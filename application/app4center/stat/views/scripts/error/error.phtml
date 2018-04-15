@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>错误信息</title>
+<style type="text/css">
+	html{ font-size:12px; font-family:"宋体"; background:#fafafa;color:#666;}
+	body{position:relative;}
+	body,div,p,input{ margin:0; padding:0;}
+	ul{ list-style:none;}
+	img{border:0;}
+	#pageshow{width:600px;margin:auto;height:330px;background:url(/images/tips/divbg2.jpg) no-repeat bottom center;padding-top:180px; position:relative;}
+	#pageshow img {
+	   azimuth: expression(
+	    this.pngSet?this.pngSet=true:
+	           (this.nodeName == "IMG" &&
+	                   this.src.toLowerCase().indexOf('.png')>-1?
+	                            (this.runtimeStyle.backgroundImage = "none",
+	                             this.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + this.src + "', sizingMethod='image')",
+	                             this.src = "/images/tips/trans.gif")
+	                           :(this.origBg = this.origBg?
+	                                     this.origBg
+	                                    :this.currentStyle.backgroundImage.toString().replace('url("','').replace('")',''),
+	                                     this.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + this.origBg + "', sizingMethod='crop')",
+	                                    this.runtimeStyle.backgroundImage = "none")),
+	           this.pngSet=true);
+	  } 
+	  .pageshow_div{width:470px;margin:auto;padding:20px 8px 0 0;}
+	    .pageshow_title{width:94%;padding:0 3% 9px;hieght:33px; float:left;border-bottom:1px solid #c9c9c9;}
+		   .pageshow_title strong{float:left;width:60%;}
+		   .pageshow_title span{float:right;width:40%; text-align:right;}
+		.pageshow_content{width:94%;padding:10px 3%;border-top:1px solid #fff;float:left;}
+		  .pageshow_content p{line-height:30px;font-size:14px;font-weight:bold;}
+		  .pageshow_content p.tz{line-height:20px;}
+		    .pageshow_content p.tz a{color:#cc0000;}
+	  .pageshow_bnt{position:absolute;width:92px;hieght:28px;right:250px;bottom:95px;}
+	    .pageshow_bnt input{border:none;width:92px;height:28px;cursor:pointer;color:#eef0f1;font-weight:bold;background:url(/images/tips/bntbg2.gif);}
+</style>
+</head>
+<body id="body1">
+<div id="pageshow">
+  <div class="pageshow_div">
+    <div class="pageshow_title"><strong><img src="/images/tips/titlebg.png" /></strong><span><img src="/images/tips/logo.png" /></span></div>
+    <div class="pageshow_content">
+      <p>对不起，出错了！！<?php  echo $this->exception->getMessage() ?></p>
+    </div>
+  </div>
+  <div class="pageshow_bnt"><input type="button" value="返回 Back" onclick="history.back();"/></div>
+</div>
+</body>
+</html>

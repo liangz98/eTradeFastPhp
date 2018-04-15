@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>快移</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="/ky/css/base.css" rel="stylesheet">
+<link href="/ky/css/style.css" rel="stylesheet">
+<link href="/ky/css/finance.css" rel="stylesheet">
+<script type="text/javascript" src="/ky/js/jquery.js"></script>
+<script type="text/javascript" src="/ky/js/seed.form.js"></script>
+<script type="text/javascript" src="/ky/js/jquery.form.js"></script>
+<script type="text/javascript" src="/ky/js/www.js"></script>
+<script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
+<script type="text/javascript" src="/ky/js/echarts.simple.min.js"></script>
+<script type="text/javascript" src="/ky/layer/layer.js"></script>
+</head>
+<body>
+<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
+<div class="o_content_wrap w1200 m0a clearfix">
+    <div class="o_tab">
+        <p class="o_tit">金融中心</p>
+    </div>
+    <div class="finance_box clearfix">
+        <div class="finance_tip mb30">
+            <p class="pb_font mb10">还款</p>
+            <div class="tip_t">
+                <p>温馨提示：</p>
+                <p>1、暂时只支持线下还款方式，到账时间一般为2-3个工作日（具体到账时间以银行到账时间为准）。</p>
+                <p>2、暂时只支持线下还款方式，到账时间一般为2-3个工作日（具体到账时间以银行到账时间为准）。</p>
+                <p>3、暂时只支持线下还款方式，到账时间一般为2-3个工作日（具体到账时间以银行到账时间为准）。</p>
+            </div>
+            <div class="tip_b">
+                <p class="mb10">请您通过银行转账，或者自行到银行汇款，汇款帐号如下：</p>
+                <p class="f16">开户行名称：深圳市骏海威保理公司</p>
+                <p class="f16">开户银行：中国银行</p>
+                <p class="f16">银行帐号：442031655521321654321</p>
+                <p class="f16">银行地址：深圳市骏海威保理公司</p>
+                <p class="f16">SWIFT CODE：1231542165721</p>
+            </div>
+        </div>
+        <div class="finance_txt">
+            <div class="fc_count">
+
+            </div>
+            <div class="txt_box">
+                <label class="fc_lab">应还金额参考</label>
+                <p style="color: #428bca;">应还金额=本金+利息+逾期利息</p>
+            </div>
+            <div class="txt_box">
+                <label class="fc_lab">起息日期</label>
+                <p>2017/08/4</p>
+            </div>
+            <div class="txt_box">
+                <label class="fc_lab">还款日期</label>
+                <p>2017/08/16&nbsp;<a href="" style="color: #85cee5;">（点击日历选择）</a></p>
+            </div>
+            <div class="txt_box">
+                <label class="fc_lab">天数</label>
+                <p>12&nbsp;&nbsp;天&nbsp;&nbsp;(日利率0.005%)</p>
+            </div>
+            <div class="txt_box">
+                <label class="fc_lab">利息</label>
+                <p class="colorred">USD&nbsp;&nbsp;260.00</p>
+            </div>
+            <div class="txt_box">
+                <label class="fc_lab">逾期天数</label>
+                <p>0&nbsp;&nbsp;天&nbsp;&nbsp;(逾期日利率0.03%)</p>
+            </div>
+            <div class="txt_box">
+                <label class="fc_lab">逾期利息</label>
+                <p class="colorred">USD&nbsp;&nbsp;0.00</p>
+            </div>
+            <div class="txt_box">
+                <label class="fc_lab">应还本金</label>
+                <p class="colorred">USD&nbsp;&nbsp;80000.00</p>
+            </div>
+            <div class="txt_box">
+                <label class="fc_lab">应还合计</label>
+                <p>USD&nbsp;&nbsp;90000.00</p>
+            </div>
+            <div class="txt_box">
+                <label class="fc_lab">余额还款</label>
+                <p>USD&nbsp;&nbsp;<span class="fc_span">80000.00</span></p>
+                <label class="fc_lab" style="height: 1px;"></label>
+                <p class="f12" style="line-height: 20px;">可用剩余金额 <span class="colorred">USD&nbsp;&nbsp;90000.00</span> = 美元账户自由余额 <span class="colorred">USD&nbsp;&nbsp;90000.00</span> + 人民币账户自由余额 <span class="colorred">CNY 9898*0.73</span></p>
+            </div>
+            <div class="txt_box">
+                <label class="fc_lab">银行还款</label>
+                <p>USD&nbsp;&nbsp;<span class="fc_span">260.00</span></p>
+            </div>
+            <div class="txt_box" style="height: auto;">
+                <label class="fc_lab">银行凭证</label>
+            </div>
+            <div class="txt_box">
+                <label class="fc_lab">还款合计</label>
+                <p>USD&nbsp;&nbsp;90000.00</p>
+            </div>
+            <div class="txt_box">
+                <label class="fc_lab">支付密码</label>
+                <input class="fc_pw" type="password" name="">
+                <input class="fc_btn" type="button" name="" value="确定">
+            </div>
+        </div>
+    </div>
+</div>
+<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
+</body>
+</html>

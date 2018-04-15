@@ -1,0 +1,102 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript" src="/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+$().ready(function() {
+	$('input[@type=checkbox][@name=checkAll]').each(function(){
+		$(this).checkbox().toggle($(this).val());
+	});
+	// 搜索表单状态
+    $("#is_actived").val('<?php echo $this->is_actived;?>');
+    $("#is_admin").val('<?php echo $this->is_admin;?>');
+    $("#user_name").val('<?php echo $this->user_name;?>');
+    $("#user_email").val('<?php echo $this->user_email;?>');
+    $("#idcard_no").val('<?php echo $this->idcard_no;?>');
+    <?php if ($this->begin_time):?>
+    $("#begin_time").val('<?php echo date('Y-m-d H:i:s',$this->begin_time);?>');
+    <?php endif;?> 
+    <?php if ($this->end_time):?>
+    $("#end_time").val('<?php echo date('Y-m-d H:i:s',$this->end_time);?>');
+    <?php endif;?> 
+});
+
+//删除
+function deleteAll(){
+	var ids="";
+    $("[name='chose[]'][checked]").each(function(){
+    	ids+=$(this).val()+",";
+    });
+    ids=ids.substring(0,(ids.length-1));
+    document.location = '<?php echo $this->BaseUrl();?>/account/delete/user_ids/'+ids;
+}
+</script>
+
+<h1>帐号管理</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" onclick="location.href='<?php echo $this->BaseUrl();?>/account/add/';" value="添加" />
+    <input class="admin_bnt2" name="" type="button" value="导入excel" onclick="document.location='<?php echo $this->BaseUrl();?>/account/excel'"/>
+  </p>
+</div>
+<div class="admin_search">
+  <form name="search" id="search"  method="get">
+    <fieldset>
+      <legend>账户搜索</legend>
+      &nbsp;
+      <select name="is_admin" id="is_admin">
+        <option value="-1">-是否允许后台登陆-</option>
+        <option value="0" >否</option>
+        <option value="1" >是</option>
+      </select>
+      <select name="is_actived" id="is_actived">
+        <option value="-1">-是否激活-</option>
+        <option value="0" >否</option>
+        <option value="1" >是</option>
+      </select>
+      选择时间：<input name="begin_time" type="text" class="admin_txt1  Wdate" id="begin_time" style="width:150px; height:13px;" onFocus="WdatePicker({startDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" value="" size="10" >至
+       <input name="end_time" type="text" class="admin_txt1  Wdate" id="end_time" style="width:150px; height:13px;" onFocus="WdatePicker({startDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" value="" size="10" >
+      帐号名称：
+      <input type="text" name="user_name" id="user_name" value="" style="width:100px;"/>
+      帐号E-mail：
+      <input type="text" name="user_email" id="user_email" value="" style="width:100px;"/>
+      <br/>
+      身份证：
+      <input type="text" name="idcard_no" id="idcard_no" value="" style="width:200px;"/>
+      <input name="提交" type="submit" class="admin_bnt2" value="搜索"/>
+    </fieldset>
+  </form>
+</div>
+<table class="admin_list">
+  <tr>
+    <th><input type="checkbox" name="checkAll" id="checkAll"  value="input.ids_all" title="全选/反选">
+      <label for="checkAll">全选</label></th>
+    <th>昵称</th>
+    <th>用户名</th>
+    <th>身份证</th>
+    <th>服务网点</th>
+    <th>是否允许后台登陆</th>
+    <th>是否激活</th>
+    <th>操作</th>
+  </tr>
+  <?php if(is_array($this->users)):?>
+  <?php foreach($this->users as $user):?>
+  <tr>
+    <td><input type="checkbox" id="chose[]" name="chose[]" value="<?php echo ($user['user_id'])?>" class="ids_all"></td>
+    <td><?php echo ($user['nick_name']);?></td>
+    <td><?php echo ($user['user_name']);?></td>
+    <td><?php echo ($user['idcard_no']);?></td>
+    <td><?php echo ($user['service_site']);?></td>
+    <td><?php echo ($user['is_admin']=='1')?'<img src="/images/center/yes.gif">':'<img src=/images/center/no.gif>';?></td>
+    <td><?php echo ($user['is_actived']=='1')?'<img src="/images/center/yes.gif">':'<img src=/images/center/no.gif>';?></td>
+    <td><a href="<?php echo $this->BaseUrl();?>/account/update/user_id/<?php echo $user['user_id']?>"><img src="/images/center/edit.gif" title="编辑资料" alt="编辑资料"></a> <a href="<?php echo $this->BaseUrl();?>/account/passwd/user_id/<?php echo $user['user_id']?>"><img src="/images/center/passwd.gif" title="修改登录密码" alt="修改登录密码"></a> <a href="<?php echo $this->BaseUrl();?>/account/paypasswd/user_id/<?php echo $user['user_id']?>"><img src="/images/center/passwd.gif" title="修改支付密码" alt="修改支付密码"></a> <a href="<?php echo $this->BaseUrl();?>/account/auth/user_id/<?php echo $user['user_id']?>"><img src="/images/center/role.gif" title="角色指派" alt="角色指派"></a> <a href="<?php echo $this->BaseUrl();?>/account/delete/user_ids/<?php echo $user['user_id']?>"><img src="/images/center/del.gif" title="删除帐号" alt="删除帐号" /></a></td>
+  </tr>
+  <?php endforeach; ?>
+  <?php endif;?>
+</table>
+<div class="batch">
+  <input type="button" class="admin_bnt2" name="deleteButton" id="deleteButton" value="删除选择" onclick="deleteAll()">
+</div>
+<!--分页开始-->
+<div class="page"> <?php echo $this->showPage($this->page);?> </div>
+<!--分页结束--> 
+
+<?php echo $this->render("footer.phtml") ?> 

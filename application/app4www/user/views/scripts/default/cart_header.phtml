@@ -1,0 +1,18 @@
+<?php 
+   $goodsCateM = new Shop_Model_GoodsCate('shop');
+   $cates = $goodsCateM->fetchRows(null,array('parent'=>'0'),'order_by desc');
+?>
+<div id="head">
+	<div class="head_top">
+    	<p>
+        	<small>
+            	<!--<a>正品保证</a>-->
+                <a href="<?php echo $this->seed_Setting['user_app_server']?>/order" >订单查询</a>
+                <a href="/help">帮助中心</a> 
+                <a href="<?php echo $this->seed_Setting['user_app_server']?>/info">我的信天邮</a>
+            </small>
+            <span>欢迎来到信天邮&nbsp;&nbsp; | <?php if ($this->seed_User['user_id']>0):?><a href="<?php echo $this->seed_Setting['user_app_server']?>/info"><em><?php echo $this->seed_User['real_name']?$this->seed_User['real_name']:$this->seed_User['user_name'];?></em></a> | <a href="<?php echo $this->seed_Setting['user_app_server']?>/logout">退出</a><?php else :?><a href="<?php echo $this->seed_Setting['user_app_server']?>/login">请登录</a> | <a href="<?php echo $this->seed_Setting['user_app_server']?>/register">快速注册</a> <?php endif;?></span>
+            <!--
+            <span>欢迎来到信天邮&nbsp;&nbsp; | <a href="<?php echo $this->seed_Setting['user_app_server']?>/info"><em>hongsite</em></a> | <a href="<?php echo $this->seed_Setting['user_app_server']?>/logout">退出</a></span>
+        --></p>
+    </div>

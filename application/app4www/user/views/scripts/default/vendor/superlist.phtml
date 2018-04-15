@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>快移</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link href="/ky/css/base.css" rel="stylesheet">
+    <link href="/ky/css/style.css" rel="stylesheet">
+    <script type="text/javascript" src="/ky/js/jquery.js"></script>
+    <script>
+        function doStatus(status) {
+            window.location.href = '<?php echo $this->BaseUrl();?>/vendor/index/status/' + status
+
+        }
+    </script>
+    <script>
+        function singleSelect(obj) {
+            var pname = $(obj).val();
+            var thegoodid = obj.id;
+            if (obj.checked) {
+                $(window.parent.document).find("#supplierID").val(thegoodid);
+                $(window.parent.document).find("#supplierName").val(pname);
+                $(window.parent.document).find("#supplierName").css('border-color','#e8e8e8');
+            }
+        }
+        function delSelect(obj) {
+            $(obj).parent().remove();
+        }
+        function addlink() {
+            window.parent.open("<?php echo WWW;?>user/vendor/adds");
+        }
+    </script>
+</head>
+<body>
+<div class="order_goodslist">
+    <div style="height: 40px;line-height:35px;margin: 10px;">
+        <form action="#" method="post">
+            <p>
+                <input class="search_inp"  name="keyword"  <?php if (!empty($this->keyword)) {
+                    echo "value=" . $this->keyword;
+                } ?> placeholder="<?php echo $this->translate('INPkw_par_vendor'); ?>" type="text"><!--可输入公司名称、行业等关键字-->
+                <input class="ss_btn" type="submit" value="">
+                <a style="margin-top: 8px;"  target="_blank"  href="<?php echo WWW; ?>user/vendor/add" class="addb_box fr"></a>
+                <a style="margin-top: 10px;"  target="_blank"  href="#" onclick="addlink()" class="p_n_sh fr"></a>
+            </p>
+        </form>
+    </div>
+    <div style="width: 100%">
+        <table class="qy_table_tc qy_table1">
+            <thead>
+            <tr>
+                <th><!--操作--><?php echo $this->translate('madeTT'); ?></th>
+                <th><!--公司名称--><?php echo $this->translate('comNAME'); ?></th>
+                <th><!--行业--><?php echo $this->translate('industry'); ?></th>
+                <th><!--所在国家--><?php echo $this->translate('ONcountry'); ?></th>
+                <th><!--状态--><?php echo $this->translate('state'); ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if (is_array($this->e) && count($this->e) > 0): ?>
+                <?php foreach ($this->e as $k => $v): ?>
+                    <tr>
+                        <td><input value="<?php echo $v['toName']; ?>" type="radio" name="checkbox"
+                                   onclick="singleSelect(this)" id="<?php echo $v['toID']; ?>"></td>
+                        <td><?php echo $v['toName']; ?></td>
+                        <td><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ISIC_INDUSTRY_TYPE'], $v['industryCode']); ?> </td>
+                        <td><?php echo $this->ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'], $this->userlangCode, $this->dic_Setting['COUNTRY_ISO_CODE'], $v['regdCountryCode']); ?></td>
+                        <td><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['PARTNER_STATUS'], $v['partnerStatus']); ?> </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            </tbody>
+        </table>
+        <div class="page"> <?php echo $this->showProductPage($this->page); ?> </div>
+    </div>
+</div>
+
+</body>
+</html>

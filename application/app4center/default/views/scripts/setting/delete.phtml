@@ -1,0 +1,54 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/setting/delete',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+</script>
+
+<h1>删除变量列表</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back();"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_list">
+    <tr>
+      <th>编号</th>
+      <th>变量</th>
+      <th>名称</th>
+      <th>说明</th>
+    </tr>
+    <?php if(is_array($this->settings)):?>
+    <?php foreach($this->settings as $setting):?>
+    <tr>
+      <td><input type="checkbox" id="mod_id<?php echo ($setting['setting_id'])?>" name="setting_id[]" checked value="<?php echo ($setting['setting_id'])?>">
+        <?php echo ($setting['setting_id'])?></td>
+      <td><?php echo ($setting['setting_variable'])?></td>
+      <td><?php echo ($setting['setting_name'])?></td>
+      <td><?php echo ($setting['setting_desc'])?></td>
+    </tr>
+    <?php endforeach; ?>
+    <?php endif;?>
+  </table>
+  <div class="batch">
+    <input type="hidden" name="modtype" value="<?php echo $this->modtype;?>">
+    <input type="hidden" name="modname" value="<?php echo $this->modname;?>">
+    <input type="submit" class="admin_bnt2" name="" value="确认删除" onclick="return confirm('确认删除选择记录？')">
+  </div>
+</form>
+<?php echo $this->render("footer.phtml") ?> 

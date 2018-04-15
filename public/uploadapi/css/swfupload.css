@@ -1,0 +1,273 @@
+/* -- Form Styles ------------------------------- */
+form {	
+	margin: 0;
+	padding: 0;
+}
+
+#flash-uploader {
+width:600px;
+float:left;
+}
+
+#flash-uploader .flashUploaderBox {
+width:648px;
+background-color:#E8F6F2;
+border:1px solid #C8E0DA;
+position:relative;
+z-index:0;
+color:#61869D;
+padding-bottom:36px;
+}
+
+#flash-uploader .flashUploaderBox table {
+width:100%;
+margin:89px 0 0;
+}
+.uploaderTip{ position:absolute;left:5px;top:414px;}
+
+div.fieldset {
+}
+
+div.fieldset span.legend {
+display:none;
+}
+
+div.flash {
+	width:636px;
+	height:300px;
+	margin:0 auto 3px;
+	border:1px solid #C8E0DA;
+	background-color:#FFF;
+	padding:5px 0;
+    -moz-border-radius-bottomleft : 5px;
+    -webkit-border-bottom-left-radius : 5px;
+    -moz-border-radius-bottomright : 5px;
+    -webkit-border-bottom-right-radius : 5px;
+	overflow:auto;
+	overflow-x:hidden;
+	overflow-y:auto;
+}
+
+.progressWrapper {
+	overflow: hidden;
+	padding:4px;
+}
+
+.wrapperOdd {
+background-color:#F7F7F7;
+}
+
+.wrapperEven {
+background-color:#FFF;
+}
+
+.progressContainer {
+	padding: 4px;
+	overflow: hidden;
+	line-height:14px;
+	height:14px;
+}
+
+.flashUploaderBtns {
+width:636px;
+position:absolute;
+top:0;
+left:0;
+padding:10px 6px;
+}
+
+.flashUploaderBtns input {
+border:0;
+overflow:hidden;
+text-indent:-999px;
+}
+
+.flashUploaderBtns .swfupload {
+width:129px;
+height:42px;
+cursor:pointer;
+position:absolute;
+left:50%;
+top:210px;
+margin:0 0 0 -64px;
+}
+
+.after .flashUploaderBtns .swfupload {
+width:84px;
+height:25px;
+margin:0;
+left:6px;
+top:10px;
+}
+
+#startUpbutton1 {
+width:84px;
+height:25px;
+position:absolute;
+right:6px;
+top:10px;
+background:transparent url(../images/swfupload/uploader-misc-bg.png) no-repeat -84px -116px;
+}
+
+.after #startUpbutton1 {
+background:transparent url(../images/swfupload/uploader-misc-bg.png) no-repeat 0 -116px;
+cursor:pointer;
+}
+
+.after #startUpbutton1.disalbebutton {
+width:84px;
+height:25px;
+position:absolute;
+right:6px;
+top:10px;
+background:transparent url(../images/swfupload/uploader-misc-bg.png) no-repeat -84px -116px;
+cursor:default;
+}
+
+#btnCancel1 {
+width:84px;
+height:25px;
+background:transparent url(../images/swfupload/uploader-misc-bg.png) no-repeat -84px -141px;
+position:absolute;
+right:6px;
+top:410px;
+}
+
+.after #btnCancel1 {
+width:84px;
+height:25px;
+background:transparent url(../images/swfupload/uploader-misc-bg.png) no-repeat 0 -141px;
+cursor:pointer;
+}
+
+.flashUploaderBtns .tip {
+position:absolute;
+top:42px;
+left:6px;
+}
+
+/* Message */
+.message {
+	margin: 1em 0;
+	padding: 10px 20px;
+	border: solid 1px #FFDD99;
+	background-color: #FFFFCC;
+	overflow: hidden;
+}
+/* Error */
+.red {
+	border: solid 1px #B50000;
+	background-color: #FFEBEB;
+}
+
+/* Current */
+.green {
+	border: solid 1px #DDF0DD;
+	background-color: #EBFFEB;
+}
+
+/* Complete */
+.blue {
+	border: solid 1px #CEE2F2;
+	background-color: #F0F5FF;
+}
+
+.progressName {
+	width: 360px;
+	text-align: left;
+	white-space: nowrap;
+	overflow: hidden;
+	float:left;
+}
+
+.progressBarInProgress,
+.progressBarComplete,
+.progressBarError {
+	font-size: 0;
+	width: 0%;
+	height: 2px;
+	background-color: #06C;
+	margin-top: 2px;
+    clear:both;
+    float:left;
+}
+
+.progressBarComplete {
+	width: 100%;
+	background-color: green;
+	visibility: hidden;
+}
+
+.progressBarError {
+	width: 100%;
+	background-color: red;
+	visibility: hidden;
+}
+
+.progressBarStatus {
+	width: 170px;
+	text-align: left;
+	white-space: nowrap;
+	float:left;
+}
+
+.progressCancel {
+	height: 14px;
+	width: 14px;
+	float: right;
+	background:transparent url(../images/swfupload/uploader-misc-bg.png) no-repeat  -212px -62px;
+	display:inline;
+}
+
+.progressCancel:hover {
+	background-position: right -212px -74px;
+}
+
+.wrapperHead {
+position:absolute;
+top:69px;
+padding:0;
+left:5px;
+}
+
+.wrapperHead .progressContainer {
+width:638px;
+padding:0;
+height:22px;
+line-height:23px;
+overflow:hidden;
+}
+
+.progressWrapper {
+}
+
+	.after .progressWrapper {
+	display:block;
+	}
+
+.wrapperHead .progressName {
+height:22px;
+text-indent:8px;
+background:transparent url(../images/swfupload/uploader-flash-bg.png) no-repeat 0 0;
+}
+
+.wrapperHead .progressBarStatus {
+height:22px;
+text-indent:8px;
+background:transparent url(../images/swfupload/uploader-flash-bg.png) no-repeat center 0;
+border:1px solid #C8E0DA;
+border-width:0 1px;
+}
+
+.wrapperHead .progressCancel {
+width:106px;
+height:22px;
+text-align:center;
+background:transparent url(../images/swfupload/uploader-flash-bg.png) no-repeat right 0;
+}
+
+
+/* -- SWFUpload Object Styles ------------------------------- */
+.swfupload {
+	vertical-align: top;
+}

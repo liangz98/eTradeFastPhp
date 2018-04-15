@@ -1,0 +1,162 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+    $("#post_form").validate({
+        event: "keyup",
+        rules: {},
+        messages: {},
+        submitHandler: function() {
+            SeedMsgBox('正在保存中，请稍候...');
+            var options = {
+                target: '#SeedMsgTxt',
+                url: '<?php echo $this->BaseUrl(); ?>/about/updatepc',
+                success: function() {
+                }
+            };
+            $('#post_form').ajaxSubmit(options);
+        }
+    });
+});
+
+function selectMaterial() {
+    tb_show('', '<?php echo $this->BaseUrl(); ?>/material/select/?TB_iframe=true&width=800&height=450');
+}
+
+function setMaterial(id) {
+    loadMaterial(id);
+}
+
+function loadMaterial(id) {
+    $.getJSON("<?php echo $this->BaseUrl(); ?>/material/getjson?material_id=" + id, function(data) {
+        if (data.material_id > 0) {
+            $("#about_material_id").val(data.material_id);
+            $("#material_select").html(data.material_title);
+            $("#about_title").val(data.material_title);
+            $("#about_image").val(data.material_image);
+            $("#about_desc").val(data.material_desc);
+        }
+    });
+}
+</script>
+<script type="text/javascript" src="/ky/editor/xheditor.min.js"></script>
+<script type="text/javascript" src="/ky/editor/xheditor_lang/zh-cn.js"></script>
+<h1>修改企业信息</h1>
+<div class="textnav">
+    <p>
+        <input class="btn btn-primary" name="" type="button" value="返回" onclick="history.back()"/>
+    </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+<input name="about_id" id="about_id" type="hidden" value="<?php echo ($this->about['about_id']); ?>" />
+<table class="admin_form">
+    <tr>
+        <td><strong>内容来源：</strong>
+            <p>
+                <input type="radio" name="about_source" id="about_source0" value="0" style="width:15px;" <?php echo ($this->about['about_source'] == 0) ? "checked" : ""; ?> onclick="$('#tr_source1').show();
+              $('#tr_source0').hide();" disabled>
+                <label for="about_source0">单独添加</label>
+                &nbsp;
+                <input type="radio" name="about_source" id="about_source1" value="1" style="width:15px;" <?php echo ($this->about['about_source'] == 1) ? "checked" : ""; ?> onclick="$('#tr_source0').show();
+              $('#tr_source1').hide();" disabled>
+                <label for="about_source1">素材库</label>
+            </p></td>
+    </tr>
+    <tr id="tr_source0" <?php echo ($this->about['about_source'] == 0) ? "style=\"display:none;\"" : ""; ?>>
+        <td><strong>选择素材：</strong>
+            <p>
+                <input type="button" name="select" value="点击选择"  class="btn btn-primary"  onclick="selectMaterial()"><input type="hidden" name="about_material_id" id="about_material_id" value="<?php echo ($this->about['about_material_id']); ?>">
+                当前选择:<span id="material_select"><?php echo ($this->about['about_material_title']); ?></span>
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td><strong>标题：</strong>
+            <p>
+                <input class="admin_txt1" name="about_title" id="about_title" type="text" value="<?php echo ($this->about['about_title']); ?>"/>
+            </p></td>
+    </tr>
+    <tr>
+        <td><strong>封面：</strong>
+            <p>
+                <input name="about_image" id="about_image" readonly value="<?php echo ($this->about['about_image']); ?>" type="text" class="admin_txt1"/>
+                <input type="button" name="select" value="选择" class="btn btn-primary" onclick="selectCoverImage('aboutthumb', 'about_image')">
+                <input type="button" name="preview_about_image" id="preview_about_image" value="预览" class="btn btn-primary" onclick="previewCoverImage('about_image')" <?php echo (($this->about['about_image']) == "") ? "style=\"display:none;\"" : ""; ?>>
+            </p></td>
+    </tr>
+    <tr>
+        <td><strong>标识(英文和数字)：</strong>
+            <p>
+                <input name="about_mark" id="about_mark" value="<?php echo ($this->about['about_mark']); ?>" type="text" class="admin_txt1"/>
+            </p></td>
+    </tr>
+    <tr>
+        <td><strong>简介：</strong>
+            <p>
+                <textarea  class="textarea" name="about_desc" style="height:200px;" id="about_desc"><?php echo ($this->about['about_desc']); ?></textarea>
+            </p></td>
+    </tr>
+    <tbody  id="tr_source1" <?php echo ($this->about['about_source'] == 1) ? "style=\"display:none;\"" : ""; ?>>
+        <tr>
+            <td><strong>内容：</strong>
+                <div class="txt_lft">
+                    <!-- 加载编辑器的容器 -->
+                    <textarea id="container" name="about_content" type="text/plain" style="width: 90%; height:400px">
+                        <?php echo $this->ShowContent($this->about['about_content']);?>
+                    </textarea>
+                    <!-- 配置文件 -->
+                    <script type="text/javascript" src="/ueditor/ueditor.config.js"></script>
+                    <!-- 编辑器源码文件 -->
+                    <script type="text/javascript" src="/ueditor/ueditor.all.js"></script>
+                    <!-- 实例化编辑器 -->
+                    <script type="text/javascript">
+                        var ue = UE.getEditor('container');
+                    </script>
+
+                </div>
+                <input id="imgZoneUrl1" type="hidden" value="/b/upload/imagexhr/initimagepage?type=2&img_cate=about">
+            </td>
+        </tr>
+        <tr>
+            <td id="imgZoneContent1" style="margin-top:10px;"></td>
+        </tr>
+    </tbody>
+    <tr>
+        <td><strong>排序：</strong>
+            <p>
+                <input class="admin_txt1" name="order_by" id="order_by" type="text" value="<?php echo ($this->about['order_by']); ?>"/>
+            </p></td>
+    </tr>
+    <tr>
+        <td><strong>是否显示：</strong>
+            <p>
+                <input type="radio" name="is_actived" id="is_actived0" value="0" style="width:15px;" <?php echo ($this->about['is_actived'] == '0') ? "checked" : ""; ?>>
+                否&nbsp;
+                <input type="radio" name="is_actived" id="is_actived1" value="1" style="width:15px;" <?php echo ($this->about['is_actived'] == '1') ? "checked" : ""; ?>>
+                是 </p></td>
+    </tr>
+    <tr>
+        <td><strong>SEO标题：</strong>
+            <p>
+                <textarea style="width:675px;height:80px;size:12px;" name="html_title" id="html_title"><?php echo $this->escape($this->about['html_title']); ?></textarea>
+            </p></td>
+    </tr>
+    <tr>
+        <td><strong>SEO关键词：</strong>
+            <p>
+                <textarea style="width:675px;height:80px;size:12px;" name="html_keywords" id="html_keywords"><?php echo $this->escape($this->about['html_keywords']); ?></textarea>
+            </p></td>
+    </tr>
+    <tr>
+        <td><strong>SEO描述：</strong>
+            <p>
+                <textarea style="width:675px;height:80px;size:12px;" name="html_description" id="html_description"><?php echo $this->escape($this->about['html_description']); ?></textarea>
+            </p></td>
+    </tr>
+</table>
+<table class="admin_form">
+    <tr>
+        <td><input   class="btn btn-primary" type="submit" value="提交" /></td>
+    </tr>
+</table>
+</form>
+<?php echo $this->render("footer.phtml") ?>

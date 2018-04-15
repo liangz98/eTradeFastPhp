@@ -1,0 +1,166 @@
+<?php 
+   $goodsCateM = new Shop_Model_GoodsCate('shop');
+   $cates = $goodsCateM->getCatesTree(0,null,true);
+?>
+<script type="text/javascript">
+function a(){
+	if(good_search.keyword.value == '请输入关键词'){
+		alert('请输入关键词');
+		return true;
+	} 
+	good_search.submit();
+}
+$(function(){   
+        $(".pullDownList li").hover(function(){
+            $(".yMenuListCon").fadeIn();
+            var index=$(this).index(".pullDownList li");
+            if (!($(this).hasClass("menulihover")||$(this).hasClass("menuliselected"))) {
+                $($(".yBannerList")[index]).css("display","block").siblings().css("display","none");
+                $($(".yBannerList")[index]).removeClass("ybannerExposure");
+                setTimeout(function(){
+                $($(".yBannerList")[index]).addClass("ybannerExposure");
+                },60)
+            }else{  
+            }
+            $(this).addClass("menulihover").siblings().removeClass("menulihover");
+                $(this).addClass("menuliselected").siblings().removeClass("menuliselected");
+            $($(".yMenuListConin")[index]).fadeIn().siblings().fadeOut();
+        },function(){
+            
+        })
+        $(".pullDown").mouseleave(function(){
+            $(".yMenuListCon").fadeOut();
+            $(".yMenuListConin").fadeOut();
+            $(".pullDownList li").removeClass("menulihover");
+        })
+    })
+</script>
+<div id="head">
+	<div class="head_top">
+    	<p>
+            <small>
+                <a href="<?php echo WWW;?>user/order" rel="nofollow">订单查询</a>
+                <a href="<?php echo WWW;?>help" rel="nofollow">帮助中心</a>
+                <a href="<?php echo WWW;?>user/info" rel="nofollow">我的信天邮</a>
+            </small>
+            <span>欢迎来到信天邮&nbsp;&nbsp; | <?php if ($this->seed_User['user_id']>0):?><a href="<?php echo $this->seed_Setting['user_app_server']?>/info"><em><?php echo $this->seed_User['real_name']?$this->seed_User['real_name']:$this->seed_User['user_name'];?></em></a> | <a href="<?php echo $this->seed_Setting['user_app_server']?>/logout" rel="nofollow">退出</a><?php else :?><a href="<?php echo WWW;?>user/login" rel="nofollow">请登录</a> | <a href="<?php echo $this->seed_Setting['user_app_server']?>/register" rel="nofollow">快速注册</a> <?php endif;?></span>
+        </p>
+    </div>
+    <div class="header">
+        <div class="logo">
+            <span><a href="<?php echo WWW;?>"><img src="<?php echo WWW;?>static/sendyou/images/ui/logo3.png" alt="信天邮" title="信天邮"/></a></span>
+        </div>
+        <div class="good_search">
+            <form id="good_search" name="good_search" method="get" action='/search'>
+            <p>
+                <input class="s_txt" name="keyword" type="text" value="请输入关键词" onfocus="if(value==defaultValue){value='';this.style.color='#000'}" onblur="if(!value){value=defaultValue;this.style.color='#999'}" style="color: rgb(153, 153, 153); outline:none;"/>
+                <input class="s_bnt" name="" type="button"  value="" style="outline:none;" onclick="javascript:a();"/>
+            </p>
+            </form>
+            <ul>
+                <li>热门搜索：</li>
+                <?php foreach ($cates as $k=>$cate):?>            
+                    <li>
+                    <?php if ($k!= count($cate['cate_name'])-1) echo "丨";?>
+                    <a href="<?php echo WWW;?>products/top-<?php echo $cate['cate_id'];?>.html"><?php echo $cate['cate_name'];?></a>
+                    </li>
+                <?php endforeach;?>
+            </ul>
+        </div>
+        <?php $charts = $this->fetchCharts('pc_head_rad');?>
+        <?php if(is_array($charts) && count($charts)>0):?>
+        <div class="header_r">
+            <span class="head_cart" ><a href="<?php echo $this->seed_Setting['user_app_server']?>/cart">购物车</a><em id="total_carts"><?php echo intval($this->total_carts).'';?></em></span>
+        <?php foreach ($charts as $k=>$chart):?>
+            <span><a href="<?php echo $chart['chart_href'];?>"><img src="<?php echo $this->showImage($chart['chart_image']);?>" alt="服务引导图"/></a></span>
+         <?php endforeach;?>       
+        </div>
+        <?php endif;?>
+    </div>
+    <div class="yHeader">
+        <div class="yNavIndex">
+            <div class="pullDown">
+                <h2 class="pullDownTitle">
+                    所有商品分类
+                </h2>
+                <ul class="pullDownList">
+                    <?php foreach ($cates as $cate):?>
+                    <li class="" >
+                        <i class="listi1"><img src="<?php echo $this->showImage($cate['cate_image']);?>" alt="li_logo"/></i>
+                        <h2>
+                        <a href="<?php echo WWW;?>products/top-<?php echo $cate['cate_id'];?>.html"><?php echo $cate['cate_name'];?></a>
+                        </h2>
+                        <h3>
+                        <?php foreach($cate['cates'] as $k=>$mysecond):?>
+                        <?php if ($k != count($mysecond['cate_name'])-1) echo "|";?>
+                        <a class="ecolor610" href="<?php echo WWW;?>products/top-<?php echo $mysecond['cate_id'];?>.html">        
+                        <?php echo $this->escape($mysecond['cate_name']);?></a>
+                         <?php endforeach;?></h3>
+                    </li>
+                    <?php endforeach;?>
+                </ul>
+                <div class="yMenuListCon" style="display:none;">
+                   <dl>
+                   <?php foreach ($cates as $cate):?>                 
+                    <div class="yMenuListConin">                      
+                        <div class="yMenuLCinList">
+                            
+                            <dt><h3><a href="<?php echo WWW;?>products/top-<?php echo $cate['cate_id'];?>.html" class="yListName"><?php echo $cate['cate_name'];?></a><a href="<?php echo WWW;?>products/top-<?php echo $cate['cate_id'];?>.html" class="yListMore">更多 ></a></h3>
+                            </dt>
+                            <dd> 
+                            <?php foreach($cate['cates'] as $mysecond):?>       
+                            <p>
+                            <span><a  class="ecolor610" href="<?php echo WWW;?>products/top-<?php echo $mysecond['cate_id'];?>.html"><?php echo $this->escape($mysecond['cate_name']);?></a>
+                            </span>
+                            </p>
+                            <p> 
+                                <?php foreach($mysecond['cates'] as $mythird):?>
+                                    <a href="<?php echo WWW;?>products/top-<?php echo $mythird['cate_id'];?>.html"><?php echo $this->escape($mythird['cate_name']);?></a>      
+                                    <?php endforeach;?>
+                            </p>
+                            <?php endforeach;?>
+                            </dd>                  
+                        </div>
+                    </div>
+                    <?php endforeach;?>
+                    </dl>
+                </div>
+            </div>
+            <ul class="yMenuIndex">
+                <li <?php if ($this->cur_pos=='index'):?>class="crumb"<?php endif;?>><a href="<?php echo WWW;?>">首页</a></li>
+                <li <?php if ($this->cur_pos=='products'):?>class="crumb"<?php endif;?>><a href="<?php echo WWW;?>products/top-1.html">母婴馆</a></li>
+                <li <?php if ($this->cur_pos=='products'):?>class="crumb"<?php endif;?>><a href="<?php echo WWW;?>products/top-13.html">健康保健</a></li>
+                <li <?php if ($this->cur_pos=='products'):?>class="crumb"<?php endif;?>><a href="<?php echo WWW;?>products/top-12.html">美妆个护</a></li>
+                <li <?php if ($this->cur_pos=='merchants'):?>class="crumb"<?php endif;?>><a href="<?php echo WWW;?>merchants">品牌旗舰店</a></li>
+                <?php if (isset($this->seed_Setting['goods_channel']) && $this->seed_Setting['goods_channel']=='BBC'):?>
+                <li><a target="_blank" href="<?php echo $this->seed_Setting['website'];?>">香港信天邮</a></li>
+                <?php elseif (isset($this->seed_Setting['goods_channel']) && $this->seed_Setting['goods_channel']=='BC'):?>
+                <li><a target="_blank" href="<?php echo $this->seed_Setting['website'];?>">大陆信天邮</a></li>
+                <?php endif;?>
+            </ul>
+            <div class="r_fx">
+                <div class="new">
+                    <h3><a class="new_title">信天邮快报</a><a href="#" class="new_more">更多></a></h3>
+                    <ul>
+                        <li title="清明放假公告"><p><strong style="color:#d00000;">[公告]</strong><span><a target="_blank" href="http://www.sendtou.com/help/1453775223.html" style="color:#d00000;">税改政策调整</a></span></p></li>
+                        <li title="信天邮大健康海购体验商城广州试业(网易新闻)"><p><strong>[快报]</strong><span><a target="_blank" href="http://news.163.com/15/0623/18/ASQIMSFS00014AED.html">信天邮大健康海购体验商城广州试业(网易新闻)</a></span></p></li>
+                        <li title="信天邮体验店落户广州(凤凰资讯)"><p><strong>[快报]</strong><span><a target="_blank" href="http://news.ifeng.com/a/20150805/44349634_0.shtml">信天邮体验店落户广州(凤凰资讯)</a></span></p></li>
+                        <li title="信天邮——首家开进药店的跨境电商(广州日报)"><p><strong>[快报]</strong><span><a target="_blank" href="http://news.dayoo.com/guangzhou/201511/16/10002080_112003719.htm">信天邮——首家开进药店的跨境电商(广州日报)</a></span></p></li>
+                        <li title="信天邮——各式海鲜食材即烹即享免费试吃(网易房产)"><p><strong>[快报]</strong><span><a target="_blank" href="http://gz.house.163.com/15/1113/08/B89OK3B600873L40.html">信天邮——各式海鲜食材即烹即享免费试吃(网易房产)</a></span></p></li>
+                        <li title="跨境电商井喷真相？(凤凰资讯)"><p><strong>[快报]</strong><span><a target="_blank" href="http://news.ifeng.com/a/20151015/44992473_0.shtml">跨境电商井喷真相？(凤凰资讯)</a></span></p></li>
+                    </ul>
+                </div>
+                <div class="notice">
+                    <h3><a class="new_title">热销品牌</a><a href="#" class="new_more">更多></a></h3>
+                    <ul>
+                         <li><a href="<?php echo WWW;?>brand/top-228.html"><img src="http://pay.sendtou.com/upload_files/images/brand/20151216/20454_504884153132.jpg" alt="童年时光"></a></li>
+                        <li><a href="<?php echo WWW;?>brand/top-157.html"><img src="http://pay.sendtou.com/upload_files/images/brand/20151216/20533_645345016507.jpg" alt="艾维诺"></a></li>
+                        <li><a href="<?php echo WWW;?>brand/top-186.html"><img src="http://pay.sendtou.com/upload_files/images/brand/20151216/20534_909114942123.jpg" alt="嘉宝"></a></li>
+                        <li><a href="<?php echo WWW;?>brand/top-208.html"><img src="http://pay.sendtou.com/upload_files/images/brand/20151216/20535_724396490584.jpg" alt="启泰"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

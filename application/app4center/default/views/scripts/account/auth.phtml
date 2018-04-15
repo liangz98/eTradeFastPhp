@@ -1,0 +1,96 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$('input[@type=checkbox][@name=checkAll]').each(function(){
+		$(this).checkbox().toggle($(this).val());
+	});
+	
+	$("#mod_name").CascadingSelect(
+			$("#role_name"),
+			"<?php echo $this->BaseUrl();?>/role/ajax?",
+			{datatype:"json",textfield:"role_desc",valuefiled:"role_name",parameter:"mod_name"},
+			function(){
+				$("#role_name").AddOption("","-1",true,0);
+			}
+	);
+	
+});
+function doadd(){
+	$("#post_form").validate({
+	   event: "keyup",
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/account/auth',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+}
+
+function dodelete(){
+	if(!confirm("的确要删除所选择记录？"))return false;
+	$("#post_form4del").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/account/auth',
+			    success: function() {
+			    }
+			};
+			$('#post_form4del').ajaxSubmit(options);
+		}
+	});
+}
+</script><h1>帐号授权</h1>
+<div class="textnav" id="idTabs">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back()"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <fieldset>
+    <legend>添加角色</legend>
+    &nbsp;
+    模块：
+    <select name="mod_name" id="mod_name">
+      <option value="-1"></option>
+      <?php if(is_array($this->modules)):?>
+      <?php foreach($this->modules as $module):?>
+      <option value="<?php echo ($module['mod_name']."_".$module['mod_type']);?>"><?php echo ($module['mod_desc']);?></option>
+      <?php endforeach; ?>
+      <?php endif;?>
+    </select>
+    角色：
+    <select name="role_name" id="role_name">
+      <option value="-1"></option>
+    </select>
+    <input type="hidden" name="action" value="add">
+    <input type="hidden" name="user_id" id="user_id" value="<?php echo $this->user['user_id'];?>">
+    <input type="submit" value="添加"  class="admin_bnt2"  onclick="doadd();"/>
+  </fieldset>
+</form>
+<form name="post_form4del" method="post" action="" id="post_form4del" >
+<br />
+  <strong>当前拥有角色:</strong><br /><br />
+  <?php if(is_array($this->roles)):?>
+  <?php foreach($this->roles as $role):?>
+  <p>
+    <input type="checkbox" name="user_role[]" value="<?php echo ($role['user_id']);?>^<?php echo ($role['mod_name']);?>^<?php echo ($role['role_name']);?>" style="width:15px;">
+    <?php echo ($role['mod_desc']);?>： <?php echo ($role['role_desc']);?> </p>
+  <?php endforeach; ?>
+  <?php endif;?>
+  <div class="batch">
+    <input type="hidden" name="action" value="delete">
+    <input type="hidden" name="user_id" value="<?php echo ($this->user['user_id']);?>">
+    <input  class="admin_bnt2"  name="" type="submit" value="删除所选择" onclick="return dodelete();"/>
+  </div>
+</form>
+<?php echo $this->render("footer.phtml") ?>

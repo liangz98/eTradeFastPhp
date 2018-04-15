@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>快移</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link href="/ky/css/base.css" rel="stylesheet">
+    <link href="/ky/css/style.css" rel="stylesheet">
+    <script type="text/javascript" src="/ky/js/jquery.js"></script>
+    <script type="text/javascript" src="/ky/js/jquery.wallform.js"></script>
+    <script type="text/javascript" src="/ky/js/www.js"></script>
+    <script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
+    <link href="/ky/css/pay.css" rel="stylesheet">
+</head>
+<body>
+<?php echo $this->render(SEED_WWW_TPL . '/header.phtml'); ?>
+<div class="o_content_wrap w1000 m0a clearfix">
+    <div style="height: 60px;">
+    <h2 class="w"><!--结汇--><?php echo $this->translate('Saltter_exg');?></h2></div>
+    <div class="pay_tip">
+     <h3><!--温馨提示--><?php echo $this->translate('Saltter_prompt');?></h3>
+        <p><!--1、结汇功能仅支持--><?php echo $this->translate('Saltter_prompt_e1');?>
+       <br> <!--2、结汇后金额--><?php echo $this->translate('Saltter_prompt_e2');?></p>
+    </div>
+<form action="" method="post">
+    <div class="pay" id="pay_box1">
+        <label><!--结汇账户--><?php echo $this->translate('Saltter_exg_act');?></label>
+        <?php if(is_array($this->paybal_cny)&&count($this->paybal_cny)>0):?>
+        <?php foreach ($this->paybal_cny as $k=>$v):?>
+            <?php if($this->crnCode!=$k):?>
+                   <!-- 备注 结汇不可以取默认货币故 选中ID 不可与提现相同-->
+            <a class="pay_slt2" data-key="<?php echo $k;?>" onclick="jhui(this)"><?php echo $k;?></a>
+           <?php endif;?>
+        <?php endforeach;?>
+        <?php else:?>
+            <span class="pay_slt2" ><?php echo $this->crnCode;?></span>
+        <?php endif;?>
+    </div>
+
+    <div class="pay">
+        <label><!--结汇金额--><?php echo $this->translate('Saltter_exg_amt');?></label>
+        <em id="pay_crnCode_ba1"><?php echo current(array_keys($this->paybal_cny));?></em>
+        <input  onchange="multiply2(this)"  class="pay_inpt" id="pay_ind" type="text" value="">
+        <span class="pay_transfer_sp"><!--剩余-->
+            <?php echo $this->translate('Saltter_surplus');?>
+            <em id="pay_crnCode_ba2"><?php echo $this->df_crnCode[0];?></em>
+            <em id="pay_amount_free"><?php echo  $this->ShowToPrice($this->paybal_cny[$this->df_crnCode[0]]['balAmount']);?></em><!--可用-->
+            <?php echo $this->translate('Saltter_usable');?>
+        </span>
+        <input type="hidden" id="pay_crnCode_ba3" name="JhcrnCode" value="<?php echo $this->df_crnCode[0];?>">
+    </div>
+
+    <div class="pay">
+        <label><!--当前汇率--><?php echo $this->translate('Saltter_huilv');?></label>
+        <div id="pay_huilv_em"></div>
+    </div>
+
+    <div class="pay">
+        <label><!--结汇金额--><?php echo $this->translate('Saltter_exg_amt');?></label>
+        <em><?php echo $this->crnCode;?></em>
+        <span id="pay_huilvs" class="pay_transfer_sp"></span>
+        <input type="hidden" name="paymount" id="pay_huilvst" value="">
+    </div>
+    <div class="pay">
+        <label><!--支付密码--><?php echo $this->translate('Saltter_pay_pwd');?></label>
+        <input class="pay_inp" type="password" name="paymentPwd" value="">
+        <input class="pay_btn" type="submit" value="<?php echo $this->translate('confirmed');?>">
+    </div>
+</form>
+    <div style="height:180px;"></div>
+</div>
+<?php echo $this->render(SEED_WWW_TPL . '/footer.phtml'); ?>
+<script type="application/javascript">
+    $(document).ready(function () {
+        $('#pay_box1').find('a:first').attr('id','pay_on');
+        pay_huilv();
+
+    });
+    function pay_huilv() {
+        var basecode = $('#pay_crnCode_ba1').html();//商品基准货币
+        var contcode = '<?php echo $this->crnCode;?>';//对应目标货币
+        if (basecode == null || basecode == "") {
+            basecode = contcode;
+        }
+        if (contcode == null || contcode == "") {
+            contcode = basecode;
+        }
+        $.post("/user/system/orderlist/", {
+            'baseCrn': basecode,
+            'contraCrn': contcode
+        }, function (data) {
+            var json;
+            if (typeof data === 'object') {
+                json = data.result;
+            }
+            else {
+                json = eval('(' + data.result + ')');
+            }
+            var huistr=basecode+'->'+contcode+' &nbsp;&nbsp;<em id="pay_huilv_data">'+json+'</em>';
+
+            $('#pay_huilv_em').html(huistr);
+        }, "json");
+    }
+    function jhui(e) {
+        $("#pay_on").attr('id',"");
+        var mm=$(e);
+        $(mm).attr('id','pay_on');
+        var k=mm.attr('data-key');
+        $('#pay_crnCode_ba1').html(k);
+        $('#pay_crnCode_ba2').html(k);
+        $('#pay_crnCode_ba3').val(k);
+        doller='<?php echo json_encode($this->paybal_cny);?>';
+        //var key=eval('(' + k + ')');
+        var obj =eval("("+doller+")");
+        var toAmount='';
+        $.each(obj, function(key, val) {
+            if(key==k){
+                toAmount=val.balAmount;
+            }
+        });
+        $('#pay_amount_free').html(changeTwoDecimal_f(toAmount));
+    }
+    function changeTwoDecimal_f(x) {
+        var f_x = parseFloat(x);
+        if (isNaN(f_x)) {
+            alert('function:changeTwoDecimal->parameter error');
+            return false;
+        }
+        var f_x = Math.round(x * 100) / 100;
+        var s_x = f_x.toString();
+        var pos_decimal = s_x.indexOf('.');
+        if (pos_decimal < 0) {
+            pos_decimal = s_x.length;
+            s_x += '.';
+        }
+        while (s_x.length <= pos_decimal + 2) {
+            s_x += '0';
+        }
+        return s_x;
+    }
+
+    function multiply2(){
+
+        data=$('#pay_ind').val();
+        rate=$('#pay_huilv_data').html();
+        paymount=Math.floor(parseFloat(data)*parseFloat(rate) * 100) / 100;
+
+        $('#pay_huilvs').html(paymount);
+        $('#pay_huilvst').val(paymount);
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/wechattemplate/add',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+</script>
+<h1>添加微信模板</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back()"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_form">
+    <tr>
+      <td><strong>模板名称：</strong>
+        <p>
+          <input name="temp_name" id="temp_name" value="" type="text" class="admin_txt1"/>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>模板说明：</strong>
+        <p>
+          <input name="temp_desc" id="temp_desc" value="" type="text" class="admin_txt1"/>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>微信发送至(固定号码填写 FAKEID)：</strong>
+        <p>
+          <input name="send_to" id="send_to" value="" type="text" class="admin_txt1"/>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>模板内容：</strong>
+        <p>
+          <textarea style="height:40px;" name="temp_content" id="temp_content" class="textarea"></textarea>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>是否激活：</strong>
+        <p>
+          <input type="radio" name="is_actived" id="is_actived0" value="0" style="width:15px;">
+          否&nbsp;
+          <input type="radio" name="is_actived" id="is_actived1" value="1" style="width:15px;" checked>
+          是 </p></td>
+    </tr>
+    <tr>
+      <td><input name="" type="submit" value="提交" class="admin_bnt"/></td>
+    </tr>
+  </table>
+</form>
+<?php echo $this->render("footer.phtml") ?>

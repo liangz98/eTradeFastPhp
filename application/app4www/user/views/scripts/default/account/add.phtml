@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title><?php echo $this->escape($this->seed_Setting['www_html_title']);?></title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="/ky/css/base.css" rel="stylesheet">
+<link href="/ky/css/style.css" rel="stylesheet">
+<script type="text/javascript" src="/ky/js/jquery.js"></script>
+<script type="text/javascript" src="/ky/js/www.js"></script>
+<script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
+<script type="text/javascript">
+    function selectAA() {
+        $.ajax(
+            {
+                type: "post",
+                url: "<?php echo WWW;?>user/data/country",
+                data: { "type": "COUNTRY_ISO_CODE" },
+                success: function (msg) {
+                    var json;
+                    if(typeof msg === 'object'){
+                        json = msg;
+                    }
+                    else{
+                        json = eval('(' + msg + ')');
+                    }
+                    $.each(json, function (n, value) {
+                        $("#COUNTRY_ISO_CODE").append("<option value=" + value.code + ">" + value.name + "</option>");
+                    });
+                    $("#COUNTRY_ISO_CODE").val("CN");
+                    //  $("#COUNTRY_ISO_CODE  option[value="+Coun+"] ").attr("selected",true)
+                    selectBB();
+                }
+            });
+    };
+    function selectBB() {
+        $("#PROVINCE_CODE").html("");
+        $.ajax(
+            {
+                type: "post",
+                url: "<?php echo WWW;?>user/data/province",
+                data: { "provinceID":$('#COUNTRY_ISO_CODE').attr("value")},
+                success: function (msg2) {
+
+                    var json2;
+                    if(typeof msg2 === 'object'){
+                        json2 = msg2;
+                    }
+                    else{
+                        json2 = eval('(' + msg2 + ')');
+                    }
+                    $.each(json2, function (n, value) {
+                        $("#PROVINCE_CODE").append("<option value=" + value.code + ">" + value.name + "</option>");
+                    });
+                    $("#PROVINCE_CODE").val("44");
+                    selectCC();
+                }
+            });
+    };
+    function selectCC() {
+        $("#CITY_CODE").html("");
+        $.ajax(
+            {
+                type: "post",
+                url: "<?php echo WWW;?>user/data/city",
+                data: {"cityID":$('#PROVINCE_CODE').attr("value") },
+                success: function (msg3) {
+                    var json3;
+                    if(typeof msg3 === 'object'){
+                        json3 = msg3;
+                    }
+                    else{
+                        json3 = eval('(' + msg3 + ')');
+                    }
+                    $.each(json3, function (n, value) {
+                        $("#CITY_CODE").append("<option value=" + value.code + ">" + value.name + "</option>");
+                    });
+                    $("#CITY_CODE").val("4401");
+                }
+            })
+    };
+    $(function () {
+        selectAA();
+        $('#COUNTRY_ISO_CODE').bind("change", selectBB);
+        $('#PROVINCE_CODE').bind("change", selectCC);
+    });
+</script>
+</head>
+<body>
+<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
+<div class="o_content_wrap w1200 m0a clearfix">
+    <?php echo $this->render(SEED_WWW_TPL.'/left_menu.phtml');?>
+    <div class="o_content fr w940">
+        <?php echo $this->render(SEED_WWW_TPL.'/account/r_top_menu.phtml');?>
+        <div class="n_o_c_tit">
+            <h4><!-- 新增员工 --><?php echo $this->translate('add').$this->translate('baseINF') ;?></h4>
+        </div>
+        <div class="u_info_ed_box">
+            <form action="#" method="post" id="account_add_form">
+               <div class="infobox clearfix">
+                   <div>
+                       <label class="labelbox"><!-- 姓名 --><?php echo $this->translate('name');?></label>
+                       <input class="must" style="border:1px solid #DF7E20;" type="text" name="name" id="name" placeholder="<?php echo $this->translate('is_name');?>" tabindex="1" required data-msg-required="<?php echo $this->translate('de_null');?>" /><!--请填写真实姓名-->
+                   </div>
+                   <div>
+                       <label class="labelbox"><!-- 称谓 --><?php echo $this->translate('title');?></label>
+                       <input type="text" name="salutation" value="" tabindex="1" />
+                   </div>
+                   <div>
+                       <label class="labelbox"><!-- 性别 --><?php echo $this->translate('sex');?></label>
+                       <select  class="dq_select"  name="sex"> <?php echo $this->ShowDictionaryList('datatest_setting',$this->userlangCode,$this->dic_Setting['SEX'],$this->e['sex']);?></select>
+                   </div>
+                   <div>
+                       <label class="labelbox"><!-- 生日 --><?php echo $this->translate('birthdate');?></label>
+                       <script language="javascript" type="text/javascript" src="/ky/My97DatePicker/WdatePicker.js"></script>
+                       <input type="text" name="birthdate" value="" tabindex="1" onfocus="WdatePicker({minDate:'1900-01-01',maxDate:'2001-01-01'})">
+                   </div>
+                   <?php if($this->e['regdCountryCode']=='CN'):?>
+                   <div>
+                       <label class="labelbox"><!-- 证件类型 --><?php echo $this->translate('certificateType');?></label>
+                       <select class="dq_select2"  name="identityType"  disabled="disabled" style="
+    appearance: none;
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari 和 Chrome */
+    border: 0;
+    background: transparent;
+    color: #000;
+">
+                           <?php echo $this->ShowDictionaryList('datatest_setting',$this->userlangCode,'ID_TYPE',$this->e['identityType']);?></select>
+                   </div>
+                   <div>
+                       <label class="labelbox"><!-- 证件号码 --><?php echo $this->translate('certificateNo');?></label>
+                       <input type="text" name="identityNo" value="" tabindex="1" data-rule-mail="identityNo"/>
+                   </div>
+                   <?php endif;?>
+                   <div>
+                       <label class="labelbox"><!-- 部门 --><?php echo $this->translate('division');?></label>
+                       <input type="text" name="department" tabindex="1" />
+                   </div>
+                   <div>
+                       <label class="labelbox"><!-- 公司职务 --><?php echo $this->translate('job');?></label>
+                       <input type="text" name="title" value="" tabindex="1" />
+                   </div>
+                   <div>
+                       <label class="labelbox"><!-- 电子邮箱 --><?php echo $this->translate('email');?></label>
+                       <input class="must" style="border:1px solid #DF7E20;" type="text" name="email" id="email" placeholder="<?php echo $this->translate('is_emails');?>" tabindex="1" data-rule-mail="true" required data-msg-required="<?php echo $this->translate('de_null');?>" /><!--请填写有效的邮箱-->
+                   </div>
+                   <div>
+                       <label class="labelbox"><!-- 移动电话 --><?php echo $this->translate('mobile');?></label>
+                       <input class="must" style="border:1px solid #DF7E20;" type="text" name="mobilePhone" id="mobilePhone" placeholder="<?php echo $this->translate('is_phone');?>" tabindex="1"  data-rule-mobile="true" required data-msg-required="<?php echo $this->translate('de_null');?>" /><!--请填写有效的移动电话-->
+                   </div>
+                   <div>
+                       <label class="labelbox"><!-- 固定电话 --><?php echo $this->translate('telphone');?></label>
+                       <input class="must" style="border:1px solid #DF7E20;" type="text" name="phone" id="phone" placeholder="<?php echo $this->translate('is_tel');?>" value="" tabindex="1" data-rule-phone="true" required data-msg-required="<?php echo $this->translate('de_null');?>" /><!--请填写有效的固定电话-->
+                   </div>
+                   <div>
+                       <label class="labelbox"><!-- 传真 --><?php echo $this->translate('fax');?></label>
+                       <input type="text" name="fax" id="fax" tabindex="1" data-rule-fax="true" />
+                   </div>
+                   <div style="width: 88%;height:auto;">
+                       <label class="labelbox"><!-- 平台角色 --><?php echo $this->translate('userROLE');?></label>
+                       <div style="margin-left:125px;">
+                         <input type="checkbox" name="ecommrole[]" value="CompUser" checked="checked"><span class="account_add_span"><?php echo $this->translate('CompUser');?></span>
+                         <input type="checkbox" name="ecommrole[]" value="CompOrderAdmin" ><span class="account_add_span"><?php echo $this->translate('CompOrderAdmin');?></span>
+                         <input type="checkbox" name="ecommrole[]" value="CompClerk" ><span class="account_add_span"><?php echo $this->translate('CompClerk');?></span>
+                         <input type="checkbox" name="ecommrole[]" value="CompProductAdmin" ><span class="account_add_span"><?php echo $this->translate('CompProductAdmin');?></span>
+                         <input type="checkbox" name="ecommrole[]" value="CompPartnerAdmin" ><span class="account_add_span"><?php echo $this->translate('CompPartnerAdmin');?></span>
+                         <input type="checkbox" name="ecommrole[]" value="SOAdmin" ><span class="account_add_span"><?php echo $this->translate('SOAdmin');?></span>
+                         <input type="checkbox" name="ecommrole[]" value="TOAdmin" ><span class="account_add_span"><?php echo $this->translate('TOAdmin');?></span>
+                         <input type="checkbox" name="ecommrole[]" value="CompPublicInfoAdmin" ><span class="account_add_span"><?php echo $this->translate('CompPublicInfoAdmin');?></span>
+                         <input type="checkbox" name="ecommrole[]" value="CompAdmin" ><span class="account_add_span"><?php echo $this->translate('CompAdmin');?></span>
+                         <input type="checkbox" name="ecommrole[]" value="DeclarationAdmin" ><span class="account_add_span"><?php echo $this->translate('DeclarationAdmin');?></span>
+                         <input type="checkbox" name="ecommrole[]" value="CompSettleAdmin" ><span class="account_add_span"><?php echo $this->translate('CompSettleAdmin');?></span>
+                       </div>
+                   </div>
+                
+                   <div>
+                       <label class="labelbox"><!-- 订单联系人 --><?php echo $this->translate('orderContact');?></label>
+                       <input class="u_radio" type="radio" name="isPublicContact" value="1"><?php echo $this->translate('yes');?>
+                       &nbsp;&nbsp;&nbsp;
+                       <input class="u_radio" type="radio" name="isPublicContact" value="0" checked="checked"><?php echo $this->translate('no');?>
+                   </div>
+               </div>
+                <?php echo $this->render(SEED_WWW_TPL.'/btn_confirm.phtml');?>
+            </form>
+            
+        </div>           
+    </div>
+</div>
+<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
+<script src="/ky/js/jquery.validate.js"></script>
+<script>
+$(function(){
+    $("#account_add_form").validate({
+        submitHandler: function() {
+            form.submit();
+        }
+    })
+});
+
+//身份证号码的验证规则
+function isIdCardNo(num){
+    //if (isNaN(num)) {alert("输入的不是数字！"); return false;}
+    var len = num.length, re;
+    if (len == 15)
+        re = new RegExp(/^(\d{6})()?(\d{2})(\d{2})(\d{2})(\d{2})(\w)$/);
+    else if (len == 18)
+        re = new RegExp(/^(\d{6})()?(\d{4})(\d{2})(\d{2})(\d{3})(\w)$/);
+    else {
+        //alert("输入的数字位数不对。");
+        return false;
+    }
+    var a = num.match(re);
+    if (a != null)
+    {
+        if (len==15)
+        {
+            var D = new Date("19"+a[3]+"/"+a[4]+"/"+a[5]);
+            var B = D.getYear()==a[3]&&(D.getMonth()+1)==a[4]&&D.getDate()==a[5];
+        }
+        else
+        {
+            var D = new Date(a[3]+"/"+a[4]+"/"+a[5]);
+            var B = D.getFullYear()==a[3]&&(D.getMonth()+1)==a[4]&&D.getDate()==a[5];
+        }
+        if (!B) {
+            //alert("输入的身份证号 "+ a[0] +" 里出生日期不对。");
+            return false;
+        }
+    }
+    if(!re.test(num)){
+        //alert("身份证最后一位只能是数字和字母。");
+        return false;
+    }
+    return true;
+}
+
+// 身份证号码验证
+jQuery.validator.addMethod("identityNo", function(value, element) {
+    //var idCard = /^(\d{6})()?(\d{4})(\d{2})(\d{2})(\d{3})(\w)$/;
+    return this.optional(element) || isIdCardNo(value);
+}, "<?php echo $this->translate('de_format');?>");
+jQuery.validator.addMethod("mail", function (value, element) {
+  var mail = /^[A-Za-z0-9._%-]+@([A-Za-z0-9-]+\.)+[A-Za-z]{2,4}$/;
+  return this.optional(element) || (mail.test(value));
+}, "<?php echo $this->translate('email').$this->translate('de_format');?>");
+jQuery.validator.addMethod("phone", function (value, element) {
+    var phone = /^[\d|\-|\+|\s]+$/;
+    return this.optional(element) || (phone.test(value));
+}, "<?php echo $this->translate('phone').$this->translate('de_format');?>");
+jQuery.validator.addMethod("mobile", function (value, element) {
+    var mobile = /^[\d|\-|\+|\s]+$/;
+  return this.optional(element) || (mobile.test(value));
+}, "<?php echo $this->translate('mobilephone').$this->translate('de_format');?>");
+jQuery.validator.addMethod("fax",function(value,element){
+    var fax = /^[\d|\-|\+|\s]+$/;
+    return this.optional(element) || (fax.test(value));
+},"<?php echo $this->translate('fax').$this->translate('de_format');?>");
+</script>
+</body>
+</html>

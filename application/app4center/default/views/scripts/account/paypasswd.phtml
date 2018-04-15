@@ -1,0 +1,52 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {
+	   },
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/account/paypasswd',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+</script>
+<h1>修改支付密码</h1>
+<div class="textnav" id="idTabs">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back()"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form">
+<input name="user_id" id="user_id" type="hidden" value="<?php echo $this->user_id?>" />
+  <table class="admin_form">
+    <tr>
+      <td><strong>用户名：</strong>
+        <p><?php echo $this->user['user_name'];?></p></td>
+    </tr>
+    <tr>
+      <td><strong>新支付密码：</strong>
+        <p>
+          <input name="user_password" id="user_password" value="" type="text" class="admin_txt1"/>
+        </p></td>
+    </tr>
+    </table>
+    
+    <table class="admin_form">
+    <tr>
+      <td>
+      <input type="hidden" name="user_id" id="user_id" value="<?php echo $this->user['user_id'];?>">
+      <input name=""  class="admin_bnt"  type="submit" value="提交" />
+    </td>
+    </tr>
+    </table>
+</form>
+<?php echo $this->render("footer.phtml") ?>

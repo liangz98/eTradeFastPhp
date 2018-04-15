@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!--
+ * FCKeditor - The text editor for Internet - http://www.fckeditor.net
+ * Copyright (C) 2003-2008 Frederico Caldeira Knabben
+ *
+ * == BEGIN LICENSE ==
+ *
+ * Licensed under the terms of any of the following licenses at your
+ * choice:
+ *
+ *  - GNU General Public License Version 2 or later (the "GPL")
+ *    http://www.gnu.org/licenses/gpl.html
+ *
+ *  - GNU Lesser General Public License Version 2.1 or later (the "LGPL")
+ *    http://www.gnu.org/licenses/lgpl.html
+ *
+ *  - Mozilla Public License Version 1.1 or later (the "MPL")
+ *    http://www.mozilla.org/MPL/MPL-1.1.html
+ *
+ * == END LICENSE ==
+ *
+ * Preview page for the Image dialog window.
+ *
+ * Curiosity: http://en.wikipedia.org/wiki/Lorem_ipsum
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="robots" content="noindex, nofollow" />
+	<script src="../common/fck_dialog_common.js" type="text/javascript"></script>
+	<script type="text/javascript">
+
+var FCKTools	= window.parent.FCKTools ;
+var FCKConfig	= window.parent.FCKConfig ;
+
+// Set the preview CSS
+document.write( FCKTools.GetStyleHtml( FCKConfig.EditorAreaCSS ) ) ;
+document.write( FCKTools.GetStyleHtml( FCKConfig.EditorAreaStyles ) ) ;
+
+if ( window.parent.FCKConfig.BaseHref.length > 0 )
+	document.write( '<base href="' + window.parent.FCKConfig.BaseHref + '">' ) ;
+
+window.onload = function()
+{
+	window.parent.SetPreviewElements(
+		document.getElementById( 'imgPreview' ),
+		document.getElementById( 'lnkPreview' ) ) ;
+}
+
+	</script>
+</head>
+<body>
+	<div>
+		<a id="lnkPreview" onclick="return false;" style="cursor: default">
+			<img id="imgPreview" onload="window.parent.UpdateOriginal();"
+				style="display: none" alt="" /></a>
+<p>广州萌芽工作室(Guangzhou Seed Studio)是一个专注于广州以及珠江三角洲PHP+MYSQL系统外包开发的专业团队。（www.gzseed.com）</p>
+<p>FCKeditor的主要特点有：</p>
+<p>多种浏览器兼容 </p>
+<p>生成XHTML 1.0 </p>
+<p>CSS支持，更好地结合你的网站风格 </p>
+<p>字体格式，包括：类型，大小，颜色，风格，粗体，斜体等 </p>
+<p>文本格式，包括：对齐，缩进，子弹名单等 </p>
+<p>减少，粘贴和粘贴为纯文本，撤消和重做 </p>
+<p>粘贴文本，从清理与自动检测 </p>
+<p>联系和锚支持 </p>
+<p>图像插入，上传和服务器浏览支持 </p>
+<p>表的建立和编辑（添加，删除行等） -其中一个最好的制度，对市场造成的。 </p>
+<p>表元素的编辑（大小，颜色等） </p>
+<p>表单域 </p>
+<p>右键菜单支持 </p>
+<p>完整的工具栏定制 </p>
+<p>皮肤支持 </p>
+<p>插件支持 </p>
+<p>拼写检查 </p>
+<p>多国语言支持，自动用户语言检测。包括右至左的脚本。 </p>
+<p>轻量级和快速 </p>
+<p>自动浏览器检测和定制 </p>
+<p>可整合使用到ASP, ASP.NET, Java, ColdFusion, Perl, PHP, javascript等等脚本语言中。 </p>
+<p>图象和文件的链接上传和服务器存放的浏览器。 </p>
+<p>对于网站开发者，它很容易安装和定制 </p>
+<p>为网络用户来说，它是简单和容易使用的！</p>
+	</div>
+</body>
+</html>

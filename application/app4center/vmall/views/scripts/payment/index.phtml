@@ -1,0 +1,51 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+function deleteAll(){
+	var ids="";
+    $("[name='chose[]'][checked]").each(function(){
+    	ids+=$(this).val()+",";
+    });
+    ids=ids.substring(0,(ids.length-1));
+    document.location = "<?php echo $this->baseUrl();?>/payment/delete/payment_ids/"+ids;
+}
+</script>
+
+<h1>支付方式管理</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="添加方式" onclick="document.location='<?php echo $this->baseUrl();?>/payment/add'"/>
+  </p>
+</div>
+<table class="admin_list">
+  <tr>
+    <th><input type="checkbox" name="checkAll" id="checkAll"  value="input.ids_all" title="全选/反选">
+      <label for="checkAll">全选</label></th>
+    <th>名称</th>
+    <th>说明</th>
+    <th>在线支付</th>
+    <th>激活(PC)</th>
+    <th>激活(移动)</th>
+    <th>操作</th>
+  </tr>
+  <?php if (is_array($this->payments)) :?>
+  <?php foreach ($this->payments as $payment) :?>
+  <tr>
+    <td><input type="checkbox" id="chose[]" name="chose[]" value="<?php echo ($payment['payment_id'])?>" class="ids_all"></td>
+    <td><?php echo ($payment['payment_name']);?></td>
+    <td><?php echo ($payment['payment_desc']);?></td>
+    <td><?php echo ($payment['is_online']=='1')?'<img src="/images/center/yes.gif">':'<img src=/images/center/no.gif>';?></td>
+    <td><?php echo ($payment['is_actived']=='1')?'<img src="/images/center/yes.gif">':'<img src=/images/center/no.gif>';?></td>
+    <td><?php echo ($payment['is_mob']=='1')?'<img src="/images/center/yes.gif">':'<img src=/images/center/no.gif>';?></td>
+    <td>
+    <a href="<?php echo $this->baseUrl();?>/payment/update/payment_id/<?php echo ($payment['payment_id']);?>"><img src="/images/center/edit.gif" title="编辑" alt="编辑"></a>
+    <a href="<?php echo $this->baseUrl();?>/paymentparam/setting/payment_name/<?php echo ($payment['payment_name']);?>"><img src="/images/center/set.gif" title="参数设置" alt="参数设置"></a>
+    <a href="<?php echo $this->baseUrl();?>/payment/delete/payment_ids/<?php echo ($payment['payment_id']);?>"><img src="/images/center/del.gif" title="删除" alt="删除"/></a>
+    </td>
+  </tr>
+  <?php endforeach;?>
+  <?php endif;?>
+</table>
+<div class="batch">
+  <input class="admin_bnt2" type="button" name="deleteID" id="deleteID" value="删除选择" onclick="deleteAll()">
+  &nbsp; </div>
+<?php echo $this->render("footer.phtml") ?>

@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<link rel="stylesheet" href="/css/center/admin.css" type="text/css" media="all" />
+<link rel="stylesheet" href="/css/center/validate.css" type="text/css" media="all" />
+<link rel="stylesheet" href="/css/center/thickbox.css" type="text/css" media="all" />
+<link rel="stylesheet" href="/css/center/dtree.css" type="text/css" />
+<script type="text/javascript">
+var baseUrl="<?php echo $this->BaseUrl();?>/upload";
+var tb_pathToImage = "/images/center/loadingAnimation.gif";
+</script>
+<script type="text/javascript" src="/js/center/jquery.js"></script>
+<script type="text/javascript" src="/js/center/jquery.form.js"></script>
+<script type="text/javascript" src="/js/center/jquery.validate.js"></script>
+<script type="text/javascript" src="/js/center/jquery.metadata.js"></script>
+<script type="text/javascript" src="/js/center/jquery.idtabs.js"></script>
+<script type="text/javascript" src="/js/center/admin.js"></script>
+<script type="text/javascript" src="/js/center/jquery.thickbox.js"></script>
+<script type="text/javascript" src="/js/center/jquery.checkbox.js"></script>
+<script type="text/javascript" src="/js/center/jquery.linkageselect.js"></script>
+<!--script type="text/javascript" src="/js/center/jquery.region.js"></script-->
+<script type="text/javascript" src="/js/center/seed.region.js"></script>
+<script type="text/javascript" src="/js/center/dtree.js"></script>
+<script type="text/javascript" src="/js/center/seed.form.js"></script>
+<script type="text/javascript" src="/js/center/jquery.filloptions.js"></script>
+<script type="text/javascript" src="/js/center/jquery.cascadingselect.js"></script>
+<script type="text/javascript">
+//选择封面图片
+var oCoverField;
+// 显示封面图片
+function selectCoverImage(name,field_name){
+	oCoverField = field_name;
+	tb_show('', '/a/upload/singleimage/?name='+name+'&TB_iframe=true&width=800&height=450');
+}
+// 设置封面图片
+function setCoverImage(url){
+	if($('#'+oCoverField)){
+		$('#'+oCoverField).val(url);
+		if($('#preview_'+oCoverField))$('#preview_'+oCoverField).show();
+	}
+}
+// 预览封面图片
+function previewCoverImage(field_name){
+	if($('#'+field_name) && $('#'+field_name).val())
+	tb_show('','<?php echo $this->seed_Setting['upload_view_server']?>/'+$('#'+field_name).val());
+}
+
+//选择相册图片
+var oAlbumField;
+function selectAlbumImage(name,field_name){
+	oAlbumField = field_name;
+	tb_show('', '/a/upload/albumimage/?name='+name+'&TB_iframe=true&width=800&height=450');
+}
+function setAlbumImage(id,thumb,normal,original){
+	if($("#"+oAlbumField)){
+		var new_img_html=" <li><img src='<?php echo $this->seed_Setting['upload_view_server'];?>"+thumb+"'><br><input type='checkbox' name='album_image_ids["+id+"]' value='"+id+"' checked><input type='hidden' name='album_thumb_images["+id+"]' value='"+thumb+"'><input type='hidden' name='album_normal_images["+id+"]' value='"+normal+"'><input type='hidden' name='album_original_images["+id+"]' value='"+original+"'> 说明：<input type='text' name='album_image_descs["+id+"]' value='' style='width:70px;'> 排序：<input type='text' name='album_order_bys["+id+"]' value='0' style='width:15px;'></li>";
+		$("#"+oAlbumField).append(new_img_html);
+	}
+}
+
+//选择文件
+var oFileField;
+function selectFile(name,field_name){
+	oFileField = field_name;
+	tb_show('', '/a/upload/file/select?name='+name+'&TB_iframe=true&width=800&height=450');
+}
+function setFile(url){
+	if($('#'+oFileField)){
+		$('#'+oFileField).val(url);
+	}
+}
+
+$().ready(function() {
+	$('input[@type=checkbox][@name=checkAll]').each(function(){
+		$(this).checkbox().toggle($(this).val());
+	});
+});
+</script>
+<style>
+</style>
+</head>
+<body id="body1">
+<div id="seedMsgBox"><!-- message --></div>
+<div id="information">
+  <div class="content">

@@ -1,0 +1,125 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$('input[@type=checkbox][@name=checkAll]').each(function(){
+		$(this).checkbox().toggle($(this).val());
+	});
+});
+//删除
+function deleteAll(){
+	var ids="";
+    $("[name='chose[]'][checked]").each(function(){
+    	ids+=$(this).val()+",";
+    });
+    ids=ids.substring(0,(ids.length-1));
+    document.location = "<?php echo $this->BaseUrl();?>/lang/delete/lang_ids/"+ids;
+}
+
+function doadd(){
+    $("#post_form").validate({
+       event: "keyup",
+       rules: {
+    	 lang_name: "required",
+    	 lang_content: "required",
+       },
+       messages: {
+    	 lang_name: "名称不能为空！",
+    	 lang_content: "说明不能为空！",
+       },
+       submitHandler: function() {
+            SeedMsgBox('<img src="正在保存中，请稍候...');
+            var options = {
+                target:     '#SeedMsgTxt',
+                url:        '<?php echo $this->BaseUrl();?>/lang/add',
+                success: function() {
+                }
+            };
+            $('#post_form').ajaxSubmit(options);
+        }
+    });
+}
+function update(){
+	SeedMsgBox('正在保存中，请稍候...');
+    var options = {
+            target:     '#SeedMsgTxt',
+            url:        '<?php echo $this->BaseUrl();?>/lang/update',
+            success: function() {
+            }
+        };
+        $('#post_form').ajaxSubmit(options);
+}
+
+function doCache(){
+	SeedMsgBox('正在保存中，请稍候...');
+    var options = {
+            target:     '#SeedMsgTxt',
+            url:        '<?php echo $this->BaseUrl();?>/lang/cache',
+            success: function() {
+            }
+        };
+        $('#post_form').ajaxSubmit(options);
+}
+</script>
+
+<h1>语言包列表</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="添加" onclick="document.location='<?php echo $this->BaseUrl();?>/lang/index'"/>
+  </p>
+</div>
+<div class="admin_search">
+  <form name="post_form" method="post" action="" id="post_form" >
+    <fieldset>
+      <legend>编辑</legend>
+      &nbsp;
+      名称：
+      <input type="text" name="lang_name" id="lang_name" value="<?php echo ($this->lang['lang_name']);?>" style="width:100px;"/>
+      &nbsp;
+     含义：
+      <input type="text" name="lang_desc" id="lang_desc" value="<?php echo ($this->lang['lang_desc']);?>" style="width:100px;"/>
+      &nbsp;
+    内容：
+      <input type="text" name="lang_content" id="lang_content" value="<?php echo ($this->lang['lang_content']);?>" style="width:100px;"/>
+      &nbsp;
+      <?php if($this->lang['lang_id']>0):?>
+      <input type="hidden" name="lang_id" id="lang_id" value="<?php echo ($this->lang['lang_id']);?>">
+      <input name="updateConfirm" type="button"  value="修改" class="admin_bnt2" onclick="update();"/>
+      &nbsp;
+      <?php else:?>
+      <input type="submit" value="添加" class="admin_bnt2" onclick="doadd();"/>
+      &nbsp;
+      <?php endif;?>
+      <input name="reset" type="reset" class="admin_bnt2" value="重置"/>
+    </fieldset>
+  </form>
+</div>
+<table class="admin_list">
+  <tr>
+    <th><input type="checkbox" name="checkAll" id="checkAll"  value="input.ids_all" title="全选/反选">
+      <label for="checkAll">全选</label></th>
+    <th>名称</th>
+    <th>含义</th>
+    <th>内容</th>
+    <th>操作</th>
+  </tr>
+  <?php if(is_array($this->langs)):?>
+  <?php foreach($this->langs as $lang):?>
+  <tr>
+    <td><input type="checkbox" id="chose[]" name="chose[]" value="<?php echo ($lang['lang_id'])?>" class="ids_all"></td>
+    <td><?php echo ($lang['lang_name']);?></td>
+    <td><?php echo ($lang['lang_desc']);?></td>
+    <td><?php echo ($lang['lang_content']);?></td>
+    <td>
+    <a href="<?php echo $this->BaseUrl();?>/lang/index/lang_id/<?php echo ($lang['lang_id']);?>"><img src="/images/center/edit.gif" title="编辑" alt="编辑"></a> 
+    <a href="<?php echo $this->BaseUrl();?>/lang/delete/lang_ids/<?php echo ($lang['lang_id']);?>"><img src="/images/center/del.gif" title="删除" alt="删除"/></a>
+  </td></tr>
+  
+   
+  <?php endforeach; ?>
+  <?php endif;?>
+</table>
+<div class="batch">
+  <input class="admin_bnt2" type="submit" name="deleteID" id="deleteID" value="删除选择" onclick="deleteAll()">
+  <input class="admin_bnt2" type="submit" name="" id="" value="生成缓存" onclick="doCache()">
+  &nbsp; </div>
+<?php echo $this->render("footer.phtml") ?> 

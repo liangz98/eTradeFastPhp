@@ -1,0 +1,37 @@
+ <!-- content star -->
+ <div class="order_info">
+     <div class="info_cont track_wrap clearfix">
+         <em style="
+    display: block;
+    width: 30px;
+    height: 30px;
+    background: #f5f5f5;
+    margin: 0 50px -50px;
+    z-index: 999;
+    position: relative;
+"></em>
+         <ul class="trackul">
+             <?php if(is_array($this->tracklog) && count($this->tracklog)>0):?>
+                 <?php foreach ($this->tracklog as $k=>$tracklog):?>
+                     <li>
+                         <div class="trackul_box pr clearfix">
+
+                             <span class="sanjiao pa"><img src="/ky/images/track_sj.png"></span>
+                             <span class="track_sta fl"> <?php if($this->trackview=='event'){echo $this-> ShowDictionary($this->dic_Setting["ACTION_LOG_EVENT_TYPE"],$k,'zh_CN');}else{echo $k;}?></span>
+                             <?php foreach ($tracklog as $k2=>$v2):?>
+                             <div class="xxinfo">
+                                 <p class="des fr"><?php echo date('Y-m-d H:i:s',strtotime($v2['operateTime']));?></p>
+                                 <p class="track_d1 fl"><?php echo $this-> ShowDictionary($this->dic_Setting['BIZ_TYPE'],$v2['bizType'],'zh_CN');?></p>
+                                 <p class="des fl"><?php echo $v2['summary'];?></p>
+
+                             </div>
+                             <?php endforeach; ?>
+                             <div class="track_d2 fr"></div>
+                         </div>
+                     </li>
+                 <?php endforeach; ?>
+             <?php endif;?>
+         </ul>
+     </div>
+ </div>
+    <!-- content end -->

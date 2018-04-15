@@ -1,0 +1,138 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+    $("#post_form").validate({
+        event: "keyup",
+        rules: {},
+        messages: {},
+        submitHandler: function() {
+            SeedMsgBox('正在保存中，请稍候...');
+            var options = {
+                target: '#SeedMsgTxt',
+                url: '<?php echo $this->BaseUrl(); ?>/about/add',
+                success: function() {
+                }
+            };
+            $('#post_form').ajaxSubmit(options);
+        }
+    });
+});
+
+function selectMaterial() {
+    tb_show('', '<?php echo $this->BaseUrl(); ?>/material/select/?TB_iframe=true&width=800&height=450');
+}
+
+function setMaterial(id) {
+    loadMaterial(id);
+}
+
+function loadMaterial(id) {
+    $.getJSON("<?php echo $this->BaseUrl(); ?>/material/getjson?material_id=" + id, function(data) {
+        if (data.material_id > 0) {
+            $("#about_material_id").val(data.material_id);
+            $("#material_select").html(data.material_title);
+            $("#about_title").val(data.material_title);
+            $("#about_m_image").val(data.material_m_image);
+            $("#about_m_desc").val(data.material_m_desc);
+        }
+    });
+}
+</script>
+<script type="text/javascript" src="/ky/editor/xheditor.min.js"></script>
+<script type="text/javascript" src="/ky/editor/xheditor_lang/zh-cn.js"></script>
+<h1>添加企业信息</h1>
+<div class="textnav">
+    <p>
+        <input class="btn btn-primary" name="" type="button" value="返回" onclick="history.back()"/>
+    </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+<table class="admin_form">
+    <tr>
+        <td><strong>内容来源：</strong>
+            <p>
+                <input type="radio" name="about_source" id="about_source0" value="0" style="width:15px;" checked onclick="$('#tr_source1').show();
+              $('#tr_source0').hide();">
+                <label for="about_source0">单独添加</label>
+                &nbsp;
+                <input type="radio" name="about_source" id="about_source1" value="1" style="width:15px;" onclick="$('#tr_source0').show();
+              $('#tr_source1').hide();">
+                <label for="about_source1">素材库</label>
+            </p></td>
+    </tr>
+    <tr id="tr_source0" style="display:none;">
+        <td><strong>选择素材：</strong>
+            <p>
+                <input type="button" name="select" value="点击选择"  class="btn btn-primary"  onclick="selectMaterial()"><input type="hidden" name="about_material_id" id="about_material_id" value="0">
+                当前选择:<span id="material_select"></span>
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td><strong>标题：</strong>
+            <p>
+                <input class="admin_txt1" name="about_title" id="about_title" type="text" />
+            </p></td>
+    </tr>
+    <tr>
+        <td><strong>封面：</strong>
+            <p>
+                <input name="about_m_image" id="about_m_image" readonly value="" type="text" class="admin_txt1"/>
+                <input type="button" name="select" value="选择" class="btn btn-primary" onclick="selectCoverImage('aboutthumb_m', 'about_m_image')">
+                <input type="button" name="preview_about_m_image" id="preview_about_m_image" value="预览" class="btn btn-primary" onclick="previewCoverImage('about_m_image')" style="display:none;">
+            </p></td>
+    </tr>
+    <tr>
+        <td><strong>标识(英文和数字)：</strong>
+            <p>
+                <input name="about_mark" id="about_mark" value="" type="text" class="admin_txt1"/>
+            </p></td>
+    </tr>
+    <tr>
+        <td><strong>简介：</strong>
+            <p>
+                <textarea class="textarea" name="about_m_desc" style="height:200px;" id="about_m_desc"></textarea>
+            </p></td>
+    </tr>
+    <tbody id="tr_source1">
+        <tr>
+            <td><strong>内容：</strong>
+                <div class="txt_lft">
+                    <!-- 加载编辑器的容器 -->
+                    <textarea id="container" name="about_m_content" type="text/plain" >
+                    </textarea>
+                    <!-- 配置文件 -->
+                    <script type="text/javascript" src="/ueditor/ueditor.config.js"></script>
+                    <!-- 编辑器源码文件 -->
+                    <script type="text/javascript" src="/ueditor/ueditor.all.js"></script>
+                    <!-- 实例化编辑器 -->
+                    <script type="text/javascript">
+                        var ue = UE.getEditor('container');
+                    </script>
+
+                </div>
+                <input id="imgZoneUrl1" type="hidden" value="/b/upload/imagexhr/initimagepage?type=2&img_cate=about_m">
+            </td>
+        </tr>
+        <tr>
+            <td id="imgZoneContent1" style="margin-top:10px;"></td>
+        </tr>
+    </tbody>
+    <tr>
+        <td><strong>是否显示：</strong>
+            <p>
+                <input type="radio" name="is_m_actived" id="is_m_actived0" value="0" style="width:15px;">
+                否&nbsp;
+                <input type="radio" name="is_m_actived" id="is_m_actived1" value="1" style="width:15px;" checked>
+                是
+            </p>
+        </td>
+    </tr>
+</table>
+<table class="admin_form">
+    <tr>
+        <td><input class="btn btn-primary"  type="submit" value="提交"/></td>
+    </tr>
+</table>
+</form>
+<?php echo $this->render("footer.phtml") ?>

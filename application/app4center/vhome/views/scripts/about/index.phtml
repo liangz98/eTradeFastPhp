@@ -1,0 +1,110 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+    <?php if(isset($this->conditions['is_m_actived'])):?>
+    $("#is_m_actived").val('<?php echo $this->conditions['is_m_actived'];?>');
+    <?php endif;?>
+});
+
+//删除
+function deleteAll(){
+	var ids="";
+    $("input[name='chose\[\]']:checked").each(function(){
+    	ids+=$(this).val()+",";
+    });
+    ids=ids.substring(0,(ids.length-1));
+    document.location = "<?php echo $this->BaseUrl();?>/about/delete?about_ids="+ids;
+}
+function doOrder(){
+    $("#post_form").validate({
+       event: "keyup",
+       rules: {},
+       messages: {},
+       submitHandler: function() {
+            SeedMsgBox('正在保存中，请稍候...');
+            var options = {
+                target:     '#SeedMsgTxt',
+                url:        '<?php echo $this->BaseUrl();?>/about/order',
+                success: function() {
+                }
+            };
+            $('#post_form').ajaxSubmit(options);
+        }
+    });
+}
+</script>
+
+<h1> 企业信息 </h1>
+<div class="textnav">
+  <p>
+    <input class="btn btn-primary" name="" type="button" value="添加" onclick="document.location='<?php echo $this->BaseUrl();?>/about/add/'"/>
+  </p>
+</div>
+<div class="admin_search">
+  <form name="search" id="search" action="" method="get">
+    <fieldset>
+      <legend>企业信息搜索</legend>
+      &nbsp;
+      <select name="is_m_actived" id="is_m_actived">
+        <option value="-1">-是否开放-</option>
+        <option value="0" >否</option>
+        <option value="1" >是</option>
+      </select>
+       <input name="提交" type="submit"  class="btn btn-primary"  value="搜索"/>
+    </fieldset>
+  </form>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_list">
+    <tr>
+      <th><input type="checkbox" name="checkAll" id="checkAll"  value="input.ids_all" title="全选/反选">
+        <label for="checkAll">全选</label></th>
+      <th>标题</th>
+      <th>标志</th>
+      <th>排序</th>
+      <?php if(isset($this->seed_Setting['pc_open']) && $this->seed_Setting['pc_open']=='1'):?>
+      <th>PC版</th>
+      <?php endif;?>
+      <th>移动版</th>
+      <th>操作</th>
+    </tr>
+    <?php if(is_array($this->abouts)):?>
+    <?php foreach($this->abouts as $about):?>
+    <tr>
+      <td><input type="checkbox" id="chose[]" name="chose[]" value="<?php echo ($about['about_id'])?>" class="ids_all"></td>
+      <td><?php echo ($about['about_title']);?></td>
+      <td><?php echo ($about['about_mark']);?></td>
+      <td><input type="hidden" name="about_ids[]" value="<?php echo ($about['about_id'])?>">
+        <input type="text" value="<?php echo ($about['order_by']);?>" name="order_bys[]" style="width:30px;">
+      </td>
+      <?php if(isset($this->seed_Setting['pc_open']) && $this->seed_Setting['pc_open']=='1'):?>
+      <td>
+      	  <?php echo ($about['is_actived']=='1')?'<img src="/images/center/yes.gif">':'<img src=/images/center/no.gif>';?><br />
+	      <a href="<?php echo $this->BaseUrl();?>/about/updatepc/about_id/<?php echo $about["about_id"]?>">[编辑]</a>
+          <a href="javascript:;" class="js-copy-link" url="<?php echo $this->seed_Setting['www_app_server']?>/about/<?php echo $this->escape($about['about_mark'])?>.html">[链接]</a>
+      </td>
+      <?php endif;?>
+      <td>
+      	  <?php echo ($about['is_m_actived']=='1')?'<img src="/images/center/yes.gif">':'<img src=/images/center/no.gif>';?><br />
+	      <a href="<?php echo $this->BaseUrl();?>/about/update/about_id/<?php echo $about["about_id"]?>">[编辑]</a>
+          <a href="javascript:;" class="js-copy-link" url="<?php echo $this->seed_Setting['vhome_app_server']?>/about/detail?name=<?php echo $this->escape($about['about_mark'])?>">[链接]</a>
+      </td>
+      <td>
+	      <a href="<?php echo $this->BaseUrl();?>/about/delete/about_ids/<?php echo $about["about_id"]?>">[删除]</a>
+      </td>
+    </tr>
+    <?php endforeach; ?>
+    <?php endif;?>
+  </table>
+  <div class="batch">
+    <input class="btn btn-primary" type="submit" name="orderID" id="orderID" value="重新排序" onclick="doOrder()">
+    &nbsp;
+    <input class="btn btn-primary" type="button" name="deleteID" id="deleteID" value="删除选择" onclick="deleteAll()">
+    &nbsp </div>
+</form>
+<!--分页开始-->
+<div class="page">
+  <?php echo $this->showPage($this->page);?>
+</div>
+<!--分页结束-->
+<?php echo $this->render("footer.phtml") ?>

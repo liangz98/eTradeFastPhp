@@ -1,0 +1,153 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/chart/update',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+	$("#idtab ul").idTabs(); 
+});
+
+function change_data(id)
+{
+    $.ajax({
+        url: '<?php echo $this->BaseUrl();?>/chart/ajaxchange/' + Math.round(Math.random()*10000),
+        data: "channel_id=" +id,
+        error: function(request) {
+            alert('发生未知错误');
+        },
+        success: function(data) {
+            if('null' != data) {
+                $('#cate_id').html(data);
+            } else {
+                alert('参数传递错误');
+            }
+        }
+    });
+}
+</script>
+<h1>编辑榜单信息</h1>
+<div class="textnav" id="idtab">
+  <ul>
+    <li><a class="crumb" href="#basic">基本数据</a></li>
+    <li><a href="#attr">榜单属性</a></li>
+  </ul>
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back()"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_form" id="basic">
+    <tr>
+      <td><strong>所属频道：</strong>
+        <p>
+          <select name="channel_id" id="channel_id">
+            <?php if(is_array($this->channeloptions)):?>
+            <?php foreach($this->channeloptions as $key => $channelmenu):?>
+            <option value="<?php echo $channelmenu['channel_id'];?>" <?php if($channelmenu['channel_id'] == $this->chart['channel_id']) echo 'selected';?> onclick="change_data(<?php echo $channelmenu['channel_id'];?>);"><?php echo $channelmenu['channel_name'];?></option>
+            <?php endforeach;?>
+            <?php endif;?>
+          </select>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>所属榜单：</strong>
+        <p>
+          <select name="cate_id" id="cate_id">
+            <?php if(is_array($this->cateoptions)):?>
+            <?php foreach($this->cateoptions as $key => $catemenu):?>
+            <option value="<?php echo $catemenu['cate_id'];?>" <?php if($catemenu['cate_id'] == $this->chart['cate_id']) echo 'selected';?>><?php echo $catemenu['cate_title'];?></option>
+            <?php endforeach;?>
+            <?php endif;?>
+          </select>
+        </p></td>
+    </tr>
+    <tr>
+      <td><input name="chart_id" value="<?php echo $this->chart['chart_id'];?>" type="hidden" />
+        <strong>信息标题：</strong>
+        <p>
+          <input name="chart_name" id="chart_name" value="<?php echo ($this->chart['chart_name']);?>" type="text" class="admin_txt1"/>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>网页链接：</strong>
+        <p>
+          <input name="chart_href" id="chart_href" value="<?php echo ($this->chart['chart_href']);?>" type="text" class="admin_txt1"/>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>图片链接：</strong>
+        <p>
+          <input name="chart_image" id="chart_image" value="<?php echo ($this->chart['chart_image']);?>" type="text" class="admin_txt1"/>
+          <input type="button" name="select" value="选择" class="admin_bnt2" onclick="selectCoverImage('chart','chart_image')">
+          <input type="button" name="preview_chart_image" id="preview_chart_image" value="预览" class="admin_bnt2" onclick="previewCoverImage('chart_image')" <?php echo (($this->chart['chart_image'])=="")?"style=\"display:none;\"":"";?>>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>小图片链接：</strong>
+        <p>
+          <input name="chart_m_image" id="chart_m_image" value="<?php echo ($this->chart['chart_m_image']);?>" type="text" class="admin_txt1"/>
+          <input type="button" name="select" value="选择" class="admin_bnt2" onclick="selectCoverImage('chart','chart_m_image')">
+          <input type="button" name="preview_chart_m_image" id="preview_chart_m_image" value="预览" class="admin_bnt2" onclick="previewCoverImage('chart_m_image')" <?php echo (($this->chart['chart_m_image'])=="")?"style=\"display:none;\"":"";?>>
+        </p></td>
+    </tr>
+    <tr>
+    	<td>
+    	<strong>推荐状态：</strong>
+        <p>
+          <input name="chart_status " type="radio" id="chart_status 0" value="0" <?php if($this->chart['chart_status'] == 0 ) echo 'checked'?>/>
+          <label for="chart_status 0">普通</label>
+          <input name="chart_status " type="radio" id="chart_status 1" value="1" <?php if($this->chart['chart_status'] == 1 ) echo 'checked'?>/>
+          <label for="chart_status 1">新品</label>
+          <input name="chart_status " type="radio" id="chart_status 2" value="2" <?php if($this->chart['chart_status'] == 2 ) echo 'checked'?>/>
+          <label for="chart_status 2">推荐</label>
+          <input name="chart_status " type="radio" id="chart_status 3" value="3" <?php if($this->chart['chart_status'] == 3 ) echo 'checked'?>/>
+          <label for="chart_status 3">热卖</label>
+        </p>
+    	</td>
+    </tr>
+    <tr>
+      <td><strong>信息排序：</strong>
+        <p>
+          <input name="chart_order" id="chart_order" value="<?php echo ($this->chart['chart_order']);?>" type="text" class="admin_txt1"/>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>信息描述：</strong>
+        <p>
+          <textarea class="textarea" name="chart_desc" id="chart_desc"><?php echo ($this->chart['chart_desc']);?></textarea>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>信息备注：</strong>
+        <p>
+          <textarea class="textarea" name="chart_remark" id="chart_remark"><?php echo ($this->chart['chart_remark']);?></textarea>
+        </p></td>
+    </tr>
+  </table>
+  <table class="admin_form" id="attr">
+    <?php if(is_array($this->attrs)):?>
+    <?php foreach($this->attrs as $attr):?>
+    <tr>
+      <td><strong><?php echo $attr['attr_name'];?>：</strong>
+        <p><?php echo $this->chartAttrInput($attr,$this->chart['attrs'][$attr['field_name']]);?></p></td>
+    </tr>
+    <?php endforeach;?>
+    <?php endif;?>
+  </table>
+  <div class="batch">
+    <input class="admin_bnt"  type="submit" value="提交" />
+  </div>
+</form>
+<?php echo $this->render("footer.phtml") ?>

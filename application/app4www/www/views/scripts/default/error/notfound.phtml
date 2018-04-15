@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>404</title>
+<link type="text/css" rel="stylesheet" href="/static/sendyou/css/common.css" />
+<link rel="shortcut icon" type="image/x-icon" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/images/ui/favicon.ico" />
+<link type="text/css" rel="stylesheet" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/css/www.css" />
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/www.js"></script>
+<style type="text/css">
+html{background:#ffffff;}
+.bigdiv{background:#fff;border:1px solid #ebebeb;min-height:420px;margin:40px 0;}
+.error404{width:100%;padding:20px 0;display:block; text-align:center;}
+  .error404 p{padding:20px 0;font:16px/24px "Microsoft YaHei";}
+</style>
+<!--<script type="text/javascript">
+ 	var num=6;
+ 	function redirect(){
+ 		num--;
+ 		document.getElementById("num").innerHTML=num;
+ 		if(num<0){
+ 			document.getElementById("num").innerHTML=0;
+ 			location.href="http://www.sendtou.com";
+ 			}
+ 		}
+    setInterval("redirect()", 1000);
+</script>-->
+</head>
+<body>
+<?php echo $this->render('default/header.phtml');?>
+<div id="content">
+	<div class="bigdiv" style="margin-top:30px;">
+    	<div class="error404">
+        	<p><img src="<?php echo WWW;?>/static/sendyou/images/ui/404.png" alt="错误提示" /></p>
+            <p><a href="<?php echo WWW;?>"><img src="<?php echo WWW;?>/static/sendyou/images/ui/404_2.png" alt="错误提示" /></a></p>
+            <!-- <p><span id="num"></span>秒后自动跳转到首页</p> -->
+        </div>
+    </div>
+</div>
+<div id="footer">
+    <div class="copyrightdiv">
+    	<div class="copyright">
+        	<?php echo $this->seed_Setting['footer'];?>
+        </div>
+    </div>
+</div>
+</body>
+</html>

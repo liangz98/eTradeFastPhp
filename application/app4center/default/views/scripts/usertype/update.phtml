@@ -1,0 +1,72 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/usertype/update',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+
+</script>
+
+<h1>修改会员等级</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="返回" onclick="history.go(-1);"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+<input name="type_id" id="type_id" type="hidden" value="<?php echo $this->escape($this->usertype['type_id']);?>" />
+  <table class="admin_form">
+    <tr>
+      <td><strong>类型名：</strong>
+        <p>
+          <input name="type_name" id="type_name" value="<?php echo $this->escape($this->usertype['type_name']);?>" type="text" class="admin_txt1"/>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>达成条件（消费总额）：</strong>
+        <p>
+          <input name="user_integral" id="user_integral" value="<?php echo $this->escape($this->usertype['user_integral']);?>" type="text" class="admin_txt1"/>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>折扣类型：</strong>
+        <p>
+          <input name="main_discount_type" type="radio" id="main_discount_type_1" value="1" <?php if($this->usertype['main_discount_type']==1):?>checked="checked" <?php endif;?>/>
+          <label for="main_discount_type_1">百分比</label>
+          <input name="main_discount_type" id="main_discount_type_0" type="radio" value="0" <?php if($this->usertype['main_discount_type']==0):?>checked="checked" <?php endif;?>/>
+          <label for="main_discount_type_0">直减</label>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>折扣值：</strong>
+        <p>
+          <input name="main_discount" id="main_discount" value="<?php echo $this->escape($this->usertype['main_discount']);?>" type="text" class="admin_txt1"/>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>排序：</strong>
+        <p>
+          <input name="order_by" id="order_by" value="<?php echo $this->escape($this->usertype['order_by']);?>" type="text" class="admin_txt1"/>
+        </p></td>
+    </tr>
+    <tr>
+      <td><input class="admin_bnt"  name="" type="submit" value="提交"/>
+        <input class="admin_bnt" name="reset" type="reset" value="重置"/></td>
+      <td>&nbsp;</td>
+    </tr>
+  </table>
+</form>
+<?php echo $this->render("footer.phtml") ?>

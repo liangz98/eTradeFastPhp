@@ -1,0 +1,191 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript" src="/js/center/jquery.cascadingselect4dbclick.js"></script>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->baseUrl();?>/shippingregion/add',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+	
+	$("#province").FillOptions("/a/region/ajax",{datatype:"json",textfield:"reg_name",valuefiled:"reg_id"});
+	$("#city").AddOption("","-1",true,0);
+	$("#district").AddOption("","-1",true,0);
+	$("#street").AddOption("","-1",true,0);
+	$("#city").hide();
+	$("#district").hide();
+	$("#street").hide();
+	$("#province").CascadingSelect(
+			$("#city"),
+			"/a/region/ajax?",
+			{datatype:"json",textfield:"reg_name",valuefiled:"reg_id",parameter:"parent"},
+			function(){
+				if($("#city").get(0).options.length>0){
+					$("#city").show();
+					$("#province option").each(function(){$(this).removeAttr("selected")});
+					$("#city option").each(function(){$(this).removeAttr("selected")});
+					$("#district option").each(function(){$(this).removeAttr("selected")});
+				}
+				else{
+					$("#city").hide();
+					$("#district").hide();
+					$("#street").hide();
+				}
+			}
+	);
+	$("#city").CascadingSelect(
+		$("#district"),
+		"/a/region/ajax?",
+		{datatype:"json",textfield:"reg_name",valuefiled:"reg_id",parameter:"parent"},
+		function(){
+			if($("#district").get(0).options.length>0){
+				$("#district").show();
+					$("#province option").each(function(){$(this).removeAttr("selected")});
+					$("#city option").each(function(){$(this).removeAttr("selected")});
+					$("#district option").each(function(){$(this).removeAttr("selected")});
+					$("#street option").each(function(){$(this).removeAttr("selected")});
+			}else{
+				$("#district").hide();
+				$("#street").hide();
+			}
+		});
+	
+	$("#district").CascadingSelect(
+			$("#street"),
+			"/a/region/ajax?",
+			{datatype:"json",textfield:"reg_name",valuefiled:"reg_id",parameter:"parent"},
+			function(){
+				if($("#street").get(0).options.length>0){
+					$("#street").show();
+					$("#province option").each(function(){$(this).removeAttr("selected")});
+					$("#city option").each(function(){$(this).removeAttr("selected")});
+					$("#district option").each(function(){$(this).removeAttr("selected")});
+					$("#street option").each(function(){$(this).removeAttr("selected")});
+				}else{
+					$("#street").hide();
+				}
+			}
+	);
+});
+
+function select_region(){
+	
+	var reg_name=new Array();
+	var reg_id=new Array();
+			
+	if($("#street").val() != null  && ($("#street").val().length>0 && $("#street").val() != -1)){		
+		for (var a in $("#street").val())
+		{
+			if ($("#street").val()[a] == -1) continue; 
+			reg_id[a] = $("#street").val()[a];			
+			reg_name[a] =$("select[@name=street] option[@selected][@value="+reg_id[a]+"]").text();
+		}
+	}
+	else if($("#district").val() != null && ($("#district").val().length>0 && $("#district").val() != -1)){
+		for (var a in $("#district").val())
+		{
+			if ($("#district").val()[a] == -1) continue; 
+			reg_id[a] = $("#district").val()[a];			
+			reg_name[a] =$("select[@name=district] option[@selected][@value="+reg_id[a]+"]").text();
+		}
+	}
+	else if($("#city").val() != null && ($("#city").val().length>0 && $("#city").val() != -1)){
+		for (var a in $("#city").val())
+		{
+			if ($("#city").val()[a] == -1) continue; 
+			reg_id[a] = $("#city").val()[a];			
+			reg_name[a] =$("select[@name=city] option[@selected][@value="+reg_id[a]+"]").text();
+		}
+	}
+	else if($("#province").val() != null && ($("#province").val().length>0 && $("#province").val() != -1)){
+		for (var a in $("#province").val())
+		{
+			if ($("#province").val()[a] == -1) continue; 
+			reg_id[a] = $("#province").val()[a];			
+			reg_name[a] =$("select[@name=province] option[@selected][@value="+reg_id[a]+"]").text();
+		}
+	}
+	
+	if(reg_id.length>0){
+		var regContent="";
+		for (var i=0;i<reg_id.length;i++)
+		{
+			regContent+="<input type='checkbox' name='reg_ids[]' style='width:18px;' value='"+reg_id[i]+"' checked>";
+	    	regContent+=reg_name[i]+" &nbsp; ";
+		}
+		$('#select_region_div').before(regContent);
+	}
+}
+</script>
+
+<h1>配送地区设置 - <?php echo $this->shipping['shipping_desc'];?></h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="列表" onclick="document.location='<?php echo $this->baseUrl();?>/shippingregion?shipping_name=<?php echo $this->shipping['shipping_name'];?>'"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+<table class="admin_form">
+      <tr><td> <strong>名称：</strong>
+        <p>
+          <input name="sr_name" id="sr_name" value="" type="text" class="admin_txt1" />
+        </p>
+      </td></tr>
+      <tr><td> <strong>说明：</strong>
+        <p>
+          <input name="sr_desc" id="sr_desc" value="" type="text" class="admin_txt1" />
+        </p>
+      </td></tr>
+      <?php if(is_array($this->shippingparams)):?>
+      <?php foreach($this->shippingparams as $param):?>
+      <tr><td> <strong><?php echo $param['setting_name'];?>：</strong>
+        <p>
+          <input name="<?php echo $param['setting_variable'];?>" id="<?php echo $param['setting_variable'];?>" value="<?php echo ($this->shippingregionconfigure[$param['setting_variable']]);?>" type="text" class="admin_txt1" />
+        </p>
+      </td></tr>
+      <?php endforeach; ?>
+      <?php endif;?>
+      <tr><td> <strong>选择地区：</strong>
+        <p>
+          <select id="province" name="province" style="height:200px;"  multiple>
+            选择省
+          </select>
+          <select id="city" name="city" style="height:200px;"  multiple>
+            选择市
+          </select>
+          <select id="district" name="district" style="height:200px;" multiple>
+            选择区
+          </select>
+          <select id="street" name="street" style="height:200px;" multiple>
+            选择街道
+          </select>
+        </p>
+        <p>
+          <input name="selectRegion" type="button" value="添加"  onclick="select_region();"   class="admin_bnt2" />
+        </p>
+        <p>
+          <?php if(is_array($this->shippingregiondetails)):?>
+          <?php foreach ($this->shippingregiondetails as $region):?>
+          <input type="checkbox" value="<?php echo $region['reg_id']?>" name="reg_ids[]" style="width:20px;" checked>
+          <?php echo $region['reg_name']?> &nbsp;
+          <?php endforeach; ?>
+          <?php endif;?>
+          <span id="select_region_div"></span> </p>
+      </td></tr>
+    </table>
+    <div class="batch">
+      <input type="hidden" name="shipping_name" value="<?php echo $this->shipping['shipping_name'];?>">
+      <input name=""  class="admin_bnt"  type="submit" value="提交" />
+    </div>
+</form>
+<?php echo $this->render("footer.phtml") ?>

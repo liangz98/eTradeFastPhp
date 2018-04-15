@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="baidu-site-verification" content="7dGQolUeVh" />
+<title>帮助中心-<?php echo $this->help['html_title'];?>-信天邮</title>
+<meta name="keywords" content="<?php echo $this->help['html_keywords'];?>" />
+<meta name="description" content="<?php echo $this->help['html_description'];?>" />
+<link rel="shortcut icon" type="image/x-icon" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/images/ui/favicon.ico" />
+<link type="text/css" rel="stylesheet" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/css/common.css" />
+<link type="text/css" rel="stylesheet" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/css/www.css" />
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/www.js"></script>
+</head>
+<body>
+<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
+<div id="content">
+	<div class="bigdiv">
+    	<div class="location"><a href="<?php echo WWW;?>">首页</a> &gt; 帮助中心 &gt; <?php echo $this->escape($this->help['help_title']);?></div>
+        
+        <div class="layout addpad">
+            <div class="help_nav">
+            <?php if(is_array($this->helps)):?>
+            <?php foreach ($this->helps as $help):?>
+                <dl>
+                    <dt><?php echo $this->escape($help['help_title']);?></dt>
+                    <dd>
+                        <ul>
+                        <?php if(is_array($help['sub_helps'])):?>
+                         <?php foreach ($help['sub_helps'] as $sub):?>
+                        	<li <?php if ($sub['help_mark']==$this->help_mark):?>class="crumb"<?php endif;?>><a href="<?php echo WWW;?>help/<?php echo $this->escape($sub['help_mark']);?>.html" rel="nofollow"><?php echo $this->escape($sub['help_title']);?></a></li>
+                         <?php endforeach;?>
+                         <?php endif;?>
+                        </ul>
+                    </dd>
+                </dl>
+             <?php endforeach;?>
+             <?php endif;?>
+            </div>
+            
+            <div class="info">
+                <h1><?php echo $this->escape($this->help['help_title']);?></h1>
+                <div class="info_txt">
+                	<?php echo $this->showContent($this->help['help_content']);?>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
+<?php echo $this->render(SEED_WWW_TPL.'/right_fix.phtml');?>
+</body>
+</html>

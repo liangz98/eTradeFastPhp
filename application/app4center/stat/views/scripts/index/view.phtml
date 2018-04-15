@@ -1,0 +1,55 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$('input[@type=checkbox][@name=checkAll]').each(function(){
+		$(this).checkbox().toggle($(this).val());
+	});
+});
+
+//删除
+function deleteAll(){
+	var ids="";
+    $("[name='chose[]'][checked]").each(function(){
+    	ids+=$(this).val()+",";
+    });
+    ids=ids.substring(0,(ids.length-1));
+    document.location = "<?php echo $this->baseUrl();?>/stat/delete?ids="+ids;
+}
+</script>
+
+<h1><?php echo $this->escape($this->nick_name);?>(<?php echo $this->escape($this->user_name);?>)访问过的页面</h1>
+<div class="textnav">
+  <p></p>
+</div>
+<table class="admin_list">
+  <tr>
+    <th>日期</th>
+    <th>活动次数</th>
+  </tr>
+  <?php if(is_array($this->output)):?>
+  <?php foreach($this->output as $key => $statList):?>
+  <tr>
+    <td>
+        <strong><?php echo $key;?></strong>
+        <br>
+    </td>
+    <td style="text-align: left;">
+        <strong><?php echo count($statList);?> 个活动</strong>
+        <br><br/>
+        <ol>
+            <?php foreach($statList as $stat):?>
+            <li><a href="<?php echo $this->escape('http://'.$stat['domain'].$stat['resource']);?>" target="_blank" style="margin-left: 25px;text-decoration:underline;"><?php echo $this->escape($stat['title']);?></a></li>
+            <br/>
+            <?php endforeach;?>
+        </ol>
+    </td>
+  </tr>
+  <?php endforeach; ?>
+  <?php endif;?>
+</table>
+<!--分页开始-->
+<div class="page">
+  <?php echo $this->showPage($this->page);?>
+</div>
+<!--分页结束-->
+<?php echo $this->render("footer.phtml") ?>

@@ -1,0 +1,32 @@
+<?php echo $this->render("header.phtml") ?>
+<h1>积分详细</h1>
+<table class="admin_list">
+  <tr>
+    <th>用户id</th>
+    <th>昵称</th>
+    <th>积分值</th>
+    <th>积分说明</th>
+    <th>来源说明</th>
+    <th>积分时间</th>
+  </tr>
+  <?php if(isset($this->integrals) && is_array($this->integrals)):?>
+  <?php foreach($this->integrals as $k=>$v):?>
+  <tr>
+      <td><?php echo $v['user_id'];?></td>
+      <td><?php echo $v['nick_name'];?></td>
+      <td><?php echo $v['integral_value'];?></td>
+      <td><?php echo $v['integral_desc'];?></td>
+      <td><?php echo $v['source_desc'];?></td>
+     <td><?php echo date('Y-m-d H:i:s',$v['add_time']);?></td>
+  </tr>
+  <?php endforeach;?>
+<?php endif;?>
+  </table>
+<div class="page">
+  <?php echo $this->showPage($this->page);?>
+</div>
+<script type="text/javascript">
+
+
+</script>
+<?php echo $this->render("footer.phtml");?>

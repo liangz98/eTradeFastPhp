@@ -1,0 +1,49 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/image/delete',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+</script>
+<h1>删除图片</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back();"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_list">
+    <tr>
+      <th>编号</th>
+      <th>名称</th>
+      <th>路径</th>
+    </tr>
+    <?php if(is_array($this->images)):?>
+    <?php foreach($this->images as $image):?>
+    <tr>
+      <td><input type="checkbox" id="image_id[]" name="image_id[]" checked value="<?php echo ($image['image_id'])?>">
+        <?php echo ($image['image_id'])?></td>
+      <td><a href="javascript:void(0)" onclick="tb_show('', '<?php echo $this->seed_Setting['upload_view_server'].'/images/'.$image['cate_path'].'/'.$image['normal_image_path']?>');"><?php echo ($image['image_name']);?></a></td>
+      <td><?php echo ($image['cate_path'])?></td>
+    </tr>
+    <?php endforeach; ?>
+    <?php endif;?>
+  </table>
+  <div class="batch">
+    <input  class="admin_bnt2"  type="submit" name="" value="确认删除">
+  </div>
+</form>
+<?php echo $this->render("footer.phtml") ?> 

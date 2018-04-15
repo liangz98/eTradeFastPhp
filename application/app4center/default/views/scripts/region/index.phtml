@@ -1,0 +1,78 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+function doorder(){
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/region/order',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+};
+function docache(){
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/region/docache',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+};
+</script>
+
+<h1>地区列表</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="列表" onclick="document.location='<?php echo $this->BaseUrl();?>/region/index/parent/<?php echo $this->parent;?>'"/>
+    <input class="admin_bnt2" name="" type="button" value="添加" onclick="document.location='<?php echo $this->BaseUrl();?>/region/add/parent/<?php echo $this->parent;?>'"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_form">
+    <tr>
+      <th> <p style="width:100%;font-size:14px;text-align:left;"> <strong>层次导航：</strong> <a href="<?php echo $this->BaseUrl();?>/region/index">最顶级</a>
+          <?php if(is_array($this->parent_nav)):?>
+          <?php foreach($this->parent_nav as $key => $nav):?>
+          <?php if($nav['reg_id']>0):?>
+          -&gt; <a href="<?php echo $this->BaseUrl();?>/region/index?parent=<?php echo $nav['reg_id'];?>"><?php echo $nav['reg_name'];?></a>
+          <?php endif;?>
+          <?php endforeach; ?>
+          <?php endif;?>
+        </p></th>
+    </tr>
+    <?php if(is_array($this->regions)):?>
+    <?php foreach($this->regions as $key => $region):?>
+    <tr>
+      <td><?php echo ($region['reg_name']);?>
+        <input type="text" name="order_bys[]" value="<?php echo ($region['order_by']);?>" style="width:15px;">
+        <input type="hidden" name="reg_ids[]" value="<?php echo ($region['reg_id']);?>">
+        &nbsp;&nbsp;<a href="<?php echo $this->BaseUrl();?>/region/index/parent/<?php echo $region['reg_id']?>">管理</a> | <a href="<?php echo $this->BaseUrl();?>/region/update/reg_id/<?php echo $region['reg_id']?>">编辑</a> | <a href="<?php echo $this->BaseUrl();?>/region/delete/reg_id/<?php echo ($region['reg_id']);?>">删除</a></td>
+    </tr>
+    <?php endforeach; ?>
+    <?php endif;?>
+  </table>
+  <?php if(count($this->regions)>0):?>
+  <div class="batch">
+    <input class="admin_bnt2" name="order" type="submit" value="重新排序" onclick="doorder()"/>
+    <input class="admin_bnt2" name="order" type="submit" value="缓存为JS" onclick="docache()"/>
+  </div>
+  <?php endif;?>
+  </div>
+</form>
+<?php echo $this->render("footer.phtml") ?> 

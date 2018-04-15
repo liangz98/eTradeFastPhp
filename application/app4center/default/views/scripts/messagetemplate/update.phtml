@@ -1,0 +1,63 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/messagetemplate/update',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+
+</script>
+
+<h1>修改邮件模板</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back()"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_form">
+    <tr>
+      <td><strong>模板名称：</strong>
+        <p>
+          <input name="temp_name" id="temp_name" value="<?php echo ($this->temp['temp_name']);?>" type="text" class="admin_txt1"/>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>模板标题：</strong>
+        <p>
+          <input name="temp_title" id="temp_title" value="<?php echo ($this->temp['temp_title']);?>" type="text" class="admin_txt1"/>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>模板内容：</strong>
+        <p>
+          <textarea name="temp_content" id="temp_content" style="height:300px;" class="textarea"><?php echo $this->temp['temp_content'];?></textarea>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>是否激活：</strong>
+        <p>
+          <input type="radio" name="is_actived" id="is_actived0" value="0" style="width:15px;" <?php echo ($this->temp['is_actived']=='0')?"checked":""; ?>>
+          否&nbsp;
+          <input type="radio" name="is_actived" id="is_actived1" value="1" style="width:15px;" <?php echo ($this->temp['is_actived']=='1')?"checked":""; ?>>
+          是 </p></td>
+    </tr>
+  </table>
+  <div class="batch">
+    <input type="hidden" name="temp_id" id="temp_id" value="<?php echo ($this->temp['temp_id']);?>">
+    <input name="" class="admin_bnt" type="submit" value="提交" />
+  </div>
+</form>
+<?php echo $this->render("footer.phtml") ?>

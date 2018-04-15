@@ -1,0 +1,84 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {
+	   	 cate_name:"required",
+         cate_title:"required",
+	   	 cate_limit:"required"
+	   },
+	   messages: {
+	   	 cate_name: '请输入保存名称！',
+         cate_title: '请输入榜单名称',
+	   	 cate_limit: '请输入榜单限量！'
+	   },
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/chartcate/add',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+</script>
+<h1>添加榜单</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back()"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_form">
+    <tr>
+      <td><strong>所属频道：</strong>
+        <p>
+          <select name="channel_id" id="channel_id">
+            <?php if(is_array($this->channeloptions)):?>
+            <?php foreach($this->channeloptions as $key => $channelmenu):?>
+            <option value="<?php echo $channelmenu['channel_id'];?>"><?php echo $channelmenu['channel_name'];?></option>
+            <?php endforeach;?>
+            <?php endif;?>
+          </select>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>榜单名称：</strong>
+        <p>
+          <input name="cate_title" id="cate_title" value="" type="text" class="admin_txt1"/>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>保存名称：</strong>
+        <p>
+          <input name="cate_name" id="cate_name" value="" type="text" class="admin_txt1"/>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>榜单限量：</strong>
+        <p>
+          <input name="cate_limit" id="cate_limit" value="" type="text" class="admin_txt1" />
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>榜单排序：</strong>
+        <p>
+          <input name="order_by" id="order_by" value="" type="text" class="admin_txt1" />
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>榜单描述：</strong>
+        <p>
+          <textarea class="textarea" name="cate_desc" id="cate_desc"></textarea>
+        </p></td>
+    </tr>
+  </table>
+  <div class="batch">
+    <input class="admin_bnt" name="" type="submit" value="提交"/>
+  </div>
+</form>
+<?php echo $this->render("footer.phtml") ?>

@@ -1,0 +1,95 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	
+	<?php if(isset($this->conditions['cate_name'])):?>
+    $("#cate_name").val('<?php echo $this->conditions['cate_name'];?>');
+    <?php endif;?>
+    
+    <?php if(isset($this->conditions['file_id'])):?>
+    $("#file_id").val('<?php echo $this->conditions['file_id'];?>');
+    <?php endif;?>
+    
+	<?php if(isset($this->conditions['user_name'])):?>
+    $("#user_name").val('<?php echo $this->conditions['user_name'];?>');
+    <?php endif;?>
+});
+
+//删除
+function deleteAll(){
+	var ids="";
+    $("[name='chose[]'][checked]").each(function(){
+    	ids+=$(this).val()+",";
+    });
+    ids=ids.substring(0,(ids.length-1));
+    document.location = "<?php echo $this->BaseUrl();?>/file/delete?file_ids="+ids;
+}
+</script>
+
+<h1>文件附件管理</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2"  name="" type="button" value="列表" onclick="document.location='<?php echo $this->BaseUrl();?>/file/index'"/>
+  </p>
+</div>
+<div class="admin_search">
+<form name="search" action="" method="get">
+  <fieldset>
+    <legend>搜索</legend>
+    &nbsp;
+    文件编号：
+    <input type="text" name="file_id" id="file_id" value="" style="width:100px;"/>
+    &nbsp;
+    用户帐号：
+    <input type="text" name="user_name" id="user_name" value="" style="width:100px;"/>
+    &nbsp;
+    文件类型：
+    <select name="cate_name" id="cate_name">
+      <option value="">--选择分类--</option>
+      <?php if(is_array($this->cates)):?>
+      <?php foreach($this->cates as $cate):?>
+      <option value="<?php echo ($cate['cate_name']);?>"><?php echo ($cate['cate_desc']);?></option>
+      <?php endforeach; ?>
+      <?php endif;?>
+    </select>
+    <input type="submit" value="搜索" class="admin_bnt2"/>
+  </fieldset>
+</form>
+</div>
+<table class="admin_list">
+  <tr>
+    <th><input type="checkbox" name="checkAll" id="checkAll"  value="input.ids_all" title="全选/反选">
+      <label for="checkAll">全选</label></th>
+    <th>文件名</th>
+    <th>文件分类</th>
+    <th>大小</th>
+    <th>上传时间</th>
+    <th>上传IP</th>
+    <th>上传者</th>
+    <th>操作</th>
+  </tr>
+  <?php if(is_array($this->files)):?>
+  <?php foreach($this->files as $file):?>
+  <tr>
+    <td><input type="checkbox" id="chose[]" name="chose[]" value="<?php echo ($file['file_id']);?>" class="ids_all">
+      <?php echo ($file['file_id']);?></td>
+    <td><a href="<?php echo '/files/'.$file['cate_path'].'/'.$file['file_path']?>" target="_blank"><?php echo ($file['file_name']);?></a></td>
+    <td><?php echo ($file['cate_name']);?></td>
+    <td><?php echo ($file['file_size']);?></td>
+    <td><?php echo date('Y-m-d H:i',$file['upload_time']);?></td>
+    <td><?php echo ($file['upload_ip']);?></td>
+    <td><?php echo ($file['user_name']);?></td>
+    <td><a href="<?php echo '/files/'.$file['cate_path'].'/'.$file['file_path']?>" target="_blank"><img src="/images/view.gif" title="预览" alt="预览"></a> <a href="<?php echo $this->BaseUrl();?>/upload/file/delete/file_ids=<?php echo ($file['file_id']);?>"><img src="<?php echo $this->imageUrl?>/static/images/admin/no.gif" title="删除" alt="删除"></a></td>
+  </tr>
+  <?php endforeach; ?>
+  <?php endif;?>
+</table>
+<div class="batch"> &nbsp;
+  <input class="admin_bnt2" type="button" name="deleteID" id="deleteID" value="删除选择" onclick="deleteAll()">
+  &nbsp </div>
+<!--分页开始-->
+<div class="page"> 
+  <?php echo $this->showPage($this->page);?>
+</div>
+<!--分页结束-->
+<?php echo $this->render("footer.phtml") ?>

@@ -1,0 +1,53 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {
+	   	 channel_name:"required"
+	   },
+	   messages: {
+	   	 channel_name: '请输入频道名称！'
+	   },
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/chartchannel/add',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+
+</script>
+<h1>添加频道</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back()"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_form">
+    <tr>
+      <td><strong>频道名称：</strong>
+        <p>
+          <input name="channel_name" id="channel_name" value="" type="text" class="admin_txt1"/>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>频道描述：</strong>
+        <p>
+          <textarea class="textarea" name="channel_desc" id="channel_desc"></textarea>
+        </p></td>
+    </tr>
+  </table>
+  <table class="admin_form">
+    <tr>
+      <td><input class="admin_bnt"  type="submit" value="提交" /></td>
+    </tr>
+  </table>
+</form>
+<?php echo $this->render("footer.phtml") ?>

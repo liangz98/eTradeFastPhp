@@ -1,0 +1,467 @@
+<div class="order_progress" <?php if(empty($this->orders)||$this->vestut==-1){echo 'style="display:none;"';}?> >
+    <div class="info_tit clearfix">
+        <h4><!--最近更新订单进度--><?php echo $this->translate('orderStatus');?></h4>
+    </div>
+
+    <!--进度条-->
+    <div class="progress">
+		<p class="icon_bg1 <?php if ($this->vestut == 0): ?><?php echo 'go'; ?><?php elseif ($this->vestut > 0): ?><?php echo 'finish'; ?><?php endif; ?> ">
+			<!--确认订单--><?php echo $this->translate('confirming'); ?></p>
+		<p class="icon_bg2 signTopBtn <?php if ($this->vestut == 1 || $this->vestut == 3): ?><?php echo 'go'; ?><?php elseif ($this->vestut > 1): ?><?php echo 'gocursor finish'; ?><?php endif; ?>">
+			<!--签订合同--><?php echo $this->translate('sign'); ?></p>
+		<p class="icon_bg2 deliveryTopBtn <?php if ($this->vestut > 3): ?><?php echo 'go gocursor'; ?><?php elseif ($this->vestut > 7): ?><?php echo 'gocursor finish'; ?><?php endif; ?>">
+			<!--发货--><?php echo $this->translate('delivery'); ?></p>
+		<p class="icon_bg2 paymentTopBtn <?php if ($this->vestut > 3): ?><?php echo 'go gocursor'; ?><?php elseif ($this->vestut > 7): ?><?php echo 'gocursor finish'; ?><?php endif; ?>">
+			<!--结算中--><?php echo $this->translate('calculate'); ?></p>
+    </div>
+
+    <!--检查状态是否正确-->
+    <input id="vendST" type="hidden" value=<?php echo  $this->vestut;?>>
+    <input id="orderID" type="hidden" value=<?php echo  $this->veorderID;?>>
+    <input id="baseCrn" type="hidden" value=<?php echo $this->orders["buyerCrnCode"];?>>
+    <input id="contraCrn" type="hidden" value=<?php echo $this->orders["vendorCrnCode"];?>>
+
+    <!--订单未开始-->
+    <div class="clearfix pb10 dn" <?php if ($this->vestut==-1){echo 'style="display:block;"';}?>>
+        <div class="or_curs tl"><label class="or_lb"><!--订单号码--><?php echo $this->translate('orderNo');?></label><span class="w_curstor"><?php echo $this->orders["orderNo"];?></div>
+        <div class="or_curs tl"><label class="or_lb"><!--订单汇率--><?php echo $this->translate('Prities');?></label><span class="w_curstor huilv"></div>
+        <div class="or_curs clearfix" style="width:100%;"><label class="or_lb"><!--进度说明--><?php echo $this->translate('progressING');?></label>
+            <span class="w_curstor" style="width:740px;"><?php echo $this->plan['plan'];?></span></div>
+        <div class="or_curs tl"><label class="or_lb"><?php echo $this->translate('stateING');?><!--当前状态--></label>
+            <span class="w_curstor"><!--当前订单未开始--><?php  echo  $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ORDER_STATUS'],$this->orders["orderStatus"]);?></span></div>
+    </div>
+
+    <!--确认订单-->
+    <div class="clearfix pb10 dn" <?php if ($this->vestut==0){echo 'style="display:block;"';}?>>
+        <div class="or_curs tl"><label class="or_lb"><!--订单号码--><?php echo $this->translate('orderNo');?></label><span class="w_curstor"><?php echo $this->orders["orderNo"];?></div>
+        <div class="or_curs tl"><label class="or_lb"><!--订单汇率--><?php echo $this->translate('Prities');?></label><span class="w_curstor huilv"></div>
+        <div class="or_curs clearfix" style="width:100%;"><label class="or_lb"><!--进度说明--><?php echo $this->translate('progressING');?></label>
+            <span class="w_curstor" style="width:740px;"><?php echo $this->plan['plan'];?></span></div>
+        <div class="or_curs tl clearfix" style="width: 820px;padding: 10PX 45px;">
+            <h3><!--附件下载--><?php echo $this->translate('download');?></h3>
+            <dl class="fl" style="width:100%;"><?php echo $this->showTopIMG($this->orders['attachmentList'],$this->accountID,'ODBQ',null);?></dl>
+            <dl class="fl" style="width:100%;"><?php echo $this->showTopIMG($this->orders['attachmentList'],$this->accountID,'ODTA',$this->orders['client']);?></dl>
+        </div>
+        <div class="or_curs tl"><label class="or_lb"><!--当前状态--><?php echo $this->translate('stateING');?></label>
+            <span class="w_curstor"><!--当前订单未开始--><?php  echo  $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ORDER_STATUS'],$this->orders["orderStatus"]);?></span></div>
+        <div class="or_curs tl"><label class="or_lb"><!--当前操作--><?php echo $this->translate('operatING');?></label>
+            <input type="button"  <?php echo $this->orders["allowBuyerConfirm"]==1 ? 'class="yh_red" id="handle"':'class="yh_wite"';?> value="<?php echo $this->translate('confirmed');?>"><!--确认-->
+            <span><!--我有异议--></span>
+        </div>
+    </div>
+
+    <!--签订合同-->
+    <?php if ($this->vestut >= 1): ?>
+	<div class="clearfix pb10 signTopDiv" <?php if ($this->vestut > 3): ?>style="display: none;"<?php endif; ?> >
+        <div class="or_curs tl"><label class="or_lb"><!--订单号码--><?php echo $this->translate('orderNo');?></label><span class="w_curstor"><?php echo $this->orders["orderNo"];?></div>
+        <div class="or_curs tl"><label class="or_lb"><!--订单汇率--><?php echo $this->translate('Prities');?></label><span class="w_curstor huilv"></div>
+        <div class="or_curs clearfix" style="width:100%;"><label class="or_lb"><!--进度说明--><?php echo $this->translate('progressING');?></label>
+            <span class="w_curstor" style="width:740px;"><?php echo $this->plan['plan'];?></span></div>
+        <div id="key" class="or_curs tl clearfix " style="<?php  if($this->plan['display']==0){echo 'display:none;';}?> width: 820px;padding: 10px 45px;">
+            <h3><!--文件--><?php echo $this->translate('files');?></h3>
+            <dl class="fl download_doc"><?php echo $this->ShowTopContract($this->contractList, $this->accountID, 'ODTA', $this->orders['client'], $this->hasIDCertificate);?></dl>
+        </div>
+
+        <div class="or_curs tl"><label class="or_lb"><!--当前状态--><?php echo $this->translate('stateING');?></label>
+            <span class="w_curstor"><?php  echo  $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ORDER_STATUS'],$this->orders["orderStatus"]);?><!--当前订单未开始--></span>
+		</div>
+    </div>
+    <?php endif; ?>
+
+	<!-- 物流 Delivery -->
+    <?php if ($this->vestut == 7): ?>
+	<div class="clearfix deliveryTopDiv" style="clear:both; text-align: left; padding-bottom: 30px;">
+		<div>
+			<table class="layui-table" lay-skin="line" id="deliveryTable" lay-filter="demoEvent">
+				<colgroup>
+					<col width="60">
+					<col width="140">
+					<col width="100">
+					<col width="160">
+					<col>
+					<col width="130">
+				</colgroup>
+				<thead>
+				<tr style="background-color: #01AAED; color: white;">
+					<th>批次</th>
+					<th>收发货单编号</th>
+					<th>批次状态</th>
+					<th style="text-align: center">日期</th>
+					<th style="text-align: center">摘要</th>
+					<th style="text-align: center">操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				<?php if (count($this->deliveryList) > 0): ?>
+					<?php foreach ($this->deliveryList as $k => $v):?>
+						<tr>
+							<td><span class="layui-badge" style="background-color: #4CAF50;"><?php echo $k + 1; ?></span></td>
+							<td class="deliveryViewClass" style="cursor: pointer;" deliveryID_="<?php echo $v->deliveryID; ?>" deliveryStatus_="<?php echo $v->deliveryStatus; ?>" deliveryNo_="<?php echo $v->deliveryNo; ?>"><?php echo $v->deliveryNo; ?></td>
+							<td class="deliveryViewClass" style="cursor: pointer;" deliveryID_="<?php echo $v->deliveryID; ?>" deliveryStatus_="<?php echo $v->deliveryStatus; ?>" deliveryNo_="<?php echo $v->deliveryNo; ?>"><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['DELIVERY_STATUE'], $v->deliveryStatus); ?></td>
+							<td class="deliveryViewClass" style="cursor: pointer;" deliveryID_="<?php echo $v->deliveryID; ?>" deliveryStatus_="<?php echo $v->deliveryStatus; ?>" deliveryNo_="<?php echo $v->deliveryNo; ?>"><?php $date = date_create($v->readyDate); echo date_format($date,"Y年m月d日"); ?></td>
+							<td class="deliveryViewClass" style="cursor: pointer;" deliveryID_="<?php echo $v->deliveryID; ?>" deliveryStatus_="<?php echo $v->deliveryStatus; ?>" deliveryNo_="<?php echo $v->deliveryNo; ?>"><?php $summary = $v->summary; $replaceStr = "<br />"; echo str_replace('\n', $replaceStr, $summary); ?></td>
+							<td>
+								<?php if ($v->deliveryStatus == 1 && $v->needExamine == True):?>
+									<a class="layui-btn layui-btn-warm deliveryExamineBtn" deliveryID_="<?php echo $v->deliveryID; ?>" >验货</a>
+								<?php elseif ($v->deliveryStatus == 2): ?>
+									<a class="layui-btn layui-btn-disabled">收货</a>
+								<?php elseif ($v->deliveryStatus == 3): ?>
+									<a class="layui-btn layui-btn-warm deliveryReceiptBtn" deliveryID_="<?php echo $v->deliveryID; ?>" >收货</a>
+								<?php elseif ($v->deliveryStatus == 4): ?>
+								
+								<?php endif; ?>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				<?php else: ?>
+					<tr>
+						<td colspan="6" style="height: 100px; text-align: center;">
+							<label><?php echo $this->translate('deliveryItemListNull'); ?></label>
+						</td>
+					</tr>
+				<?php endif; ?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+    <?php endif; ?>
+
+	<!--结算-->
+    <?php if ($this->vestut >= 7): ?>
+	<div class="clearfix pb10 paymentTopDiv" <?php if ($this->vestut != 15): ?>style="display: none;"<?php endif; ?> >
+
+	</div>
+    <?php endif; ?>
+
+    <!--game over-->
+    <div class="clearfix pb10 dn" <?php if ($this->vestut>=63){echo 'style="display:block;"';}?>>
+        <div class="or_curs tl"><label class="or_lb"><!--订单号码--><?php echo $this->translate('orderNo');?></label><span class="w_curstor"><?php echo $this->orders["orderNo"];?></div>
+        <div class="or_curs tl"><label class="or_lb"><!--订单汇率--><?php echo $this->translate('Prities');?></label><span class="w_curstor huilv"></div>
+        <div class="or_curs clearfix" style="width:100%;"><label class="or_lb"><!--进度说明--><?php echo $this->translate('progressING');?></label>
+            <span class="w_curstor" style="width:740px;"><?php echo $this->plan['plan'];?></div>
+        <div class="or_curs tl"><label class="or_lb"><!--当前状态--><?php echo $this->translate('stateING');?></label>
+            <span class="w_curstor"><?php  echo  $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ORDER_STATUS'],$this->orders["orderStatus"]);?><!--完成--></span></div>
+    </div>
+</div>
+
+<!--PDF预览-->
+<div id="signViewDiv" style="display: none;">
+	<div class="sign-button">签署</div>
+	<div class="download-button">下载</div>
+	<div class="pdfDoc" style="padding-left:50px;">
+		<div id="pdfPageBox">
+		</div>
+	</div>
+</div>
+
+<!--非网签-->
+<div id="signViewNoEContractDiv" class="layui-form" style="display: none;">
+	<div class="et-auth-error" style="display: none;"></div>
+	<div class="et-auth-content">
+		<div style="margin-top: 20px;"></div>
+
+		<div class="layui-form-item" style="margin-left: 28px;">
+			<div style="text-align: left;">
+				<label class="layui-form-label" style="width: 400px;text-align: left;"><?php echo $this->translate('contractUPInfo'); ?></label>
+			</div>
+		</div>
+
+		<div class="layui-form-item" style="margin-bottom: -5px;margin-top: -15px;margin-left: 28px;margin-right: 28px;">
+			<div style="text-align: left;">
+				<table class="layui-table" id="demo" lay-filter="test">
+					<colgroup>
+						<col width="470">
+						<col width="150">
+						<col>
+					</colgroup>
+					<thead>
+					<tr>
+						<th>合同列表</th>
+						<th>类型</th>
+						<th style="text-align:center">操作</th>
+					</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="layui-form-item" style="margin-left: 28px; margin-top: 50px; width: 600px;">
+			<div class="layui-form-label" style="width: 420px;">
+				<div class="yyzz_box clearfix" style="width: 600px;">
+					<p class="zzname" style="width: 600px; font-weight:bold;"><?php echo $this->translate('contractUP'); ?><!--合同相关附件上传--></p>
+                    <?php if ($this->vestut == 1) {
+                        echo $this->ShowWebuploader($this->goods['attachmentList'], $this->biz_Setting['ORDER'], $this->attach_Setting['CRIM'], "0", null);
+                    } ?>
+				</div>
+			</div>
+		</div>
+
+
+		<div style="height: 12px"></div>
+		<div class="et-auth-row">
+			<button class="layui-btn" id="signNoEContractConfirmBtn"><?php echo $this->translate('signing'); ?></button>
+		</div>
+	</div>
+</div>
+
+<!--签署-->
+<div id="doSignPDFLayDiv" class="layui-form" style="display: none;">
+	<div class="et-auth-error" style="display: none;"></div>
+	<div class="et-auth-content">
+		<div style="margin-top: 20px;"></div>
+
+		<div class="layui-form-item" style="margin-left: 28px;">
+			<div style="text-align: left;">
+				<label class="layui-form-label" style="width: 180px;text-align: left;"><?php echo $this->translate('signInfo'); ?></label>
+			</div>
+			
+		</div>
+  
+		<div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
+			<div style="text-align: left;">
+				<label class="layui-form-label" style="width: 180px;text-align: left;"><b><?php echo $this->translate('signAuthType'); ?></b></label>
+			</div>
+		</div>
+
+		<div class="layui-form-item" style="margin-left: 28px;">
+			<div class="layui-form-label" style="width: 420px;">
+				<input type="text" id="signMobileInput" name="signMobileInput" lay-verify="signMobileInput" autocomplete="off" class="layui-input" readonly="readonly">
+			</div>
+		</div>
+
+		<div class="layui-form-item" style="margin-left: 28px;">
+			<div class="layui-form-label" style="width: 250px;">
+				<input type="text" id="signAuthCode" name="signAuthCode" lay-verify="signAuthCode" autocomplete="off" placeholder="<?php echo $this->translate('signInputAuthCode'); ?>" class="layui-input">
+			</div>
+
+			<div class="layui-form-label" style="width: 140px;">
+				<button class="layui-btn layui-btn-fluid" id="signSendAuthCodeBtn"><?php echo $this->translate('signSendAuthCode'); ?></button>
+			</div>
+		</div>
+
+		<div style="height: 12px"></div>
+		<div class="et-auth-row">
+			<button class="layui-btn layui-btn-fluid" id="singConfirmBtn" style="width: 85%;"><?php echo $this->translate('confirmed'); ?></button>
+		</div>
+	</div>
+</div>
+
+<!--物流-->
+<div id="deliveryExamineViewDiv" class="layui-form" style="display: none;"></div>
+
+<script>
+$(function(){
+	//判断合同CRCT
+	isCRCT();
+
+	$('#handle').click(function(){
+		var vendST=$('#vendST').val();
+		var orderID=$('#orderID').val();
+		//var jind=$('#jingdu')
+		//var zhuangtai=$('#zhuangtai')
+		if(vendST<0){
+			$('#jingdu').html('<?php echo $this->translate('orderPS01');?>');/*未开始*/
+			$('#zhuangtai').html('<?php echo $this->translate('orderPS02');?>');/*未生成*/
+		}
+		if(vendST==0){
+			$('#jingdu').html('<?php echo $this->translate('waiting').$this->translate('confirmed');?>');/*等待确认*/
+			$('#zhuangtai').html('<?php echo $this->translate('waiting').$this->translate('confirmed');?>');/*等待确认*/
+			$.post(
+				'<?php echo $this->BaseUrl();?>/ordercg/confirm',
+				{'orderID':orderID},
+
+				function(data){
+					if(data=='1'){
+						document.location.reload();
+					}else{
+						alert(data+'failed,please try again!');
+					}
+				},
+				'json');
+
+		}
+		if(vendST==1){
+
+			$('#jingdu').html('<?php echo $this->translate('waiting').$this->translate('sign');?>');/*等待签订合同*/
+			$('#zhuangtai').html('<?php echo $this->translate('waiting').$this->translate('sign');?>');/*等待签订合同*/
+
+			var nidArr="";
+			var nid =document.getElementsByName("attachNid[]");
+			for (var i = 0, j = nid.length; i < j; i++){
+				nidArr  += nid[i].value+"|";
+			}
+			var nameArr="";
+			var name =document.getElementsByName("attachName[]");
+			for (var i = 0, j = name.length; i < j; i++){
+				nameArr  += name[i].value+"|";
+			}
+			var sizeArr="";
+			var size =document.getElementsByName("attachSize[]");
+			for (var i = 0, j = size.length; i < j; i++){
+				sizeArr  += size[i].value+"|";
+			}
+			var attachTypeArr="";
+			var attachType =document.getElementsByName("attachType[]");
+			for (var i = 0, j = attachType.length; i < j; i++){
+				attachTypeArr  += attachType[i].value+"|";
+			}
+			$.post(
+				'<?php echo $this->BaseUrl();?>/ordercg/agree',
+				{'orderID':orderID,'name':nameArr,'nid':nidArr,'size':sizeArr,'attachType':attachTypeArr},
+
+				function(data){
+					if(data=='1'){
+						document.location.reload();
+					}else{
+						alert(data+'failed,please try again!');
+					}
+				},'json');
+		}
+		if(vendST==3){
+			$('#jingdu').html('<?php echo $this->translate('waiting').$this->translate('ckGOODS');?>');/*等待验货*/
+			$('#zhuangtai').html('<?php echo $this->translate('waiting').$this->translate('ckGOODS');?>');/*等待验货*/
+
+			var nidArr="";
+			var nid =document.getElementsByName("attachNid[]");
+			for (var i = 0, j = nid.length; i < j; i++){
+				nidArr  += nid[i].value+"|";
+			}
+			var nameArr="";
+			var name =document.getElementsByName("attachName[]");
+			for (var i = 0, j = name.length; i < j; i++){
+				nameArr  += name[i].value+"|";
+			}
+			var sizeArr="";
+			var size =document.getElementsByName("attachSize[]");
+			for (var i = 0, j = size.length; i < j; i++){
+				sizeArr  += size[i].value+"|";
+			}
+			var attachTypeArr="";
+			var attachType =document.getElementsByName("attachType[]");
+			for (var i = 0, j = attachType.length; i < j; i++){
+				attachTypeArr  += attachType[i].value+",";
+			}
+			$.post(
+				'<?php echo $this->BaseUrl();?>/ordercg/examine',
+				{'orderID':orderID,'name':nameArr,'nid':nidArr,'size':sizeArr,'attachTT':attachTypeArr},
+
+				function(data){
+					if(data=='1'){
+						document.location.reload();
+					}else{
+						alert(data+'failed,please try again!');
+					}
+				},'json');
+		}
+		if(vendST==7){
+			$('#jingdu').html('<?php echo $this->translate('waiting').$this->translate('reGOODS');?>');/*等待收货*/
+			$('#zhuangtai').html('<?php echo $this->translate('waiting').$this->translate('reGOODS');?>');/*等待收货*/
+
+			var nidArr="";
+			var nid =document.getElementsByName("attachNid[]");
+			for (var i = 0, j = nid.length; i < j; i++){
+				nidArr  += nid[i].value+"|";
+			}
+			var nameArr="";
+			var name =document.getElementsByName("attachName[]");
+			for (var i = 0, j = name.length; i < j; i++){
+				nameArr  += name[i].value+"|";
+			}
+			var sizeArr="";
+			var size =document.getElementsByName("attachSize[]");
+			for (var i = 0, j = size.length; i < j; i++){
+				sizeArr  += size[i].value+"|";
+			}
+			var attachTypeArr="";
+			var attachType =document.getElementsByName("attachType[]");
+			for (var i = 0, j = attachType.length; i < j; i++){
+				attachTypeArr  += attachType[i].value+",";
+			}
+			$.post(
+				'<?php echo $this->BaseUrl();?>/ordercg/receipt',
+				{'orderID':orderID,'name':nameArr,'nid':nidArr,'size':sizeArr,'attachType':attachTypeArr},
+				function(data){
+					if(data=='1'){
+						document.location.reload();
+					}else{
+						alert(data+'failed,please try again!');
+					}
+				},'json');
+		}
+		if(vendST==15){
+			$('#jingdu').html('<?php echo $this->translate('waiting').$this->translate('calculated');?>');/*等待结算*/
+			$('#zhuangtai').html('<?php echo $this->translate('waiting').$this->translate('calculated');?>');/*等待结算*/
+			//待开发。。。。。。
+		}
+		if(vendST==63){
+			$('#jingdu').html('<?php echo $this->translate('finished');?>');/*已完成*/
+			$('#zhuangtai').html('<?php echo $this->translate('finished');?>');
+			//待开发。。。。。。
+		}
+	})
+});
+function QRht(obj){
+
+	var nidArr="";
+	var nid =document.getElementsByName("attachNid[]");
+	for (var i = 0, j = nid.length; i < j; i++){
+		nidArr  += nid[i].value+"|";
+	}
+	var nameArr="";
+	var name =document.getElementsByName("attachName[]");
+	for (var i = 0, j = name.length; i < j; i++){
+		nameArr  += name[i].value+"|";
+	}
+	var sizeArr="";
+	var size =document.getElementsByName("attachSize[]");
+	for (var i = 0, j = size.length; i < j; i++){
+		sizeArr  += size[i].value+"|";
+	}
+	var attachTypeArr="";
+	var attachType =document.getElementsByName("attachType[]");
+	for (var i = 0, j = attachType.length; i < j; i++){
+		attachTypeArr  += attachType[i].value+",";
+	}
+	var orderID=obj;
+	$.post(
+		'<?php echo $this->BaseUrl();?>/ordercg/agree',
+		{'orderID':orderID,'name':nameArr,'nid':nidArr,'size':sizeArr,'attachType':attachTypeArr},
+
+		function(data,status){
+			alert('数据：'+data+'状态：'+status)
+
+		},'json');
+	//  $('#delete_form').ajaxSubmit(options);
+}
+
+
+function signView($id) {
+	var rs_url=window.location.href;
+	if($id==null&&$id==""){
+		return false;
+	}
+
+	$.post('/user/orderxs/sign',{'id':$id,'url': rs_url},function (data) {
+		if(data==null||data==""){
+			layer.msg('Error,Please try again later!', {
+				icon: 2,
+				time: 2000 //2秒关闭（如果不配置，默认是3秒）
+			});
+		}
+		/*注意返回为html 格式注意异步回调格式问题*/
+		//在这里面打印出合同签署页面
+		var html='<div style="padding:50px;">'+data+'</div>';
+
+		layer.open({
+			type: 1 //Page层类型
+			,area: ['350px', '300px']
+			,title: 'sign Contract loading...ssssss'
+			,shade: 0.6 //遮罩透明度
+			,anim: 1 //0-6的动画形式，-1不开启
+			,content: html
+		});
+	},'html')
+}
+</script>

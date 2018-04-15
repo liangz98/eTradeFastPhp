@@ -1,0 +1,21 @@
+<div class="user_l">
+            	<dl>
+                	<dt><img src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/images/user/user_icon1.gif" />交易管理</dt>
+                    <dd>
+                    	<ul>
+                        	<li><a href="/user/cart">我的购物车</a></li>
+                            <li <?php echo $this->cur_pos=='order'?'class="crumb"':'';?>><a href="/user/order" >我的订单</a></li>
+                        </ul>
+                    </dd>
+                </dl>
+                <dl>
+                	<dt><img src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/images/user/user_icon2.gif" />帐号管理</dt>
+                    <dd>
+                    	<ul>
+                        	<li <?php echo $this->cur_pos=='info'?'class="crumb"':'';?>><a href="/user/info">帐号信息</a></li>
+                            <li <?php echo $this->cur_pos=='address'?'class="crumb"':'';?>><a href="/user/address">收货地址管理</a></li>
+                           <li <?php if ($this->seed_User['is_open']>0):?>><a href="<?php echo WWW;?>/inbuy">员工内购通道<img alt="热销图片" width="20" height="12" src="<?php echo WWW;?>static/sendyou/images/ui/hot3.gif"></a> <?php else :?>></li><?php endif;?>
+                        </ul>
+                    </dd>
+                </dl>
+</div>

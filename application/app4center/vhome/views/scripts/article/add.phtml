@@ -1,0 +1,157 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/article/add',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+
+function selectMaterial(){
+	tb_show('', '<?php echo $this->BaseUrl();?>/material/select/?TB_iframe=true&width=800&height=450');
+}
+
+function setMaterial(id){
+	loadMaterial(id);
+}
+
+function loadMaterial(id){
+	$.getJSON( "<?php echo $this->BaseUrl();?>/material/getjson?material_id="+id, function( data ) {
+		if(data.material_id>0){
+			$("#news_material_id").val(data.material_id);
+			$("#material_select").html(data.material_title);
+			$("#news_title").val(data.material_title);
+			$("#news_m_image").val(data.material_m_image);
+			$("#news_m_desc").val(data.material_m_desc);
+		}
+	});
+}
+
+</script>
+<script type="text/javascript" src="<?php echo $this->seed_Setting['static_app_server'] ?>/commerce/editor/xheditor.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->seed_Setting['static_app_server'] ?>/commerce/editor/xheditor_lang/zh-cn.js"></script>
+<h1>添加文章</h1>
+<div class="textnav" id="idtab">
+  <p>
+    <input class="btn btn-primary" name="" type="button" value="返回" onclick="history.back()"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_form">
+    <tr>
+      <td><strong>文章分类：</strong>
+        <p>
+          <select name="cate_id" id="cate_id" class="admin_txt1">
+            <option value="0"></option>
+            <?php if(is_array($this->cateoptions)):?>
+            <?php foreach($this->cateoptions as $key => $cate):?>
+            <option value="<?php echo $cate['cate_id'];?>"><?php echo $cate['cate_name'];?></option>
+            <?php endforeach;?>
+            <?php endif;?>
+          </select>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>内容来源：</strong>
+        <p>
+          <input type="radio" name="news_source" id="news_source0" value="0" style="width:15px;" checked onclick="$('#tr_source1').show();$('#tr_source0').hide();">
+          <label for="news_source0">单独添加</label>
+          &nbsp;
+          <input type="radio" name="news_source" id="news_source1" value="1" style="width:15px;" onclick="$('#tr_source0').show();$('#tr_source1').hide();">
+          <label for="news_source1">素材库</label>
+        </p></td>
+    </tr>
+    <tr id="tr_source0" style="display:none;">
+    	<td><strong>选择素材：</strong>
+    	<p>
+    		<input type="button" name="select" value="点击选择"  class="btn btn-primary"  onclick="selectMaterial()"><input type="hidden" name="news_material_id" id="news_material_id" value="0">
+    		当前选择:<span id="material_select"></span>
+    	</p>
+    	</td>
+    </tr>
+    <tr>
+      <td><strong>文章标题：</strong>
+        <p>
+          <input name="news_title" id="news_title" value="" type="text" class="admin_txt1"/>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>文章封面：</strong>
+        <p>
+          <input name="news_m_image" readonly id="news_m_image" value="" type="text" class="admin_txt1"/>
+          <input type="button" name="select" value="选择" class="btn btn-primary" onclick="selectCoverImage('newsthumb_m','news_m_image')">
+          <input type="button" name="preview_news_m_image" id="preview_news_m_image" value="预览" class="btn btn-primary" onclick="previewCoverImage('news_m_image')" style="display:none;">
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>文章概要：</strong>
+        <p>
+          <textarea class="textarea" name="news_m_desc" id="news_m_desc"></textarea>
+        </p></td>
+    </tr>
+    <tbody id="tr_source1">
+    <tr>
+      <td><strong>表现类型：</strong>
+        <p>
+          <input type="radio" name="news_type" id="news_type0" value="0" style="width:15px;" checked onclick="$('#li_type0').show();$('#li_type1').hide();">
+          <label for="news_type0">文字类</label>
+          &nbsp;
+          <input type="radio" name="news_type" id="news_type1" value="1" style="width:15px;" onclick="$('#li_type1').show();$('#li_type0').hide();">
+          <label for="news_type1">图册类</label>
+        </p></td>
+    </tr>
+    <tr id="li_type0">
+      <td><strong>文章内容：</strong>
+            <div class="txt_lft">
+                <textarea  id="container" name="news_m_content" rows="20" cols="80" style="width: 100%; height:400px"></textarea>
+                <!-- 配置文件 -->
+                <script type="text/javascript" src="/ueditor/ueditor.config.js"></script>
+                <!-- 编辑器源码文件 -->
+                <script type="text/javascript" src="/ueditor/ueditor.all.js"></script>
+                <!-- 实例化编辑器 -->
+                <script type="text/javascript">
+                    var ue = UE.getEditor('container');
+                </script>
+            </div>
+            <input id="imgZoneUrl1" type="hidden" value="/b/upload/imagexhr/initimagepage?type=2&img_cate=news_m">
+      </td>
+    </tr>
+    <tr>
+        <td id="imgZoneContent1" style="margin-top:10px;"></td>
+    </tr>
+    <tr id="li_type1" style="display:none;">
+      <td><strong>文章图册：</strong>
+        <p>
+          <input type="button" name="select" value="批量上传"  class="btn btn-primary"  onclick="selectAlbumImage('newsalbum_m','album_show')">
+	        <div class="image_show">
+	          <ul id="album_show"></ul>
+	        </div>
+        </p>
+      </td>
+    </tr>
+    </tbody>
+    <tr>
+      <td><strong>是否开放：</strong>
+        <p>
+          <input type="radio" name="is_m_actived" id="is_m_actived0" value="0" style="width:15px;">
+          否&nbsp;
+          <input type="radio" name="is_m_actived" id="is_m_actived1" value="1" style="width:15px;" checked>
+          是 </p></td>
+    </tr>
+  </table>
+  <div class="batch">
+    <input class="btn btn-primary"  name="" type="submit" value="提交"/>
+  </div>
+</form>
+<?php echo $this->render("footer.phtml") ?>

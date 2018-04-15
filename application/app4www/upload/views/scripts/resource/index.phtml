@@ -1,0 +1,120 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript" src="/js/center/jquery.filloptions.js"></script>
+<script type="text/javascript" src="/js/center/jquery.cascadingselect.js"></script>
+<script type="text/javascript" src="/js/center/jquery.checkbox.js"></script>
+<script type="text/javascript">
+if(parent.$_('admincpnav')) 
+	parent.$_('admincpnav').innerHTML='上传系统&nbsp;&raquo;&nbsp;前台资源';
+</script>
+<script type="text/javascript">
+$().ready(function() {
+	$('input[@type=checkbox][@name=checkAll]').each(function(){
+		$(this).checkbox().toggle($(this).val());
+	});
+});
+function doadd(){
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {
+         res_name: "required",
+         priv_name: "required"
+	   },
+	   messages: {
+         res_name: "资源名称不能为空！",
+         priv_name: "权限名称不能为空！"
+	   },
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/resource/update',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+}
+
+function dodelete(){
+	if(!confirm("的确要删除所选择记录？"))return false;
+	$("#post_form4del").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/resource/delete',
+			    success: function() {
+			    }
+			};
+			$('#post_form4del').ajaxSubmit(options);
+		}
+	});
+}
+</script>
+
+<h1>前台资源 - <?php echo $this->module['mod_desc'];?></h1>
+<div class="textnav">
+  <p>
+    		<input class="admin_bnt2" name="" type="button" value="添加" onclick="document.location='<?php echo $this->BaseUrl();?>/resource/add'"/>
+    	</p>
+</div>
+    
+    <div class="main">
+    	<div class="control">
+    	<form name="post_form" method="post" action="" id="post_form" >
+		<fieldset>
+			<legend>补充资源</legend>
+			&nbsp;
+			资源：<select name="res_name" id="res_name">
+					<option value="-1"></option>
+					<?php if(is_array($this->resources)):?>
+					<?php foreach($this->resources as $resource):?>
+					<option value="<?php echo ($resource['res_name']);?>"><?php echo ($resource['res_name']);?>（<?php echo ($resource['res_desc']);?>）</option>
+					<?php endforeach; ?>
+					<?php endif;?>
+				</select>
+			权限：<select name="priv_name" id="priv_name">
+					<option value="-1"></option>
+					<?php if(is_array($this->privileges)):?>
+					<?php foreach($this->privileges as $privilege):?>
+					<option value="<?php echo ($privilege['priv_name']);?>"><?php echo ($privilege['priv_name']);?>（<?php echo ($privilege['priv_desc']);?>）</option>
+					<?php endforeach; ?>
+					<?php endif;?>
+				</select>
+			记录日志<input type="checkbox" name="is_log" id="is_log" value="1" />
+			<input type="submit" value="补充"  onclick="doadd();"/>
+		</fieldset>
+		</form>
+    	</div>
+    	
+    	<form name="post_form4del" method="post" action="" id="post_form4del" >
+		<?php if(is_array($this->rules)):?>
+		<?php foreach($this->rules as $rule):?>
+    	<div class="control">
+		<fieldset>
+			<legend><input type="checkbox" name="checkAll" id="res_name<?php echo ($rule['res_name']);?>" value="input.res_<?php echo ($rule['res_name']);?>"><?php echo ($rule['res_name']);?>（<?php echo ($rule['res_desc']);?>）</legend>
+			&nbsp;
+			<?php if(is_array($rule['privileges'])):?>
+			<?php foreach($rule['privileges'] as $privilege):?>
+			<input type="checkbox" name="rule_ids[]" id="rule_id<?php echo ($privilege['rule_id']);?>" value="<?php echo ($privilege['rule_id']);?>" class="res_<?php echo ($rule['res_name']);?>"><label for="rule_id<?php echo ($privilege['rule_id']);?>"><?php echo ($privilege['priv_name']);?>（<?php echo ($privilege['priv_desc']);?>）</label>&nbsp;&nbsp;
+			<?php endforeach; ?>
+			<?php endif;?>
+		</fieldset>
+		</div>
+		<?php endforeach; ?>
+		<?php endif;?>
+    	<div class="batch">
+    		<input name="" type="submit" value="删除所选择" onclick="return dodelete();"/>
+    	</div>
+    	</form>
+    </div>
+    <div class="bg1">&nbsp;</div>
+  </div>
+</div>
+
+<?php echo $this->render("footer.phtml") ?>
+

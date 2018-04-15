@@ -1,0 +1,69 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript" src="<?php echo $this->imageUrl?>/static/js/center/jquery.checkbox.js"></script>
+<script type="text/javascript">
+$().ready(function() {
+	$('input[@type=checkbox][@name=checkAll]').each(function(){
+		$(this).checkbox().toggle($(this).val());
+	});
+    <?php if(isset($this->conditions['is_actived'])):?>
+    $("#is_actived").val('<?php echo $this->conditions['is_actived'];?>');
+    <?php endif;?>
+});
+
+//删除
+function deleteAll(){
+	var ids="";
+    $("[name='chose[]'][checked]").each(function(){
+    	ids+=$(this).val()+",";
+    });
+    ids=ids.substring(0,(ids.length-1));
+    document.location = "<?php echo $this->BaseUrl();?>/wechattemplate/delete/temp_ids/"+ids;
+}
+
+function dosend(id){
+	SeedMsgBox('正在发送测试，请稍候...');
+	$.get("<?php echo $this->BaseUrl();?>/wechattemplate/send" , {temp_id : id} ,
+	function(data){
+		$("#SeedMsgTxt").html(data);
+	});
+}
+</script>
+
+<h1> 微信模板 </h1>
+<div class="textnav" id="idTabs">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="添加" onclick="location.href='<?php echo $this->BaseUrl();?>/wechattemplate/add/'"/>
+  </p>
+</div>
+<table class="admin_list">
+  <tr>
+    <th><input type="checkbox" name="checkAll" id="checkAll"  value="input.ids_all" title="全选/反选">
+      <label for="checkAll">全选</label></th>
+    <th>模板名称</th>
+    <th>模板说明</th>
+    <th>模板内容</th>
+    <th>是否激活</th>
+    <th>操作</th>
+  </tr>
+  <?php if(is_array($this->temps)):?>
+  <?php foreach($this->temps as $temp):?>
+  <tr>
+    <td><input type="checkbox" id="chose[]" name="chose[]" value="<?php echo ($temp['temp_id'])?>" class="ids_all"></td>
+    <td><?php echo ($temp['temp_name']);?></td>
+    <td><?php echo ($temp['temp_desc']);?></td>
+    <td><?php echo ($temp['temp_content']);?></td>
+    <td><?php echo ($temp['is_actived']=='1')?'<img src="/images/center/yes.gif">':'<img src=/images/center/no.gif>';?></td>
+    <td>
+    <a href="<?php echo $this->BaseUrl();?>/wechattemplate/update/temp_id/<?php echo $temp['temp_id']?>"><img src="/images/center/edit.gif" title="编辑模版" alt="编辑模版"></a>
+    <a href="<?php echo $this->BaseUrl();?>/wechattemplate/delete/temp_ids/<?php echo $temp['temp_id']?>"><img src="/images/center/del.gif" title="删除模版" alt="删除模版"></a>
+    <?php if(!empty($temp['send_to'])):?>
+    <a href="javascript:void(0)" onclick="dosend(<?php echo ($temp['temp_id']);?>);"><img src="/images/center/set.gif" title="发送测试" alt="发送测试"></a>
+    <?php endif;?></td>
+  </tr>
+  <?php endforeach; ?>
+  <?php endif;?>
+</table>
+<div class="batch">
+  <input type="button" class="admin_bnt2" name="deleteButton" id="deleteButton" value="删除选择" onclick="deleteAll()">
+</div>
+<?php echo $this->render("footer.phtml") ?> 

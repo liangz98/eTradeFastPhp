@@ -1,0 +1,24 @@
+.padding-left-15 {
+    padding-left: 15px;
+}
+
+.padding-left-24 {
+    padding-left: 24px;
+}
+
+.billInfoTop {
+    height: 160px;
+    text-align: left;
+}
+
+.width-120 {
+    width: 120px !important;
+}
+
+.width-80-per {
+    width: 80% !important;
+}
+
+.margin-left-150 {
+    margin-left: 150px !important;
+}

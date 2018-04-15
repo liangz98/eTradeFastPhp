@@ -1,0 +1,92 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+function deleteAll(){
+	var ids="";
+    $("[name='chose[]'][checked]").each(function(){
+    	ids+=$(this).val()+",";
+    });
+    ids=ids.substring(0,(ids.length-1));
+    document.location = "<?php echo $this->baseUrl();?>/crond/delete/crond_ids/"+ids;
+}
+function doOrder(){
+    $("#post_form").validate({
+       event: "keyup",
+       rules: {},
+       messages: {},
+       submitHandler: function() {
+            SeedMsgBox('正在保存中，请稍候...');
+            var options = {
+                target:     '#SeedMsgTxt',
+                url:        '<?php echo $this->BaseUrl();?>/crond/order',
+                success: function() {
+                }
+            };
+            $('#post_form').ajaxSubmit(options);
+        }
+    });
+}
+</script>
+
+<h1>计划任务管理</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="添加任务" onclick="document.location='<?php echo $this->baseUrl();?>/crond/add'"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+<table class="admin_list">
+  <tr>
+    <th><input type="checkbox" name="checkAll" id="checkAll"  value="input.ids_all" title="全选/反选">
+    <label for="checkAll">全选</label></th>
+    <th>执行文件URL</th>
+    <th>任务标识</th>
+    <th>任务标题</th>
+<!--    <th>执行次数限制</th>-->
+    <th>已执行</th>
+    <th>成功</th>
+    <th>失败</th>
+    <th>最后执行</th>
+    <th>状态</th>
+    <th>优先</th>
+    <th>启用</th>
+    <th>操作</th>
+  </tr>
+  <?php if (is_array($this->cronds)) :?>
+  <?php foreach ($this->cronds as $crond) :?>
+  <tr>
+    <td><input type="checkbox" id="chose[]" name="chose[]" value="<?php echo ($crond['crond_id'])?>" class="ids_all"></td>
+    <td><?php echo ($crond['crond_url']);?></td>
+  <td><?php echo ($crond['crond_name']);?></td>
+    <td><?php echo ($crond['crond_title']);?></td>
+<!--    <td>--><?php //echo ($crond['limit_num']);?><!--</td>-->
+    <td><?php echo ($crond['crond_num']);?></td>
+    <td><?php echo ($crond['succeed_num']);?></td>
+    <td><?php echo ($crond['error_num']);?></td>
+ <td><?php echo date('Y/m/d H:i:s ',$crond['last_time']);?></td>
+    <td><?php echo ($crond['crond_status']=='1')?'<img src="/images/center/yes.gif">':'<img src=/images/center/no.gif>';?></td>
+    <td>
+        <input type="hidden" name="crond_ids[]" value="<?php echo ($crond['crond_id'])?>">
+        <input type="text" value="<?php echo ($crond['order_by']);?>" name="order_bys[]" style="width:30px;">
+    </td>
+    <td><?php echo ($crond['is_actived']=='1')?'<img src="/images/center/yes.gif">':'<img src=/images/center/no.gif>';?></td></td>
+    <td>
+    <a href="<?php echo $this->baseUrl();?>/crond/update/crond_id/<?php echo ($crond['crond_id']);?>"><img src="/images/center/edit.gif" title="编辑" alt="编辑"></a>
+    <a href="<?php echo $this->baseUrl();?>/crondparam/setting/crond_name/<?php echo ($crond['crond_name']);?>"><img src="/images/center/set.gif" title="参数设置" alt="参数设置"></a>
+    <a href="<?php echo $this->baseUrl();?>/crond/delete/crond_ids/<?php echo ($crond['crond_id']);?>"><img src="/images/center/del.gif" title="删除" alt="删除"/></a>
+    </td>
+  </tr>
+  <?php endforeach;?>
+  <?php endif;?>
+</table>
+<div class="batch">
+    <!--<input type="hidden" name="cate_id" value="<?php echo $chart['cate_id'];?>" />-->
+    <input class="admin_bnt2" type="submit" name="orderID" id="orderID" value="重新排序" onclick="doOrder()">
+    &nbsp;  
+  <input class="admin_bnt2" type="button" name="deleteID" id="deleteID" value="删除选择" onclick="deleteAll()">
+  &nbsp; </div>
+</form>
+<!--分页开始-->
+<?php if($this->page['totalpage']>1){?><div class="page"><?php echo $this->ShowPage($this->page);?></div><?php }?>
+<!--分页结束-->
+
+<?php echo $this->render("footer.phtml") ?>

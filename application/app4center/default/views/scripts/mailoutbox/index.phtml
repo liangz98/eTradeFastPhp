@@ -1,0 +1,63 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$('input[@type=checkbox][@name=checkAll]').each(function(){
+		$(this).checkbox().toggle($(this).val());
+	});
+});
+//删除
+function deleteAll(){
+	var ids="";
+    $("[name='chose[]'][checked]").each(function(){
+    	ids+=$(this).val()+",";
+    });
+    ids=ids.substring(0,(ids.length-1));
+    document.location = "<?php echo $this->BaseUrl();?>/mailoutbox/delete?send_ids="+ids;
+}
+
+function doResend(id){
+	if(!confirm("是否设置重发？"))return false;
+	document.location="<?php echo $this->BaseUrl();?>/mailoutbox/resend?send_id="+id;
+}
+</script>
+
+<h1>发送邮件</h1>
+<div class="textnav">
+  <p>
+    		<input class="admin_bnt2" name="" type="button" value="添加" onclick="document.location='<?php echo $this->BaseUrl();?>/mailoutbox/add'"/>
+    	</p>
+</div>
+    
+    <div class="main">
+        <table class="admin_list">
+			<tr>
+    			<th><input type="checkbox" name="checkAll" id="checkAll"  value="input.ids_all" title="全选/反选"><label for="checkAll">全选</label></th>
+    			<th>发送邮箱</th>
+    			<th>邮件标题</th>
+    			<th>状态</th>
+    			<th>添加时间</th>
+    			<th>操作</th>
+    		</tr>
+    		<?php if (is_array($this->mails)) :?>
+        	<?php foreach ($this->mails as $k=>$mail):?>
+        	<tr>
+        		<td><input type="checkbox" id="chose[]" name="chose[]" value="<?php echo ($mail['send_id'])?>" class="ids_all"></td>
+        		<td><?php echo ($mail['send_email']);?></td>
+        		<td><?php echo ($mail['send_title']);?></td>
+        		<td><?php echo ($mail['is_sended']=='1')?'<img src="/images/center/yes.gif">':'<img src=/images/center/no.gif>';?></td>
+        		<td><?php echo date('Y-m-d H:i',$mail['add_time']);?></td>
+        		<td><a href="javascript:void(0)" onclick="doResend(<?php echo ($mail['send_id']);?>)"><img src="/images/center/edit.gif" title="重发" alt="重发"></a></td>
+        	</tr>
+        	<?php endforeach; ?>
+        	<?php endif; ?>
+        </table>
+    </div>
+    
+	<div class="batch">
+		<input type="submit" class="admin_bnt2" name="deleteID" id="deleteID" value="删除选择" onclick="deleteAll()">&nbsp;
+	</div>
+    <div class="bg1">&nbsp;</div>
+    <div class="page"><?php echo $this->showPage($this->page);?></div>
+  </div>
+</div>
+<?php echo $this->render("footer.phtml") ?>

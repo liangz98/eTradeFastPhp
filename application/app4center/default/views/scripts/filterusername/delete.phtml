@@ -1,0 +1,50 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/filterusername/delete',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+</script>
+
+<h1>删除过滤用户名</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back();"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_list">
+    <tr>
+      <th>编号</th>
+      <th>关键词</th>
+      <th>过滤原因</th>
+    </tr>
+    <?php if(is_array($this->filters)):?>
+    <?php foreach($this->filters as $filter):?>
+    <tr>
+      <td><input type="checkbox" id="filter_id<?php echo ($filter['filter_id'])?>" name="filter_id[]" checked value="<?php echo ($filter['filter_id'])?>">
+        <?php echo ($filter['filter_id'])?></td>
+      <td><?php echo ($filter['keyword'])?></td>
+      <td><?php echo ($filter['filter_reason'])?></td>
+    </tr>
+    <?php endforeach; ?>
+    <?php endif;?>
+  </table>
+  <div class="batch">
+    <input  class="admin_bnt2"  type="submit" name="" value="确认删除" onclick="return confirm('确认删除选择记录？')">
+  </div>
+</form>
+<?php echo $this->render("footer.phtml") ?> 

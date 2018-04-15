@@ -1,0 +1,125 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$('input[@type=checkbox][@name=checkAll]').each(function(){
+		$(this).checkbox().toggle($(this).val());
+	});
+});
+function doRecruit(){
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {
+         res_name: "required",
+         priv_name: "required"
+	   },
+	   messages: {
+         res_name: "资源名称不能为空！",
+         priv_name: "权限名称不能为空！"
+	   },
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/resource/recruit',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+}
+
+function dodelete(){
+	if(!confirm("的确要删除所选择记录？"))return false;
+	$("#post_form4del").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/resource/delete',
+			    success: function() {
+			    }
+			};
+			$('#post_form4del').ajaxSubmit(options);
+		}
+	});
+}
+</script>
+
+<h1>资源列表 - <?php echo $this->module['mod_desc'];?></h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="添加" onclick="document.location='<?php echo $this->BaseUrl();?>/resource/add?mod_name=<?php echo $this->mod_name;?>'"/>
+  </p>
+</div>
+<div class="admin_search">
+<fieldset>
+  <legend>请先选择模块</legend>
+  &nbsp;
+  模块：
+  <select name="mod_name" id="mod_name" onchange="document.location='<?php echo $this->BaseUrl();?>/resource/index/mod_name/'+this.value">
+    <?php if(is_array($this->modules)):?>
+    <?php foreach($this->modules as $module):?>
+    <option value="<?php echo ($module['mod_name']);?>" <?php echo ($module['mod_id']==$this->module['mod_id'])?"selected":"";?>><?php echo ($module['mod_name']);?>（<?php echo ($module['mod_desc']);?>）</option>
+    <?php endforeach; ?>
+    <?php endif;?>
+  </select>
+</fieldset>
+</div>
+<div class="admin_search">
+<form name="post_form" method="post" action="" id="post_form" >
+  <fieldset>
+    <legend>补充资源</legend>
+    &nbsp;
+    控制器：
+    <select name="res_name" id="res_name">
+      <option value="-1"></option>
+      <?php if(is_array($this->resources)):?>
+      <?php foreach($this->resources as $resource):?>
+      <option value="<?php echo ($resource['res_name']);?>"><?php echo ($resource['res_name']);?>（<?php echo ($resource['res_desc']);?>）</option>
+      <?php endforeach; ?>
+      <?php endif;?>
+    </select>
+    动作名称：
+    <input type="text" name="priv_name" style="width:100px;">
+    动作描述：
+    <input type="text" name="priv_desc" style="width:100px;">
+    
+    <input type="checkbox" name="priv_desc" id="priv_desc" value="1" /><label for="priv_desc">记录日志</label>
+    <input type="checkbox" name="is_secondary_login" id="is_secondary_login" value="1" /><label for="is_secondary_login">二次登录</label>
+    <input type="hidden" name="mod_name" id="mod_name" value="<?php echo $this->mod_name;?>">
+    <input type="hidden" name="mod_type" id="mod_type" value="<?php echo $this->mod_type;?>">
+    <input type="submit" value="补充" class="admin_bnt2"  onclick="doRecruit();"/>
+  </fieldset>
+</form>
+</div>
+<div class="admin_search">
+<form name="post_form4del" method="post" action="" id="post_form4del" >
+  <?php if(is_array($this->rules)):?>
+  <?php foreach($this->rules as $rule):?>
+  <fieldset>
+    <legend>
+    <input type="checkbox" name="checkAll" id="res_name<?php echo ($rule['res_name']);?>" value="input.res_<?php echo ($rule['res_name']);?>">
+    <?php echo ($rule['res_name']);?>（<?php echo ($rule['res_desc']);?>） [<a href="<?php echo $this->BaseUrl();?>/resource/update?mod_name=<?php echo $this->mod_name;?>&res_name=<?php echo ($rule['res_name']);?>">编辑</a>]</legend>
+    &nbsp;
+    <?php if(is_array($rule['privileges'])):?>
+    <?php foreach($rule['privileges'] as $privilege):?>
+    <input type="checkbox" name="rule_ids[]" id="rule_id<?php echo ($privilege['rule_id']);?>" value="<?php echo ($privilege['rule_id']);?>" class="res_<?php echo ($rule['res_name']);?>">
+    <label for="rule_id<?php echo ($privilege['rule_id']);?>"><?php echo ($privilege['priv_name']);?>（<?php echo ($privilege['priv_desc']);?>）</label>
+    &nbsp;&nbsp;
+    <?php endforeach; ?>
+    <?php endif;?>
+  </fieldset>
+  <?php endforeach; ?>
+  <?php endif;?>
+  <div class="batch">
+    <input type="hidden" name="mod_name" id="mod_name" value="<?php echo $this->mod_name;?>">
+    <input type="hidden" name="mod_type" id="mod_type" value="<?php echo $this->mod_type;?>">
+    <input name="" class="admin_bnt2" type="submit" value="删除所选择" onclick="return dodelete();"/>
+  </div>
+</form>
+</div>
+<?php echo $this->render("footer.phtml") ?>

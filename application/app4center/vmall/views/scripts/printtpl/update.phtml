@@ -1,0 +1,66 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->baseUrl();?>/printtpl/update',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+</script>
+<h1>修改快递模板</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back()"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_form">
+    <tr>
+      <td><strong>单据名称：</strong>
+        <p>
+          <input name="pt_name" id="pt_name" value="<?php echo ($this->tpl['pt_name']);?>" type="text" class="admin_txt1" />
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>单据尺寸：</strong>
+        <p> 宽
+          <input name="pt_width"  style="width:100px;" id="pt_width" onchange="printer_editor.resize()" value="<?php echo ($this->tpl['pt_width']);?>">
+          &nbsp;×
+          高
+          <input name="pt_height"  style="width:100px;" id="pt_height" onchange="printer_editor.resize()" value="<?php echo ($this->tpl['pt_height']);?>">
+          mm </p></td>
+    </tr>
+    <tr>
+      <td><strong>单据背景图：</strong>
+        <p>
+          <input name="pt_bg" id="pt_bg" readonly value="<?php echo ($this->tpl['pt_bg']);?>" type="text" class="admin_txt1"/>
+          <input type="button" name="select" value="选择" class="admin_bnt2" onclick="selectCoverImage('shipping','pt_bg')">
+          <input type="button" name="preview_pt_bg" id="preview_pt_bg" value="预览" class="admin_bnt2" onclick="previewCoverImage('pt_bg')" <?php echo (($this->tpl['pt_bg'])=="")?"style=\"display:none;\"":"";?>>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>是否激活：</strong>
+        <p>
+          <input type="radio" name="is_actived" id="is_actived0" value="0" <?php echo ($this->tpl['is_actived']=='0')?"checked":""; ?>>
+          否&nbsp;
+          <input type="radio" name="is_actived" id="is_actived1" value="1" <?php echo ($this->tpl['is_actived']=='1')?"checked":""; ?>>
+          是 </p></td>
+    </tr>
+  </table>
+  <div class="batch">
+    <input type="hidden" name="pt_id" id="pt_id" value="<?php echo ($this->tpl['pt_id']);?>">
+    <input name="" class="admin_bnt" type="submit" value="提交"/>
+  </div>
+</form>
+<?php echo $this->render("footer.phtml") ?>

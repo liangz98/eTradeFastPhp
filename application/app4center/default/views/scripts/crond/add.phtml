@@ -1,0 +1,85 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+		event: "keyup",
+		rules: {},
+		messages: {},
+		submitHandler: function() {
+			SeedMsgBox("正在保存中，请稍候...");
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->baseUrl();?>/crond/add',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+
+</script>
+<h1>新建任务计划</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back(-1);"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_form">
+      <tr><td> <strong>执行文件URL：</strong>
+        <p>
+          <input name="crond_url" id="crond_url" value="" type="text" class="admin_txt1" />
+        </p>
+      </td></tr>
+      <tr><td> <strong>任务标识：</strong>
+        <p>
+          <input name="crond_name" id="crond_name" value="" type="text" class="admin_txt1" />
+        </p>
+      </td></tr>
+      <tr><td> <strong>任务标题：</strong>
+        <p>
+          <input name="crond_title" id="crond_title" value="" type="text" class="admin_txt1" />
+        </p>
+      </td></tr>
+      <tr><td> <strong>任务描述：</strong>
+        <p>
+          <input name="crond_desc" id="crond_desc" value="" type="text" class="admin_txt1" />
+        </p>
+      </td></tr>
+      <tr><td> <strong>任务详细描述：</strong>
+        <p>
+          <input name="crond_content" id="crond_content" value="" type="text" class="admin_txt1" />
+        </p>
+      </td></tr>
+     <!--
+      <tr><td> <strong>执行次数限制：</strong>
+        <p>
+          <input name="limit_num" id="limit_num" value="" type="text" class="admin_txt1" />
+        </p>
+      </td></tr>-->
+      <tr><td> <strong>任务状态：</strong>
+        <p>
+          <input type="radio" name="crond_status" id="crond_status0" value="0"/>
+          否&nbsp;
+          <input type="radio" name="crond_status" id="crond_status1" value="1" checked/>
+          是 </p>
+      </td></tr>
+      <tr><td> <strong>优先级别：</strong>
+        <p>
+          <input name="order_by" id="order_by" value="" type="text" class="admin_txt1" />
+        </p>
+      </td></tr>
+      <tr><td> <strong>是否启用：</strong>
+        <p>
+          <input type="radio" name="is_actived" id="is_actived0" value="0"/>
+          否&nbsp;
+          <input type="radio" name="is_actived" id="is_actived1" value="1" checked/>
+          是 </p>
+      </td></tr>
+  </table>
+      <div class="batch">
+      <input name="" class="admin_bnt" type="submit" value="提交"  />
+    </div>
+</form>
+<?php echo $this->render("footer.phtml") ?>

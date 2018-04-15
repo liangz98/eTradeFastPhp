@@ -1,0 +1,62 @@
+<?php echo $this->render("header.phtml") ?>
+
+
+<h1>Excel导入用户</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back()"/>
+  </p>
+</div>
+<form name="post_form" enctype="multipart/form-data" method="post" action="" id="post_form">
+  <table class="admin_form">
+    <tr>
+      <td><strong>注意：</strong>
+        <p> 1.excel模板的标题不能改顺序,不能省略.<br>
+          2.excel模板导入的数据都可选填.<br>         
+          3.excel模板第一行为标题('手机号码','姓名','固定电话','身份证号码','性别','生日','省份','城市','地区','城镇','用户地址','邮政编码','邮箱','卡号(后六位)'),标题不进行导入,数据从第二行才开始导入.<br>
+          <a style="color:#0000FF" href="/upload_files/excel/user_card.xlsx">4.excel模板下载</a>.
+          </p>
+          </td>
+         
+    </tr>
+    <tr>
+      <td><strong>选择EXCEL文件：</strong>
+        <p>
+          <input name="file" id="file" value="" type="file"/>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>门店选择：</strong>
+        <p>
+          <select name="service_site" id="service_site" style="width:100px;">
+          <option value="0">---请选择---</option>
+          <?php foreach ($this->stores as $store):?>
+          <option value="<?php echo $store['store_token']?>"><?php echo $store['store_name']?></option>
+          <?php endforeach;?> 
+          </select>
+        </p>
+      </td>
+    </tr>
+    <?php if(isset($this->myresult) && !empty($this->myresult)):?>
+    <tr>
+      <td><strong>导入结果：</strong>
+        <p><?php echo $this->myresult;?></p>
+        <p style="color:#0000FF;">成功导入<?php echo $this->mycount;?>行</p>
+      </td>
+    </tr>
+    <?php elseif(isset($this->mycount) && !empty($this->mycount)):?>
+    <tr>
+      <td><strong>导入结果：</strong>
+        <p style="color:#0000FF;">成功导入<?php echo $this->mycount;?>行</p>
+      </td>
+    </tr>
+    <?php endif;?>
+    <?php if(empty($this->myresult) && empty($this->mycount)):?>
+    <tr>
+      <td><input name="" class="admin_bnt"  type="submit" value="提交" />
+       </td>
+    </tr>
+    <?php endif;?>
+  </table>
+</form>
+<?php echo $this->render("footer.phtml") ?>

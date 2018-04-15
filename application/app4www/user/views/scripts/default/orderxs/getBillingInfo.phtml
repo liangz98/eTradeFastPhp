@@ -1,0 +1,35 @@
+<div id="deliveryBillInfoDiv" class="layui-form">
+	<div class="et-auth-top et-auth-bg-orange billInfoTop" style="height: 190px; text-align: left;">
+		<h3><label><?php echo $this->delivery->deliveryNo; ?></label>&nbsp;<?php echo $this->translate('deliveryBillTips'); ?></h3>
+		<h6 class="padding-left-15">*&nbsp;<?php echo $this->translate('deliveryBillTips_A'); ?></h6>
+		<h6 class="padding-left-15">*&nbsp;<?php echo $this->translate('deliveryBillTips_B'); ?></h6>
+		<h6 class="padding-left-24"><?php echo $this->translate('deliveryBillTips_C'); ?></h6>
+		<h6 class="padding-left-24"><?php echo $this->translate('deliveryBillTips_D'); ?></h6>
+		<h6 class="padding-left-24"><?php echo $this->translate('deliveryBillTips_E'); ?></h6>
+		<h6 class="padding-left-15">*&nbsp;<?php echo $this->translate('deliveryBillTips_F'); ?></h6>
+	</div>
+	<div class="et-auth-error" style="display: none;"></div>
+
+	<div class="layui-form">
+		<div class="layui-collapse" lay-accordion>
+		<?php
+		$isShow = true;
+		foreach ($this->deliverySupplierList as $deliverySupplier):
+		?>
+			<div class="layui-colla-item" style="text-align: left">
+				<h2 class="layui-colla-title"><?php echo $deliverySupplier->supplierName ?></h2>
+				<div class="layui-colla-content <?php if ($isShow) echo "layui-show" ?>">内容区域</div>
+			</div>
+		<?php
+            $isShow = false;
+		endforeach;
+		?>
+		</div>
+
+		<div style="height: 12px"></div>
+		<div class="et-auth-row">
+			<button class="layui-btn layui-btn-warm" id="signingBtn"><?php echo $this->translate('signingNow'); ?></button>&nbsp;&nbsp;
+			<a id="addBankAccountBtn" style="color: #01AAED; cursor: pointer;"><?php echo $this->translate('add').$this->translate('bankAccount'); ?></a>
+		</div>
+	</div>
+</div>

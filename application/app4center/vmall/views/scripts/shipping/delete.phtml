@@ -1,0 +1,50 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->baseUrl();?>/shipping/delete',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+</script>
+<h1>删除配送方式</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back();"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_list">
+    <tr>
+      <th><input type="checkbox" name="checkAll" id="checkAll"  value="input.ids_all" title="全选/反选" checked>
+        <label for="checkAll">全选</label></th>
+      <th>名称</th>
+      <th>说明</th>
+    </tr>
+    <?php if (is_array($this->shippings)) :?>
+    <?php foreach ($this->shippings as $shipping) :?>
+    <tr>
+      <td><input type="checkbox" id="shipping_id<?php echo ($shipping['shipping_id'])?>" name="shipping_id[]" checked value="<?php echo ($shipping['shipping_id'])?>">
+        <?php echo ($shipping['shipping_id'])?></td>
+      <td><?php echo ($shipping['shipping_name']);?></td>
+      <td><?php echo ($shipping['shipping_desc']);?></td>
+    </tr>
+    <?php endforeach; ?>
+    <?php endif;?>
+  </table>
+  <div class="batch">
+    <input type="submit" name="" class="admin_bnt2" value="确认删除">
+  </div>
+</form>
+<?php echo $this->render("footer.phtml") ?>

@@ -1,0 +1,53 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/moduleapi/delete',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+</script>
+
+<h1>删除模块接口</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back();"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_list">
+    <tr>
+      <th>编号</th>
+      <th>名称</th>
+      <th>说明</th>
+      <th>路径</th>
+    </tr>
+    <?php if(is_array($this->apis)):?>
+    <?php foreach($this->apis as $api):?>
+    <tr>
+      <td><input type="checkbox" id="api_id<?php echo ($api['api_id'])?>" name="api_id[]" checked value="<?php echo ($api['api_id'])?>">
+        <?php echo ($api['api_id'])?></td>
+      <td><?php echo ($api['api_name'])?></td>
+      <td><?php echo ($api['api_desc'])?></td>
+      <td><?php echo ($api['api_url'])?></td>
+    </tr>
+    <?php endforeach; ?>
+    <?php endif;?>
+  </table>
+  <div class="batch">
+    <input type="hidden" name="mod_name" id="mod_name" value="<?php echo ($this->module['mod_name']);?>_<?php echo ($this->module['mod_type']);?>">
+    <input type="submit"  class="admin_bnt2"  name="" value="确认删除" onclick="return confirm('确认删除选择记录？')">
+  </div>
+</form>
+<?php echo $this->render("footer.phtml") ?> 

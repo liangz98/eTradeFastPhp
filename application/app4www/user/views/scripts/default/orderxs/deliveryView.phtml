@@ -1,0 +1,152 @@
+<div id="deliveryViewDiv" class="layui-form">
+	<div class="et-auth-top et-auth-bg-orange" style="height: 60px; text-align: left;">
+		<h3><?php echo $this->translate('deliveryView'); ?>&nbsp;<label><?php echo $this->delivery->deliveryNo; ?></label></h3>
+	</div>
+	<div class="et-auth-error" style="display: none;"></div>
+
+	<div class="">
+		<div style="margin-top: 20px;"></div>
+
+		<div class="layui-form-item">
+			<table class="layui-table" lay-skin="line" id="deliveryEditTable">
+				<colgroup>
+					<col>
+					<col width="140">
+					<col width="120">
+					<col width="80">
+					<col width="160">
+				</colgroup>
+				<thead>
+				<tr>
+					<th>名称</th>
+					<th>型号</th>
+					<th>单价</th>
+					<th>数量</th>
+					<th>总价</th>
+				</tr>
+				</thead>
+				<tbody>
+                <?php foreach ($this->delivery->deliveryItemList as $index => $value):?>
+					<tr>
+						<td style="text-align: left"><?php echo $value->productName;?></td>
+						<td style="text-align: left"><?php echo $value->productModel;?></td>
+						<td style="text-align: left"><?php echo $this->delivery->crnCode;?>&nbsp;
+							<label class="buyerUnitPrice_"></label>
+							<script type="text/javascript">$(".buyerUnitPrice_").html(formatCurrency(<?php echo $value->buyerUnitPrice;?>, 2));</script>
+						</td>
+						<td style="text-align: left"><?php echo $value->deliveryQuantity;?></td>
+						<td style="text-align: left"><?php echo $this->delivery->crnCode?>&nbsp;
+							<label class="buyerTotalAmount_"></label>
+							<script type="text/javascript">$(".buyerTotalAmount_").html(formatCurrency(<?php echo $value->buyerTotalAmount;?>, 2));</script>
+						</td>
+					</tr>
+                <?php endforeach; ?>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="layui-form-item">
+			<!-- 备货相关附件 -->
+			<?php if(is_array($this->prepareAttachmentList) && count($this->prepareAttachmentList)>0):?>
+			<div class="clearfix" style="display:block; margin: 0 auto 20px;">
+				<h5 style="font-weight: bold; color: #56859D; font-size: 14px; padding: 9px 15px; text-align: left;"><?php echo $this->translate('PREPARE_GOODS').$this->translate('download');?></h5>
+				<?php foreach ($this->prepareAttachmentList as $k=>$attach):?>
+					<dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+						<span class="fr"><?php echo $this->translate('creatdate')." ".date('Y-m-d H:i:s',strtotime($attach->createTime));?></span>
+						<em class="new_upicon" style="background:url('/ky/ico/<?php echo strtolower($attach->ext);?>.png') no-repeat;background-size: 20px;"></em>
+						<a class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach->attachID.'&vid='.$attach->verifyID;?>" download>
+							<?php echo $attach->name;?>
+						</a>
+					</dl>
+				<?php endforeach; ?>
+			</div>
+			<?php endif;?>
+			
+			<!-- 验货相关附件 -->
+			<?php if(is_array($this->examineAttachmentList) && count($this->examineAttachmentList)>0):?>
+			<div class="clearfix" style="display:block; margin: 0 auto 20px;">
+				<h5 style="font-weight: bold; color: #56859D; font-size: 14px; padding: 9px 15px; text-align: left;"><?php echo $this->translate('EXAMINE_GOODS').$this->translate('download');?></h5>
+				<?php foreach ($this->examineAttachmentList as $k=>$attach):?>
+					<dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+						<span class="fr"><?php echo $this->translate('creatdate')." ".date('Y-m-d H:i:s',strtotime($attach->createTime));?></span>
+						<em class="new_upicon" style="background:url('/ky/ico/<?php echo strtolower($attach->ext);?>.png') no-repeat;background-size: 20px;"></em>
+						<a class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach->attachID.'&vid='.$attach->verifyID;?>" download>
+							<?php echo $attach->name;?>
+						</a>
+					</dl>
+				<?php endforeach; ?>
+			</div>
+			<?php endif;?>
+
+			<!-- 质量保证函正本 -->
+            <?php if(is_array($this->qualityAttachmentList) && count($this->qualityAttachmentList)>0):?>
+				<div class="clearfix" style="display:block; margin: 0 auto 20px;">
+					<h5 style="font-weight: bold; color: #56859D; font-size: 14px; padding: 9px 15px; text-align: left;"><?php echo $this->translate('QUALITY_AGREE_FORMAL').$this->translate('download');?></h5>
+                    <?php foreach ($this->qualityAttachmentList as $k=>$attach):?>
+						<dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+							<span class="fr"><?php echo $this->translate('creatdate')." ".date('Y-m-d H:i:s',strtotime($attach->createTime));?></span>
+							<em class="new_upicon" style="background:url('/ky/ico/<?php echo strtolower($attach->ext);?>.png') no-repeat;background-size: 20px;"></em>
+							<a class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach->attachID.'&vid='.$attach->verifyID;?>" download>
+                                <?php echo $attach->name;?>
+							</a>
+						</dl>
+                    <?php endforeach; ?>
+				</div>
+            <?php endif;?>
+
+			<!-- 发货相关附件 -->
+            <?php if(is_array($this->deliverAttachmentList) && count($this->deliverAttachmentList)>0):?>
+				<div class="clearfix" style="display:block; margin: 0 auto 20px;">
+					<h5 style="font-weight: bold; color: #56859D; font-size: 14px; padding: 9px 15px; text-align: left;"><?php echo $this->translate('DELIVER_GOODS').$this->translate('download');?></h5>
+                    <?php foreach ($this->deliverAttachmentList as $k=>$attach):?>
+						<dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+							<span class="fr"><?php echo $this->translate('creatdate')." ".date('Y-m-d H:i:s',strtotime($attach->createTime));?></span>
+							<em class="new_upicon" style="background:url('/ky/ico/<?php echo strtolower($attach->ext);?>.png') no-repeat;background-size: 20px;"></em>
+							<a class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach->attachID.'&vid='.$attach->verifyID;?>" download>
+                                <?php echo $attach->name;?>
+							</a>
+						</dl>
+                    <?php endforeach; ?>
+				</div>
+            <?php endif;?>
+
+			<!-- 收货相关附件 -->
+            <?php if(is_array($this->receiptAttachmentList) && count($this->receiptAttachmentList)>0):?>
+				<div class="clearfix" style="display:block; margin: 0 auto 20px;">
+					<h5 style="font-weight: bold; color: #56859D; font-size: 14px; padding: 9px 15px; text-align: left;"><?php echo $this->translate('RECEIPT_GOODS').$this->translate('download');?></h5>
+                    <?php foreach ($this->receiptAttachmentList as $k=>$attach):?>
+						<dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+							<span class="fr"><?php echo $this->translate('creatdate')." ".date('Y-m-d H:i:s',strtotime($attach->createTime));?></span>
+							<em class="new_upicon" style="background:url('/ky/ico/<?php echo strtolower($attach->ext);?>.png') no-repeat;background-size: 20px;"></em>
+							<a class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach->attachID.'&vid='.$attach->verifyID;?>" download>
+                                <?php echo $attach->name;?>
+							</a>
+						</dl>
+                    <?php endforeach; ?>
+				</div>
+            <?php endif;?>
+
+			<!-- 收货确认函正本 -->
+            <?php if(is_array($this->receiptConfirmationAttachmentList) && count($this->receiptConfirmationAttachmentList)>0):?>
+				<div class="clearfix" style="display:block; margin: 0 auto 20px;">
+					<h5 style="font-weight: bold; color: #56859D; font-size: 14px; padding: 9px 15px; text-align: left;"><?php echo $this->translate('RECEIPT_CONFIRMATION_FORMAL').$this->translate('download');?></h5>
+                    <?php foreach ($this->receiptConfirmationAttachmentList as $k=>$attach):?>
+						<dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+							<span class="fr"><?php echo $this->translate('creatdate')." ".date('Y-m-d H:i:s',strtotime($attach->createTime));?></span>
+							<em class="new_upicon" style="background:url('/ky/ico/<?php echo strtolower($attach->ext);?>.png') no-repeat;background-size: 20px;"></em>
+							<a class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach->attachID.'&vid='.$attach->verifyID;?>" download>
+                                <?php echo $attach->name;?>
+							</a>
+						</dl>
+                    <?php endforeach; ?>
+				</div>
+            <?php endif;?>
+		</div>
+
+		<div style="height: 12px"></div>
+		<div class="et-auth-row">
+			<button class="layui-btn layui-btn-warm" id="deliveryEditBtn"><?php echo $this->translate('edit'); ?></button>&nbsp;&nbsp;
+			<a id="deliveryDelBtn" style="color: #c2c2c2; cursor: pointer;"><?php echo $this->translate('deliveryDel'); ?></a>
+		</div>
+	</div>
+</div>

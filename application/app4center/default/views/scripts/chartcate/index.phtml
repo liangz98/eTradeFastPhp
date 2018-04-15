@@ -1,0 +1,82 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$('input[@type=checkbox][@name=checkAll]').each(function(){
+		$(this).checkbox().toggle($(this).val());
+	});
+    <?php if(isset($this->conditions['channel_id'])):?>
+    $("#channel_id").val('<?php echo $this->conditions['channel_id'];?>');
+    <?php endif;?>
+});
+
+//删除
+function deleteAll(){
+	var ids="";
+    $("[name='chose[]'][checked]").each(function(){
+    	ids+=$(this).val()+",";
+    });
+    ids=ids.substring(0,(ids.length-1));
+    document.location = "<?php echo $this->BaseUrl();?>/chartcate/delete/cate_ids/"+ids;
+}
+</script>
+
+<h1>榜单管理</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button"  value="添加" onclick="document.location='<?php echo $this->BaseUrl();?>/chartcate/add'"/>
+  </p>
+</div>
+<div class="admin_search">
+<form name="search" method="get">
+  <fieldset>
+    <legend>信息搜索</legend>
+    &nbsp;
+    <select name="channel_id" id="channel_id">
+      <option value="-1">所属频道</option>
+      <?php if(is_array($this->channeloptions)):?>
+      <?php foreach ($this->channeloptions as $channelmenu):?>
+      <option value="<?php echo $channelmenu['channel_id'];?>" onclick="change_data(<?php echo $channelmenu['channel_id'];?>);"><?php echo ($channelmenu['channel_name']);?></option>
+      <?php endforeach;?>
+      <?php endif;?>
+    </select>
+    <input name="提交" type="submit"  class="admin_bnt2" value=" 搜 索 "/>
+  </fieldset>
+</form>
+</div>
+<table class="admin_list">
+  <tr>
+    <th><input type="checkbox" name="checkAll" id="checkAll"  value="input.ids_all" title="全选/反选">
+      <label for="checkAll">全选</label></th>
+    <th>榜单名称</th>
+    <th>保存名称</th>
+    <th>所属频道</th>
+    <th>榜单限量</th>
+    <th>榜单排序</th>
+    <th>操作</th>
+  </tr>
+  <?php if(is_array($this->categorys)):?>
+  <?php foreach($this->categorys as $cate):?>
+  <tr>
+    <td><input type="checkbox" id="chose[]" name="chose[]" value="<?php echo ($cate['cate_id'])?>" class="ids_all"></td>
+    <td><?php echo ($cate['cate_title']);?></td>
+    <td><?php echo ($cate['cate_name']);?></td>
+    <td><?php echo ($cate['channel_name']);?></td>
+    <td><?php echo ($cate['cate_limit']);?></td>
+    <td><?php echo ($cate['order_by']);?></td>
+    <td>
+    <a href="<?php echo $this->BaseUrl();?>/chartcate/update/cate_id/<?php echo ($cate['cate_id']);?>"> <img src="/images/center/edit.gif" title="编辑资料" alt="编辑资料"></a> 
+    <a href="<?php echo $this->BaseUrl();?>/chart/index/channel_id/<?php echo ($cate['channel_id']);?>/cate_id/<?php echo ($cate['cate_id']);?>">  <img src="/images/center/detail.gif" title="查看资料" alt="查看资料"></a>
+    <a href="<?php echo $this->BaseUrl();?>/chartcate/delete/cate_ids/<?php echo ($cate['cate_id']);?>"><img src="/images/center/del.gif" title="删除" alt="删除"/></a>
+    </td>
+  </tr>
+  <?php endforeach;?>
+  <?php endif;?>
+</table>
+<div class="batch">
+  <input  class="admin_bnt2"   type="submit" name="deleteID" id="deleteID" value="删除选择" onclick="deleteAll()">
+  &nbsp; </div>
+<!--分页开始-->
+<div class="page">
+  <?php echo $this->showPage($this->page);?>
+</div>
+<!--分页结束-->

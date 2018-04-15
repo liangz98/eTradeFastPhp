@@ -1,0 +1,49 @@
+<?php echo $this->render("header.phtml") ?>
+
+<h1>日志详情 </h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back()"/>
+  </p>
+</div>
+<table class="admin_form">
+    <tr>
+      <td><strong>记录编号:</strong>
+        <p><?php echo ($this->log['log_id']);?></p></td>
+    </tr>
+    <tr>
+      <td><strong>日志描述:</strong>
+        <p><?php echo ($this->log['log_desc']);?></p></td>
+    </tr>
+    <tr>
+      <td><strong>访问路径:</strong>
+        <p><?php echo ($this->log['log_url']);?></p></td>
+    </tr>
+    <tr>
+      <td><strong>日志内容:</strong>
+        <p>
+          <?php if (is_array($this->log['log_data']['get'])) :?>
+          GET:<br>
+          <?php print_r($this->log['log_data']['get']);?>
+          <?php endif;?>
+          <br>
+          <?php if (is_array($this->log['log_data']['post'])) :?>
+          POST:<br>
+          <?php print_r($this->log['log_data']['post']);?>
+          <?php endif;?>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>会员名称:</strong>
+        <p><?php echo ($this->log['user_name']);?></p></td>
+    </tr>
+    <tr>
+      <td><strong>记录时间:</strong>
+        <p><?php echo date("Y-m-d H:i:s",$this->log['log_time']);?></p></td>
+    </tr>
+    <tr>
+      <td><strong>记录IP:</strong>
+        <p><?php echo ($this->log['log_ip']);?></p></td>
+    </tr>
+  </table>
+<?php echo $this->render("footer.phtml") ?>

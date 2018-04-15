@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>企业电商运营平台系统管理</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" href="/css/center/admin.css" type="text/css" media="all" />
+<!--[if lte IE 6]>
+<style type="text/css">
+html,body{overflow-x:hidden;}
+#hear{position:absolute;top:0;left:0;}
+</style>
+<![endif]-->
+<!--[if lte IE 6]>
+<script type="text/javascript">
+function topFixed(){
+document.getElementById("hear").style.top=document.documentElement.scrollTop+"px";
+}
+window.onscroll=topFixed,window.resize=topFixed,topFixed();
+</script>
+<![endif]-->
+<script type="text/javascript" src="/js/center/jquery.js"></script>
+<script type="text/javascript" src="/js/center/admin.js"></script>
+<script type="text/javascript">
+var cur_id;
+function changePanel(obj,p)
+{
+	$(".nav ul li").removeClass("crumb");
+	$(obj).addClass("crumb");
+	$(".leftcontent dl").css("display","none");
+	$(".panel_"+p).css("display","");
+	var hasClass=false;
+	$(".panel_"+p).each(function (index){
+		if($(this).hasClass("crumb")){
+			hasClass=true;
+		}
+		});
+	if(!hasClass){
+		$(".panel_"+p+":first").addClass("crumb");
+	}
+}
+
+
+function gotoTabMenu(id,url,name,re_load)
+{
+	$(".leftcontent dl dd ul li").removeClass("crumb");
+	$("#a_"+id).parent().addClass("crumb");
+	// 查找是否已存在卡项
+	var new_tab_menu=true;
+	// 全部移除样式
+	$("#ul_nav li").removeClass("crumb");
+	// 针对设置样式
+	$("#ul_nav li a[class='n']").each(function(index){
+		var href=$(this).attr("href");
+		if(!(href.indexOf(url)==-1)){
+			// 若存在有链接相同的，则设置样式
+			$("#ul_nav li:eq("+index+")").addClass("crumb");
+			// 卡项已存在，设置以下值为false
+			new_tab_menu=false;
+			return false;
+		}
+	});
+	if(new_tab_menu){
+		// 新增卡项
+		var count=$("#ul_nav li").size();
+		if(count>7){
+			// 删除第2个元素，保留第一个后台首页
+			$("#ul_nav li").eq(1).remove();
+			$("#if_class:first").next().remove();
+		}
+		var htmlstr=$("#ul_nav").html();
+		htmlstr+="<li id='tab_"+id+"'  class=\"crumb\"><span><a hideFocus class='n' target='main' href=\""+url+"\" onClick=\"return gotoTabMenu('"+id+"','"+url+"','"+name+"');\">"+name+"</a></span><small><a onClick='closeTab("+id+")'></a></small></li>";
+		$("#ul_nav").html(htmlstr);
+		// 新增卡项
+		return goToUrl(url,id,true);
+	}else{
+		// 切换
+		if(re_load){
+			// 重新载入
+			return goToUrl(url,id,true);
+		}else{
+			return goToUrl(url,id,false);
+		}
+	}
+}
+
+function goToUrl(url,id,new_open)
+{	
+	var html_str;
+	if(!new_open){
+		// 切换到卡项
+		$("#iframe_div iframe").hide();
+		$("#if_"+id).show();
+		cur_id=id;
+	}else{
+		$("#if_"+id).remove();
+		// 直接请求服务器
+		html_str="<iframe class=\"if_class\" id=\"if_"+id+"\" style=\"display:none\" src=\""+url+"\"  width=\"100%\" height=\"100%\" frameborder=\"0\" style=\"overflow: visible;\" scroll=\"no\"><\/iframe>";
+		$("#iframe_div").append(html_str);
+		$("#iframe_div iframe").hide();
+		$("#if_"+id).show();
+		cur_id=id;
+	}
+	return false;
+}
+
+// 关闭LI标记，即关闭菜单
+function closeTab(id)
+{
+	// 后台首页不能关闭
+	if(id!==0){
+		// 查询上一个的URL
+		var href=$("#ul_nav li[id=tab_"+id+"]").prev().find("a").eq(0).attr("href");
+		var prev_id=$("#ul_nav li[id=tab_"+id+"]").prev().attr("id");
+		prev_id=prev_id.replace("tab_","");
+		// 去到指定的网址
+		gotoTabMenu(prev_id,href,'');
+		$("#if_"+prev_id).show();
+		// 删除指定属性的元素
+		$("#ul_nav li").remove("li[id=tab_"+id+"]");
+	}
+}
+</script>
+</head>
+<body  style="overflow-x:hidden;overflow-y:auto;">
+<table cellpadding="0" cellspacing="0" width="100%" height="100%">
+  <tr>
+    <td colspan="2" height="78"><div id="hear">
+        <div class="logo">
+          <div class="logo_bg"></div>
+          <div class="nav">
+            <div class="admin_info">
+                <?php
+                    $wcUserM = new Wechat_Model_User('wechat');
+                    $isService = $wcUserM->fetchOne(array('user_id' => $this->seed_User['user_id']), 'is_service');
+                ?>
+              <p><strong>用 户：<?php echo $this->seed_User['user_name'];?></strong><?php if(defined('SEED_VERSION')):?><strong>系统版本：<?php echo SEED_VERSION;?></strong><?php endif;?><a href="javascript:void();" onClick="location.reload()">管理首页</a> | <a target="_blank" href="/">浏览网站</a> | <a href="<?php echo $this->BaseUrl();?>/admin/passwd" onClick="return gotoTabMenu(99999,'<?php echo $this->BaseUrl();?>/admin/passwd','修改密码',true);">修改密码</a> | <?php if($isService==1):?><a href="<?php echo $this->BaseUrl();?>/wechat/livehelp" target="_blank">在线客服</a> | <?php endif;?><a href="<?php echo $this->BaseUrl();?>/logout" onClick="return gotoTabMenu(99998,'<?php echo $this->BaseUrl();?>/admin/logout','安全退出',true);" class="red">安全退出</a></p>
+            </div>
+            <ul>
+              <?php if (is_array($this->menus)) :?>
+              <?php foreach($this->menus as $k=>$r):?>
+                      <?php if(!empty($r["menu_name"])):?>
+              <li <?php echo ($k==0?" class=\"crumb\"":"")?> onClick="changePanel(this,<?php echo $k?>);"><a><?php echo $r["menu_name"]?></a></li>
+                      <?php endif;?>
+              <?php endforeach;?>
+              <?php endif;?>
+            </ul>
+          </div>
+          <div class="subnav">
+            <ul id="ul_nav">
+            </ul>
+          </div>
+          <div class="leftcontent">
+            <?php if (is_array($this->submenus)) :?>
+            <?php foreach($this->submenus as $k=>$r1):?>
+            <?php if (isset($r1["second"]) && is_array($r1["second"])) :?>
+            <?php foreach($r1["second"] as $k2=>$r2):?>
+            <dl  class="panel_<?php echo $k?>">
+              <dt><?php echo $r2["menu_name"]?></dt>
+              <dd>
+                <ul>
+                  <?php if(isset($r2["third"]) && is_array($r2["third"])) :?>
+                  <?php foreach($r2["third"] as $r3):?>
+                          <?php if(!empty($r3["menu_id"])):?>
+                  <li><a hideFocus id="a_<?php echo $r3["menu_id"]?>"; href="<?php echo $this->seed_BaseUrl."/".$r3["link_url"]?>" onClick="return gotoTabMenu(<?php echo $r3["menu_id"]?>,'<?php echo $this->seed_BaseUrl."/".$r3["link_url"]?>','<?php echo $r3["menu_name"]?>',true);"><?php echo $r3["menu_name"]?></a></li>
+                  <?php endif;?>
+                      <?php endforeach;?>
+                  <?php endif;?>
+                </ul>
+              </dd>
+            </dl>
+            <?php endforeach;?>
+            <?php endif;?>
+            <?php endforeach;?>
+            <?php endif;?>
+          </div>
+          <div class="fold"><a></a></div>
+        </div>
+      </div></td>
+  </tr>
+  <tr>
+    <td valign="top"><table cellpadding="0" cellspacing="0" width="100%" height="100%">
+        <tr>
+          <td valign="top" width="169" class="menutd"><div style="width:168px;"></div></td>
+          <td valign="top" class="matter"><div id="iframe_div"> </div></td>
+        </tr>
+      </table></td>
+  </tr>
+</table>
+</body>
+</html>
+<script type="text/javascript">	
+gotoTabMenu('0','<?php echo $this->BaseUrl();?>/index/welcome','后台首页');
+$(".leftcontent dl").css("display","none");
+$(".panel_0").css("display","");
+
+function reinitIframe(){
+	var iframe = document.getElementById("if_"+cur_id);
+	height = $("#if_"+cur_id).contents().find("#body1").height()+20;
+	try{
+		iframe.height = height;
+		iframe.width = $(document).width()-200;
+
+	}catch (ex){}
+}
+setInterval("reinitIframe()",100);
+</script>

@@ -1,0 +1,195 @@
+<div class="info_tit">
+    <h4><!--文档上传--><?php echo $this->translate('file').$this->translate('download');?></h4>
+    <em id="san_up"></em>
+</div>
+<div id="at_up" class="clearfix" style="display:block;width: 900px;margin: 0 auto 20px;">
+    <?php if(is_array($this->ODOD) && count($this->ODOD)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->ODOD_name;?></h5>
+        <?php foreach ($this->ODOD as $k=>$attach):?>
+            <dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+                <span  class="fr"><?php echo $this->translate('creatdate').date('Y-m-d H:i:s',strtotime($attach['createTime']));?></span>
+                <em class="new_upicon"></em>
+                <a  class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach['attachID'].'&vid='.$attach['verifyID'];?>" download>
+                    <?php echo $attach['name'];?></a>
+            </dl>
+        <?php endforeach; ?>
+    <?php endif;?>
+    <?php if(is_array($this->ODTA) && count($this->ODTA)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->ODTA_name;?></h5>
+        <?php foreach ($this->ODTA as $k=>$attach):?>
+            <dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+                <span  class="fr"><?php echo $this->translate('creatdate').date('Y-m-d H:i:s',strtotime($attach['createTime']));?></span>
+                <em class="new_upicon"></em>
+                <a  class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach['attachID'].'&vid='.$attach['verifyID'];?>" download>
+                    <?php echo $attach['name'];?></a>
+            </dl>
+        <?php endforeach; ?>
+    <?php endif;?>
+
+    <?php if(is_array($this->CRCT) && count($this->CRCT)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->CRCT_name;?></h5>
+        <?php foreach ($this->CRCT as $k=>$attach):?>
+            <dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+                <span  class="fr"><?php echo $this->translate('creatdate').date('Y-m-d H:i:s',strtotime($attach['createTime']));?></span>
+                <em class="new_upicon"></em>
+                <a  class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach['attachID'].'&vid='.$attach['verifyID'];?>" download>
+                    <?php echo $attach['name'];?></a>
+            </dl>
+        <?php endforeach; ?>
+    <?php endif;?>
+
+    <?php if(is_array($this->ODVQ) && count($this->ODVQ)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->ODVQ_name;?></h5>
+        <?php foreach ($this->ODVQ as $k=>$attach):?>
+            <dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+                <span  class="fr"><?php echo $this->translate('creatdate').date('Y-m-d H:i:s',strtotime($attach['createTime']));?></span>
+                <em class="new_upicon"></em>
+                <a  class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach['attachID'].'&vid='.$attach['verifyID'];?>" download>
+                    <?php echo $attach['name'];?></a>
+            </dl>
+        <?php endforeach; ?>
+    <?php endif;?>
+    <?php if(is_array($this->ODBQ) && count($this->ODBQ)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->ODBQ_name;?></h5>
+        <?php foreach ($this->ODBQ as $k=>$attach):?>
+            <dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+                <span  class="fr"><?php echo $this->translate('creatdate').date('Y-m-d H:i:s',strtotime($attach['createTime']));?></span>
+                <em class="new_upicon"></em>
+                <a  class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach['attachID'].'&vid='.$attach['verifyID'];?>" download>
+                    <?php echo $attach['name'];?></a>
+            </dl>
+        <?php endforeach; ?>
+    <?php endif;?>
+    <?php if(is_array($this->ODQA) && count($this->ODQA)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->ODQA_name;?></h5>
+        <?php foreach ($this->ODQA as $k=>$attach):?>
+            <dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+                <span  class="fr"><?php echo $this->translate('creatdate').date('Y-m-d H:i:s',strtotime($attach['createTime']));?></span>
+                <em class="new_upicon"></em>
+                <a  class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach['attachID'].'&vid='.$attach['verifyID'];?>" download>
+                    <?php echo $attach['name'];?></a>
+            </dl>
+        <?php endforeach; ?>
+    <?php endif;?>
+    <?php if(is_array($this->SOTM) && count($this->SOTM)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->SOTM_name;?></h5>
+        <?php foreach ($this->SOTM as $k=>$attach):?>
+            <dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+                <span  class="fr"><?php echo $this->translate('creatdate').date('Y-m-d H:i:s',strtotime($attach['createTime']));?></span>
+                <em class="new_upicon"></em>
+                <a  class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach['attachID'].'&vid='.$attach['verifyID'];?>" download>
+                    <?php echo $attach['name'];?></a>
+            </dl>
+        <?php endforeach; ?>
+    <?php endif;?>
+
+    <?php if(is_array($this->TOTM) && count($this->TOTM)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->TOTM_name;?></h5>
+        <?php foreach ($this->TOTM as $k=>$attach):?>
+            <dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+                <span  class="fr"><?php echo $this->translate('creatdate').date('Y-m-d H:i:s',strtotime($attach['createTime']));?></span>
+                <em class="new_upicon"></em>
+                <a  class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach['attachID'].'&vid='.$attach['verifyID'];?>" download>
+                    <?php echo $attach['name'];?></a>
+            </dl>
+        <?php endforeach; ?>
+    <?php endif;?>
+    <?php if(is_array($this->EDCT) && count($this->EDCT)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->EDCT_name;?></h5>
+        <?php foreach ($this->EDCT as $k=>$attach):?>
+            <dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+                <span  class="fr"><?php echo $this->translate('creatdate').date('Y-m-d H:i:s',strtotime($attach['createTime']));?></span>
+                <em class="new_upicon"></em>
+                <a  class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach['attachID'].'&vid='.$attach['verifyID'];?>" download>
+                    <?php echo $attach['name'];?></a>
+            </dl>
+        <?php endforeach; ?>
+    <?php endif;?>
+    <?php if(is_array($this->PL4C) && count($this->PL4C)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->PL4C_name;?></h5>
+        <?php foreach ($this->PL4C as $k=>$attach):?>
+            <dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+                <span  class="fr"><?php echo $this->translate('creatdate').date('Y-m-d H:i:s',strtotime($attach['createTime']));?></span>
+                <em class="new_upicon"></em>
+                <a  class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach['attachID'].'&vid='.$attach['verifyID'];?>" download>
+                    <?php echo $attach['name'];?></a>
+            </dl>
+        <?php endforeach; ?>
+    <?php endif;?>
+</div>
+<div class="info_tit">
+    <h4><!--文档上传--><?php echo $this->translate('file').$this->translate('upload');?></h4>
+    <em id="san_down"></em>
+</div>
+<div id="at_down" class="clearfix" style="display: block; width: 900px;margin: 0 auto 20px;">
+    <?php if(is_array($this->ODSE) && count($this->ODSE)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->ODSE_name;?></h5>
+        <ul >
+            <?php echo $this->showDoc($this->ODSE);?>
+        </ul>
+    <?php endif;?>
+    <?php if(is_array($this->CRSE) && count($this->CRSE)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->CRSE_name;?></h5>
+        <ul>
+            <?php echo $this->showDoc($this->CRSE);?>
+        </ul>
+    <?php endif;?>
+    <?php if(is_array($this->ODQS) && count($this->ODQS)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->ODQS_name;?></h5>
+        <ul >
+            <?php echo $this->showDoc($this->ODQS);?>
+        </ul>
+    <?php endif;?>
+
+    <?php if(is_array($this->ODPG) && count($this->ODPG)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->ODPG_name;?></h5>
+        <ul >
+            <?php echo $this->showDoc($this->ODPG);?>
+        </ul>
+    <?php endif;?>
+    <?php if(is_array($this->ODEG) && count($this->ODEG)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->ODEG_name;?></h5>
+        <ul >
+            <?php echo $this->showDoc($this->ODEG);?>
+        </ul>
+    <?php endif;?>
+    <?php if(is_array($this->ODDG) && count($this->ODDG)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->ODDG_name;?></h5>
+        <ul >
+            <?php echo $this->showDoc($this->ODDG);?>
+        </ul>
+    <?php endif;?>
+    <?php if(is_array($this->ODRG) && count($this->ODRG)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->ODRG_name;?></h5>
+        <ul >
+            <?php echo $this->showDoc($this->ODRG);?>
+        </ul>
+    <?php endif;?>
+</div>
+<script>
+    $(function () {
+        $('#san_up').click(function() {
+            if($('#at_up').css("display")=="none"){
+                $('#at_up').css("display","block");
+                $('#san_up').css("background","url(/ky/images/san-1.png) no-repeat 0 0");
+                $('#san_up').css("margin-top","39px");
+
+            }else{
+                $('#at_up').css("display","none");
+                $('#san_up').css("background","url(/ky/images/san-2.png) no-repeat 0 0");
+                $('#san_up').css("margin-top","29px");
+            }
+        });
+        $('#san_down').click(function() {
+            if($('#at_down').css("display")=="none"){
+                $('#at_down').css("display","block");
+                $('#san_down').css("background","url(/ky/images/san-1.png) no-repeat 0 0");
+                $('#san_down').css("margin-top","39px");
+            }else{
+                $('#at_down').css("display","none");
+                $('#san_down').css("background","url(/ky/images/san-2.png) no-repeat 0 0");
+                $('#san_down').css("margin-top","29px");
+            }
+        });
+    })
+</script>

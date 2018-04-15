@@ -1,0 +1,43 @@
+<div id="authViewDiv_" class="layui-form">
+	<div class="et-auth-top et-auth-bg-no" style="height: 100px; text-align: left;">
+		<h3><?php echo $this->translate('companySignh3'); ?></h3>
+		<p><?php echo $this->translate('companySignp01'); ?></p>
+	</div>
+	<div class="et-auth-error" style="display: none;"></div>
+
+	<div class="">
+		<div style="margin-top: 20px;"></div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="width: 120px"><!--企业名称--><?php echo $this->translate('et_auth_name'); ?><em>*</em></label>
+			<div class="layui-input-block" style="margin-left: 150px; width: 360px;">
+				<input type="text" name="auth_name" value="<?php echo $this->account->accountName; ?>" lay-verify="et_auth_name" autocomplete="off" placeholder="请输入<?php echo $this->translate('et_auth_name'); ?>" class="layui-input">
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="width: 120px"><!--统一社会信用代码--><?php echo $this->translate('et_auth_code'); ?><em>*</em></label>
+			<div class="layui-input-block" style="margin-left: 150px; width: 360px;">
+				<input type="text" name="auth_code" value="<?php echo $this->account->businessLicenseNo; ?>" lay-verify="auth_code" autocomplete="off" placeholder="请输入<?php echo $this->translate('et_auth_code'); ?>" class="layui-input">
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="width: 120px"><!--负责人姓名--><?php echo $this->translate('et_auth_mg_name'); ?><em>*</em></label>
+			<div class="layui-input-block" style="margin-left: 150px; width: 360px;">
+				<input type="text" name="auth_mg_name" value="<?php echo $this->account->legalPersonName; ?>" lay-verify="auth_mg_name" autocomplete="off" placeholder="请输入<?php echo $this->translate('et_auth_mg_name'); ?>" class="layui-input">
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="width: 120px"><!--负责人身份证号码--><?php echo $this->translate('et_auth_mg_id'); ?><em>*</em></label>
+			<div class="layui-input-block" style="margin-left: 150px; width: 360px;">
+				<input type="text" name="auth_mg_id" value="<?php echo $this->account->legalPersonIdentityNo; ?>" lay-verify="auth_mg_name" autocomplete="off" placeholder="请输入<?php echo $this->translate('et_auth_mg_id'); ?>" class="layui-input">
+			</div>
+		</div>
+
+		<div class="et-auth-row" style="text-align: center;">
+			<button class="layui-btn layui-btn-warm" id="doAuthBtn"><?php echo $this->translate('next'); ?></button>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,14 @@
+.body{background: #fff;}
+.box_swipe{margin-bottom: 10px;}
+.qitai_pro{overflow: hidden;padding:0 5px; margin-bottom: 10px;}
+.qitai_pro ul li{width: 48%;margin:2px;float: left;border: 1px solid #be0703;}
+.qitai_pro ul li p.goods_font{padding: 0 5px;font-size: 16px;color: #000;line-height: 28px;height: 28px;overflow: hidden;}
+.qitai_pro ul li img{width: 100%;display: inline-block;}
+.qitai_pro ul li a div.buy_box{width: 96%;height: 35px;display: inline-block;text-align: center;color:#be0703;}
+.buy_box .sell_d{width: 30%;float: left;}
+.buy_box .sell_c{width: 30%;float: left;}
+.buy_box .sell_d del{font-size: 12px;display: block;line-height: 12px;}
+.buy_box .sell_d span{font-size: 13px;color:#be0703;}
+.buy_box .sell_c p{font-size: 14px;margin-top: 12px;text-align: left;}
+.buy_box .sell_c p span{font-size: 13px;}
+.buy_box .buy_c{font-size: 13px;line-height: 26px;width: 40%;height: 26px;background: #be0703;color: #edd654;text-decoration: none;display: inline-block;border-radius: 5px;text-align: center;}

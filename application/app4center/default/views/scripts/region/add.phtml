@@ -1,0 +1,54 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/region/add',
+			    success: function() {
+			    }
+			};
+ 			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+</script>
+<h1>添加地区</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="列表" onclick="document.location='<?php echo $this->BaseUrl();?>/region/index/parent/<?php echo $this->parent['reg_id'];?>'"/>
+    <input class="admin_bnt2" name="" type="button" value="添加" onclick="document.location='<?php echo $this->BaseUrl();?>/region/add/parent/<?php echo $this->parent['reg_id'];?>'"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_form">
+    <tr>
+      <td><strong>所属地区：</strong>
+        <p><?php echo $this->parent['reg_name'];?></p></td>
+    </tr>
+    <tr>
+      <td><strong>名称：</strong>
+        <p>
+          <input  name="reg_name" id="reg_name" value="" type="text" class="admin_txt1" />
+        </p>
+        <strong>批量加入：</strong>（一行一个）
+        <p>
+          <textarea name="reg_names" id="reg_names" style="width:200px;height:400px;" ></textarea>
+        </p></td>
+    </tr>
+  </table>
+  <table class="admin_form">
+    <tr>
+      <td>
+      <input type="hidden" name="parent" id="parent" value="<?php echo $this->parent['reg_id'];?>">
+      <input name="" class="admin_bnt" type="submit" value="提交">
+    </td>
+    </tr>
+    </table>
+</form>
+<?php echo $this->render("footer.phtml") ?>

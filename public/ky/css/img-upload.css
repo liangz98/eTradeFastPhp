@@ -1,0 +1,31 @@
+@charset "UTF-8";
+/***图片上传样式开始***/
+.demo{margin:0px auto}
+a{cursor: pointer}
+.btn:hover{background-color: #e95a00;text-decoration: none}
+ul,li{list-style: none;padding:0;margin:0}
+.clearfix:after{visibility:hidden; display:block; font-size:0; content:" "; clear:both; height:0}
+*:first-child+html .clearfix{zoom:1}
+/*******进度条样式*********/
+/*.progress{width:120px;height:120px;float:left;position:relative;padding: 1px; border-radius:3px; margin:40px 0 0 0;}*/
+.bar {background-color: green; display:block; width:0%; height:20px; border-radius:3px; }
+.percent{position:absolute; height:20px; display:inline-block;top:3px; left:2%; color:#fff }
+/********webupload******/
+.img-view{  float: left; }
+.img-view img{ float: left;  margin-left: 10px; }
+.upload-image-list{width: 125px;height: 125px;  float: left;  margin-left: 15px;  }
+.fileinput-button {position: relative;  overflow: hidden;  height: 100%;  text-align: center;  width: 100%;  background: url("../images/plus.png") no-repeat scroll center center;  padding: 0;  float:left;}
+.fileinput-button input { position: absolute;  top: 0;  left: 0;  margin: 0;  opacity: 0;  filter: alpha(opacity=0); }
+.img_common {max-height: 100%;  max-width: 100%;  text-align: center;  margin-left: 10px;}
+.cover_words{ display: inline-block;padding: 74px 0 0;}
+.yyzz_box{width:100%;text-align:left;margin:0 auto;}
+.yyzz_box .zzname{color: #56859D;}
+.yyzz_box .zzname span{color: #898989;font-size: 12px;float:right;line-height: 32px;margin-right: 45px;}
+.yyzz_box p{width:870px; height: 30px; line-height: 30px;font-size: 14px;margin:0 auto 10px auto; /*border-bottom: 1px solid #CCC;*/}
+.yyzz_box .tc{padding: 0;}
+.yyzz_box ul li{margin-left: 20px;width: 125px;height: 125px;float: left;}
+.del_to { width: 125px;height: 80px;display:none;word-break:break-all;color:#fff;text-align: center;background: #000;float: left;margin-left: 10px;margin-top:-80px;opacity: 0.6;}
+.del_to a{ color: #fff;}
+.img-view li:hover span { display:block;}
+
+/********webupload over 图片上传样式end******/

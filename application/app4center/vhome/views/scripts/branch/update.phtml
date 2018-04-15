@@ -1,0 +1,125 @@
+<?php echo $this->render('header.phtml'); ?>
+<script type="text/javascript">
+$().ready(function() {
+    $("#post_form").validate({
+       event: "keyup",
+       rules: {},
+	   messages: {},
+       submitHandler: function() {
+	   		var oEditor = FCKeditorAPI.GetInstance('branch_m_content').GetXHTML(true);
+			$('#branch_m_content').val(oEditor);
+            SeedMsgBox('正在保存中，请稍候...');
+            var options = {
+                target:     '#SeedMsgTxt',
+                url:        '<?php echo $this->BaseUrl();?>/branch/update',
+                success: function() {
+                }
+            };
+            $('#post_form').ajaxSubmit(options);
+        }
+    });
+});
+</script>
+
+<h1>修改网点</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back()"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_form">
+    <tr>
+      <td><strong>网点分区：</strong>
+			<p>
+			<select name="branch_region" id="branch_region">
+				  <option value="0"></option>
+				  <?php if(is_array($this->regionoptions)):?>
+				  <?php foreach($this->regionoptions as $key => $region):?>
+				  <option value="<?php echo $region['br_id'];?>" <?php echo ($region['br_id']==$this->branch['branch_region'])?"selected":"";?>><?php echo $region['br_name'];?></option>
+				  <?php endforeach;?>
+				  <?php endif;?>
+				</select>
+			</p></td>
+    </tr>
+    <tr>
+      <td><strong>网点名称：</strong>
+				<p><input class="admin_txt1" name="branch_name" id="branch_name" type="text" value="<?php echo $this->escape($this->branch['branch_name']);?>" /></p></td>
+    </tr>
+    <tr>
+      <td><strong>保存文件名(留空则自动为添加时间)：</strong>
+		        <p>
+		        	<input name="branch_mark" id="branch_mark" value="<?php echo $this->escape($this->branch['branch_mark']);?>" type="text" class="admin_txt1"/>
+		        </p></td>
+    </tr>
+    <tr>
+      <td><strong>网点图标：</strong>
+				<p>
+		        	<input name="branch_m_image" id="branch_m_image" readonly value="<?php echo $this->escape($this->branch['branch_m_image']);?>" type="text" class="admin_txt1"/>
+		        	<input type="button" name="select" value="选择" class="admin_bnt2" onclick="selectCoverImage('branchthumb_vhome','branch_m_image')">		        	
+		        	<input type="button" name="preview_branch_m_image" id="preview_branch_m_image" value="预览" class="admin_bnt2" onclick="previewCoverImage('branch_m_image')" <?php echo ($this->escape($this->branch['branch_m_image'])=="")?"style=\"display:none;\"":"";?>>
+		        </p></td>
+    </tr>
+    <tr>
+      <td><strong>网点电话：</strong>
+				<p><input class="admin_txt1" name="branch_telephone" id="branch_telephone" type="text" value="<?php echo $this->escape($this->branch['branch_telephone']);?>" /></p></td>
+    </tr>
+    <tr>
+      <td><strong>网点地址：</strong>
+				<p><input class="admin_txt1" name="branch_address" id="branch_address" type="text" value="<?php echo $this->escape($this->branch['branch_address']);?>" /></p></td>
+    </tr>
+      <tr>
+          <td><strong>经度:</strong>(点击下面地图获取相应的数值)
+              <p><input type="text" class="admin_txt1" value="<?php echo $this->branch['location_y'];?>" name="location_y" id="location_y" /></p>
+          </td>
+      </tr>
+      <tr>
+          <td><strong>纬度:</strong>(点击下面地图获取相应的数值)
+              <p><input type="text" class="admin_txt1" value="<?php echo $this->branch['location_x'];?>" name="location_x" id="location_x" /></p>
+          </td>
+      </tr>
+    <tr>
+    	<td>
+		<?php echo include("baidupoint.phtml");?>
+    	</td>
+    </tr>
+    <tr>
+      <td><strong>营业时间：</strong>
+				<p><input class="admin_txt1" name="branch_time" id="branch_time" type="text" value="<?php echo $this->escape($this->branch['branch_time']);?>" /></p></td>
+    </tr>
+    <tr>
+      <td><strong>网点描述：</strong>
+		        <p><textarea class="textarea" style="height:100px;" name="branch_m_desc" id="branch_m_desc"><?php echo $this->escape($this->branch['branch_m_desc']);?></textarea></p></td>
+    </tr>
+    <tr>
+      <td><strong>网点介绍：</strong>
+		        <p>
+					<?php 
+						$editor = new FCKeditor('branch_m_content') ;
+						$editor->ToolbarSet = 'Default';
+						$editor->ImageCate = 'branch';
+						$editor->BasePath = '/js/FCKeditor/';
+						$editor->Width = 950;
+						$editor->Height = 700;
+              			$editor->Value = $this->ShowContent($this->branch['branch_m_content']);
+						$editor->Create();
+					?>
+		        </p></td>
+    </tr>
+    <tr>
+      <td><strong>网点排序：</strong>
+				<p><input class="admin_txt1" name="order_by" id="order_by" type="text" value="<?php echo $this->escape($this->branch['order_by']);?>" /></p></td>
+    </tr>
+    <tr>
+      <td><strong>显示状态：</strong>（打勾表示前台显示，否则不显示）
+			<p>
+			<input name="is_m_actived" type="checkbox" id="is_m_actived" value="1" <?php echo $this->escape($this->branch['is_m_actived']) == 1 ? 'checked' : '';?> /><label for="is_m_actived">显示</label>
+			</p></td>
+    </tr>
+  </table>
+  <table class="admin_form">
+    <tr>      <td><input name="branch_id" type="hidden" id="branch_id" value="<?php echo $this->escape($this->branch['branch_id']);?>"/><input class="admin_bnt"  type="submit" value="提交"/></td>
+    </tr>
+  </table>
+</form>
+<?php echo $this->render("footer.phtml") ?>

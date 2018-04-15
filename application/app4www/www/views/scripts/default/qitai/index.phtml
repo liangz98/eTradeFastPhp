@@ -1,0 +1,291 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<base target="_blank"></base>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="shortcut icon" type="image/x-icon" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/images/ui/favicon.ico" />
+<title>您的健康，启泰的幸福！—信天邮</title>
+<link type="text/css" rel="stylesheet" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/css/common.css" />
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/seed.form.js"></script>
+<script type="text/javascript" src="<?php echo $this->seed_Setting['static_app_server']?>/default/vplatform/js/jquery.form.js"></script>
+<script type="text/javascript" src="<?php echo $this->seed_Setting['static_app_server']?>/default/vplatform/js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?php echo $this->seed_Setting['static_app_server']?>/default/vplatform/js/jquery.ba-hashchange.js"></script>
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/www.js"></script>
+<script type="text/javascript" src="<?php echo WWW;?>static/sendyou/js/jquery.lazyload.js"></script>
+<style type="text/css">
+#content{background:#f5f5f5;}
+.qitai_zq{width:100%;display:block;text-align:center;margin-top:10px;}
+.qitai_zq .title{min-width:1200px;}
+.qtcontent{width: 1200px;margin: 0 auto;padding: 10px 0 35px 0;}
+.qtcontent ul{width: 1200px;overflow:hidden;}
+.qitai_zq4 .qtcontent ul li{width:294px;height:368px;float: left;border:1px solid #BE0703;margin:5px 2px 0 2px;overflow: hidden;position: relative;}
+.qitai_zq4 .qtcontent ul li div.qt_price del{top: 348px;left: 10px;color:#FEE900;font: 12px/12px "simsun"; position:absolute;}
+.qitai_zq4 .qtcontent ul li div.qt_price p{top: 328px;left:68px;color:#FEE900;font: 36px/36px "simsun"; position:absolute;}
+.qitai_zq3 .qtcontent ul li{width:390px;height:412px;float: left;border:1px solid #BE0703;margin:5px 2px 0 2px;overflow: hidden;position: relative;}
+.qitai_zq3 .qtcontent ul li div.qt_price del{top: 392px;left: 10px;color:#FEE900;font: 12px/12px "simsun"; position:absolute;}
+.qitai_zq3 .qtcontent ul li div.qt_price p{top: 372px;left:68px;color:#FEE900;font: 36px/36px "simsun"; position:absolute;}
+</style>
+<script type="text/javascript">
+function a(){
+  if(good_search.keyword.value == '请输入关键词'){
+    alert('请输入关键词');
+    return true;
+  } 
+  good_search.submit();
+}
+</script>
+</head>
+<body>
+<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
+<div id="content">
+  <div class="main">
+    <ul class="item_list">
+      <li class="item" style="min-width:1200px;height:500px;background:url(http://www.sendtou.com/upload_files/images/chart/20160225/24690_798398885780.jpg) 50% 50% no-repeat;"></li>        
+    </ul>
+  </div>
+  <div class="qitai_zq4">
+    <div class="title" style="height:147px;background:url(/static/sendyou/images/qitai/title_bg.jpg) 50% 50% no-repeat;">
+      <img src="<?php echo WWW;?>static/sendyou/images/qitai/title1.png" alt="启泰牌专区——送礼自用两相宜" title="启泰牌专区——送礼自用两相宜" width="480px" height="147px"/>
+    </div>
+    <div class="qtcontent">
+      <ul>
+
+        <li><a href="<?php echo WWW;?>products/498.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="295px" height="368px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent11.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes['0']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes['0']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+        <li><a href="<?php echo WWW;?>products/490.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="295px" height="368px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent12.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes['1']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes['1']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+        <li><a href="<?php echo WWW;?>products/491.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="295px" height="368px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent13.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes['2']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes['2']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+        <li><a href="<?php echo WWW;?>products/492.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="295px" height="368px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent14.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes['3']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes['3']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+        <li><a href="<?php echo WWW;?>products/493.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="295px" height="368px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent15.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes['4']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes['4']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+        <li><a href="<?php echo WWW;?>products/494.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="295px" height="368px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent16.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes['5']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes['5']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+        <li><a href="<?php echo WWW;?>products/495.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="295px" height="368px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent17.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes['6']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes['6']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+        <li><a href="<?php echo WWW;?>products/504.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="295px" height="368px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent18.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes['7']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes['7']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qitai_zq3">
+    <div class="title" style="height:147px;background:url(/static/sendyou/images/qitai/title_bg.jpg) 50% 50% no-repeat;">
+      <img src="<?php echo WWW;?>static/sendyou/images/qitai/title2.png" alt="启泰牌专区——送礼自用两相宜" title="启泰牌专区——送礼自用两相宜" width="480px" height="147px"/>
+    </div>
+    <div class="qtcontent">
+      <ul>
+        <li><a href="<?php echo WWW;?>products/1720.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="390px" height="412px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent21.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes1['0']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes1['0']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+        <li><a href="<?php echo WWW;?>products/1721.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="390px" height="412px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent22.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes1['1']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes1['1']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+        <li><a href="<?php echo WWW;?>products/1722.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="390px" height="412px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent23.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes1['2']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes1['2']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+        <li><a href="<?php echo WWW;?>products/1723.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="390px" height="412px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent24.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes1['3']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes1['3']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+        <li><a href="<?php echo WWW;?>products/1724.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="390px" height="412px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent25.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes1['4']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes1['4']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+        <li><a href="<?php echo WWW;?>products/1725.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="390px" height="412px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent26.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes1['5']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes1['5']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qitai_zq3">
+    <div class="title" style="height:147px;background:url(/static/sendyou/images/qitai/title_bg.jpg) 50% 50% no-repeat;">
+      <img src="<?php echo WWW;?>static/sendyou/images/qitai/title3.png" alt="启泰牌专区——送礼自用两相宜" title="启泰牌专区——送礼自用两相宜" width="480px" height="147px"/>
+    </div>
+    <div class="qtcontent">
+      <ul>
+        <li><a href="<?php echo WWW;?>products/487.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="390px" height="412px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent31.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes2['0']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes2['0']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+        <li><a href="<?php echo WWW;?>products/488.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="390px" height="412px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent32.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes2['1']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes2['1']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+        <li><a href="<?php echo WWW;?>products/489.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="390px" height="412px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent33.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes2['2']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes2['2']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qitai_zq4">
+    <div class="title" style="height:147px;background:url(/static/sendyou/images/qitai/title_bg.jpg) 50% 50% no-repeat;">
+      <img src="<?php echo WWW;?>static/sendyou/images/qitai/title4.png" alt="启泰牌专区——送礼自用两相宜" title="启泰牌专区——送礼自用两相宜" width="480px" height="147px"/>
+    </div>
+    <div class="qtcontent">
+      <ul>
+        <li><a href="<?php echo WWW;?>products/499.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="295px" height="368px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent41.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes3['0']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes3['0']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+        <li><a href="<?php echo WWW;?>products/500.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="295px" height="368px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent42.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes3['1']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes3['1']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+        <li><a href="<?php echo WWW;?>products/501.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="295px" height="368px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent43.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes3['2']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes3['2']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+        <li><a href="<?php echo WWW;?>products/502.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="295px" height="368px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent44.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes3['3']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes3['3']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qitai_zq3">
+    <div class="title" style="height:147px;background:url(/static/sendyou/images/qitai/title_bg.jpg) 50% 50% no-repeat;">
+      <img src="<?php echo WWW;?>static/sendyou/images/qitai/title5.png" alt="启泰牌专区——送礼自用两相宜" title="启泰牌专区——送礼自用两相宜" width="480px" height="147px"/>
+    </div>
+    <div class="qtcontent">
+      <ul>
+        <li><a href="<?php echo WWW;?>products/1716.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="390px" height="412px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent51.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes4['0']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes4['0']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+        <li><a href="<?php echo WWW;?>products/1717.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="390px" height="412px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent52.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes4['1']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes4['1']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+        <li><a href="<?php echo WWW;?>products/1718.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="390px" height="412px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent53.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes4['2']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes4['2']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qitai_zq3">
+    <div class="title" style="height:147px;background:url(/static/sendyou/images/qitai/title_bg.jpg) 50% 50% no-repeat;">
+      <img src="<?php echo WWW;?>static/sendyou/images/qitai/title6.png" alt="启泰牌专区——送礼自用两相宜" title="启泰牌专区——送礼自用两相宜" width="480px" height="147px"/>
+    </div>
+    <div class="qtcontent">
+      <ul>
+        <li><a href="<?php echo WWW;?>products/496.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="390px" height="412px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent61.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes5['0']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes5['0']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+        <li><a href="<?php echo WWW;?>products/497.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="390px" height="412px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent62.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes5['1']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes5['1']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+        <li><a href="<?php echo WWW;?>products/503.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="390px" height="412px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent63.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes5['2']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes5['2']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+        <li><a href="<?php echo WWW;?>products/1719.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="390px" height="412px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent64.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes5['3']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes5['3']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+        <li><a href="<?php echo WWW;?>products/505.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="390px" height="412px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent65.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes5['4']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes5['4']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+        <li><a href="<?php echo WWW;?>products/507.html"><img class="lazy" data-original="<?php echo WWW;?>static/sendyou/images/ui/load.png" width="390px" height="412px" src="<?php echo WWW;?>static/sendyou/images/qitai/qtcontent66.png" style="display: block;"></a>
+          <div class="qt_price">
+            <del><span id="show_market_price">¥<?php echo $this->goodes5['5']['stock_market_price'];?></span></del>
+            <p class="price"><span id="show_shop_price">¥<?php echo $this->goodes5['5']['stock_shop_price'];?></span></p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
+<?php echo $this->render(SEED_WWW_TPL.'/right_fix.phtml');?>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript" src="/js/center/jquery.filloptions.js"></script>
+<script type="text/javascript" src="/js/center/jquery.cascadingselect.js"></script>
+<script type="text/javascript" src="/js/center/jquery.checkbox.js"></script>
+<script type="text/javascript">
+if(parent.$_('admincpnav')) 
+	parent.$_('admincpnav').innerHTML='上传系统&nbsp;&raquo;&nbsp;授权管理';
+</script>
+<script type="text/javascript">
+$().ready(function() {
+	$('input[@type=checkbox][@name=checkAll]').each(function(){
+		$(this).checkbox().toggle($(this).val());
+	});
+	$('#role_id').val('<?php echo $this->role_id;?>');
+});
+function doupdate(){
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {
+         role_id: "required"
+	   },
+	   messages: {
+         role_id: "角色名称不能为空！"
+	   },
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/acl/update',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+}
+
+</script>
+
+
+<h1>授权列表 - <?php echo ($this->role['role_name']);?>（<?php echo ($this->role['role_desc']);?>）</h1>
+<div class="textnav">
+  <p>
+    		<input class="admin_bnt2" name="" type="button" value="角色列表" onclick="document.location='<?php echo $this->BaseUrl();?>/role/index'"/>
+    	</p>
+</div>
+    
+    <div class="main">
+		<form name="post_form" method="post" action="" id="post_form" >
+		<?php if(is_array($this->rules)):?>
+		<?php foreach($this->rules as $rule):?>
+    	<div class="control">
+		<fieldset>
+			<legend><input type="checkbox" style="width:13px;" name="checkAll" id="res_name<?php echo ($rule['res_name']);?>" value="input.res_<?php echo ($rule['res_name']);?>"><?php echo ($rule['res_name']);?>（<?php echo ($rule['res_desc']);?>）</legend>
+			&nbsp;
+			<?php if(is_array($rule['privileges'])):?>
+			<?php foreach($rule['privileges'] as $privilege):?>
+			<input type="checkbox" style="width:13px;" name="rule_ids[]" id="rule_id<?php echo ($privilege['rule_id']);?>" value="<?php echo ($privilege['rule_id']);?>" class="res_<?php echo ($rule['res_name']);?>" <?php if($privilege['permit']=='1'):?>checked<?php endif;?>><label for="rule_id<?php echo ($privilege['rule_id']);?>"><?php echo ($privilege['priv_name']);?>（<?php echo ($privilege['priv_desc']);?>）</label>&nbsp;&nbsp;
+			<?php endforeach; ?>
+			<?php endif;?>
+		</fieldset>
+		</div>
+		<?php endforeach; ?>
+		<?php endif;?>
+		
+		<?php if($this->role_id>0):?>
+      	<div class="batch">
+      		<input type="hidden" name="role_id" id="role_id" value="<?php echo $this->role_id;?>">
+      		<input name="" type="submit" value="更新授权" onclick="return doupdate();"/>
+      	</div>
+      	<?php endif;?>
+      	</form>
+    </div>
+    <div class="bg1">&nbsp;</div>
+  </div>
+</div>
+<?php echo $this->render("footer.phtml") ?>
+

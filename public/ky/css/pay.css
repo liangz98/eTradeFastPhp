@@ -1,0 +1,121 @@
+@charset "UTF-8";
+/**
+*
+* @authors Your Name (you@example.org)
+* @date    2016-05-06 10:09:31
+* @version $Id$
+*/
+/*index star*/
+/*IE*/
+
+h2{line-height: 45px;margin: 10px 0; float: left;font-size: 16px;color: #56859D;  font-weight: bold;}
+.pay{ line-height: 45px;margin: 5px 0;font-size: 18px;}
+.pm_view {
+    width: 1200px;
+    padding: 20px 0;
+}
+.settle_info{background: #eee;margin-bottom: 20px;}
+.pm_view span {
+    line-height: 32px;
+    font-size: 14px;
+    margin-left: 50px;
+}
+.pm_lab {
+    width: 120px;
+    text-align: right;
+    display: inline-table;
+    float: left;
+    line-height: 32px;
+    color: #56859D;
+    font-size: 14px;
+    font-weight: bold;
+}
+#yue_tip{color: #df7e20;width: 650px;display: inline-block;padding-left: 160px;}
+.pay_bank{ line-height: 45px;margin: 30px 0;font-size: 18px;}
+.pay_ticket{line-height: 45px;font-size: 16px;}
+.pay label,.pay_bank label,.pay_ticket label{width: 120px;  display: inline-table;  float: left; color: #56859D;  font-weight: bold;}
+.pay em{color: #56859D;font-weight: bold;font-size: 14px;}
+.pay_transfer_sp{color: #a0a0a0;margin-left: 30px;font-size: 14px;}
+.pay_transfer_sp em{margin: 0 5px;}
+#pay_huilv_em{color: #56859D;font-weight: bold;}
+#pay_huilvs,#pay_ind{color:#000;font-weight: normal;width: 200px;text-align: center;display: inline-block;}
+.pay h3,.pay_ticket h3{color: #56859D;font-weight: bold;}
+.pay_bank select{   border-radius: 5px;border: 1px solid #f5f5f5;height: 30px; width: 400px;padding: 0 20px;}
+.pay_yu{color: #56859D;text-align: center;width: 240px}
+.pay_inpt{  border-bottom: 2px solid #f5f5f5;border-top: none;border-left: none;border-right: none;height: 26px;  width: 180px;font-size: 18px;text-align: center;}
+.pay_inpt2{  border-bottom: 2px solid #f5f5f5;border-top: none;border-left: none;border-right: none;height: 26px;  width: 400px;font-size: 18px;text-align: center;}
+.pay_slt{border: 1px solid #df7e20;color: #df7e20;border-radius: 5px;height: 30px;line-height: 30px; width: 80px;display: inline-block;text-align: center;margin-right: 20px;}
+.pay_slt2{border: 1px solid #d8d8d8;color: #d8d8d8;border-radius: 5px;height: 30px;line-height: 30px; width: 80px;display: inline-block;text-align: center;margin-right: 20px;}
+#pay_on{border: 1px solid #df7e20;color: #df7e20;}
+.pay_tip{height:80px;line-height:24px;border: 1px solid #eee; background-color: #f5f5f5;padding:20px;font-size: 14px;}
+.pay_list{border: 1px solid #f5f5f5;font-size: 16px;padding:20px;}
+.pay_list h3{font-size: 14px;}
+.pay_list span { display: block;  float: left;}
+.pay_list label {width: 120px; display: inline-table; float: left;}
+.pay_list p {width: 100%; display: block; line-height: 32px; height: 32px;}
+.pay_btn { width:110px;height:32px;margin-left: 10px;border-radius:5px;display: inline-block;background: #e8811a;  color: #fff;  border: 0;  cursor: pointer;  font: 14px/1.4 "Microsoft Yahei";  }
+.pay_inp {  width: 240px;  height: 32px;  border-radius: 4px;  border: 1px solid #f5f5f5;}
+#pay_bank_no{border: none;display:inline-block;background-color: #666;width: 90px;border-radius: 5px;line-height: 30px;color: #fff;margin-left: 10px;text-align: center;font-size: 12px;}
+
+.pm_box {
+    width: 100%;
+    /*height: 75px;*/
+    margin-top: 20px
+}
+
+.pm_box .pm_p {
+    line-height: 32px;
+    color: #56859D;
+    font-size: 14px;
+}
+
+.pm_box .pm_p input {
+    width: 340px;
+    height: 32px;
+    border: none;
+    border-bottom: 2px solid #f5f5f5;
+    margin-left: 20px;
+    padding-left: 5px;
+    vertical-align: top;
+}
+
+.pm_box .pm_p span {
+    width: 150px;
+    color: #666;
+    display: inline-block;
+    text-align: right;
+    margin-right: 20px;
+}
+
+.pm_box span {
+    margin-left: 170px;
+    color: #EE9001;
+}
+
+.pm_box .txt {
+    /*margin-left: 120px;*/
+}
+
+.pm_box .txt span {
+    color: #EE9001;
+}
+
+.pm_input {
+    width: 340px;
+    height: 32px;
+    border-radius: 4px;
+    border: 1px solid #e8e8e8;
+    padding-left: 5px;
+    vertical-align: top;
+}
+
+.pm_btn {
+    padding: 5px 40px;
+    margin-left: 10px;
+    display: inline-block;
+    background: #e8811a;
+    color: #fff;
+    border: 0;
+    cursor: pointer;
+    font: 14px/1.4 "Microsoft Yahei";
+}

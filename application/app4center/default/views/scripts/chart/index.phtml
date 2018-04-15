@@ -1,0 +1,142 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$('input[@type=checkbox][@name=checkAll]').each(function(){
+		$(this).checkbox().toggle($(this).val());
+	});
+    <?php if(isset($this->conditions['channel_id'])):?>
+    $("#channel_id").val('<?php echo $this->conditions['channel_id'];?>');
+    <?php endif;?>
+    <?php if(isset($this->conditions['cate_id'])):?>
+    $("#cate_id").val('<?php echo $this->conditions['cate_id'];?>');
+    <?php endif;?>
+});
+
+//删除
+function deleteAll(){
+	var ids="";
+    $("[name='chose[]'][checked]").each(function(){
+    	ids+=$(this).val()+",";
+    });
+    ids=ids.substring(0,(ids.length-1));
+    document.location = "<?php echo $this->BaseUrl();?>/chart/delete/chart_ids/"+ids;
+}
+
+function change_data(id)
+{
+    $.ajax({
+        url: '<?php echo $this->BaseUrl();?>/chart/ajaxchange/' + Math.round(Math.random()*10000),
+        data: "channel_id=" +id,
+        error: function(request) {
+            alert('发生未知错误');
+        },
+        success: function(data) {
+            if('null' != data) {
+                data = '<option value="-1">所属榜单</option>' + data;
+                $('#cate_id').html(data);
+            } else {
+                alert('参数传递错误');
+            }
+        }
+    });
+}
+
+function doOrder(){
+    $("#post_form").validate({
+       event: "keyup",
+       rules: {},
+       messages: {},
+       submitHandler: function() {
+            SeedMsgBox('正在保存中，请稍候...');
+            var options = {
+                target:     '#SeedMsgTxt',
+                url:        '<?php echo $this->BaseUrl();?>/chart/order',
+                success: function() {
+                }
+            };
+            $('#post_form').ajaxSubmit(options);
+        }
+    });
+}
+</script>
+
+<h1>信息管理</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button"  value="添加" onclick="document.location='<?php echo $this->BaseUrl();?>/chart/add/channel_id/<?php echo (isset($this->conditions['channel_id']))?$this->conditions['channel_id']:"";?>/cate_id/<?php echo (isset($this->conditions['cate_id']))?$this->conditions['cate_id']:"";?>'"/>
+  </p>
+</div>
+<div class="admin_search">
+  <form name="search" method="get">
+    <fieldset>
+      <legend>信息搜索</legend>
+      &nbsp;
+      <select name="channel_id" id="channel_id">
+        <option value="-1">所属频道</option>
+        <?php if(is_array($this->channeloptions)):?>
+        <?php foreach ($this->channeloptions as $channelmenu):?>
+        <option value="<?php echo $channelmenu['channel_id'];?>" onclick="change_data(<?php echo $channelmenu['channel_id'];?>);"><?php echo ($channelmenu['channel_name']);?></option>
+        <?php endforeach;?>
+        <?php endif;?>
+      </select>
+      &nbsp;
+      <select name="cate_id" id="cate_id">
+        <option value="-1">所属榜单</option>
+        <?php if(is_array($this->cateoptions)):?>
+        <?php foreach ($this->cateoptions as $catemenu):?>
+        <option value="<?php echo $catemenu['cate_id'];?>"><?php echo ($catemenu['cate_title']);?></option>
+        <?php endforeach;?>
+        <?php endif;?>
+      </select>
+      <input type="submit" value="搜索"  class="admin_bnt2"/>
+    </fieldset>
+  </form>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_list">
+    <tr>
+      <th><input type="checkbox" name="checkAll" id="checkAll"  value="input.ids_all" title="全选/反选">
+        <label for="checkAll">全选</label></th>
+      <th>信息标题</th>
+      <th>所属频道</th>
+      <th>所属榜单</th>
+      <th>网页链接</th>
+      <th>图片链接</th>
+      <th>信息排序</th>
+      <th>操作</th>
+    </tr>
+    <?php if(is_array($this->charts)):?>
+    <?php foreach($this->charts as $chart):?>
+    <tr>
+      <td><input type="checkbox" id="chose[]" name="chose[]" value="<?php echo ($chart['chart_id'])?>" class="ids_all"></td>
+      <td><?php echo ($chart['chart_name']);?></td>
+      <td><?php echo ($chart['channel_name']);?></td>
+      <td><?php echo ($chart['cate_title']);?></td>
+      <td><?php if( ! empty($chart['chart_href'])):?>
+        <a target="_blank" href="<?php echo ($chart['chart_href']);?>">链接</a>
+        <?php else:?>
+        <label>无链接</label>
+        <?php endif;?></td>
+      <td><?php if( ! empty($chart['chart_image'])):?>
+        <a target="_blank" href="<?php echo $this->seed_Setting['upload_view_server']?><?php echo ($chart['chart_image']);?>"> <img alt="<?php echo ($chart['chart_name']);?>" src="/images/center/view.gif" /> </a>
+        <?php else:?>
+        <label>无图片链接</label>
+        <?php endif;?></td>
+      <td><input type="hidden" name="chart_ids[]" value="<?php echo ($chart['chart_id'])?>">
+        <input type="text" value="<?php echo ($chart['chart_order']);?>" name="order_bys[]" style="width:30px;"></td>
+      <td><a href="<?php echo $this->BaseUrl();?>/chart/update/chart_id/<?php echo ($chart['chart_id']);?>"><img src="/images/center/edit.gif" title="编辑资料" alt="编辑资料"></a> <a href="<?php echo $this->BaseUrl();?>/chart/delete/chart_ids/<?php echo ($chart['chart_id']);?>"><img src="/images/center/del.gif" title="删除" alt="删除"/></a></td>
+    </tr>
+    <?php endforeach; ?>
+    <?php endif;?>
+  </table>
+  <div class="batch">
+  <input type="hidden" name="cate_id" value="<?php echo $chart['cate_id'];?>" />
+    <input class="admin_bnt2" type="submit" name="orderID" id="orderID" value="重新排序" onclick="doOrder()">
+    &nbsp;
+    <input type="button" name="deleteID" id="deleteID" class="admin_bnt2" value="删除选择" onclick="deleteAll()">
+    &nbsp; </div>
+</form>
+<!--分页开始-->
+<div class="page"> <?php echo $this->showPage($this->page);?> </div>
+<!--分页结束--> 
+<?php echo $this->render("footer.phtml") ?> 

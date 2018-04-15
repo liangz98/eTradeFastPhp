@@ -1,0 +1,21 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<polymer-element name="core-meta" attributes="label type" hidden>
+    <template>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="keywords" content="<?php echo $this->seed_Setting['v_html_keywords']?>" />
+        <meta name="description" content="<?php echo $this->seed_Setting['v_html_description']?>" />
+        <link type="text/css" rel="stylesheet" href="<?php echo $this->seed_Setting['v_app_server']?>/static/default/vplatform/css/vmall.css" />
+        <title><?php echo $this->seed_Setting['v_html_title']?></title>
+    </template>
+<script>
+
+  (function() {
+    Polymer('seed-meta');
+  })();
+
+</script>
+</polymer-element>

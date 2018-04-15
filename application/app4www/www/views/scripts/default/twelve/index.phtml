@@ -1,0 +1,410 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+  <base target="_blank">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="shortcut icon" type="image/x-icon" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/images/czlui/favicon.ico" />
+  <title>信天邮双十二钜惠</title>
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/seed.form.js"></script>
+<script type="text/javascript" src="<?php echo $this->seed_Setting['static_app_server']?>/default/vplatform/js/jquery.form.js"></script>
+<script type="text/javascript" src="<?php echo $this->seed_Setting['static_app_server']?>/default/vplatform/js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?php echo $this->seed_Setting['static_app_server']?>/default/vplatform/js/jquery.ba-hashchange.js"></script>
+  <script type="text/javascript">
+function a(){
+  if(good_search.keyword.value == '请输入关键词'){
+    alert('请输入关键词');
+    return true;
+  } 
+  good_search.submit();
+}
+function ajaxToCart(goods_id, stock_id){
+    $('#goods_id').val(goods_id);
+    $('#stock_id').val(stock_id);
+  SeedMsgBox('正在保存中，请稍候...');
+  var options = {
+      target:     '#SeedMsgTxt',
+      url:        '<?php echo $this->seed_Setting['user_app_server']?>/cart/addgoods?ajax=1',
+      success: function() {
+        window.location.href="<?php echo $this->BaseUrl();?>/user/cart"
+      }
+    };
+    $('#goods_form').ajaxSubmit(options);
+
+}
+</script>
+<style type="text/css">
+*{word-wrap:break-word;font-family:"Microsoft YaHei","宋体";}
+html{color:#343434;font-size:12px;}
+body,div,ol,ul,li,p,input,textarea,form,center,h1,h2,h3,h4,h5,h6,dl,dt,dd,img,select,table,tr,td,fieldset,legend,table,tr,td,th{margin:0; padding:0;}
+body{_background-attachment:fixed; background:#ffffff;}
+select,input,textarea{font-size:12px;vertical-align:middle;}  
+select{font:12px Tahoma,Arial,Verdana;border:1px solid #ebebeb;height:24px;}
+li{list-style:none;}
+label input{width:14px;height:14px;vertical-align:middle;margin-right:5px;}
+img{border:0;}
+a{color:#ffffff;cursor:pointer;text-decoration:none;}
+    #head{width:100%;display:block;text-align:center;background:#ffffff;}
+  .head_top{width:100%;display:block;height:40px;background-color: #e2e2e2;}
+    .head_top p{width:970px;background:#e2e2e2;border:solid #eee;border-width:1px 0;display:inline-block;height:38px;line-height:38px;text-align:left;overflow:hidden;color:#666;}
+      .head_top p a{color:#666;margin:0 10px;}
+      .head_top p em{font-style:normal;color:#7cbe28;}
+      .head_top p small{float:right;font-size:12px;}
+  .header{width:970px;display:inline-block;text-align:left;padding:34px 0;height:72px;overflow:hidden;}
+    .logo{float:left;height:72px;overflow:hidden;}
+      .logo span{margin-right:40px; display:inline-block;}
+    .header_r{float:right;height:72px;overflow:hidden;}
+    .header_r img{margin-right: 30px;}
+
+        .nav{width:100%;height:50px;background-color: #008028;display:block;text-align: center;}
+    .navdiv{width:970px;height:50px;background-color: #008028;display:inline-block;z-index:2;float: auto;}
+      .navdiv ul li{float:left;height:50px;font:16px/50px "Microsoft YaHei";padding:0 24px;}
+          .navdiv ul li a{color:#E2E2E2;padding:0 6px;height:47px;display:block;}
+          .navdiv ul li.crumb a{color:#ffffff;}
+          .navdiv ul li.crumb a:hover{font-weight:bold;border-bottom: 3px solid #fcff00;color:#fcff00; }
+        .navdiv ul li.nav_sort{width:170px;font-size:16px;padding:0;margin-right:15px;background-color: #7cbe28;}
+          .navdiv ul li.nav_sort a{background:#7cbe28 url(/static/sendyou/twelve/nav_sort.png) no-repeat 30px center;padding:0 0 0 25px;}
+        .navdiv p{width:200px;height:28px;padding:8px 0;float:right;}
+        .good_search{float: left; width:200px;}
+        .s_txt{width:150px;height:26px;float:left;padding:2px;color:#333;border:2px solid #7CBE28;background:#fff;}
+        .s_bnt{width:40px;height:34px;border:none;float:left;background:#7CBE28 url(/static/sendyou/twelve/search.png) no-repeat center;cursor:pointer;}
+.main1{width:100%;min-width:1200px;height:520px;float:left;position:relative;}
+  .item_show{width:100%;min-width:1200px;height: 550px;overflow:hidden;float:left;position:relative;}
+  .zhs1{width:100%;min-width:1200px;float:left;position:relative;background:#F3D6C6 url(/static/sendyou/twelve/zhsbg1.jpg)no-repeat center;text-align: center;}
+  .zhs1 .title{width:100%;min-width:1200px; height:170px;border-bottom: 1px solid #D59E81;}
+  .zhs1_products{width:100%;min-width:1200px;height:416px;}
+  .zhs1_products ul{width:1200px;overflow:hidden;position:relative;margin: 0 auto;}
+   .zhs1_products ul li{float:left;overflow:hidden;}
+
+  .zhs2_products{width:100%;min-width:1200px;height:418px;float:left;position:relative;background:#BDC792  url(/static/sendyou/twelve/zhsbg2.jpg)no-repeat center;text-align: center;}
+  .zhs2_products ul{width:1200px;overflow:hidden;position:relative;margin: 0 auto;}
+   .zhs2_products ul li{float:left;overflow:hidden;}
+
+  .zhs3_products{width:100%;min-width:1200px;height:412px;float:left;position:relative;background:#E2C8B9 url(/static/sendyou/twelve/zhsbg3.jpg)no-repeat center;text-align: center;}
+  .zhs3_products ul{width:1200px;overflow:hidden;position:relative;margin: 0 auto;}
+   .zhs3_products ul li{float:left;overflow:hidden;}
+   
+  .zhs4_products{width:100%;min-width:1200px;height:418px;float:left;position:relative;background:#BDC792  url(/static/sendyou/twelve/zhsbg2.jpg)no-repeat center;text-align: center;}
+  .zhs4_products ul{width:1200px;overflow:hidden;position:relative;margin: 0 auto;}
+   .zhs4_products ul li{float:left;overflow:hidden;}
+   
+  .zhs5_products{width:100%;min-width:1200px;height:416px;float:left;position:relative;background:#E2C8B9 url(/static/sendyou/twelve/zhsbg5.jpg)no-repeat center;text-align: center;}
+  .zhs5_products ul{width:1200px;overflow:hidden;position:relative;margin: 0 auto;}
+   .zhs5_products ul li{float:left;overflow:hidden;}
+   
+  .zhs6_products{width:100%;min-width:1200px;height:418px;float:left;position:relative;background:#BDC792  url(/static/sendyou/twelve/zhsbg2.jpg)no-repeat center;text-align: center;}
+  .zhs6_products ul{width:1200px;overflow:hidden;position:relative;margin: 0 auto;}
+   .zhs6_products ul li{float:left;overflow:hidden;}
+   
+  .zhs7_products{width:100%;min-width:1200px;height:340px;float:left;position:relative;background:#E2C8B9 url(/static/sendyou/twelve/zhsbg3.jpg)no-repeat center;text-align: center;}
+  .zhs_products_small{width: 1200px;margin: 5px auto;border-top: 1px solid #D59E81;border-left: 1px solid #D59E81;}
+  .zhs_products_small ul{width:1200px;overflow:hidden;position:relative;}
+   .zhs_products_small ul li{float:left;overflow:hidden;width: 299px;height:320px;border-right: 1px solid #d59e81;border-bottom: 1px solid #d59e81;text-align: right;}
+
+    .yybj{width:100%;min-width:1200px;float:left;position:relative;background:#E2C8B9 url(/static/sendyou/twelve/bodybg.jpg)repeat-y center;text-align: center;}
+   .yybj_title{width: 1200px;margin: 5px auto;}
+  .yybj_products{width: 1200px;margin: 5px auto;border-top: 1px solid #D59E81;border-left: 1px solid #D59E81;}
+  .yybj_products ul{width:1200px;overflow:hidden;position:relative;}
+   .yybj_products ul li{float:left;overflow:hidden;width: 299px;height:320px;border-right: 1px solid #d59e81;border-bottom: 1px solid #d59e81;text-align: right;}
+
+    .myfs{width:100%;min-width:1200px;float:left;position:relative;background:#E2C8B9 url(/static/sendyou/twelve/bodybg.jpg)repeat-y center;text-align: center;}
+    .myfs_title{width: 1200px;margin: 5px auto;}
+  .myfs_products{width: 1200px;margin: 5px auto;border-top: 1px solid #D59E81;border-left: 1px solid #D59E81;}
+  .myfs_products ul{width:1200px;overflow:hidden;position:relative;}
+   .myfs_products ul li{float:left;overflow:hidden;width: 299px;height:320px;border-right: 1px solid #d59e81;border-bottom: 1px solid #d59e81;text-align: right;}
+
+  .yeyp{width:100%;min-width:1200px;float:left;position:relative;background:#E2C8B9 url(/static/sendyou/twelve/bodybg.jpg)repeat-y center;text-align: center;}
+    .yeyp_title{width: 1200px;margin: 5px auto;}
+  .yeyp_products{width: 1200px;margin: 5px auto;border-top: 1px solid #D59E81;border-left: 1px solid #D59E81;}
+  .yeyp_products ul{width:1200px;overflow:hidden;position:relative;}
+   .yeyp_products ul li{float:left;overflow:hidden;width: 299px;height:320px;border-right: 1px solid #d59e81;border-bottom: 1px solid #d59e81;text-align: right;}
+
+    .mzhf{width:100%;min-width:1200px;float:left;position:relative;background:#E2C8B9 url(/static/sendyou/twelve/bodybg.jpg)repeat-y center;text-align: center;}
+    .mzhf_title{width: 1200px;margin: 5px auto;}
+  .mzhf_products{width: 1200px;margin: 5px auto;border-top: 1px solid #D59E81;border-left: 1px solid #D59E81;}
+  .mzhf_products ul{width:1200px;overflow:hidden;position:relative;}
+   .mzhf_products ul li{float:left;overflow:hidden;width: 299px;height:320px;border-right: 1px solid #d59e81;border-bottom: 1px solid #d59e81;text-align: right;}
+
+   .shrh{width:100%;min-width:1200px;float:left;position:relative;background:#E2C8B9 url(/static/sendyou/twelve/bodybg.jpg)repeat-y center;text-align: center;}
+    .shrh_title{width: 1200px;margin: 5px auto;}
+  .shrh_products{width: 1200px;margin: 5px auto;border-top: 1px solid #D59E81;border-left: 1px solid #D59E81;}
+  .shrh_products ul{width:1200px;overflow:hidden;position:relative;}
+   .shrh_products ul li{width: 299px;height:320px;float:left;overflow:hidden;border-right: 1px solid #d59e81;border-bottom: 1px solid #d59e81;text-align: right;}
+
+.footer{width:100%;display:block;text-align:center;background-color: #ffffff;}
+  .guidediv{width:100%;background:#7cbe28;padding: 30px 0; display:block;}
+    .guide{width:1000px; display:inline-block;background:#7cbe28;}
+      .guide_top{padding:15px 0;border-top:2px solid #42bb48;}
+      .guide_logo{float: left;}
+      .guide_code{float: left;margin:12px;}
+          .guide_cont dl{padding:5px 0 0 55px;width:100px;float:left;text-align:left;color:#f7f7f7;}
+            .guide_cont dl dt{font:18px/24px "Microsoft YaHei";height:24px;overflow:hidden;padding-bottom:10px;color: #ffffff;}
+            .guide_cont dl dd{width:100%;height:26px;line-height:26px;overflow:hidden;}
+  .copyrightdiv{width:100%; display:block;background:#008028;padding: 15px 0;color: #ffffff;}
+    .copyright{width:970px;display:inline-block;background:#008028;}
+      .copyright a{margin:0 15px;color: #ffffff;} 
+</style>
+</head>
+<body>
+<div id="head">
+  <div class="head_top">
+      <p>
+          <small>
+                <a href="/user/register">订单查询</a>
+                <a href="/user/register">帮助中心</a>
+                <a href="/user/register">我的信天邮</a>
+            </small>
+            <span>
+            <a>欢迎来到信天邮</a> | <a href="/user/login">登录</a> | <a href="/user/register">注册</a> 
+            </span>
+        </p>
+    </div>
+    <div class="header">
+      <div class="logo">
+          <span><a href="/"><img src="/static/sendyou/twelve/logo.png" /></a></span>
+      </div>
+        <div class="header_r">
+            <img src="/static/sendyou/twelve/state.png">
+        </div>   
+    </div>
+</div>
+<div class="nav">
+    <div class="navdiv">
+        <ul>
+            <li <?php if ($this->cur_pos=='index'):?>class="crumb"<?php endif;?>><a href="/">首页</a></li>
+            <li <?php if ($this->cur_pos=='merchants'):?>class="crumb"<?php endif;?>><a href="/products/top-1.html">母婴馆</a></li>
+            <li <?php if ($this->cur_pos=='merchants'):?>class="crumb"<?php endif;?>><a href="/products/top-13.html">健康保健</a></li>
+            <li <?php if ($this->cur_pos=='merchants'):?>class="crumb"<?php endif;?>><a href="/products/top-33.html">美妆护肤</a></li>
+            <li <?php if ($this->cur_pos=='merchants'):?>class="crumb"<?php endif;?>><a href="/merchants">品牌旗舰店</a></li>
+            <?php if (isset($this->seed_Setting['goods_channel']) && $this->seed_Setting['goods_channel']=='BBC'):?>
+            <li><a target="_blank" href="<?php echo $this->seed_Setting['website'];?>">香港信天邮</a></li>
+            <?php elseif (isset($this->seed_Setting['goods_channel']) && $this->seed_Setting['goods_channel']=='BC'):?>
+            <li><a target="_blank" href="<?php echo $this->seed_Setting['website'];?>">大陆信天邮</a></li>
+            <?php endif;?>
+        </ul>
+         <form class="good_search" id="good_search" name="good_search" method="get" action='/search'>
+        <p>
+            <input class="s_txt" name="keyword" type="text" value="请输入关键词" onfocus="if(value==defaultValue){value='';this.style.color='#000'}" onblur="if(!value){value=defaultValue;this.style.color='#999'}" style="color: rgb(153, 153, 153); outline:none;"/>
+            <input class="s_bnt" name="" type="button" value="" onclick="javascript:a();"style="outline:none;"/>
+        </p>
+        </form>
+    </div>
+</div>
+<div class="content">
+    <div class="main1">
+        <div class="item_show">
+            <a title="信天邮双十二钜惠钜惠" alt="信天邮双十二钜惠">
+            <div class="item" style="background:url(/static/sendyou/twelve/1920520.jpg) center  0 no-repeat ;width:100%;height:100%"></div>
+            </a>
+        </div>
+    </div>
+    <form name="goods_form" method="post" action="" id="goods_form" >
+    <div class="zhs1">
+        <div class="title">
+            <a alt="真划算套装"><img src="/static/sendyou/twelve/content_title1.png"></a>
+        </div>
+        <div class="zhs1_products">
+          <ul>
+            <li><a alt="启泰高丽参糖+花旗参糖+川贝枇杷润喉糖 套装"><img src="/static/sendyou/twelve/zhs11.png"></a></li>
+            <li><a href="http://www.sendtou.com/products/491.html" alt="启泰高丽参糖+花旗参糖+川贝枇杷润喉糖 套装"><img src="/static/sendyou/twelve/zhs12.png"></a></li>
+            <li><a href="http://www.sendtou.com/products/493.html" alt="启泰高丽参糖+花旗参糖+川贝枇杷润喉糖 套装"><img src="/static/sendyou/twelve/zhs13.png"></a></li>
+            <li><a href="http://www.sendtou.com/products/495.html" alt="启泰高丽参糖+花旗参糖+川贝枇杷润喉糖 套装"><img src="/static/sendyou/twelve/zhs14.png"></a></li>
+            <li><a href="javascript:;" onclick="ajaxToCart(1694,1909);" alt="启泰高丽参糖+花旗参糖+川贝枇杷润喉糖 套装" target="_blank"><img src="/static/sendyou/twelve/zhs15.png"></a></li>
+           </ul>
+        </div>
+    </div>
+    <div class="zhs2_products">
+      <ul>
+        <li><a alt="阿华师黄金油切日式绿茶+玫瑰薄荷茶+桂花乌龙茶套装"><img src="/static/sendyou/twelve/zhs21.png"></a></li>
+        <li><a href="http://www.sendtou.com/products/487.html" alt="阿华师黄金油切日式绿茶+玫瑰薄荷茶+桂花乌龙茶套装"><img src="/static/sendyou/twelve/zhs22.png"></a></li>
+        <li><a href="http://www.sendtou.com/products/488.html" alt="阿华师黄金油切日式绿茶+玫瑰薄荷茶+桂花乌龙茶套装"><img src="/static/sendyou/twelve/zhs23.png"></a></li>
+        <li><a href="http://www.sendtou.com/products/489.html" alt="阿华师黄金油切日式绿茶+玫瑰薄荷茶+桂花乌龙茶套装"><img src="/static/sendyou/twelve/zhs24.png"></a></li>
+        <li><a href="javascript:;" onclick="ajaxToCart(1695,1910);" alt="阿华师黄金油切日式绿茶+玫瑰薄荷茶+桂花乌龙茶套装"><img src="/static/sendyou/twelve/zhs25.png"></a></li>
+      </ul>
+    </div>
+    <div class="zhs3_products">
+      <ul>
+        <li><a alt="KAI牌天然卵膦脂浓缩丸+阿拉斯加深海鱼油丸(排装)"><img src="/static/sendyou/twelve/zhs31.png"></a></li>
+        <li><a href="http://www.sendtou.com/products/499.html" alt="KAI牌天然卵膦脂浓缩丸+阿拉斯加深海鱼油丸(排装)"><img src="/static/sendyou/twelve/zhs32.png"></a></li>
+        <li><a href="http://www.sendtou.com/products/501.html" alt="KAI牌天然卵膦脂浓缩丸+阿拉斯加深海鱼油丸(排装)"><img src="/static/sendyou/twelve/zhs33.png"></a></li>
+        <li><a href="javascript:;" onclick="ajaxToCart(1698,1913);" alt="KAI牌天然卵膦脂浓缩丸+阿拉斯加深海鱼油丸(排装)"><img src="/static/sendyou/twelve/zhs34.png"></a></li>
+      </ul>
+    </div>
+    <div class="zhs4_products">
+      <ul>
+        <li><a alt="珍苑牌即食乌鱼干贝酱2瓶套装"><img src="/static/sendyou/twelve/zhs41.png"></a></li>
+        <li><a href="http://www.sendtou.com/products/490.html" alt="珍苑牌即食乌鱼干贝酱2瓶套装"><img src="/static/sendyou/twelve/zhs42.png"></a></li>
+        <li><a href="http://www.sendtou.com/products/494.html" alt="KAI牌天然卵膦脂浓缩丸+阿拉斯加深海鱼油丸(排装)"><img src="/static/sendyou/twelve/zhs43.png"></a></li>
+        <li><a href="javascript:;" onclick="ajaxToCart(1902,2126);" alt="KAI牌天然卵膦脂浓缩丸+阿拉斯加深海鱼油丸(排装)"><img src="/static/sendyou/twelve/zhs44.png"></a></li>
+      </ul>
+    </div>
+    <div class="zhs5_products">
+      <ul>
+        <li><a alt="启泰牌高丽参糖礼盒+川贝枇杷糖礼盒 套装"><img src="/static/sendyou/twelve/zhs51.png"></a></li>
+        <li><a href="http://www.sendtou.com/products/496.html" alt="启泰牌高丽参糖礼盒+川贝枇杷糖礼盒 套装"><img src="/static/sendyou/twelve/zhs52.png"></a></li>
+        <li><a href="http://www.sendtou.com/products/497.html" alt="启泰牌高丽参糖礼盒+川贝枇杷糖礼盒 套装"><img src="/static/sendyou/twelve/zhs53.png"></a></li>
+        <li><a href="javascript:;" onclick="ajaxToCart(1884,2108);" alt="启泰牌高丽参糖礼盒+川贝枇杷糖礼盒 套装"><img src="/static/sendyou/twelve/zhs54.png"></a></li>
+       </ul>
+    </div>
+    <div class="zhs6_products">
+      <ul>
+        <li><a alt="启泰牌高丽参糖礼盒+花旗参糖礼盒套装"><img src="/static/sendyou/twelve/zhs61.png"></a></li>
+        <li><a href="http://www.sendtou.com/products/490.html" alt="启泰牌高丽参糖礼盒+花旗参糖礼盒套装"><img src="/static/sendyou/twelve/zhs62.png"></a></li>
+        <li><a href="http://www.sendtou.com/products/492.html" alt="启泰牌高丽参糖礼盒+花旗参糖礼盒套装"><img src="/static/sendyou/twelve/zhs63.png"></a></li>
+        <li><a href="javascript:;" onclick="ajaxToCart(1982,2207);" alt="启泰牌高丽参糖礼盒+花旗参糖礼盒套装"><img src="/static/sendyou/twelve/zhs64.png"></a></li>
+       </ul>
+    </div>
+    <input type="hidden" id="goods_number" name="goods_number" value="1" />
+    <input type="hidden" id="goods_id" name="goods_id" value="" />
+    <input type="hidden" id="stock_id" name="stock_id" value="" />
+    </form>
+    <div class="zhs7_products">
+        <div class="zhs_products_small">
+            <ul>
+                <li><a href="http://www.sendtou.com/products/1.html" alt="美赞臣 Enfamil 奶粉 newborn段"><img src="/static/sendyou/twelve/zhs7.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/2.html" alt="美赞臣 Enfamil 奶粉 2段"><img src="/static/sendyou/twelve/zhs8.png"></a></li>
+                <li><a href="http://www.sendtou.hk/products/276.html" alt="余仁生冰糖燕窝 较低糖"><img src="/static/sendyou/twelve/zhs9.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/274.html" alt="余仁生虫草菌丝体胶囊"><img src="/static/sendyou/twelve/zhs10.png"></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="yybj">
+        <div class="yybj_title">
+            <a alt="营养保健：约惠，健康每一天！"><img src="/static/sendyou/twelve/content_title2.png"></a>
+        </div>
+        <div class="yybj_products">
+            <ul>
+                <li><a href="http://www.sendtou.hk/products/1937.html" alt="位元堂猴枣除痰散10支"><img src="/static/sendyou/twelve/yybj1.png"></a></li>
+                <li><a href="http://www.sendtou.hk/products/1941.html" alt="位元堂珠珀保嬰丹6支"><img src="/static/sendyou/twelve/yybj2.png"></a></li>
+                <li><a href="http://www.sendtou.hk/products/1949.html" alt="位元堂燕窩白鳳丸25包"><img src="/static/sendyou/twelve/yybj3.png"></a></li>
+                <li><a href="http://www.sendtou.hk/products/1944.html" alt="位元堂养阴丸50粒"><img src="/static/sendyou/twelve/yybj4.png"></a></li>
+                <li><a href="http://www.sendtou.hk/products/277.html" alt="余仁生珍珠粉胶原蛋白燕窝（较低糖）"><img src="/static/sendyou/twelve/yybj5.png"></a></li>
+                <li><a href="http://www.sendtou.hk/products/289.html" alt="Healthy Life消炎止痛片"><img src="/static/sendyou/twelve/yybj6.png"></a></li>
+                <li><a href="http://www.sendtou.hk/products/290.html" alt="Healthy Life 记忆力片"><img src="/static/sendyou/twelve/yybj7.png"></a></li>
+                <li><a href="http://www.sendtou.hk/products/293.html" alt="Healthy Life消化酶胶囊"><img src="/static/sendyou/twelve/yybj8.png"></a></li>
+                <li><a href="http://www.sendtou.hk/products/474.html" alt="陈老二燕窝滋阴丸"><img src="/static/sendyou/twelve/yybj9.png"></a></li>
+                <li><a href="http://www.sendtou.hk/products/485.html" alt="陈老二顺气化痰止咳丸"><img src="/static/sendyou/twelve/yybj10.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/1720.html" alt="健康博士 高效蓝莓睛灵素胶囊"><img src="/static/sendyou/twelve/yybj11.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/1721.html" alt="健康博士 高效复方蜂胶1000软胶囊"><img src="/static/sendyou/twelve/yybj12.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/584.html" alt="童年时光 ChildLife 鳕鱼鱼油"><img src="/static/sendyou/twelve/yybj13.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/586.html" alt="童年时光 ChildLife 维生素C营养液"><img src="/static/sendyou/twelve/yybj14.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/1719.html" alt="健力仕 脆皮鱼油丸软胶囊"><img src="/static/sendyou/twelve/yybj15.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/1176.html" alt="西芹籽"><img src="/static/sendyou/twelve/yybj16.png"></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="myfs">
+        <div class="myfs_title">
+            <a alt="母婴辅食：约惠，给宝宝最好的营养"><img src="/static/sendyou/twelve/content_title3.png"></a>
+        </div>
+        <div class="myfs_products">
+            <ul>
+                <li><a href="http://www.sendtou.com/products/156.html" alt="德国爱他美pre *4罐"><img src="/static/sendyou/twelve/myfs1.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/157.html" alt="德国爱他美1段 *4罐"><img src="/static/sendyou/twelve/myfs2.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/158.html" alt="德国爱他美2段 *4罐"><img src="/static/sendyou/twelve/myfs3.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/1198.html" alt="德运奶粉（全脂）"><img src="/static/sendyou/twelve/myfs4.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/1199.html" alt="德运奶粉（脱脂）"><img src="/static/sendyou/twelve/myfs5.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/142.html" alt="Rafferty’s Garden 水果酸奶混合泥 苹果/覆盆子"><img src="/static/sendyou/twelve/myfs6.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/143.html" alt="Rafferty’s Garden 水果酸奶混合泥 香蕉/蓝莓"><img src="/static/sendyou/twelve/myfs7.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/144.html" alt="Rafferty’s Garden 水果酸奶混合泥 香蕉/芒果"><img src="/static/sendyou/twelve/myfs8.png"></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="yeyp">
+        <div class="yeyp_title">
+            <a alt="婴儿用品：约惠，关爱宝宝成长！"><img src="/static/sendyou/twelve/content_title4.png"></a>
+        </div>
+        <div class="yeyp_products">
+            <ul>
+                <li><a href="http://www.sendtou.com/products/69.html" alt="布朗博士Dr. Brown’s 标准口径玻璃奶瓶"><img src="/static/sendyou/twelve/yeyp1.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/69.html#stock-75" alt="布朗博士Dr. Brown’s 标准口径玻璃奶瓶"><img src="/static/sendyou/twelve/yeyp2.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/70.html#stock-78" alt="布朗博士 Dr. Brown’s 标准口径玻璃奶瓶"><img src="/static/sendyou/twelve/yeyp3.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/1278.html" alt="Born Free 宽口径喷绘图案奶瓶 9安士"><img src="/static/sendyou/twelve/yeyp4.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/1141.html" alt="麦肯齐 Munchkin 彩色水杯"><img src="/static/sendyou/twelve/yeyp5.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/1144.html" alt="麦肯齐 Munchkin 婴幼儿新鲜食物咬咬袋"><img src="/static/sendyou/twelve/yeyp6.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/43.html" alt="艾维诺 Aveeno 婴儿沐浴露洗发二合一 236ml"><img src="/static/sendyou/twelve/yeyp7.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/50.html" alt="甘尼克 BabyGanics 泡沫免洗洗手液 （桔香）"><img src="/static/sendyou/twelve/yeyp8.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/391.html" alt="米奇冲洗式泵洗发水300毫升"><img src="/static/sendyou/twelve/yeyp9.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/131.html" alt="Lucas’ 木瓜膏 75g"><img src="/static/sendyou/twelve/yeyp10.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/126.html" alt="杰克吉尔 Jack N’ Jill 天然金盏花儿童牙膏 草莓味"><img src="/static/sendyou/twelve/yeyp11.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/118.html" alt="意高 Ego QV 儿童润肤霜"><img src="/static/sendyou/twelve/yeyp12.png"></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="mzhf">
+        <div class="mzhf_title">
+            <a alt="美妆护肤：约惠，焕发健康美肌！"><img src="/static/sendyou/twelve/content_title5.png"></a>
+        </div>
+        <div class="mzhf_products">
+            <ul>
+                <li><a href="http://www.sendtou.com/products/406.html" alt="极润透明质酸保湿霜"><img src="/static/sendyou/twelve/mzhf1.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/125.html" alt="意高 Ego QV 润肤霜"><img src="/static/sendyou/twelve/mzhf2.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/1134.html" alt="VE面霜"><img src="/static/sendyou/twelve/mzhf3.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/137.html" alt=" 苏芊 Sukin 天然有机保湿喷雾爽肤水"><img src="/static/sendyou/twelve/mzhf4.png"></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="shrh">
+        <div class="shrh_title">
+            <a alt="生活日化：约惠，爱自己爱生活！"><img src="/static/sendyou/twelve/content_title6.png"></a>
+        </div>
+        <div class="shrh_products">
+            <ul>
+                <li><a href="http://www.sendtou.com/products/464.html" alt="P & G 宝洁花香洗衣凝胶球 (补充装)"><img src="/static/sendyou/twelve/shrh1.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/135.html" alt="Morning Fresh 抗菌型浓缩洗洁精 柠檬味"><img src="/static/sendyou/twelve/shrh2.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/394.html" alt="Bathclin 熏衣草的香气浴盐"><img src="/static/sendyou/twelve/shrh3.png"></a></li>
+                <li><a href="http://www.sendtou.com/products/487.html" alt="阿华师牌黄金油切日式绿茶"><img src="/static/sendyou/twelve/shrh4.png"></a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+  <div class="footer">
+          <div class="guide_top">
+              <?php $charts = $this->fetchCharts('www_index_guide');?>
+              <?php if(is_array($charts) && count($charts)>0):?>
+              <?php foreach ($charts as $k=>$chart):?>
+              <img src="/static/sendyou/twelve/guide_brand.png" />
+              <?php endforeach;?>
+              <?php endif;?>
+          </div>
+          <div class="guidediv">
+                <div class="guide">
+                        <?php
+                            $helpM = new Home_Model_Help('home');
+                            $helps = $helpM->fetchRows(array(0,5),array('parent'=>'0'),array('order_by ASC'));
+                            if(is_array($helps) && count($helps) > 0){
+                              foreach ($helps as $k=>$help){
+                                $sub_helps = $helpM->fetchRows(null,array('parent'=>$help['help_id']),array('order_by ASC'));
+                                $helps[$k]['sub_helps'] = $sub_helps;
+                              }
+                            }
+                        ?>
+                      <div class="guide_cont">
+                          <div class="guide_code"><img src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/twelve/guide_code.jpg" />
+                          </div>
+                          <div class="guide_tip">
+                          <?php if(is_array($helps)):?>
+                          <?php foreach ($helps as $help):?>
+                              <dl>
+                                  <dt><?php echo $this->escape($help['help_title']);?></dt>
+                                  <?php if(is_array($help['sub_helps']) && count($help['sub_helps'])):?>
+                                  <?php foreach ($help['sub_helps'] as $sub_help):?>
+                                  <dd><a href="/help/<?php echo $sub_help['help_mark']?>.html"><?php echo $this->escape($sub_help['help_title']);?></a></dd>
+                                  <?php endforeach;?>
+                                  <?php endif;?>
+                              </dl>
+                           <?php endforeach;?>
+                           <?php endif;?>
+                           </div>
+                      </div>
+                </div>
+          </div>
+          <div class="copyrightdiv">
+            <div class="copyright">
+                <?php echo $this->seed_Setting['footer'];?>
+            </div>
+          </div>
+  </div>
+</body>
+</html>

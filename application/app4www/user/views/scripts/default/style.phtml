@@ -1,0 +1,52 @@
+<?php 
+   $goodsCateM = new Shop_Model_GoodsCate('shop');
+   $cates = $goodsCateM->fetchRows(null,array('parent'=>'0'),'order_by desc');
+?>
+<div id="head">
+	<div class="head_top">
+    	<p>
+        	<small>
+            	<a>正品保证</a>
+                <a href="user_order.html">订单查询</a>
+                <a href="user_collection.html">收藏的品牌</a>
+                <a href="user.html">我的信天游</a>
+            </small>
+            <span>欢迎来到信天邮&nbsp;&nbsp; | <a href="login.html">请登录</a> | <a href="sign.html">快速注册</a></span>
+            <span>欢迎来到信天邮&nbsp;&nbsp; | <a href="user.html"><em>hongsite</em></a> | <a>退出</a></span>
+        </p>
+    </div>
+    <div class="header">
+    	<div class="logo">
+        	<span><a><img src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/images/ui/logo.png" /></a></span>
+            <img src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/images/ui/logo2.png" />
+        </div>
+        <div class="header_r">
+        	<span><a><img src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/upload/head_1.png" /></a></span>
+            <span><a><img src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/upload/head_2.png" /></a></span>
+            <span><a><img src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/upload/head_3.png" /></a></span>
+            <span class="head_cart"><a>去购物车结算</a><em>0</em></span>
+        </div>
+    </div>
+    <div class="nav">
+    	<div class="navdiv">
+        	<ul>
+                <li class="nav_sort"><a>所有商品分类</a></li>
+                <li class="crumb"><a href="/index">首页</a></li>
+                <li><a href="/brand">品牌</a></li>
+                <li><a>关于我们</a></li>
+                <li><a>公司简介</a></li>
+                <li><a>联系我们</a></li>
+            </ul>
+            <p>
+            	<input class="s_txt" name="" type="text" placeholder="奶粉" >
+                <input class="s_bnt" name="" type="button" value="" >
+            </p>
+            <dl class="l_fx">
+                <dt>产品类别</dt>
+                <?php foreach ($cates as $cate):?>
+                <dd><a href="/products/top-<?php echo $cate['cate_id'];?>.html"><?php echo $this->escape($cate['cate_name']);?></a></dd>
+                <?php endforeach;?>
+            </dl>
+        </div>
+    </div>
+</div>

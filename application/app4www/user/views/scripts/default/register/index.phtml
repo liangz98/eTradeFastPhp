@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>快移</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link href="/ky/css/base.css" rel="stylesheet">
+    <link href="/ky/css/style.css" rel="stylesheet">
+    <link href="/ky/css/swiper-3.3.1.min.css" rel="stylesheet">
+    <script type="text/javascript" src="/ky/js/jquery.js"></script>
+    <script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
+    <script type="text/javascript" src="/ky/js/swiper-3.3.1.jquery.min.js"></script>
+    <script type="text/javascript" src="/ky/js/seed.form.js"></script>
+    <script type="text/javascript" src="/ky/js/jquery.form.js"></script>
+    <script type="text/javascript" src="/ky/js/www.js"></script>
+    <script type="text/javascript" src="/ky/js/tips.js"></script>
+    <!--    <script type="text/javascript" src="/ky/js/checkformat.js"></script>-->
+    <script type="text/javascript" src="/ky/layer/layer.js"></script>
+</head>
+<body>
+<?php echo $this->render(SEED_WWW_TPL . '/header.phtml'); ?>
+
+<!-- content star -->
+<div class="content">
+    <div class="bigdiv">
+        <div class="registerdiv">
+            <form action="" method="post" name="register_form" id="register_form">
+                <h3><!--用户资料--><?php echo $this->translate('userTT'); ?></h3>
+                <div class="r_box tr">
+                    <p>
+                        <label class="lagin_lab3 pr10"><!--姓名：--><?php echo $this->translate('name'); ?></label>
+                        <input class="login_txt3 must" name="name" id="name" onblur="checkname(this.value)" value=""
+                               type="text" placeholder="<?php echo $this->translate('is_name'); ?>"/><!--请填写真实姓名-->
+                        <span id="e_name" class="f12"></span><em class="w10 fr0 h20"></em>
+                    </p>
+                    <p>
+                        <label class="lagin_lab3 pr10"><!--用户名：--><?php echo $this->translate('elogname'); ?></label>
+                        <input class="login_txt3 must" name="ecommloginname" id="ecommloginname"
+                               onblur="docheckName(this.value)" value="" type="text"
+                               placeholder="<?php echo $this->translate('is_emlog'); ?>"/>
+                        <!--例：zhangsan@etradfast.com-->
+                        <span id="e_login" class="f12"></span><em class="w10 fr0 h20"></em>
+                    </p>
+                    <p>
+                        <label class="lagin_lab3 pr10"><!--密码：--><?php echo $this->translate('password'); ?></label>
+                        <input class="login_txt3 must" name="ecommpasswsd" id="ecommpasswsd"
+                               onblur="checkpwd(this.value)" value=""
+                               placeholder="<?php echo $this->translate('is_passwd'); ?>" type="password"/>
+                        <!--请提供8-30位数字、大小写字母-->
+                        <span id="e_pwd" class="f12"></span><em class="w10 fr0 h20"></em>
+                    </p>
+                    <p>
+                        <label class="lagin_lab3 pr10"><!--确认密码：--><?php echo $this->translate('confirmPSD'); ?></label>
+                        <input class="login_txt3 must" name="ecommpasswsd" id="ecommrpasswsd"
+                               onblur="checkRpwd(this.value)"
+                               placeholder="<?php echo $this->translate('is_rpasswd'); ?>" value="" type="password"/>
+                        <!--请再次输入密码-->
+                        <span id="e_rpwd" class="f12"></span><em class="w10 fr0 h20"></em>
+                    </p>
+                    <p>
+                        <label class="lagin_lab3 pr10"><!--联系电话：--><?php echo $this->translate('phone'); ?></label>
+                        <input class="login_txt3 must" name="mobilePhone" id="phone" onblur="checkphone(this.value)"
+                               value="" type="text" placeholder="<?php echo $this->translate('is_phone'); ?>"/>
+                        <!--15880000001-->
+                        <span id="e_phone" class="f12"></span><em class="w10 fr0 h20"></em>
+                    </p>
+                </div>
+                <h3><?php echo $this->translate('companyINF'); ?></h3>
+                <div class="r_box tr">
+                    <p>
+                        <label class="lagin_lab3 pr10"><!--公司名称：--><?php echo $this->translate('companyFU'); ?></label>
+                        <input class="login_txt3 must" name="accountName" id="accountName"
+                               onblur="checkacname(this.value)" value="" type="text"
+                               placeholder="<?php echo $this->translate('is_comname'); ?>"/><!--请填写真实的公司名称-->
+                        <span id="e_acname" class="f12"></span><em class="w10 fr0 h20"></em>
+                    </p>
+                    <p>
+                        <label class="lagin_lab3 pr10"><!--公司地址：--><?php echo $this->translate('regaddress'); ?></label>
+                        <select class="login_txt3" id="COUNTRY_CODE" name="regdcountryCode"
+                                style="margin-bottom:20px;width:652px;height: 32px;">
+                            <?php echo $this->ShowDictionaryList($this->dic_Setting['COUNTRY_ISO_CODE'], $this->userlangCode, $this->dic_Setting['COUNTRY_ISO_CODE']); ?>
+                        </select>
+                        <input class="login_txt3 must" style="margin-left:120px;" name="regdAddress"
+                               onblur="checkregd(this.value)" id="regdAddress" value="" type="text"
+                               placeholder="<?php echo $this->translate('is_regadress'); ?>"/><!--该内容同时作为公司的联系地址-->
+                        <span id="e_regd" class="f12"></span><em class="w10 fr0 h20"></em>
+                    </p>
+                    <p>
+                        <label class="lagin_lab3 pr10"><!--公司邮箱：--><?php echo $this->translate('companyEM'); ?></label>
+                        <input class="login_txt3 must" name="email" id="email" value="" onblur="checkEmailc(this.value)"
+                               type="text" placeholder="<?php echo $this->translate('ps_email'); ?>"/>
+                        <!--admin@eTrade.com-->
+                        <span id="e_mail" class="f12"></span><em class="w10 fr0 h20"></em>
+                    </p>
+                    <div class="clearfix tc mb20">
+                        <label><input name="" type="checkbox" checked="checked" value=""
+                                      id="regText"><?php echo $this->translate('agree'); ?><span><a
+                                        id="check_doc"><?php echo $this->translate('is_xieyi'); ?></a></span></label>
+                        <!--《快移交易平台服务使用协议》-->
+                    </div>
+                    <input class="register_bnt2" name="sub" id="regBtn" type="submit"
+                           value="<?php echo $this->translate('returnReg'); ?>">
+                    <a href="<?php echo $this->seed_Setting['user_app_server'] ?>/login"
+                       class="register_bnt1"><?php echo $this->translate('return') . $this->translate('nav_login'); ?></a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- content end -->
+
+<?php echo $this->render(SEED_WWW_TPL . '/footer.phtml'); ?>
+<script type="text/javascript">
+    //弹出框
+    var regBtn = $("#regBtn");
+    $("#regText").change(function () {
+        var that = $(this);
+        that.prop("checked", that.prop("checked"));
+        if (that.prop("checked")) {
+        } else {
+            regBtn.prop("disabled", true)
+        }
+    });
+
+    $(function () {
+        document.register_form.sub.disabled = true;
+        $('#check_doc').click(function () {
+            //页面层
+            layer.open({
+                type: 1,
+                title: false,
+                area: ['600px', '450px'], //宽高
+                content: '合作协议'
+            });
+        })
+    });
+
+    function yz() {
+        //需要同时遍历所有的字段 并检查，包括密码
+        var m = $("input[type='text']");
+        var p = $("input[type='password']");
+        for (var i = 0; i < m.length; i++) {
+            if (m[i].value == "" || m[i].value == null) {
+                mt=1;
+            }else{
+                mt=0;
+            }
+        }
+
+
+         for (var i = 0; i < p.length; i++){
+             if (p[i].value == "" || p[i].value == null) {
+//                alert(i);
+                 pt=1;
+             }else{
+                 pt=0;
+             }
+         }
+         if(mt+pt>0){
+             document.register_form.sub.disabled = true;
+             return false;
+         }else{
+             document.register_form.sub.disabled = false;
+         }
+    }
+//
+//    function doRegister() {
+//        var options = {
+//            target: '#SeedMsgTxt',
+//            url: '< //echo $this->baseUrl();>///register',
+//            success: function () {
+//            }
+//        };
+//        $('#register_form').ajaxSubmit(options);
+//    }
+
+    function docheckName(emlog) {
+        var ecommloginname = document.getElementById('ecommloginname').value;
+        if (emlog == "") {
+            $("#e_login").css('color', 'red');
+            $("#ecommloginname").css('border-color', 'red');
+            document.getElementById("e_login").innerHTML = "<?php echo $this->translate('email') . $this->translate('de_null');?>";
+            /*邮箱不能为空*/
+            document.register_form.sub.disabled = true;
+            return;
+        } else {
+            document.getElementById("e_login").innerHTML = "";
+            yz();
+        }
+        var reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+        var isok = reg.test(ecommloginname);
+        if (!isok) {
+            $("#e_login").css('color', 'red');
+            $("#ecommloginname").css('border-color', 'red');
+            document.getElementById("e_login").innerHTML = "<?php echo $this->translate('email') . $this->translate('de_format');?>";
+            /*邮箱格式*/
+            document.register_form.sub.disabled = true;
+            return;
+        } else {
+            $("#ecommloginname").css('border-color', '#DF7E20');
+            document.getElementById("e_login").innerHTML = "";
+            yz();
+        }
+        $.post("<?php echo $this->BaseUrl();?>/register/check/",
+            {'ecommloginname': ecommloginname},
+            function (data) {
+                if (data.result == true) {
+                    $("#e_login").css('color', 'red');
+                    $("#ecommloginname").css('border-color', 'red');
+                    document.getElementById("e_login").innerHTML = "<?php echo $this->translate('de_use');?>";
+                    /*真遗憾，用户名已经被使用*/
+                }
+                else {
+                    $("#e_login").css('color', 'green');
+                    document.getElementById("e_login").innerHTML = "<?php echo $this->translate('en_use');?>";
+                    /*恭喜你，用户名可以使用*/
+                }
+            }, "json");
+    }
+    function checkEmailc(em) {
+        var ecommloginname = document.getElementById('email').value;
+        if (em == "") {
+            $("#e_mail").css('color', 'red');
+            $("#ecommloginname").css('border-color', 'red');
+            document.getElementById("e_mail").innerHTML = "<?php echo $this->translate('email') . $this->translate('de_null');?>";
+            /*邮箱不能为空*/
+            document.register_form.sub.disabled = true;
+            return;
+        } else {
+            document.getElementById("e_mail").innerHTML = "";
+            yz();
+        }
+//        var reg=/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+        var reg = /^[0-9a-zA-Z._%-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,4}$/;
+        var isok = reg.test(ecommloginname);
+        if (!isok) {
+            $("#e_mail").css('color', 'red');
+            $("#ecommloginname").css('border-color', 'red');
+            document.getElementById("e_mail").innerHTML = "<?php echo $this->translate('email') . $this->translate('de_format');?>";
+            /*邮箱格式不对*/
+            document.register_form.sub.disabled = true;
+            return;
+        } else {
+            $("#ecommloginname").css('border-color', '#DF7E20');
+            document.getElementById("e_mail").innerHTML = "";
+            yz();
+        }
+    }
+
+    function checkname(va) {
+        if (va == "") {
+            $("#e_name").css('color', 'red');
+            $("#name").css('border-color', 'red');
+            document.getElementById("e_name").innerHTML = "<?php echo $this->translate('name') . $this->translate('de_null');?>";
+            /*密码不能为空*/
+            document.register_form.sub.disabled = true;
+        } else {
+            $("#name").css('border-color', '#DF7E20');
+            document.getElementById("e_name").innerHTML = "";
+            yz();
+        }
+    }
+    function checkphone(va) {
+        if (va == "") {
+            $("#e_phone").css('color', 'red');
+            $("#phone").css('border-color', 'red');
+            document.getElementById("e_phone").innerHTML = "<?php echo $this->translate('phone') . $this->translate('de_null');?>";
+            /*密码不能为空*/
+            document.register_form.sub.disabled = true;
+        } else {
+            $("#phone").css('border-color', '#DF7E20');
+            document.getElementById("e_phone").innerHTML = "";
+            yz();
+        }
+        var reg = /^[\d|\-|\+|\s]+$/;
+        var phoneok = reg.test(va);
+        if (!phoneok) {
+            $("#e_phone").css('color', 'red');
+            $("#phone").css('border-color', 'red');
+            document.getElementById("e_phone").innerHTML = "<?php echo $this->translate('phone') . $this->translate('de_format');?>&nbsp";
+            /*手机号码格式不正确*/
+            document.register_form.sub.disabled = true;
+            return false;
+        } else {
+            $("#phone").css('border-color', '#DF7E20');
+            document.getElementById("e_phone").innerHTML = "";
+            // document.register_form.sub.disabled=false;
+        }
+    }
+    function checkregd(va) {
+        if (va == "") {
+            $("#e_regd").css('color', 'red');
+            $("#regdAddress").css('border-color', 'red');
+            document.getElementById("e_regd").innerHTML = "<?php echo $this->translate('regaddress') . $this->translate('de_null');?>";
+            /*密码不能为空*/
+            document.register_form.sub.disabled = true;
+        } else {
+            $("#regdAddress").css('border-color', '#DF7E20');
+            document.getElementById("e_regd").innerHTML = "";
+            yz();
+        }
+    }
+    function checkacname(va) {
+        if (va == "") {
+            $("#e_acname").css('color', 'red');
+            $("#accountName").css('border-color', 'red');
+            document.getElementById("e_acname").innerHTML = "<?php echo $this->translate('companyFU') . $this->translate('de_null') . '&nbsp;';?>";
+            /*密码不能为空*/
+            document.register_form.sub.disabled = true;
+        } else {
+            $("#accountName").css('border-color', '#DF7E20');
+            document.getElementById("e_acname").innerHTML = "";
+            yz();
+        }
+    }
+
+    function checkpwd(va) {
+        var pwd = document.getElementById("ecommpasswsd").value;
+        if (va == "") {
+            $("#e_pwd").css('color', 'red');
+            $("#ecommpasswsd").css('border-color', 'red');
+            document.getElementById("e_pwd").innerHTML = "<?php echo $this->translate('password') . $this->translate('de_null');?>";
+            /*密码不能为空*/
+            document.register_form.sub.disabled = true;
+        } else {
+            $("#ecommpasswsd").css('border-color', '#DF7E20');
+            document.getElementById("e_pwd").innerHTML = "";
+            yz();
+        }
+
+        var reg = new RegExp("^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$", "g");
+        var pwdok = reg.test(pwd);
+        if (!pwdok) {
+            $("#e_pwd").css('color', 'red');
+            $("#ecommpasswsd").css('border-color', 'red');
+            document.getElementById("e_pwd").innerHTML = "<?php echo $this->translate('mat_psd');?>";
+            /*密码最少8位，包含大小字母数字*/
+            document.register_form.sub.disabled = true;
+            return false;
+        } else {
+            $("#ecommpasswsd").css('border-color', '#DF7E20');
+            document.getElementById("e_pwd").innerHTML = "";
+            yz();
+        }
+    }
+    function checkRpwd(va) {
+        var pwd = document.getElementById("ecommpasswsd").value;
+        if (va == "") {
+            $("#e_rpwd").css('color', 'red');
+            $("#ecommpasswsd").css('border-color', 'red');
+            document.getElementById("e_rpwd").innerHTML = "<?php echo $this->translate('password') . $this->translate('de_null');?>";
+            /*密码不能为空*/
+            document.register_form.sub.disabled = true;
+            $("#e_rpwd").css('border-color', '#red');
+        } else {
+            $("#ecommpasswsd").css('border-color', '#DF7E20');
+            document.getElementById("e_rpwd").innerHTML = "";
+            yz();
+        }
+        if (va != pwd) {
+            $("#e_rpwd").css('color', 'red');
+            $("#ecommrpasswsd").css('border-color', 'red');
+            document.getElementById("e_rpwd").innerHTML = "<?php echo $this->translate('is_psd');?>";
+            /*两次输入的密码不一致*/
+            document.register_form.sub.disabled = true;
+        } else {
+            $("#ecommrpasswsd").css('border-color', '#DF7E20');
+            document.getElementById("e_rpwd").innerHTML = "";
+            yz();
+        }
+    }
+
+    function docheckPhone() {
+        var phone = document.getElementById("phone").value;
+        if (phone == "") {
+            $("#e_phone").css('color', 'red');
+            $("#phone").css('border-color', 'red');
+            document.getElementById("e_phone").innerHTML = "<?php echo $this->translate('phone') . $this->translate('de_null');?>";
+            /*手机号码不能为空*/
+            document.register_form.sub.disabled = true;
+            return;
+        } else {
+            $("#phone").css('border-color', '#DF7E20');
+            document.getElementById("e_phone").innerHTML = "";
+            yz();
+        }
+    }
+</script>
+</html>

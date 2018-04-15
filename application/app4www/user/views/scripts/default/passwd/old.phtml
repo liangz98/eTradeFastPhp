@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>用户中心-修改棉麻-信天邮</title>
+<link rel="shortcut icon" type="image/x-icon" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/images/ui/favicon.ico" />
+<link type="text/css" rel="stylesheet" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/css/common.css" />
+<link type="text/css" rel="stylesheet" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/css/user.css" />
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/seed.form.js"></script>
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/jquery.form.js"></script>
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/www.js"></script>
+<script type="text/javascript">
+function update(){
+            SeedMsgBox('正在保存中，请稍候...');
+            var options = {
+                target:     '#SeedMsgTxt',
+                url:        '<?php echo $this->baseUrl();?>/passwd',
+                success: function() {
+                }
+            };
+            $('#post_form').ajaxSubmit(options);
+}
+</script>
+</head>
+<body>
+<?php echo $this->render('default/header.phtml');?>
+<div id="content">
+	<div class="bigdiv">
+    	<div class="userdiv">
+             <?php echo $this->render('default/menu.phtml');?>
+            <div class="user_r">
+            	<div class="location">您的位置：帐号管理 &gt; 修改密码</div>
+                <div class="user_nav">
+                	<ul>
+                    	<li class="crumb"><a>修改密码</a></li>
+                    </ul>
+                </div>
+                <form name="post_form" id="post_form" method="post" action="">
+                <div class="user_form">
+                	<p>原始密码：<input class="user_txt2" name="old_passwd" id="old_passwd" type="text" /></p>
+                    <p>新 密 码：<input class="user_txt2" name="new_passwd1" id="new_passwd1" type="password" /></p>
+                    <p>确认密码：<input class="user_txt2" name="new_passwd2" id="new_passwd2" type="password" /></p>
+                    <p><input class="user_bnt2" name="" type="button" value="确认提交" onclick="update()"/></p>
+                </div>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<?php echo $this->render('default/footer.phtml');?>
+<?php echo $this->render('default/right_fix.phtml');?>
+</body>
+</html>

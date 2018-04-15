@@ -1,0 +1,12 @@
+table tr td{padding:0;color:#4f5052;border-top:none;}
+.admin_form{border:none;float:none;}
+.admin_form th,.admin_form td{border-bottom:none;padding:8px 5px;text-align:left;}
+.admin_form td strong{font-weight:normal;}
+.admin_form td textarea{width:900px;}
+.admin_form td#buy_area table{table-layout:auto;}
+
+.reset_button{width:87px;height:32px;background:#fff;color:#313131;text-align:center;border:1px solid #c6c7cb;font-weight:bold;}
+.batch{border-bottom:none;text-align:right;margin-bottom:30px;}
+
+/* supplier */
+#main_group table td input{width:80px;height:14px;padding:5px;border:1px solid #cfcfcf;background:url(../images/center/admin_txtbg1.gif);}

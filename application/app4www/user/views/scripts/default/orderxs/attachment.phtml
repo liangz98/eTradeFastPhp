@@ -1,0 +1,226 @@
+<div class="info_tit">
+    <h4><!--文档上传--><?php echo $this->translate('file').$this->translate('download');?></h4>
+    <em id="san_up"></em>
+</div>
+<div id="at_up" class="clearfix" style="display:block;width: 900px;margin: 0 auto 20px;">
+	<!--订单附件-->
+    <?php if(is_array($this->ODOD) && count($this->ODOD)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->ODOD_name;?></h5>
+        <?php foreach ($this->ODOD as $k=>$attach):?>
+            <dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+                <span class="fr"><?php echo $this->translate('creatdate')." ".date('Y-m-d H:i:s',strtotime($attach['createTime']));?></span>
+                <em class="new_upicon"></em>
+                <a class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach['attachID'].'&vid='.$attach['verifyID'];?>" download>
+                    <?php echo $attach['name'];?>
+				</a>
+            </dl>
+        <?php endforeach; ?>
+    <?php endif;?>
+
+	<!--委托书-->
+    <?php if(is_array($this->ODTA) && count($this->ODTA)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->ODTA_name;?></h5>
+        <?php foreach ($this->ODTA as $k=>$attach):?>
+            <dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+                <span class="fr"><?php echo $this->translate('creatdate')." ".date('Y-m-d H:i:s',strtotime($attach['createTime']));?></span>
+                <em class="new_upicon"></em>
+                <a class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach['attachID'].'&vid='.$attach['verifyID'];?>" download>
+                    <?php echo $attach['name'];?>
+				</a>
+            </dl>
+        <?php endforeach; ?>
+    <?php endif;?>
+
+	<!--合同范本-->
+    <?php if(is_array($this->CRCT) && count($this->CRCT)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->CRCT_name;?></h5>
+        <?php foreach ($this->CRCT as $k=>$attach):?>
+            <dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+                <span class="fr"><?php echo $this->translate('creatdate')." ".date('Y-m-d H:i:s',strtotime($attach['createTime']));?></span>
+                <em class="new_upicon"></em>
+                <a class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach['attachID'].'&vid='.$attach['verifyID'];?>" download>
+                    <?php echo $attach['name'];?>
+				</a>
+            </dl>
+        <?php endforeach; ?>
+    <?php endif;?>
+
+	<!--卖家计价单-->
+    <?php if(is_array($this->ODVQ) && count($this->ODVQ)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->ODVQ_name;?></h5>
+        <?php foreach ($this->ODVQ as $k=>$attach):?>
+            <dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+                <span class="fr"><?php echo $this->translate('creatdate')." ".date('Y-m-d H:i:s',strtotime($attach['createTime']));?></span>
+                <em class="new_upicon"></em>
+                <a class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach['attachID'].'&vid='.$attach['verifyID'];?>" download>
+                    <?php echo $attach['name'];?>
+				</a>
+            </dl>
+        <?php endforeach; ?>
+    <?php endif;?>
+	
+	<!--买家计价单-->
+    <?php if(is_array($this->ODBQ) && count($this->ODBQ)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->ODBQ_name;?></h5>
+        <?php foreach ($this->ODBQ as $k=>$attach):?>
+            <dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+                <span class="fr"><?php echo $this->translate('creatdate')." ".date('Y-m-d H:i:s',strtotime($attach['createTime']));?></span>
+                <em class="new_upicon"></em>
+                <a class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach['attachID'].'&vid='.$attach['verifyID'];?>" download>
+                    <?php echo $attach['name'];?>
+				</a>
+            </dl>
+        <?php endforeach; ?>
+    <?php endif;?>
+	
+	<!--质量保证函模板-->
+    <?php if(is_array($this->DLQT) && count($this->DLQT)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->DLQT_name;?></h5>
+        <?php foreach ($this->DLQT as $k=>$attach):?>
+            <dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+                <span class="fr"><?php echo $this->translate('creatdate')." ".date('Y-m-d H:i:s',strtotime($attach['createTime']));?></span>
+                <em class="new_upicon"></em>
+                <a class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach['attachID'].'&vid='.$attach['verifyID'];?>" download>
+                    <?php echo $attach['name'];?>
+				</a>
+            </dl>
+        <?php endforeach; ?>
+    <?php endif;?>
+
+	<!--收货确认函模板-->
+    <?php if(is_array($this->DLCT) && count($this->DLCT)>0):?>
+		<h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->DLCT_name;?></h5>
+        <?php foreach ($this->DLCT as $k=>$attach):?>
+			<dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+				<span class="fr"><?php echo $this->translate('creatdate')." ".date('Y-m-d H:i:s',strtotime($attach['createTime']));?></span>
+				<em class="new_upicon"></em>
+				<a class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach['attachID'].'&vid='.$attach['verifyID'];?>" download>
+                    <?php echo $attach['name'];?>
+				</a>
+			</dl>
+        <?php endforeach; ?>
+    <?php endif;?>
+	
+	<!--订舱单-->
+    <?php if(is_array($this->SOTM) && count($this->SOTM)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->SOTM_name;?></h5>
+        <?php foreach ($this->SOTM as $k=>$attach):?>
+            <dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+                <span class="fr"><?php echo $this->translate('creatdate')." ".date('Y-m-d H:i:s',strtotime($attach['createTime']));?></span>
+                <em class="new_upicon"></em>
+                <a class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach['attachID'].'&vid='.$attach['verifyID'];?>" download>
+                    <?php echo $attach['name'];?>
+				</a>
+            </dl>
+        <?php endforeach; ?>
+    <?php endif;?>
+
+	<!--派车单-->
+    <?php if(is_array($this->TOTM) && count($this->TOTM)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->TOTM_name;?></h5>
+        <?php foreach ($this->TOTM as $k=>$attach):?>
+            <dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+                <span class="fr"><?php echo $this->translate('creatdate')." ".date('Y-m-d H:i:s',strtotime($attach['createTime']));?></span>
+                <em class="new_upicon"></em>
+                <a class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach['attachID'].'&vid='.$attach['verifyID'];?>" download>
+                    <?php echo $attach['name'];?>
+				</a>
+            </dl>
+        <?php endforeach; ?>
+    <?php endif;?>
+	<!--报关单-->
+    <?php if(is_array($this->EDCT) && count($this->EDCT)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->EDCT_name;?></h5>
+        <?php foreach ($this->EDCT as $k=>$attach):?>
+            <dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+                <span class="fr"><?php echo $this->translate('creatdate')." ".date('Y-m-d H:i:s',strtotime($attach['createTime']));?></span>
+                <em class="new_upicon"></em>
+                <a class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach['attachID'].'&vid='.$attach['verifyID'];?>" download>
+                    <?php echo $attach['name'];?>
+				</a>
+            </dl>
+        <?php endforeach; ?>
+    <?php endif;?>
+	<!--装箱单-->
+    <?php if(is_array($this->PL4C) && count($this->PL4C)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->PL4C_name;?></h5>
+        <?php foreach ($this->PL4C as $k=>$attach):?>
+            <dl class="fl" style="width:90%; padding: 0 20px;height:30px;">
+                <span class="fr"><?php echo $this->translate('creatdate'). " " .date('Y-m-d H:i:s',strtotime($attach['createTime']));?></span>
+                <em class="new_upicon"></em>
+                <a class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'].'/doc/download.action?sid='.session_id().'&nid='.$attach['attachID'].'&vid='.$attach['verifyID'];?>" download>
+                    <?php echo $attach['name'];?>
+				</a>
+            </dl>
+        <?php endforeach; ?>
+    <?php endif;?>
+</div>
+<div class="info_tit">
+    <h4><!--文档上传--><?php echo $this->translate('file').$this->translate('upload');?></h4>
+    <em id="san_down"></em>
+</div>
+<div id="at_down" class="clearfix" style="display: block; width: 900px;margin: 0 auto 20px;">
+	<!--盖章委托书-->
+    <?php if(is_array($this->ODSE) && count($this->ODSE)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->ODSE_name;?></h5>
+        <ul >
+            <?php echo $this->showDoc($this->ODSE);?>
+        </ul>
+    <?php endif;?>
+	<!--盖章合同-->
+    <?php if(is_array($this->CRSE) && count($this->CRSE)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->CRSE_name;?></h5>
+        <ul>
+            <?php echo $this->showDoc($this->CRSE);?>
+        </ul>
+    <?php endif;?>
+	<!--盖章质保函-->
+    <?php if(is_array($this->DLQF) && count($this->DLQF)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->DLQF_name;?></h5>
+        <ul >
+            <?php echo $this->showDoc($this->DLQF);?>
+        </ul>
+    <?php endif;?>
+
+	<!--收货确认函正本-->
+    <?php if(is_array($this->DLCF) && count($this->DLCF)>0):?>
+		<h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->DLCF_name;?></h5>
+		<ul >
+            <?php echo $this->showDoc($this->DLCF);?>
+		</ul>
+    <?php endif;?>
+	
+	<!-- 物流相关 -->
+	<!--备货相关附件查看-->
+    <?php if(is_array($this->DLPG) && count($this->DLPG)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->DLPG_name;?></h5>
+        <ul >
+            <?php echo $this->showDoc($this->DLPG);?>
+        </ul>
+    <?php endif;?>
+	<!--验货相关附件查看-->
+    <?php if(is_array($this->DLEG) && count($this->DLEG)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->DLEG_name;?></h5>
+        <ul >
+            <?php echo $this->showDoc($this->DLEG);?>
+        </ul>
+    <?php endif;?>
+	<!--发货相关附件查看-->
+    <?php if(is_array($this->DLDG) && count($this->DLDG)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->DLDG_name;?></h5>
+        <ul >
+            <?php echo $this->showDoc($this->DLDG);?>
+        </ul>
+    <?php endif;?>
+	<!--收货相关附件查看-->
+    <?php if(is_array($this->DLRG) && count($this->DLRG)>0):?>
+        <h5 style="float: left;width: 100%;text-align: left;margin: 20px 0;"><?php echo $this->DLRG_name;?></h5>
+        <ul >
+            <?php echo $this->showDoc($this->DLRG);?>
+        </ul>
+    <?php endif;?>
+</div>
+
+<script>
+
+</script>

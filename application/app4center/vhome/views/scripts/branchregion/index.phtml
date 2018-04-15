@@ -1,0 +1,125 @@
+<?php echo $this->render('header.phtml'); ?>
+<script type="text/javascript">
+function doadd(){
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {
+	   },
+	   messages: {
+	   },
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/branchregion/add',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+}
+function doupdate(){
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {
+	   	 br_id: "required",
+         br_name: "required"
+	   },
+	   messages: {
+	   },
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/branchregion/update',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+}
+function dodelete(){
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {
+	   },
+	   messages: {
+	   },
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/branchregion/delete',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+}
+</script>
+<h1>网点分区</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="添加" onclick="document.location='<?php echo $this->BaseUrl();?>/branchregion/index/'"/>
+  </p>
+</div>
+<table width="100%" border="0">
+  <form name="post_form" method="post" action="" id="post_form" >
+    <tr>
+      <td valign="top" style="width:200px;">
+        <script language="javascript" type="text/javascript">
+		d = new dTree("d","/images/center/");
+		d.add(0,-1,"网点分区");
+		<?php if(is_array($this->regions)):?>
+		<?php foreach($this->regions as $key => $region):?>
+		d.add("<?php echo $region['br_id'];?>","<?php echo $region['parent'];?>","<?php echo $this->escape($region['br_name']);?>","<?php echo $this->BaseUrl();?>/branchregion/index/br_id/<?php echo $this->escape($region['br_id']);?>");
+		<?php endforeach;?>
+		<?php endif;?>
+		document.write(d);
+		</script></td>
+      <td valign="top"><table class="admin_form">
+          <tr>
+            <td><strong>所属：</strong>
+              <p>
+                <select name="parent" id="parent">
+				  <option value="0"></option>
+				  <?php if(is_array($this->regionoptions)):?>
+				  <?php foreach($this->regionoptions as $key => $region):?>
+				  <option value="<?php echo $region['br_id'];?>" <?php if($region['br_id']==$this->region['parent']):?>selected<?php endif;?>><?php echo $region['br_name'];?></option>
+				  <?php endforeach;?>
+				  <?php endif;?>
+				  </select>
+              </p></td>
+         </tr>
+         <tr>
+		      <td><strong>分区名称：</strong>
+						<p><input class="admin_txt1" name="br_name" id="br_name" type="text" value="<?php echo $this->escape($this->region['br_name']);?>" /></p></td>
+		 </tr>
+		 <tr>
+		      <td><strong>分区排序：</strong>
+						<p><input class="admin_txt1" name="order_by" id="order_by" type="text" value="<?php echo $this->escape($this->region['order_by']);?>" /></p></td>
+		 </tr>
+         <tr>
+            <td><?php if($this->region['br_id']>0):?>
+            <input type="hidden" name="br_id" id="br_id" value="<?php echo $this->region['br_id'];?>">
+              <input class="admin_bnt" name="updateConfirm" type="submit" value="修改" onclick="doupdate();"/>
+              &nbsp;
+              <input class="admin_bnt" name="deleteConfirm" type="submit" value="删除" onclick="dodelete();"/>
+              &nbsp;
+              <?php else:?>
+              <input class="admin_bnt" name="addConfirm" type="submit" value="添加" onclick="doadd();"/>
+              &nbsp;
+              <?php endif;?>
+              <input class="admin_bnt" name="reset" type="reset" value="重置"/></td>
+          </tr>
+        </table>
+  </form>
+    </td>
+  
+    </tr>
+  
+</table>
+<?php echo $this->render("footer.phtml") ?> 

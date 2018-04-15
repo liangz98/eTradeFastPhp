@@ -1,0 +1,75 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+if(parent.$_('admincpnav')) 
+	parent.$_('admincpnav').innerHTML='上传系统&nbsp;&raquo;&nbsp;添加资源';
+</script>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {
+	   	 res_name: "required",
+	     res_desc: "required"
+	   },
+	   messages: {
+	   	 res_name: "名称不能为空！",
+	     res_desc: "说明不能为空！"
+	   },
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/resource/add',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+</script>
+
+<h1>添加资源 - <?php echo $this->module['mod_desc'];?></h1>
+<div class="textnav">
+  <p>
+    		<input class="admin_bnt2" name="" type="button" value="列表" onclick="document.location='<?php echo $this->BaseUrl();?>/resource/index'"/>
+    		<input class="admin_bnt2" name="" type="button" value="添加" onclick="document.location='<?php echo $this->BaseUrl();?>/resource/add'"/>
+    	</p>
+</div>
+    
+    <div class="main">
+   		<form name="post_form" method="post" action="" id="post_form" >
+		<ul class="xg">
+          <li>
+              <strong>资源名称：</strong>
+              <p><input name="res_name" id="res_name" value="" type="text" /></p>
+          </li>
+          <li>
+              <strong>资源说明：</strong>
+              <p><input name="res_desc" id="res_desc" value="" type="text" /></p>
+          </li>
+          <li>
+              <strong>记录日志：</strong>
+              <p>是否记录<input type="checkbox" name="is_log" id="is_log" value="1" /></p>
+          </li>
+          <li>
+              <strong>权限列表：</strong>
+              <div>
+              	<?php if(is_array($this->privileges)):?>
+				<?php foreach($this->privileges as $privilege):?>
+				<input type="checkbox" name="priv_names[]" id="priv_name<?php echo ($privilege['priv_id']);?>" value="<?php echo ($privilege['priv_name']);?>"><label for="priv_name<?php echo ($privilege['priv_id']);?>"><?php echo ($privilege['priv_name']);?>（<?php echo ($privilege['priv_desc']);?>）</label>&nbsp;&nbsp;
+				<?php endforeach; ?>
+				<?php endif;?>
+			   </div>
+          </li> 
+      </ul>
+      <div class="batch">
+      	<input name="" type="submit" value="提交" />
+      </div>
+	  </form>
+	</div>
+   	<div class="bg1">&nbsp;</div>
+</div>
+
+<?php echo $this->render("footer.phtml") ?>
+

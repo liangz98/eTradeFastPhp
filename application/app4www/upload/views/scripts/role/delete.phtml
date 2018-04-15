@@ -1,0 +1,72 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+if(parent.$_('admincpnav'))
+    parent.$_('admincpnav').innerHTML='上传系统&nbsp;&raquo;&nbsp;前台角色';
+</script>
+
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/role/delete',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+</script>
+<div id="information">
+  <div class="content">
+   <div class="title">
+    <strong>删除前台角色</strong>
+   		<span>
+   			<input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back();"/>
+   		</span>
+   </div>
+   
+   <form name="post_form" method="post" action="" id="post_form" >
+    <div class="main">
+    	<div class="list_title">
+	      <ul>
+	         <li style="width:15%;">编号</li>
+	         <li style="width:50%;">名称</li>
+	         <li style="width:35%;">说明</li>
+	      </ul>
+	    </div>
+	    
+	    <div class="list_content">
+		<?php if(is_array($this->roles)):?>
+		<?php foreach($this->roles as $role):?>
+		<ul>
+			<li style="width:15%;">
+				<input type="checkbox" id="role_id<?php echo ($role['role_id'])?>" name="role_id[]" checked value="<?php echo ($role['role_id'])?>">
+				<?php echo ($role['role_id'])?>
+        	</li >
+        	<li style="width:50%;">
+        		<?php echo ($role['role_name'])?>
+        	</li>
+        	<li style="width:35%;">
+        		<?php echo ($role['role_desc'])?>
+        	</li>
+		</ul>
+		<?php endforeach; ?>
+		<?php endif;?>
+    	</div>
+    	
+		<div class="batch">
+			<input type="submit" name="" value="确认删除" onclick="return confirm('确认删除选择记录？')">
+		</div>
+  </div>
+  </form>
+	<div class="bg1">&nbsp;</div>
+  </div>
+</div>
+<?php echo $this->render("footer.phtml") ?>

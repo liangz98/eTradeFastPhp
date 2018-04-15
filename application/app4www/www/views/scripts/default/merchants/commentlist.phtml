@@ -1,0 +1,16 @@
+
+<?php if( !empty($this->commentList)):?>
+<?php foreach($this->commentList as $comment):?>
+
+    <li>
+        <div class="pic"><img src="<?php echo $this->showImage($comment['user_face']);?>"/></div>
+        <div class="pl_cont">
+           <p class="name"><small><?php echo date('Y-m-d', $comment['comment_time']);?></small><?php echo $this->escape($comment['user_name']);?><span class="star"><i style="width:<?php echo $comment['score_desc']*20;?>%;"></i></span></p>
+           <div class="pl_txt">
+                <h3><?php echo $this->ShowContent($comment['comment_title'])?$this->ShowContent($comment['comment_title']):"暂无";?></h3>
+                <p><?php echo $this->ShowContent($comment['comment_content'])?$this->ShowContent($comment['comment_content']):"暂无";?></p>
+           </div>
+        </div>
+    </li>
+<?php endforeach; ?>
+<?php endif; ?>

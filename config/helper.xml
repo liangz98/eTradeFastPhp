@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<configdata>
+  <position_index_name>首页</position_index_name>
+  <position_implode_str> » </position_implode_str>
+  <goods_path>goods</goods_path>
+  <goods_position_name>产品中心</goods_position_name>
+  <goods_search_attr_group>default</goods_search_attr_group>
+  <article_path>article</article_path>
+  <news_path>news</news_path>
+</configdata>

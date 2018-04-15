@@ -1,0 +1,181 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript" src="/js/center/mootools.js"></script>
+<h1>设置快递模板</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back()"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_form">
+    <tr>
+      <td><strong>单据名称：</strong>
+        <p><?php echo ($this->tpl['pt_name']);?></p></td>
+    </tr>
+    <tr>
+      <td><strong>单据尺寸：</strong>
+        <p> <?php echo ($this->tpl['pt_width']);?>mm &nbsp;× <?php echo ($this->tpl['pt_height']);?>mm </p></td>
+    </tr>
+    <tr>
+      <td><strong>单据打印项：</strong>
+        <p>
+          <select onchange="printer_editor.addElement(this.value , this.options[this.selectedIndex].text);this.options[0].selected=true;" style="width:100px;">
+            <option value="--">添加</option>
+            <?php 
+            				if ($this->labels):
+            				foreach ($this->labels as $k=>$v):
+            					?>
+            <option value="<?php echo $v['ptcl_name'];?>"><?php echo $v['ptcl_desc'];?></option>
+            <?php
+            				endforeach;
+            				endif;
+            				?>
+          </select>
+          <input type="button" name="delmodl" value="删除" style="width:50px;" onclick="printer_editor.delItem()">
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>数据项控制：</strong>
+        <p>
+          <select name="font" style="width:50px;height:20px;" onchange="if(this.value!='--')printer_editor.setFontSize(this.value);">
+            <option value="--">大小</option>
+            <option value="10">10</option>
+            <option value="12">12</option>
+            <option value="14">14</option>
+            <option value="14">15</option>
+            <option value="14">16</option>
+            <option value="14">17</option>
+            <option value="18">18</option>
+            <option value="20">20</option>
+            <option value="24">24</option>
+            <option value="27">27</option>
+            <option value="30">30</option>
+            <option value="36">36</option>
+          </select>
+          <select style="width:100px;"  onchange="if(this.value!='--')printer_editor.setFont(this.value);">
+            <option value="--">字体</option>
+            <option value="宋体">宋体</option>
+            <option value="黑体">黑体</option>
+            <option value="Arial">Arial</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Serif">Serif</option>
+            <option value="Cursive">Cursive</option>
+            <option value="Fantasy">Fantasy</option>
+            <option value="Sans-Serif">Sans-Serif</option>
+          </select>
+          <select style="width:50px;height:20px;"  onchange="if(this.value!='--')printer_editor.setFontSpace(this.value);" name="jianju">
+            <option value="--">间距</option>
+            <option value="-4">-4</option>
+            <option value="-2">-2</option>
+            <option value="0">0</option>
+            <option value="2">2</option>
+            <option value="4">4</option>
+            <option value="6">6</option>
+            <option value="8">8</option>
+            <option value="10">10</option>
+            <option value="12">12</option>
+            <option value="14">14</option>
+            <option value="16">16</option>
+            <option value="18">18</option>
+            <option value="20">20</option>
+            <option value="22">22</option>
+            <option value="24">24</option>
+            <option value="26">26</option>
+            <option value="28">28</option>
+            <option value="30">30</option>
+          </select>
+          <input type="button" name="strong" value=" 粗体 " style="width:50px;" onclick="printer_editor.setBorder(1);">
+          <input type="button" name="italic" value=" 斜体 " style="width:50px;" onclick="printer_editor.setItalic(1);">
+          <img src="/images/center/print/transparent.gif" border="none" align="middle" style="width: 16px; height: 16px; background-image: url(/images/center/print/ImageBundle.gif); background-repeat: no-repeat; background-position: 0pt -608px;" onclick="printer_editor.setAlign('left')"/> <img src="/images/center/print/transparent.gif" border="none" align="middle" style="width: 16px; height: 16px; background-image: url(/images/center/print/ImageBundle.gif); background-repeat: no-repeat; background-position: 0pt -640px;" onclick="printer_editor.setAlign('center')"/> <img src="/images/center/print/transparent.gif" border="none" align="middle" style="width: 16px; height: 16px; background-image: url(/images/center/print/ImageBundle.gif); background-repeat: no-repeat; background-position: 0pt -656px;" onclick="printer_editor.setAlign('right')"/> </p>
+        <input id="dly_printer_bg" type="hidden" name="tmp_bg" value=""/>
+        <input type="hidden" value="" id="prt_tmpl_data" name="prt_tmpl_data"></td>
+    </tr>
+    <tr>
+      <td><div id="dly_printer_editor" style="border: 1px solid rgb(153, 153, 153); height: <?php echo ($this->tpl['pt_height']*3.78);?>px; width: <?php echo ($this->tpl['pt_width']*3.78);?>px;"> </div></td>
+    </tr>
+  </table>
+  <div class="batch">
+    <input type="hidden" name="pt_id" id="pt_id" value="<?php echo ($this->tpl['pt_id']);?>">
+    <input type="button" class="admin_bnt" name="save" value="保存" onclick="printer_editor.save();" >
+  </div>
+</form>
+<script type="text/javascript">
+var printer_editor = {
+    screenDPI:96,
+    init:function(options,xmldata,bgimg){
+        this.screenDPI = options.dpi;
+        this.swf = new Swiff('/images/center/print/printer.swf?<?php echo time();?>', {
+            width:  '100%',
+            height: '100%',
+            id:'dly_printer_editor_flash',
+            container: $('dly_printer_editor'),
+            params:{
+                wMode:'opaque'
+            },
+            vars:{data:xmldata,bg:bgimg,copyright:'shopex'}
+        });
+    },
+    setBorder:function(){
+        $('dly_printer_editor_flash').setBorder();
+    },
+    setItalic:function(){
+        $('dly_printer_editor_flash').setItalic();
+    },
+    setFontSize:function(){        
+        $('dly_printer_editor_flash').setFontSize(arguments[0]);
+    },
+    setAlign:function(){
+        $('dly_printer_editor_flash').setAlign(arguments[0]);
+    },
+    setFontSpace:function(){
+        $('dly_printer_editor_flash').setFontSpace(arguments[0]);
+    },
+        delItem:function(){
+                $('dly_printer_editor_flash').delItem();
+        },
+    setPicture:function(url){
+        $('dly_printer_editor_flash').setBg(url);
+    },
+    resize:function(){
+        var size = {width:$('ipt_prt_tmpl_width').value.toInt()*printer_editor.screenDPI/25.4,height:$('ipt_prt_tmpl_height').value.toInt()*printer_editor.screenDPI/25.4};
+        $('dly_printer_editor').setStyles(size);
+    },
+    addElement:function(){
+        $('dly_printer_editor_flash').addElement(arguments[0],arguments[1]);
+    },
+    save:function(){
+        var data = $('dly_printer_editor_flash').getData();
+
+        $('prt_tmpl_data').value = unascii(data);
+        $('post_form').submit();
+    },
+    setFont:function(){
+        $('dly_printer_editor_flash').setFont(arguments[0]);
+    },
+    lockbg:function(t){
+        $('dly_printer_editor_flash').lockBg();
+    },
+    delBg:function(){
+        if($('dly_printer_bg')){
+            $('dly_printer_bg').value='__none__';
+        }else{
+            new Element("input",{id:"dly_printer_bg",type:"hidden",name:"tmp_bg",value:""}).inject("dly_printer_form");
+        }
+        $('dly_printer_editor_flash').delBg();
+    },
+    uploadBg:function(){
+    	upload_tpl('printtmpl' , 'dly_printer_bg' , 'printtmpl'); 
+    }
+};
+printer_editor.init({dpi:'96'},'<?php echo $this->tpl['pt_data'];?>','<?php echo $this->seed_Setting['upload_view_server'];?><?php echo $this->tpl['pt_bg'];?>');
+
+function ascii(str)
+{
+return str.replace(/[^\u0000-\u00FF]/g,function($0){return escape($0).replace(/(%u)(\w{4})/gi,"\\u$2")});
+}
+function unascii(str)
+{
+  return unescape(str.replace(/\\u/g,"%u"));
+}
+</script> 
+<?php echo $this->render("footer.phtml") ?> 

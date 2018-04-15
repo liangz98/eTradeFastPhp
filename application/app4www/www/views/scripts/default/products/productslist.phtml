@@ -1,0 +1,13 @@
+<?php if(is_array($this->goodses)):?>
+<?php foreach($this->goodses as $goods):?>
+				<li>
+                    <a href="<?php echo $this->showGoodsUrl($goods);?>"><img src="<?php echo $this->showImage($goods['goods_m_list_image']);?>" alt="<?php echo $this->escape($goods['goods_name']);?>"/></a>
+                    <p class="name"><?php echo $this->escape($goods['goods_name']);?></p>
+                    <p class="price">
+                    	<small><a></a></small>
+                        <em>¥<?php echo $this->escape($goods['shop_price'])?></em>
+                        <del>¥<?php echo $this->escape($goods['market_price'])?></del>
+                    </p>
+                </li>
+<?php endforeach;?>
+<?php endif;?>

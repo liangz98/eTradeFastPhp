@@ -1,0 +1,13 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+    function up(){
+        var DDurl = document.getElementById("i");
+        DDurl.src = "/user/data/index" ;
+    }
+
+</script>
+    <div class="batch">
+        <input name="" type="submit" value="更新" class="admin_bnt" onclick="up()"/>
+    </div>
+<iframe id="i" frameborder="0" scrolling = "no" height="400px" width="75%"></iframe>
+<?php echo $this->render("footer.phtml") ?>

@@ -1,0 +1,79 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {
+	   	 old_password: {
+			required: true
+		},
+	   	 password: {
+			required: true,
+			minlength: 6
+		},
+		confirm_password: {
+			required: true,
+			minlength: 6,
+			equalTo: "#password"
+		}
+	   },
+	   messages: {
+	   	 old_password: {
+			required: '请输入原密码'
+		},
+	   	 password: {
+			required: '请输入密码',
+			minlength: '新密码必须大于6个字符'
+		},
+		confirm_password: {
+			required: '请确认你的新密码',
+			equalTo: '两次密码输入不一致',
+			minlength: '密码必须大于6个字符'
+		}
+	   },
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+				target:     '#SeedMsgTxt',
+				url:   '<?php echo $this->BaseUrl();?>/admin/passwd/',
+			    success: function(data) {
+					
+				}
+			};
+			$('#post_form').ajaxSubmit(options);
+			return false;
+		}
+	});
+});
+</script>
+
+<h1>修改密码</h1>
+<form name="post_form" method="post" action="" id="post_form" >
+<table class="admin_form">
+  <tr>
+    <td><p><strong>原密码：</strong></p>
+      <p>
+        <input name="old_password" id="old_password" value="" type="password" class="admin_txt1"/>
+      </p></td>
+  </tr>
+  <tr>
+    <td><p><strong>新密码：</strong></p>
+      <p>
+          <input name="password" id="password" value="" type="password" class="admin_txt1"/>
+      </p></td>
+  </tr>
+    <tr>
+    <td><p><strong>密码确认：</strong></p>
+      <p>
+       <input name="confirm_password" id="confirm_password" value="" type="password" class="admin_txt1"/>
+      </p></td>
+  </tr> 
+  <tr>
+    <td>
+      <p>
+         <input name="" type="submit" class="admin_bnt"  value="提交" />
+      </p></td>
+  </tr>
+</table>
+</form>
+<?php echo $this->render("footer.phtml") ?>

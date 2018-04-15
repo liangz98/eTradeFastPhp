@@ -1,0 +1,172 @@
+
+<script type="text/javascript" src="/ky/js/jquery.js"></script>
+<script>
+
+   function QRht(obj){
+//       var nid = $('.img-view input[name=nid]').val();
+//       var name = $('.img-view input[name=name]').val();
+//       var size = $('input[name=size]').val();
+//       var attachType = $('input[name=attachType]').val();
+       var nidArr="";
+       var nid =document.getElementsByName("nid");
+       for (var i = 0, j = nid.length; i < j; i++){
+           nidArr  += nid[i].value+"|";
+       }
+       var nameArr="";
+       var name =document.getElementsByName("name");
+       for (var i = 0, j = name.length; i < j; i++){
+           nameArr  += name[i].value+"|";
+       }
+       var sizeArr="";
+       var size =document.getElementsByName("size");
+       for (var i = 0, j = size.length; i < j; i++){
+           sizeArr  += size[i].value+"|";
+       }
+       var attachTypeArr="";
+       var attachType =document.getElementsByName("attachType");
+       for (var i = 0, j = attachType.length; i < j; i++){
+           attachTypeArr  += attachType[i].value+",";
+       }
+       var orderID=obj;
+      $.post(
+           '<?php echo $this->BaseUrl();?>/orderxs/agree',
+           {'orderID':orderID,'name':nameArr,'nid':nidArr,'size':sizeArr,'attachType':attachTypeArr},
+
+           function(data,status){
+           alert('数据：'+data+'状态：'+status)
+
+           },'json');
+     //  $('#delete_form').ajaxSubmit(options);
+   }
+</script>
+<div class="order_progress">
+    <div class="info_tit clearfix">
+        <h4><!--最近更新订单进度--><?php echo $this->translate('orderStatus');?></h4>
+    </div>
+    <div class="progress">
+        <p class="icon_bg1  <?php if ($this->vestut==0):?><?php echo 'go';?><?php elseif($this->vestut>0):?><?php echo 'finish';?><?php endif;?> "><!--确认订单--><?php echo $this->translate('confirming');?></p>
+        <p class="icon_bg2 <?php if ($this->vestut==1):?><?php echo 'go';?><?php elseif($this->vestut>1):?><?php echo 'finish';?><?php endif;?>"><!--签订合同--><?php echo $this->translate('sign');?></p>
+        <p class="icon_bg2 <?php if ($this->vestut==3):?><?php echo 'go';?><?php elseif($this->vestut>3):?><?php echo 'finish';?><?php endif;?>"><!--备货--><?php echo $this->translate('rdGOODS');?></p>
+        <p class="icon_bg2 <?php if ($this->vestut==7):?><?php echo 'go';?><?php elseif($this->vestut>7):?><?php echo 'finish';?><?php endif;?>"><!--发货--><?php echo $this->translate('deGOODS');?></p>
+        <p class="icon_bg2 <?php if ($this->vestut==15):?><?php echo 'go';?><?php elseif($this->vestut>15):?><?php echo 'finish';?><?php endif;?>"><!--结算中--><?php echo $this->translate('calculate');?></p>
+        <p class="icon_bg3 <?php if ($this->vestut==63):?><?php echo 'go';?><?php elseif($this->vestut>63):?><?php echo 'finish';?><?php endif;?>"><!--完成--><?php echo $this->translate('finish');?></p>
+    </div>
+    <div class="clearfix pb10 <?php if ($this->vestut<0):?><?php echo 'dn';?><?php endif;?>">
+        <div class="or_curs tl"><lable class="or_lb"><!--订单号码--><?php echo $this->translate('orderNo');?></lable><span class="w_curstor"><?php echo $this->newE["orderNo"];?></div>
+        <div class="or_curs tl"><lable class="or_lb"><!--订单汇率--><?php echo $this->translate('Prities');?></lable><span class="w_curstor"><?php echo $this->newE["orderNo"];?></div>
+        <div class="or_curs tl"><lable class="or_lb"><!--收入--><?php echo $this->translate('income');?></lable><span class="w_curstor"><?php echo $this->newE["vendorCrnCode"];?><?php echo $this->newE["totalAmount"];?></span></div>
+        <div class="or_curs tl"><lable class="or_lb"><!--支出--><?php echo $this->translate('expend');?></lable><span class="w_curstor"><?php echo $this->newE["vendorCrnCode"];?>1200.98</span></div>
+        <div class="or_curs clearfix" style="width:94%;"><lable class="or_lb"><!--进度说明--><?php echo $this->translate('progressING');?></lable><span class="w_curstor" style="width:740px;">(未生成)</div>
+        <div class="or_curs tl"><lable class="or_lb"><!--当前状态--><?php echo $this->translate('stateING');?></lable><span class="w_curstor"><!--当前订单未开始--></span></div>
+
+    </div>
+    <div class="clearfix pb10 <?php if ($this->vestut!=0):?><?php echo 'dn';?><?php endif;?>">
+        <div class="or_curs tl"><lable class="or_lb"><!--订单号码--><?php echo $this->translate('orderNo');?></lable><span class="w_curstor"><?php echo $this->newE["orderNo"];?></div>
+        <div class="or_curs tl"><lable class="or_lb"><!--订单汇率--><?php echo $this->translate('Prities');?></lable><span class="w_curstor"><?php echo $this->newE["orderNo"];?></div>
+        <div class="or_curs tl"><lable class="or_lb"><!--收入--><?php echo $this->translate('income');?></lable><span class="w_curstor"><?php echo $this->newE["vendorCrnCode"];?><?php echo $this->newE["totalAmount"];?></span></div>
+        <div class="or_curs tl"><lable class="or_lb"><!--支出--><?php echo $this->translate('expend');?></lable><span class="w_curstor"><?php echo $this->newE["vendorCrnCode"];?>1200.98</span></div>
+        <div class="or_curs clearfix" style="width:94%;"><lable class="or_lb"><!--进度说明--><?php echo $this->translate('progressING');?></lable><span class="w_curstor" style="width:740px;">(未生成)</div>
+        <?php if(isAllowVendorConfirm==true):?>
+        <div class="or_curs tl"><lable class="or_lb"><!--当前状态--><?php echo $this->translate('stateING');?></lable><span class="w_curstor"><?php echo $this->newE["orderStatus"];?>XXX<?php echo $this->newE["vendorExecStatus"]?>XXX<?php echo $this->newE["buyerExecStatus"]?></span></div>
+        <div class="or_curs tl"><lable class="or_lb"><!--当前操作--><?php echo $this->translate('operatING');?></lable><span class="yh_red"><a href=<?php echo  WWW.'user/orderxs/confirm?'.base64_encode($this->veorderID);?>><!--确认--></a></span><span><!--我有异议--></span></div>
+        <?php else:?>
+            <div class="or_curs tl"><lable class="or_lb"><!--当前状态--><?php echo $this->translate('stateING');?></lable><span class="w_curstor"><?php echo $this->newE["orderStatus"];?>XXX<?php echo $this->newE["vendorExecStatus"]?>XXX<?php echo $this->newE["buyerExecStatus"]?></span></div>
+            <div class="or_curs tl"><lable class="or_lb"><!--当前操作--><?php echo $this->translate('operatING');?></lable><span class="yh_red"><a style="background: #e5e5e5";><!--确认--><?php echo $this->translate('confirm');?></a></span><span><!--我有异议--><?php echo $this->translate('objection');?></span></div>
+        <?php endif; ?>
+    </div>
+
+
+    <div class="clearfix pb10 <?php if ($this->vestut!=1):?><?php echo 'dn';?><?php endif;?>">
+        <div class="or_curs tl"><lable class="or_lb"><!--订单号码--><?php echo $this->translate('orderNo');?></lable><span class="w_curstor"><?php echo $this->newE["orderNo"];?></div>
+        <div class="or_curs tl"><lable class="or_lb"><!--订单汇率--><?php echo $this->translate('Prities');?></lable><span class="w_curstor"><?php echo $this->newE["orderNo"];?></div>
+        <div class="or_curs tl"><lable class="or_lb"><!--收入--><?php echo $this->translate('income');?></lable><span class="w_curstor"><?php echo $this->newE["vendorCrnCode"];?><?php echo $this->newE["totalAmount"];?></span></div>
+        <div class="or_curs tl"><lable class="or_lb"><!--支出--><?php echo $this->translate('expend');?></lable><span class="w_curstor"><?php echo $this->newE["vendorCrnCode"];?>1200.98</span></div>
+        <div class="or_curs clearfix" style="width:94%;"><lable class="or_lb"><!--进度说明--><?php echo $this->translate('progressING');?></lable><span class="w_curstor" style="width:740px;">(未生成)</div>
+        <!-- 合同签订 -->
+        <div class="yyzz_box"><?php echo session_id();?>
+            <p class="zzname"><!-- 合同 -->合同文件上传</p>
+            <div class="img-read" id="img-read">
+                <input type="hidden" id="name" value="">
+                <input type="hidden" id="size" value="">
+                <input type="hidden" id="attachID" value="">
+                <input type="hidden" id="attachType" value="CRSE">
+                <input type="hidden" id="bizType" value="OD">
+            </div>
+            <div class="demo">
+                <div class="img-view">
+                    <?php if(is_array($this->attlist) && count($this->attlist)>0):?>
+                        <?php foreach ($this->attlist as $k=>$attlist):?>
+                            <img width="125px" height="125px"  src="https://123.207.120.251:8099/etrade/doc/download.action?sid=<?php echo session_id();?>&nid=<?php echo $attlist['attachID'];?>&vid=<?php echo $attlist['verifyID'];?>&size=MIDDLE" name=<?php echo $attlist['name'];?> alt=<?php echo $attlist['attachType'];?>>
+                        <?php endforeach; ?>
+                    <?php endif;?>
+                </div>
+                <div class="upload-image-list clearfix">
+                    <div class="fileinput-button js-add-image"onclick="addWebuploadCurrent($(this))">
+                        <span class="cover_words"></span>
+                        <div class="webuploader-pick">
+                            <a class="fileinput-button-icon" href="javascript:;"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script type="text/javascript" src="/ky/upload/img.js"></script>
+        </div>
+        <?php if(isAllowVendorSign==true):?>
+            <div class="or_curs tl"><lable class="or_lb"><!--当前状态--><?php echo $this->translate('stateING');?></lable><span class="w_curstor"><?php echo $this->newE["orderStatus"];?>XXX<?php echo $this->newE["vendorExecStatus"]?>XXX<?php echo $this->newE["buyerExecStatus"]?></span></div>
+            <div class="or_curs tl"><lable class="or_lb"><!--当前操作--><?php echo $this->translate('operatING');?></lable><span class="yh_red"><a href=<?php echo  WWW.'user/orderxs/confirm?'.base64_encode($this->veorderID);?>><!--确认--></a></span><span><!--我有异议--></span></div>
+        <?php else:?>
+            <div class="or_curs tl"><lable class="or_lb"><!--当前状态--><?php echo $this->translate('stateING');?></lable><span class="w_curstor"><?php echo $this->newE["orderStatus"];?>XXX<?php echo $this->newE["vendorExecStatus"]?>XXX<?php echo $this->newE["buyerExecStatus"]?></span></div>
+            <div class="or_curs tl"><lable class="or_lb"><!--当前操作--><?php echo $this->translate('operatING');?></lable><span class="yh_red"><a style="background: #e5e5e5";><!--确认--><?php echo $this->translate('confirm');?></a></span><span><!--我有异议--><?php echo $this->translate('objection');?></span></div>
+        <?php endif; ?>
+    </div>
+    <div class="clearfix pb10 <?php if ($this->vestut!=3):?><?php echo 'dn';?><?php endif;?>">
+        <div class="or_curs tl"><lable class="or_lb"><!--订单号码--><?php echo $this->translate('orderNo');?></lable><span class="w_curstor"><?php echo $this->newE["orderNo"];?></div>
+        <div class="or_curs tl"><lable class="or_lb"><!--订单汇率--><?php echo $this->translate('Prities');?></lable><span class="w_curstor"><?php echo $this->newE["orderNo"];?></div>
+        <div class="or_curs tl"><lable class="or_lb"><!--收入--><?php echo $this->translate('income');?></lable><span class="w_curstor"><?php echo $this->newE["vendorCrnCode"];?><?php echo $this->newE["totalAmount"];?></span></div>
+        <div class="or_curs tl"><lable class="or_lb"><!--支出--><?php echo $this->translate('expend');?></lable><span class="w_curstor"><?php echo $this->newE["vendorCrnCode"];?>1200.98</span></div>
+        <div class="or_curs clearfix" style="width:94%;"><lable class="or_lb"><!--进度说明--><?php echo $this->translate('progressING');?></lable><span class="w_curstor" style="width:740px;">(未生成)</div>
+        <?php if(isAllowVendorReady==true):?>
+            <div class="or_curs tl"><lable class="or_lb"><!--当前状态--><?php echo $this->translate('stateING');?></lable><span class="w_curstor"><?php echo $this->newE["orderStatus"];?>XXX<?php echo $this->newE["vendorExecStatus"]?>XXX<?php echo $this->newE["buyerExecStatus"]?></span></div>
+            <div class="or_curs tl"><lable class="or_lb"><!--当前操作--><?php echo $this->translate('operatING');?></lable><span class="yh_red"><a href=<?php echo  WWW.'user/orderxs/confirm?'.base64_encode($this->veorderID);?>><!--确认--></a></span><span><!--我有异议--></span></div>
+        <?php else:?>
+            <div class="or_curs tl"><lable class="or_lb"><!--当前状态--><?php echo $this->translate('stateING');?></lable><span class="w_curstor"><?php echo $this->newE["orderStatus"];?>XXX<?php echo $this->newE["vendorExecStatus"]?>XXX<?php echo $this->newE["buyerExecStatus"]?></span></div>
+            <div class="or_curs tl"><lable class="or_lb"><!--当前操作--><?php echo $this->translate('operatING');?></lable><span class="yh_red"><a style="background: #e5e5e5";><!--确认--><?php echo $this->translate('confirm');?></a></span><span><!--我有异议--><?php echo $this->translate('objection');?></span></div>
+        <?php endif; ?>
+     </div>
+    <div class="clearfix pb10 <?php if ($this->vestut!=7):?><?php echo 'dn';?><?php endif;?>">
+        <div class="or_curs tl"><lable class="or_lb"><!--订单号码--><?php echo $this->translate('orderNo');?></lable><span class="w_curstor"><?php echo $this->newE["orderNo"];?></div>
+        <div class="or_curs tl"><lable class="or_lb"><!--订单汇率--><?php echo $this->translate('Prities');?></lable><span class="w_curstor"><?php echo $this->newE["orderNo"];?></div>
+        <div class="or_curs tl"><lable class="or_lb"><!--收入--><?php echo $this->translate('income');?></lable><span class="w_curstor"><?php echo $this->newE["vendorCrnCode"];?><?php echo $this->newE["totalAmount"];?></span></div>
+        <div class="or_curs tl"><lable class="or_lb"><!--支出--><?php echo $this->translate('expend');?></lable><span class="w_curstor"><?php echo $this->newE["vendorCrnCode"];?>1200.98</span></div>
+        <div class="or_curs clearfix" style="width:94%;"><lable class="or_lb"><!--进度说明--><?php echo $this->translate('progressING');?></lable><span class="w_curstor" style="width:740px;">(未生成)</div>
+        <?php if(isAllowVendorDeliver==true):?>
+            <div class="or_curs tl"><lable class="or_lb"><!--当前状态--><?php echo $this->translate('stateING');?></lable><span class="w_curstor"><?php echo $this->newE["orderStatus"];?>XXX<?php echo $this->newE["vendorExecStatus"]?>XXX<?php echo $this->newE["buyerExecStatus"]?></span></div>
+            <div class="or_curs tl"><lable class="or_lb"><!--当前操作--><?php echo $this->translate('operatING');?></lable><span class="yh_red"><a href=<?php echo  WWW.'user/orderxs/confirm?'.base64_encode($this->veorderID);?>><!--确认--></a></span><span><!--我有异议--></span></div>
+        <?php else:?>
+            <div class="or_curs tl"><lable class="or_lb"><!--当前状态--><?php echo $this->translate('stateING');?></lable><span class="w_curstor"><?php echo $this->newE["orderStatus"];?>XXX<?php echo $this->newE["vendorExecStatus"]?>XXX<?php echo $this->newE["buyerExecStatus"]?></span></div>
+            <div class="or_curs tl"><lable class="or_lb"><!--当前操作--><?php echo $this->translate('operatING');?></lable><span class="yh_red"><a style="background: #e5e5e5";><!--确认--><?php echo $this->translate('confirm');?></a></span><span><!--我有异议--><?php echo $this->translate('objection');?></span></div>
+        <?php endif; ?>
+     </div>
+    <div class="clearfix pb10 <?php if ($this->vestut!=15):?><?php echo 'dn';?><?php endif;?>">
+        <div class="or_curs tl"><lable class="or_lb"><!--订单号码--><?php echo $this->translate('orderNo');?></lable><span class="w_curstor"><?php echo $this->newE["orderNo"];?></div>
+        <div class="or_curs tl"><lable class="or_lb"><!--订单汇率--><?php echo $this->translate('Prities');?></lable><span class="w_curstor"><?php echo $this->newE["orderNo"];?></div>
+        <div class="or_curs tl"><lable class="or_lb"><!--收入--><?php echo $this->translate('income');?></lable><span class="w_curstor"><?php echo $this->newE["vendorCrnCode"];?><?php echo $this->newE["totalAmount"];?></span></div>
+        <div class="or_curs tl"><lable class="or_lb"><!--支出--><?php echo $this->translate('expend');?></lable><span class="w_curstor"><?php echo $this->newE["vendorCrnCode"];?>1200.98</span></div>
+        <div class="or_curs clearfix" style="width:94%;"><lable class="or_lb"><!--进度说明--><?php echo $this->translate('progressING');?></lable><span class="w_curstor" style="width:740px;">(未生成)</div>
+        <?php if(isAllowVendorSettle==true):?>
+            <div class="or_curs tl"><lable class="or_lb"><!--当前状态--><?php echo $this->translate('stateING');?></lable><span class="w_curstor"><?php echo $this->newE["orderStatus"];?>XXX<?php echo $this->newE["vendorExecStatus"]?>XXX<?php echo $this->newE["buyerExecStatus"]?></span></div>
+            <div class="or_curs tl"><lable class="or_lb"><!--当前操作--><?php echo $this->translate('operatING');?></lable><span class="yh_red"><a href=<?php echo  WWW.'user/orderxs/confirm?'.base64_encode($this->veorderID);?>><!--确认--></a></span><span><!--我有异议--></span></div>
+        <?php else:?>
+            <div class="or_curs tl"><lable class="or_lb"><!--当前状态--><?php echo $this->translate('stateING');?></lable><span class="w_curstor"><?php echo $this->newE["orderStatus"];?>XXX<?php echo $this->newE["vendorExecStatus"]?>XXX<?php echo $this->newE["buyerExecStatus"]?></span></div>
+            <div class="or_curs tl"><lable class="or_lb"><!--当前操作--><?php echo $this->translate('operatING');?></lable><span class="yh_red"><a style="background: #e5e5e5";><!--确认--><?php echo $this->translate('confirm');?></a></span><span><!--我有异议--><?php echo $this->translate('objection');?></span></div>
+        <?php endif; ?>
+    </div>
+    <div class="clearfix pb10 <?php if ($this->vestut!=63):?><?php echo 'dn';?><?php endif;?>">
+        <div class="or_curs tl"><lable class="or_lb"><!--订单号码--><?php echo $this->translate('orderNo');?></lable><span class="w_curstor"><?php echo $this->newE["orderNo"];?></div>
+        <div class="or_curs tl"><lable class="or_lb"><!--订单汇率--><?php echo $this->translate('Prities');?></lable><span class="w_curstor"><?php echo $this->newE["orderNo"];?></div>
+        <div class="or_curs tl"><lable class="or_lb"><!--收入--><?php echo $this->translate('income');?></lable><span class="w_curstor"><?php echo $this->newE["vendorCrnCode"];?><?php echo $this->newE["totalAmount"];?></span></div>
+        <div class="or_curs tl"><lable class="or_lb"><!--支出--><?php echo $this->translate('expend');?></lable><span class="w_curstor"><?php echo $this->newE["vendorCrnCode"];?>1200.98</span></div>
+        <div class="or_curs clearfix" style="width:94%;"><lable class="or_lb"><!--进度说明--><?php echo $this->translate('progressING');?></lable><span class="w_curstor" style="width:740px;">(未生成)</div>
+
+    </div>
+</div>

@@ -1,0 +1,107 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+		event: "keyup",
+		rules: {},
+		messages: {},
+		submitHandler: function() {
+			SeedMsgBox("正在保存中，请稍候...");
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->baseUrl();?>/payment/add',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+
+</script>
+<h1>新建支付接口</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="添加" onclick="document.location='<?php echo $this->baseUrl();?>/payment/add'"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_form">
+      <tr><td> <strong>名称：</strong>
+        <p>
+          <input name="payment_name" id="payment_name" value="" type="text" class="admin_txt1" />
+        </p>
+      </td></tr>
+      <tr><td> <strong>说明：</strong>
+        <p>
+          <input name="payment_desc" id="payment_desc" value="" type="text" class="admin_txt1" />
+        </p>
+      </td></tr>
+      <tr><td> <strong>LOGO：</strong>
+        <p>
+          <input name="payment_logo" id="payment_logo" readonly value="" type="text" class="admin_txt1"/>
+          <input type="button" name="select" value="选择" class="admin_bnt2" onclick="selectCoverImage('payment','payment_logo')">
+          <input type="button" name="preview_payment_logo" id="preview_payment_logo" value="预览" class="admin_bnt2" onclick="previewCoverImage('payment_logo')" style="display:none;">
+        </p>
+      </td></tr>
+      <tr><td> <strong>是否在线支付：</strong>
+        <p>
+          <input type="radio" name="is_online" id="is_online0" value="0" checked>
+          否&nbsp;
+          <input type="radio" name="is_online" id="is_online1" value="1" >
+          是 </p>
+      </td></tr>
+      <tr><td> <strong>在线支付接口：</strong>
+        <p>
+          <input name="payment_interface" id="payment_interface" value="" type="text" class="admin_txt1" />
+        </p>
+      </td></tr>
+      <tr><td> <strong>手续费用（%）：</strong>
+        <p>
+          <input name="payment_fee_percent" id="payment_fee_percent" value="" type="text" class="admin_txt1" />
+        </p>
+      </td></tr>
+       <tr>
+      <td><strong>支付超时时间（单位是分钟，默认值是30分钟，建议保留默认值）：</strong>
+        <p>
+          <input name="expire_time" id="expire_time" value="<?php echo ($this->payment['expire_time']);?>" type="text" class="admin_txt1" />
+        </p></td>
+        </tr>
+      <tr><td> <strong>排序：</strong>
+        <p>
+          <input name="order_by" id="order_by" value="" type="text" class="admin_txt1" />
+        </p>
+      </td></tr>
+      <tr><td> <strong>介绍：</strong>
+        <p>
+          <textarea name="payment_intro" id="payment_intro" class="textarea" style="height:100px;"></textarea>
+        </p>
+      </td></tr>
+      <tr><td> <strong>是否激活(PC)：</strong>
+        <p>
+          <input type="radio" name="is_actived" id="is_actived0" value="0" checked>
+          否&nbsp;
+          <input type="radio" name="is_actived" id="is_actived1" value="1">
+          是 </p>
+      </td></tr>
+      <tr><td> <strong>是否激活(移动)：</strong>
+        <p>
+          <input type="radio" name="is_mob" id="is_mob0" value="0" checked >
+          否&nbsp;
+          <input type="radio" name="is_mob" id="is_mob1" value="1">
+          是 </p>
+      </td></tr>
+      <tr><td> <strong>是否提现：</strong>
+        <p>
+          <input type="radio" name="is_withdraw" id="is_withdraw0" value="0"/>
+          否&nbsp;
+          <input type="radio" name="is_withdraw" id="is_withdraw1" value="1" checked/>
+          是 </p>
+      </td></tr>
+   
+  </table>
+      <div class="batch">
+      <input name="" class="admin_bnt" type="submit" value="提交"  />
+    </div>
+</form>
+<?php echo $this->render("footer.phtml") ?>

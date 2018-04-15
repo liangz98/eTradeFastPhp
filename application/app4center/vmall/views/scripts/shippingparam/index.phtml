@@ -1,0 +1,125 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+function doadd(){
+    $("#post_form").validate({
+       event: "keyup",
+       rules: {},
+       messages: {},
+       submitHandler: function() {
+            SeedMsgBox('正在保存中，请稍候...');
+            var options = {
+                target:     '#SeedMsgTxt',
+                url:        '<?php echo $this->baseUrl();?>/shippingparam/add',
+                success: function() {
+                }
+            };
+            $('#post_form').ajaxSubmit(options);
+        }
+    });
+}
+function doupdate(){
+    $("#post_form").validate({
+       event: "keyup",
+       rules: {},
+       messages: {},
+       submitHandler: function() {
+            SeedMsgBox('正在保存中，请稍候...');
+            var options = {
+                target:     '#SeedMsgTxt',
+                url:        '<?php echo $this->baseUrl();?>/shippingparam/update',
+                success: function() {
+                }
+            };
+            $('#post_form').ajaxSubmit(options);
+        }
+    });
+}
+
+function dodelete(){
+    $("#post_form").validate({
+       event: "keyup",
+       rules: {},
+       messages: {},
+       submitHandler: function() {
+            SeedMsgBox('正在保存中，请稍候...');
+            var options = {
+                target:     '#SeedMsgTxt',
+                url:        '<?php echo $this->baseUrl();?>/shippingparam/delete',
+                success: function() {
+                }
+            };
+            $('#post_form').ajaxSubmit(options);
+        }
+    });
+}
+</script>
+
+<h1>配送参数</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="变量" onclick="document.location='<?php echo $this->baseUrl();?>/shippingparam/index?shipping_name=<?php echo $this->shipping_name;?>'"/>
+    <input class="admin_bnt2" name="" type="button" value="设置" onclick="document.location='<?php echo $this->baseUrl();?>/shippingparam/setting?shipping_name=<?php echo $this->shipping_name;?>'"/>
+  </p>
+</div>
+注意：当前配置的是：<?php if(defined('CURRENT_MODULE_NAME') && CURRENT_MODULE_NAME=='center_hk'):?>HK站的配送管理，若需设置大陆的，则用大陆域名打开后台并进行管理。<?php endif;?>
+<?php if(defined('CURRENT_MODULE_NAME') && CURRENT_MODULE_NAME=='center'):?>大陆站的配送管理，若需设置HK的，则用HK域名打开后台并进行管理。<?php endif;?>
+<div class="admin_search">
+  <form name="post_form" method="post" action="" id="post_form" >
+   <input type="hidden" name="shipping_name" id="shipping_name" value="<?php echo ($this->shipping_name);?>">
+    <fieldset>
+      <legend>编辑变量</legend>
+      &nbsp;
+      变量：
+      <input type="text" name="setting_variable" id="setting_variable" value="<?php echo ($this->mysetting['setting_variable']);?>" style="width:100px;"/>
+      &nbsp;
+      名称：
+      <input type="text" name="setting_name" id="setting_name" value="<?php echo ($this->mysetting['setting_name']);?>" style="width:100px;"/>
+      &nbsp;
+      说明：
+      <input type="text" name="setting_desc" id="setting_desc" value="<?php echo ($this->mysetting['setting_desc']);?>" style="width:100px;"/>
+      &nbsp;
+      排序：
+      <input type="text" name="order_by" id="order_by" value="<?php echo ($this->mysetting['order_by']);?>" style="width:20px;"/>
+      &nbsp;
+      类型：
+      <select name="setting_input" id="setting_input">
+        <option value="0" <?php echo ($this->mysetting['setting_input']=="0")?"selected":"";?>>TEXT</option>
+        <option value="1" <?php echo ($this->mysetting['setting_input']=="1")?"selected":"";?>>RADIO</option>
+        <option value="2" <?php echo ($this->mysetting['setting_input']=="2")?"selected":"";?>>TEXTAREA</option>
+      </select>
+      <input type="hidden" name="modtype" id="modtype" value="<?php echo $this->modtype;?>">
+      <input type="hidden" name="modname" id="modname" value="<?php echo $this->modname;?>">
+      <?php if($this->mysetting['setting_id']>0):?>
+      <input type="hidden" name="setting_id" id="setting_id" value="<?php echo ($this->mysetting['setting_id']);?>">
+      <input name="updateConfirm" type="submit" class="admin_bnt2"  value="修改" onclick="doupdate();"/>
+      <input name="updateConfirm" type="submit" class="admin_bnt2"  value="删除" onclick="dodelete();"/>
+      &nbsp;
+      <?php else:?>
+      <input type="submit" value="添加" class="admin_bnt2"  onclick="doadd();"/>
+      &nbsp;
+      <?php endif;?>
+      <input name="reset" class="admin_bnt2" type="reset"  value="重置"/>
+    </fieldset>
+  </form>
+</div>
+<table class="admin_list">
+  <tr>
+    <th>变量</th>
+    <th>名称</th>
+    <th>说明</th>
+    <th>排序</th>
+    <th>操作</th>
+  </tr>
+  <?php if(is_array($this->settings)):?>
+  <?php foreach($this->settings as $setting):?>
+  <tr>
+    <td><?php echo ($setting['setting_variable']);?></td>
+    <td><?php echo ($setting['setting_name']);?></td>
+    <td><?php echo ($setting['setting_desc']);?></td>
+    <td><?php echo ($setting['order_by']);?></td>
+    <td><a href="<?php echo $this->baseUrl();?>/shippingparam?shipping_name=<?php echo $this->shipping_name;?>&setting_id=<?php echo ($setting['setting_id']);?>"><img src="/images/center/edit.gif" title="编辑" alt="编辑"></a> <a href="<?php echo $this->baseUrl();?>/shippingparam?shipping_name=<?php echo $this->shipping_name;?>&setting_id=<?php echo ($setting['setting_id']);?>"><img src=/images/center/del.gif title="删除" alt="删除"></a></td>
+  </tr>
+  <?php endforeach; ?>
+  <?php endif;?>
+</table>
+<?php echo $this->render("footer.phtml") ?> 

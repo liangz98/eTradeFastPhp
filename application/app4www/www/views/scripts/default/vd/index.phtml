@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<base target="_blank"></base>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="shortcut icon" type="image/x-icon" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/images/ui/favicon.ico" />
+<title>元宵邂逅情人节，幸福健康sendtou-信天邮全球购</title>
+<link type="text/css" rel="stylesheet" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/css/common.css" />
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/seed.form.js"></script>
+<script type="text/javascript" src="<?php echo $this->seed_Setting['static_app_server']?>/default/vplatform/js/jquery.form.js"></script>
+<script type="text/javascript" src="<?php echo $this->seed_Setting['static_app_server']?>/default/vplatform/js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?php echo $this->seed_Setting['static_app_server']?>/default/vplatform/js/jquery.ba-hashchange.js"></script>
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/www.js"></script>
+<style type="text/css">
+#content{background:#4a0006 url(/static/sendyou/images/vd/z_bg.jpg) 50% 50% repeat;}
+</style>
+<script type="text/javascript">
+function a(){
+  if(good_search.keyword.value == '请输入关键词'){
+    alert('请输入关键词');
+    return true;
+  } 
+  good_search.submit();
+}
+function ajaxToCart(goods_id, stock_id){
+    $('#goods_id').val(goods_id);
+    $('#stock_id').val(stock_id);
+  SeedMsgBox('正在保存中，请稍候...');
+  var options = {
+      target:     '#SeedMsgTxt',
+      url:        '<?php echo $this->seed_Setting['user_app_server']?>/cart/addgoods?ajax=1',
+      success: function() {
+        window.location.href="<?php echo $this->BaseUrl();?>/user/cart"
+      }
+    };
+    $('#goods_form').ajaxSubmit(options);
+}
+</script>
+</head>
+<body>
+<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
+<div id="content">
+  <div class="main">
+    <ul class="item_list"><li class="item" style="height: 500px;background: url(http://www.sendtou.com/upload_files/images/chart/20160129/23867_386424169208.jpg) 50% 50% no-repeat;"></li>
+    <li class="item" style="height: 178px;background: url(/static/sendyou/images/vd/z_tit1.jpg) 50% 50% repeat-x;"></li>
+    <li class="item" style="height: 318px;background: url(/static/sendyou/images/vd/z_tit2.jpg) 50% 50% repeat-x;"></li>
+    </ul>
+  </div>
+  <form name="goods_form" method="post" action="" id="goods_form" >
+  <table width="1900" border="0" cellpadding="0" cellspacing="0" style=" width:1200px;margin:0 auto;">
+    <tbody> 
+      <tr>
+        <td><img src="<?php echo WWW;?>static/sendyou/images/vd/z_pro1.jpg" alt="优惠套餐专区——元宵团圆欢乐购" title="优惠套餐专区——元宵团圆欢乐购" width="1200" usemap="#Map1" style="vertical-align:bottom" border="0"  hidefocus="true"></td>
+      </tr>
+      <tr>
+        <td><img src="<?php echo WWW;?>static/sendyou/images/vd/z_pro2.jpg" alt="优惠套餐专区——元宵团圆欢乐购" title="优惠套餐专区——元宵团圆欢乐购" width="1200" usemap="#Map2" style="vertical-align:bottom" border="0"  hidefocus="true"></td>
+      </tr>
+      <tr>
+        <td><img src="<?php echo WWW;?>static/sendyou/images/vd/z_pro3.jpg" alt="买一送一专区——情意浓浓买就送" title="买一送一专区——情意浓浓买就送" width="1200" border="0" usemap="#Map3"  hidefocus="true" style="vertical-align:bottom"></td>
+      </tr>
+      <tr>
+        <td><img src="<?php echo WWW;?>static/sendyou/images/vd/z_pro4.jpg" alt="买一送一专区——情意浓浓买就送" title="买一送一专区——情意浓浓买就送" width="1200" border="0" usemap="#Map4"  hidefocus="true" style="vertical-align:bottom;padding-bottom: 15px;"></td>
+      </tr>
+      <tr><td><img src="<?php echo WWW;?>static/sendyou/images/vd/z_pro5.jpg" alt="美妆护理专区——守护爱人的青春" width="1200" usemap="#Map5" style="vertical-align:bottom;padding-bottom: 34px;" title="美妆护理专区——守护爱人的青春" border="0"></td>
+      </tr>
+      <tr>
+        <td><img src="<?php echo WWW;?>static/sendyou/images/vd/z_pro6.jpg" alt="母婴用品专区——呵护宝宝的成长" title="母婴用品专区——呵护宝宝的成长" width="1200" usemap="#Map6" style="vertical-align:bottom" border="0"  hidefocus="true"></td>
+      </tr>
+      <tr>
+        <td><img src="<?php echo WWW;?>static/sendyou/images/vd/z_pro7.jpg" alt="母婴用品专区——呵护宝宝的成长" title="母婴用品专区——呵护宝宝的成长" width="1200" border="0" usemap="#Map7"  hidefocus="true" style="vertical-align:bottom"></td>
+      </tr>
+      <tr>
+        <td><img src="<?php echo WWW;?>static/sendyou/images/vd/z_pro8.jpg" alt="母婴用品专区——呵护宝宝的成长" title="母婴用品专区——呵护宝宝的成长" width="1200" border="0" usemap="#Map8"  hidefocus="true" style="vertical-align:bottom;padding-bottom: 34px;"></td>
+      </tr>
+      <tr>
+        <td><img src="<?php echo WWW;?>static/sendyou/images/vd/z_pro9.jpg" alt="营养保健专区——关心亲人的健康" title="营养保健专区——关心亲人的健康" width="1200" border="0" usemap="#Map9"  hidefocus="true" style="vertical-align:bottom"></td>
+      </tr>
+      <tr>
+        <td><img src="<?php echo WWW;?>static/sendyou/images/vd/z_pro10.jpg" alt="营养保健专区——关心亲人的健康" title="营养保健专区——关心亲人的健康" width="1200" border="0" usemap="#Map10"  hidefocus="true" style="vertical-align:bottom"></td>
+      </tr>
+      <tr>
+        <td><img src="<?php echo WWW;?>static/sendyou/images/vd/z_pro11.jpg" alt="营养保健专区——关心亲人的健康" title="营养保健专区——关心亲人的健康" width="1200" border="0" usemap="#Map11"  hidefocus="true" style="vertical-align:bottom;padding-bottom: 34px;"></td>
+      </tr>
+    </tbody>
+  </table>
+  <input type="hidden" id="goods_number" name="goods_number" value="1" />
+  <input type="hidden" id="goods_id" name="goods_id" value="" />
+  <input type="hidden" id="stock_id" name="stock_id" value="" />
+  </form>
+</div>
+<map name="Map1">
+  <area shape="rect" coords="197,4,406,21" href="http://www.sendtou.com/products/499.html">
+  <area shape="rect" coords="196,27,410,44" href="http://www.sendtou.com/products/501.html">
+  <area shape="rect" coords="446,11,499,74" target="_self" href="" onclick="ajaxToCart(1698,1913);">
+  <area shape="rect" coords="704,3,838,22" href="http://www.sendtou.com/products/490.html">
+  <area shape="rect" coords="705,27,829,44" href="http://www.sendtou.com/products/492.html">
+  <area shape="rect" coords="954,11,1007,73" target="_self" href="" onclick="ajaxToCart(1982,2207);">
+</map>
+
+<map name="Map2">
+  <area shape="rect" coords="46,324,245,342" href="http://www.sendtou.com/products/1765.html">
+  <area shape="rect" coords="46,348,155,365" href="http://www.sendtou.com/products/98.html">
+  <area shape="rect" coords="46,369,155,387" href="http://www.sendtou.com/products/1764.html">
+  <area shape="rect" coords="294,352,346,414" target="_self" href="" onclick="ajaxToCart(2303,2535);">
+  <area shape="rect" coords="452,323,652,340" href="http://www.sendtou.com/products/43.html">
+  <area shape="rect" coords="452,345,595,361" href="http://www.sendtou.com/products/44.html">
+  <area shape="rect" coords="702,329,755,391" target="_self" href="" onclick="ajaxToCart(2347,2579);">
+  <area shape="rect" coords="863,325,1028,343" href="http://www.sendtou.com/products/487.html">
+  <area shape="rect" coords="863,348,974,365" href="http://www.sendtou.com/products/488.html">
+  <area shape="rect" coords="863,369,975,387" href="http://www.sendtou.com/products/489.html">
+  <area shape="rect" coords="1111,352,1163,414" target="_self" href="" onclick="ajaxToCart(1695,1910);">
+</map>
+
+<map name="Map3">
+  <area shape="rect" coords="14,132,242,463" href="http://www.sendtou.com/products/1147.html">
+  <area shape="rect" coords="251,132,478,463" href="http://www.sendtou.com/products/34.html">
+  <area shape="rect" coords="486,132,714,462" href="http://www.sendtou.com/products/27.html">
+  <area shape="rect" coords="724,131,951,463" href="http://www.sendtou.com/products/48.html">
+  <area shape="rect" coords="960,132,1188,462" href="http://www.sendtou.com/products/1275.html">
+</map>
+
+<map name="Map4">
+  <area shape="rect" coords="14,7,242,338" href="http://www.sendtou.hk/products/1136.html">
+  <area shape="rect" coords="250,6,479,338" href="http://www.sendtou.com/products/118.html">
+  <area shape="rect" coords="487,7,715,338" href="http://www.sendtou.com/products/127.html">
+  <area shape="rect" coords="723,7,951,338" href="http://www.sendtou.com/products/132.html">
+  <area shape="rect" coords="960,6,1188,339" href="http://www.sendtou.com/products/132.html#stock-152">
+</map>
+<map name="Map5">
+  <area shape="rect" coords="14,105,242,436" href="http://www.sendtou.com/products/1239.html">
+  <area shape="rect" coords="250,105,478,435" href="http://www.sendtou.com/products/137.html">
+  <area shape="rect" coords="486,104,714,435" href="http://www.sendtou.hk/products/1787.html">
+  <area shape="rect" coords="724,105,952,436" href="http://www.sendtou.com/products/1134.html">
+  <area shape="rect" coords="959,104,1187,435" href="http://www.sendtou.com/products/1238.html">
+</map>
+
+<map name="Map6">
+  <area shape="rect" coords="14,105,241,434" href="http://www.sendtou.com/products/2.html">
+  <area shape="rect" coords="251,104,477,435" href="http://www.sendtou.com/products/45.html">
+  <area shape="rect" coords="486,105,714,435" href="http://www.sendtou.com/products/1260.html">
+  <area shape="rect" coords="724,104,951,435" href="http://www.sendtou.hk/products/1778.html">
+  <area shape="rect" coords="960,105,1187,437" href="http://www.sendtou.com/products/64.html">
+</map>
+
+<map name="Map7">
+  <area shape="rect" coords="13,8,242,340" href="http://www.sendtou.com/products/9.html">
+  <area shape="rect" coords="251,9,479,339" href="http://www.sendtou.com/products/10.html">
+  <area shape="rect" coords="487,9,714,340" href="http://www.sendtou.com/products/1249.html">
+  <area shape="rect" coords="723,8,952,339" href="http://www.sendtou.com/products/1246.html">
+  <area shape="rect" coords="960,9,1187,340" href="http://www.sendtou.com/products/95.html">
+</map>
+
+<map name="Map8">
+  <area shape="rect" coords="13,4,241,333" href="http://www.sendtou.com/products/96.html">
+  <area shape="rect" coords="250,4,478,333" href="http://www.sendtou.com/products/156.html">
+  <area shape="rect" coords="486,3,715,335" href="http://www.sendtou.com/products/166.html">
+  <area shape="rect" coords="724,3,951,335" href="http://www.sendtou.com/products/1232.html">
+  <area shape="rect" coords="960,4,1188,334" href="http://www.sendtou.com/products/1207.html">
+</map>
+
+<map name="Map9">
+  <area shape="rect" coords="13,105,241,436" href="http://www.sendtou.hk/products/1153.html">
+  <area shape="rect" coords="251,104,479,436" href="http://www.sendtou.hk/products/480.html">
+  <area shape="rect" coords="486,104,714,435" href="http://www.sendtou.hk/products/1941.html">
+  <area shape="rect" coords="724,105,951,436" href="http://www.sendtou.hk/products/1944.html">
+  <area shape="rect" coords="960,105,1188,435" href="http://www.sendtou.hk/products/1949.html">
+</map>
+
+<map name="Map10">
+  <area shape="rect" coords="14,4,241,334" href="http://www.sendtou.hk/products/1937.html">
+  <area shape="rect" coords="250,3,478,335" href="http://www.sendtou.com/products/274.html">
+  <area shape="rect" coords="486,3,714,335" href="http://www.sendtou.hk/products/268.html">
+  <area shape="rect" coords="724,3,951,334" href="http://www.sendtou.hk/products/269.html">
+  <area shape="rect" coords="960,4,1187,334" href="http://www.sendtou.hk/products/270.html">
+</map>
+
+<map name="Map11">
+  <area shape="rect" coords="14,4,241,335" href="http://www.sendtou.hk/products/272.html">
+  <area shape="rect" coords="251,4,479,335" href="http://www.sendtou.hk/products/273.html">
+  <area shape="rect" coords="487,4,714,334" href="http://www.sendtou.com/products/1720.html">
+  <area shape="rect" coords="724,4,952,335" href="http://www.sendtou.com/products/1719.html">
+  <area shape="rect" coords="960,4,1188,334" href="http://www.sendtou.com/products/1718.html">
+</map>
+
+<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
+<?php echo $this->render(SEED_WWW_TPL.'/right_fix.phtml');?>
+</body>
+</html>

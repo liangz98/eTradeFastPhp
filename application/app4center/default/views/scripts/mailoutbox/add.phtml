@@ -1,0 +1,60 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+    $("#post_form").validate({
+       event: "keyup",
+       rules: {},
+       messages: {},
+       submitHandler: function() {
+            SeedMsgBox('正在保存中，请稍候...');
+            var options = {
+                target:     '#SeedMsgTxt',
+                url:        '<?php echo $this->BaseUrl();?>/mailoutbox/add',
+                success: function() {
+                }
+            };
+            $('#post_form').ajaxSubmit(options);
+        }
+    });
+});
+
+function selectsms(str){
+	$("#send_content").val(str);
+}
+
+</script>
+
+<h1>发送邮件</h1>
+<div class="textnav">
+  <p>
+    		<input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back()"/>
+    	</p>
+</div>
+
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_form">
+    <tr>
+      <td>
+      <strong>接收邮箱:</strong>
+          	<p><input class="admin_txt1" name="send_email" id="send_email" type="text" /></p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <strong>邮件标题:</strong>
+          	<p><input class="admin_txt1" name="send_title" id="send_title" type="text" /></p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <strong>邮件内容（支持HTML）:</strong>
+          	<p><textarea name="send_content" id="send_content" style="height:500px;width:800px;" class="textarea"></textarea></p>
+      </td>
+    </tr>
+  </table>
+  <table class="admin_form">
+    <tr>      <td><input class="admin_bnt"  type="submit" value="提交"/></td>
+    </tr>
+  </table>
+</form>
+<?php echo $this->render("footer.phtml") ?>

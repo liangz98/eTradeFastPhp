@@ -1,0 +1,17 @@
+<div class="or_curs tl"><lable class="or_lb">当前操作</lable>
+
+    <span <?php if ($this->newE["allowVendorConfirm"]==true){echo 'class="yh_red" id="handle"';}?>><!--确认--><?php echo $this->translate('confirmed');?></span>
+    <span <?php if ($this->newE["allowVendorSign"]==true){echo 'class="yh_red" id="handle"';}?>><!--提交--><?php echo $this->translate('submit');?></span>
+    <span <?php if ($this->newE["allowVendorReady"]==true){echo 'class="yh_red" id="handle"';}?>><!--备货--><?php echo $this->translate('rdGOODS');?></span>
+    <span <?php if ($this->newE["allowVendorDeliver"]==true){echo 'class="yh_red" id="handle"';}?>><!--发货--><?php echo $this->translate('deGOODS');?></span>
+    <span <?php if ($this->newE["allowVendorSettle"]==true){echo 'class="yh_red" id="handle"';}?>><!--结算--><?php echo $this->translate('calculated');?></span>
+
+
+    <span <?php if ($this->newE["allowBuyerConfirm"]==true){echo 'class="yh_red" id="handle"';}?>><!--确认--><?php echo $this->translate('confirmed');?></span>
+    <span <?php if ($this->newE["allowBuyerSign"]==true){echo 'class="yh_red" id="handle"';}?>><!--提交--><?php echo $this->translate('submit');?></span>
+    <span <?php if ($this->newE["allowBuyerExamine"]==true){echo 'class="yh_red" id="handle"';}?>><!--验货--><?php echo $this->translate('ckGOODS');?></span>
+    <span <?php if ($this->newE["allowBuyerReceive"]==true){echo 'class="yh_red" id="handle"';}?>><!--收货--><?php echo $this->translate('reGOODS');?></span>
+    <span <?php if ($this->newE["allowBuyerSettle"]==true){echo 'class="yh_red" id="handle"';}?>><!--结算--><?php echo $this->translate('calculated');?></span>
+
+    <span>我有异议</span></div>
+</div>

@@ -1,0 +1,41 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$('input[@type=checkbox][@name=checkAll]').each(function(){
+		$(this).checkbox().toggle($(this).val());
+	});
+});
+</script>
+
+<h1>产品分析</h1>
+<div class="textnav">
+  <p></p>
+</div>
+<table class="admin_list">
+  <tr>
+    <th>页面</th>
+    <th>产品</th>
+    <th>访问次数</th>
+    <th>操作</th>
+  </tr>
+  <?php if(is_array($this->goods_list)):?>
+  <?php foreach($this->goods_list as $stat):?>
+  <tr>
+    <td><?php echo $this->escape($stat['res']);?></td>
+    <td><?php echo $this->escape(isset($stat['goods']['goods_name']) ? $stat['goods']['goods_name'] : '');?></td>
+    <td><?php echo $this->escape($stat['total']);?></td>
+    <td>
+        <?php if(isset($stat['goods']['goods_id'])):?>
+      <a target="_blank" href="/vmall/products/<?php echo $stat['goods']['goods_id'];?>.html"><img src="/images/center/view.gif" title="查看" alt="查看"></a>
+        <?php endif;?>
+    </td>
+  </tr>
+  <?php endforeach; ?>
+  <?php endif;?>
+</table>
+<!--分页开始-->
+<!--<div class="page">
+  <?php // echo $this->showPage($this->page);?>
+</div>-->
+<!--分页结束-->
+<?php echo $this->render("footer.phtml") ?>

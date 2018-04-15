@@ -1,0 +1,6 @@
+RewriteEngine on
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteRule !\.(js|ico|gif|bmp|jpg|png|css|xml|htm|txt|sql)$ index.php [NC] 

@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="baidu-site-verification" content="7dGQolUeVh" />
+<title><?php echo $this->escape($this->brand['html_title']);?>-信天邮全球购</title>
+<link rel="shortcut icon" type="image/x-icon" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/images/ui/favicon.ico" />
+<link type="text/css" rel="stylesheet" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/css/common.css" />
+<link type="text/css" rel="stylesheet" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/css/www.css" />
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/www.js"></script>
+</head>
+<body>
+<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
+<div id="content">
+	<div class="bigdiv">
+    	<div class="location"><a href="/">首页</a> &gt; <?php echo $this->escape($this->brand['brand_name']);?></div>
+        
+        <div class="layout">
+            <div class="banner">
+            <?php if(!empty($this->brand['brand_m_banner1'])):?>
+                    <a href="<?php echo WWW;?>products/top-<?php echo $this->brand['brand_id'];?>.html"><img src="<?php echo $this->showImage($this->brand['brand_m_banner1']);?>"  alt="专题展示图"/></a>
+            <?php else:?>
+                    <?php $charts = $this->fetchCharts('www_product_banner');?>
+                    <?php if(is_array($charts) && count($charts)>0):?>
+                        <?php foreach ($charts as $k=>$chart):?>
+                            <a href="<?php echo $chart['chart_href'];?>" title="<?php echo $chart['chart_name'];?>"><img src="<?php echo $this->showImage($chart['chart_image']);?>" /></a>
+                         <?php endforeach;?>   
+                    <?php endif;?>
+            <?php endif;?> 
+            </div>
+        </div>
+        
+       <div class="layout">
+        	<dl class="filter">
+        	    <dd>
+                    <span>品牌：</span>
+                    <div class="filter_brand">
+                        <ul>
+                         <?php if ($this->brands && count($this->brands)>0):?>
+                         <?php foreach ($this->brands as $k=>$brand):?>
+                         <?php if (!empty($brand['brand_m_logo']) && isset($brand['brand_m_logo'])):?>
+                            <li><a href="/brand/top-<?php echo $brand['brand_id'];?>.html"><img src="<?php echo $this->showImage($brand['brand_m_logo']);?>" alt="商家logo" /></a></li>
+                         <?php endif;?>
+                         <?php endforeach;?>
+                         <?php endif;?>   
+                       </ul>
+                        <small><i>展开</i></small>
+                    </div>
+                </dd>
+                 			     			                   	
+            </dl>
+        </div>
+        
+        <div class="layout">
+            <div class="row">
+                <small><?php echo $this->ShowStaticPage($this->page);?></small>
+                   排序：<span>
+                <a <?php echo $this->mod == 'top'?'class="crumb"':'';?> href="/brand/top-<?php echo $this->escape($this->brand_id);?>-0.html"><i>默认</i></a>
+                <a <?php echo $this->mod == 'price'?'class="crumb"':'';?>href="/brand/price-<?php echo $this->escape($this->brand_id);?>-0.html"><i class="repeat">价格</i></a>
+                <a <?php echo $this->mod == 'sold'?'class="crumb"':'';?>href="/brand/sold-<?php echo $this->escape($this->brand_id);?>-0.html"><i>销量</i></a>
+                <a <?php echo $this->mod == 'hot'?'class="crumb"':'';?> href="/brand/hot-<?php echo $this->escape($this->brand_id);?>-0.html"><i>人气</i></a>
+                <a <?php echo $this->mod == 'new'?'class="crumb"':'';?> href="/brand/new-<?php echo $this->escape($this->brand_id);?>-0.html"><i class="repeat">上架时间</i></a>
+             </span>
+            </div>
+        </div>
+
+        <div class="layout">
+        	<div class="list">
+            	<ul>
+            	<?php if (is_array($this->goodses) && count($this->goodses)>0):?>
+            	<?php foreach ($this->goodses as $k => $goods):?>
+                    <?php if($goods['goods_channel']=='BBC'):?>
+                    <li>
+                        <a href="/products/<?php echo $this->escape($goods['goods_mark']);?>.html"><img src="<?php echo $this->showImage($goods['goods_list_image']);?>" alt="<?php echo $this->escape($goods['goods_name']);?>"/></a>
+                        <p class="country"><?php echo $this->escape($goods['country_name']);?></p>
+                        <h4><a href="/products/<?php echo $this->escape($goods['goods_mark']);?>.html"><?php echo $this->escape($goods['goods_name']);?></a></h4>
+                         <p class="shop_name"><?php echo $this->escape($goods['shop_name']);?></p>
+                        <p><span class="star"><i style="width:<?php echo ($goods['score_avg']=='0.00'?'5':$goods['score_avg'])*20;?>%;"></i></span></p>
+                        <p class="price"><?php echo $this->showPrice($goods['shop_price']);?></p>
+                        <?php if($goods['sum_stock_value']<=0): ?>
+                        <div class="product_tips">
+                            <a href="/products/<?php echo $this->escape($goods['goods_mark']);?>.html"><img src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/images/ui/soldout.png" alt="卖光啦"/></a>
+                        </div>
+                        <?php endif;?>
+                    </li>
+                  <?php else:?>
+                    <li>
+                        <a href="http://www.sendtou.hk/products/<?php echo $this->escape($goods['goods_mark']);?>.html"><img src="<?php echo $this->showImage($goods['goods_list_image']);?>" alt="<?php echo $this->escape($goods['goods_name']);?>"/></a>
+                        <p class="country"><?php echo $this->escape($goods['country_name']);?></p>
+                        <h4><?php echo $this->escape($goods['goods_name']);?></h4>
+                        <p class="shop_name"><?php echo $this->escape($goods['shop_name']);?></p>
+                        <p><span class="star"><i style="width:<?php echo ($goods['score_avg']=='0.00'?'5':$goods['score_avg'])*20;?>%;"></i></span></p>
+                        <p class="price"><?php echo $this->showPrice($goods['shop_price']);?></p>
+                        <div class="hk_product">
+                            <a href="http://www.sendtou.hk/products/<?php echo $this->escape($goods['goods_mark']);?>.html"><img src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/images/ui/hkproduct.png" alt="香港直邮"/></a>
+                        </div>
+                        <?php if($goods['sum_stock_value']<=0): ?>
+                        <div class="product_tips">
+                            <a href="<?php echo WWW;?>products/<?php echo $this->escape($goods['goods_mark']);?>.html"><img src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/images/ui/soldout.png" alt="卖光啦"/></a>
+                        </div>
+                        <?php endif;?>
+                    </li> 
+                    <?php endif;?>   
+                 <?php endforeach;?>
+                 <?php endif;?>
+                </ul>
+            </div>
+             <?php if ($this->page['totalpage']>1):?>
+            <div class="page"><?php echo $this->ShowStaticPage($this->page);?></div>
+            <?php endif;?>
+        </div>
+        
+    </div>
+</div>
+<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
+<?php echo $this->render(SEED_WWW_TPL.'/right_fix.phtml');?>
+</body>
+</html>

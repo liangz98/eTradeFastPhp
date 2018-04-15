@@ -1,0 +1,219 @@
+<script type="text/javascript">
+var g_hash = false;
+$(document).ready(function() {
+	$(window).hashchange(function() {
+		var hash = location.hash;
+		var reg = /#stock-\d/;
+		if(reg.test(hash)){
+			g_hash = true;
+			var stock_id = hash.replace('#stock-','');
+			var json_str = '<?php echo(json_encode($this->goods_stocks));?>';
+			var json = eval("("+json_str+")");
+			$.each(json, function(idx,item){
+				if(stock_id == item.stock_id){
+					var is_display_market_price = false;
+					if(item.stock_market_price > item.stock_shop_price) is_display_market_price = true;
+					select_stock(item.stock_id)
+					return false;
+				}
+			});
+		}
+	});
+});
+
+function addToCart(){
+	SeedMsgBox('正在保存中，请稍候...');
+	var options = {
+			target:     '#SeedMsgTxt',
+			url:        '<?php echo $this->seed_Setting['user_app_server']?>/cart/addgoods',
+			success: function() {
+			}
+		};
+		$('#goods_form').ajaxSubmit(options);
+}
+
+function ajaxToCart(){
+	SeedMsgBox('正在保存中，请稍候...');
+	var options = {
+			target:     '#SeedMsgTxt',
+			url:        '<?php echo $this->seed_Setting['user_app_server']?>/cart/addgoods?ajax=1',
+			success: function() {
+			}
+		};
+		$('#goods_form').ajaxSubmit(options);
+}
+
+function addCollect()
+{
+	var options = {
+		target:     '#SeedMsgTxt',
+		url:        '<?php echo $this->seed_Setting['user_app_server']?>/collect/',
+		success: function() {
+		}
+	};
+	$('#goods_form').ajaxSubmit(options);
+	return false;
+}
+
+
+function select_stock(stock_id){
+	var goods_id = <?php echo $this->escape($this->goods['goods_id']);?>;
+	var gq_id = <?php echo ($this->goods_qrcode['gq_id']>0)?$this->goods_qrcode['gq_id']:0;?>;
+	var stock_id = stock_id;
+	$.ajax({
+		url: '<?php echo $this->BaseUrl()?>/products/ajaxstock',
+		data: 'goods_id=' + goods_id + "&stock_id=" + stock_id + "&gq_id=" + gq_id,
+		type: 'POST',
+		dataType: 'json',
+		beforeSend: function() {},
+		error: function(request) {
+		},
+		success: function(data_stock) {
+            $("#size_stocks").find('a').removeClass('crumb');
+			var stock_value = data_stock.stock_value;
+			if(stock_value > 0){
+				$("#stock_id").val(data_stock.stock_id);
+				$("#show_shop_price").html(data_stock.stock_shop_price_format);
+				$("#show_market_price").html(data_stock.stock_market_price_format);
+				$("#show_tax_rate").html(data_stock.tax_rate);
+				$("#show_qrcode_price").html(data_stock.stock_qrcode_price_format);
+				$("#stock_li_"+data_stock.group_id).addClass('crumb');
+				$("#stock_a_"+data_stock.stock_id).addClass('crumb');
+				$("#stock_value").html("有货");
+				$("#selected_show").html('您选择了<?php echo (count($this->stock_groups)>1 && $this->stock_group['group_id']>0)?'"'.$this->escape($this->stock_group['group_name']).'"':"";?>"'+data_stock.stock_name+'"');
+			}else{
+				$("#stock_value").html("已售罄");
+				alert('该库存已没货，请选择其他库存！');
+			}
+			return;
+		}
+	});
+}
+
+function reduce(){
+	var goods_number = $("#goods_number").val();
+	goods_number--;
+	if(goods_number < 1)goods_number=1;
+	$("#goods_number").val(goods_number);
+}
+
+function increase(){
+	 var stock_id = parseInt($("#stock_id").val());
+	 var goods_id = parseInt($("#goods_id").val());
+     var goods_number = parseInt($("#goods_number").val());
+
+   var url = '';
+   if (stock_id > 0)
+       url = '<?php echo $this->BaseUrl();?>/products/addgoods?stock_id=' + stock_id + '&goods_id=' + goods_id + '&number=' + goods_number;
+   else if (goods_id > 0)
+       url = '<?php echo $this->BaseUrl();?>/products/addgoods?goods_id=' + goods_id + '&number=' + goods_number;
+
+   $.ajax({
+       type: 'get',
+       url: url,
+       dataType: 'json',
+       success: function(data) {
+      //   alert(data['aa']);
+           if (data['flag'] == 1) {
+               var goods_number = $("#goods_number").val();
+               goods_number--; 
+               $("#goods_number").val(goods_number);
+               alert('对不起，你所购买的数量超出库存数量!');
+               return false;
+           }
+           if (data['flag'] == 2) {
+               alert('你所选的商品已下架!');
+               return false;
+           }
+       }
+   });
+   var goods_number = $("#goods_number").val();
+   goods_number++;
+   $("#goods_number").val(goods_number);
+}
+</script>
+
+<div class="mainshow_r">
+   <form name="goods_form" method="post" action="" id="goods_form" >
+		<?php if($this->goods['is_nameshow']=='1'):?>
+		<h1><?php echo $this->escape($this->goods['goods_names']);?></h1>
+		<?php else:?>
+		<h1><?php echo $this->escape($this->goods['goods_name']);?></h1>
+        <?php endif;?>
+	    <p class="goods_tips"><?php echo $this->escape($this->goods['goods_tips']);?></p>
+	    <?php if($this->goods['market_price']!=$this->goods['shop_price']  && $this->goods['is_group'] =='0') {?>
+        <p class="price"><del><label>原价</label>
+        	<span id="show_market_price"><?php echo $this->showPrice($this->goods['market_price']);?></span></del></p>
+        <?php } ;?>
+	    <p class="price"><label>销售价</label>
+	       <span id="show_shop_price"><?php echo $this->showPrice($this->goods['shop_price']);?></span>
+	    </p>
+	    <p><label>发货地</label>
+		<span>广州发货&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;预计3-4天到达
+		</span>
+	    </p>
+	    <p><label>税率</label>
+	    <?php if($this->goods['goods_channel']=='BC' || $this->goods['tax_rate']=='0.000'):?>
+	    <span id="show_tax_rate">已包含税费</span>
+	    <?php else:?>
+		<span id="show_tax_rate"><?php echo $this->escape($this->goods['tax_rate'])*100;?>%</span>
+	    <?php endif;?>	
+	    </p>
+	    <div class="r_txt">
+	    	<?php if(!empty($this->goods['country_name'])):?>
+	        <p><label>原产地</label> 
+	        <span><?php echo $this->goods['country_name'];?></span>
+	        &nbsp;
+	        <?php if(!empty($this->goods['country_m_logo'])):?>
+	        <img style="height:15px;width:20px" src="<?php echo $this->showImage($this->goods['country_m_logo'])?>" alt="country_logo"/>
+	        <?php endif;?>
+	        </p>
+	        <?php endif;?>
+	        <?php if(is_array($this->stock_groups) && count($this->stock_groups)>1):?>
+	    	<p>可选</p>
+	        <p class="version" id="size">
+	        <?php foreach ($this->stock_groups as $k=>$v):?>
+	        	<a id="group_a_<?php echo $this->escape($v['group_id']);?>" <?php echo ($this->stock_group['group_id']==$v['group_id'])?'class="crumb"':"";?> href="<?php echo $this->baseUrl();?>/products/<?php echo $this->escape($this->goods['goods_mark']);?><?php echo ($k>0)?'-'.$k:"";?>.html" title="<?php echo $this->escape($v['group_name']);?>">
+	        	  <?php echo $this->escape($v['group_name']);?>
+	        	 <!--  <img src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/upload/1.jpg" /> -->
+	        	</a>
+	        <?php endforeach?>
+	        </p>
+	        <?php endif;?>
+	        
+	        <?php if(is_array($this->goods_stocks) && count($this->goods_stocks)>0):?>
+	        <p class="version" id="size_stocks">
+	        <label>可选规格</label>
+	            <?php foreach ($this->goods_stocks as $k=>$v ):?>
+	                <?php if($v['stock_value']>0):?>
+	                        <?php if($k==0): // 默认选择第一个库存?> 
+	                        <script language="javascript" type="text/javascript">
+								$(document).ready(function(){
+	    							if(g_hash==false){
+	        							select_stock('<?php echo $this->escape($v['stock_id']);?>');
+	    							}
+								});
+							</script>
+	  						<?php endif;?>
+						<a title="<?php echo $this->escape($v['stock_name']);?>" href="#stock-<?php echo $v['stock_id'];?>" onclick="select_stock('<?php echo $this->escape($v['stock_id']);?>');" id="stock_a_<?php echo $this->escape($v['stock_id']);?>"><?php echo $this->escape($v['stock_name']);?></a>
+						<?php else:?>
+						<a title="<?php echo $this->escape($v['stock_name']);?>" href="#stock-<?php echo $v['stock_id'];?>" onclick="alert('<?php echo $this->escape($v['stock_name']);?> 库存不足！');" id="stock_a_<?php echo $this->escape($v['stock_id']);?>"><?php echo $this->escape($v['stock_name']);?></a>
+						<?php endif;?>
+	        	     <!-- <a class="crumb"><img src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/upload/1.jpg" /></a> -->
+	            <?php endforeach;?>
+	        </p>
+	        <?php endif;?>
+	     
+	        <p><label>购买数量</label>
+	         <input type="hidden" id="goods_id" name="goods_id" value="<?php echo $this->goods['goods_id'];?>" />
+		     <input type="hidden" id="gq_id" name="gq_id" value="<?php echo $this->goods_qrcode['gq_id'];?>" />
+		     <input id="stock_id" name="stock_id" type="hidden" value="<?php echo $this->goods['stock_id'];?>" />
+	        <span class="num"><a onclick="javascript:reduce()">-</a><input name="goods_number" id="goods_number" type="text" value="1" /><a onclick="javascript:increase()">+</a></span><em id="stock_value"><?php if($this->goods['goods_number']>0){echo '有货';}else{echo '已售罄';}?></em><span style="margin-left:20px;color:#7CBE28">最低购买数量：<?php echo $this->goods['min_quantity']?></span></p>
+	        <!--<p class="shop_name"><?php echo (!empty($this->goods['shop_name'])?'供应商：'.$this->goods['shop_name']:'');?></p>  -->
+	        <p class="buy">
+	            <input class="buy_bnt1" type="button" name="" value="立即抢购" onclick="addToCart();">
+	            <input class="buy_bnt2" type="button" name="" value="加入购物车" onclick="ajaxToCart();">
+	        </p>
+	    </div>
+    </form>
+</div>

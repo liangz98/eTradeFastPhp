@@ -1,0 +1,47 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/chartcate/delete',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+</script>
+<h1>删除榜单</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back();"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_list">
+    <tr>
+      <th>编号</th>
+      <th>榜单标题</th>
+    </tr>
+    <?php if(is_array($this->categoryall)):?>
+    <?php foreach($this->categoryall as $category):?>
+    <tr>
+      <td><input type="checkbox" id="cate_id<?php echo ($category['cate_id'])?>" name="cate_id[]" checked value="<?php echo ($category['cate_id'])?>">
+        <?php echo ($category['cate_id'])?></td>
+      <td><?php echo ($category['cate_name'])?></td>
+    </tr>
+    <?php endforeach; ?>
+    <?php endif;?>
+  </table>
+  <div class="batch">
+    <input type="submit" class="admin_bnt2" name="" value="确认删除"/>
+  </div>
+</form>
+<?php echo $this->render("footer.phtml") ?>

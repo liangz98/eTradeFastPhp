@@ -1,0 +1,45 @@
+<?php if(is_array($this->bgd) && count($this->bgd)>0):?>
+    <div class="info_tit">
+        <h4><!--报关--><?php echo $this->translate('clearance');?></h4>
+    </div>
+
+    <?php foreach ($this->bgd as $k=>$orders):?>
+        <div class="clearfix">
+            <dl class="fl">
+                <dt class="fl"><!--委托人--><?php echo $this->translate('manCHB');?></dt><dd class="buyer_contacts"><?php echo $orders['clientName'];?></dd>
+            </dl>
+            <dl class="fl">
+                <dt class="fl"><!--经营单位--><?php echo $this->translate('companyCHB');?></dt><dd class="fl price_rules"><?php echo $orders['operator'];?></dd>
+            </dl>
+            <dl class="fl">
+                <dt class="fl"><!--申报单位--><?php echo $this->translate('registerCHB');?></dt><dd class="buyer_contacts"><?php echo $orders['declarer'];?></dd>
+            </dl>
+            <dl class="fl">
+                <dt class="fl"><!--申报现场--><?php echo $this->translate('adressCHB');?></dt>
+                <dd class="fl price_rules"><?php echo $this->ShowDictionaryTo('EXPORT_POINTS',$this->userlangCode,$this->dic_Setting['EXPORT_POINTS'],$orders['declarationLocation']);?>
+                </dd>
+            </dl>
+            <dl class="fl">
+                <dt class="fl"><!--指运港/城市'destinationPort'] 'destinationCity'--><?php echo $this->translate('cityCHB');?></dt>
+                <dd class="buyer_contacts">
+                    <?php echo $this->ShowDictionaryTo('SEA_PORT',$this->userlangCode,$this->dic_Setting['EXPORT_POINTS'],$orders['destinationPort']);?>
+                    <?php echo $this->ShowDictionaryTo('CITY_ISO_CODE',$this->userlangCode,$this->dic_Setting['EXPORT_POINTS'],$orders['destinationCity']);?>
+                    </dd>
+            </dl>
+            <dl class="fl">
+                <dt class="fl"><!--状态--><?php echo $this->translate('state');?></dt>
+                <dd class="fl price_rules"><?php echo $this->ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['EXPORT_DECLARATION_STATUS'],$orders['declarationStatus']);?>
+                 </dd>
+            </dl>
+
+        </div>
+
+    <?php endforeach; ?>
+<?php else:?>
+    <div class="info_tit">
+        <h4><!--订仓单--><?php echo $this->translate('clearance');?></h4>
+    </div>
+    <div class="clearfix">
+        <?php echo $this->translate('Nodata');?>
+    </div>
+<?php endif;?>

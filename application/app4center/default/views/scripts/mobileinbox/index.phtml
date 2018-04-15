@@ -1,0 +1,58 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript" src="/js/center/jquery.checkbox.js"></script>
+<script type="text/javascript">
+if(parent.$_('admincpnav')) 
+	parent.$_('admincpnav').innerHTML='客服系统&nbsp;&raquo;&nbsp;接收手机短信';
+</script>
+<script type="text/javascript">
+$().ready(function() {
+	$('input[@type=checkbox][@name=checkAll]').each(function(){
+		$(this).checkbox().toggle($(this).val());
+	});
+});
+//删除
+function deleteAll(){
+	var ids="";
+    $("[name='chose[]'][checked]").each(function(){
+    	ids+=$(this).val()+",";
+    });
+    ids=ids.substring(0,(ids.length-1));
+    document.location = "<?php echo $this->BaseUrl();?>/mobileinbox/delete?send_ids="+ids;
+}
+</script>
+
+<div id="information">
+  <div class="content">
+    <div class="title">
+    	<strong>接收手机短信</strong>
+    </div>
+    
+    
+    <div class="main">
+        <table class="admin_list">
+			<tr>
+    			<th><input type="checkbox" name="checkAll" id="checkAll"  value="input.ids_all" title="全选/反选"><label for="checkAll">全选</label></th>
+    			<th>手机号码</th>
+    			<th>手机内容</th>
+    			<th>接收时间</th>
+    		</tr>
+	     	<?php if (is_array($this->messages)) :?>
+	        <?php foreach ($this->messages as $k=>$msg):?>
+    		<tr>
+    			<td><input type="checkbox" id="chose[]" name="chose[]" value="<?php echo ($msg['send_id'])?>" class="ids_all"></td>
+    			<td><?php echo ($msg['send_mobile']);?></td>
+    			<td><?php echo ($msg['send_content']);?></td>
+    			<td><?php echo date('Y-m-d H:i',$msg['add_time']);?></td>
+    		</tr>
+	        <?php endforeach; ?>
+	        <?php endif; ?>
+	    </table>
+    </div>
+	<div class="batch">
+		<input type="submit" name="deleteID" id="deleteID" value="删除选择" onclick="deleteAll()">&nbsp;
+	</div>
+    <div class="bg1">&nbsp;</div>
+    <div class="page"><?php echo $this->showPage($this->page);?></div>
+  </div>
+</div>
+<?php echo $this->render("footer.phtml") ?>

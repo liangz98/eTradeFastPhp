@@ -1,0 +1,49 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/account/delete',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+</script>
+<h1>删除帐号</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back();"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_list">
+    <tr>
+      <th>编号</th>
+      <th>用户名</th>
+      <th>E-mail</th>
+    </tr>
+    <?php if(is_array($this->users)):?>
+    <?php foreach($this->users as $user):?>
+    <tr>
+      <td><input type="checkbox" id="user_id<?php echo ($user['user_id'])?>" name="user_id[]" checked value="<?php echo ($user['user_id'])?>">
+        <?php echo ($user['user_id'])?></td>
+      <td><?php echo ($user['user_name'])?></td>
+      <td><?php echo ($user['user_email'])?></td>
+    </tr>
+    <?php endforeach; ?>
+    <?php endif;?>
+  </table>
+  <div class="batch">
+    <input  class="admin_bnt2"  type="submit" name="" value="确认删除">
+  </div>
+</form>
+<?php echo $this->render("footer.phtml") ?>

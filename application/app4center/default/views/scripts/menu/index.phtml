@@ -1,0 +1,149 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+function doadd(){
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/menu/add',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+}
+function doupdate(){
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {
+	   	 menu_id: "required",
+         menu_name: "required"
+	   },
+	   messages: {
+	   	 menu_id: "关键数据不能为空！",
+         menu_name: "名称不能为空！"
+	   },
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/menu/update',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+}
+function dodelete(){
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {
+	   	 menu_id: "required"
+	   },
+	   messages: {
+	   	 menu_id: "关键数据不能为空！"
+	   },
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/menu/delete',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+}
+</script>
+<h1>系统菜单</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="添加" onclick="location.href='<?php echo $this->BaseUrl();?>/menu/'"/>
+  </p>
+</div>
+<table width="100%" border="0">
+  <tr>
+    <td valign="top" style="width:200px;">
+      <script language="javascript" type="text/javascript">
+		d = new dTree("d","/images/center/");
+		d.add(0,-1,"管理菜单");
+		<?php if(is_array($this->menus)):?>
+		<?php foreach($this->menus as $key => $menu):?>
+		d.add("<?php echo $menu['menu_id'];?>","<?php echo $menu['parent'];?>","<?php echo $this->escape($menu['menu_name']);?>","<?php echo $this->BaseUrl();?>/menu/index/menu_id/<?php echo $this->escape($menu['menu_id']);?>");
+		<?php endforeach;?>
+		<?php endif;?>
+		document.write(d);
+		</script></td>
+    <td valign="top"><form name="post_form" method="post" action="" id="post_form" >
+        <table class="admin_form">
+          <tr>
+            <td><p><strong>所属：</strong></p>
+              <p>
+                <select name="parent" id="parent">
+                  <option value="0">请选择菜单</option>
+                   <?php if(is_array($this->menuoptions)):?>
+				  <?php foreach($this->menuoptions as $key => $menu):?>
+				  <option value="<?php echo $menu['menu_id'];?>" <?php if($menu['menu_id']==$this->menu['parent']):?>selected<?php endif;?>><?php echo $menu['menu_name'];?></option>
+				  <?php endforeach;?>
+				  <?php endif;?>
+                </select>
+              </p></td>
+          </tr>
+          <tr>
+            <td><strong>名称：</strong>
+              <p>
+                <input  name="menu_name" id="menu_name" value="<?php echo $this->menu['menu_name'];?>" type="text" class="admin_txt1"/>
+              </p></td>
+          </tr>
+			<tr>
+				<td><strong>语言代码：</strong>
+					<p>
+						<input  name="menu_lang" id="menu_lang" value="<?php echo $this->menu['menu_lang'];?>" type="text" class="admin_txt1"/>
+					</p></td>
+			</tr>
+          <tr>
+            <td><strong>地址：</strong>
+              <p>
+                <input  name="link_url" id="link_url" value="<?php echo $this->menu['link_url'];?>" type="text" class="admin_txt1"/>
+              </p></td>
+          </tr>
+            <tr>
+                <td><strong>是否新窗口：</strong>
+                    <p>
+                        <input style="margin-left: 10px;"  name="menu_blank" <?php echo $this->menu['menu_blank']==1?'checked="checked"':null;?> value="1" type="radio" />是
+                        <input style="margin-left: 10px;"  name="menu_blank" <?php echo $this->menu['menu_blank']==0?'checked="checked"':null;?> value="0" type="radio" />否
+                    </p></td>
+            </tr>
+            <tr>
+          <tr>
+            <td><strong>排序：</strong>
+              <p>
+                <input  name="order_by" id="order_by" value="<?php echo $this->menu['order_by'];?>" type="text" class="admin_txt1"/>
+              </p></td>
+          </tr>
+          <tr>
+            <td><?php if($this->menu['menu_id']>0):?>
+              <input class="admin_bnt" type="hidden" name="menu_id" id="menu_id" value="<?php echo $this->menu['menu_id'];?>">
+              <input class="admin_bnt" name="updateConfirm" type="submit" value="修改"  onclick="doupdate();"/>
+              &nbsp;
+              <input class="admin_bnt" name="deleteConfirm" type="submit" value="删除" onclick="dodelete();"/>
+              &nbsp;
+              <?php else:?>
+              <input class="admin_bnt" name="addConfirm" type="submit" value="添加" onclick="doadd();"/>
+              &nbsp;
+              <?php endif;?>
+              <input class="admin_bnt" name="reset" type="reset" value="重置"/></td>
+            <td>&nbsp;</td>
+          </tr>
+        </table>
+      </form></td>
+  </tr>
+</table>
+<?php echo $this->render("footer.phtml") ?>

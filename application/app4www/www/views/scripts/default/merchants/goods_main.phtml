@@ -1,0 +1,189 @@
+<script type="text/javascript">
+var g_hash = false;
+$(document).ready(function() {
+	$(window).hashchange(function() {
+		var hash = location.hash;
+		var reg = /#stock-\d/;
+		if(reg.test(hash)){
+			g_hash = true;
+			var stock_id = hash.replace('#stock-','');
+			var json_str = '<?php echo(json_encode($this->goods_stocks));?>';
+			var json = eval("("+json_str+")");
+			$.each(json, function(idx,item){
+				if(stock_id == item.stock_id){
+					var is_display_market_price = false;
+					if(item.stock_market_price > item.stock_shop_price) is_display_market_price = true;
+					select_stock(item.stock_id)
+					return false;
+				}
+			});
+		}
+	});
+});
+
+function addToCart(){
+	var options = {
+			target:     '#SeedMsgTxt',
+			url:        '<?php echo $this->seed_Setting['user_app_server']?>/cart/addgoods',
+			success: function() {
+			}
+		};
+		$('#goods_form').ajaxSubmit(options);
+}
+
+function ajaxToCart(){
+	var options = {
+			target:     '#SeedMsgTxt',
+			url:        '<?php echo $this->seed_Setting['user_app_server']?>/cart/addgoods?ajax=1',
+			success: function() {
+			}
+		};
+		$('#goods_form').ajaxSubmit(options);
+}
+
+function addCollect()
+{
+	var options = {
+		target:     '#SeedMsgTxt',
+		url:        '<?php echo $this->seed_Setting['user_app_server']?>/collect/',
+		success: function() {
+		}
+	};
+	$('#goods_form').ajaxSubmit(options);
+	return false;
+}
+
+
+function select_stock(stock_id){
+	var goods_id = <?php echo $this->escape($this->goods['goods_id']);?>;
+	var gq_id = <?php echo ($this->goods_qrcode['gq_id']>0)?$this->goods_qrcode['gq_id']:0;?>;
+	var stock_id = stock_id;
+	$.ajax({
+		url: '<?php echo $this->BaseUrl()?>/products/ajaxstock',
+		data: 'goods_id=' + goods_id + "&stock_id=" + stock_id + "&gq_id=" + gq_id,
+		type: 'POST',
+		dataType: 'json',
+		beforeSend: function() {},
+		error: function(request) {
+		},
+		success: function(data_stock) {
+            $("#size_stocks").find('a').removeClass('crumb');
+			var stock_value = data_stock.stock_value;
+			if(stock_value > 0){
+				$("#stock_id").val(data_stock.stock_id);
+				$("#show_shop_price").html(data_stock.stock_shop_price_format);
+				$("#show_market_price").html(data_stock.stock_market_price_format);
+				$("#show_qrcode_price").html(data_stock.stock_qrcode_price_format);
+				$("#stock_li_"+data_stock.group_id).addClass('crumb');
+				$("#stock_a_"+data_stock.stock_id).addClass('crumb');
+				$("#stock_value").html("库存"+stock_value+"件");
+				$("#selected_show").html('您选择了<?php echo (count($this->stock_groups)>1 && $this->stock_group['group_id']>0)?'"'.$this->escape($this->stock_group['group_name']).'"':"";?>"'+data_stock.stock_name+'"');
+			}else{
+				alert('该库存已没货，请选择其他库存！');
+			}
+			return;
+		}
+	});
+}
+
+function reduce(){
+	var goods_number = $("#goods_number").val();
+	goods_number--;
+	if(goods_number < 1)goods_number=1;
+	$("#goods_number").val(goods_number);
+}
+
+function increase(){
+	 var stock_id = parseInt($("#stock_id").val());
+	 var goods_id = parseInt($("#goods_id").val());
+     var goods_number = parseInt($("#goods_number").val());
+
+   var url = '';
+   if (stock_id > 0)
+       url = '<?php echo $this->BaseUrl();?>/products/addgoods?stock_id=' + stock_id + '&goods_id=' + goods_id + '&number=' + goods_number;
+   else if (goods_id > 0)
+       url = '<?php echo $this->BaseUrl();?>/products/addgoods?goods_id=' + goods_id + '&number=' + goods_number;
+
+   $.ajax({
+       type: 'get',
+       url: url,
+       dataType: 'json',
+       success: function(data) {
+      //   alert(data['aa']);
+           if (data['flag'] == 1) {
+               var goods_number = $("#goods_number").val();
+               goods_number--; 
+               $("#goods_number").val(goods_number);
+               alert('对不起，你所购买的数量超出库存数量!');
+               return false;
+           }
+           if (data['flag'] == 2) {
+               alert('你所选的商品已下架!');
+               return false;
+           }
+       }
+   });
+   var goods_number = $("#goods_number").val();
+   goods_number++;
+   $("#goods_number").val(goods_number);
+}
+</script>
+<div class="mainshow_r">
+   <form name="goods_form" method="post" action="" id="goods_form" >
+                	<h1><?php echo $this->escape($this->goods['goods_name']);?></h1>
+                    <p><?php echo $this->escape($this->goods['goods_tips']);?></p>
+                    <p><span class="star"><i style="width:<?php echo $this->escape($this->goods['score_avg']);?>%;"></i></span> <em><?php echo $this->escape($this->goods['view_total']);?> 浏览</em></p>
+					<div class="summary"><?php echo $this->escape($this->goods['goods_desc']);?></div>
+                    <p class="price"><del><span id="show_market_price"><?php echo $this->showPrice($this->goods['market_price']);?></span></del>
+                           <span id="show_shop_price"><?php echo $this->showPrice($this->goods['shop_price']);?></span>
+                    </p>
+                    <div class="r_txt">
+                        <?php if(is_array($this->stock_groups) && count($this->stock_groups)>1):?>
+                    	<p>可选</p>
+                        <p class="version" id="size">
+                        <?php foreach ($this->stock_groups as $k=>$v):?>
+                        	<a id="group_a_<?php echo $this->escape($v['group_id']);?>" <?php echo ($this->stock_group['group_id']==$v['group_id'])?'class="crumb"':"";?> href="<?php echo $this->baseUrl();?>/products/<?php echo $this->escape($this->goods['goods_mark']);?><?php echo ($k>0)?'-'.$k:"";?>.html" title="<?php echo $this->escape($v['group_name']);?>">
+                        	  <?php echo $this->escape($v['group_name']);?>
+                        	 <!--  <img src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/upload/1.jpg" /> -->
+                        	</a>
+                        <?php endforeach?>
+                        </p>
+                        <?php endif;?>
+                        
+                        <?php if(is_array($this->goods_stocks) && count($this->goods_stocks)>0):?>
+                        <p class="version" id="size_stocks">
+                            <?php foreach ($this->goods_stocks as $k=>$v ):?>
+	                            <?php if($v['stock_value']>0):?>
+				                        <?php if($k==0): // 默认选择第一个库存?> 
+				                        <script language="javascript" type="text/javascript">
+			    							$(document).ready(function(){
+			        							if(g_hash==false){
+			            							select_stock('<?php echo $this->escape($v['stock_id']);?>');
+			        							}
+			    							});
+			    						</script>
+			      						<?php endif;?>
+	      						<a title="<?php echo $this->escape($v['stock_name']);?>" href="#stock-<?php echo $v['stock_id'];?>" onclick="select_stock('<?php echo $this->escape($v['stock_id']);?>');" id="stock_a_<?php echo $this->escape($v['stock_id']);?>"><?php echo $this->escape($v['stock_name']);?></a>
+	      						<?php else:?>
+	      						<a title="<?php echo $this->escape($v['stock_name']);?>" href="#stock-<?php echo $v['stock_id'];?>" onclick="alert('<?php echo $this->escape($v['stock_name']);?> 库存不足！');" id="stock_a_<?php echo $this->escape($v['stock_id']);?>"><?php echo $this->escape($v['stock_name']);?></a>
+	      						<?php endif;?>
+                        	     <!-- <a class="crumb"><img src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/upload/1.jpg" /></a> -->
+                            <?php endforeach;?>
+                        </p>
+                        <?php endif;?>
+                        
+                        <p>原产地</p>
+                        <p><img height="35" src="<?php echo $this->showImage($this->goods['country_m_logo'])?>" alt="country_logo"/></p>
+                        <p>数量</p>
+                         <input type="hidden" id="goods_id" name="goods_id" value="<?php echo $this->goods['goods_id'];?>" />
+					     <input type="hidden" id="gq_id" name="gq_id" value="<?php echo $this->goods_qrcode['gq_id'];?>" />
+					     <input id="stock_id" name="stock_id" type="hidden" value="<?php echo $this->goods['stock_id'];?>" />
+                         
+                        <p><span class="num"><a onclick="javascript:reduce()">-</a><input name="goods_number" id="goods_number" type="text" value="1" /><a onclick="javascript:increase()">+</a></span><em id="stock_value">库存<?php echo $this->goods['goods_number']?>件</em></p>
+                        <p class="buy">
+                            <input class="buy_bnt1" type="button" name="" value="立即购买" onclick="addToCart();">
+                            <input class="buy_bnt2" type="button" name="" value="添加到购物车" onclick="ajaxToCart();">
+                        </p>
+                    </div>
+    </form>
+</div>

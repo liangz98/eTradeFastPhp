@@ -1,0 +1,15 @@
+			<?php if(is_array($this->newses) && count($this->newses)>0):?>
+    		<?php foreach ($this->newses as $news):?>
+            <li>
+                    <p class="time fr"><?php echo date('Y-m-d',$news['add_time']);?> </p>
+                <a href="<?php echo $this->BaseUrl();?>/news/index?cate_mark=<?php echo $this->escape($news['cate_mark']);?>">
+                    <h2 class="fl">【<?php echo $this->escape($news['cate_name'])/*$this->escape($news['news_m_desc'])*/;?>】</h2></a>
+                <a href="<?php echo $this->BaseUrl();?>/news/detail?id=<?php echo $this->escape($news['news_id']);?>">
+                    <p class="cont fl"><?php echo $this->escape($news['news_title']);?></p>
+                    <small class="fr mr10">查看详情</small>
+                </a>
+            </li>
+            <?php endforeach;?>
+            <?php else:?>
+            <div class="more"><a>没有找到相关数据</a></div>
+            <?php endif;?>

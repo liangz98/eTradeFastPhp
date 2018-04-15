@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>快移</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link href="/ky/css/base.css" rel="stylesheet">
+    <link href="/ky/css/style.css" rel="stylesheet">
+    <script type="text/javascript" src="/ky/js/jquery.js"></script>
+    <script type="text/javascript" src="/ky/js/seed.form.js"></script>
+    <script type="text/javascript" src="/ky/js/jquery.form.js"></script>
+    <script type="text/javascript" src="/ky/js/www.js"></script>
+    <script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
+    <script type="text/javascript" src="/ky/layer/layer.js"></script>
+
+</head>
+<body>
+<?php echo $this->render(SEED_WWW_TPL . '/header.phtml'); ?>
+<div class="o_content_wrap w1200 m0a clearfix">
+    <?php echo $this->render(SEED_WWW_TPL . '/left_menu.phtml'); ?>
+    <div class="o_content fr w940">
+        <div class="order_table order_tableh">
+            <ul class="order_state2 order_state3 clearfix">
+                <li <?php if ($this->status == 01): ?><?php echo "class='on'"; ?><?php endif; ?> ><a
+                            href="<?php echo WWW; ?>user/buyer/index-01-1.html">
+                        <!--有效--><?php echo $this->translate('valid'); ?></a></li>
+                <li <?php if ($this->status == 02): ?><?php echo "class='on'"; ?><?php endif; ?> ><a
+                            href="<?php echo WWW; ?>user/buyer/index-02-1.html">
+                        <!--待处理--><?php echo $this->translate('waiting'); ?>（<span
+                                class="wh_num"><?php if (!empty($this->clConut['02'])) {
+                                echo $this->clConut['02'];
+                            } else {
+                                echo '0';
+                            } ?></span>）</a></li>
+                <li <?php if ($this->status == 00): ?><?php echo "class='on'"; ?><?php endif; ?> ><a
+                            href="<?php echo WWW; ?>user/buyer/index-00-1.html">
+                        <!--审核中--><?php echo $this->translate('audit'); ?>（<span
+                                class="wh_num"><?php if (!empty($this->clConut['00'])) {
+                                echo $this->clConut['00'];
+                            } else {
+                                echo '0';
+                            } ?></span>）</a></li>
+            </ul>
+        </div>
+        <div class="qysearch_box">
+            <form action="#" method="post">
+                <input class="search_inp" name="keyword" <?php if (!empty($this->keyword)) {
+                    echo "value=" . $this->keyword;
+                } ?> placeholder="<?php echo $this->translate('INPkw_par_buyer'); ?>" type="text"><!--可输入买家名称-->
+                <input class="ss_btn" type="submit" value="">
+                <?php if ($this->CompPartnerAdmin == true || $this->CompOrderAdmin == true): ?>
+                    <?php if (count($this->buyer_isAllowAdd) > 0): ?>
+                        <a href="<?php echo WWW; ?>user/buyer/add" class="addb_box fr"></a>
+                        <a href="<?php echo WWW; ?>user/buyer/adds" class="p_n_sh fr"></a>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </form>
+        </div>
+        <table class="qy_table">
+            <thead>
+            <tr>
+                <th><!--公司名称--><?php echo $this->translate('comNAME'); ?></th>
+                <th><!--行业--><?php echo $this->translate('industry'); ?></th>
+                <th><!--所在国家--><?php echo $this->translate('ONcountry'); ?></th>
+                <th><!--合作额度--><?php echo $this->translate('ONlimit'); ?></th>
+                <?php if ($this->CompPartnerAdmin == true || $this->CompOrderAdmin == true): ?>
+                    <th><!--操作--><?php echo $this->translate('madeTT'); ?></th>
+                <?php endif; ?>
+            </tr>
+            </thead>
+            <tbody>
+            <form id="delete_form" name="delete_form" method="post" action="">
+
+                <?php if (is_array($this->e) && count($this->e) > 0): ?>
+                    <?php foreach ($this->e as $k => $v): ?>
+                        <tr style="height: 65px">
+                            <td><a href="<?php if (!empty($this->buyer_isAllowView)) {
+                                    echo WWW . 'user/buyer/view?' . base64_encode($v['toID']);
+                                } ?>">
+                                    <?php if ($this->userrgCode == 'CN') {
+                                        echo $v['toName'];
+                                    } elseif (!empty($v['toEnName'])) {
+                                        echo $v['toEnName'];
+                                    } else {
+                                        echo $v['toName'];
+                                    } ?></a></td>
+                            <td><a href="<?php if (!empty($this->buyer_isAllowView)) {
+                                    echo WWW . 'user/buyer/view?' . base64_encode($v['toID']);
+                                } ?>">
+                                    <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ISIC_INDUSTRY_TYPE'], $v['industryCode']); ?> </a>
+                            </td>
+                            <td><a href="<?php if (!empty($this->buyer_isAllowView)) {
+                                    echo WWW . 'user/buyer/view?' . base64_encode($v['toID']);
+                                } ?>">
+                                    <?php echo $this->ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'], $this->userlangCode, $this->dic_Setting['COUNTRY_ISO_CODE'], $v['regdCountryCode']); ?></a>
+                            </td>
+                            <td><a href="<?php if (!empty($this->buyer_isAllowView)) {
+                                    echo WWW . 'user/buyer/view?' . base64_encode($v['toID']);
+                                } ?>">待补充</a></td>
+                            <?php if ($this->CompPartnerAdmin == true || $this->CompOrderAdmin == true): ?>
+                                <td>
+                                    <div class="cc_box">
+                                        <!--编辑--> <a title="<?php echo $this->translate('edit'); ?>"
+                                            <?php if ($v['partnerStatus'] == 00) {
+                                                echo 'style="display:inline-block;"';
+                                            } ?> class="t_edit p_ed"
+                                                     href="<?php echo WWW . 'user/buyer/edit?' . base64_encode($v['toID']); ?>"></a>
+
+                                        <!--删除--><a title="<?php echo $this->translate('delete'); ?>"
+                                            <?php if ($v['partnerStatus'] == 00 || $v['partnerStatus'] == 01) {
+                                                echo 'style="display:inline-block;"';
+                                            } ?> class="t_edit p_del"
+                                                    href="javascript:;" id="<?php echo $v['toID']; ?>"
+                                                    data-url="/user/buyer/delete"
+                                                    data-msg1="<?php echo $this->translate('is_delete'); ?>"
+                                                    data-msg2="<?php echo $this->translate('delete_y'); ?>"
+                                                    data-msg3="<?php echo $this->translate('delete_n'); ?>"
+                                                    onclick="doOption(this);"></a>
+
+                                        <!--接受邀请--><a title="<?php echo $this->translate('accept'); ?>"
+                                            <?php if ($v['partnerStatus'] == 02) {
+                                                echo 'style="display:inline-block;"';
+                                            } ?> class="t_edit p_qr"
+                                                      href="javascript:;" id="<?php echo $v['toID']; ?>"
+                                                      data-url="/user/buyer/accept"
+                                                      data-msg1="<?php echo $this->translate('is_accept'); ?>"
+                                                      data-msg2="<?php echo $this->translate('tip_accept_sucess'); ?>"
+                                                      data-msg3="<?php echo $this->translate('tip_accept_fail'); ?>"
+                                                      onclick="doOption(this);"></a>
+
+                                        <!--拒绝邀请--><a title="<?php echo $this->translate('reject'); ?>"
+                                            <?php if ($v['partnerStatus'] == 02) {
+                                                echo 'style="display:inline-block;"';
+                                            } ?> class="t_edit p_del"
+                                                      href="javascript:;" id="<?php echo $v['toID']; ?>"
+                                                      data-url="/user/buyer/reject"
+                                                      data-msg1="<?php echo $this->translate('is_reject'); ?>"
+                                                      data-msg2="<?php echo $this->translate('tip_reject_sucess'); ?>"
+                                                      data-msg3="<?php echo $this->translate('tip_reject_fail'); ?>"
+                                                      onclick="doOption(this);"></a>
+                                    </div>
+                                </td>
+                            <?php endif; ?>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="5"> <?php echo $this->translate('Nodata'); ?></td>
+                    </tr>
+                <?php endif; ?>
+            </form>
+            </tbody>
+        </table>
+        <div class="page"> <?php echo $this->showProductPage($this->page); ?> </div>
+    </div>
+</div>
+<?php echo $this->render(SEED_WWW_TPL . '/footer.phtml'); ?>
+<script>
+    function doOption(obj) {
+        var url = $(obj).attr('data-url');
+        var id = $(obj).attr('id');
+        var msg1 = $(obj).attr('data-msg1');
+        var msg2 = $(obj).attr('data-msg2');
+        var msg3 = $(obj).attr('data-msg3');
+        //询问框
+        layer.confirm(msg1, {
+            title: false,
+            closeBtn: 0,
+            btn: ['<?php echo $this->translate('yes');?>', '<?php echo $this->translate('no');?>'] //按钮
+        }, function () {
+            $.post(url,
+                {'delID': id},
+                function (data) {
+                    if (data.status == 1) {
+                        layer.msg('<span style="color: #EF8200;font-size: 16px;">' + msg2 + '</span>', {
+                            skin: 'del-class',
+                            icon: 1
+                        });
+                        parent.window.location.reload();
+                    }
+                    else {
+                        layer.msg('<span style="color: #EF8200;font-size: 16px;">' + msg3 + '</span><br>' + data.error, {
+                            skin: 'del-class',
+                            icon: 0
+                        });
+                        parent.window.location.reload();
+                    }
+                }, "json");
+
+        }, function () {
+            layer.closeAll();
+        });
+    }
+
+</script>
+</body>
+</html>

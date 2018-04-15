@@ -1,0 +1,93 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$('input[@type=checkbox][@name=checkAll]').each(function(){
+		$(this).checkbox().toggle($(this).val());
+	});
+	
+	<?php if(isset($this->conditions['cate_name'])):?>
+    $("#cate_name").val('<?php echo $this->conditions['cate_name'];?>');
+    <?php endif;?>
+    
+    <?php if(isset($this->conditions['image_id'])):?>
+    $("#image_id").val('<?php echo $this->conditions['image_id'];?>');
+    <?php endif;?>
+    
+	<?php if(isset($this->conditions['user_name'])):?>
+    $("#user_name").val('<?php echo $this->conditions['user_name'];?>');
+    <?php endif;?>
+});
+
+//删除
+function deleteAll(){
+	var ids="";
+    $("[name='chose[]'][checked]").each(function(){
+    	ids+=$(this).val()+",";
+    });
+    ids=ids.substring(0,(ids.length-1));
+    document.location = "<?php echo $this->BaseUrl();?>/image/delete?image_ids="+ids;
+}
+
+</script>
+<h1>图片附件管理</h1>
+<div class="admin_search">
+<form name="search" action="" method="get">
+  <fieldset>
+    <legend>搜索</legend>
+    &nbsp;
+    图片编号：
+    <input type="text" name="image_id" id="image_id" value="" style="width:100px;"/>
+    &nbsp;
+    用户帐号：
+    <input type="text" name="user_name" id="user_name" value="" style="width:100px;"/>
+    &nbsp;
+    图片类型：
+    <select name="cate_name" id="cate_name">
+      <option value="">--选择分类--</option>
+      <?php if(is_array($this->cates)):?>
+      <?php foreach($this->cates as $cate):?>
+      <option value="<?php echo ($cate['cate_name']);?>"><?php echo ($cate['cate_desc']);?></option>
+      <?php endforeach; ?>
+      <?php endif;?>
+    </select>
+    <input name="提交" type="submit"  class="admin_bnt2" value=" 搜 索 " />
+  </fieldset>
+</form>
+</div>
+<table class="admin_list">
+  <tr>
+    <th><input type="checkbox" name="checkAll" id="checkAll"  value="input.ids_all" title="全选/反选">
+      <label for="checkAll">全选</label></th>
+    <th>文件名</th>
+    <th>图片分类</th>
+    <th>大小</th>
+    <th>上传时间</th>
+    <th>上传IP</th>
+    <th>上传者</th>
+    <th>操作</th>
+  </tr>
+  <?php if(is_array($this->images)):?>
+  <?php foreach($this->images as $image):?>
+  <tr>
+    <td><input type="checkbox" id="chose[]" name="chose[]" value="<?php echo ($image['image_id']);?>" class="ids_all">
+      <?php echo $image['image_id'];?></td>
+    <td><a href="javascript:void(0)" onclick="tb_show('', '<?php echo $this->seed_Setting['upload_view_server'].'/images/'.$image['cate_path'].'/'.$image['normal_image_path']?>');"><?php echo ($image['image_name']);?></a></td>
+    <td><?php echo ($image['cate_name']);?></td>
+    <td><?php echo ($image['image_size']);?></td>
+    <td><?php echo $image['upload_time'];?></td>
+    <td><?php echo ($image['upload_ip']);?></td>
+    <td><?php echo ($image['user_name']);?></td>
+    <td>
+    <a href="javascript:void(0)" onclick="tb_show('', '<?php echo $this->seed_Setting['upload_view_server'].'/images/'.$image['cate_path'].'/'.$image['normal_image_path']?>');"><img src="<?php echo $this->imageUrl?>/images/center/view.gif" title="预览" alt="预览"></a>
+    <a href=<?php echo "../../../upload_files/images/goodsalbum/".$image['original_image_path'];?> download="<?php echo ($image['image_name']);?>">下载</a></td>
+  </tr>
+  <?php endforeach; ?>
+  <?php endif;?>
+</table>
+<div class="batch">
+  <input type="button" class="admin_bnt2" name="deleteButton" id="deleteButton" value="删除选择" onclick="deleteAll()">
+</div>
+<!--分页开始-->
+<div class="page"><?php echo $this->showPage($this->page);?></div>
+<!--分页结束-->
+<?php echo $this->render("footer.phtml") ?>

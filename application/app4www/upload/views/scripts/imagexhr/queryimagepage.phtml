@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title> ImageSpace </title>
+<link rel="stylesheet" href="/static/commerce/css/shop_comm.css" type="text/css" media="all" />
+<link rel="stylesheet" href="/static/commerce/css/shop.css" type="text/css" media="all" />
+<script type="text/javascript" src="/static/commerce/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="/static/commerce/js/pop.base.js"></script>
+<style type="text/css">
+.thickclose:link, .thickclose:visited {background: url("/static/commerce/css/i/bg_thickbox.gif") no-repeat scroll 0 -18px transparent;display: block;font-size: 0;height: 15px;line-height: 100px;overflow: hidden;position: absolute;right: 12px;top: 7px;width: 15px;z-index: 100000;}
+#thickcloser:link, #thickcloser:visited {background-position: 0 0;height: 17px;right: 9px;top: 6px;width: 16px;}
+</style>
+</head>
+<body id="mainframe">
+    <div class="image-tab" style="width: 100%;height: 360px;">
+        <div class="order_tbl">
+            <ul class="tbl_tab">
+                <li><span><a href="/upload/imagexhr/uploadinit?type=<?php echo $this->escape($this->type);?>&img_cate=<?php echo $this->escape($this->imgCateName);?>">上传新图</a></span></li>
+                <li><span><a class="on" href="/upload/imagexhr/initimagepage?type=<?php echo $this->escape($this->type);?>&img_cate=<?php echo $this->escape($this->imgCateName);?>">从图片空间选图</a></span></li>
+            </ul>
+            <a id="thickcloser" class="thickclose" href="javascript:closeFrame();"></a>
+        </div>
+        <div class="imgtab-con con" >
+            <form id="queryImagesForm" name="queryImagesForm" action="/upload/imagexhr/queryimagepage" method="get">
+                <div class="tab-line">
+                    <input name="query_type" id="imgsQuery.queryType" type="hidden" value="<?php echo $this->escape($this->queryType);?>"/>
+                    <input type="hidden" id="img_cate" name="img_cate" value="<?php echo $this->escape($this->imgCateName);?>"/>
+                    &nbsp;&nbsp;图片名：<input type="text" value="<?php echo $this->escape($this->queryKey);?>" maxlength="20" name="query_key" id="imgsQuery.queryKey"/>
+                    <a class="btn_reelect" onclick="queryImages();" style="cursor: pointer;">查找</a>
+                </div>
+                <input type="hidden" id="imgZoneType" name="type" value="<?php echo $this->escape($this->type);?>"/>
+            </form>
+            <ul id="imageInfo" style="margin-bottom: 5px;margin-left:15px;border-style: none;">
+                <?php if( !empty($this->imageList)):?>
+                <?php foreach($this->imageList as $image):?>
+                <li  id="imgInfo_<?php echo $image['imgId'];?>" class="li-img" onclick="chooseImage(this);" >
+                    <input type="hidden" name="imageZoneId" value="<?php echo $image['imgId'];?>"/>
+                    <img src="<?php echo "http://{$_SERVER['HTTP_HOST']}/upload_files{$image['nolImgUrl']}";?>"  width="98px"  height="98px"  alt="暂时无法读取图片" title="<?php echo $this->escape($image['imgName']);?>"/>
+                    <span style="position:relative; left:86px; top:-12px;">
+                        <img src="/static/commerce/images/321.png" alt="" style="display:none;"/>
+                    </span>
+                </li>
+                <?php endforeach;?>
+                <?php endif;?>
+            </ul>
+            <div class="p-wrap">
+                <a id="insetLink" class="btn_reelect"  href="javascript:insertImg();"  style="margin-left:30px;float: left;">插入选中图片</a>
+                <a href="javascript:closeFrame();" class="btn_reelect" id="frameCloser" style="margin-left:10px;float: left;">关&nbsp;闭</a>
+                <div class="pagin fr"><?php echo $this->showImagePage($this->page);?></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        //统计被选中的图片的个数
+        var selectedCounts=0;
+
+        //查询图片
+        function queryImages(){
+            var url = "/upload/imagexhr/queryimagepage?type=<?php echo $this->escape($this->type);?>&page=1";
+            jQuery("#queryImagesForm").attr("action",url);
+            jQuery("#queryImagesForm").submit();
+        }
+        //选中图片
+        function chooseImage(o){
+            if(jQuery(o).attr("class")=="curr1"){
+                jQuery(o).removeClass("curr1");
+                jQuery(o).addClass("li-img");
+                jQuery(".li-img span img").hide();
+                selectedCounts=selectedCounts-1;
+            }else{
+                if(selectedCounts>=100){
+                    alert("图片数量超限，请重新选择！");
+                    return;
+                }else{
+                    jQuery(o).removeClass("li-img");
+                    jQuery(o).addClass("curr1");
+                    jQuery(".curr1 span img").show();
+                    selectedCounts=selectedCounts+1;
+                }
+            }
+        }
+        //插入图片
+        function insertImg(){
+            var count = 0;
+            var chooseImgCount = jQuery(".curr1").length;
+            if(chooseImgCount==0){
+                alert("请选择图片！");
+                return;
+            }
+            for(var i =0;i<chooseImgCount;i++){
+                //获取图片的url
+                var imageUrl = jQuery(".curr1 img:first").attr("src");
+                //获取图片在图片空间的id
+                var imageZoneId=jQuery(".curr1 input:first").val();
+                //将获取的图片url和图片id以“||”的形式连接
+                var imgZoneUrl=imageUrl+"||"+imageZoneId;
+                //用来判断点击选择图片空间弹层时，是从关联版式的顶部还是底部弹出的；1代表顶部，2代表底部
+                var descVla = jQuery("#imgZoneType").val();
+                if(descVla==1){
+                    if(parent.insertImgUrl(imgZoneUrl)){
+                        count ++ ;
+                        jQuery(".curr1 span img:first").hide();
+                        jQuery(".curr1:first").removeClass("curr1");
+                    }
+                }
+                if(descVla==2){
+                    if(parent.insertImgUrl1(imgZoneUrl)){
+                        count ++ ;
+                        jQuery(".curr1 span img:first").hide();
+                        jQuery(".curr1:first").removeClass("curr1");
+                    }
+                }
+            }
+        }
+
+        function closeFrame(){
+            var descVla = jQuery("#imgZoneType").val();
+            parent.closeFrame(descVla);
+        }
+    </script>
+</body>
+</html>

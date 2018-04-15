@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>快移</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link href="/ky/css/base.css" rel="stylesheet">
+    <link href="/ky/css/style.css" rel="stylesheet">
+    <script type="text/javascript" src="/ky/js/jquery.js"></script>
+    <script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
+    <script type="text/javascript" src="/ky/js/www.js"></script>
+    <script type="text/javascript" src="/ky/js/jquery.min.js"></script>
+    <script type='text/javascript' src='/ky/js/jquery-ui.min.js'></script>
+    <script type="text/javascript" src="/ky/js/idrag.js"></script>
+    <style type="text/css">
+        .order_progress {
+            padding: 0 20px;
+            border-top: 5px solid #df7e20;
+            border-bottom: 20px solid #fff;
+        }
+
+        .progress {
+            display: block;
+            padding: 10px 0;
+            margin: 0 -10px;
+            overflow: hidden;
+        }
+
+        .progress p {
+            float: left;
+            margin: 0 10px;
+            font-size: 12px;
+        }
+
+        .icon_bg1, .icon_bg2, .icon_bg3 {
+            width: 210px;
+            height: 40px;
+            background-color: #A0A0A0;
+            position: relative;
+            color: #000;
+            line-height: 40px;
+        }
+
+        .finish {
+            background-color: #4CAF50;
+            color: #fff;
+        }
+
+        .go {
+            background-color: #df7e20;
+            color: #fff;
+        }
+
+        .go:after {
+            border-left-color: #df7e20;
+        }
+
+        .od_ht_dl {
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<?php echo $this->render(SEED_WWW_TPL . '/header.phtml'); ?>
+<!-- content star -->
+<div class="o_content_wrap w1200 m0a clearfix">
+    <?php echo $this->render(SEED_WWW_TPL . '/left_menu.phtml'); ?>
+    <div class="o_content_index fr w940">
+        <div class="user_wrap w940 clearfix" style=" background: #f5f5f5;">
+            <div class="user fl">
+                <div class="tx_wrap fl">
+                    <a target="_blank" href="<?php echo WWW; ?>user/index/edit"><img src="/ky/images/user_tx.png"></a>
+                    <p><a  target="_blank" href="<?php echo WWW; ?>user/index/edit"><?php echo $this->userLoginName; ?></a></p>
+                </div>
+            </div>
+            <div class="user_info fl">
+                <div class="clearfix" style="position:relative;">
+                    <h2 class="fl"><a href="<?php echo WWW; ?>user/company"><?php echo $this->accountName; ?></a></h2>
+                    <i class="company_icon fr" style="margin: 7px 20px 0 0;"></i>
+                    <div class="company_box" style="left:602px;"><img
+                                src="<?php echo WWWURL; ?>/qrcode?from=<?php echo base64_encode($this->e['accountName']); ?>"
+                                style="width:100px;"></div>
+                </div>
+                <div>
+                    <ul class="user_state clearfix">
+                        <li>
+                            <a href="javascript:;">
+                                <!--待审核--><?php echo $this->translate('checkIN');?><br/><i></i>
+                                <span class="u_sh_num"><?php echo intval($this->COUNT['01']); ?></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">
+                                <!--待确认--><?php echo $this->translate('checkR');?><br/><i></i>
+                                <span class="u_sh_num"><?php echo intval($this->COUNT['02']); ?></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">
+                                <!--执行中--><?php echo $this->translate('running');?><i class="new_coin"></i>
+                                <br/><span
+                                        class="u_sh_num"><?php echo intval($this->COUNT['03']) + intval($this->COUNT['04']); ?></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">
+                                <!--完成--><?php echo $this->translate('finished');?><i></i>
+                                <br/><span class="u_sh_num"><?php echo intval($this->COUNT['10']); ?></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--订单模块状态-->
+        <?php if(($this->newE)||$this->vestut==-1){echo $this->render(SEED_WWW_TPL . '/index/newlist.phtml');} ?>
+        <!--六大功能模块  产品 合作伙伴 订单-->
+        <div class="de_list w970  clearfix">
+            <div id="loader"></div>
+            <div id="module_list">
+                <input type="hidden" id="orderlist" value="<?php echo $this->sort; ?>"/>
+                <?php if (is_array($this->sortArr) && count($this->sortArr) > 0): ?>
+                    <?php foreach ($this->sortArr as $k => $v): ?>
+
+                         <?php if($v=='1'): ?>
+                                <div class="list_wrap fl pr" title="<?php echo $v; ?>">
+                                    <h3 class="ofh"><?php echo $this->translate('orderSALLE');?></h3>
+                                    <ul>
+                                        <?php if (is_array($this->orderXS) && count($this->orderXS) > 0): ?>
+                                            <?php foreach ($this->orderXS as $k1 => $orderxs): ?>
+                                                <li><a href="<?php  echo WWW.'user/orderxs/view?'.base64_encode($orderxs['orderID']);?>"><?php echo $orderxs['orderNo']; ?></a>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </ul>
+                                    <a class="pa u_checked_more" href="/user/orderxs"><?php echo $this->translate('more'); ?>>></a>
+                                </div>
+                            <?php endif;?>
+                           <?php if($v=='2'): ?>
+                                <div class="list_wrap fl pr" title="<?php echo $v; ?>">
+                                    <h3 class="ofh"><?php echo $this->translate('orderBUY'); ?></h3>
+                                    <ul>
+                                        <?php if (is_array($this->orderCG) && count($this->orderCG) > 0): ?>
+                                            <?php foreach ($this->orderCG as $k2 => $ordercg): ?>
+                                                <li><a href="<?php  echo WWW.'user/ordercg/view?'.base64_encode($ordercg['orderID']);?>"><?php echo $ordercg['orderNo']; ?></a>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </ul>
+                                    <a class="pa u_checked_more" href="/user/ordercg"><?php echo $this->translate('more'); ?>>></a>
+                                </div>
+                           <?php endif;?>
+                          <?php if($v=='3'): ?>
+                                <div class="list_wrap fl pr" title="<?php echo $v; ?>">
+                                    <h3 class="ofh"><?php echo $this->translate('goodsME'); ?></h3>
+                                    <ul>
+                                        <?php if (is_array($this->Goods) && count($this->Goods) > 0): ?>
+                                            <?php foreach ($this->Goods as $k3 => $Goods): ?>
+                                                <li><a href="<?php  echo WWW.'user/goods/view?'.base64_encode($Goods['productID']);?>"><?php echo $Goods['productName']; ?></a>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </ul>
+                                    <a class="pa u_checked_more" href="/user/goods"><?php echo $this->translate('more'); ?>>></a>
+                                </div>
+                          <?php endif;?>
+                          <?php if($v=='4'): ?>
+                                <div class="list_wrap fl pr" title="<?php echo $v; ?>">
+                                    <h3 class="ofh"><?php echo $this->translate('goodsBUY'); ?></h3>
+                                    <ul>
+                                        <?php if (is_array($this->Purchase) && count($this->Purchase) > 0): ?>
+                                            <?php foreach ($this->Purchase as $k1 => $Purchase): ?>
+                                                <li><a href="<?php  echo WWW.'user/purchase/view?'.base64_encode($Purchase['productID']);?>"><?php echo $Purchase['productName'];  ?></a>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </ul>
+                                    <a class="pa u_checked_more" href="/user/purchase"><?php echo $this->translate('more'); ?>>></a>
+                                </div>
+                          <?php endif;?>
+                         <?php if($v=='5'): ?>
+                                <div class="list_wrap fl pr" title="<?php echo $v; ?>">
+                                    <h3 class="ofh"><?php echo $this->translate('cooperationC'); ?></h3>
+                                    <ul>
+                                        <?php if (is_array($this->Buyer) && count($this->Buyer) > 0): ?>
+                                            <?php foreach ($this->Buyer as $k1 => $Buyer): ?>
+                                                <li><a href="<?php  echo WWW.'user/buyer/view?'.base64_encode($Buyer['toID']);?>"><?php echo $Buyer['toName']; ?></a>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </ul>
+                                    <a class="pa u_checked_more" href="/user/buyer"><?php echo $this->translate('more'); ?>>></a>
+                                </div>
+                         <?php endif;?>
+                <?php if($v=='6'): ?>
+                                <div class="list_wrap fl pr" title="<?php echo $v; ?>">
+                                    <h3 class="ofh"><?php echo $this->translate('cooperationB'); ?></h3>
+                                    <ul>
+                                        <?php if (is_array($this->Vendor) && count($this->Vendor) > 0): ?>
+                                            <?php foreach ($this->Vendor as $k1 => $Vendor): ?>
+                                                <li><a href="<?php  echo WWW.'user/vendor/view?'.base64_encode($Vendor['toID']);?>"><?php echo $Vendor['toName']; ?></a>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </ul>
+                                    <a class="pa u_checked_more" href="/user/vendor"><?php echo $this->translate('more'); ?>>></a>
+                                </div>
+                        <?php endif;?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php echo $this->render(SEED_WWW_TPL . '/footer.phtml'); ?>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$('input[@type=checkbox][@name=checkAll]').each(function(){
+		$(this).checkbox().toggle($(this).val());
+	});
+    <?php if(isset($this->conditions['is_actived'])):?>
+    $("#is_actived").val('<?php echo $this->conditions['is_actived'];?>');
+    <?php endif;?>
+});
+
+//删除
+function deleteAll(){
+	var ids="";
+    $("[name='chose[]'][checked]").each(function(){
+    	ids+=$(this).val()+",";
+    });
+    ids=ids.substring(0,(ids.length-1));
+    document.location = "<?php echo $this->BaseUrl();?>/chartchannel/delete/channel_ids/"+ids;
+}
+</script>
+
+<h1>频道管理</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="添加" onclick="document.location='<?php echo $this->BaseUrl();?>/chartchannel/add/'"/>
+  </p>
+</div>
+<table class="admin_list">
+  <tr>
+    <th><input type="checkbox" name="checkAll" id="checkAll"  value="input.ids_all" title="全选/反选">
+      <label for="checkAll">全选</label></th>
+    <th>频道名称</th>
+    <th>操作</th>
+  </tr>
+  <?php if(is_array($this->channels)):?>
+  <?php foreach($this->channels as $channel):?>
+  <tr>
+    <td><input type="checkbox" id="chose[]" name="chose[]" value="<?php echo ($channel['channel_id'])?>" class="ids_all"></td>
+    <td><?php echo ($channel['channel_name']);?></td>
+    <td>
+    <a href="<?php echo $this->BaseUrl();?>/chartchannel/update/channel_id/<?php echo $channel['channel_id'];?>"><img src="/images/center/edit.gif" title="编辑资料" alt="编辑资料"></a>
+    <a href="<?php echo $this->BaseUrl();?>/chartchannel/delete/channel_ids/<?php echo $channel['channel_id'];?>"><img src="/images/center/del.gif" title="删除" alt="删除"/></a>
+    </td>
+  </tr>
+  <?php endforeach; ?>
+  <?php endif;?>
+</table>
+<div class="batch">
+  <input type="button" class="admin_bnt2" name="deleteButton" id="deleteButton" value="删除选择" onclick="deleteAll()">
+</div>
+<!--分页开始-->
+<div class="page">
+  <?php echo $this->showPage($this->page);?>
+</div>
+<!--分页结束-->
+<?php echo $this->render("footer.phtml") ?>

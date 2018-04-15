@@ -1,0 +1,69 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$('input[@type=checkbox][@name=checkAll]').each(function(){
+		$(this).checkbox().toggle($(this).val());
+	});
+    <?php if(isset($this->conditions['is_actived'])):?>
+    $("#is_actived").val('<?php echo $this->conditions['is_actived'];?>');
+    <?php endif;?>
+});
+//删除
+function deleteAll(){
+	var ids="";
+    $("[name='chose[]'][checked]").each(function(){
+    	ids+=$(this).val()+",";
+    });
+    ids=ids.substring(0,(ids.length-1));
+    document.location = "<?php echo $this->BaseUrl();?>/filterusername/delete?filter_ids="+ids;
+}
+</script>
+
+<h1>过滤用户名</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="添加" onclick="document.location='<?php echo $this->BaseUrl();?>/filterusername/add'"/>
+    <input class="admin_bnt2" name="" type="button" value="导入" onclick="document.location='<?php echo $this->BaseUrl();?>/filterusername/import'"/>
+  </p>
+</div>
+<div class="admin_search">
+  <form name="search" action="" method="get">
+    <fieldset>
+      <legend>过滤搜索</legend>
+      &nbsp;
+      <select name="is_actived" id="is_actived">
+        <option value="-1">-是否启用-</option>
+        <option value="0" >否</option>
+        <option value="1" >是</option>
+      </select>
+      <input  class="admin_bnt2"  type="submit" value="搜索" />
+    </fieldset>
+  </form>
+</div>
+<table class="admin_list">
+  <tr>
+    <th><input type="checkbox" name="checkAll" id="checkAll"  value="input.ids_all" title="全选/反选">
+      <label for="checkAll">全选</label></th>
+    <th>关键词</th>
+    <th>过滤结果</th>
+    <th>是否启用</th>
+    <th>操作</th>
+  </tr>
+  <?php if(is_array($this->filters)):?>
+  <?php foreach($this->filters as $filter):?>
+  <tr>
+    <td><input type="checkbox" id="chose[]" name="chose[]" value="<?php echo ($filter['filter_id'])?>" class="ids_all"></td>
+    <td><?php echo ($filter['keyword']);?></td>
+    <td><?php echo ($filter['filter_reason']);?></td>
+    <td><?php echo ($filter['is_actived']=='1')?'<img src="/images/center/yes.gif">':'<img src=/images/center/no.gif>';?></td>
+    <td><a href="<?php echo $this->BaseUrl();?>/filterusername/update?filter_id=<?php echo ($filter['filter_id']);?>"><img src="/images/center/edit.gif" title="编辑" alt="编辑"></a> <a href="<?php echo $this->BaseUrl();?>/filterusername/delete?filter_ids=<?php echo ($filter['filter_id']);?>"><img src="/images/center/del.gif" title="删除" alt="删除"></a></td>
+  </tr>
+  <?php endforeach; ?>
+  <?php endif;?>
+</table>
+<div class="batch">
+  <input  class="admin_bnt2"  type="button" name="deleteID" id="deleteID" value="删除选择" onclick="deleteAll()">
+  &nbsp; </div>
+</div>
+<div class="page"><?php echo $this->showPage($this->page);?></div>
+<?php echo $this->render("footer.phtml") ?> 

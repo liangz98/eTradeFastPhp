@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>快移</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link href="/ky/css/base.css" rel="stylesheet">
+    <link href="/ky/css/style.css" rel="stylesheet">
+    <script type="text/javascript" src="/ky/js/jquery.js"></script>
+    <script type="text/javascript" src="/ky/js/jquery.wallform.js"></script>
+    <script type="text/javascript" src="/ky/js/www.js"></script>
+    <script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
+    <script>
+        function doStatus(status){
+            window.location.href='<?php echo $this->BaseUrl();?>/vendor/addv/'+status;
+            alert('status');
+        }
+        function nextPage(){
+        }
+    </script>
+</head>
+<body>
+<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
+<div class="o_content_wrap w1200 m0a clearfix">
+    <?php echo $this->render(SEED_WWW_TPL.'/left_menu.phtml');?>
+    <div class="o_content fr w940 border-top">
+        <div class="info_tit clearfix">
+            <h4 ><?php echo $this->translate('viewInfo');?><!--查看基本信息--></h4>
+        </div>
+        <div class="pa_form_box">
+            <form action="#" method="post">
+                <div class="info_cont clearfix">
+                    <dl class="fl">
+                        <dt class="fl"><?php echo $this->translate('comNAME');?><!--公司名称--></dt><dd class="buyer_contacts"><?php echo $this->e['accountName']?></dd>
+                    </dl>
+                    <dl class="fl">
+                        <dt class="fl"><?php echo $this->translate('enNAME');?><!--公司英文名称--></dt><dd class="fl price_rules"><?php echo $this->e['accountEnName']?></dd>
+                    </dl>
+                    <dl class="fl">
+                        <dt class="fl"><?php echo $this->translate('LANGCODE');?><!--语言--></dt><dd class="buyer_contacts">
+                            <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['SYS_LANG'],$this->e['langCode']);?></dd>
+                    </dl>
+                    <dl class="fl">
+                        <dt class="fl"><?php echo $this->translate('currency');?><!--货币--></dt><dd class="fl price_rules">
+                            <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['CURRENCY'],$this->e['crnCode']);?></dd>
+                    </dl>
+                    <dl class="fl">
+                        <dt class="fl"><?php echo $this->translate('comlegals');?><!--形式--></dt>
+                        <dd class="buyer_contacts">  <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['ACCOUNT_LEGALFORM'], $this->e['legalForm']);?></dd>
+                    </dl>
+                    <dl class="fl">
+                        <dt class="fl"><?php echo $this->translate('industry');?><!--行业--></dt><dd class="fl price_rules">
+                            <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['ISIC_INDUSTRY_TYPE'], $this->e['industryCode']);?> </dd>
+                    </dl>
+                    <dl class="fl">
+                        <dt class="fl">DUNS</dt><dd class="buyer_contacts"><?php echo $this->e['DUNS']?></dd>
+                    </dl>
+                    <dl class="fl">
+                        <dt class="fl"><?php echo $this->translate('contacts');?><!--联系人--></dt><dd class="fl price_rules"><?php echo $this->e['contact']['name']?></dd>
+                    </dl>
+                    <dl class="fl">
+                        <dt class="fl"><?php echo $this->translate('comTEL');?><!--联系电话--></dt><dd class="buyer_contacts"><?php echo $this->e['phone']?></dd>
+                    </dl>
+                    <dl class="fl">
+                        <dt class="fl"><?php echo $this->translate('comFOX');?><!--传真--></dt><dd class="fl price_rules"><?php echo $this->e['fax']?></dd>
+                    </dl>
+                    <dl class="fl">
+                        <dt class="fl"><?php echo $this->translate('comEMAIL');?></dt><dd class="buyer_contacts"><?php echo $this->e['email']?></dd>
+                    </dl>
+                    <dl class="fl">
+                        <dt class="fl"><?php echo $this->translate('comSITE');?><!--网站--></dt><dd class="fl price_rules"><?php echo $this->e['website']?></dd>
+                    </dl>
+                    <dl class="fl" style="width: 100%;height: 120px;">
+                        <dt class="fl"><?php echo $this->translate('address');?><!--地址--></dt><dd class="buyer_contacts">
+                            <?php echo $this-> ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'],$this->userlangCode,$this->dic_Setting['COUNTRY_ISO_CODE'], $this->e['regdCountryCode']);?>
+                            &nbsp;&nbsp;
+                            <?php echo $this->e['regdAddress']?></dd>
+                    </dl>
+                </div>
+
+        </div>
+        <div class="com_btn_box tc">
+            <?php if($this->extData['isShowVendorBtn']):?>
+            <a class="buyer_ed_view" href="<?php echo WWW.'user/vendor/addv?'.base64_encode($this->toID);?>"><?php echo $this->translate('sendVendor');?></a><!--邀请为卖家-->
+            <?php endif;?>
+            <input type="button" value="<?php echo $this->translate('return');?>" onclick="javascript:window.opener=null;window.open('','_self');window.close();"><!--返回-->
+        </div>
+    </div>
+</div>
+<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
+</body>
+</html>

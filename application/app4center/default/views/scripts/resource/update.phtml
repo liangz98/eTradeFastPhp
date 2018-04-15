@@ -1,0 +1,84 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {
+	   	 res_name: "required",
+	     res_desc: "required"
+	   },
+	   messages: {
+	   	 res_name: "名称不能为空！",
+	     res_desc: "说明不能为空！"
+	   },
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/resource/update',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+
+var action_cnt=<?php echo count($this->rules);?>;
+function addAction(){
+	action_cnt++;
+	var html='<p><input type="text" name="priv_names['+action_cnt+']" style="width:100px;">&nbsp;&nbsp;<input type="text" name="priv_descs['+action_cnt+']" style="width:100px;">&nbsp;&nbsp;<input type="checkbox" name="is_logs['+action_cnt+']" value="1" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="is_secondary_logins['+action_cnt+']" value="1" /></p>';
+	$('#actiondiv').before(html);
+}
+</script>
+
+<h1>修改资源 - <?php echo $this->module['mod_desc'];?></h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="列表" onclick="document.location='<?php echo $this->BaseUrl();?>/resource/index?mod_name=<?php echo $this->mod_name;?>'"/>
+    <input class="admin_bnt2" name="" type="button" value="添加" onclick="document.location='<?php echo $this->BaseUrl();?>/resource/add?mod_name=<?php echo $this->mod_name;?>'"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_form">
+    <tr>
+      <td><strong>控制器名称（CONTROLLER）：</strong>
+        <p><?php echo ($this->resource['res_name']);?>
+          <input name="res_name" id="res_name" value="<?php echo ($this->resource['res_name']);?>" type="hidden" />
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>控制器说明：</strong>
+        <p>
+          <input name="res_desc" id="res_desc" value="<?php echo ($this->resource['res_desc']);?>" type="text" />
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>动作列表（ACTION）：</strong>
+        <div class="batch">
+          <input name="" type="button"  class="admin_bnt2"  value="添加动作" onclick="addAction()" />
+        </div>
+        <p>动作名称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动作说明&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;记录日志&nbsp;&nbsp;&nbsp;&nbsp;二次登录</p>
+        <?php if(is_array($this->rules)):?>
+        <?php foreach($this->rules as $k=>$rule):?>
+        <p>
+          <input type="text" name="priv_names[<?php echo $k;?>]" value="<?php echo ($rule['priv_name']);?>" style="width:100px;">
+          &nbsp;&nbsp;
+          <input type="text" name="priv_descs[<?php echo $k;?>]" value="<?php echo ($rule['priv_desc']);?>" style="width:100px;">
+          &nbsp;&nbsp;
+          <input type="checkbox" name="is_logs[<?php echo $k;?>]" value="1" <?php echo ($rule['is_log']=='1')?"checked":"";?> />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="checkbox" name="is_secondary_logins[<?php echo $k;?>]" value="1" <?php echo ($rule['is_secondary_login']=='1')?"checked":"";?> />
+        </p>
+        <?php endforeach; ?>
+        <?php endif;?>
+        <div id="actiondiv" name="actiondiv"></div></td>
+    </tr>
+  </table>
+  <div class="batch">
+    <input type="hidden" name="mod_name" id="mod_name" value="<?php echo $this->mod_name;?>">
+    <input type="hidden" name="mod_type" id="mod_type" value="<?php echo $this->mod_type;?>">
+    <input name="" type="submit"  class="admin_bnt"  value="提交" />
+  </div>
+</form>
+<?php echo $this->render("footer.phtml") ?> 

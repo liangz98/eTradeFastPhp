@@ -1,0 +1,162 @@
+<div class="nav">
+	<ul>
+        <?php if (is_array($this->headmenus)) :?>
+        <?php $menu = ''; $link = '';?>
+        <?php foreach($this->headmenus as $k=>$r):?>
+        <?php
+            $link_url = $r["link_url"].(strpos($r["link_url"], '?')>0?'&':'?')."menu_id={$r['menu_id']}";
+            $crumb = '';
+            if($this->menu_id == $r['menu_id']) {
+                $crumb = ' class="crumb"';
+                $menu = $r['menu_name'];
+                $link = $r['link_url'];
+            }
+        ?>
+        <li<?php echo $crumb;?>><a href="<?php echo "/b/".$link_url;?>"><?php echo $r["menu_name"]?></a></li>
+        <?php endforeach;?>
+        <?php endif;?>
+	</ul>
+</div>
+<div class="sidebar">
+			<dl>
+                <?php if (is_array($this->submenus)) :?>
+                <?php $s_menu = ''; $s_link = '';?>
+                <?php foreach($this->submenus as $k=>$sub):?>
+                <?php
+                    $link_url = $sub["link_url"].(strpos($sub["link_url"], '?')>0?'&':'?')."menu_id={$this->menu_id}&sub_id={$sub['menu_id']}";
+                    $s_crumb = '';
+                    if($this->sub_id == $sub['menu_id']) {
+                        $s_crumb = ' class="crumb"';
+                        $s_menu = $sub['menu_name'];
+                        $s_link = $sub['link_url'];
+                    }
+                ?>
+                <dd<?php echo $s_crumb;?>><a href="<?php echo "/b/".$link_url?>"><?php echo $sub["menu_name"]?></a></dd>
+				<?php endforeach;?>
+                <?php endif;?>
+			</dl>
+		</div>
+<div class="o_nav fl">
+    <dl>
+        <dt>
+          <a href="/user/order">订单中心</a>
+        </dt>
+        <dd>
+            <a href="/user/orderts">退税申请</a>
+        </dd>
+        <dd>
+            <a href="/user/orderxs">销售订单</a>
+        </dd>
+        <dd>
+            <a href="/user/ordercg">采购订单</a>
+        </dd>
+    </dl>
+    <dl>
+        <dt>
+          <a href="/user/partnet">合作伙伴</a>
+        </dt>
+        <dd>
+            <a href="/user/buyer">我的买家</a>
+        </dd>
+        <dd>
+            <a href="/user/busness">我的卖家</a>
+        </dd>
+        <dd>
+            <a href="/user/service">服务提供商</a>
+        </dd>
+        <dd>
+            <a href="/user/contact">通讯录</a>
+        </dd>
+    </dl>
+    <dl>
+        <dt>
+            <a href="#">产品管理</a>
+        </dt>
+        <dd>
+            <a href="/user/goods">我的产品</a>
+        </dd>
+        <dd>
+            <a href="/user/buygoods">采购的产品</a>
+        </dd>
+    </dl>
+    <dl>
+        <dt>
+            <a href="/user/info">公司管理</a>
+        </dt>
+        <dd>
+            <a href="/user/company">我的公司</a>
+        </dd>
+    </dl>
+    <dl>
+        <dt>
+            <a href="#">合同</a>
+        </dt>
+        <dd>
+            <a href="/user/xssp">销售合同</a>
+        </dd>
+        <dd>
+            <a href="/user/cgsp">采购合同</a>
+        </dd>
+    </dl>
+    <dl>
+        <dt>
+            <a href="/user/bgwl">报关物流</a>
+        </dt>
+        <dd>
+            <a href="/user/bgd">报关单</a>
+        </dd>
+        <dd>
+            <a href="/user/bgpc">派车单</a>
+        </dd>
+        <dd>
+            <a href="/user/bgdc">订舱单</a>
+        </dd>
+    </dl>
+    <dl class="dn">
+        <dt>
+            <a href="/user/finance">金融中心</a>
+        </dt>
+        <dd>
+            <a href="#">xxx</a>
+        </dd>
+        <dd>
+            <a href="#">xxx</a>
+        </dd>
+        <dd>
+            <a href="#">xxx</a>
+        </dd>
+    </dl>
+    <dl class="dn">
+        <dt>
+            <a href="/user/finance">结算中心</a>
+        </dt>
+        <dd>
+            <a href="/user/fin">总览</a>
+        </dd>
+        <dd>
+            <a href="/user/finsr">收入</a>
+        </dd>
+        <dd>
+            <a href="/user/finzc">支出</a>
+        </dd>
+        <dd>
+            <a href="/user/finjl">交易记录</a>
+        </dd>
+    </dl>
+</div>
+<script type="text/javascript">
+var urlstr = location.href;
+var urlstatus=false;
+$(".o_nav a").each(function () {
+if ((urlstr + '/').indexOf($(this).attr('href')) > -1&&$(this).attr('href')!='') {
+  $(this).parents('dd').addClass('current'); 
+  urlstatus = true;
+} else {
+  $(this).parents('dd').removeClass('current');
+}
+});
+if (!urlstatus) 
+{$(".o_nav a").eq(0).addClass('current');
+}
+
+</script>

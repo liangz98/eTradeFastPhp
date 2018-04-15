@@ -1,0 +1,134 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$('input[@type=checkbox][@name=checkAll]').each(function(){
+		$(this).checkbox().toggle($(this).val());
+	});
+});
+//删除
+function deleteAll(){
+	var ids="";
+    $("[name='chose[]'][checked]").each(function(){
+    	ids+=$(this).val()+",";
+    });
+    ids=ids.substring(0,(ids.length-1));
+    document.location = "<?php echo $this->BaseUrl();?>/role/delete/role_ids/"+ids;
+}
+
+function doadd(){
+    $("#post_form").validate({
+       event: "keyup",
+       rules: {
+         role_name: "required",
+         mod_desc: "required",
+         order_by: "required"
+       },
+       messages: {
+         role_name: "角色名称不能为空！",
+         mod_desc: "角色说明不能为空！",
+         order_by: "排序不能为空！"
+       },
+       submitHandler: function() {
+            SeedMsgBox('<img src="正在保存中，请稍候...');
+            var options = {
+                target:     '#SeedMsgTxt',
+                url:        '<?php echo $this->BaseUrl();?>/role/add',
+                success: function() {
+                }
+            };
+            $('#post_form').ajaxSubmit(options);
+        }
+    });
+}
+function doupdate(){
+    $("#post_form").validate({
+       event: "keyup",
+       rules: {
+         role_id: "required",
+         role_name: "required",
+         role_desc: "required",
+         order_by: "required"
+       },
+       messages: {
+         role_id: "关键数据不能为空！",
+         role_name: "名称不能为空！",
+         role_desc: "说明不能为空！",
+         order_by: "角色等级不能为空！"
+       },
+       submitHandler: function() {
+            SeedMsgBox('<img src="正在保存中，请稍候...');
+            var options = {
+                target:     '#SeedMsgTxt',
+                url:        '<?php echo $this->BaseUrl();?>/role/update',
+                success: function() {
+                }
+            };
+            $('#post_form').ajaxSubmit(options);
+        }
+    });
+}
+</script>
+
+<h1>角色列表</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="添加" onclick="document.location='<?php echo $this->BaseUrl();?>/role/index'"/>
+  </p>
+</div>
+<div class="admin_search">
+  <form name="post_form" method="post" action="" id="post_form" >
+    <fieldset>
+      <legend>编辑角色</legend>
+      &nbsp;
+      名称：
+      <input type="text" name="role_name" id="role_name" value="<?php echo ($this->role['role_name']);?>" style="width:100px;"/>
+      &nbsp;
+      说明：
+      <input type="text" name="role_desc" id="role_desc" value="<?php echo ($this->role['role_desc']);?>" style="width:100px;"/>
+      &nbsp;
+      排序：
+      <input type="text" name="order_by" id="order_by" value="<?php echo ($this->role['order_by']);?>" style="width:20px;"/>
+      <?php if($this->role['role_id']>0):?>
+      <input type="hidden" name="role_id" id="role_id" value="<?php echo ($this->role['role_id']);?>">
+      <input name="updateConfirm" type="submit"  value="修改" class="admin_bnt2" onclick="doupdate();"/>
+      &nbsp;
+      <?php else:?>
+      <input type="submit" value="添加" class="admin_bnt2" onclick="doadd();"/>
+      &nbsp;
+      <?php endif;?>
+      <input name="reset" type="reset" class="admin_bnt2" value="重置"/>
+    </fieldset>
+  </form>
+</div>
+<table class="admin_list">
+  <tr>
+    <th><input type="checkbox" name="checkAll" id="checkAll"  value="input.ids_all" title="全选/反选">
+      <label for="checkAll">全选</label></th>
+    <th>名称</th>
+    <th>说明</th>
+    <th>排序</th>
+    <th>操作</th>
+  </tr>
+  <?php if(is_array($this->roles)):?>
+  <?php foreach($this->roles as $role):?>
+  <tr>
+    <td><input type="checkbox" id="chose[]" name="chose[]" value="<?php echo ($role['role_id'])?>" class="ids_all"></td>
+    <td><?php echo ($role['role_name']);?></td>
+    <td><?php echo ($role['role_desc']);?></td>
+    <td><?php echo ($role['order_by']);?></td>
+    <td>
+    <a href="<?php echo $this->BaseUrl();?>/role/detail/role_id/<?php echo ($role['role_id']);?>">[角色用户]</a> 
+    <a href="<?php echo $this->BaseUrl();?>/role/index/role_id/<?php echo ($role['role_id']);?>"><img src="/images/center/edit.gif" title="编辑" alt="编辑"></a> 
+    <a href="<?php echo $this->BaseUrl();?>/role/menu/role_id/<?php echo ($role['role_id']);?>"><img src="/images/center/set.gif" title="角色菜单" alt="角色菜单"></a>
+    <a href="<?php echo $this->BaseUrl();?>/acl/index/role_id/<?php echo ($role['role_id']);?>"><img src="/images/center/set.gif" title="授权" alt="授权"></a>
+    <a href="<?php echo $this->BaseUrl();?>/role/delete/role_ids/<?php echo ($role['role_id']);?>"><img src="/images/center/del.gif" title="删除" alt="删除"/></a>
+  </td></tr>
+  
+   
+  <?php endforeach; ?>
+  <?php endif;?>
+</table>
+<div class="batch">
+  <input class="admin_bnt2" type="submit" name="deleteID" id="deleteID" value="删除选择" onclick="deleteAll()">
+  &nbsp; </div>
+<?php echo $this->render("footer.phtml") ?> 

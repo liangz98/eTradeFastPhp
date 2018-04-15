@@ -1,0 +1,57 @@
+<div class="order_progress" <?php if(empty($this->newE)||$this->vestut==-1){echo 'style="display:none;"';}?>>
+    <div class="info_tit clearfix">
+        <h4><!--最近更新订单进度--> <?php echo $this->translate('orderStatus01');?></h4>
+    </div>
+
+    <input id="vendST" type="hidden" value=<?php echo  $this->vestut;?>>
+    <input id="orderID" type="hidden" value=<?php echo  $this->veorderID;?>>
+    <input id="contraCrn" type="hidden" value=<?php echo $this->newE["buyerCrnCode"];?>>
+    <input id="baseCrn" type="hidden" value=<?php echo $this->newE["vendorCrnCode"];?>>
+
+    <div class="progress">
+		<p class="icon_bg1 <?php if ($this->vestut == 0): ?><?php echo 'go'; ?><?php elseif ($this->vestut > 0): ?><?php echo 'finish'; ?><?php endif; ?> ">
+			<!--确认订单--><?php echo $this->translate('confirming'); ?></p>
+		<p class="icon_bg2 signTopBtn <?php if ($this->vestut == 1 || $this->vestut == 3): ?><?php echo 'go'; ?><?php elseif ($this->vestut > 1): ?><?php echo 'gocursor finish'; ?><?php endif; ?>">
+			<!--签订合同--><?php echo $this->translate('sign'); ?></p>
+		<p class="icon_bg2 deliveryTopBtn <?php if ($this->vestut > 3): ?><?php echo 'go gocursor'; ?><?php elseif ($this->vestut > 7): ?><?php echo 'gocursor finish'; ?><?php endif; ?>">
+			<!--发货--><?php echo $this->translate('delivery'); ?></p>
+		<p class="icon_bg2 paymentTopBtn <?php if ($this->vestut > 3): ?><?php echo 'go gocursor'; ?><?php elseif ($this->vestut > 7): ?><?php echo 'gocursor finish'; ?><?php endif; ?>">
+			<!--结算中--><?php echo $this->translate('calculate'); ?></p>
+    </div>
+    <div class="clearfix pb10">
+        <div class="or_curs tl"><lable class="or_lb"><!--订单号码--><?php echo $this->translate('orderNo');?></lable><span class="w_curstor"><?php echo $this->newE["orderNo"];?></div>
+        <div class="or_curs tl"><lable class="or_lb"><!--订单汇率--><?php echo $this->translate('Prities');?></lable><span class="w_curstor huilv"></div>
+        <div class="or_curs clearfix" style="width:100%;"><lable class="or_lb"><!--进度说明--><?php echo $this->translate('progressING');?></lable>
+            <span class="w_curstor" style="width:740px;">
+            <?php echo $this->plan['plan'];?></div>
+        <div class="or_curs tl"><lable class="or_lb"><!--当前状态--><?php echo $this->translate('stateING');?></lable>
+            <span class="w_curstor"><?php  echo  $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ORDER_STATUS'],$this->newE["orderStatus"]);?><!--当前订单未开始--></span></div>
+    </div>
+
+</div>
+<script type="text/javascript">
+    $(function() {
+        //获取汇率
+      //  var basecode = $("#baseCrn").val();//商品基准货币
+       // var contcode = $("#contraCrn").val();//对应目标货币
+        var bizID='<?php echo  $this->veorderID;?>';
+        var bizType='OD';
+        $.post("/user/system/topview/", {
+            'bizID': bizID,
+            'bizType': bizType
+        }, function (data) {
+            var json;
+            if (typeof data === 'object') {
+                json = data.result;
+            }
+            else {
+                json = eval('(' + data.result + ')');
+            }
+            var hlv="";
+             $.each(json,function(i, n){
+             hlv+='<dl>'+n.contraCrn+'-'+n.baseCrn+' '+n.basicRate+'</dl>';
+             });
+            $('.huilv').html(hlv);
+        }, "json");
+    });
+</script>

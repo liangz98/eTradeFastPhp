@@ -1,0 +1,378 @@
+<?php $this->placeholder('html_title')->set('会员中心'); ?>
+<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
+<!-- content star -->
+<div class="o_content_wrap w1200 m0a clearfix">
+    <?php echo $this->render(SEED_WWW_TPL.'/left_menu.phtml');?>
+    <div class="o_content fr w940">
+        <div class="order_table order_tableh">
+            <ul class="order_state2 order_state22 clearfix">
+                <li class="on"><a href="javascript:;">有效（<span class="ha_num">9</span>）</a></li>
+                <li><a href="javascript:;">待审核（<span class="wh_num">9</span>）</a></li>
+                <li><a href="javascript:;">待确认（<span class="ws_num">9</span>）</a></li>
+                <li><a href="javascript:;">不通过（<span class="nopa_num">9</span>）</a></li>
+                <li><a href="javascript:;">草稿（<span class="cg_num">9</span>）</a></li>
+                <li><a href="javascript:;">无效（<span class="noa_num">9</span>）</a></li>
+            </ul>
+        </div>
+        <div class="qy_list_wrap curr pr">
+            <div class="qysearch_box">
+                <form action="#" method="post">
+                    <input class="search_inp" placeholder="查找目标" type="text">
+                    <span class="ssb_box"><input class="ss_btn" type="submit"></span>
+                    <a href="order_spb_add.html" class="addb_box fr"></a>
+                </form>
+            </div>
+            <table class="qy_table qy_table1">
+                <thead>
+                <tr>
+                    <th>图片</th>
+                    <th>名称</th>
+                    <th>HSCODE</th>
+                    <th>品牌</th>
+                    <th>型号</th>
+                    <th>单价</th>
+                    <th>退税率</th>
+                    <th>状态</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><img class="table_img" src="../public/images/user_tx.png"></td>
+                    <td>塑料胶条1</td>
+                    <td>093724</td>
+                    <td>Nx3</td>
+                    <td>RX782</td>
+                    <td>$1.56</td>
+                    <td>3.65%</td>
+                    <td><span class="t_state youxiao">有效</span></td>
+                    <td>
+                        <div class="cc_box">
+                            <a class="t_edit p_ed" href="order_spb_view.html"></a>
+                            <a class="p_cop" href="javascript:;"></a>
+                            <a class="p_dsi" href="order_spb_view.html"></a>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><img class="table_img" src="../public/images/user_tx.png"></td>
+                    <td>塑料胶条</td>
+                    <td>093724</td>
+                    <td>Nx3</td>
+                    <td>RX782</td>
+                    <td>$1.56</td>
+                    <td>3.65%</td>
+                    <td><span class="t_state wuxiao">有效</span></td>
+                    <td>
+                        <div class="cc_box">
+                            <a class="t_edit p_ed" href="order_spb_view.html"></a>
+                            <a class="p_cop" href="javascript:;"></a>
+                            <a class="p_dsi" href="javascript:;"></a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="qy_list_wrap pr">
+            <div class="qysearch_box">
+                <form action="#" method="post">
+                    <input class="search_inp" placeholder="查找目标" type="text"><input class="ssub_btn" type="submit" value="提交查询内容"><input class="sadd_btn" type="button" value="新增">
+                </form>
+            </div>
+            <table class="qy_table qy_table1">
+                <thead>
+                <tr>
+                    <th>图片</th>
+                    <th>名称</th>
+                    <th>HSCODE</th>
+                    <th>品牌</th>
+                    <th>型号</th>
+                    <th>单价</th>
+                    <th>退税率</th>
+                    <th>状态</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><img class="table_img" src="../public/images/user_tx.png"></td>
+                    <td>塑料胶条2</td>
+                    <td>093724</td>
+                    <td>Nx3</td>
+                    <td>RX782</td>
+                    <td>$1.56</td>
+                    <td>3.65%</td>
+                    <td><span class="t_state youxiao">有效</span></td>
+                    <td>
+                        <div class="cc_box">
+                            <a class="t_edit" href="javascript:;">编辑</a></br>
+                            <a class="t_copy" href="javascript:;">复制</a></br>
+                            <a class="t_jy" href="javascript:;">禁用</a>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><img class="table_img" src="../public/images/user_tx.png"></td>
+                    <td>塑料胶条</td>
+                    <td>093724</td>
+                    <td>Nx3</td>
+                    <td>RX782</td>
+                    <td>$1.56</td>
+                    <td>3.65%</td>
+                    <td><span class="t_state wuxiao">有效</span></td>
+                    <td>
+                        <div class="cc_box">
+                            <a class="t_edit" href="order_spb_view">编辑</a></br>
+                            <a class="t_copy" href="javascript:;">复制</a></br>
+                            <a class="t_jy" href="javascript:;">禁用</a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="qy_list_wrap pr">
+            <div class="qysearch_box">
+                <form action="#" method="post">
+                    <input class="search_inp" placeholder="查找目标" type="text"><input class="ssub_btn" type="submit" value="提交查询内容"><a class="sadd_btn" href=""></a>
+                </form>
+            </div>
+            <table class="qy_table qy_table1">
+                <thead>
+                <tr>
+                    <th>图片</th>
+                    <th>名称</th>
+                    <th>HSCODE</th>
+                    <th>品牌</th>
+                    <th>型号</th>
+                    <th>单价</th>
+                    <th>退税率</th>
+                    <th>状态</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><img class="table_img" src="../public/images/user_tx.png"></td>
+                    <td>塑料胶条</td>
+                    <td>093724</td>
+                    <td>Nx3</td>
+                    <td>RX782</td>
+                    <td>$1.56</td>
+                    <td>3.65%</td>
+                    <td><span class="t_state youxiao">有效</span></td>
+                    <td>
+                        <div class="cc_box">
+                            <a class="t_edit" href="javascript:;">编辑</a></br>
+                            <a class="t_copy" href="javascript:;">复制</a></br>
+                            <a class="t_jy" href="javascript:;">禁用</a>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><img class="table_img" src="../public/images/user_tx.png"></td>
+                    <td>塑料胶条</td>
+                    <td>093724</td>
+                    <td>Nx3</td>
+                    <td>RX782</td>
+                    <td>$1.56</td>
+                    <td>3.65%</td>
+                    <td><span class="t_state wuxiao">有效</span></td>
+                    <td>
+                        <div class="cc_box">
+                            <a class="t_edit" href="javascript:;">编辑</a></br>
+                            <a class="t_copy" href="javascript:;">复制</a></br>
+                            <a class="t_jy" href="javascript:;">禁用</a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="qy_list_wrap pr">
+            <div class="qysearch_box">
+                <form action="#" method="post">
+                    <input class="search_inp" placeholder="查找目标" type="text"><input class="ssub_btn" type="submit" value="提交查询内容"><input class="sadd_btn" type="button" value="新增">
+                </form>
+            </div>
+            <table class="qy_table qy_table1">
+                <thead>
+                <tr>
+                    <th>图片</th>
+                    <th>名称</th>
+                    <th>HSCODE</th>
+                    <th>品牌</th>
+                    <th>型号</th>
+                    <th>单价</th>
+                    <th>退税率</th>
+                    <th>状态</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><img class="table_img" src="../public/images/user_tx.png"></td>
+                    <td>塑料胶条</td>
+                    <td>093724</td>
+                    <td>Nx3</td>
+                    <td>RX782</td>
+                    <td>$1.56</td>
+                    <td>3.65%</td>
+                    <td><span class="t_state youxiao">有效</span></td>
+                    <td>
+                        <div class="cc_box">
+                            <a class="t_edit" href="javascript:;">编辑</a></br>
+                            <a class="t_copy" href="javascript:;">复制</a></br>
+                            <a class="t_jy" href="javascript:;">禁用</a>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><img class="table_img" src="../public/images/user_tx.png"></td>
+                    <td>塑料胶条</td>
+                    <td>093724</td>
+                    <td>Nx3</td>
+                    <td>RX782</td>
+                    <td>$1.56</td>
+                    <td>3.65%</td>
+                    <td><span class="t_state wuxiao">有效</span></td>
+                    <td>
+                        <div class="cc_box">
+                            <a class="t_edit" href="javascript:;">编辑</a></br>
+                            <a class="t_copy" href="javascript:;">复制</a></br>
+                            <a class="t_jy" href="javascript:;">禁用</a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="qy_list_wrap pr">
+            <div class="qysearch_box">
+                <form action="#" method="post">
+                    <input class="search_inp" placeholder="查找目标" type="text"><input class="ssub_btn" type="submit" value="提交查询内容"><input class="sadd_btn" type="button" value="新增">
+                </form>
+            </div>
+            <table class="qy_table qy_table1">
+                <thead>
+                <tr>
+                    <th>图片</th>
+                    <th>名称</th>
+                    <th>HSCODE</th>
+                    <th>品牌</th>
+                    <th>型号</th>
+                    <th>单价</th>
+                    <th>退税率</th>
+                    <th>状态</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><img class="table_img" src="../public/images/user_tx.png"></td>
+                    <td>塑料胶条</td>
+                    <td>093724</td>
+                    <td>Nx3</td>
+                    <td>RX782</td>
+                    <td>$1.56</td>
+                    <td>3.65%</td>
+                    <td><span class="t_state youxiao">有效</span></td>
+                    <td>
+                        <div class="cc_box">
+                            <a class="t_edit" href="javascript:;">编辑</a></br>
+                            <a class="t_copy" href="javascript:;">复制</a></br>
+                            <a class="t_jy" href="javascript:;">禁用</a>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><img class="table_img" src="../public/images/user_tx.png"></td>
+                    <td>塑料胶条</td>
+                    <td>093724</td>
+                    <td>Nx3</td>
+                    <td>RX782</td>
+                    <td>$1.56</td>
+                    <td>3.65%</td>
+                    <td><span class="t_state wuxiao">有效</span></td>
+                    <td>
+                        <div class="cc_box">
+                            <a class="t_edit" href="javascript:;">编辑</a></br>
+                            <a class="t_copy" href="javascript:;">复制</a></br>
+                            <a class="t_jy" href="javascript:;">禁用</a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="qy_list_wrap pr">
+            <div class="qysearch_box">
+                <form action="#" method="post">
+                    <input class="search_inp" placeholder="查找目标" type="text"><input class="ssub_btn" type="submit" value="提交查询内容"><input class="sadd_btn" type="button" value="新增">
+                </form>
+            </div>
+            <table class="qy_table qy_table1">
+                <thead>
+                <tr>
+                    <th>图片</th>
+                    <th>名称</th>
+                    <th>HSCODE</th>
+                    <th>品牌</th>
+                    <th>型号</th>
+                    <th>单价</th>
+                    <th>退税率</th>
+                    <th>状态</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><img class="table_img" src="../public/images/user_tx.png"></td>
+                    <td>塑料胶条</td>
+                    <td>093724</td>
+                    <td>Nx3</td>
+                    <td>RX782</td>
+                    <td>$1.56</td>
+                    <td>3.65%</td>
+                    <td><span class="t_state youxiao">有效</span></td>
+                    <td>
+                        <div class="cc_box">
+                            <a class="t_edit" href="javascript:;">编辑</a></br>
+                            <a class="t_copy" href="javascript:;">复制</a></br>
+                            <a class="t_jy" href="javascript:;">禁用</a>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><img class="table_img" src="../public/images/user_tx.png"></td>
+                    <td>塑料胶条</td>
+                    <td>093724</td>
+                    <td>Nx3</td>
+                    <td>RX782</td>
+                    <td>$1.56</td>
+                    <td>3.65%</td>
+                    <td><span class="t_state wuxiao">有效</span></td>
+                    <td>
+                        <div class="cc_box">
+                            <a class="t_edit" href="javascript:;">编辑</a></br>
+                            <a class="t_copy" href="javascript:;">复制</a></br>
+                            <a class="t_jy" href="javascript:;">禁用</a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="page">
+            <span class="pagel"></span>
+            <span class="on">1</span>/
+            <span class="all">10</span>
+            <span class="pager"></span>
+        </div>
+    </div>
+</div>
+<!-- content end -->
+<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
+</body>
+</html>

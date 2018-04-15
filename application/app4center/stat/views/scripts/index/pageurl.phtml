@@ -1,0 +1,107 @@
+<?php echo $this->render("header_new.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+    var table = $("#tree_table");
+    function droppableSetup() {
+      $(this).droppable({
+        accept: ".file, .folder",
+        drop: function(e, ui) {
+          var droppedEl, node;
+
+          droppedEl = ui.draggable.parents("tr");
+          node = $("#tree_table").treetable("node", droppedEl.data("ttId"));
+
+          $("#tree_table").treetable("move", node.id, $(this).data("ttId"));
+        },
+        hoverClass: "accept",
+        over: function(e, ui) {
+          var droppedEl = ui.draggable.parents("tr");
+          if(this != droppedEl[0] && !$(this).is(".expanded")) {
+            $("#tree_table").treetable("expandNode", $(this).data("ttId"));
+          }
+        }
+      });
+    }
+    
+    $("#tree_table").treetable({
+      expandable: true,
+//      onNodeCollapse: function() {
+//        var node = this;
+//        table.treetable("unloadBranch", node);
+//      },
+      onNodeExpand: function() {
+        var node = this;
+        if($('tr[datatype="'+node.id+'"]').length > 0) {return;}
+        var path = $.trim(node.row['context'].innerText).split("\t").shift();
+        var parentPath = $.trim(node.row['context']['attributes']['parentpath'].nodeValue);
+        if(!parentPath) {parentPath = '';}
+        
+        // Render loader/spinner while loading
+        $.ajax({
+          async: false, // Must be false, otherwise loadBranch happens after showChildren?
+          url: "/a/stat/request/pageurl?nodeid=" + node.id + "&path=" + encodeURIComponent(path) + "&parentPath=" + encodeURIComponent(parentPath)
+        }).done(function(html) {
+          var rows = $(html).filter("tr");
+          node.children.shift();
+          $('tr[data-tt-id="'+node.id+'-1"]').remove();
+          table.treetable("loadBranch", node, rows);
+        });
+      }
+    });
+    
+    $("#tree_table tbody tr").on("mousedown", function() {
+      $("tr.selected").removeClass("selected");
+      $(this).addClass("selected");
+    });
+
+    // Drag & Drop Example Code
+    $("#tree_table .file, #tree_table .folder").on("mouseenter", function() {
+      var el = $(this);
+
+      if(!el.data("dndInit")) {
+        el.data("dndInit", true);
+
+        el.draggable({
+          helper: "clone",
+          opacity: .75,
+          refreshPositions: true, // Performance?
+          revert: "invalid",
+          revertDuration: 300,
+          scroll: true
+        });
+      }
+    });
+});
+</script>
+
+<h1>页面分析</h1>
+<div class="textnav">
+  <p></p>
+</div>
+<table id="tree_table" class="admin_list">
+  <thead>
+  <tr>
+    <th>页面地址</th>
+    <th>访问次数</th>
+  </tr>
+  </thead>
+  <tbody>
+  <?php if(is_array($this->statList)):?>
+  <?php foreach($this->statList as $k => $stat):?>
+  <?php if($stat['res'] == '/'):?>
+  <tr data-tt-id="<?php echo $k+1;?>" parentpath="">
+    <td style="text-align:left;padding-left:20px;height:20px;"><span class="file"><?php echo $this->escape($stat['res']);?></span></td>
+    <td><?php echo $this->escape($stat['total']);?></td>
+  </tr>
+  <?php else:?>
+  <tr data-tt-id="<?php echo $k+1;?>" parentpath="">
+    <td style="text-align:left;padding-left:20px;height:20px;"><span class="folder"><?php echo $this->escape($stat['res']);?></span></td>
+    <td><?php echo $this->escape($stat['total']);?></td>
+  </tr>
+  <tr data-tt-id="<?php echo $k+1;?>-1" data-tt-parent-id="<?php echo $k+1;?>"></tr>
+  <?php endif;?>
+  <?php endforeach; ?>
+  <?php endif;?>
+  </tbody>
+</table>
+<?php echo $this->render("footer.phtml") ?>

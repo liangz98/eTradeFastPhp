@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<title>系统提示</title>
+<?php if(!$this->ajax):?>
+<link rel="stylesheet" href="/admin/css/admin.css" type="text/css" media="all" />
+<script type="text/javascript" src="/admin/js/center/jquery.js"></script>
+<?php endif;?>
+<script type="text/javascript">
+// 关闭消息框
+function closeMsgBox()
+{
+	$("#seedMsgBox").html('');	
+}
+
+// 跳转到指定地址
+function redirect()
+{
+	location.href='<?php echo $this->goToUrl?>';
+}
+</script>
+</head>
+<body>
+<div id="mask" class="mask" style="display:block;"></div>
+<div id="SeedMsgDiv" class="SeedMsgDiv">
+  <div class="close"><a onClick="closeMsgBox();"><img src="/admin/images/close.gif"></a></div>
+  <div class="tips_text">
+    <p>温馨提示：</p>
+    <p><?php echo $this->message?></p>
+    <?php 
+	if($this->goToUrl){?>
+    <p>页面跳转中，若长时间没跳转，可点击<a  style="text-decoration:underline" href="<?php echo $this->goToUrl?>">立即跳转</a>
+    <script type="text/javascript">setTimeout("redirect()",1800);</script>
+    </p>
+    <?php }else{?>
+	<script type="text/javascript">
+	setTimeout("closeMsgBox()",1800);
+    </script>
+    <?php };?>
+  </div>
+</div>
+<script type="text/javascript">
+var scrollheight = document.documentElement.scrollTop;
+var nowheight = document.documentElement.clientHeight;
+$(".mask").css("height",$(document).height());
+$("#SeedMsgDiv").css("top",(scrollheight+nowheight/2)+'px');
+</script>
+</body>
+</html>

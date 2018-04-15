@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>快移</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link href="/ky/css/base.css" rel="stylesheet">
+    <link href="/ky/css/style.css" rel="stylesheet">
+    <script type="text/javascript" src="/ky/js/jquery.js"></script>
+    <script type="text/javascript" src="/ky/js/seed.form.js"></script>
+    <script type="text/javascript" src="/ky/js/jquery.form.js"></script>
+    <script type="text/javascript" src="/ky/js/www.js"></script>
+    <script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
+    <script type="text/javascript" src="/ky/layer/layer.js"></script>
+    <style type="text/css">
+        .order_state2 li{width:150px;}
+    </style>
+    <script>
+        function doStatus(status){
+            window.location.href='<?php echo $this->BaseUrl();?>/purchase/index/status/'+status;
+            alert('status');
+        }
+        function nextPage(){
+        }
+    </script>
+
+</head>
+<body>
+<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
+<div class="o_content_wrap w1200 m0a clearfix">
+    <?php echo $this->render(SEED_WWW_TPL.'/left_menu.phtml');?>
+    <div class="o_content fr w940">
+        <div style="border-bottom:5px solid #EF8200;">
+            <ul class="order_state2 clearfix">
+                <li <?php if ($this->status==03):?>class="on"<?php endif;?> ><a href= "<?php echo WWW;?>user/purchase/index-03-1.html"><!--有效--><?php echo $this->translate('valid');?></a></li>
+                <li <?php if ($this->status==01):?>class="on"<?php endif;?> ><a href= "<?php echo WWW;?>user/purchase/index-01-1.html"><!--待审核--><?php echo $this->translate('checkP');?>（<span class="wh_num"><?php if(!empty($this->clConut['01'])){ echo $this->clConut['01'];}else{echo '0';}?></span>）</a></li>
+                <li <?php if ($this->status==02):?>class="on"<?php endif;?> ><a href= "<?php echo WWW;?>user/purchase/index-02-1.html"><!--待确认--><?php echo $this->translate('checkR');?>（<span class="ws_num"><?php if(!empty($this->clConut['02'])){ echo $this->clConut['02'];}else{echo '0';}?></span>）</a></li>
+                <li <?php if ($this->status==04):?>class="on"<?php endif;?> ><a href="<?php echo WWW;?>user/purchase/index-04-1.html"><!--不通过--><?php echo $this->translate('nopass');?>（<span class="cg_num"><?php if(!empty($this->clConut['04'])){ echo $this->clConut['04'];}else{echo '0';}?></span>）</a></li>
+                <li <?php if ($this->status==00):?>class="on"<?php endif;?> ><a href= "<?php echo WWW;?>user/purchase/index-00-1.html"><!--草稿--><?php echo $this->translate('draft');?>（<span class="ha_num"><?php if(!empty($this->clConut['00'])){ echo $this->clConut['00'];}else{echo '0';}?></span>）</a></li>
+                <li <?php if ($this->status==05):?>class="on"<?php endif;?> ><a href="<?php echo WWW;?>user/purchase/index-05-1.html"><!--禁用--><?php echo $this->translate('disable');?></a></li>
+            </ul>
+        </div>
+        <div class="qysearch_box">
+            <form action="#" method="post">
+                <p>
+                    <input class="search_inp"  name="keyword"  <?php if(!empty($this->keyword)){echo "value=".$this->keyword;}?> placeholder="<?php echo $this->translate('INPkw_goodes');?>" type="text">
+                    <input class="ss_btn" type="submit" value="">
+                    <?php if($this->CompProductAdmin==true||$this->CompOrderAdmin==true):?>
+                        <?php if(count($this->purchase_isAllowAdd)>0):?>
+                    <a href=<?php echo WWW.'user/purchase/add';?> class="addb_box fr"></a>
+                    <?php endif;?>
+                    <?php endif;?>
+                </p>
+            </form>
+        </div>
+        <table class="qy_table qy_table1">
+            <thead>
+            <tr>
+                <th style="width:90px;"></th>
+                <th><!--商品名称--><?php echo $this->translate('productNAME');?></th>
+                <th><!--品牌--><?php echo $this->translate('brand');?></th>
+                <th><!--型号--><?php echo $this->translate('model');?></th>
+                <th><!--HSCODE--><?php echo $this->translate('HSCODE');?></th>
+                <th><!--退税率--><?php echo $this->translate('RFRT');?></th>
+                <th><!--供应商--><?php echo $this->translate('supplierName');?></th>
+                <?php if($this->CompProductAdmin==true||$this->CompOrderAdmin==true):?>
+                <th><!--操作--><?php echo $this->translate('madeTT');?></th>
+                <?php endif;?>
+            </tr>
+            </thead>
+            <tbody>
+            <form id="delete_form" name="delete_form" method="post" action="">
+                <?php if(is_array($this->e) && count($this->e)>0):?>
+                    <?php foreach ($this->e as $k=>$goods):?>
+                        <tr>
+                            <td><a href="<?php if(!empty($this->purchase_isAllowView)){echo WWW.'user/purchase/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
+                                    <?php echo $this->ShowUPimg($goods['attachmentList']);?></a></td>
+                            <td><a href="<?php if(!empty($this->purchase_isAllowView)){echo WWW.'user/purchase/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
+                                <?php echo $goods['productName'];?></a></td>
+                            <td><a href="<?php if(!empty($this->purchase_isAllowView)){echo WWW.'user/purchase/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
+                                <?php echo $goods['productBrand'];?></a></td>
+                            <td><a href="<?php if(!empty($this->purchase_isAllowView)){echo WWW.'user/purchase/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
+                                <?php echo $goods['productModel'];?></a></td>
+                            <td><a href="<?php if(!empty($this->purchase_isAllowView)){echo WWW.'user/purchase/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
+                                <?php echo $goods['hscode'];?></a></td>
+                            <td><a href="<?php if(!empty($this->purchase_isAllowView)){echo WWW.'user/purchase/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
+                                <?php echo $goods['rebateRate'];?></a></td>
+                            <td><a href="<?php if(!empty($this->purchase_isAllowView)){echo WWW.'user/purchase/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
+                                <?php echo $goods['supplierName'];?></a></td>
+                            <!--                            <td><span class="t_state wuxiao"></span></td>-->
+                        <?php if($this->CompProductAdmin==true||$this->CompOrderAdmin==true):?>
+                            <td>
+                                <div class="cc_box">
+                                    <?php if ($goods['productStatus']!=05):?>
+                                        <!--编辑-->
+                                        <a title="<?php echo $this->translate('edit');?>" style="display:inline-block;" class="t_edit p_ed"
+                                           href=<?php echo WWW.'user/purchase/edit?'.base64_encode($goods['productID']);?>></a>
+                                    <?php endif;?>
+                                    <?php if ($goods['productStatus']==00||$goods['productStatus']==01||$goods['productStatus']==03):?>
+                                        <!--复制-->
+                                        <a title="<?php echo $this->translate('copy');?>" style="display:inline-block;"  class="t_edit p_copy"
+                                           href=<?php echo WWW.'user/purchase/copy?'.base64_encode($goods['productID']);?>></a>
+                                    <?php endif;?>
+                                    <?php if ($goods['allowInvalid']==true):?>
+                                        <!--禁用-->   <a title="<?php echo $this->translate('disable');?>" style="display:inline-block;"  class="t_edit p_jy"
+                                                       href="javascript:;" id="<?php echo $goods['productID'];?>" data-url="/user/purchase/invalid"
+                                                       data-msg1="<?php echo $this->translate('is_invalid');?>" data-msg2="<?php echo $this->translate('tip_invalid_sucess');?>"
+                                                       data-msg3="<?php echo $this->translate('tip_invalid_fail');?>" onclick="doOption(this);"></a>
+                                    <?php endif;?>
+                                    <?php if ($goods['allowDelete']==true):?>
+                                        <!--删除-->   <a title="<?php echo $this->translate('delete');?>" style="display:inline-block;" class="t_edit p_del"
+                                                       href="javascript:;" id="<?php echo $goods['productID'];?>" data-url="/user/purchase/del"
+                                                       data-msg1="<?php echo $this->translate('is_delete');?>" data-msg2="<?php echo $this->translate('tip_delete_sucess');?>"
+                                                       data-msg3="<?php echo $this->translate('tip_delete_fail');?>" onclick="doOption(this);"></a>
+                                    <?php endif;?>
+                                    <?php if ($goods['allowValid']==true):?>
+                                        <!--启用-->   <a title="<?php echo $this->translate('valid');?>" style="display:inline-block;"  class="t_edit p_qy"
+                                                       href="javascript:;" id="<?php echo $goods['productID'];?>" data-url="/user/purchase/valid"
+                                                       data-msg1="<?php echo $this->translate('is_valid');?>" data-msg2="<?php echo $this->translate('tip_valid_sucess');?>"
+                                                       data-msg3="<?php echo $this->translate('tip_valid_fail');?>" onclick="doOption(this);"></a>
+                                    <?php endif;?>
+                                    <?php if ($goods['allowConfirm']==true):?>
+                                        <!--确认-->   <a title="<?php echo $this->translate('confirmed');?>" style="display:inline-block;"  class="t_edit p_qr"
+                                                       href="javascript:;" id="<?php echo $goods['productID'];?>" data-url="/user/purchase/confrim"
+                                                       data-msg1="<?php echo $this->translate('is_confirm2');?>" data-msg2="<?php echo $this->translate('tip_confrim_sucess');?>"
+                                                       data-msg3="<?php echo $this->translate('tip_confrim_fail');?>" onclick="doOption(this);"></a>
+                                    <?php endif;?>
+                                    <?php if ($goods['allowForReview']==true):?>
+                                        <!--审核-->   <a title="<?php echo $this->translate('submitCHECK');?>" style="display:inline-block;"  class="t_edit p_sh"
+                                                       href="javascript:;" id="<?php echo $goods['productID'];?>" data-url="/user/purchase/forreview"
+                                                       data-msg1="<?php echo $this->translate('is_forReview');?>" data-msg2="<?php echo $this->translate('tip_forReview_sucess');?>"
+                                                       data-msg3="<?php echo $this->translate('tip_forReview_fail');?>" onclick="doOption(this);"></a> <?php endif;?>
+                                </div>
+                            </td>
+                            <?php endif;?>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else:?>
+                    <tr><td colspan="8"> <?php echo $this->translate('Nodata');?></td></tr>
+                <?php endif;?>
+            </form>
+            </tbody>
+        </table>
+        <div class="page"> <?php echo $this->showProductPage($this->page);?> </div>
+    </div>
+
+</div>
+</div>
+<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
+<script>
+    function doOption(obj){
+        var url=$(obj).attr('data-url');
+        var id=$(obj).attr('id');
+        var msg1=$(obj).attr('data-msg1');
+        var msg2=$(obj).attr('data-msg2');
+        var msg3=$(obj).attr('data-msg3');
+        //询问框
+        layer.confirm(msg1, {
+            title:false,
+            closeBtn: 0,
+            btn: ['<?php echo $this->translate('yes');?>','<?php echo $this->translate('no');?>'] //按钮
+        }, function(){
+            $.post( url,
+                {'delID':id},
+                function(data){
+                    if( data.status == 1){
+                        layer.msg('<span style="color: #EF8200;font-size: 16px;">'+msg2+'</span>', {skin:'del-class',icon: 1});
+                        parent.window.location.reload();
+                    }
+                    else{
+                        layer.msg('<span style="color: #EF8200;font-size: 16px;">'+msg3+'</span><br>'+data.error, {skin:'del-class',icon: 0});
+                        parent.window.location.reload();
+                    }
+                },"json");
+
+        }, function(){
+            layer.closeAll();
+        });
+
+    }
+
+</script>
+</body>
+</html>

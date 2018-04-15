@@ -1,0 +1,50 @@
+<div id="footer">
+        <div class="guide_top">
+                    <?php $charts = $this->fetchCharts('www_index_guide');?>
+                    <?php if(is_array($charts) && count($charts)>0):?>
+                    <?php foreach ($charts as $k=>$chart):?>
+                    <img src="<?php echo $this->showImage($chart['chart_image']);?>" />
+                    <?php endforeach;?>
+                    <?php endif;?>
+        </div>
+       <div class="guidediv">
+        <div class="guide">
+                <?php
+                        $helpM = new Home_Model_Help('home');
+                        $helps = $helpM->fetchRows(array(0,5),array('parent'=>'0'),array('order_by ASC'));
+                        if(is_array($helps) && count($helps) > 0){
+                            foreach ($helps as $k=>$help){
+                                $sub_helps = $helpM->fetchRows(null,array('parent'=>$help['help_id']),array('order_by ASC'));
+                                $helps[$k]['sub_helps'] = $sub_helps;
+                            }
+                        }
+                        //print_r($helps);
+                ?>
+            <div class="guide_cont">
+                <div class="guide_logo"><img src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/images/ui/guide_logo2.png" />
+                </div>
+                <div class="guide_code"><img src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/images/ui/guide_code.png" />
+                </div>
+                <div class="guide_tip">
+                <?php if(is_array($helps)):?>
+                <?php foreach ($helps as $help):?>
+                    <dl>
+                        <dt><?php echo $this->escape($help['help_title']);?></dt>
+                        <?php if(is_array($help['sub_helps']) && count($help['sub_helps'])):?>
+                        <?php foreach ($help['sub_helps'] as $sub_help):?>
+                        <dd><a href="/help/<?php echo $sub_help['help_mark']?>.html"><?php echo $this->escape($sub_help['help_title']);?></a></dd>
+                        <?php endforeach;?>
+                        <?php endif;?>
+                    </dl>
+                 <?php endforeach;?>
+                 <?php endif;?>
+                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="copyrightdiv">
+        <div class="copyright">
+            <?php echo $this->seed_Setting['footer'];?>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$('input[@type=checkbox][@name=checkAll]').each(function(){
+		$(this).checkbox().toggle($(this).val());
+	});
+	// 搜索表单状态
+    $("#is_actived").val('<?php echo $this->is_actived;?>');
+    $("#is_admin").val('<?php echo $this->is_admin;?>');
+    $("#user_name").val('<?php echo $this->user_name;?>');
+    $("#user_email").val('<?php echo $this->user_email;?>');
+});
+
+//删除
+function deleteAll(){
+	var ids="";
+    $("[name='chose[]'][checked]").each(function(){
+    	ids+=$(this).val()+",";
+    });
+    ids=ids.substring(0,(ids.length-1));
+    document.location = '<?php echo $this->BaseUrl();?>/account/delete/user_ids/'+ids;
+}
+</script>
+
+<h1>帐号管理</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" onclick="location.href='<?php echo $this->BaseUrl();?>/usermobile/export/'" value="导出Excel" />
+  </p>
+</div>
+<div class="admin_search">
+  <form name="search" id="search"  method="get">
+    <fieldset>
+      <legend>账户搜索</legend>
+      &nbsp;
+      <select name="is_admin" id="is_admin">
+        <option value="-1">-是否允许后台登陆-</option>
+        <option value="0" >否</option>
+        <option value="1" >是</option>
+      </select>
+      <select name="is_actived" id="is_actived">
+        <option value="-1">-是否激活-</option>
+        <option value="0" >否</option>
+        <option value="1" >是</option>
+      </select>
+      帐号名称：
+      <input type="text" name="user_name" id="user_name" value="" style="width:100px;"/>
+      <input name="提交" type="submit" class="admin_bnt2" value="搜索"/>
+    </fieldset>
+  </form>
+</div>
+<table class="admin_list">
+  <tr>
+    <th>昵称</th>
+    <th>微信昵称</th>
+    <th>所属微信号</th>
+    <th>用户手机</th>
+  </tr>
+  <?php if(is_array($this->users)):?>
+  <?php foreach($this->users as $user):?>
+  <tr>
+    <td><?php echo ($user['nick_name']);?></td>
+    <td><?php echo ($user['wc_nick_name']);?></td>
+    <td><?php echo ($user['wc_name']);?></td>
+    <td><?php echo ($user['user_mobile']);?></td>
+  </tr>
+  <?php endforeach; ?>
+  <?php endif;?>
+</table>
+
+<!--分页开始-->
+<div class="page"> <?php echo $this->showPage($this->page);?> </div>
+<!--分页结束--> 
+<?php echo $this->render("footer.phtml") ?> 

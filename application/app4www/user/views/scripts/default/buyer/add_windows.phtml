@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<?php $this->placeholder('html_title')->set('新增买家'); ?>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="/ky/css/style.css" rel="stylesheet">
+<link href="/ky/css/base.css" rel="stylesheet">
+<script type="text/javascript" src="/ky/js/jquery.js"></script>
+<script type="text/javascript" src="/ky/js/jquery.wallform.js"></script>
+<script type="text/javascript" src="/ky/js/www.js"></script>
+<script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
+</head>
+<body>
+<div class="o_content_wrap  m0a clearfix">
+    <div class="order_goodslist">
+        <div style="height: 40px;line-height:35px;margin: 10px;">
+           <h4 ><!--新增合作伙伴--><?php echo $this->translate('add').$this->translate('cooperationC');?></h4>
+        </div> 
+        <div class="acc_add_box">
+        <form action="#" method="post" id="buyer_add_form">
+            <div class="bank_box">
+                <label class="compay_name"><!--公司全称--><?php echo $this->translate('comNAME');?></label>
+                <input class="must" style="border: 1px solid #DF7E20;" type="text" name="accountName" id="accountName" value="" required data-msg-required="<?php echo $this->translate('de_null');?>" />
+            </div>
+            <div class="bank_box">
+                <label class="cont_people"><!--联系人--><?php echo $this->translate('contacts');?></label>
+                <input class="must" style="border: 1px solid #DF7E20;" type="text" name="name" id="name" value="" required data-msg-required="<?php echo $this->translate('de_null');?>" />
+            </div>
+            <div class="bank_box">
+                <label class="cont_tel"><!--联系电话--><?php echo $this->translate('call');?></label>
+                <input class="must" style="border: 1px solid #DF7E20;" type="text" name="mobilePhone" id="mobilePhone" value="" data-rule-mobile="true" required data-msg-required="<?php echo $this->translate('de_null');?>" />
+            </div>
+            <div class="bank_box">
+                <label class="e_mail"><!--E-Mail--><?php echo $this->translate('email');?></label>
+                <input class="must" style="border: 1px solid #DF7E20;" type="text" name="email" id="email" value="" data-rule-mail="true" required data-msg-required="<?php echo $this->translate('de_null');?>" />
+            </div>
+            <div class="bank_box" style="width:100%;">
+                <label class="company_address"><!--地址--><?php echo $this->translate('address');?></label>
+                <select class="spadd_sel w100" style="border: 1px solid #DF7E20;" name="regdCountryCode" id="regdCountryCode"
+                    <?php echo $this-> ShowDictionaryList($this->dic_Setting['COUNTRY_ISO_CODE'],$this->userlangCode,$this->dic_Setting['COUNTRY_ISO_CODE']);?>
+                </select>
+                <input style="border: 1px solid #DF7E20;width: 580px;" type="text" name="regdAddress" id="regdAddress" value="" tabindex="1" required data-msg-required="<?php echo $this->translate('de_null');?>" />
+            </div>
+            <?php echo $this->render(SEED_WWW_TPL.'/btn_confirm.phtml');?>
+        </form>
+        </div>
+    </div>
+    </div>
+</div>
+<script src="/ky/js/jquery.validate.js"></script>
+<script>
+$(function(){
+    $("#buyer_add_form").validate({
+        submitHandler: function() {
+            form.submit();
+        }
+    })
+});
+jQuery.validator.addMethod("mail", function (value, element) {
+    var mail = /^[a-z0-9._%-]+@([a-z0-9-]+\.)+[a-z]{2,4}$/;
+    return this.optional(element) || (mail.test(value));
+}, "<?php echo $this->translate('email').$this->translate('de_format').",PS:zhansan@etrad.com";?>");
+jQuery.validator.addMethod("mobile", function (value, element) {
+    var mobile = /^[\d|\-|\+|\s]+$/;
+    return this.optional(element) || (mobile.test(value));
+}, "<?php echo $this->translate('mobilephone').$this->translate('de_format').",PS:13700001122";?>");
+</script>
+</body>
+</html>

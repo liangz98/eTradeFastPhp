@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no" />
+<title>首页</title>
+<link type="text/css" rel="stylesheet" href="css/vmall.css" />
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/vmall.js"></script>
+</head>
+<body onselectstart="return true;" ondragstart="return false;">
+<div id="head">
+	<ul>
+    	<li><a href="user.html"><img src="images/vmall/icon1.png" /></a></li>
+        <li class="logo"><a href="index.html"><img src="images/vmall/logo.png" /></a></li>
+        <li class="sort"><a><img src="images/vmall/icon2.png" /></a></li>
+    </ul>
+</div>
+<div class="head_sort">
+	<dl>
+    	<dt><a>返回</a><img src="images/vmall/logo.png" /></dt>
+        <dd>
+        	<ul>
+            	<li>
+                	<span><a>面部护肤</a></span>
+                    <p>
+                    	<a>眼部护理</a>
+                        <a>精华</a>
+                        <a>面霜</a>
+                        <a>洁面</a>
+                        <a>眼部护理</a>
+                        <a>精华</a>
+                        <a>面霜</a>
+                        <a>洁面</a>
+                    </p>
+                </li>
+                <li>
+                	<span><a>彩妆</a></span>
+                    <p>
+                    	<a>眼部护理</a>
+                        <a>精华</a>
+                    </p>
+                </li>
+                <li>
+                	<span><a>身体护理</a></span>
+                    <p>
+                    	<a>眼部护理</a>
+                        <a>精华</a>
+                    </p>
+                </li>
+                <li>
+                	<span><a>香水</a></span>
+                    <p>
+                    	<a>眼部护理</a>
+                        <a>精华</a>
+                    </p>
+                </li>
+                <li>
+                	<span><a>男士护理</a></span>
+                    <p>
+                    	<a>眼部护理</a>
+                        <a>精华</a>
+                    </p>
+                </li>
+            </ul>
+        </dd>
+    </dl>
+</div>
+<div class="body">
+	<script type="text/javascript" src="js/swipe.js"></script> 
+    <div id="banner_box" class="box_swipe">
+        <ul>
+            <li><img src="upload/1.jpg" alt="广告图1" /></li>
+            <li><img src="upload/2.jpg" alt="广告图1" /></li>
+        </ul>
+        <ol>
+            <li></li>
+            <li></li>
+        </ol>
+    </div>
+    <script>
+    $(function(){
+        new Swipe(document.getElementById('banner_box'), {
+            speed:500,
+            auto:3000,
+            callback: function(){
+                var lis = $(this.element).next("ol").children();
+                lis.removeClass("on").eq(this.index).addClass("on");
+            }
+        });
+    });
+    </script> 
+</div>
+<div id="content">
+    <div class="search">
+		<p>
+			<input class="s_txt1" name="" type="text" placeholder="输入关键词" />
+			<a class="s_bnt"></a>
+		</p>
+	</div>
+    <div class="index_list1">
+		<ul>
+			<li>
+            	<a href="list.html">
+                    <img src="upload/sort_1.png" />
+                    <p>所有商品</p>
+                </a>
+            </li>
+			<li>
+            	<a href="list.html">
+                    <img src="upload/sort_2.png" />
+                    <p>所有商品</p>
+                </a>
+            </li>
+			<li>
+            	<a href="list.html">
+                    <img src="upload/sort_1.png" />
+                    <p>所有商品</p>
+                </a>
+            </li>
+			<li>
+            	<a href="list.html">
+                    <img src="upload/sort_2.png" />
+                    <p>所有商品</p>
+                </a>
+            </li>
+		</ul>
+	</div>
+    <h3><span>试业邮礼</span><a>更多</a></h3>
+    <div class="index_goods">
+    	<ul>
+        	<li>
+            	<a href="view.html"><img src="upload/3.jpg"></a>
+                <p><strong>澳大利亚</strong></p>
+                <h2>澳洲爱他美 Aptamil 奶粉 4段</h2>
+                <p><span class="star"><i style="width:80%;"></i></span></p>
+                <p class="price">
+                    <a href="view.html">去看看</a>
+                    <em>¥188.00</em>
+                </p>
+            </li>
+            <li>
+            	<a href="view.html"><img src="upload/3.jpg"></a>
+                <p><strong>澳大利亚</strong></p>
+                <h2>澳洲爱他美 Aptamil 奶粉 4段</h2>
+                <p><span class="star"><i style="width:80%;"></i></span></p>
+                <p class="price">
+                    <a href="view.html">去看看</a>
+                    <em>¥188.00</em>
+                </p>
+            </li>
+            <li>
+            	<a href="view.html"><img src="upload/3.jpg"></a>
+                <p><strong>澳大利亚</strong></p>
+                <h2>澳洲爱他美 Aptamil 奶粉 4段</h2>
+                <p><span class="star"><i style="width:80%;"></i></span></p>
+                <p class="price">
+                    <a href="view.html">去看看</a>
+                    <em>¥188.00</em>
+                </p>
+            </li>
+            <li>
+            	<a href="view.html"><img src="upload/3.jpg"></a>
+                <p><strong>澳大利亚</strong></p>
+                <h2>澳洲爱他美 Aptamil 奶粉 4段</h2>
+                <p><span class="star"><i style="width:80%;"></i></span></p>
+                <p class="price">
+                    <a href="view.html">去看看</a>
+                    <em>¥188.00</em>
+                </p>
+            </li>
+        </ul>
+    </div>
+    <div class="index_list2">
+		<ul>
+			<li><a href="view.html"><img src="upload/5.jpg"></a></li>
+			<li><a href="view.html"><img src="upload/5.jpg"></a></li>
+            <li><a href="view.html"><img src="upload/5.jpg"></a></li>
+			<li><a href="view.html"><img src="upload/5.jpg"></a></li>
+		</ul>
+	</div>
+    <div class="index_brand">
+        <div class="index_brand_list">
+            <ul>
+                <li><a><img src="upload/6.jpg" /></a></li>
+                <li><a><img src="upload/7.jpg" /></a></li>
+                <li><a><img src="upload/6.jpg" /></a></li>
+                <li><a><img src="upload/7.jpg" /></a></li>
+                <li><a><img src="upload/6.jpg" /></a></li>
+                <li><a><img src="upload/7.jpg" /></a></li>
+                <li><a><img src="upload/6.jpg" /></a></li>
+                <li><a><img src="upload/7.jpg" /></a></li>
+                <li><a><img src="upload/6.jpg" /></a></li>
+            </ul>
+        </div>
+        <a class="item2_l">&lt;</a>
+        <a class="item2_r">&gt;</a>
+    </div>
+    <div class="banner"><img src="upload/1.jpg" /></div>
+    <h3><span>进驻商家</span><a>更多</a></h3>
+    <div class="index_list3">
+    	<ul>
+			<li><a href="list.html"><img src="upload/4.jpg"></a></li>
+			<li><a href="list.html"><img src="upload/4.jpg"></a></li>
+            <li><a href="list.html"><img src="upload/4.jpg"></a></li>
+		</ul>
+    </div>
+</div>
+<div id="footer">
+	<ul>
+    	<li><a href="cart.html">购物车 <em>0</em></a></li>
+        <li><a href="index.html">回到首页</a></li>
+        <li><a href="list.html">热门推荐</a></li>
+        <li><a>帮助中心</a></li>
+    </ul>
+</div>
+</body>
+</html>

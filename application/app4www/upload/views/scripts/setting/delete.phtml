@@ -1,0 +1,78 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+if(parent.$_('admincpnav'))
+    parent.$_('admincpnav').innerHTML='系统设置&nbsp;&raquo;&nbsp;变量列表';
+</script>
+
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/setting/delete',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+</script>
+<div id="information">
+  <div class="content">
+   <div class="title">
+    <strong>删除变量列表</strong>
+   		<span>
+   			<input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back();"/>
+   		</span>
+   </div>
+   
+   <form name="post_form" method="post" action="" id="post_form" >
+    <div class="main">
+    	<div class="list_title">
+	      <ul>
+	         <li style="width:15%;">编号</li>
+	         <li style="width:30%;">变量</li>
+	         <li style="width:30%;">名称</li>
+	         <li style="width:25%;">说明</li>
+	      </ul>
+	    </div>
+	    
+	    <div class="list_content">
+		<?php if(is_array($this->settings)):?>
+		<?php foreach($this->settings as $setting):?>
+		<ul>
+			<li style="width:15%;">
+				<input type="checkbox" id="mod_id<?php echo ($setting['setting_id'])?>" name="setting_id[]" checked value="<?php echo ($setting['setting_id'])?>">
+				<?php echo ($setting['setting_id'])?>
+        	</li >
+        	<li style="width:30%;">
+        		<?php echo ($setting['setting_variable'])?>
+        	</li>
+        	<li style="width:30%;">
+        		<?php echo ($setting['setting_name'])?>
+        	</li>
+        	<li style="width:25%;">
+        		<?php echo ($setting['setting_desc'])?>
+        	</li>
+		</ul>
+		<?php endforeach; ?>
+		<?php endif;?>
+    	</div>
+    	
+		<div class="batch">
+			<input type="hidden" name="modtype" value="<?php echo $this->modtype;?>">
+			<input type="hidden" name="modname" value="<?php echo $this->modname;?>">
+			<input type="submit" name="" value="确认删除" onclick="return confirm('确认删除选择记录？')">
+		</div>
+  </div>
+  </form>
+	<div class="bg1">&nbsp;</div>
+  </div>
+</div>
+<?php echo $this->render("footer.phtml") ?>

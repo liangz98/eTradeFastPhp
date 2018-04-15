@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><?php echo $this->escape($this->goods['goods_name']);?></title>
+<meta name="keywords" content="<?php echo $this->escape($this->seed_Setting['www_html_keywords']);?>" />
+<meta name="description" content="<?php echo $this->escape($this->seed_Setting['www_html_description']);?>" />
+<link type="text/css" rel="stylesheet" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/css/common.css" />
+<link type="text/css" rel="stylesheet" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/css/www.css" />
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/www.js"></script>
+<script type="text/javascript" src="<?php echo $this->seed_Setting['static_app_server']?>/default/vplatform/js/jquery.form.js"></script>
+<script type="text/javascript" src="<?php echo $this->seed_Setting['static_app_server']?>/default/vplatform/js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?php echo $this->seed_Setting['static_app_server']?>/default/vplatform/js/jquery.ba-hashchange.js"></script>
+<script type="text/javascript" src="<?php echo $this->seed_Setting['static_app_server']?>/default/vplatform/js/showMsg.js"></script>
+<script type="text/javascript">
+function comment_list(){
+	var page_num = parseInt($("#pagenum").val());
+	var pages = parseInt($("#pages").val());
+	var cate = $("#cate").val();
+	if(page_num > 0 && page_num < pages){
+		page_num = parseInt(page_num)+parseInt(1);
+		$('#pagenum').val(page_num);
+		$.get("<?php echo $this->BaseUrl();?>/products/getcomments?<?php if(!empty($this->goods['goods_id'])):echo 'goods_id='.$this->goods['goods_id'].'&';endif;?>page="+page_num,function(data){
+				$("#comment_list").append(data);
+		 });
+		return false;
+	}else{
+		$('#tips').html("已经是最后一条记录！");
+		return false;
+	}
+}
+</script>
+</head>
+<body>
+<?php echo $this->render('default/header.phtml');?>
+<div id="content">
+	<div class="bigdiv">
+    	<div class="location"><a href="/index">首页</a> &gt; 
+    	   <?php if (is_array($this->parent_cates)){
+		    	   	foreach ($this->parent_cates as $k => $cate){
+		    	   		echo '<a href="/products/top-'.$cate['cate_id'].'.html">'.$cate['cate_name'].'</a>'.'&gt; ';
+		    	   	}
+    	         }
+    	   ?>
+    	   <?php echo $this->escape($this->goods['goods_name']);?>
+        </div>
+        
+        <div class="bigbor">
+        	<div class="mainshow">
+                <div class="image">
+                    <dl>
+                    <?php if (is_array($this->photos) && count($this->photos)>0):?>
+                    <?php foreach ($this->photos as $k => $photo):?>
+                        <dd><img src="<?php echo $this->showImage($photo['original_image']);?>" alt="<?php echo $this->escape($photo['image_desc']);?>" /></dd>
+                    <?php endforeach;?>
+                    <?php endif;?>
+                        <dt>
+                            <ul>
+                             <?php if (is_array($this->photos) && count($this->photos)>0):?>
+                             <?php foreach ($this->photos as $k => $photo):?>
+                                <li><img src="<?php echo $this->showImage($photo['normal_image']);?>" alt="产品展示图"/></li>
+                             <?php endforeach;?>
+                             <?php endif;?>  
+                            </ul>
+                        </dt>
+                    </dl>
+                </div>  
+                
+                <?php echo $this->render('default/products/goods_main.phtml');?>
+        	</div>
+            
+            <div class="list">
+            	<ul>
+            	   <?php if (is_array($this->recommend_goodses) && count($this->recommend_goodses)>0):?>
+            	   <?php foreach ($this->recommend_goodses as $k => $goods):?>
+                    <li>
+                        <a href="/products/<?php echo $this->escape($goods['goods_mark']);?>.html"><img src="<?php echo $this->showImage($goods['goods_list_image']);?>" alt="<?php echo $this->escape($goods['goods_name']);?>"/></a>
+                        <p class="country"><?php echo $this->escape($goods['country_name']);?></p>
+                        <h4><?php echo $this->escape($goods['goods_name']);?></h4>
+                        <p class="price"><del><?php echo $this->showPrice($goods['market_price']);?></del><?php echo $this->showPrice($goods['shop_price']);?></p>
+                    </li>
+                    <?php endforeach;?>
+                   <?php endif;?> 
+                </ul>
+        	</div>
+            
+            <div class="layout" id="goods_cont">
+            	<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/tab.js"></script>
+                <dl class="goods_cont">
+                    <dt>
+                        <span><a href="#tab_0">商品信息</a></span>
+                        <span><a href="#tab_1">使用方法</a></span>
+                        <span><a href="#tab_2">产品细节</a></span>
+                        <span><a href="#tab_3">产品评论</a></span>
+                    </dt>
+                    <dd>
+                        <div id="tab_0" class="property tab" data-connect="tab">
+                            <p>商品名称：<?php echo $this->escape($this->goods['goods_name']);?></p>
+                            <p>商品编码：<?php echo $this->escape($this->goods['goods_barcode']);?></p>
+                            <p>品牌：<?php echo $this->escape($this->goods['brand_name']);?></p>
+                            <p>原产国家：<?php echo $this->escape($this->goods['country_name']);?></p>
+                            <?php foreach ($this->attrs as $k=>$v):?>
+                            <p><?php echo $v['attr_name'];?>：<?php echo $v['attr_value'];?></p>
+                             <?php endforeach;?>
+                        </div>
+                    </dd>
+                    <dd>
+                        <h3 id="tab_1" class="tab" data-connect="tab"></h3>
+                        <div class="goods_txt">
+                            <?php echo $this->showContent($this->goods['goods_usemethod']);?>
+                        </div>
+                    </dd>
+                    <dd>
+                        <h3 id="tab_2" class="tab" data-connect="tab"></h3>
+                        <div class="goods_txt">
+                            <?php echo $this->showContent($this->goods['goods_content']);?>
+                        </div>
+                    </dd>
+                    <dd>
+                        <h3 id="tab_3" class="tab" data-connect="tab"></h3>
+                        <div class="goods_pl">
+                            <ul name="comment_list" id="comment_list">
+                                <?php echo $this->render('default/products/commentlist.phtml');?>
+                            </ul>
+                        </div>
+                        <center id="tips"></center>
+                        <div class="more">
+                        <input type="hidden" name="pagenum" id="pagenum" value="1"/>
+                        <input type="hidden" name="pages" id='pages' value="<?php echo $this->page['totalpage']?>"/>
+                        <a href="javascript:void(0);" onclick="comment_list()">点击查看更多 <em>&gt;</em></a>
+                        </div>
+                    </dd>
+                </dl>
+            </div>           
+        </div>
+    </div>
+</div>
+<?php echo $this->render('default/footer.phtml');?>
+<?php echo $this->render('default/right_fix.phtml');?>
+</body>
+</html>

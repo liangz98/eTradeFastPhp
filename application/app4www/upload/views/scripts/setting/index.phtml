@@ -1,0 +1,175 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript" src="/js/center/jquery.checkbox.js"></script>
+<script type="text/javascript">
+if(parent.$_('admincpnav'))
+    parent.$_('admincpnav').innerHTML='系统设置&nbsp;&raquo;&nbsp;系统设置';
+</script>
+<script type="text/javascript">
+$().ready(function() {
+	$('input[@type=checkbox][@name=checkAll]').each(function(){
+		$(this).checkbox().toggle($(this).val());
+	});
+});
+//删除
+function deleteAll(){
+	var ids="";
+	$("[name='chose[]'][checked]").each(function(){
+		ids+=$(this).val()+",";
+	});
+	ids=ids.substring(0,(ids.length-1));
+	document.location = "<?php echo $this->BaseUrl();?>/setting/delete?modname=<?php echo $this->modname;?>&modtype=<?php echo $this->modtype;?>&setting_ids="+ids;
+}
+function doadd(){
+    $("#post_form").validate({
+       event: "keyup",
+       rules: {
+         setting_variable: "required",
+         setting_name: "required",
+         order_by: "required"
+       },
+       messages: {
+         setting_variable: "变量不能为空！",
+         setting_name: "名称不能为空！",
+         order_by: "排序不能为空！"
+       },
+       submitHandler: function() {
+            SeedMsgBox('正在保存中，请稍候...');
+            var options = {
+                target:     '#SeedMsgTxt',
+                url:        '<?php echo $this->BaseUrl();?>/setting/add',
+                success: function() {
+                }
+            };
+            $('#post_form').ajaxSubmit(options);
+        }
+    });
+}
+function doupdate(){
+    $("#post_form").validate({
+       event: "keyup",
+       rules: {
+         setting_id: "required",
+         setting_variable: "required",
+         setting_name: "required",
+         order_by: "required"
+       },
+       messages: {
+         setting_id: "关键数据不能为空！",
+         setting_variable: "变量不能为空！",
+         setting_name: "名称不能为空！",
+         order_by: "排序不能为空！"
+       },
+       submitHandler: function() {
+            SeedMsgBox('正在保存中，请稍候...');
+            var options = {
+                target:     '#SeedMsgTxt',
+                url:        '<?php echo $this->BaseUrl();?>/setting/update',
+                success: function() {
+                }
+            };
+            $('#post_form').ajaxSubmit(options);
+        }
+    });
+}
+function doOrder(){
+    $("#order_form").validate({
+       event: "keyup",
+       rules: {},
+       messages: {},
+       submitHandler: function() {
+            SeedMsgBox('正在保存中，请稍候...');
+            var options = {
+                target:     '#SeedMsgTxt',
+                url:        '<?php echo $this->BaseUrl();?>/setting/order',
+                success: function() {
+                }
+            };
+            $('#order_form').ajaxSubmit(options);
+        }
+    });
+}
+</script>
+
+<h1>系统设置 - <?php echo ($this->module['mod_desc']);?></h1>
+<div class="textnav">
+  <p>
+    		<input class="admin_bnt2" name="" type="button" value="变量" onclick="document.location='<?php echo $this->BaseUrl();?>/setting/index?modname=<?php echo $this->modname;?>&modtype=<?php echo $this->modtype;?>'"/>
+    		<input class="admin_bnt2" name="" type="button" value="设置" onclick="document.location='<?php echo $this->BaseUrl();?>/setting/setting?modname=<?php echo $this->modname;?>&modtype=<?php echo $this->modtype;?>'"/>
+    	</p>
+</div>
+    
+    <div class="main">
+    	<div class="control">
+    	<form name="post_form" method="post" action="" id="post_form" >
+        <fieldset>
+            <legend>编辑变量</legend>
+            &nbsp;
+            变量：<input type="text" name="setting_variable" id="setting_variable" value="<?php echo ($this->mysetting['setting_variable']);?>" style="width:100px;"/>
+            &nbsp;
+            名称：<input type="text" name="setting_name" id="setting_name" value="<?php echo ($this->mysetting['setting_name']);?>" style="width:100px;"/>
+            &nbsp;
+            说明：<input type="text" name="setting_desc" id="setting_desc" value="<?php echo ($this->mysetting['setting_desc']);?>" style="width:100px;"/>
+            &nbsp;
+            排序：<input type="text" name="order_by" id="order_by" value="<?php echo ($this->mysetting['order_by']);?>" style="width:20px;"/>
+            &nbsp;
+            类型：<select name="setting_input" id="setting_input">
+            <option value="0" <?php echo ($this->mysetting['setting_input']=="0")?"selected":"";?>>TEXT</option>
+            <option value="1" <?php echo ($this->mysetting['setting_input']=="1")?"selected":"";?>>RADIO</option>            
+            <option value="2" <?php echo ($this->mysetting['setting_input']=="2")?"selected":"";?>>TEXTAREA</option>
+            </select>
+            <input type="hidden" name="modtype" id="modtype" value="<?php echo $this->modtype;?>">
+            <input type="hidden" name="modname" id="modname" value="<?php echo $this->modname;?>">
+            <?php if($this->mysetting['setting_id']>0):?>
+            <input type="hidden" name="setting_id" id="setting_id" value="<?php echo ($this->mysetting['setting_id']);?>">
+            <input name="updateConfirm" type="submit"  value="修改" onclick="doupdate();"/>&nbsp;
+            <?php else:?>
+            <input type="submit" value="添加"  onclick="doadd();"/>&nbsp;
+            <?php endif;?>
+            <input name="reset" type="reset"  value="重置"/>
+        </fieldset>
+        </form>
+    	</div>
+    	
+    	<form name="order_form" method="post" action="" id="order_form" >
+    	<div class="list_title">
+	      <ul>
+		     <li style="width:10%;"><input type="checkbox" name="checkAll" id="checkAll"  value="input.ids_all" title="全选/反选"><label for="checkAll">全选</label></li>
+	         <li style="width:20%;">变量</li>
+	         <li style="width:20%;">名称</li>
+	         <li style="width:15%;">说明</li>
+	         <li style="width:15%;">排序</li>
+	         <li style="width:18%;">操作</li>
+	      </ul>
+	    </div>
+    	<div class="list_content">
+		<?php if(is_array($this->settings)):?>
+            <?php foreach($this->settings as $setting):?>
+		<ul>		
+			<li style="width:10%;">
+				<input type="checkbox" id="chose[]" name="chose[]" value="<?php echo ($setting['setting_id'])?>" class="ids_all">
+			</li >
+			<li style="width:20%;"><?php echo ($setting['setting_variable']);?></li>
+			<li style="width:20%;"><?php echo ($setting['setting_name']);?></li>
+			<li style="width:15%;"><?php echo ($setting['setting_desc']);?></li>
+			<li style="width:15%;"><input type="hidden" name="setting_ids[]" value="<?php echo ($setting['setting_id'])?>"><input type="text" value="<?php echo ($setting['order_by']);?>" name="order_bys[]" style="width:30px;"></li>
+			<li style="width:18%;">
+			        <a href="<?php echo $this->BaseUrl();?>/setting/index?modname=<?php echo $this->modname;?>&modtype=<?php echo $this->modtype;?>&setting_id=<?php echo ($setting['setting_id']);?>"><img src="<?php echo $this->imageUrl?>/static/images/admin/edit.gif" title="编辑" alt="编辑"></a>
+			</li>
+		</ul>
+		<?php endforeach; ?>
+		<?php endif;?>
+    	</div>
+    	
+		<div class="batch">
+            <input type="hidden" name="modtype" id="modtype" value="<?php echo $this->modtype;?>">
+            <input type="hidden" name="modname" id="modname" value="<?php echo $this->modname;?>">			
+			<input type="submit" name="orderID" id="orderID" value="重新排序" onclick="doOrder()">&nbsp;
+			<input type="button" name="deleteID" id="deleteID" value="删除选择" onclick="deleteAll()">&nbsp;
+		</div>
+    	</form>
+    </div>
+    <div class="bg1">&nbsp;</div>
+  </div>
+</div>
+<?php echo $this->render("footer.phtml") ?>
+

@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="baidu-site-verification" content="7dGQolUeVh" />
+<title>友情链接-<?php echo $this->help['html_title'];?></title>
+<meta name="keywords" content="<?php echo $this->help['html_keywords'];?>" />
+<meta name="description" content="<?php echo $this->help['html_description'];?>" />
+<link rel="shortcut icon" type="image/x-icon" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/images/ui/favicon.ico" />
+<link type="text/css" rel="stylesheet" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/css/common.css" />
+<link type="text/css" rel="stylesheet" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/css/www.css" />
+<link type="text/css" rel="stylesheet" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/css/links.css" />
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/www.js"></script>
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']); ?>/sendyou/js/seed.form.js"></script>
+<script type="text/javascript" src="<?php echo $this->seed_Setting['static_app_server'] ?>/default/vplatform/js/jquery.form.js"></script>
+<script type="text/javascript" src="<?php echo $this->seed_Setting['static_app_server'] ?>/default/vplatform/js/jquery.validate.js"></script>
+<script type="text/javascript">
+ $().ready(function() {
+    $("#post_form").validate({
+       event: "keyup",
+       rules: {},
+       messages: {},
+       submitHandler: function() {
+            SeedMsgBox('正在保存中，请稍候...');
+            var options = {
+                target:     '#SeedMsgTxt',
+                url:        '<?php echo $this->BaseUrl();?>/links/index',
+                success: function() {
+                }
+            };
+            $('#post_form').ajaxSubmit(options);
+        }
+    });
+});
+</script>
+</head>
+<body>
+<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
+<div id="content">
+	<div class="bigdiv">    
+        <div class="link_box">
+            <div class="link_content">
+                <h3 class="link_tit">友情链接</h3>
+                <ul class="link_list">
+                    <li><a href="http://www.sfbest.com" target="_blank">顺丰优选</a></li>
+                    <?php //foreach ($this->links as $link):?>
+                    <!-- <li><a href="<?php echo $link['link_url']?>" target="_blank"><?php echo $link['link_name']?></a></li> -->
+                    <?php //endforeach;?>
+                </ul>
+            </div>
+        </div>
+    <!--<div class="link_box_a">
+            <div class="link_content">
+                <h3 class="link_tit">申请友情链接</h3>
+                <ul class="link_step">
+                    <li class="link_step_tit">申请步骤：</li>
+                    <li>
+                        <div class="float_Left">
+                            1.</div>
+                        <div class="margin_l_12">
+                            请先在贵网站做好信天邮的文字友情链接：
+                            <br> 链接文字：<a href="http://www.sendtou.com/" target="_blank">信天邮链接地址：
+                           http://www.sendtou.com/</a></div>
+                    </li>
+                    <li>
+                        <div class="float_Left">
+                            2.</div>
+                        <div class="margin_l_12">
+                            做好链接后，请在右侧填写申请信息。信天邮只接受申请文字友情链接。
+                            </div>
+                    </li>
+                    <li>
+                        <div class="float_Left">
+                            3.</div>
+                        <div class="margin_l_12">
+                            已经开通我站友情链接且内容健康，符合本站友情链接要求的网站，经信天邮管理员审核后，可以显示在此友情链接页面。</div>
+                    </li>
+                    <li>
+                        <div class="float_Left">
+                            4.</div>
+                        <div class="margin_l_12">
+                            请通过右侧提交申请，注明：友情链接申请。</div>
+                    </li>
+                </ul>
+                <form name="post_form" method="post" action="" id="post_form" enctype="multipart/form-data">        
+                <table cellpadding="0" cellspacing="0" class="link_table" width="309">
+                    <tbody><tr>
+                        <td height="29" colspan="2" valign="top" class="link_step_tit">
+                            申请信息</td>
+                    </tr>
+                    <tr>
+                        <td height="29">
+                            网站名称：
+                        </td>
+                        <td height="29">
+                            <input name="link_name" id="link_name" type="text" class="w247">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="29">
+                            网&nbsp;&nbsp;&nbsp;&nbsp;址：
+                        </td>
+                        <td height="29">
+                            <input name="link_url" id="link_url" type="text" class="w247" value="http://">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="29">
+                            QQ：
+                        </td>
+                        <td height="29">
+                            <input name="link_way" id="link_way" type="text" class="w247">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="61" height="29" valign="top">
+                            网站介绍：
+                        </td>
+                        <td width="348" valign="top">
+                            <textarea id="link_desc" name="link_desc" cols="" rows="" class="w247h60"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="45" colspan="2" align="center" valign="middle">
+                            <input class="link_button"  name="" type="submit" value="提交申请" />
+                        </td>
+                    </tr>
+                </tbody></table>
+                </form>
+            </div>
+        </div> -->
+    </div>
+</div>
+<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
+<?php echo $this->render(SEED_WWW_TPL.'/right_fix.phtml');?>
+</body>
+</html>

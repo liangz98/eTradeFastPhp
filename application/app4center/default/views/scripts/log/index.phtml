@@ -1,0 +1,47 @@
+<?php echo $this->render("header.phtml") ?>
+<h1>操作记录</h1>
+<div class="textnav">
+</div>
+<div class="admin_search">
+<form name="search" action="" method="get">
+  <fieldset>
+    <legend>搜索记录</legend>
+    &nbsp;
+    用户编号：
+    <input type="text" name="user_id" id="user_id" style="width:100px;">
+    &nbsp;&nbsp;
+    用户名称：
+    <input type="text" name="user_name" id="user_name" style="width:100px;">
+    &nbsp;&nbsp;
+    <input name="提交" type="submit"  class="admin_bnt2" value="搜索"/>
+  </fieldset>
+</form>
+</div>
+<table class="admin_list">
+  <tr>
+    <th>编号</th>
+    <th>用户</th>
+    <th>日期</th>
+    <th>IP</th>
+    <th>描述</th>
+    <th>操作</th>
+  </tr>
+  <?php if(is_array($this->logs)):?>
+  <?php foreach($this->logs as $log):?>
+  <tr>
+    <td><?php echo ($log['log_id']);?></td>
+    <td><?php echo ($log['user_name']);?></td>
+    <td><?php echo date('Y-m-d H:i:s',$log['log_time']);?></td>
+    <td><?php echo ($log['log_ip']);?></td>
+    <td><?php echo ($log['log_desc']);?></td>
+    <td><a href="<?php echo $this->BaseUrl();?>/log/view?log_id=<?php echo ($log['log_id']);?>"><img src="/images/center/view.gif" title="查看详细" alt="查看详细"></a></td>
+  </tr>
+  <?php endforeach; ?>
+  <?php endif;?>
+</table>
+<!--分页开始-->
+<div class="page">
+  <?php echo $this->showPage($this->page);?>
+</div>
+<!--分页结束-->
+<?php echo $this->render("footer.phtml") ?>

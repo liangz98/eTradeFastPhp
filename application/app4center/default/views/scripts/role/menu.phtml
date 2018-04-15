@@ -1,0 +1,128 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$('input[@type=checkbox][@name=checkAll]').each(function(){d
+		$(this).checkbox().toggle($(this).val());
+	});
+	$('#role_id').val('<?php echo $this->role_id;?>');
+});
+
+function doupdate(){
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {
+         role_id: "required"
+	   },
+	   messages: {
+         role_id: "角色名称不能为空！"
+	   },
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/role/menu',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+}
+
+</script>
+
+<h1>角色菜单</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="角色列表" onclick="document.location='<?php echo $this->BaseUrl();?>/role/index'"/>
+  </p>
+</div>
+<fieldset>
+  <legend>选择角色</legend>
+  &nbsp;
+  角色：
+  <select name="role_id" id="role_id" onchange="document.location='<?php echo $this->BaseUrl();?>/role/menu/role_id/'+this.value">
+    <option value="-1"></option>
+    <?php if(is_array($this->roles)):?>
+    <?php foreach($this->roles as $role):?>
+    <option value="<?php echo ($role['role_id']);?>"><?php echo ($role['role_name']);?>（<?php echo ($role['role_desc']);?>）</option>
+    <?php endforeach; ?>
+    <?php endif;?>
+  </select>
+</fieldset>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <?php if(is_array($this->menus)):?>
+  <?php foreach ($this->menus as $k=>$menu):?>
+  <div class="admin_search">
+    <fieldset>
+      <legend>
+      <input type="checkbox" style="width:13px;" name="checkAll" id="menu_id<?php echo ($menu['menu_id']);?>" value="input.menu_<?php echo ($menu['menu_id']);?>" <?php if($menu['permit']=='1'):?>checked<?php endif;?>>
+      <?php echo ($menu['menu_name']);?></legend>
+      &nbsp;
+      <?php if(is_array($menu['submenus'])):?>
+      <?php foreach($menu['submenus'] as $submenu):?>
+      <fieldset>
+        <legend>
+        <input type="checkbox" style="width:13px;" name="menu_ids[]" id="menu_id<?php echo ($submenu['menu_id']);?>" value="<?php echo ($submenu['menu_id']);?>" class="menu_<?php echo ($menu['menu_id']);?>" <?php if($submenu['permit']=='1'):?>checked<?php endif;?>>
+        <label for="menu_id<?php echo ($submenu['menu_id']);?>"><?php echo ($submenu['menu_name']);?></label>
+        </legend>
+        <script language="javascript">
+        $("#menu_id<?php echo ($submenu['menu_id']);?>").click(function(){ 
+			if($(this).attr('checked')){
+				$('#div_thirdmenu_<?php echo ($submenu['menu_id']);?> > input:checkbox').each(function(){
+					$(this).attr("checked",true);
+				});
+			}else{
+				$('#div_thirdmenu_<?php echo ($submenu['menu_id']);?> > input:checkbox').each(function(){
+					$(this).attr("checked",false);
+				});
+			}
+		});
+        </script>
+        <div id="div_thirdmenu_<?php echo ($submenu['menu_id']);?>">
+        &nbsp;&nbsp;
+        <?php if(is_array($submenu['thirdmenus'])):?>
+        <?php foreach($submenu['thirdmenus'] as $thirdmenu):?>
+
+        <input type="checkbox" style="width:13px;" name="menu_ids[]" id="menu_id<?php echo ($thirdmenu['menu_id']);?>" value="<?php echo ($thirdmenu['menu_id']);?>" class="menu_<?php echo ($menu['menu_id']);?>" <?php if($thirdmenu['permit']=='1'):?>checked<?php endif;?>>
+        <label for="menu_id<?php echo ($thirdmenu['menu_id']);?>"><?php echo ($thirdmenu['menu_name']);?></label>
+            <script language="javascript">
+                $("#menu_id<?php echo ($submenu['menu_id']);?>").click(function(){
+                    if($(this).attr('checked')){
+                        $('#div_fourmenu_<?php echo ($submenu['menu_id']);?> > input:checkbox').each(function(){
+                            $(this).attr("checked",true);
+                        });
+                    }else{
+                        $('#div_fourmenu_<?php echo ($submenu['menu_id']);?> > input:checkbox').each(function(){
+                            $(this).attr("checked",false);
+                        });
+                    }
+                });
+            </script>
+            <?php if(is_array($thirdmenu['fourmenus'])&&count($thirdmenu['fourmenus'])>0):?><em id="div_fourmenu_<?php echo ($submenu['menu_id']);?>">(
+                <?php foreach($thirdmenu['fourmenus'] as $fourMenus):?>
+                    <input type="checkbox" style="width:13px;" name="menu_ids[]" id="menu_id<?php echo ($fourMenus['menu_id']);?>" value="<?php echo ($fourMenus['menu_id']);?>" class="menu_<?php echo ($menu['menu_id']);?>" <?php if($fourMenus['permit']=='1'):?>checked<?php endif;?>>
+                    <label for="menu_id<?php echo ($fourMenus['menu_id']);?>"><?php echo ($fourMenus['menu_name']);?></label>
+                    <?php endforeach; ?>) &nbsp;&nbsp; &nbsp;&nbsp;</em>
+                <?php endif;?>
+
+                <?php endforeach; ?>
+        <?php endif;?>
+        </div>
+      </fieldset>
+      &nbsp;&nbsp;
+      <?php endforeach; ?>
+      <?php endif;?>
+    </fieldset>
+  </div>
+  <?php endforeach; ?>
+  <?php endif;?>
+  <?php if($this->role_id>0):?>
+  <div class="batch">
+    <input type="hidden" name="role_id" id="role_id" value="<?php echo $this->role_id;?>">
+    <input name="" class="admin_bnt" type="submit" value="更新菜单" onclick="return doupdate();"/>
+  </div>
+  <?php endif;?>
+</form>
+<?php echo $this->render("footer.phtml") ?> 

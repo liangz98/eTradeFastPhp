@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no" />
+<title>详细页</title>
+<link type="text/css" rel="stylesheet" href="css/vmall.css" />
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/vmall.js"></script>
+</head>
+<body onselectstart="return true;" ondragstart="return false;">
+<div id="head">
+	<ul>
+    	<li><a href="user.html"><img src="images/vmall/icon1.png" /></a></li>
+        <li class="logo"><a href="index.html"><img src="images/vmall/logo.png" /></a></li>
+        <li class="sort"><a><img src="images/vmall/icon2.png" /></a></li>
+    </ul>
+</div>
+<div class="head_sort">
+	<dl>
+    	<dt><a>返回</a><img src="images/vmall/logo.png" /></dt>
+        <dd>
+        	<ul>
+            	<li>
+                	<span><a>面部护肤</a></span>
+                    <p>
+                    	<a>眼部护理</a>
+                        <a>精华</a>
+                        <a>面霜</a>
+                        <a>洁面</a>
+                        <a>眼部护理</a>
+                        <a>精华</a>
+                        <a>面霜</a>
+                        <a>洁面</a>
+                    </p>
+                </li>
+                <li>
+                	<span><a>彩妆</a></span>
+                    <p>
+                    	<a>眼部护理</a>
+                        <a>精华</a>
+                    </p>
+                </li>
+                <li>
+                	<span><a>身体护理</a></span>
+                    <p>
+                    	<a>眼部护理</a>
+                        <a>精华</a>
+                    </p>
+                </li>
+                <li>
+                	<span><a>香水</a></span>
+                    <p>
+                    	<a>眼部护理</a>
+                        <a>精华</a>
+                    </p>
+                </li>
+                <li>
+                	<span><a>男士护理</a></span>
+                    <p>
+                    	<a>眼部护理</a>
+                        <a>精华</a>
+                    </p>
+                </li>
+            </ul>
+        </dd>
+    </dl>
+</div>
+<div id="content">
+	<div class="body">
+		<script type="text/javascript" src="js/swipe.js"></script> 
+		<div id="banner_box" class="box_swipe">
+			<ul>
+				<li><img src="upload/1.jpg" alt="产品相册1" /></li>
+				<li><img src="upload/2.jpg" alt="产品相册1" /></li>
+			</ul>
+			<ol>
+				<li></li>
+				<li></li>
+			</ol>
+		</div>
+		<script>
+		$(function(){
+			new Swipe(document.getElementById('banner_box'), {
+				speed:500,
+				auto:3000,
+				callback: function(){
+					var lis = $(this.element).next("ol").children();
+					lis.removeClass("on").eq(this.index).addClass("on");
+				}
+			});
+		});
+		</script> 
+	</div>
+    <div class="product_txt">
+    	<p class="country">澳大利亚</p>
+		<h1>澳洲爱他美 Aptamil 奶粉 4段</h1>
+		<p>价格：<strong>¥1288.00</strong></p>
+	</div>
+	<div class="buy">
+		<p class="size">
+			<span>属性:</span>
+			<a class="crumb">黑色</a><a>粉红色</a>
+		</p>
+		<p>
+			<span>数量：</span>
+			<a><img src="images/vmall/amount_1.gif" /></a><input class="p_txt" name="" type="text" value="1" /><a><img src="images/vmall/amount_2.gif" /></a>
+			库存100件
+		</p>
+	</div>
+    <div id="goods_nav" class="goods_nav">
+		<ul>
+			<li class="crumb"><a href="view.html#goods_nav">商品介绍</a></li>
+            <li><a href="parameter.html#goods_nav">商品参数</a></li>
+			<li><a href="comment.html#goods_nav">购买评价</a></li>
+		</ul>
+	</div>
+	<div class="detail">
+		<p><img src="upload/4.jpg"><img src="upload/5.jpg"></p>
+	</div>
+	<div class="good_buy"><span><a>加入购物车</a></span><span><a href="cart.html">立即购买</a></span></div>
+    <script type="text/javascript">
+	document.addEventListener('DOMContentLoaded',
+	function() {
+		imgautofit();
+	},false);
+	var _iv;
+	var imgObj = {};
+	function imgautofit() {
+		var _docwidth =  Math.floor(document.body.clientWidth*1);
+		$(".detail img").each(function(i){
+			if(imgObj[i]){
+			   if(imgObj[i] > _docwidth){
+				   $(this).css({'width':_docwidth+'px','height':'auto'});
+			   }else{
+				   $(this).css({'width':imgObj[i]+'px','height':'auto'});
+			   }
+			}else{
+				if(this.complete){
+					imgObj[i] = this.width;
+				}else{
+					this.onload = function(){
+						imgObj[i] = this.width;
+					}
+				}
+			}
+		});
+		_iv = setTimeout('imgautofit()',300);
+	}
+	</script>
+</div>
+<div id="footer">
+	<ul>
+    	<li><a href="cart.html">购物车 <em>0</em></a></li>
+        <li><a href="index.html">回到首页</a></li>
+        <li><a href="list.html">热门推荐</a></li>
+        <li><a>帮助中心</a></li>
+    </ul>
+</div>
+</body>
+</html>

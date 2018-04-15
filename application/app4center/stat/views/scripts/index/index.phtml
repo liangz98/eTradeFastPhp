@@ -1,0 +1,39 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$('input[@type=checkbox][@name=checkAll]').each(function(){
+		$(this).checkbox().toggle($(this).val());
+	});
+});
+</script>
+
+<h1>用户分析</h1>
+<div class="textnav">
+  <p></p>
+</div>
+<table class="admin_list">
+  <tr>
+    <th>用户名称</th>
+    <th>账号昵称</th>
+    <th>访问次数</th>
+    <th>操作</th>
+  </tr>
+  <?php if(is_array($this->statList)):?>
+  <?php foreach($this->statList as $stat):?>
+  <tr>
+    <td><?php echo $this->escape($stat['user_name']);?></td>
+    <td><?php echo $this->escape($stat['nick_name']);?></td>
+    <td><?php echo $this->escape($stat['hits']);?></td>
+    <td>
+        <a href="<?php echo $this->BaseUrl();?>/index/view?uid=<?php echo ($stat['user_id']);?>">  <img src="/images/center/detail.gif" title="详细" alt="详细"></a>
+    </td>
+  </tr>
+  <?php endforeach; ?>
+  <?php endif;?>
+</table>
+<!--分页开始-->
+<div class="page">
+  <?php echo $this->showPage($this->page);?>
+</div>
+<!--分页结束-->
+<?php echo $this->render("footer.phtml") ?>

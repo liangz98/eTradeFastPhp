@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>快移</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link href="/ky/css/base.css" rel="stylesheet">
+    <link href="/ky/css/style.css" rel="stylesheet">
+    <script type="text/javascript" src="/ky/js/jquery.js"></script>
+    <script type="text/javascript" src="/ky/js/seed.form.js"></script>
+    <script type="text/javascript" src="/ky/js/jquery.form.js"></script>
+    <script type="text/javascript" src="/ky/js/www.js"></script>
+    <script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
+    <script>
+        function doDelete(toID){
+            var toID=toID;
+            if(!confirm("您确定要删除吗?"))return false;
+            SeedMsgBox('正在保存中，请稍候...');
+            var options = {
+                target:     '#SeedMsgTxt',
+                data:  {'toID':toID},
+                url:        '<?php echo $this->BaseUrl();?>/buyer/delete',
+                success: function() {
+                }
+            };
+            $('#delete_form').ajaxSubmit(options);
+        }
+        function doStatus(status){
+            window.location.href='<?php echo $this->BaseUrl();?>/buyer/index/status/'+status
+
+        }
+    </script>
+</head>
+<body>
+<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
+<div class="o_content_wrap w1200 m0a clearfix">
+    <?php echo $this->render(SEED_WWW_TPL.'/left_menu.phtml');?>
+    <div class="o_content fr w940">
+        <div class="o_tab mt03">
+        </div>
+        <div class="qysearch_box">
+            <form action="#" method="post">
+                <p>
+                   <!--查找新合作伙伴--><?php echo $this->translate('find').$this->translate('partner');?>
+                    <input class="search_inp" name="keyword" value="<?php echo $this->keywords;?>" placeholder="<?php echo $this->translate('INPfd_par');?>" type="text"><!--可通过公司快移码、邓白氏搜索新合作伙伴-->
+                    <input class="ss_btn" type="submit" value="">
+                </p>
+            </form>
+        </div>
+        <table class="qy_table">
+            <thead>
+            <tr>
+                <th ><!--公司名称--><?php echo $this->translate('comNAME');?></th>
+                <th>E-mail</th>
+                <th><!--所在国家--><?php echo $this->translate('ONcountry');?></th>
+                <th><!--行业--><?php echo $this->translate('industry');?></th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <form id="delete_form" name="delete_form" method="post" action="">
+                <?php if(is_array($this->e) && count($this->e)>0):?>
+                    <?php foreach ($this->e as $k=>$v):?>
+
+                        <tr>
+                            <td><a target="_blank" href="<?php echo WWW.'user/buyer/adds_view?'.base64_encode($v['accountID']);?>"><?php echo $v['accountName'];?></a></td>
+                            <td><a  target="_blank"  href="<?php echo WWW.'user/buyer/adds_view?'.base64_encode($v['accountID']);?>"><?php echo $v['email'];?> </a></td>
+                            <td><a  target="_blank"  href="<?php echo WWW.'user/buyer/adds_view?'.base64_encode($v['accountID']);?>">
+                                    <?php echo $this-> ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'],$this->userlangCode,$this->dic_Setting['COUNTRY_ISO_CODE'], $v['regdCountryCode']);?></a></td>
+                            <td><a  target="_blank"  href="<?php echo WWW.'user/buyer/adds_view?'.base64_encode($v['accountID']);?>">
+                                    <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['ISIC_INDUSTRY_TYPE'], $v['industryCode']);?> </a></td>
+                        </tr>
+                <?php endforeach; ?>
+            <?php endif;?>
+                </form>
+            </tbody>
+        </table>
+        <div class="page"> <?php echo $this->showProductPage($this->page);?> </div>
+    </div>
+</div>
+<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
+</body>
+</html>

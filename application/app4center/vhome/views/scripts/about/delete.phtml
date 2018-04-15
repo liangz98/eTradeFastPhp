@@ -1,0 +1,47 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/about/delete',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+</script>
+<h1>删除企业信息</h1>
+<div class="textnav">
+  <p>
+    <input class="btn btn-primary" name="" type="button" value="返回" onclick="history.back();"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_list">
+    <tr>
+      <th>编号</th>
+      <th>信息标题</th>
+    </tr>
+    <?php if(is_array($this->abouts)):?>
+    <?php foreach($this->abouts as $about):?>
+    <tr>
+      <td><input type="checkbox" id="about_id<?php echo ($about['about_id'])?>" name="about_id[]" checked value="<?php echo ($about['about_id'])?>">
+        <?php echo ($about['about_id'])?></td>
+      <td><?php echo ($about['about_title'])?></td>
+    </tr>
+    <?php endforeach; ?>
+    <?php endif;?>
+  </table>
+  <div class="batch">
+    <input class="btn btn-primary" type="submit" name="" value="确认删除">
+  </div>
+</form>
+<?php echo $this->render("footer.phtml") ?>

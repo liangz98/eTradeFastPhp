@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>快移</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link href="/ky/css/base.css" rel="stylesheet">
+    <link href="/ky/css/style.css" rel="stylesheet">
+    <link href="/ky/css/swiper-3.3.1.min.css" rel="stylesheet">
+    <script type="text/javascript" src="/ky/js/jquery.js"></script>
+    <script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
+    <script type="text/javascript" src="/ky/js/swiper-3.3.1.jquery.min.js"></script>
+    <script type="text/javascript" src="/ky/js/seed.form.js"></script>
+    <script type="text/javascript" src="/ky/js/jquery.form.js"></script>
+    <script type="text/javascript" src="/ky/js/www.js"></script>
+    <script type="text/javascript" src="/ky/js/tips.js"></script>
+    <script type="text/javascript">
+        function doForget(){
+            SeedMsgBox('<?php echo $this->translate('in_save');?>');/*正在保存中..*/
+            var options = {
+                target:     '#SeedMsgTxt',
+                url:        '<?php echo $this->baseUrl();?>/forget/pwd',
+                success: function() {
+                }
+            };
+            $('#forget_form').ajaxSubmit(options);
+        }
+
+        function checkpwd(va){
+            var pwd=document.getElementById("ecommpasswsd").value;
+            if(va==""){
+                document.getElementById("e_pwd").innerHTML="<?php echo $this->translate('de_null');?>";
+                document.forget_form.sub.disabled=true;
+            }else{
+                document.getElementById("e_pwd").innerHTML="";
+            }
+
+            var reg = new RegExp("^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$", "g");
+            var pwdok= reg.test(pwd);
+            if (!pwdok) {
+                document.getElementById("e_pwd").innerHTML="<?php echo $this->translate('mat_psd');?>";/*密码最少8位，包含大小字母数字*/
+                document.forget_form.sub.disabled=true;
+                return false;
+            }else{
+                document.getElementById("e_pwd").innerHTML="";
+            }
+        }
+        function checkRpwd(va){
+            var pwd=document.getElementById("ecommpasswsd").value;
+            if(va==""){
+                document.getElementById("e_rpwd").innerHTML="<?php echo $this->translate('de_null');?>";/*密码不能为空*/
+                document.forget_form.sub.disabled=true;
+            }else{
+                if(va!=pwd){
+                    document.getElementById("e_rpwd").innerHTML="<?php echo $this->translate('is_psd');?>";/*两次输入的密码不一致*/
+                    document.forget_form.sub.disabled=true;
+                }else{
+                    document.getElementById("e_rpwd").innerHTML="";
+                    document.forget_form.sub.disabled=false;
+                }
+            }
+
+        }
+
+
+    </script>
+</head>
+<body>
+<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
+
+<!-- content star -->
+<div class="content">
+    <div class="bigdiv">
+        <div class="registerdiv  mb100">
+            <form action="/user/forget/pwd" method="post" name="forget_form" id="forget_form">
+                <h3><?php echo $this->translate('tip_reset_pwd');?></h3><!--重置密码-->
+                <input type="hidden" name="authCode" value="<?php echo $this->authCode;?>">
+                <div class="r_box tr">
+                    <p>
+                        <label class="lagin_lab3"><!--新密码--><?php echo $this->translate('newPSD');?>：</label>
+                        <input class="login_txt3"  name="ecommpasswsd" id="ecommpasswsd" onblur="checkpwd(this.value)" value="" type="password" />
+                        <span id="e_pwd"></span><span class="login_sp3"><!--*请输入8-14位数字/英文，不能有特殊字符--><?php echo $this->translate('tip_pwd_ts');?></span>
+                    </p>
+                    <p>
+                        <label class="lagin_lab3"><!--确认密码--><?php echo $this->translate('confirmPSD');?>：</label>
+                        <input class="login_txt3"  name="ecommpasswsd" id="ecommrpasswsd" onblur="checkRpwd(this.value)"  value="" type="password"  />
+                        <span id="e_rpwd"></span>
+                    </p>
+                    <input class="login_bnt2 mt50" name="sub" type="submit" value="<?php echo $this->translate('tip_find_pwd');?>" disabled /><!--找回密码-->
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- content end -->
+
+<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
+</html>

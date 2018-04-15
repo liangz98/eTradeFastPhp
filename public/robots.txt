@@ -1,0 +1,19 @@
+#
+# robots.txt
+#
+
+User-agent: *
+Disallow: /a/
+Disallow: /api/
+Disallow: /images/
+Disallow: /js/
+Disallow: /upload/
+Disallow: /upload_files/
+Disallow: /uploadapi/
+Disallow: /vhome/
+Disallow: /vmall/
+Disallow: /vmarketing/
+Disallow: /vservice/
+Disallow: /vuser/
+Disallow: /wechat/
+Disallow: /*?*

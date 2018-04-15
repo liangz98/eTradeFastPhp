@@ -1,0 +1,48 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->baseUrl();?>/printtpl/delete',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+</script>
+<h1>删除快递模板</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back();"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_list">
+    <tr>
+      <th><input type="checkbox" name="checkAll" id="checkAll"  value="input.ids_all" title="全选/反选">
+        <label for="checkAll">全选</label></th>
+      <th>名称</th>
+    </tr>
+    <?php if(is_array($this->tpls)) :?>
+    <?php foreach ($this->tpls as $tpl) :?>
+    <tr>
+      <td><input type="checkbox" id="pt_id<?php echo ($tpl['pt_id'])?>" name="pt_id[]" checked value="<?php echo ($tpl['pt_id'])?>">
+        <?php echo ($tpl['pt_id'])?></td>
+      <td><?php echo ($tpl['pt_name']);?></td>
+    </tr>
+    <?php endforeach; ?>
+    <?php endif;?>
+  </table>
+  <div class="batch">
+    <input type="submit" class="admin_bnt2" name="" value="确认删除">
+  </div>
+</form>
+<?php echo $this->render("footer.phtml") ?> 

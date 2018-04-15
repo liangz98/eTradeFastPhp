@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="baidu-site-verification" content="7dGQolUeVh" />
+<title><?php echo $this->about['html_title'];?></title>
+<meta name="keywords" content="<?php echo $this->about['html_keywords'];?>" />
+<meta name="description" content="<?php echo $this->about['html_description'];?>" />
+<link rel="shortcut icon" type="image/x-icon" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/images/ui/favicon.ico" />
+<link type="text/css" rel="stylesheet" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/css/common.css" />
+<link type="text/css" rel="stylesheet" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/css/www.css" />
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/www.js"></script>
+</head>
+<body>
+<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
+<div id="content">
+	<div class="bigdiv">
+    	<div class="location"><a href="/">首页</a> &gt; 帮助中心  &gt; <?php echo $this->escape($this->about['about_title']);?></div>
+        <div class="layout addpad">
+            <dl class="about_nav">
+                <dt>关于我们</dt>
+                <?php if (is_array($this->abouts) && count($this->abouts)>0):?>
+                <dd>
+                	<ul>
+                	<?php foreach ($this->abouts as $about):?>
+                    	<li <?php echo $about['about_mark']== $this->about['about_mark']?'class="crumb"':'';?>><a href="/about/<?php echo $about['about_mark']?>.html"><?php echo $about['about_title']?></a></li>
+                    <?php endforeach;?>
+                    </ul>
+                </dd>
+                <?php endif;?>
+            </dl>
+            
+            <div class="info">
+                <h1><?php echo $this->escape($this->about['about_title']);?></h1>
+                <div class="info_txt">
+                    <?php echo $this->showContent($this->about['about_content']);?>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div> 
+<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
+<?php echo $this->render(SEED_WWW_TPL.'/right_fix.phtml');?>
+</body>
+</html>

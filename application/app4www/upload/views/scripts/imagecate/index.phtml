@@ -1,0 +1,205 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+function doadd(){
+    $("#post_form").validate({
+       event: "keyup",
+       rules: {
+         cate_name: "required",
+         cate_desc: "required",
+         cate_path: "required"
+       },
+       messages: {
+         cate_name: "名称不能为空！",
+         cate_desc: "说明不能为空！",
+         cate_path: "路径不能为空！"
+       },
+       submitHandler: function() {
+            SeedMsgBox('正在保存中，请稍候...');
+            var options = {
+                target:     '#SeedMsgTxt',
+                url:        '<?php echo $this->BaseUrl();?>/imagecate/add',
+                success: function() {
+                }
+            };
+            $('#post_form').ajaxSubmit(options);
+        }
+    });
+}
+function doupdate(){
+    $("#post_form").validate({
+       event: "keyup",
+       rules: {
+         cate_id: "required",
+         cate_name: "required",
+         cate_desc: "required",
+         cate_path: "required"
+       },
+       messages: {
+         cate_id: "关键数据不能为空！",
+         cate_name: "名称不能为空！",
+         cate_desc: "说明不能为空！",
+         cate_path: "路径不能为空！"
+       },
+       submitHandler: function() {
+            SeedMsgBox('正在保存中，请稍候...');
+            var options = {
+                target:     '#SeedMsgTxt',
+                url:        '<?php echo $this->BaseUrl();?>/imagecate/update',
+                success: function() {
+                }
+            };
+            $('#post_form').ajaxSubmit(options);
+        }
+    });
+}
+function dodelete(){
+    if(!confirm("的确要删除该记录？"))return false;
+    $("#post_form").validate({
+       event: "keyup",
+       rules: {
+         cate_id: "required"
+       },
+       messages: {
+         cate_id: "关键数据不能为空！"
+       },
+       submitHandler: function() {
+            SeedMsgBox('正在保存中，请稍候...');
+            var options = {
+                target:     '#SeedMsgTxt',
+                url:        '<?php echo $this->BaseUrl();?>/imagecate/delete',
+                success: function() {
+                }
+            };
+            $('#post_form').ajaxSubmit(options);
+        }
+    });
+}
+</script>
+
+<h1>图片分类</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="列表" onclick="document.location='<?php echo $this->BaseUrl();?>/imagecate/index'"/>
+  </p>
+</div>
+<div class="admin_search">
+<form name="post_form" method="post" action="" id="post_form" >
+  <fieldset>
+    <legend>编辑分类</legend>
+    &nbsp;
+    名称：
+    <input type="text" name="cate_name" id="cate_name" value="<?php echo ($this->category['cate_name']);?>" style="width:80px;"/>
+    （英文、数字和下划线）
+    &nbsp;
+    说明：
+    <input type="text" name="cate_desc" id="cate_desc" value="<?php echo ($this->category['cate_desc']);?>" style="width:80px;"/>
+    &nbsp;
+    路径：
+    <input type="text" name="cate_path" id="order_by" value="<?php echo ($this->category['cate_path']);?>" style="width:80px;"/>
+    （英文、数字和下划线）<br>
+    &nbsp;
+    允许上传的文件扩展名：
+    <input type="text" name="cate_ext" id="cate_ext" value="<?php echo ($this->category['cate_ext']);?>" style="width:80px;"/>
+    （用逗号“,”分开）
+    图片可见：
+    <select name="is_pub" id="is_pub">
+      <option value="0" <?php echo ($this->category['is_pub']=="0")?"selected":"";?>>仅上传人可见</option>
+      <option value="1" <?php echo ($this->category['is_pub']=="1")?"selected":"";?>>所有人可见</option>
+    </select>
+    水印：
+    <select name="water_mark" id="water_mark">
+      <option value="0" <?php echo ($this->category['water_mark']=="0")?"selected":"";?>>不加水印</option>
+      <option value="1" <?php echo ($this->category['water_mark']=="1")?"selected":"";?>>添加水印</option>
+    </select>
+    命名：
+    <select name="keep_orgname" id="keep_orgname">
+      <option value="0" <?php echo ($this->category['keep_orgname']=="0")?"selected":"";?>>自动重命名</option>
+      <option value="1" <?php echo ($this->category['keep_orgname']=="1")?"selected":"";?>>保持原名</option>
+    </select>
+    <br>
+    &nbsp;
+    常规图：
+    <input type="text" name="normal_width" id="normal_width" value="<?php echo ($this->category['normal_width']);?>" style="width:40px;"/>
+    PX ×
+    <input type="text" name="normal_height" id="normal_height" value="<?php echo ($this->category['normal_height']);?>" style="width:40px;"/>
+    PX
+    缩略方式：
+    <select name="normal_type" id="normal_type">
+      <option value="0" <?php echo ($this->category['normal_type']=="0")?"selected":"";?>>绝对截取</option>
+      <option value="1" <?php echo ($this->category['normal_type']=="1")?"selected":"";?>>等比缩放</option>
+    </select>
+    <br>
+    &nbsp;
+    缩略图：
+    <input type="text" name="thumb_width" id="thumb_width" value="<?php echo ($this->category['thumb_width']);?>" style="width:40px;"/>
+    PX ×
+    <input type="text" name="thumb_height" id="thumb_height" value="<?php echo ($this->category['thumb_height']);?>" style="width:40px;"/>
+    PX
+    缩略方式：
+    <select name="thumb_type" id="thumb_type">
+      <option value="0" <?php echo ($this->category['thumb_type']=="0")?"selected":"";?>>绝对截取</option>
+      <option value="1" <?php echo ($this->category['thumb_type']=="1")?"selected":"";?>>等比缩放</option>
+    </select>
+    <br>
+    &nbsp;
+    正方图：
+    <input type="text" name="square_width" id="square_width" value="<?php echo ($this->category['square_width']);?>" style="width:40px;"/>
+    PX ×
+    <input type="text" name="square_height" id="square_height" value="<?php echo ($this->category['square_height']);?>" style="width:40px;"/>
+    PX
+    缩略方式：
+    <select name="square_type" id="square_type">
+      <option value="0" <?php echo ($this->category['square_type']=="0")?"selected":"";?>>绝对截取</option>
+      <option value="1" <?php echo ($this->category['square_type']=="1")?"selected":"";?>>等比缩放</option>
+    </select>
+    <br>
+    &nbsp;
+    手机图：
+    <input type="text" name="wap_width" id="wap_width" value="<?php echo ($this->category['wap_width']);?>" style="width:40px;"/>
+    PX ×
+    <input type="text" name="wap_height" id="wap_height" value="<?php echo ($this->category['wap_height']);?>" style="width:40px;"/>
+    PX
+    缩略方式：
+    <select name="wap_type" id="wap_type">
+      <option value="0" <?php echo ($this->category['wap_type']=="0")?"selected":"";?>>绝对截取</option>
+      <option value="1" <?php echo ($this->category['wap_type']=="1")?"selected":"";?>>等比缩放</option>
+    </select>
+    <br>
+    <?php if($this->category['cate_id']>0):?>
+    <input type="hidden" name="cate_id" id="cate_id" value="<?php echo ($this->category['cate_id']);?>">
+    <input name="updateConfirm" type="submit" class="admin_bnt2"  value="修改" onclick="doupdate();"/>
+    &nbsp;
+    <input name="deleteConfirm" type="submit" class="admin_bnt2"  value="删除" onclick="dodelete();"/>
+    &nbsp;
+    <?php else:?>
+    <input type="submit" value="添加" class="admin_bnt2" onclick="doadd();"/>
+    &nbsp;
+    <?php endif;?>
+    <input name="reset" type="reset" class="admin_bnt2" value="重置"/>
+  </fieldset>
+</form>
+</div>
+<table class="admin_list">
+  <tr>
+    <th>名称</th>
+    <th>说明</th>
+    <th>文件夹路径</th>
+    <th>扩展名</th>
+    <th>操作</th>
+  </tr>
+  <?php if(is_array($this->categories)):?>
+  <?php foreach($this->categories as $category):?>
+  <tr>
+    <td><?php echo ($category['cate_name']);?></td>
+    <td><?php echo ($category['cate_desc']);?></td>
+    <td><?php echo ($category['cate_path']);?></td>
+    <td><?php echo ($category['cate_ext']);?></td>
+    <td>
+    <a href="javascript:void(0)" onclick="tb_show('', '/upload/testimage/?name=<?php echo ($category['cate_name']);?>&TB_iframe=true&width=800&height=450')"><img src="/images/center/view.gif" title="测试上传" alt="测试上传"></a> 
+    <a href="<?php echo $this->BaseUrl();?>/imagecate/index?cate_id=<?php echo ($category['cate_id']);?>"><img src="/images/center/edit.gif" title="编辑" alt="编辑"></a> 
+    <a href="<?php echo $this->BaseUrl();?>/imagecate/index?cate_id=<?php echo ($category['cate_id']);?>"><img src="/images/center/del.gif" title="删除" alt="删除"></a></td>
+  </tr>
+  <?php endforeach; ?>
+  <?php endif;?>
+</table>
+<?php echo $this->render("footer.phtml") ?>

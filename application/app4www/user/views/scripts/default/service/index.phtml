@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>快移</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="/ky/css/base.css" rel="stylesheet">
+<link href="/ky/css/style.css" rel="stylesheet">
+<script type="text/javascript" src="/ky/js/jquery.js"></script>
+<script type="text/javascript" src="/ky/js/jquery.wallform.js"></script>
+<script type="text/javascript" src="/ky/js/www.js"></script>
+<script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
+</head>
+<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
+<div class="o_content_wrap w1200 m0a clearfix">
+    <?php echo $this->render(SEED_WWW_TPL.'/left_menu.phtml');?>
+    <div class="o_content fr w940">
+       <div class="o_tab">
+           <ul>
+               <li class="cur">服务提供商</li>
+           </ul>
+       </div>
+       <div class="qysearch_box">
+            <form action="#" method="post">
+                <p>
+                    <input class="search_inp"  name="keyword"  placeholder="可输入名称、HSCode、型号、品牌等关键字" type="text">
+                    <input class="ss_btn" type="button" style="outline:none;" onclick="javascript:();">
+                    <a href="<?php echo WWW;?>user/service/add" class="addb_box fr"></a>
+                </p>
+            </form>
+        </div>
+        <table class="qy_table user_table1">
+            <thead>
+                <tr>
+                    <th width="140">姓名</th>
+                    <th width="140">移动电话</th>
+                    <th width="220">电子邮箱</th>
+                    <th width="140">平台用户</th>
+                    <th width="80">角色</th>
+                    <th width="60">状态</th>
+                    <th width="100"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Lucy</td>
+                    <td>14552455154</td>
+                    <td>862355468@qq.com</td>
+                    <td>是</td>
+                    <td>财务</td>
+                    <td>有效</td>
+                    <td>
+                        <div class="cc_box"><a href="user_info_edit.html" class="edit"></a><a class="p_lxr" href="user_info_view.html"></a><a class="p_edi" href="user_info_view.html"></a></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Lucy</td>
+                    <td>14552455154</td>
+                    <td>862355468@qq.com</td>
+                    <td>是</td>
+                    <td>财务</td>
+                    <td>有效</td>
+                    <td>
+                        <div class="cc_box"><a href="user_info_edit.html" class="edit"></a><a class="p_lxr" href="user_info_view.html"></a><a class="p_edi" href="user_info_view.html"></a></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
+</body>
+</html>

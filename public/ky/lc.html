@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script type="text/javascript" src="/ky/js/jquery.js"></script>
+    <script type="text/javascript">
+
+
+        function selectAA() {
+            $.ajax(
+                    {
+                        type: "post",
+                        url: "http://www.dd800.com/user/data/country",
+                        data: { "type": "COUNTRY_ISO_CODE" },
+                        success: function (msg) {
+                            var json;
+                            if(typeof msg === 'object'){
+                                json = msg;
+                            }
+                            else{
+                                json = eval('(' + msg + ')');
+                            }
+                            $.each(json, function (n, value) {
+                                $("#COUNTRY_ISO_CODE").append("<option value=" + value.code + ">" + value.name + "</option>");
+                            });
+                            $("#COUNTRY_ISO_CODE").val("CN");
+                            //  $("#COUNTRY_ISO_CODE  option[value="+Coun+"] ").attr("selected",true)
+                            selectBB();
+                        }
+                    });
+        };
+
+
+        function selectBB() {
+            $("#PROVINCE_CODE").html("");
+            $.ajax(
+                    {
+                        type: "post",
+                        url: "http://www.dd800.com/user/data/province",
+                        data: { "provinceID":$('#COUNTRY_ISO_CODE').attr("value")},
+                        success: function (msg2) {
+
+                            var json2;
+                            if(typeof msg2 === 'object'){
+                                json2 = msg2;
+                            }
+                            else{
+                                json2 = eval('(' + msg2 + ')');
+                            }
+                            $.each(json2, function (n, value) {
+                                $("#PROVINCE_CODE").append("<option value=" + value.code + ">" + value.name + "</option>");
+                            });
+                            $("#PROVINCE_CODE").val("44");
+                            selectCC();
+                        }
+                    });
+        };
+        function selectCC() {
+            $("#CITY_CODE").html("");
+            $.ajax(
+                    {
+                        type: "post",
+                        url: "http://www.dd800.com/user/data/city",
+                        data: {"cityID":$('#PROVINCE_CODE').attr("value") },
+                        success: function (msg3) {
+                            var json3;
+                            if(typeof msg3 === 'object'){
+                                json3 = msg3;
+                            }
+                            else{
+                                json3 = eval('(' + msg3 + ')');
+                            }
+                            $.each(json3, function (n, value) {
+                                $("#CITY_CODE").append("<option value=" + value.code + ">" + value.name + "</option>");
+                            });
+                            $("#CITY_CODE").val("4401");
+                        }
+                    })
+        };
+        $(function () {
+            selectAA();
+            $('#COUNTRY_ISO_CODE').bind("change", selectBB);
+            $('#PROVINCE_CODE').bind("change", selectCC);
+        });
+
+
+    </script>
+</head>
+<body>
+<div style="width: 100%;">
+    <label class="labelbox"><!-- 邮寄地址 -->邮寄地址</label>
+    <select class="dq_select" id="COUNTRY_ISO_CODE" name="mailingCountryCode">
+
+    </select>
+    <select class="dq_select" id="PROVINCE_CODE" name="mailingStateCode" onclick="selectCC()">
+
+    </select>
+    <select class="dq_select" id="CITY_CODE" name="mailingCityCode">
+    </select>
+
+</div>
+</body>
+</html>

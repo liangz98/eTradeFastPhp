@@ -1,0 +1,56 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {
+	   },
+	   messages: {
+	   },
+	   submitHandler: function() {
+			SeedMsgBox('正在设置中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->baseUrl();?>/paymentparam/setting',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+</script>
+
+<h1>支付参数</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="变量" onclick="document.location='<?php echo $this->baseUrl();?>/paymentparam/index?payment_name=<?php echo $this->payment_name;?>'"/>
+    <input class="admin_bnt2" name="" type="button" value="设置" onclick="document.location='<?php echo $this->baseUrl();?>/paymentparam/setting?payment_name=<?php echo $this->payment_name;?>'"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_form">
+    <?php foreach($this->settings as $setting):?>
+    <tr>
+      <td><strong><?php echo ($setting['setting_name']);?><?php echo (($setting['setting_desc'])!="")?"( ".($setting['setting_desc'])." )":"";?>：</strong>
+        <p>
+          <?php if ($setting['setting_input']==0):?>
+          <input name="settings[<?php echo ($setting['setting_variable']);?>]" value="<?php echo ($setting['setting_content']);?>" type="text" class="admin_txt1"  />
+          <?php elseif ($setting['setting_input']==1):?>
+          <input type="radio" name="settings[<?php echo ($setting['setting_variable']);?>]" value="1" <?php if(($setting['setting_content'])=='1')echo"checked";?> style="width:20px;">
+          是
+          <input type="radio" name="settings[<?php echo ($setting['setting_variable']);?>]" value="0" <?php if(($setting['setting_content'])=='0')echo"checked";?> style="width:20px;">
+          否
+          <?php elseif ($setting['setting_input']==2):?>
+          <textarea name="settings[<?php echo ($setting['setting_variable']);?>]" id="settings[<?php echo ($setting['setting_variable']);?>]" style="width:600px;height:100px;font-size:12px;"><?php echo ($setting['setting_content']);?></textarea>
+          <?php endif;?>
+        </p></td>
+    </tr>
+    <?php endforeach; ?>
+  </table>
+  <div class="batch">
+    <input type="hidden" name="payment_name" id="payment_name" value="<?php echo ($this->payment_name);?>">
+    <input name=""  class="admin_bnt"  type="submit" value="提交" />
+  </div>
+</form>
+<?php echo $this->render("footer.phtml") ?> 

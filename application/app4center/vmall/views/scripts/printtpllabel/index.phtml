@@ -1,0 +1,101 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+function doadd(){
+    $("#post_form").validate({
+       event: "keyup",
+       submitHandler: function() {
+            SeedMsgBox('正在保存中，请稍候...');
+            var selects = {
+                target:     '#SeedMsgTxt',
+                url:        '<?php echo $this->baseUrl();?>/printtpllabel/add',
+                success: function() {
+                }
+            };
+            $('#post_form').ajaxSubmit(selects);
+        }
+    });
+}
+function doupdate(){
+    $("#post_form").validate({
+       event: "keyup",
+       submitHandler: function() {
+            SeedMsgBox('正在保存中，请稍候...');
+            var selects = {
+                target:     '#SeedMsgTxt',
+                url:        '<?php echo $this->baseUrl();?>/printtpllabel/update',
+                success: function() {
+                }
+            };
+            $('#post_form').ajaxSubmit(selects);
+        }
+    });
+}
+function dodelete(){
+    if(!confirm("的确要删除该记录？"))return false;
+    $("#post_form").validate({
+       event: "keyup",
+       submitHandler: function() {
+             SeedMsgBox('正在保存中，请稍候...');
+            var selects = {
+                target:     '#SeedMsgTxt',
+                url:        '<?php echo $this->baseUrl();?>/printtpllabel/delete',
+                success: function() {
+                }
+            };
+            $('#post_form').ajaxSubmit(selects);
+        }
+    });
+}
+</script>
+
+<h1>打印模板标签</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="添加" onclick="document.location='<?php echo $this->baseUrl();?>/printtpllabel/'"/>
+  </p>
+</div>
+注意：当前配置的是：<?php if(defined('CURRENT_MODULE_NAME') && CURRENT_MODULE_NAME=='center_hk'):?>HK站的配送管理，若需设置大陆的，则用大陆域名打开后台并进行管理。<?php endif;?>
+<?php if(defined('CURRENT_MODULE_NAME') && CURRENT_MODULE_NAME=='center'):?>大陆站的配送管理，若需设置HK的，则用HK域名打开后台并进行管理。<?php endif;?>
+<div class="admin_search">
+  <form name="post_form" method="post" action="" id="post_form" >
+    <fieldset>
+      <legend>编辑选择</legend>
+      &nbsp;
+      标签：
+      <input type="text" name="ptcl_name" id="ptcl_name" value="<?php echo ($this->label['ptcl_name']);?>" style="width:100px;"/>
+      &nbsp;
+      说明：
+      <input type="text" name="ptcl_desc" id="ptcl_desc" value="<?php echo ($this->label['ptcl_desc']);?>" style="width:100px;"/>
+      <?php if($this->label['ptcl_id']>0):?>
+      <input type="hidden" name="ptcl_id" id="ptcl_id" value="<?php echo ($this->label['ptcl_id']);?>">
+      <input name="updateConfirm" class="admin_bnt2" type="submit"  value="修改" onclick="doupdate();"/>
+      &nbsp;
+      <input name="deleteConfirm" class="admin_bnt2" type="submit"  value="删除" onclick="dodelete();"/>
+      &nbsp;
+      <?php else:?>
+      <input type="submit" class="admin_bnt2" value="添加"  onclick="doadd();"/>
+      &nbsp;
+      <?php endif;?>
+      <input name="reset" class="admin_bnt2" type="reset"  value="重置"/>
+    </fieldset>
+  </form>
+</div>
+<table class="admin_list">
+  <tr>
+    <th>标签</th>
+    <th>说明</th>
+    <th>操作</th>
+  </tr>
+  <?php if(is_array($this->labels)):?>
+  <?php foreach($this->labels as $label):?>
+  <tr>
+    <td><?php echo ($label['ptcl_name']);?></td>
+    <td><?php echo ($label['ptcl_desc']);?></td>
+    <td>
+    <a href="<?php echo $this->baseUrl();?>/printtpllabel/index/ptcl_id/<?php echo ($label['ptcl_id']);?>"><img src="/images/center/edit.gif" title="编辑" alt="编辑"></a> 
+    <a href="<?php echo $this->baseUrl();?>/printtpllabel/index/ptcl_id/<?php echo ($label['ptcl_id']);?>"><img src="/images/center/del.gif" title="删除" alt="删除"></a></td>
+  </tr>
+  <?php endforeach; ?>
+  <?php endif;?>
+</table>
+<?php echo $this->render("footer.phtml") ?> 

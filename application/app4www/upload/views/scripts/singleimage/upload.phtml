@@ -1,0 +1,331 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="<?php echo $this->seed_Setting['upload_app_server'];?>/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $this->seed_Setting['upload_app_server'];?>/js/swfupload.js"></script>
+<script type="text/javascript" src="<?php echo $this->seed_Setting['upload_app_server'];?>/js/swfupload.queue.js"></script>
+<script type="text/javascript" src="<?php echo $this->seed_Setting['upload_app_server'];?>/js/fileprogress.js"></script>
+<script type="text/javascript" src="<?php echo $this->seed_Setting['upload_app_server'];?>/js/handlers.js"></script>
+<script type="text/javascript">
+var swfu;
+function uploadStart(file) {
+	try {
+		$("#progress_div").show();
+		var progress = new FileProgress(file, this.customSettings.progressTarget);
+		progress.setStatus("上传中...");
+		progress.toggleCancel(true, this);
+	}
+	catch (ex) {
+		this.debug(ex);
+	}
+	
+	return true;
+}
+
+function uploadSuccess(file, serverData) {
+	try {
+		var progress = new FileProgress(file, this.customSettings.progressTarget);
+		progress.setComplete();
+		progress.setStatus("上传完成。");
+		progress.toggleCancel(false);
+		
+		var imageData = eval('('+serverData+')');
+		var image_id = imageData.image_id;
+		var square_url = imageData.square_url;
+		var image_name = imageData.image_name;
+		
+		$('#image_ul').append('<li><p><img src="<?php echo $this->seed_Setting['upload_view_server'];?>'+square_url+'"/></p></li>');
+	} catch (ex) {
+		this.debug(ex);
+	}
+}
+
+function uploadComplete(file) {
+	try {
+		if (this.getStats().files_queued === 0) {
+			document.location="<?php echo $this->BaseUrl();?>/singleimage?name=<?php echo $this->escape($this->name);?>";
+		} else {	
+			this.startUpload();
+		}
+	} catch (ex) {
+		this.debug(ex);
+	}
+
+}
+
+function uploadError(file, errorCode, message){
+	try {
+		alert(errorCode);
+		alert(message);
+	} catch (ex) {
+		this.debug(ex);
+	}
+}
+
+window.onload = function() {
+	swfu = new SWFUpload({
+		// Backend Settings
+		upload_url: "<?php echo $this->seed_Setting['upload_app_server'];?>/image/upload",
+		post_params: {
+					"name": "<?php echo $this->name;?>" ,
+					<?php if($this->cate['keep_orgname']=='1') :?>
+					"path": "<?php echo $this->path;?>" ,
+					<?php endif;?>
+					"token": "<?php echo $this->seed_Token;?>"
+				},
+
+
+		// File Upload Settings
+		file_size_limit : "<?php echo $this->file_size_limit;?>",
+		file_types : "<?php echo $this->file_types;?>",
+		file_types_description : "图片格式",
+		file_upload_limit : "60",
+		file_queue_limit : "0",
+		file_post_name : "Filedata",
+
+		// Event Handler Settings (all my handlers are in the Handler.js file)
+		file_dialog_start_handler : fileDialogStart,
+		file_queued_handler : fileQueued,
+		file_queue_error_handler : fileQueueError,
+		file_dialog_complete_handler : fileDialogComplete,
+		upload_start_handler : uploadStart,
+		upload_progress_handler : uploadProgress,
+		upload_error_handler : uploadError,
+		upload_success_handler : uploadSuccess,
+		upload_complete_handler : uploadComplete,
+
+		// Button Settings
+		button_image_url : "<?php echo $this->seed_Setting['upload_app_server'];?>/images/upload/upload2.png",
+		button_placeholder_id : "spanButtonPlaceholder1",
+	//	button_text_top_padding: 0,
+	//	button_text_left_padding: 18,
+		
+		button_width: 100,
+		button_height: 30,
+		button_text : '',
+		
+		// Flash Settings
+		flash_url : "<?php echo $this->seed_Setting['upload_app_server'];?>/images/upload/swfupload.swf",
+		
+
+		custom_settings : {
+			progressTarget : "fsUploadProgress1",
+			cancelButtonId : "btnCancel1"
+		},
+		
+		// Debug Settings
+		debug: false
+	});
+ }
+</script>
+<title>上传图片</title>
+<style type="text/css">
+html{font-size:12px; font-family:"宋体";color:#666;}
+body,div,ul,li,p,dl,dt,dd,input,form{margin:0; padding:0;}
+ul{list-style:none;}
+img{border:0;}
+.image_show{width:100%;float:left;}
+.image_show div{padding-left:20px;padding-top:10px;text-align:left;font-weight:bold;}
+	    .image_show ul{float:left;width:100%;padding-bottom:10px;}
+	    .image_show li{width:230px;height:180px;float:left;line-height:18px;padding:10px 10px 0;}
+		  .image_show li img{padding:2px;border:1px solid #ccc;vertical-align: middle;}
+		  .image_show li p{width:100%;float:left;text-align:center;}
+		    .image_show li p strong{width:100px;float:left;height:25px;overflow:hidden;}
+			.image_show li p small{width:65px;float:right;height:25px; text-align:right;}
+			  .image_show li p small a{color:#fc9b4d;}
+
+		/* -----------------------------------------------
+			www.swfupload.org
+			Description: Common Screen Stylesheet for SWFUpload Demos
+			Updated on:  May 1, 2008
+		----------------------------------------------- */
+		
+		
+		
+		div.fieldset {
+			border:  1px solid #afe14c;
+			margin: 10px 0;
+			padding: 20px 10px;
+		}
+		div.fieldset span.legend {
+			position: relative;
+			background-color: #EEE;
+			padding: 3px;
+			top: -30px;
+			font: 700 14px Arial, Helvetica, sans-serif;
+			color: #73b304;
+		}
+		
+		div.flash {
+			width: 700px;
+			margin: auto;
+			margin-top:20px;
+			border-color: #D9E4FF;
+		
+			-moz-border-radius-topleft : 5px;
+			-webkit-border-top-left-radius : 5px;
+		    -moz-border-radius-topright : 5px;
+		    -webkit-border-top-right-radius : 5px;
+		    -moz-border-radius-bottomleft : 5px;
+		    -webkit-border-bottom-left-radius : 5px;
+		    -moz-border-radius-bottomright : 5px;
+		    -webkit-border-bottom-right-radius : 5px;
+		
+		}
+		
+		button,
+		input,
+		select,
+		textarea { 
+			vertical-align:middle;
+		}
+		
+		
+		
+		input[disabled]{ border: 1px solid #ccc } /* FF 2 Fix */
+		
+		
+		label { 
+			width: 150px; 
+			text-align: right; 
+			display:block;
+			margin-right: 5px;
+		}
+		
+		#btnSubmit { margin: 0 0 0 155px ; }
+		
+		/* -- Table Styles ------------------------------- */
+		td {
+			font: 10pt Helvetica, Arial, sans-serif;
+			vertical-align: top;
+		}
+		
+		.progressWrapper {
+			width: 700px;
+			overflow: hidden;
+		}
+		
+		.progressContainer {
+			margin: 5px;
+			padding: 4px;
+			border: solid 1px #E8E8E8;
+			background-color: #F7F7F7;
+			overflow: hidden;
+		}
+		/* Message */
+		.message {
+			margin: 1em 0;
+			padding: 10px 20px;
+			border: solid 1px #FFDD99;
+			background-color: #FFFFCC;
+			overflow: hidden;
+		}
+		/* Error */
+		.red {
+			border: solid 1px #B50000;
+			background-color: #FFEBEB;
+		}
+		
+		/* Current */
+		.green {
+			border: solid 1px #DDF0DD;
+			background-color: #EBFFEB;
+		}
+		
+		/* Complete */
+		.blue {
+			border: solid 1px #CEE2F2;
+			background-color: #F0F5FF;
+		}
+		
+		.progressName {
+			font-size: 8pt;
+			font-weight: 700;
+			color: #555;
+			width: 323px;
+			height: 14px;
+			text-align: left;
+			white-space: nowrap;
+			overflow: hidden;
+		}
+		
+		.progressBarInProgress,
+		.progressBarComplete,
+		.progressBarError {
+			font-size: 0;
+			width: 0%;
+			height: 2px;
+			background-color: blue;
+			margin-top: 2px;
+		}
+		
+		.progressBarComplete {
+			width: 100%;
+			background-color: green;
+			visibility: hidden;
+		}
+		
+		.progressBarError {
+			width: 100%;
+			background-color: red;
+			visibility: hidden;
+		}
+		
+		.progressBarStatus {
+			margin-top: 2px;
+			width: 337px;
+			font-size: 12px;
+			font-family: 宋体;
+			text-align: left;
+			white-space: nowrap;
+		}
+		
+		a.progressCancel {
+			font-size: 0;
+			display: block;
+			height: 14px;
+			width: 14px;
+			background-image: url(<?php echo $this->seed_Setting['upload_app_server'];?>/images/upload/cancelbutton.gif);
+			background-repeat: no-repeat;
+			background-position: -14px 0px;
+			float: right;
+		}
+		
+		a.progressCancel:hover {
+			background-position: 0px 0px;
+		}
+		
+		
+		/* -- SWFUpload Object Styles ------------------------------- */
+		.swfupload {
+			vertical-align: top;
+		}
+
+</style>
+</head>
+<body>
+<?php if($this->cate['keep_orgname']=='1') :?>
+<form name="form1" action="<?php echo $this->BaseUrl();?>/singleimage/addpath" method="POST">
+请选择上传目录：
+<select name="path" id="path" onchange="document.location='<?php echo $this->BaseUrl();?>/singleimage/upload?name=<?php echo $this->name;?>&path='+this.value;">
+	<option value="">根目录</option>
+	<?php if(is_array($this->paths)):?>
+	<?php foreach ($this->paths as $path):?>
+	<option value="<?php echo $this->escape($path['path_name']);?>" <?php echo ($this->path==$path['path_name'])?"selected":"";?>><?php echo $this->escape($path['path_desc']);?> [<?php echo $this->escape($path['path_name']);?>]</option>
+	<?php endforeach;?>
+	<?php endif;?>
+</select> &nbsp;文件名：<input type="text" name="path_name" id="path_name" style="width:80px;"> 说明：<input type="text" name="path_desc" id="path_desc" style="width:80px;"><input type="hidden" name="cate_name" value="<?php echo $this->name;?>"> <input type="submit" value="增加">
+</form><br /><br />
+<?php endif;?>
+<span id="spanButtonPlaceholder1"></span>
+<div class="image_show">
+	<ul id="image_ul"></ul>
+</div>
+<div id="progress_div" style="display:none;">
+	<div class="fieldset flash" id="fsUploadProgress1">	
+		<span class="legend">上传进度<input id="btnCancel1" type="button" value="取消上传" onclick="cancelQueue(swfu);" disabled="disabled" style="margin-left: 2px; height: 30px; font-size:12px;display:none;" /></span>
+	</div>
+</div>
+</body>
+</html>

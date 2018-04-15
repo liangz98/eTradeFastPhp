@@ -1,0 +1,25 @@
+<script>
+    function canchild() {
+        $(window.parent.document).find("#myDiv").css('display','none');
+        $(window.parent.document).find("#popupDiv").children().remove();
+    }
+    var t = null;
+    function singleSelect(obj) {
+
+        var thegoodid = obj.id;
+        var contant=" <input class='public_txt' name='vendorName' type='text' id='account' value="+thegoodid+" onclick= 'show(this)'>"
+        if (obj.checked) {
+
+            $(window.parent.document).find("#account").val(thegoodid);
+        }
+    }
+    function delSelect(obj){
+        $(obj).parent().remove();
+    }
+
+</script>
+<?php if(is_array($this->userList) && count($this->userList)>0):?>
+       <?php foreach ($this->userList as $k=>$ulist):?>
+        <input value="<?php echo $ulist['name'];?>" type="radio" name="checkbox" onclick="singleSelect(this)" id="<?php echo $ulist['contactID'];?>"> <?php echo $ulist['name'];?>
+              <?php endforeach; ?>
+        <?php endif;?>

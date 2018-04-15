@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>快移</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link href="/ky/css/base.css" rel="stylesheet">
+    <link href="/ky/css/style.css" rel="stylesheet">
+    <script type="text/javascript" src="/ky/js/jquery.js"></script>
+</head>
+<body>
+<div style="border-top:5px solid #DF7E20;">
+    <div style="padding-left:40px;line-height: 60px;font-size:18px;color:#438aca;">
+       <!-- iterm商品名称 --><?php echo $this->iterm['productName'];?>
+    </div>
+    <div style="margin: 20px;height: 125px;">
+    <?php echo $this->ShowWebuploader($this->iterm['attachmentList'], $this->biz_Setting['PRODUCT'], $this->attach_Setting['PDPD'], "1", $this->accountID); ?>
+    </div>
+    <div class="info_goods clearfix">
+        <dl class="fl">
+            <dt class="fl"><!--数量--><?php echo $this->translate('number');?></dt>
+            <dd class="buyer_contacts"><?php echo $this->iterm['quantity'];?></dd>
+        </dl>
+        <dl class="fl">
+            <dt class="fl"><!--总金额--><?php echo $this->translate('shopTotal');?></dt>
+            <dd class="buyer_contacts"><?php echo $this->iterm_crnCode;?>&nbsp;&nbsp;
+                <?php echo $this->iterm['totalPrice'];?></dd>
+        </dl>
+
+        <?php if($this->iterm['totalPurPrice']):?>
+        <dl class="fl">
+            <dt class="fl"><!--采购金额--><?php echo $this->translate('purtotal');?></dt>
+            <dd class="buyer_contacts"><?php echo $this->iterm['purCrnCode'];?>&nbsp;&nbsp;
+                <?php echo $this->iterm['totalPurPrice'];?></dd>
+        </dl>
+        <?php endif;?>
+        <dl class="fl">
+            <dt class="fl"><!--件数--><?php echo $this->translate('quantity');?></dt>
+            <dd class="buyer_contacts"><?php echo $this->iterm['totalPackage'];?></dd>
+        </dl>
+        <dl class="fl">
+            <dt class="fl"><!--品牌--><?php echo $this->translate('brand');?></dt>
+            <dd class="buyer_contacts"><?php echo $this->iterm['productBrand'];?></dd>
+        </dl>
+        <dl class="fl">
+            <dt class="fl"><!--型号--><?php echo $this->translate('model');?></dt>
+            <dd class="buyer_contacts"><?php echo $this->iterm['productModel'];?></dd>
+        </dl>
+        <dl class="fl">
+            <dt class="fl"><!--材质--><?php echo $this->translate('productMaterial');?></dt>
+            <dd class="buyer_contacts"><?php echo $this->iterm['productMaterial'];?></dd>
+        </dl>
+        <dl class="fl">
+            <dt class="fl"><!--用途--><?php echo $this->translate('functionUsage');?></dt>
+            <dd class="buyer_contacts"><?php echo $this->iterm['functionUsage'];?></dd>
+        </dl>
+        <dl class="fl">
+            <dt class="fl"><!--规格尺寸--><?php echo $this->translate('productSize');?></dt>
+            <dd class="buyer_contacts">
+                <?php echo $this->iterm['packingLength'];?>&nbsp;*&nbsp;
+                <?php echo $this->iterm['packingWidth'];?>&nbsp;*&nbsp;
+                <?php echo $this->iterm['packingHeight'];?>
+            </dd>
+        </dl>
+        <dl class="fl">
+            <dt class="fl"><!--包装种类--><?php echo $this->translate('packageTYPE');?></dt>
+            <dd class="buyer_contacts">
+                <?php echo $this->ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['PRODUCT_PACKING_TYPE'],$this->iterm['packingType']);?>
+                </dd>
+        </dl>
+    </div>
+</div>
+
+</body>
+</html>

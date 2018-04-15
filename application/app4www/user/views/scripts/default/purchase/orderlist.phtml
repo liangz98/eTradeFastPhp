@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta HTTP-EQUIV="pragma" CONTENT="no-cache">
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate">
+<meta HTTP-EQUIV="expires" CONTENT="0">
+<title>快移</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="/ky/css/base.css" rel="stylesheet">
+<link href="/ky/css/style.css" rel="stylesheet">
+<script type="text/javascript" src="/ky/js/jquery.js"></script>
+</head>
+<body>
+<div class="order_goodslist" style="background:#f5f5f5;">
+    <div style="height: 40px;line-height:35px;margin: 10px;">
+        <form action="#" method="post">
+            <p>
+                <input class="search_inp" name="keyword" <?php if(($this->keyword)){echo "value=".$this->keyword;}?>  placeholder="<?php echo $this->translate('INPkw_goodes');?>" type="text"><!--可输入名称、HSCode、型号、品牌等关键字-->
+                <input class="ss_btn"  type="submit" value="">
+                <a class="addb_box fr" target="_blank"  style="margin-top: 8px;" href="<?php echo WWW.'user/purchase/add';?>"></a>
+            </p>
+        </form></div>
+    <div style="width: 100%">
+        <table class="qy_table_tc qy_table1">
+            <thead>
+            <tr>
+                <th width="80"><!--操作--><?php echo $this->translate('madeTT');?></th>
+                <th><!--商品名称--><?php echo $this->translate('productNAME');?></th>
+                <th width="100"><!--品牌--><?php echo $this->translate('brand');?></th>
+                <th width="100"><!--型号--><?php echo $this->translate('model');?></th>
+                <th width="100"><!--HSCODE--><?php echo $this->translate('HSCODE');?></th>
+                <th width="60"><!--退税率--><?php echo $this->translate('RFRT');?></th>
+                <th width="100"><!--供应商--><?php echo $this->translate('supplierName');?></th>
+            </tr>
+            </thead>
+            <?php if(is_array($this->e) && count($this->e)>0):?>
+                <?php foreach ($this->e as $k=>$goods):?>
+                    <tbody>
+                    <tr>
+                        <td> <input  type="checkbox" name="checkbox" <?php if(!empty($goods['isArr'])){ echo 'checked="checked"';}?> onclick="singleSelect(this)" id="<?php echo $goods['productID'];?>"></td>
+                        <td><?php echo $goods['productName'];?></td>
+                        <td><?php echo $goods['productBrand'];?></td>
+                        <td><?php echo $goods['productModel'];?></td>
+                        <td><?php echo $goods['hscode'];?></td>
+                        <td><?php echo $goods['rebateRate'];?></td>
+                        <td><?php echo $goods['supplierName'];?></td>
+                    </tr>
+                    </tbody>
+
+                <?php endforeach; ?>
+            <?php else:?>
+                <tr><td colspan="7"> <?php echo $this->translate('Nodata');?></td></tr>
+            <?php endif;?> </table>
+        <?php if(is_array($this->e) && count($this->e)>0):?>
+            <?php foreach ($this->e as $k=>$goods):?>
+                <div class="selecttable" style="display: none">
+                    <li id="<?php echo $goods['productID'];?>" >
+                        <input type="hidden" class="baseCRN" value="<?php echo $goods['purchaseCrnCode'];?>">
+                        <em class="goods_num select_NO"></em>
+                        <input type="hidden" class="n_sp4_3_txt" name="productID[]" id="" value="<?php echo $goods['productID'];?>">
+                        <input type="hidden" class="n_sp4_3_txt" name="itemID[]" id="" value="<?php echo $goods['itemID'];?>">
+                        <a class="goods_add_btn p_delx" onclick="delSelect(this)"></a>
+                        <div class="pro_view">
+                            <p>
+                                <label class="public_lab"><!--商品名称--><?php echo $this->translate('productNAME');?></label>
+                                <a class="name_line ml10" title="<?php echo $goods['productName'];?>" href="#"><?php echo strlen($goods['productName'])>18?(mb_substr($goods['productName'],0,8,"utf-8").'...'):$goods['productName'];?></a>
+                                <input  name="productName[]" id="" type="hidden" value="<?php echo $goods['productName'];?>">
+                            </p>
+                            <p>
+                                <label class="public_lab"><!--英文名称--><?php echo $this->translate('productENNAME');?></label>
+                                <input class="n_sp4_3_txt" name="productEnName[]" id="" type="text" value="<?php echo $goods['productEnName'];?>">
+                            </p>
+                            <p>
+                                <label class="public_lab"><!--包装类型--><?php echo $this->translate('packageTYPE');?></label>
+                                <select class="n_sp4_3_txt js-example-basic-single" name="packingType[]" style="width:160px;">
+                                    <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userlangCode,$this->dic_Setting['PRODUCT_PACKING_TYPE'],$goods['packingType']);?>
+                                </select>
+                            </p>
+                            <p>
+                                <label class="public_lab"><!--HSCode--><?php echo $this->translate('HSCODE');?></label>
+                                <input class="n_sp4_3_txt null" readOnly="true" name="hscode[]" id="" type="text" value="<?php echo $goods['hscode'];?>">
+                            </p>
+                            <p>
+                                <label class="public_lab"><!--品牌--><?php echo $this->translate('brand');?></label>
+                                <input class="n_sp4_3_txt" name="productBrand[]" id="" type="text" value="<?php echo $goods['productBrand'];?>">
+                            </p>
+                            <p>
+                                <label class="public_lab"><!--型号--><?php echo $this->translate('model');?></label>
+                                <input class="n_sp4_3_txt" name="productModel[]" id="" type="text" value="<?php echo $goods['productModel'];?>">
+                                <input class="n_sp4_3_txt" name="productionMode[]" id="" type="hidden" value="<?php echo $goods['productionMode'];?>">
+                                <input class="n_sp4_3_txt" name="supplierID[]" id="" type="hidden" value="<?php echo $goods['supplierID'];?>">
+                            </p>
+                            <p>
+                                <label class="public_lab"><!--材质--><?php echo $this->translate('productMaterial');?></label>
+                                <input class="n_sp4_3_txt" name="productMaterial[]" id="" type="text" value="<?php echo $goods['productMaterial'];?>">
+                            </p>
+                            <p style="width:66%;">
+                                <label class="public_lab"><!--功能用途--><?php echo $this->translate('functionUsage');?></label>
+                                <input style="width:438px;" class="n_sp4_3_txt" name="functionUsage[]" id="" type="text" value="<?php echo $goods['functionUsage'];?>">
+                            </p>
+                        </div>
+                        <table  class="n_sp_tab tc" style="margin-top:10px;" id="<?php echo $goods['productID'];?>">
+                            <tr>
+                                <th><!--价格--><?php echo $this->translate('orderprice');?></th>
+                                <th><!--数量--><?php echo $this->translate('number');?></th>
+                                <th><!--金额--><?php echo $this->translate('ordertotal');?></th>
+                                <th class="uije"><!--开票价格--><?php echo $this->translate('uiprice');?></th>
+                                <th class="uije"><!--开票金额--><?php echo $this->translate('uitotal');?></th>
+                                <!--采购价格 采购金额 采购列表不需要 已移除2017-4-5-->
+                                <th><!--件数--><?php echo $this->translate('quantity');?></th>
+                                <th><!--净重--><?php echo $this->translate('netWET');?></th>
+                                <th><!--毛重--><?php echo $this->translate('grossWET');?></th>
+                            </tr>
+                            <tr>
+                                <td><span class="w30b  ordercrn"><?php echo $goods['crnCode'];?></span>
+                                    <input class="w70b" type="text" readOnly='true'  name="unitPrice[]" id="unitPrice_<?php echo $goods['productID'];?>" onchange="divmul(this)" onblur="yzPrice(this)"  value=<?php echo round($goods['unitPrice'],4);?>></td>
+
+                                <td><input  style="float:left;" class="w70b" type="text" name="quantity[]" id="quantity_<?php echo $goods['productID'];?>" onchange="divNUM(this)"  onblur="isDigit(this);"  value="1"><!--默认金额 等价格 数量默认为1-->
+                                    <span id="num_dw" class="w30b"><?php echo $this->ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['PRODUCT_PRICING_UNIT'],$goods['pricingUnit']);?>
+                                        <input type="hidden" name="pricingUnit[]"    value="<?php echo $goods['pricingUnit'];?>"></span></td>
+
+                                <td><span class="w30b crnCode ordercrn"><?php echo $goods['crnCode'];?></span>
+                                    <!---金额自动获取=价格乘以数量-->
+                                    <input class="w70b jine" type="text" readOnly='true'  name="totalPrice[]" id="totalPrice_<?php echo $goods['productID'];?>" onchange="divchu(this)" onblur="yzPrice(this)" value='<?php echo round($goods['unitPrice'],4);?>'></td><!--默认金额 等价格 数量默认为1-->
+                                <input type="hidden" id="productionMode_<?php echo $goods['productID'];?>" value="<?php echo $goods['productionMode'];?>">
+
+                                <td class="uije"><span class="w30b crncodelist crncode"><?php echo $goods['purchaseCrnCode'];?></span>
+                                    <input class='w70b'  type='text' onchange="PURmul(this)" onblur="yzPrice(this)"  id="PurPrice_<?php echo $goods['productID'];?>" name='PurUnitPrice[]' value='<?php echo round($goods['purchaseUnitPrice'],4);?>'></td><!--默认金额 等价格 数量默认为1-->
+                                <td class="uije"><span class="w30b crncode"><?php echo $goods['purchaseCrnCode'];?></span>
+                                    <input class='w70b'  type='text' onchange="PURchu(this)"  onblur="yzPrice(this)"  id='totalPurPrice_<?php echo $goods['productID'];?>' name='totalPurPrice[]' value='<?php echo round($goods['purchaseUnitPrice'],4);?>'></td><!--默认金额 等价格 数量默认为1-->
+
+
+                                <td><!---总数量除以每件数量=件数-->
+                                    <input id="packingQuantity_<?php echo $goods['productID'];?>" type="hidden" value="<?php echo $goods['packingQuantity'];?>">
+
+                                    <input class="w h30" type="text" name="totalPackage[]" id="totalpackage_<?php echo $goods['productID'];?>"  value="<?php if(ceil(1/$goods['packingQuantity'])==0){echo 1;}else{echo ceil(1/$goods['packingQuantity']);}?>"></td>
+
+                                <td><input style="float:left;" class="w70b jinzhong" type="text" name="totalNetWeight[]" id="" onchange="jisuan()" onblur="yzPrice(this)"  value="<?php echo $goods['netWeight'];?>">
+                                    <span class="w30b" >KGS</span></td>
+                                <td><input style="float:left;" class="w70b maozhong" type="text" name="totalGrossWeight[]" id="" onchange="jisuan()"  onblur="yzPrice(this)"  value="<?php echo $goods['grossWeight'];?>">
+                                    <span class="w30b" >KGS</span></td>
+
+                                <input type="hidden" id="rebateRate_<?php echo $goods['productID'];?>" value="<?php echo $goods['rebateRate'];?>">
+                                <input type="hidden" name="productSize" id="productSize_<?php echo $goods['productID'];?>" value="<?php echo $goods['productSize'];?>">
+                                <input type="hidden" id="taxRate_<?php echo $goods['productID'];?>" value="<?php echo $goods['taxRate'];?>">
+                                <input type="hidden" id="supplierName_<?php echo $goods['productID'];?>" value="<?php echo $goods['supplierName'];?>">
+                               </tr>
+
+                        </table></li></div>
+            <?php endforeach; ?>
+        <?php endif;?>
+        <div style="width:35%;float: right;margin-right: 20px"><?php echo $this->ShowOrderPage($this->page,$this->gid);?>  </div>
+    </div>
+</div>
+<script>
+    function doStatus(status){
+        window.location.href='<?php echo $this->BaseUrl();?>/purchase/index/status/'+status;
+        alert('status');
+    }
+    function nextPage(){
+    }
+    $(function () {
+//        $(".js-example-basic-single").select2();
+        //判断PO和开票金额
+        var quotation=$(window.parent.document).find("#ORDER_QUOTATION_MODE").val();
+//            alert(quotation);
+        if(quotation == "PO"){
+            $('.uije').remove();
+        }else{
+            $('.poje').remove();
+            $('.selecttable').find('input[name="unitPrice[]"]').attr("readonly","true");
+            $('.selecttable').find('input[name="totalPrice[]"]').attr("readonly","true");
+        }
+    });
+
+    function canchild() {
+        $(window.parent.document).find("#myDiv").css('display','none');
+        $(window.parent.document).find("#myDiv").children().remove();
+
+
+    }
+    var i=$(window.parent.document).find("#goods_jisuan").val();
+    function singleSelect(obj) {
+        var goodname = $(obj).val();
+        var thegoodid = obj.id;
+        if (obj.checked) {
+            $(window.parent.document).find("#selectgoods").children("#" + thegoodid).remove();
+            var objCODE=$(window.parent.document).find('#CURRENCY').val();
+            $('.ordercrn').html(objCODE);
+            var str = $(".selecttable").children("#" + thegoodid).parent().html();
+            var selectedstr = $(window.parent.document).find("#selectgoods").html();
+            $(window.parent.document).find("#selectgoods").append(str);
+        } else {
+            $(window.parent.document).find("#selectgoods").children("#" + thegoodid).remove();
+        }
+        window.parent.window.cleartongji();
+        window.parent.window.addi();
+        window.parent.window.jisuan();
+
+    }
+    function delSelect(obj){
+        $(obj).parent().remove();
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<div id="authViewDiv_" class="layui-form">
+	<div class="et-auth-top et-auth-bg-no" style="height: 100px; text-align: left;">
+		<h3><?php echo $this->translate('et_auth_verify'); ?></h3>
+		<p><em>*</em> <?php echo $this->translate('et_auth_amount'); ?></p>
+	</div>
+	<div class="et-auth-error" style="display: none;"></div>
+
+	<div class="">
+		<div style="margin-top: 20px;"></div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="width: 120px"><?php echo $this->translate('et_auth_name'); ?></label>
+			<div class="layui-input-block">
+				<div class="layui-form-mid layui-word-aux"><?php echo json_decode($this->account->entRealAuthInfo)->accountName; ?></div>
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="width: 120px"><?php echo $this->translate('et_auth_code'); ?></label>
+			<div class="layui-input-block">
+				<div class="layui-form-mid layui-word-aux"><?php echo json_decode($this->account->entRealAuthInfo)->businessLicenseNo; ?></div>
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="width: 120px"><?php echo $this->translate('et_auth_mg_name'); ?></label>
+			<div class="layui-input-block">
+				<div class="layui-form-mid layui-word-aux"><?php echo json_decode($this->account->entRealAuthInfo)->legalPersonName; ?></div>
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="width: 120px"><?php echo $this->translate('et_auth_mg_id'); ?></label>
+			<div class="layui-input-block">
+				<div class="layui-form-mid layui-word-aux"><?php echo json_decode($this->account->entRealAuthInfo)->legalPersonIdentityNo; ?></div>
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="width: 120px"><?php echo $this->translate('et_auth_acctNo'); ?></label>
+			<div class="layui-input-block">
+				<div class="layui-form-mid layui-word-aux"><?php echo json_decode($this->account->entRealAuthInfo)->cardno; ?></div>
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="width: 120px"><?php echo $this->translate('et_auth_bankName'); ?></label>
+			<div class="layui-input-block">
+				<div class="layui-form-mid layui-word-aux"><?php echo json_decode($this->account->entRealAuthInfo)->bank; ?></div>
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="width: 120px"><?php echo $this->translate('et_auth_cityName'); ?></label>
+			<div class="layui-input-block">
+				<div class="layui-form-mid layui-word-aux"><?php echo json_decode($this->account->entRealAuthInfo)->provice; ?> / <?php echo json_decode($this->account->entRealAuthInfo)->city; ?></div>
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="width: 120px"><?php echo $this->translate('et_auth_subbranchName'); ?></label>
+			<div class="layui-input-block">
+				<div class="layui-form-mid layui-word-aux"><?php echo json_decode($this->account->entRealAuthInfo)->subbranch; ?></div>
+			</div>
+		</div>
+
+
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="width: 120px"><?php echo $this->translate('et_auth_verify'); ?><em>*</em></label>
+			<div class="layui-input-block" style="margin-left: 150px; width: 360px;">
+				<input type="text" id="authVerifyAmount" name="authVerifyAmount" lay-verify="authVerifyAmount" autocomplete="off" placeholder="请输入<?php echo $this->translate('ordertotal'); ?>" class="layui-input">
+			</div>
+		</div>
+
+		<div style="height: 12px"></div>
+		<div class="et-auth-row" style="text-align: center;">
+			<button type="button" id="doAuthConfirmBtn" class="et-btn"><?php echo $this->translate('confirm'); ?></button>
+		</div>
+	</div>
+</div>

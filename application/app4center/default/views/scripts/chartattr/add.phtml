@@ -1,0 +1,112 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+		event: "keyup",
+		rules: {},
+		messages: {},
+		submitHandler: function() {
+			SeedMsgBox("正在保存中，请稍候...");
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/chartattr/add',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+	//
+	$("input[@name=attr_input_type]").click(function(){
+		var a = $("input[@name=attr_input_type][@checked]").val();
+		if (a == '0' || a == '1'){ 
+			$('#attr_values').attr('disabled', true) ;
+			$('#attr_displays').attr('disabled', true) ;
+			$('#attr_values').val('');
+		} else {
+			$('#attr_values').attr('disabled', false) ;
+			$('#attr_displays').attr('disabled', false) ;
+		}		
+	});
+	
+	var a = $("input[@name=attr_input_type][@checked]").val();
+	if (a == '0' || a == '1'){ 
+		$('#attr_values').attr('disabled', 'true') ;
+		$('#attr_displays').attr('disabled', true) ;
+	} else {
+		$('#attr_values').attr('disabled', false) ;
+		$('#attr_displays').attr('disabled', false) ;
+	}
+});
+
+
+</script>
+
+<h1>添加榜单属性</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back(-1);"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_form">
+    <tr>
+      <td><strong>属性名称</strong>
+        <p>
+          <input name="attr_name" id="attr_name" type="text" class="admin_txt1"  value="" />
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>字段名称</strong>&nbsp;&nbsp;<font color="#ff0000">(* 注意：添加以后不能修改！)</font>
+        <p>
+          <input name="field_name" id="field_name" type="text" class="admin_txt1"  value="" />
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>字段类型</strong>&nbsp;&nbsp;<font color="#ff0000">(* 注意：添加以后不能修改！)</font>
+        <p>
+          <input type="radio" name="field_type" value="varchar" />
+          VARCHAR
+          <input type="radio" name="field_type" value="text" />
+          TEXT 
+          <input type="radio" name="field_type" value="image" />
+          IMAGE 
+          </p></td>
+    </tr>
+    <tr>
+      <td><strong>字段长度</strong>&nbsp;&nbsp;<font color="#ff0000">(* 注意：选择VARCHAR才需要输入0-255！)</font>
+        <p>
+          <input name="field_length" id="field_length" type="text" class="admin_txt1"  value="" />
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>该属性值的录入方式</strong>&nbsp;&nbsp;<font color="#ff0000">(* 只有'多选属性'和'复选属性'才提供‘可选值列表’操作)</font>
+        <p>
+          <input type="radio" name="attr_input_type" value="0" checked/>
+          单行录入
+          <input type="radio" name="attr_input_type" value="1" />
+          多行文本框
+          <input type="radio" name="attr_input_type" value="2" />
+          单选属性
+          <input type="radio" name="attr_input_type" value="3" />
+          复选属性 </p></td>
+    </tr>
+    <tr>
+      <td><strong>可选值列表:</strong>
+        <p>
+          <textarea name="attr_values" id="attr_values" style="height: 100px;" class="textarea" ></textarea>
+        </p></td>
+    </tr>
+    <tr>
+      <td><strong>可选值显示列表:</strong>
+        <p>
+          <textarea name="attr_displays" id="attr_displays" style="height: 100px;" class="textarea"></textarea>
+        </p></td>
+    </tr>
+  </table>
+  <div class="batch">
+    <input name="" type="submit" value="提交"  class="admin_bnt"/>
+    <input name="" type="reset" value="重置"   class="admin_bnt"/>
+  </div>
+</form>
+<?php echo $this->render("footer.phtml") ?>

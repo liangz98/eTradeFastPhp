@@ -1,0 +1,277 @@
+/* commerce modify */
+label {
+    display:inline-block;
+}
+
+legend {
+    font-size: 16px;
+    text-indent:10px;
+}
+
+input, button, select, textarea, legend {
+    font-family: "Microsoft YaHei",Helvetica,Verdana,Arial,Tahoma,sans-serif;
+}
+
+.btn {
+    font-size: 12px;
+    background-image: none;
+}
+
+.btn:hover,
+.btn:focus,
+.btn:active,
+.btn.active,
+.btn.disabled,
+.btn[disabled] {
+  background-color: #fcfcfc;
+}
+
+.btn-info,
+.btn-danger,
+.btn-primary,
+.btn-warning,
+.btn-success,
+.btn-inverse {
+    background-image: none;
+}
+
+.btn-primary {
+    background-color: #0077dd;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.btn-primary.disabled,
+.btn-primary[disabled] {
+    background-color: #0080ed;
+}
+
+.btn-warning:hover,
+.btn-warning:focus,
+.btn-warning:active,
+.btn-warning.active,
+.btn-warning.disabled,
+.btn-warning[disabled] {
+  background-color: #f89406;
+}
+
+.btn-danger:hover,
+.btn-danger:focus,
+.btn-danger:active,
+.btn-danger.active,
+.btn-danger.disabled,
+.btn-danger[disabled] {
+  background-color: #bd362f;
+}
+
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active,
+.btn-success.active,
+.btn-success.disabled,
+.btn-success[disabled] {
+  background-color: #51a351;
+}
+
+.btn-info:hover,
+.btn-info:focus,
+.btn-info:active,
+.btn-info.active,
+.btn-info.disabled,
+.btn-info[disabled] {
+  background-color: #2f96b4;
+}
+
+.btn-inverse:hover,
+.btn-inverse:focus,
+.btn-inverse:active,
+.btn-inverse.active,
+.btn-inverse.disabled,
+.btn-inverse[disabled] {
+  background-color: #222222;
+}
+
+.input-prepend textarea {
+    width: 180px;
+    height: 70px;
+}
+
+.control-group.error {
+    margin-left: 0;
+}
+
+.modal-lg {
+    width: 900px;
+    margin-left: -450px;
+}
+
+.modal-header {
+    padding: 10px 15px;
+}
+
+.modal {
+    position: fixed;
+}
+
+.modal.fade.in {
+    top: 11.5%;
+}
+
+.input-tiny {
+  width: 30px;
+}
+
+.popover.left .arrow {
+    border-left-color: #0077dd;
+}
+
+.input-xxxlarge {
+    width: 460px
+}
+
+/* admin modify */
+.admin_search select,
+.admin_search input[type="text"],
+.admin_form input[type="text"] {
+    margin: 5px 0;
+}
+
+.admin_form input[type="checkbox"],
+.admin_form .input-append input[name="start_time"],
+.admin_form .input-append input[name="finish_time"] {
+    margin: 0;
+}
+
+.admin_search select.short-select {
+    width: 100px;
+}
+
+.admin_search .input-append,
+.admin_form .input-append {
+    margin-bottom: 0px;
+}
+
+.admin_search .input-append .input-date {
+    width: 100px;
+}
+
+.admin_search .input-append span.add-on {
+    margin: 5px 0 5px -1px;
+}
+
+.SeedMsgDiv div.close {
+    float: none;
+    opacity: 1;
+}
+
+table.admin_list th label {
+    display: inline-block;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: normal;
+}
+
+table.admin_list {
+    margin: 0;
+}
+
+table.admin_list th input,
+table.admin_list td input {
+    margin: 0;
+}
+
+input.admin_bnt {
+    width: 87px;
+}
+
+/* Bootstrap-DatetimePicker */
+.dropdown-menu li > a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 20px;
+    color: #333333;
+    white-space: nowrap;
+}
+
+.dropdown-menu li > a:hover,
+.dropdown-menu li > a:focus,
+.dropdown-submenu:hover > a {
+    color: #ffffff;
+    text-decoration: none;
+    background-color: #0081c2;
+    background-image: -moz-linear-gradient(top, #0088cc, #0077b3);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0077b3));
+    background-image: -webkit-linear-gradient(top, #0088cc, #0077b3);
+    background-image: -o-linear-gradient(top, #0088cc, #0077b3);
+    background-image: linear-gradient(to bottom, #0088cc, #0077b3);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0);
+}
+
+/* Bootstrap-Switch */
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary,
+.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary {
+    background: #0077dd;
+}
+
+/* Goods Try */
+.goods-try-table .input-append .input-date {
+    width: 123px;
+}
+
+.goods-try-table td.td-small {
+    width: 80px;
+}
+
+.goods-try-table td.td-medium {
+    width: 185px;
+}
+
+.modal-body p span.select-goods {
+    padding: 0 20px 0 5px;
+}
+
+/* 区域联动 */
+.area-select {
+    width: 140px;
+}
+
+/* 库存规格 */
+.close-modal {
+    position: absolute;
+    z-index: 91;
+    top: -9px;
+    right: -9px;
+    width: 20px;
+    height: 20px;
+    font-size: 16px;
+    line-height: 18px;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    background: rgba(153,153,153,0.6);
+    border-radius: 10px
+}
+
+.close-modal:hover {
+    color: #fff;
+    background: #000
+}
+
+.close-modal.small {
+    top: -8px;
+    right: -8px;
+    width: 18px;
+    height: 18px;
+    font-size: 14px;
+    line-height: 16px;
+    border-radius: 9px
+}
+.trstyle{
+    width: 135px;
+    height: 50px;
+}

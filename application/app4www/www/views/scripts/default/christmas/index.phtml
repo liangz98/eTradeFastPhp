@@ -1,0 +1,335 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+  <base target="_blank">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="shortcut icon" type="image/x-icon" href="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/images/czlui/favicon.ico" />
+  <title>信天邮双旦约惠</title>
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/seed.form.js"></script>
+<script type="text/javascript" src="<?php echo $this->seed_Setting['static_app_server']?>/default/vplatform/js/jquery.form.js"></script>
+<script type="text/javascript" src="<?php echo $this->seed_Setting['static_app_server']?>/default/vplatform/js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?php echo $this->seed_Setting['static_app_server']?>/default/vplatform/js/jquery.ba-hashchange.js"></script>
+  <script type="text/javascript">
+function a(){
+  if(good_search.keyword.value == '请输入关键词'){
+    alert('请输入关键词');
+    return true;
+  } 
+  good_search.submit();
+}
+function ajaxToCart(goods_id, stock_id){
+    $('#goods_id').val(goods_id);
+    $('#stock_id').val(stock_id);
+  SeedMsgBox('正在保存中，请稍候...');
+  var options = {
+      target:     '#SeedMsgTxt',
+      url:        '<?php echo $this->seed_Setting['user_app_server']?>/cart/addgoods?ajax=1',
+      success: function() {
+        window.location.href="<?php echo $this->BaseUrl();?>/user/cart"
+      }
+    };
+    $('#goods_form').ajaxSubmit(options);
+
+}
+</script>
+<style type="text/css">
+*{word-wrap:break-word;font-family:"Microsoft YaHei","宋体";}
+html{color:#343434;font-size:12px;}
+body,div,ol,ul,li,p,input,textarea,form,center,h1,h2,h3,h4,h5,h6,dl,dt,dd,img,select,table,tr,td,fieldset,legend,table,tr,td,th{margin:0; padding:0;}
+body{_background-attachment:fixed; background:#ffffff;}
+select,input,textarea{font-size:12px;vertical-align:middle;}  
+select{font:12px Tahoma,Arial,Verdana;border:1px solid #ebebeb;height:24px;}
+li{list-style:none;}
+label input{width:14px;height:14px;vertical-align:middle;margin-right:5px;}
+img{border:0;}
+a{color:#ffffff;cursor:pointer;text-decoration:none;}
+    #head{width:100%;display:block;text-align:center;background:#ffffff;}
+  .head_top{width:100%;display:block;height:40px;background:#e2e2e2 url(/static/sendyou/christmas/headbg.jpg)repeat-x;}
+    .head_top p{width:1200px;background:#e2e2e2;border:solid #eee;border-width:1px 0;display:inline-block;height:38px;line-height:38px;text-align:left;overflow:hidden;color:#666;}
+      .head_top p a{color:#666;margin:0 10px;}
+      .head_top p em{font-style:normal;color:#7cbe28;}
+      .head_top p small{float:right;font-size:12px;}
+  .header{width:1200px;display:inline-block;text-align:left;padding:34px 0;height:72px;overflow:hidden;}
+    .logo{float:left;height:72px;overflow:hidden;}
+      .logo span{margin-right:40px; display:inline-block;}
+    .header_r{float:right;height:72px;overflow:hidden;}
+    .header_r img{margin-right: 30px;}
+    .content{background:#E2C8B9 url(/static/sendyou/christmas/bodybg.jpg)repeat-y center;text-align: center;}
+    .content2{width: 100%;min-width: 1200px;background:#c80406;padding-bottom: 30px;}
+    .content img{border-top: 1px solid #D2A180;}
+        .nav{width:100%;height:50px;background:#e2e2e2 url(/static/sendyou/christmas/headbg.jpg)repeat-x;display:block;text-align: center;}
+    .navdiv{width:1200px;height:50px;background-color: #E2E2E2;display:inline-block;z-index:2;float: auto;}
+      .navdiv ul li{float:left;height:50px;font:16px/50px "Microsoft YaHei";padding:0 24px;}
+          .navdiv ul li a{color:#333;padding:0 40px;height:47px;display:block;}
+          .navdiv ul li.crumb a{color:#ffffff;}
+          .navdiv ul li.crumb a:hover{font-weight:bold;border-bottom: 3px solid #fcff00;color:#fcff00; }
+        .navdiv ul li.nav_sort{width:170px;font-size:16px;padding:0;margin-right:15px;background-color: #7cbe28;}
+          .navdiv ul li.nav_sort a{background:#7cbe28 url(/static/sendyou/christmas/nav_sort.png) no-repeat 30px center;padding:0 0 0 25px;}
+        .navdiv p{width:200px;height:28px;padding:8px 0;float:right;}
+        .good_search{float: left; width:465px;margin:14px 0 0 60px;}
+        .s_txt{width:410px;height:28px;float:left;padding:2px;color:#333;border:2px solid #7CBE28;background:#fff;}
+    .s_bnt{width:40px;height:36px;border:none;float:left;background:#7CBE28 url(/static/sendyou/christmas/search.png) no-repeat center;cursor:pointer;}
+.main1{width:100%;min-width:1200px;height:520px;float:left;position:relative;}
+  .item_show{width:100%;min-width:1200px;height: 550px;overflow:hidden;float:left;position:relative;}
+  .main2{width:100%;min-width:1200px;height:70px;float:left;position:relative;}
+  .item_show2{width:100%;min-width:1200px;height: 70px;overflow:hidden;float:left;position:relative;}
+  
+.footer{width:100%;min-width:1200px; display:block;text-align:center;background-color: #ffffff;}
+  .guidediv{width:100%;background:#7cbe28;padding: 30px 0; display:block;}
+    .guide{width:1200px; display:inline-block;background:#7cbe28;}
+      .guide_top{padding:15px 0;border-top:2px solid #42bb48;}
+      .guide_logo{float: left;}
+      .guide_code{float: left;margin:12px;}
+          .guide_cont dl{padding:5px 0 0 90px;width:100px;float:left;text-align:left;color:#f7f7f7;}
+            .guide_cont dl dt{font:18px/24px "Microsoft YaHei";height:24px;overflow:hidden;padding-bottom:10px;color: #ffffff;}
+            .guide_cont dl dd{width:100%;height:26px;line-height:26px;overflow:hidden;}
+  .copyrightdiv{width:100%; display:block;background:#008028;padding: 15px 0;color: #ffffff;}
+    .copyright{width:1200px;display:inline-block;background:#008028;}
+      .copyright a{margin:0 15px;color: #ffffff;} 
+</style>
+</head>
+<body>
+<div id="head">
+  <div class="head_top">
+      <p>
+            <small>
+                <a href="<?php echo WWW;?>user/order" rel="nofollow">订单查询</a>
+                <a href="<?php echo WWW;?>help" rel="nofollow">帮助中心</a>
+                <a href="<?php echo WWW;?>user/info" rel="nofollow">我的信天邮</a>
+            </small>
+            <span>欢迎来到信天邮&nbsp;&nbsp; | <?php if ($this->seed_User['user_id']>0):?><a href="<?php echo $this->seed_Setting['user_app_server']?>/info"><em><?php echo $this->seed_User['real_name']?$this->seed_User['real_name']:$this->seed_User['user_name'];?></em></a> | <a href="<?php echo $this->seed_Setting['user_app_server']?>/logout" rel="nofollow">退出</a><?php else :?><a href="<?php echo $this->seed_Setting['user_app_server']?>/login" rel="nofollow">请登录</a> | <a href="<?php echo $this->seed_Setting['user_app_server']?>/register" rel="nofollow">快速注册</a> <?php endif;?></span>
+        </p>
+    </div>
+    <div class="header">
+        <div class="logo">
+            <span><a href="<?php echo WWW;?>"><img src="<?php echo WWW;?>static/sendyou/images/ui/logo3.png" alt="信天邮" title="信天邮"/></a></span>
+        </div>
+        <div class="good_search">
+            <form id="good_search" name="good_search" method="get" action='/search'>
+            <p>
+                <input class="s_txt" name="keyword" type="text" value="请输入关键词" onfocus="if(value==defaultValue){value='';this.style.color='#000'}" onblur="if(!value){value=defaultValue;this.style.color='#999'}" style="color: rgb(153, 153, 153); outline:none;"/>
+                <input class="s_bnt" name="" type="button"  value="" style="outline:none;" onclick="javascript:a();"/>
+            </p>
+            </form>
+        </div>
+        <?php $charts = $this->fetchCharts('pc_head_rad');?>
+        <?php if(is_array($charts) && count($charts)>0):?>
+        <div class="header_r">
+        <?php foreach ($charts as $k=>$chart):?>
+            <span><a href="<?php echo $chart['chart_href'];?>"><img src="<?php echo $this->showImage($chart['chart_image']);?>" alt="服务引导图"/></a></span>
+         <?php endforeach;?>       
+        </div>
+        <?php endif;?>
+    </div>
+    <div class="nav">
+    <div class="navdiv">
+        <ul>
+            <li <?php if ($this->cur_pos=='index'):?>class="crumb"<?php endif;?>><a href="/">首页</a></li>
+            <li <?php if ($this->cur_pos=='merchants'):?>class="crumb"<?php endif;?>><a href="/products/top-1.html">母婴馆</a></li>
+            <li <?php if ($this->cur_pos=='merchants'):?>class="crumb"<?php endif;?>><a href="/products/top-13.html">健康保健</a></li>
+            <li <?php if ($this->cur_pos=='merchants'):?>class="crumb"<?php endif;?>><a href="/products/top-33.html">美妆护肤</a></li>
+            <li <?php if ($this->cur_pos=='merchants'):?>class="crumb"<?php endif;?>><a href="/merchants">品牌旗舰店</a></li>
+            <?php if (isset($this->seed_Setting['goods_channel']) && $this->seed_Setting['goods_channel']=='BBC'):?>
+            <li><a target="_blank" href="<?php echo $this->seed_Setting['website'];?>">香港信天邮</a></li>
+            <?php elseif (isset($this->seed_Setting['goods_channel']) && $this->seed_Setting['goods_channel']=='BC'):?>
+            <li><a target="_blank" href="<?php echo $this->seed_Setting['website'];?>">大陆信天邮</a></li>
+            <?php endif;?>
+        </ul>
+    </div>
+</div>
+</div>
+<div class="content">
+  <div class="main1">
+      <div class="item_show">
+          <a title="信天邮双旦约惠" alt="信天邮双旦约惠">
+          <div class="item" style="background:url(/static/sendyou/christmas/content1.jpg) center  0 no-repeat ;width:100%;height:100%"></div>
+          </a>
+      </div>
+  </div>
+<form name="goods_form" method="post" action="" id="goods_form" >
+  <table width="1900" border="0" cellpadding="0" cellspacing="0" style=" width:1200px;margin:0 auto;">
+    <tbody>
+      <tr>
+      <td><img src="/static/sendyou/christmas/content2.jpg" alt="宝贝滋润套装：如同妈妈的爱一般的贴心呵护！" width="1200" border="0" usemap="#Map1"  hidefocus="true" style="vertical-align:bottom"></td>
+    </tr>
+      <tr>
+      <td>
+        <img src="/static/sendyou/christmas/content3.jpg" alt="宝贝营养套装：关注宝宝的营养，让宝宝健康成长！" width="1200" border="0" usemap="#Map2"  hidefocus="true" style="vertical-align:bottom"></td>
+    </tr>
+      <tr>
+      <td>
+        <img src="/static/sendyou/christmas/content4.jpg" alt="宝贝成长套装：给宝宝的成长助力，让孩子赢在起跑线上!" width="1200" border="0" usemap="#Map3"  hidefocus="true" style="vertical-align:bottom"></td>
+    </tr>
+      <tr>
+      <td>
+        <img src="/static/sendyou/christmas/content5.jpg" alt="父母尊享套装：他们的健康是我们最大的幸福！" width="1200" border="0" usemap="#Map4"  hidefocus="true" style="vertical-align:bottom"></td>
+    </tr>
+      <tr>
+      <td>
+        <img src="/static/sendyou/christmas/content6.jpg" alt="居家休闲套装：健康、休闲是我们最大的新年愿望！" width="1200" border="0" usemap="#Map5"  hidefocus="true" style="vertical-align:bottom"></td>
+    </tr>  
+    </tbody>
+  </table>
+  <div class="main2">
+      <div class="item_show2">
+          <a title="信天邮双旦约惠" alt="信天邮双旦约惠">
+          <div class="item2" style="background:url(/static/sendyou/christmas/content11.jpg) center  0 no-repeat ;width:100%;height:100%"></div>
+          </a>
+      </div>
+  </div>
+</div>
+<div  class="content2">
+<body>
+<table width="1900" border="0" cellpadding="0" cellspacing="0" style=" width:1200px;margin:0 auto;">
+  <tbody> 
+    <tr>
+    <td>
+      <img src="/static/sendyou/christmas/content7.jpg" alt="5折专区" width="1200" border="0" usemap="#Map6"  hidefocus="true" style="vertical-align:bottom"></td>
+  </tr>   
+    <tr>
+    <td>
+      <img src="/static/sendyou/christmas/content8.jpg" alt="营养保健专区" width="1200" border="0" usemap="#Map7"  hidefocus="true" style="vertical-align:bottom"></td>
+  </tr>   
+    <tr>
+    <td>
+      <img src="/static/sendyou/christmas/content9.jpg" alt="母婴专区" width="1200" border="0" usemap="#Map8"  hidefocus="true" style="vertical-align:bottom"></td>
+  </tr>      
+    <tr>
+    <td>
+      <img src="/static/sendyou/christmas/content10.jpg" alt="日化专区" width="1200" border="0" usemap="#Map9"  hidefocus="true" style="vertical-align:bottom"></td>
+  </tr> 
+</tbody></table>
+</div>
+<map name="Map1" id="Map1">
+  <area shape="rect" coords="306,229,505,541" href="http://www.sendtou.com/products/43.html" />
+  <area shape="rect" coords="770,203,972,544" href="http://www.sendtou.com/products/44.html" />
+  <area shape="rect" coords="1107,150,1198,367" href="javascript:;" onclick="ajaxToCart(2250,2482);" />
+</map>
+
+<map name="Map2" id="Map2">
+  <area shape="rect" coords="222,76,427,390" href="http://www.sendtou.com/products/1764.html" />
+  <area shape="rect" coords="519,76,736,387" href="http://www.sendtou.com/products/98.html" />
+  <area shape="rect" coords="849,72,1055,390" href="http://www.sendtou.com/products/1765.html" />
+  <area shape="rect" coords="1108,1,1197,214" href="javascript:;" onclick="ajaxToCart(2251,2483);"/>
+</map>
+
+<map name="Map3" id="Map3">
+  <area shape="rect" coords="346,73,924,394" href="http://www.sendtou.com/products/156.html" />
+  <area shape="rect" coords="1107,3,1201,215" href="javascript:;" onclick="ajaxToCart(2232,2463);"/>
+</map>
+
+<map name="Map4" id="Map4">
+  <area shape="rect" coords="263,59,543,389" href="http://www.sendtou.com/products/499.html" />
+  <area shape="rect" coords="733,65,1011,390" href="http://www.sendtou.com/products/501.html" />
+  <area shape="rect" coords="1108,3,1199,213" href="javascript:;" onclick="ajaxToCart(1698,1913);" />
+</map>
+
+<map name="Map5" id="Map5">
+  <area shape="rect" coords="224,59,420,391" href="http://www.sendtou.com/products/487.html " />
+  <area shape="rect" coords="518,56,735,392" href="http://www.sendtou.com/products/488.html " />
+  <area shape="rect" coords="844,59,1047,389" href="http://www.sendtou.com/products/489.html " />
+  <area shape="rect" coords="1105,2,1199,224" href="javascript:;" onclick="ajaxToCart(1695,1910);"/>
+</map>
+<map name="Map6" id="Map6">
+  <area shape="rect" coords="10,142,239,406" href="http://www.sendtou.com/products/135.html" />
+  <area shape="rect" coords="247,141,478,407" href="http://www.sendtou.com/products/120.html" />
+  <area shape="rect" coords="485,141,715,406" href="http://www.sendtou.com/products/1764.html" />
+  <area shape="rect" coords="723,141,953,406" href="http://www.sendtou.com/products/49.html" />
+  <area shape="rect" coords="960,141,1191,406" href="http://www.sendtou.com/products/1277.html  
+" />
+  <area shape="rect" coords="8,423,240,686" href="http://hk.sendtou.com/products/1761.html" />
+  <area shape="rect" coords="247,423,477,686" href="http://www.sendtou.com/products/52.html" />
+  <area shape="rect" coords="485,423,716,687" href="http://www.sendtou.com/products/137.html" />
+  <area shape="rect" coords="721,421,952,687" href="http://www.sendtou.com/products/134.html" />
+  <area shape="rect" coords="960,422,1191,686" href="http://www.sendtou.com/products/51.html" />
+</map>
+
+<map name="Map7" id="Map7">
+  <area shape="rect" coords="9,141,239,404" href="http://hk.sendtou.com/products/269.html" />
+  <area shape="rect" coords="248,141,478,405" href="http://www.sendtou.com/products/274.html" />
+  <area shape="rect" coords="486,142,715,404" href="http://hk.sendtou.com/products/268.html" />
+  <area shape="rect" coords="724,141,952,407" href="http://www.sendtou.com/products/1716.html" />
+  <area shape="rect" coords="961,141,1192,404" href="http://www.sendtou.com/products/1723.html" />
+  <area shape="rect" coords="9,422,240,685" href="http://hk.sendtou.com/products/271.html" />
+  <area shape="rect" coords="247,421,478,686" href="http://www.sendtou.com/products/1722.html " />
+  <area shape="rect" coords="485,421,715,687" href="http://www.sendtou.com/products/1719.html" />
+  <area shape="rect" coords="721,421,952,687" href="http://www.sendtou.com/products/1718.html " />
+  <area shape="rect" coords="961,421,1192,686" href="http://www.sendtou.com/products/1724.html" />
+</map>
+
+<map name="Map8" id="Map8">
+  <area shape="rect" coords="11,141,239,405" href="http://www.sendtou.com/products/2.html " />
+  <area shape="rect" coords="246,139,478,405" href="http://www.sendtou.com/products/1247.html " />
+  <area shape="rect" coords="486,139,717,405" href="http://www.sendtou.com/products/156.html  " />
+  <area shape="rect" coords="723,140,952,405" href="http://www.sendtou.com/products/166.html  " />
+  <area shape="rect" coords="960,140,1191,407" href="http://www.sendtou.com/products/23.html  " />
+  <area shape="rect" coords="9,422,241,687" href="http://www.sendtou.com/products/24.html " />
+  <area shape="rect" coords="248,422,477,688" href="http://www.sendtou.com/products/75.html " />
+  <area shape="rect" coords="485,424,716,685" href="http://www.sendtou.com/products/69.html " />
+  <area shape="rect" coords="724,423,952,686" href="http://www.sendtou.com/products/98.html " />
+  <area shape="rect" coords="960,423,1190,687" href="http://www.sendtou.com/products/1765.html" />
+</map>
+
+<map name="Map9" id="Map9">
+  <area shape="rect" coords="11,142,238,406" href="http://www.sendtou.com/products/1134.html" />
+  <area shape="rect" coords="248,142,478,405" href="http://www.sendtou.com/products/61.html" />
+  <area shape="rect" coords="484,140,716,407" href="http://www.sendtou.com/products/131.html" />
+  <area shape="rect" coords="723,140,954,406" href="http://www.sendtou.com/products/487.html" />
+  <area shape="rect" coords="959,141,1190,408" href="http://www.sendtou.com/products/1220.html" />
+</map>
+<input type="hidden" id="goods_number" name="goods_number" value="1" />
+    <input type="hidden" id="goods_id" name="goods_id" value="" />
+    <input type="hidden" id="stock_id" name="stock_id" value="" />
+</form>
+  <div class="footer">
+          <div class="guide_top">
+              <?php $charts = $this->fetchCharts('www_index_guide');?>
+              <?php if(is_array($charts) && count($charts)>0):?>
+              <?php foreach ($charts as $k=>$chart):?>
+              <img src="/static/sendyou/christmas/guide_brand.jpg" />
+              <?php endforeach;?>
+              <?php endif;?>
+          </div>
+          <div class="guidediv">
+                <div class="guide">
+                        <?php
+                            $helpM = new Home_Model_Help('home');
+                            $helps = $helpM->fetchRows(array(0,5),array('parent'=>'0'),array('order_by ASC'));
+                            if(is_array($helps) && count($helps) > 0){
+                              foreach ($helps as $k=>$help){
+                                $sub_helps = $helpM->fetchRows(null,array('parent'=>$help['help_id']),array('order_by ASC'));
+                                $helps[$k]['sub_helps'] = $sub_helps;
+                              }
+                            }
+                        ?>
+                      <div class="guide_cont">
+                          <div class="guide_logo"><img src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/images/ui/guide_logo2.png" alt="logo" title="信天邮"/>
+                          </div>
+                          <div class="guide_code"><img src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/images/ui/guide_code.png" alt="信天邮二维码"/>
+                          </div>
+                          <div class="guide_tip">
+                          <?php if(is_array($helps)):?>
+                          <?php foreach ($helps as $help):?>
+                              <dl>
+                                  <dt><?php echo $this->escape($help['help_title']);?></dt>
+                                  <?php if(is_array($help['sub_helps']) && count($help['sub_helps'])):?>
+                                  <?php foreach ($help['sub_helps'] as $sub_help):?>
+                                  <dd><a href="/help/<?php echo $sub_help['help_mark']?>.html"><?php echo $this->escape($sub_help['help_title']);?></a></dd>
+                                  <?php endforeach;?>
+                                  <?php endif;?>
+                              </dl>
+                           <?php endforeach;?>
+                           <?php endif;?>
+                           </div>
+                      </div>
+                </div>
+          </div>
+          <div class="copyrightdiv">
+            <div class="copyright">
+                <?php echo $this->seed_Setting['footer'];?>
+            </div>
+          </div>
+  </div>
+</body>
+</html>

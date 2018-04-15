@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>快移</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link href="/ky/css/base.css" rel="stylesheet">
+    <link href="/ky/css/style.css" rel="stylesheet">
+    <script type="text/javascript" src="/ky/js/jquery.js"></script>
+    <script>
+        function doStatus(status){
+            window.location.href='<?php echo $this->BaseUrl();?>/buyer/index/status/'+status
+
+        }
+    </script>
+</head>
+<body>
+<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
+<div class="o_content_wrap w1200 m0a clearfix">
+    <?php echo $this->render(SEED_WWW_TPL.'/left_menu.phtml');?>
+    <div class="o_content fr w940">
+        <div class="o_tab">
+            <ul>
+                <li><a href="<?php echo WWW.'user/buyer/view?'.base64_encode( $this->toID);?>"><!-- 合作伙伴信息 --><?php echo $this->translate('partnerINF');?></a></li>
+                <li class="cur"><a href="<?php echo WWW.'user/buyer/contact?'.base64_encode( $this->toID);?>"><!-- 联系人 --><?php echo $this->translate('contacts');?></a></li>
+            </ul>
+        </div>
+    <div class="qysearch_box user_search">
+        <form action="#" method="post">
+            <p>
+                <input class="search_inp"  name="keyword"  <?php if(!empty($this->keyword)){echo "value=".$this->keyword;}?> placeholder="<?php echo $this->translate('INPkw_par');?>" type="text"><!--可输入公司名称、行业等关键字-->
+                <input class="ss_btn" type="submit" value="">
+            </p>
+        </form></div>
+    <div style="width: 100%">
+        <table class="qy_table_tc qy_table1">
+            <thead>
+            <tr>
+                <th ><!--姓名--><?php echo $this->translate('name');?></th>
+                <th><!--个人电话--><?php echo $this->translate('myphone');?></th>
+                <th><!--电子邮箱--><?php echo $this->translate('email');?></th>
+                <th><!--职务--><?php echo $this->translate('myjob');?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if(is_array($this->e) && count($this->e)>0):?>
+                <?php foreach ($this->e as $k=>$v):?>
+                    <tr>
+                        <td><?php echo $v['name'];?></td>
+                        <td><?php if($v['phone']){echo $v['phone'];}else{echo $v['mobilePhone'];}?></td>
+                        <td><?php echo $v['email'];?></td>
+                        <td><?php echo $v['title'];?></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php endif;?>
+            </tbody>
+        </table>
+        <div class="page"> <?php echo $this->showProductPage($this->page);?> </div>
+    </div>
+</div></div></div>
+    <?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
+</body>
+</html>

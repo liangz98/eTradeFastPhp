@@ -1,0 +1,64 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+	   		if(!confirm("确实要删除？"))return false;
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->baseUrl();?>/shippingregion/delete',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+
+</script>
+
+<h1>删除配送地区 - <?php echo $this->shipping['shipping_desc'];?></h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="列表" onclick="document.location='<?php echo $this->baseUrl();?>/shippingregion?shipping_name=<?php echo $this->shipping['shipping_name'];?>'"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_list">
+    <tr>
+      <td><strong>名称：</strong>
+        <p><?php echo ($this->shippingregion['sr_name']);?></p></td>
+    </tr>
+    <tr>
+      <td><strong>说明：</strong>
+        <p><?php echo ($this->shippingregion['sr_desc']);?></p></td>
+    </tr>
+    <?php if(is_array($this->shippingparams)):?>
+    <?php foreach($this->shippingparams as $param):?>
+    <tr>
+      <td><strong><?php echo $param['setting_name'];?>：</strong>
+        <p><?php echo ($this->shippingregionconfigure[$param['setting_variable']]);?></p></td>
+    </tr>
+    <?php endforeach; ?>
+    <?php endif;?>
+    <tr>
+      <td><strong>选择地区：</strong>
+        <p>
+          <?php if(is_array($this->shippingregiondetails)):?>
+          <?php foreach ($this->shippingregiondetails as $region):?>
+          <?php echo $region['reg_name']?> &nbsp;
+          <?php endforeach; ?>
+          <?php endif;?>
+          <span id="select_region_div"></span> </p></td>
+    </tr>
+  </table>
+  <div class="batch">
+    <input type="hidden" name="sr_id" value="<?php echo $this->shippingregion['sr_id'];?>">
+    <input name="" class="admin_bnt" type="submit" value="删除" />
+  </div>
+</form>
+<?php echo $this->render("footer.phtml") ?>

@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title> UploadImage </title>
+<link rel="stylesheet" href="/static/commerce/css/shop_comm.css" type="text/css" media="all" />
+<script type="text/javascript" src="/static/commerce/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="/static/commerce/js/pop.base.js"></script>
+<script type="text/javascript" src="/static/commerce/js/upload/swfupload.js"></script>
+<script type="text/javascript" src="/static/commerce/js/upload/FeaturesDemo.js"></script>
+<script type="text/javascript" src="/static/commerce/js/upload/handlers.js"></script>
+<script type="text/javascript">
+var suo;
+jQuery(document).ready(function() {
+    // Check to see if SWFUpload is available
+    if (typeof (SWFUpload) === "undefined") {
+        return;
+    }
+    // Instantiate a SWFUpload Instance
+    suo = new SWFUpload(
+    {
+        // Backend Settings
+        upload_url: "/uploadapi/image/cmupload",
+        file_post_name: "Filedata",
+        requeue_on_error: false,
+        post_params: {
+            name: $("#selectId").val(),
+            token: $("#cookieValue").val()
+        },
+        http_success: [123, 444],
+        // File Upload Settings
+        file_size_limit: "<?php echo $this->imgCate['size_limit'];?>",
+        file_types: "<?php echo $this->imgCate['file_type'];?>",
+        file_types_description: "Image Files",
+        file_upload_limit: "<?php echo $this->imgCate['file_limit'];?>", //设置为“0”，则表示没有限制
+        file_queue_limit: "<?php echo $this->imgCate['file_limit'];?>", //每次上传最大数量
+        button_image_url: '/static/commerce/images/btn_add_img.png',
+        button_width: 160,
+        button_height: 56,
+        button_action: SWFUpload.BUTTON_ACTION.SELECT_FILES,
+        button_window_mode: SWFUpload.WINDOW_MODE.TRANSPARENT,
+        button_placeholder_id: "divButtonPlaceholder",
+        // Event Handler Settings
+        swfupload_loaded_handler: FeaturesDemoHandlers.swfUploadLoaded,
+        file_dialog_start_handler: FeaturesDemoHandlers.fileDialogStart,
+        file_queued_handler: FeaturesDemoHandlers.fileQueued,
+        file_queue_error_handler: FeaturesDemoHandlers.fileQueueError,
+        file_dialog_complete_handler: FeaturesDemoHandlers.fileDialogComplete,
+        upload_start_handler: FeaturesDemoHandlers.uploadStart,
+        upload_progress_handler: FeaturesDemoHandlers.uploadProgress,
+        upload_error_handler: FeaturesDemoHandlers.uploadError,
+        upload_success_handler: FeaturesDemoHandlers.uploadSuccess,
+        upload_complete_handler: FeaturesDemoHandlers.uploadComplete,
+        debug_handler: FeaturesDemoHandlers.debug,
+        // Flash Settings
+        flash_url: "/static/commerce/js/upload/swfupload.swf",
+        // Debug Settings
+        debug: false
+        // For the purposes of this demo I wan't debug info shown
+    });
+});
+// 取消上传
+function closeFrame() {
+    var descVla = jQuery("#imgZoneType").val();
+    parent.closeFrame(descVla);
+}
+</script>
+<style type="text/css">
+.divButtonPlaceholder {background-color: white;height: 56px;margin: 125px 0 0 340px;width: 160px;}
+.wait {color: #A0A0A0;}
+.blue{color: #0000ff;cursor: pointer;}
+.green{color: green;cursor: pointer;}
+.fuchsia{color: fuchsia;cursor: pointer;}
+.upload-box {width: 100%;;height: 295px;background-color: white;}
+.upload-box1{display: none;height:295px;background-color:white;overflow-y: auto;position: relative;top: -295px;}
+.table {border-collapse: collapse;color: #444444;text-align: center;width: 100%;}
+.table td, .table th {border: 1px solid #D7D7D7;height: 25px;padding: 3px 0;}
+.process {border: 1px solid #D7D7D7;height: 14px;margin-left: 10px;position: relative;text-align: left;width: 185px;}
+.failure .rate {color: #FF0000;}
+.process b {background: none repeat scroll 0 0 #FFD200;display: inline-block;height: 14px;position: relative;}
+body, table {color: #333333;font: 12px/150% Arial,Verdana,"宋体";}
+.process .rate {display: inline-block;left: 80px;position: absolute;top: -2px;}
+.thickclose:link, .thickclose:visited {background: url("/static/commerce/css/i/bg_thickbox.gif") no-repeat scroll 0 -18px transparent;display: block;font-size: 0;height: 15px;line-height: 100px;overflow: hidden;position: absolute;right: 12px;top: 7px;width: 15px;z-index: 100000;}
+#thickcloser:link, #thickcloser:visited {background-position: 0 0;height: 17px;right: 9px;top: 6px;width: 16px;}
+</style>
+</head>
+<body id="mainframe">
+    <div class="image-tab" style="width: 100%;height: 360px;">
+        <div class="order_tbl">
+            <ul class="tbl_tab">
+                <li><span><a class="on" href="/upload/imagexhr/uploadinit?type=<?php echo $this->escape($this->type);?>&img_cate=<?php echo $this->escape($this->imgCateName);?>">上传新图</a></span></li>
+                <li><span><a href="/upload/imagexhr/initimagepage?type=<?php echo $this->escape($this->type);?>&img_cate=<?php echo $this->escape($this->imgCateName);?>">从图片空间选图</a></span></li>
+            </ul>
+            <a id="thickcloser" class="thickclose" href="javascript:closeFrame();"></a>
+        </div>
+
+        <span class="new">
+            <input id="cookieValue" type="hidden" value="<?php echo $this->seed_Token;?>"/>
+            <input type="hidden" id="imgZoneType" name="type" value="<?php echo $this->escape($this->type);?>"/>
+        </span>
+
+        <div id="div_add_img" class="upload-box">
+            <!--<a class="add-img"></a>-->
+            <div id="divButtonPlaceholder">
+                <!–swfupload文件选择按钮占位符---浏览文件按钮–>
+            </div>
+        </div>
+
+        <div id="div_img_show" class="upload-box1">
+            <table cellspacing="0" cellpadding="0" class="table">
+                <tbody id="filesTable">
+                    <tr>
+                        <th width="40%">
+                            图片名称
+                        </th>
+                        <th width="10%">大小</th>
+                        <th width="6%">格式</th>
+                        <th width="24%">状态</th>
+                        <th></th>
+                        <th width="22%">操作</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="div_upload" class="shop_main" style="position: absolute;top:327px;padding:0px 0 0 18px;">
+            <p>
+                <span style="display: none;" id="imgZoneCateId">
+                    <?php if(empty($this->imgCateName)):?>
+                    上传至 ：
+                    <select style="width: 140px;height: 22px;" id="selectId" >
+                        <?php if( !empty($this->catelogs)):?>
+                        <?php foreach($this->catelogs as $cateItem):?>
+                        <option value="<?php echo $cateItem['cateId'];?>"><?php echo $cateItem['cateName'];?></option>
+                        <?php endforeach;?>
+                        <?php endif;?>
+                    </select>
+                    <?php else:?>
+                    <input type="hidden" id="selectId" name="selectId" value="<?php echo $this->imgCateName;?>"/>
+                    <?php endif;?>
+                </span>
+                <a class="btn_reelect" id="uploadHref" style="cursor:pointer;display: none;margin-right:10px;">开始上传</a>
+                <a class="btn_reelect" id="continueHref" style="cursor:pointer;display:none;margin-left:0px;margin-right:10px;" >继续添加图片</a>
+                <a class="btn_reelect" id="closeHref"  style="cursor:pointer;display:none;" href="javascript:closeFrame();">关闭</a>
+            </p>
+        </div>
+        <div id="div_tip" style="top:320px;position:absolute; ">
+            <br>
+            <font color="red">*支持常见图片格式，比如：<?php echo $this->imgCate['cate_ext'];?><?php if(!empty($this->imgCate['size_limit'])):?>，单张容量最大<?php echo $this->imgCate['size_limit'];?><?php endif;?><?php if(!empty($this->imgCate['width_limit'])):?>，宽度<?php echo $this->imgCate['width_limit'];?>以内<?php endif;?><?php if(!empty($this->imgCate['height_limit'])):?>，高度<?php echo $this->imgCate['height_limit'];?>以内<?php endif;?>！</font>
+        </div>
+        <div id="enlarge_images" style="position:absolute;display: none;border:1px solid green"></div>
+    </div>
+</body>
+</html>
+

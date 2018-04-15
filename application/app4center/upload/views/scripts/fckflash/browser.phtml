@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="/js/center/jquery.js"></script>
+<title>选择文件</title>
+<style type="text/css">
+html{font-size:12px; font-family:"宋体";color:#666;}
+body,div,ul,li,p,dl,dt,dd,input,form{margin:0; padding:0;}
+ul{list-style:none;}
+img{border:0;}
+.image_show{width:100%;float:left;}
+.image_show div{padding-left:20px;padding-top:10px;text-align:left;font-weight:bold;}
+	    .image_show ul{float:left;width:100%;padding-bottom:10px;}
+	    .image_show li{width:180px;height:200px;float:left;line-height:18px;padding:10px 4px 0;}
+		  .image_show li img{padding:2px;border:1px solid #ccc;vertical-align: middle;}
+		  .image_show li p{width:100%;float:left;text-align:center;}
+		    .image_show li p strong{width:100px;float:left;height:25px;overflow:hidden;}
+			.image_show li p small{width:65px;float:right;height:25px; text-align:right;}
+			  .image_show li p small a{color:#fc9b4d;}
+.page {
+color:#686868;
+line-height:25px;
+text-align:right;
+}
+.page strong {
+font-weight:normal;
+padding-right:10px;
+}
+.page a {
+color:#008DBA;
+margin:0 10px;
+}
+</style>
+<script type="text/javascript">
+function dodelete(id){
+	if(!confirm('的确要删除这个文件？'))return false;
+	$.get("<?php echo $this->BaseUrl();?>/file/dodelete" , {file_id : id} ,
+	function(data){
+		var mydata = Number(data);
+		if (typeof(mydata) == 'number' && !isNaN(mydata)) {$("#li"+id).remove();}
+		else {alert(data);}
+	});
+	
+}
+</script>
+</head>
+<body>
+<div class="image_show">
+    <div class="page"><?php echo $this->showPage($this->page);?></div>
+	<ul>
+		<?php if(is_array($this->files)):?>
+		<?php foreach($this->files as $file):?>
+		<li id="li<?php echo $file['file_id'];?>">
+			<p><img src="/images/<?php echo ($file['file_type']);?>.jpg"/></p>
+			<p><?php echo ($file['file_name']);?></p>
+			<p>【<a href="javascript:void(0)" onclick="parent.setFile('<?php echo $this->seed_Setting['upload_view_server'].'/files/'.$file['cate_path'].'/'.$file['file_path']?>');parent.tb_remove();">选择</a>】&nbsp;<img src="<?php echo $this->imageUrl?>/static/images/admin/no.gif" onclick="dodelete(<?php echo $file['file_id'];?>)"></p>
+		</li>
+	  	<?php endforeach; ?>
+		<?php endif;?>
+	</ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+@charset "utf-8";
+.upload_choose{background: url(../images/upload.jpg) no-repeat; width: 125px;height: 125px;float: left;}
+.upload_append_list{float: left;position: relative;}
+.upload_append_list img {width: 125px;height: 125px;float: left;margin:0 10px 10px 0;}
+.upload_append_list strong{font-size:9px;color:#ffffff;text-align:center;word-wrap: break-word;}
+.upload_append_list a{text-align: center;font-size: 12px;color:#ffffff;}

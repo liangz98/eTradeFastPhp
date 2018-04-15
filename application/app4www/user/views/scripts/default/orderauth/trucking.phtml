@@ -1,0 +1,35 @@
+
+<?php if(is_array($this->pcd) && count($this->pcd)>0):?>
+    <div class="info_tit">
+        <h4><!--派车单--><?php echo $this->translate('carsbook');?></h4>
+    </div>
+    <?php foreach ($this->pcd as $k=>$orders):?>
+        <div class="clearfix">
+            <dl class="fl">
+                <dt class="fl"><!--拖车公司--><?php echo $this->translate('carsCOM');?></dt><dd class="buyer_contacts"><?php echo $orders['truckerName'];?></dd>
+            </dl>
+            <dl class="fl">
+                <dt class="fl"><!--车牌号--><?php echo $this->translate('carsNo');?></dt><dd class="fl price_rules"><?php echo $orders['plateNo'];?></dd>
+            </dl>
+            <dl class="fl">
+                <dt class="fl"><!--货柜号--><?php echo $this->translate('shippingNo');?></dt><dd class="buyer_contacts"><?php echo $orders['containerList']['containerNo'];?></dd>
+            </dl>
+            <dl class="fl">
+                <dt class="fl"><!--货值--><?php echo $this->translate('carsPrice');?></dt><dd class="buyer_contacts"><?php echo $orders['totalPrice'];?></dd>
+            </dl>
+            <dl class="fl">
+                <dt class="fl"><!--状态--><?php echo $this->translate('state');?></dt><dd class="fl price_rules">
+                    <?php echo $this->ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['TRUCKING_ORDER_STATUS'],$orders['orderStatus']);?></dd>
+            </dl>
+
+        </div>
+
+    <?php endforeach; ?>
+<?php else:?>
+    <div class="info_tit">
+        <h4><!--订仓单--><?php echo $this->translate('carsbook');?></h4>
+    </div>
+    <div class="clearfix">
+        <?php echo $this->translate('Nodata');?>
+    </div>
+<?php endif;?>

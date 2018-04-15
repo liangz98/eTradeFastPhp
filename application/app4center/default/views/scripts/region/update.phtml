@@ -1,0 +1,46 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {
+         reg_name: "required"
+	   },
+	   messages: {
+         reg_name: "名称不能为空！"
+	   },
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/region/update',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+</script>
+<h1>修改地区</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="列表" onclick="document.location='<?php echo $this->BaseUrl();?>/region/index?parent=<?php echo $this->parent['reg_id'];?>'"/>
+    <input class="admin_bnt2" name="" type="button" value="修改" onclick="document.location='<?php echo $this->BaseUrl();?>/region/update?reg_id=<?php echo $this->region['reg_id'];?>&parent=<?php echo $this->parent['reg_id'];?>'"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_form">
+    <tr>
+      <td><strong>名称：</strong>
+        <p>
+          <input  name="reg_name" id="reg_name" value="<?php echo $this->region['reg_name'];?>" type="text" class="admin_txt1" />
+        </p></td>
+    </tr>
+    <tr>
+      <td><input type="hidden" name="reg_id" id="reg_id" value="<?php echo $this->region['reg_id'];?>">
+        <input  class="admin_bnt" name="" type="submit" value="提交"/></td>
+    </tr>
+  </table>
+</form>
+<?php echo $this->render("footer.phtml") ?>

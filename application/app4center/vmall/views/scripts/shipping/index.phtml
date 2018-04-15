@@ -1,0 +1,57 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+function deleteAll(){
+	var ids="";
+    $("[name='chose[]'][checked]").each(function(){
+    	ids+=$(this).val()+",";
+    });
+    ids=ids.substring(0,(ids.length-1));
+    document.location = "<?php echo $this->baseUrl();?>/shipping/delete/shipping_ids/"+ids;
+}
+
+</script>
+
+<h1> 配送方式管理 </h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="添加方式" onclick="document.location='<?php echo $this->baseUrl();?>/shipping/add'"/>
+  </p>
+</div>
+注意：当前配置的是：<?php if(defined('CURRENT_MODULE_NAME') && CURRENT_MODULE_NAME=='center_hk'):?>HK站的配送管理，若需设置大陆的，则用大陆域名打开后台并进行管理。<?php endif;?>
+<?php if(defined('CURRENT_MODULE_NAME') && CURRENT_MODULE_NAME=='center'):?>大陆站的配送管理，若需设置HK的，则用HK域名打开后台并进行管理。<?php endif;?>
+<table class="admin_list">
+  <tr>
+    <th><input type="checkbox" name="checkAll" id="checkAll"  value="input.ids_all" title="全选/反选">
+      <label for="checkAll">全选</label></th>
+    <th>名称</th>
+    <th>说明</th>
+    <th>快递物流查询名称</th>
+    <th>激活(PC)</th>
+    <th>激活(移动)</th>
+    <th>是否默认</th>
+    <th>操作</th>
+  </tr>
+  <?php if (is_array($this->shippings)) :?>
+  <?php foreach ($this->shippings as $shipping) :?>
+  <tr>
+    <td><input type="checkbox" id="chose[]" name="chose[]" value="<?php echo ($shipping['shipping_id'])?>" class="ids_all"></td>
+    <td><?php echo ($shipping['shipping_name']);?></td>
+    <td><?php echo ($shipping['shipping_desc']);?></td>
+    <td><?php echo ($shipping['inquiry_name']);?></td>
+    <td><?php echo ($shipping['is_actived']=='1')?'<img src="/images/center/yes.gif">':'<img src=/images/center/no.gif>';?></td>
+    <td><?php echo ($shipping['is_m_actived']=='1')?'<img src="/images/center/yes.gif">':'<img src=/images/center/no.gif>';?></td>
+     <td><?php echo ($shipping['is_default']=='1')?'<img src="/images/center/yes.gif">':'<img src=/images/center/no.gif>';?></td>
+    <td>
+    <a href="<?php echo $this->baseUrl();?>/shipping/update/shipping_id/<?php echo ($shipping['shipping_id']);?>"><img src="/images/center/edit.gif" title="编辑" alt="编辑"></a>
+    <a href="<?php echo $this->baseUrl();?>/shippingregion/index/shipping_name/<?php echo ($shipping['shipping_name']);?>"><img src="/images/center/set.gif" title="地区设置" alt="地区设置"></a>
+    <a href="<?php echo $this->baseUrl();?>/shippingparam/setting/shipping_name/<?php echo ($shipping['shipping_name']);?>"><img src="/images/center/set.gif" title="参数设置" alt="参数设置"></a>
+    <a href="<?php echo $this->baseUrl();?>/shipping/delete/shipping_ids/<?php echo ($shipping['shipping_id']);?>"><img src="/images/center/del.gif" title="删除" alt="删除"/></a>
+    </td>
+  </tr>
+  <?php endforeach;?>
+  <?php endif;?>
+</table>
+<div class="batch">
+  <input class="admin_bnt2"  type="button" name="deleteID" id="deleteID" value="删除选择" onclick="deleteAll()">
+  &nbsp; </div>
+<?php echo $this->render("footer.phtml") ?>

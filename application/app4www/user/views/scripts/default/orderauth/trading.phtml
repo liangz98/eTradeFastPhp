@@ -1,0 +1,28 @@
+<table class="st_table">
+    <thead>
+    <tr>
+        <th width="150"><!--时间-->时间</th>
+        <th width="120"><!--类型-->类型</th>
+        <th width="200"><!--交易号丨订单号丨摘要-->交易号丨订单号丨摘要</th>
+        <th><!--对方-->对方</th>
+        <th><!--金额-->金额</th>
+        <th><!--状态-->状态</th>
+        <th><!--操作详情-->操作详情</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php if(is_array($this->jsd) && count($this->jsd)>0):?>
+        <?php foreach ($this->jsd as $k=>$saltter):?>
+            <tr>
+                <td><?php echo date('Y-m-d H:i:s',strtotime($saltter['recordDate']));?></td>
+                <td><?php echo $saltter['subject'];?></td>
+                <td><?php echo $saltter['orderNo'];?></td>
+                <td><?php echo $saltter['customerName'];?></td>
+                <td><?php echo $saltter['totalAmount'];?></td>
+                <td><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['PAYMENT_TRADING_STATUS'],$saltter['tradingStatus']);?></td>
+                <td><a target="_blank" style="color:#86c224" href="/user/settle/listview?<?php echo base64_encode($saltter['tradingID']);?>">详情</a></td>
+            </tr>
+        <?php endforeach; ?>
+    <?php endif;?>
+    </tbody>
+</table>

@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head> 
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <style type="text/css">
+            /***图片上传样式开始***/
+            .demo{margin:0px auto}
+            a{cursor: pointer}
+            .btn:hover{background-color: #e95a00;text-decoration: none}
+            ul,li{list-style: none;padding:0;margin:0}
+            .clearfix:after{visibility:hidden; display:block; font-size:0; content:" "; clear:both; height:0}
+            *:first-child+html .clearfix{zoom:1}
+            /*******进度条样式*********/
+            .progress{position:relative;padding: 1px; border-radius:3px; margin:40px 0 0 0;}
+            .bar {background-color: green; display:block; width:0%; height:20px; border-radius:3px; }
+            .percent{position:absolute; height:20px; display:inline-block;top:3px; left:2%; color:#fff }
+            /********webupload******/
+            .img-view{
+                float: left;
+            }
+            .upload-image-list{
+                width: 125px;
+                height: 125px;
+                float: left;
+            }
+            .fileinput-button {
+                position: relative;
+                overflow: hidden;
+                height: 100%;
+                text-align: center;
+                width: 100%;
+                background: url("images/plus.png") no-repeat scroll center center;
+                padding: 0;
+                float:left
+            }
+            .fileinput-button input {
+                position: absolute;
+                top: 0;
+                left: 0;
+                margin: 0;
+                opacity: 0;
+                filter: alpha(opacity=0);
+            }
+            .img_common {
+                max-height: 100%;
+                max-width: 100%;
+                text-align: center;
+                margin-left: 10px;
+            }
+            .cover_words{ display: inline-block;padding: 74px 0 0;}
+            /********webupload over 图片上传样式end******/
+        </style>
+    </head>
+    <body>
+        <div class="demo">
+        <div class="img-view"></div>
+            <div class="upload-image-list clearfix">
+                <div class="fileinput-button js-add-image"onclick="addWebuploadCurrent($(this))">
+                    <span class="cover_words"></span>
+                    <div class="webuploader-pick">
+                        <a class="fileinput-button-icon" href="javascript:;"></a>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <script type="text/javascript" src="jquery.js"></script>
+        <script type="text/javascript" src="img.js"></script>
+
+    </body>
+</html>

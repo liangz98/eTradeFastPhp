@@ -1,0 +1,121 @@
+﻿@charset "UTF-8";
+/**
+ * 
+ * @authors Your Name (you@example.org)
+ * @date    2016-03-14 10:52:36
+ * @version $Id$
+ */
+<style type="text/css">
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html {
+    -ms-touch-action: none;
+     overflow-y:scroll;
+}
+
+body,ul,li {
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+body {
+    font-size: 12px;
+    font-family: "微软雅黑", helvetica, arial;
+    overflow: hidden; /* this is important to prevent the whole page to bounce */
+}
+
+#wrapper {
+    position: absolute;
+    z-index: 1;
+    top: 0px;
+    bottom: 0px;
+    left: 0;
+    width: 100%;
+}
+
+#scroller {
+    position: absolute;
+    z-index: 1;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    width: 100%;
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-text-size-adjust: none;
+    -moz-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    -o-text-size-adjust: none;
+    text-size-adjust: none;
+}
+
+#scroller ul {
+    list-style: none;
+    padding: 0;
+    margin:0 2%;
+    width: 100%;
+    text-align: left;
+}
+
+#scroller li {
+    float: left;
+    width: 48%;
+    font-size: 14px;
+    margin-left: -1px;
+    margin-top: -1px;
+    border: 1px solid #71ab18;
+    padding-bottom: 10px;
+    background:#ffffff;
+}
+#scroller .fl2 li{
+    border: 1px solid #2c7fb3;
+}
+#scroller .fl3 li{
+    border: 1px solid #82c599;
+}
+#scroller .fl4 li{
+    border: 1px solid #d97d10;
+}
+.fl {background:#ffffff;}
+.fl1 {margin-top: 40px;}
+.fl .ban{padding-top: 20px;}
+.fl .add{float: left;width: 49%;}
+.fl2 .buy_box{border-top: 1px solid #2c7fb3;}
+.fl2 .sell_c{color:#2c7fb3; }
+.fl2 .buy_c a{background:#2c7fb3; }
+
+.fl3 .buy_box{border-top: 1px solid #82c599;}
+.fl3 .sell_c{color:#82c599; }
+.fl3 .buy_c a{background:#82c599; }
+
+.fl4 .buy_box{border-top: 1px solid #d97d10;}
+.fl4 .sell_c{color:#d97d10; }
+.fl4 .buy_c a{background:#d97d10; }
+
+#scroller .sp_list li>a{display: inline;width: 100%;}
+
+.fl>img{width: 100%;display: block;padding-bottom: 12px;}
+.sp_list>li{text-align: center;}
+.sp_list>li>a>img{width: 100%;display: inline-block;}
+.buy_box{width: 90%;height: 70px;border-top: 1px solid #71ab18;display: inline-block;}
+.buy_box .sp_name{line-height:30px;height: 30px;text-align: center;color: #5a5a5a;padding: 0;margin: 0;overflow:hidden;text-overflow:ellipsis;}
+.sell_c {color: #7db20a;width: 46%;display: inline-block;position: relative;top: 4px;}
+.sell_c .sell_num{font-size: 22px;}
+.sell_c .sell_coin{font-size: 12px;}
+.buy_c{display: inline-block;width: 50%;}
+.buy_c p{padding: 0;margin: 0;text-align: center;color: #5a5a5a;font-size: 12px;}
+.buy_c>a{font-size:14px;line-height: 26px;width: 100%;height:26px;background: #69ac07 ;color: #fff;text-decoration: none;display: inline-block;font-family: "宋体";border-radius: 10px;text-align: center;}
+.buy_c a i{width: 5px;height: 9px;display: inline-block;vertical-align: 0px;margin-left: 2px;}
+
+</style>

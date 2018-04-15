@@ -1,0 +1,94 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->baseUrl();?>/shipping/add',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+
+</script>
+<h1>添加配送方式</h1>
+<div class="textnav">
+  <p>
+    <input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back()"/>
+  </p>
+</div>
+<form name="post_form" method="post" action="" id="post_form" >
+  <table class="admin_form">
+      <tr><td> <strong>名称：</strong>
+        <p>
+          <input name="shipping_name" id="shipping_name" value="" type="text" class="admin_txt1" />
+        </p>
+      </td></tr>
+      <tr><td> <strong>名称：</strong>
+        <p>
+          <input name="inquiry_name" id="inquiry_name" value="" type="text" class="admin_txt1" />
+        </p>
+      </td></tr>
+      <tr><td> <strong>说明：</strong>
+        <p>
+          <input name="shipping_desc" id="shipping_desc" value="" type="text" class="admin_txt1" />
+        </p>
+      </td></tr>
+      <tr><td> <strong>LOGO：</strong>
+        <p>
+          <input name="shipping_logo" id="shipping_logo" readonly value="" type="text" class="admin_txt1"/>
+          <input type="button" name="select" value="选择" class="admin_bnt2" onclick="selectCoverImage('shipping','shipping_logo')">
+          <input type="button" name="preview_shipping_logo" id="preview_shipping_logo" value="预览" class="admin_bnt2" onclick="previewCoverImage('shipping_logo')" style="display:none;">
+        </p>
+      </td></tr>
+      <tr><td> <strong>排序：</strong>
+        <p>
+          <input name="order_by" id="order_by" value="" type="text" class="admin_txt1" />
+        </p>
+      </td></tr>
+      <tr><td> <strong>介绍：</strong>
+        <p>
+          <textarea name="shipping_intro" id="shipping_intro" class="textarea" style="height:100px;"></textarea>
+        </p>
+      </td></tr>
+      <tr><td> <strong>保价说明：</strong>
+        <p>
+          <textarea name="shipping_svalue" id="shipping_svalue" class="textarea" style="height:100px;"></textarea>
+        </p>
+      </td></tr>
+      <tr><td> <strong>是否激活(PC)：</strong>
+        <p>
+          <input type="radio" name="is_actived" id="is_actived0" value="0">
+          否&nbsp;
+          <input type="radio" name="is_actived" id="is_actived1" value="1">
+          是 </p>
+      </td></tr>
+      <tr><td> <strong>是否激活(移动)：</strong>
+        <p>
+          <input type="radio" name="is_m_actived" id="is_gift0" value="0">
+          否&nbsp;
+          <input type="radio" name="is_m_actived" id="is_gift1" value="1">
+          是 </p>
+      </td></tr>
+      <tr><td> <strong>是否默认：</strong>
+        <p>
+          <input type="radio" name="is_default" id="is_default0" value="0">
+          否&nbsp;
+          <input type="radio" name="is_default" id="is_default1" value="1">
+          是 </p>
+      </td></tr>
+
+  </table>
+      <div class="batch">
+      <input name="" class="admin_bnt" type="submit" value="提交"/>
+    </div>
+</form>
+<?php echo $this->render("footer.phtml") ?>

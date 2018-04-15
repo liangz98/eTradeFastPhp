@@ -1,0 +1,24 @@
+@charset "utf-8";
+html,small{font-size:12px; font-family:"宋体";color:#fff;}
+body,div,p,ul,li,dl,dt,dd,iframe{ margin:0; padding:0;}
+ul,li{list-style:none;}
+img{border:none;}
+a{cursor:pointer;text-decoration:none;}
+
+
+	 /*提示框*/
+.tips{width:449px;height:119px;background:url(../../images/tips/red/divbg2.gif);position:absolute;top:35%;left:35%;}
+  .close{padding:5px 12px 0 0;text-align:right;}
+  .tips_text{color:#fff;line-height:24px;padding:20px 0 0 200px;}
+
+	
+#pageshow{width:501px;margin:auto;height:245px;background:url(../../images/tips/red/divbg.gif) no-repeat bottom center;padding-top:180px; position:relative;}
+  .pageshow_div{width:462px;padding:20px 20px 0 20px;}
+    .pageshow_title{width:94%;padding:0 3%;height:66px;float:left;border-bottom:1px solid #7a0000;}
+	   .pageshow_title strong{height:66px;float:left;width:60%;background:url(../../images/tips/red/titlebg.gif) no-repeat left top;}
+	   .pageshow_title span{height:66px;float:right;width:40%; background:url(../../images/tips/red/logo2.gif) no-repeat right top;}
+	.pageshow_content{width:94%;padding:10px 3%;border-top:1px solid #c90000;float:left;}
+	  .pageshow_content p{line-height:30px;font-size:14px;}
+	    .pageshow_content p a{color:#ffd800;margin:0 5px;font-weight:bold;text-decoration:underline;}
+  .pageshowbnt{position:absolute;width:89px;hieght:23px;right:25px;bottom:25px;}
+    .pageshowbnt input{border:none;width:89px;height:23px;cursor:pointer;color:#eef0f1;background:url(../../images/tips/red/bntbg.gif);font-size:12px;}

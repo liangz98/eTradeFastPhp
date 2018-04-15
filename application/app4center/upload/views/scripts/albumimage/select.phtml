@@ -1,0 +1,17 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>选择图片</title>
+<script type="text/javascript">
+<?php if(is_array($this->selects)):?>
+<?php foreach($this->selects as $select):?>
+parent.setAlbumImage("<?php echo $select['image_id'];?>","<?php echo $this->seed_Setting['upload_return_server'].'/images/'.$select['cate_path'].'/'.$select['thumb_path'];?>","<?php echo $this->seed_Setting['upload_return_server'].'/images/'.$select['cate_path'].'/'.$select['normal_path'];?>","<?php echo $this->seed_Setting['upload_return_server'].'/images/'.$select['cate_path'].'/'.$select['original_path'];?>");
+<?php endforeach; ?>
+<?php endif;?>
+parent.tb_remove();
+</script>
+</head>
+<body>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<div class="footer_warp">
+    <div class="footer ta w1200 m0a">
+        <div class="f_a tc">
+            <a href="javascript:;">查找职位</a>  |
+            <a href="javascript:;">关于</a>  |
+            <a href="javascript:;">隐私</a>  |
+            <a href="javascript:;">法律条款</a>  |
+            <div style="width:85px;display:inline-block">
+                <select id="langcode" style="background:url(/ky/images/arrow2.png) no-repeat right center;color:#9E9F9F;border:none;">
+                    <option <?php if($this->userlangCode=="en_US"){echo 'selected="true"';}?> value="en_US"><?php echo $this->translate('english');?></option>
+                    <option <?php if($this->userlangCode=="zh_CN"){echo 'selected="true"';}?> value="zh_CN"><?php echo $this->translate('chinese');?></option>
+                </select>
+
+            </div>
+        </div>
+        <p class="tc">©2016ETRADEFAST.INC 粤ICP备17023256号-1</p>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        $('#langcode').change(function(){
+            var lang=$('#langcode').val();
+            $.post( '/user/system/langcode',
+                {'langcode':lang},
+                function(data){
+                    if(data){
+                        location.reload();
+                    }
+                    else{
+                        return false;
+                    }
+                },"json");
+        });
+
+    });
+
+</script>

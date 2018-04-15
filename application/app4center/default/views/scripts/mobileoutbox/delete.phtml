@@ -1,0 +1,63 @@
+<?php echo $this->render("header.phtml") ?>
+<script type="text/javascript">
+if(parent.$_('admincpnav'))
+    parent.$_('admincpnav').innerHTML='客服系统&nbsp;&raquo;&nbsp;删除手机短信';
+</script>
+
+<script type="text/javascript">
+$().ready(function() {
+	$("#post_form").validate({
+	   event: "keyup",
+	   rules: {},
+	   messages: {},
+	   submitHandler: function() {
+			SeedMsgBox('正在保存中，请稍候...');
+			var options = {
+			    target:     '#SeedMsgTxt',
+			    url:        '<?php echo $this->BaseUrl();?>/mobileoutbox/delete',
+			    success: function() {
+			    }
+			};
+			$('#post_form').ajaxSubmit(options);
+		}
+	});
+});
+</script>
+<div id="information">
+  <div class="content">
+   <div class="title">
+    <strong>删除手机短信</strong>
+   		<span>
+   			<input class="admin_bnt2" name="" type="button" value="返回" onclick="history.back();"/>
+   		</span>
+   </div>
+   
+   <form name="post_form" method="post" action="" id="post_form" >
+    <div class="main">
+    	<table class="admin_list">
+			<tr>
+    			<th>编号</th>
+    			<th>号码</th>
+    			<th>内容</th>
+    		</tr>
+			<?php if(is_array($this->messages)):?>
+			<?php foreach($this->messages as $sms):?>
+			<tr>
+				<td><input type="checkbox" id="user_id<?php echo ($sms['send_id'])?>" name="send_id[]" checked value="<?php echo ($sms['send_id'])?>">
+				<?php echo ($sms['send_id'])?></td>
+				<td><?php echo ($sms['send_mobile'])?></td>
+				<td><?php echo ($sms['send_content'])?></td>
+			</tr>
+			<?php endforeach; ?>
+			<?php endif;?>
+    	</table>
+    	
+		<div class="batch">
+			<input type="submit" name="" value="确认删除" onclick="return confirm('确认删除选择记录？')">
+		</div>
+  </div>
+  </form>
+	<div class="bg1">&nbsp;</div>
+  </div>
+</div>
+<?php echo $this->render("footer.phtml") ?>
