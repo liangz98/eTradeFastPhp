@@ -45,23 +45,6 @@ switch ($_SERVER['HTTP_CONTENT_TYPE']) {
 	default:
 		throw new \Exception("Unsupported content type: $_SERVER[HTTP_CONTENT_TYPE]");
 }
-# Payload structure depends on triggered event
-# https://developer.github.com/v3/activity/events/types/
-// $payload = json_decode($json);
-// switch (strtolower($_SERVER['HTTP_X_GITHUB_EVENT'])) {
-// 	case 'ping':
-// 		echo 'pong';
-// 		break;
-// //	case 'push':
-// //		break;
-// //	case 'create':
-// //		break;
-// 	default:
-// 		header('HTTP/1.0 404 Not Found');
-// 		echo "Event:$_SERVER[HTTP_X_GITHUB_EVENT] Payload:\n";
-// 		print_r($payload); # For debug only. Can be found in GitHub hook log.
-// 		die();
-// }
 
 $local = '/storage/html/eTradeFastWebhooksTest/eTradeFastPhp';
 echo shell_exec("cd {$local} && git reset --hard origin/master && git clean -f && git pull 2>&1");
