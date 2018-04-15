@@ -35,8 +35,15 @@
     margin-left: 150px !important;
 }
 
-.billingInfoTitle {
+.font-orange {
     color: #FFB800;
+}
+
+.font-blue {
+    color: #01AAED;
+}
+
+.billingInfofont {
     font-size: 16px;
     font-weight: bold !important;
 }
