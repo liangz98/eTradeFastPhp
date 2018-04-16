@@ -382,7 +382,9 @@
 							auth_error.hide();
 							layer.closeAll();
 
-							$("#company-auth").removeClass("et-ico-auth-cno").addClass("et-ico-auth-cing").trigger("click");
+							setTimeout(function(){
+								$("#company-auth").removeClass("et-ico-auth-cno").addClass("et-ico-auth-cing").trigger("click");
+							}, 500);
 						} else {
 							auth_error.html("");
 							auth_error.html(data);
@@ -456,7 +458,10 @@
 						if (data == '0') {
 							auth_error.hide();
 							layer.closeAll();
-							$("#company-auth").trigger("click");
+
+							setTimeout(function(){
+								$("#company-auth").trigger("click");
+							}, 500);
 						} else {
 							auth_error.html("");
 							auth_error.html(data);

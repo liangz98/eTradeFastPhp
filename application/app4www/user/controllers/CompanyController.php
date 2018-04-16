@@ -330,9 +330,8 @@ class CompanyController extends Kyapi_Controller_Action
             $verifyAmount = $this->_request->getParam('authVerifyAmount');
             
             $_requestOb = $this->_requestObject;
-            // $resultObject = $this->json->doEntRealNameVerify($_requestOb, $verifyAmount);
+            $resultObject = $this->json->doEntRealNameVerify($_requestOb, $verifyAmount);
     
-            $resultObject = '{"latency":1773,"result":{"data":{"serviceId":"7b08d900-2030-4cd4-a4a3-c4da85e0b9fa","cash":"0.68","entRealAuthStatus":"2"},"errCode":"0","msg":"成功"},"status":1}';
             // 取回接口请求状态
             $apiStatus = json_decode($resultObject)->status;
             if ($apiStatus == 1) {
