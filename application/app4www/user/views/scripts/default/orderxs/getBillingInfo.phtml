@@ -47,7 +47,10 @@
 					<div class="layui-form-item margin-bottom-1">
 						<label class="layui-form-label width-100">地址、电话</label>
 						<div class="layui-input-block">
-							<div class="layui-form-mid layui-word-aux"><?php echo $deliverySupplier->supplier->regdAddress. ' ' .$deliverySupplier->supplier->phone ?></div>
+							<div class="layui-form-mid layui-word-aux">
+								<?php echo $deliverySupplier->supplier->regdAddress ?>
+								<a href="tel:<?php echo $deliverySupplier->supplier->phone ?>" class="text-white"><?php echo $deliverySupplier->supplier->phone ?></a>
+							</div>
 						</div>
 					</div>
 
