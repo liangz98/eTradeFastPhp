@@ -32,9 +32,10 @@ h3.time-line-title-aft span:after {
     width: 200px;
     height: 1px;
 }
-h3.time-line-title span:before{
+h3.time-line-title-bef span:before{
     left: 100%;        /*调整背景横线的左右距离*/
 }
-h3.time-line-title span:after {
+h3.time-line-title-aft span:after {
     right: 100%;
 }
+
