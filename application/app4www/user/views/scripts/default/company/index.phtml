@@ -499,7 +499,9 @@
 						if (data == '0') {
 							auth_error.hide();
 							layer.closeAll();
-							$("#company-auth").removeClass("et-ico-auth-cno et-ico-auth-cing").addClass("et-ico-auth-cok").trigger("click");
+							setTimeout(function(){
+								$("#company-auth").removeClass("et-ico-auth-cno et-ico-auth-cing").addClass("et-ico-auth-cok").trigger("click");
+							}, 500);
 						} else {
 							auth_error.html("");
 							auth_error.html(data);
