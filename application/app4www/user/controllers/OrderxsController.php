@@ -1443,7 +1443,9 @@ class OrderxsController extends Kyapi_Controller_Action
                 exit;
             } else {
                 $billingInfoResultObject = $this->json->getBillingInfoApi($_requestOb, $deliveryID);
-                $this->view->billingInfo = json_decode($billingInfoResultObject)->result;
+                $billingInfo = json_decode($billingInfoResultObject)->result;
+                $this->view->billingInfo = $billingInfo;
+                $this->view->deliverySupplierList = $billingInfo->deliverySupplierList;
                 $content = $this->view->render(SEED_WWW_TPL . "/orderxs/getBillingInfo.phtml");
                 echo $content;
                 exit;

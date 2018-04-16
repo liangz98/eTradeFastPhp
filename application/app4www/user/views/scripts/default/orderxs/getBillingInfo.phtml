@@ -22,7 +22,7 @@
 					<div class="layui-form-item margin-bottom-1">
 						<label class="layui-form-label width-100">价税合计金额</label>
 						<div class="layui-input-block">
-							<div class="layui-form-mid layui-word-aux"><?php echo $deliverySupplier->supplierName; ?></div>
+							<div class="layui-form-mid layui-word-aux"><?php echo $deliverySupplier->supplierCrnCode. ' ' .$deliverySupplier->totalAmount; ?></div>
 						</div>
 					</div>
 
@@ -40,21 +40,21 @@
 					<div class="layui-form-item margin-bottom-1">
 						<label class="layui-form-label width-100">纳税人识别号</label>
 						<div class="layui-input-block">
-							<div class="layui-form-mid layui-word-aux"><?php echo $deliverySupplier->supplierName ?></div>
+							<div class="layui-form-mid layui-word-aux"><?php echo json_decode($deliverySupplier->supplier)->businessLicenseNo ?> ?></div>
 						</div>
 					</div>
 
 					<div class="layui-form-item margin-bottom-1">
 						<label class="layui-form-label width-100">地址、电话</label>
 						<div class="layui-input-block">
-							<div class="layui-form-mid layui-word-aux"><?php echo $deliverySupplier->supplierName ?></div>
+							<div class="layui-form-mid layui-word-aux"><?php echo json_decode($deliverySupplier->supplier)->regdAddress. ' ' .json_decode($deliverySupplier->supplier)->phone ?></div>
 						</div>
 					</div>
 
 					<div class="layui-form-item margin-bottom-1">
 						<label class="layui-form-label width-100">开户行及帐号</label>
 						<div class="layui-input-block">
-							<div class="layui-form-mid layui-word-aux"><?php echo $deliverySupplier->supplierName ?></div>
+							<div class="layui-form-mid layui-word-aux"><?php echo $deliverySupplier->bankName. ' ' .$deliverySupplier->bankAcctNo ?></div>
 						</div>
 					</div>
 
