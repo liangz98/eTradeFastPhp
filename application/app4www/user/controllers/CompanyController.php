@@ -225,26 +225,6 @@ class CompanyController extends Kyapi_Controller_Action
 
     }
 
-    public function authconfirmAction()
-    {
-        $msg = 0;
-        if ($this->_request->isPost()) {
-            //获取account数据集合
-            $verifyAmount = $this->_request->getParam('authVerifyAmount');
-
-            $_requestOb = $this->_requestObject;
-            $existData = $this->json->doEntRealNameVerify($_requestOb, $verifyAmount);
-            $res = json_decode($existData)->result;
-            if($res==0){
-                $msg=$res;
-            } else{
-                $msg=$this->view->translate(trim($res));
-            }
-        }
-        echo json_encode($msg);
-        exit;
-    }
-    
     // 企业认证 - view
     public function authviewAction() {
         // $accountID = $this->_request->getParam('accountID');
@@ -323,6 +303,36 @@ class CompanyController extends Kyapi_Controller_Action
             
             $_requestOb = $this->_requestObject;
             $resultObject = $this->json->doEntRealNameToPay($_requestOb, $acctName, $auth_acctNo, $bankName, $proviceName, $cityName, $subbranchName);
+            // 取回接口请求状态
+            $apiStatus = json_decode($resultObject)->status;
+            if ($apiStatus == 1) {
+                // 取回企业认证状态
+                if (json_decode($resultObject)->result->errCode == 0) {
+                    $msg = json_decode($resultObject)->result->errCode;
+                } else {
+                    $msg = json_decode($resultObject)->result->msg;
+                }
+        
+            } else {
+                // 接口请求错误的情况下, 将接口错误返回给页面
+                $msg = $this->view->translate(trim(json_decode($resultObject)->errorCode));
+            }
+        }
+        echo json_encode($msg);
+        exit;
+    }
+    
+    // 企业认证 - 银行打款金额验证
+    public function authconfirmAction() {
+        $msg = 0;
+        if ($this->_request->isPost()) {
+            //获取account数据集合
+            $verifyAmount = $this->_request->getParam('authVerifyAmount');
+            
+            $_requestOb = $this->_requestObject;
+            // $resultObject = $this->json->doEntRealNameVerify($_requestOb, $verifyAmount);
+    
+            $resultObject = '{"latency":1773,"result":{"data":{"serviceId":"7b08d900-2030-4cd4-a4a3-c4da85e0b9fa","cash":"0.68","entRealAuthStatus":"2"},"errCode":"0","msg":"成功"},"status":1}';
             // 取回接口请求状态
             $apiStatus = json_decode($resultObject)->status;
             if ($apiStatus == 1) {
