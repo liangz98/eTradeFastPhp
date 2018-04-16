@@ -339,6 +339,11 @@
 
 				var form = layui.form;
 				form.render('select');
+
+				layui.use('element', function(){
+					var element = layui.element;
+					element.render();
+				});
 				
 				// 认证基本信息
 				$("#doAuthBtn").click(function () {
