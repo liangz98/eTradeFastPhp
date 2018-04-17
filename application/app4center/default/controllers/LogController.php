@@ -102,11 +102,14 @@ class LogController extends Seed_Controller_Action4Admin {
         $directory = "/storage/html/eTradeFastWebhooksTest/eTradeFastPhp/log/";
         $fileList = scandir($directory, 1);
         foreach ($fileList as $index => $value) {
-            if ($index >= $page && $index <= $limit) {
+            // if ($index >= $page && $index <= $limit) {
+            
                 $files['id'] = $index;
                 $files['name'] = $value;
                 $files['fileTime'] = $value. ' ' . date('Y-m-d H:i:s', filectime($directory.$value));
-            }
+                $files['page'] = $page;
+            $files['limit'] = $limit;
+            // }
         }
         $result['data'] = $files;
         echo json_encode($result);
