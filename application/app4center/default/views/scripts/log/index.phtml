@@ -1,8 +1,8 @@
 <?php echo $this->render("header.phtml") ?>
 <h1>操作记录</h1>
 
-<div>
-	<button id="reloadBtn" class="layui-btn layui-btn-normal layui-btn-sm"><i class="layui-icon">&#x1002;</i> 重载表格数据</button>
+<div style="padding-top: 12px;">
+	<button id="reloadBtn" class="layui-btn layui-btn-sm"><i class="layui-icon">&#x1002;</i> 重载表格数据</button>
 </div>
 <table id="demo" lay-filter="test"></table>
 <div id="logInfoDiv" style="display: none; white-space: nowrap;"></div>
@@ -15,7 +15,7 @@
 		//第一个实例
 		table.render({
 			elem: '#demo'
-			,height: 475
+			,height: 473
 			,url: '/a/log/logfilelist' //数据接口
 			,page: true //开启分页
 			,limit: 10
