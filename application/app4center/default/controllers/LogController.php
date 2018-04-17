@@ -108,7 +108,7 @@ class LogController extends Seed_Controller_Action4Admin {
             }
         }
         $result['data'] = $files;
-        echo json_decode((object)$result);
+        echo json_encode($result);
         exit;
     }
 }
