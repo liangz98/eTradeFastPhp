@@ -104,11 +104,11 @@ class LogController extends Seed_Controller_Action4Admin {
         foreach ($fileList as $index => $value) {
             // if ($index >= $page && $index <= $limit) {
             
-                $files['id'] = $index;
-                $files['name'] = $value;
-                $files['fileTime'] = $value. ' ' . date('Y-m-d H:i:s', filectime($directory.$value));
-                $files['page'] = $page;
-            $files['limit'] = $limit;
+                $files[$index]['id'] = $index;
+                $files[$index]['name'] = $value;
+                $files[$index]['fileTime'] = $value. ' ' . date('Y-m-d H:i:s', filectime($directory.$value));
+                $files[$index]['page'] = $page;
+            $files[$index]['limit'] = $limit;
             // }
         }
         $result['data'] = $files;
