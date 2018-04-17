@@ -696,16 +696,13 @@ class OrderxsController extends Kyapi_Controller_Action
             $existDatt['shippingRequest']=$this->view->translate('NoData');   //物流要求
     
         $this->view->orders = $existDatt;
-        //判断是否请求合同签订
-        if ($existDatt['vendorExecStatus'] == 1) {
-            $bizType = 'OD';
-            $_resultKY = $this->json->listBizContract($_requestOb, $bizType, $_orderID);
-            $res_contract = json_decode($_resultKY);
-            if ($res_contract->result) {
-                $contractList = $this->objectToArray($res_contract->result);
-            }
-        }
-        $this->view->contractList = empty($contractList) ? null : $contractList;
+    
+        // 请求合同列表
+        $bizType = 'OD';
+        $listBizContractResultObject = $this->json->listBizContract($_requestOb, $bizType, $_orderID);
+        $listBizContract = json_decode($listBizContractResultObject)->result;
+        
+        $this->view->contractList = empty($listBizContract) ? null : $listBizContract;
         $this->view->vestut = $existDatt['vendorExecStatus'];
         $this->view->veorderID = $existDatt['orderID'];
         //处理进度说明逻辑
