@@ -65,13 +65,17 @@
 			,limit: 10
 			,cols: [[ //表头
 				{field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
-				,{field: 'name', title: '文件名', width:280}
+				,{field: 'name', title: '文件名', width:280, templet: '#titleTpl'}
 				,{field: 'fileTime', title: '修改时间', width:280, sort: true}
 			]]
 		});
 
 	});
 
+</script>
+
+<script type="text/html" id="titleTpl">
+	<a href="/detail/{{d.id}}" class="layui-table-link">{{d.title}}</a>
 </script>
 <?php
 foreach ($this->fileList as $file):
