@@ -57,6 +57,6 @@
 }
 
 #progressbar li.activing:before,  #progressbar li.activing:after{
-    background: #27AE60;
+    background: #FFB800;
     color: white;
 }
