@@ -35,7 +35,7 @@ class LogController extends Seed_Controller_Action4Admin {
     
         // $filePath = $_SERVER["DOCUMENT_ROOT"] . "/checkdata/app/files/nlp.txt";
         // $filePath = "/storage/html/eTradeFastWebhooksTest/eTradeFastPhp/public/ky/mod2018-04-17-16.log.txt";
-        $filePath = "index.phtml";
+        $filePath = "log/mod2018-04-17-16.log.txt";
         $file = fopen($filePath, "r");
     
         // $str = file_get_contents('/ky/mod2018-04-17-16.log.txt');//将整个文件内容读入到一个字符串中
