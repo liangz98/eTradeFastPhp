@@ -55,3 +55,8 @@
     background: #27AE60;
     color: white;
 }
+
+#progressbar li.activing:before,  #progressbar li.activing:after{
+    background: #27AE60;
+    color: white;
+}
