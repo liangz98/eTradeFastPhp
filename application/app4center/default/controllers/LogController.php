@@ -109,6 +109,7 @@ class LogController extends Seed_Controller_Action4Admin {
                     $files[$index]['id'] = $index + 1;
                     $files[$index]['name'] = $value;
                     $files[$index]['fileTime'] = date('Y-m-d H:i:s', filectime($directory . $value));
+                    $files[$index]['fileSize'] = filesize($directory . $value);
                     $files[$index]['page'] = $page;
                     $files[$index]['limit'] = $limit;
                 }
