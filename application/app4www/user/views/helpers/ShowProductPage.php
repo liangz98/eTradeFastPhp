@@ -9,7 +9,7 @@ class Zend_View_Helper_ShowProductPage
 			//$str.= '<strong>总记录:'.$page['total'].' / 总页码:'.$page['totalpage'].' / 当前页:'.$page['curpage'].'</strong>';
 			//$str.= '<a href="'.$page['baseurl'].'1">首页</a>';
 //			$str.= '<span class="page_top"><a href="'.$page['pageurl'].'-1.html">首页</a></span>';
-			$str.= '<span class="page_l"><a href="'.$page['pageurl']."-".$page['prepage'].'.html"><</a></span>';
+			$str.= '<span class="page_l"><a href="'.$page['pageurl']."-".$page['prepage'].'.html"></a></span>';
 			$str.= '<input id="pagekey" style="width:30px;text-align:center;color:#DF7E20;border: 1px solid #A0A0A0;border-radius:5px;margin:0 5px;" type="text" value='.$page['curpage'].'>';
 			$str.= '<input id="pagestr"  type="hidden" value='.$page['pageurl'].' >';
 			$str.= '<a href="'.$page['pageurl']."-".$page['totalpage'].'.html">/'.$page['totalpage'].'</a>';
