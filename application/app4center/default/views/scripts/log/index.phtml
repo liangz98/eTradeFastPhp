@@ -1,5 +1,5 @@
 <?php echo $this->render("header.phtml") ?>
-<h1>操作记录</h1>
+<h1>操作记录 <button id="reloadBtn" class="layui-btn">reload</button></h1>
 
 <table id="demo" lay-filter="test"></table>
 <div id="logInfoDiv" style="display: none; white-space: nowrap;"></div>
@@ -23,6 +23,21 @@
 			]]
 		});
 
+		// var tableIns = table.render({
+		// 	elem: '#id'
+		// 	,url: '/api/data' //设置异步接口
+		// 	,id: 'idTest'
+		// });
+        //
+		// tableIns.reload({
+		// 	page: {
+		// 		curr: 1 //重新从第 1 页开始
+		// 	}
+		// });
+		
+		$("#reloadBtn").click(function () {
+			alert("in");
+		});
 	});
 
 	function showLog(fileName) {

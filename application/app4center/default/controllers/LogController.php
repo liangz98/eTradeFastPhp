@@ -134,7 +134,6 @@ class LogController extends Seed_Controller_Action4Admin {
         }
         fclose($file);
     
-        $this->view->fileContent = $fileContent;
         echo $fileContent;
         exit;
     }
