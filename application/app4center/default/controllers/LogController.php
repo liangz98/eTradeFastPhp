@@ -98,12 +98,14 @@ class LogController extends Seed_Controller_Action4Admin {
     
         $page = $page == 1 ? $page - 1 : $page *10;
         $limit = $limit < 10 ? 10 : $limit;
-        $limit = $page + $limit;
+        
+        $start = $page * $limit - $limit - 1;
+        $end = $page * $limit - 1;
     
         $directory = "/storage/html/eTradeFastWebhooksTest/eTradeFastPhp/log/";
         $fileList = scandir($directory, 1);
         foreach ($fileList as $index => $value) {
-            if ($index >= $page && $index <= $limit) {
+            if ($index >= $start && $index <= $end) {
                 $files[$index]['id'] = $index;
                 $files[$index]['name'] = $value;
                 $files[$index]['fileTime'] = $value. ' ' . date('Y-m-d H:i:s', filectime($directory.$value));
