@@ -30,29 +30,13 @@ class LogController extends Seed_Controller_Action4Admin {
         $this->view->logs = $logs;
         $this->view->conditions = $conditions;
     
-        $this->view->testStr = "test STR";
-    }
     
-    
-    function viewAction() {
-        /*
-        $log_id = $this->_request->getParam('log_id');
-        if ($log_id < 1)
-            throw new Exception('参数错误');
-        $logM = new Seed_Model_Log('system');
-        $log = $logM->fetchRow(array('log_id' => $log_id));
-        if ($log['log_id'] < 1)
-            throw new Exception('没有找到相关数据');
-        $log['log_data'] = unserialize($log['log_data']);
-        $this->view->log = $log;
-        */
-        
-        /* 改成读取本地日志文件 */
+        /* 读取本地日志文件 */
     
         // $filePath = $_SERVER["DOCUMENT_ROOT"] . "/checkdata/app/files/nlp.txt";
         $filePath = "/ky/mod2018-04-17-16.log.txt";
         $file = fopen($filePath, "r");
-        
+    
         // $str = file_get_contents('/ky/mod2018-04-17-16.log.txt');//将整个文件内容读入到一个字符串中
         $str_encoding = mb_convert_encoding($file, 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');//转换字符集（编码）
         $arr = explode("\r\n", $str_encoding);//转换成数组
@@ -67,5 +51,18 @@ class LogController extends Seed_Controller_Action4Admin {
         // var_dump($arr);
         $this->view->firstLog = $arr;
         $this->view->testStr = "test STR";
+    }
+    
+    
+    function viewAction() {
+        $log_id = $this->_request->getParam('log_id');
+        if ($log_id < 1)
+            throw new Exception('参数错误');
+        $logM = new Seed_Model_Log('system');
+        $log = $logM->fetchRow(array('log_id' => $log_id));
+        if ($log['log_id'] < 1)
+            throw new Exception('没有找到相关数据');
+        $log['log_data'] = unserialize($log['log_data']);
+        $this->view->log = $log;
     }
 }
