@@ -1,5 +1,5 @@
 <?php echo $this->render("header.phtml") ?>
-<h1>操作记录 <button id="reloadBtn" class="layui-btn">reload</button></h1>
+<h1>操作记录  <button id="reloadBtn" class="layui-btn layui-btn-sm">重载表格数据</button></h1>
 
 <table id="demo" lay-filter="test"></table>
 <div id="logInfoDiv" style="display: none; white-space: nowrap;"></div>
@@ -16,7 +16,7 @@
 			,url: '/a/log/logfilelist' //数据接口
 			,page: true //开启分页
 			,limit: 10
-			,id: 'idTest'
+			,id: 'reloadID'
 			,cols: [[ //表头
 				{field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
 				,{field: 'name', title: '文件名', width:280, templet: '#titleTpl'}
@@ -25,23 +25,7 @@
 		});
 
 		$("#reloadBtn").click(function () {
-			// var tableIns = table.render({
-			// 	elem: '#demo'
-			// 	,cols: [[ //表头
-			// 		{field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
-			// 		,{field: 'name', title: '文件名', width:280, templet: '#titleTpl'}
-			// 		,{field: 'fileTime', title: '修改时间', width:280, sort: true}
-			// 	]]
-			// 	,url: '/a/log/logfilelist' //设置异步接口
-			// 	,id: 'idTest'
-			// });
-
-			// tableIns.reload({
-			// 	page: {
-			// 		curr: 1 //重新从第 1 页开始
-			// 	}
-			// });
-			table.reload('idTest', {
+			table.reload('reloadID', {
 				page: {
 					curr: 1 //重新从第 1 页开始
 				}
