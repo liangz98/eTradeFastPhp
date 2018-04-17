@@ -50,4 +50,11 @@
 <hr />
 <?php echo $this->fileContent; ?>
 <hr />
-<?php var_dump($this->fileList); ?>
+<?php
+foreach ($this->fileList as $file):
+?>
+<div>$file</div>
+<?php
+endforeach;
+?>
+<?php //var_dump($this->fileList); ?>
