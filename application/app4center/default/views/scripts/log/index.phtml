@@ -51,7 +51,7 @@
 <?php //echo $this->fileContent; ?>
 <hr />
 <table id="demo" lay-filter="test"></table>
-<div id="logInfoDiv" style="display: none;"></div>
+<div id="logInfoDiv" style="display: none; white-space: nowrap;"></div>
 
 <script>
 	layui.use('table', function(){
@@ -83,7 +83,14 @@
 				skin: 'layui-layer-rim',
 				scrollbar: false,
 				shade: 0.5,
-				content: $("#logInfoDiv")
+				content: $("#logInfoDiv"),
+				cancel: function(index, layero){
+					// if(confirm('确定要关闭么')){ //只有当点击confirm框的确定时，该层才会关闭
+					// 	layer.close(index)
+					// }
+					$("#logInfoDiv").html("").hide();
+					return false;
+				}
 			});
 		});
 	}
