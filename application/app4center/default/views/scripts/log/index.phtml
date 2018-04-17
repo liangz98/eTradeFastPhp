@@ -74,8 +74,8 @@
 	});
 
 	function showLog(fileName) {
-		alert("in");
-		$("#logInfoDiv").html("/a/log/loginfo").load('', {fileName:fileName}, function () {
+		alert(fileName);
+		$("#logInfoDiv").html("").load('/a/log/loginfo', {fileName:fileName}, function () {
 			layer.open({
 				type: 1,
 				title: false,
