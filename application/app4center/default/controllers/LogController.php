@@ -29,6 +29,8 @@ class LogController extends Seed_Controller_Action4Admin {
         ), $conditions, "log_id DESC");
         $this->view->logs = $logs;
         $this->view->conditions = $conditions;
+    
+        $this->view->firstLog = $arr;
     }
     
     
