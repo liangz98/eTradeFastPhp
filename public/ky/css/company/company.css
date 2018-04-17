@@ -17,7 +17,7 @@
     list-style-type: none;
     color: white;   /* 步骤下方字休颜色 */
     text-transform: uppercase;
-    font-size: 9px;
+    font-size: 12px;
     width: 25%;     /* li宽度占比 */
     float: left;
     position: relative;
