@@ -1,6 +1,6 @@
 #msform {
-    width: 400px;
-    margin: 50px auto;
+    width: 500px;
+    /*margin: 50px auto;*/
     text-align: center;
     position: relative;
 }
@@ -37,11 +37,11 @@
 /*progressbar connectors*/
 #progressbar li:after {
     content: '';
-    width: 70%;
+    width: 76%;
     height: 2px;
     background: white;
     position: absolute;
-    left: -35%;
+    left: -38%;
     top: 9px;
     z-index: 0; /*put it behind the numbers*/
 }
