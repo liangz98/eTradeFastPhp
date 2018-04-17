@@ -26,6 +26,11 @@
 		$("#reloadBtn").click(function () {
 			var tableIns = table.render({
 				elem: '#demo'
+				,cols: [[ //表头
+					{field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
+					,{field: 'name', title: '文件名', width:280, templet: '#titleTpl'}
+					,{field: 'fileTime', title: '修改时间', width:280, sort: true}
+				]]
 				,url: '/a/log/logfilelist' //设置异步接口
 				,id: 'idTest'
 			});
