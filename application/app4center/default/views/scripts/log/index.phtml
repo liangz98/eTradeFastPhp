@@ -51,6 +51,7 @@
 <?php //echo $this->fileContent; ?>
 <hr />
 <table id="demo" lay-filter="test"></table>
+<div id="logInfoDiv" style="display: none;"></div>
 
 <script>
 	layui.use('table', function(){
@@ -60,7 +61,7 @@
 		table.render({
 			elem: '#demo'
 			,height: 315
-			,url: '/a/log/testdata' //数据接口
+			,url: '/a/log/logfilelist' //数据接口
 			,page: true //开启分页
 			,limit: 10
 			,cols: [[ //表头
@@ -72,6 +73,19 @@
 
 	});
 
+	function showLog(fileName) {
+		$("#logInfoDiv").html("/a/log/loginfo").load('', {fileName:fileName}, function () {
+			layer.open({
+				type: 1,
+				title: false,
+				area: ['750px', '97%'],
+				skin: 'layui-layer-rim',
+				scrollbar: false,
+				shade: 0.5,
+				content: $("#logInfoDiv")
+			});
+		});
+	}
 </script>
 
 <script type="text/html" id="titleTpl">

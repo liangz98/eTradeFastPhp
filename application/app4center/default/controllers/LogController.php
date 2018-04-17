@@ -86,7 +86,7 @@ class LogController extends Seed_Controller_Action4Admin {
         $this->view->log = $log;
     }
     
-    function testdataAction() {
+    function logfilelistAction() {
         $page = $this->_request->getParam('page');
         $limit = $this->_request->getParam('limit');
         $result = array();
@@ -115,6 +115,25 @@ class LogController extends Seed_Controller_Action4Admin {
         }
         $result['data'] = $files;
         echo json_encode($result);
+        exit;
+    }
+    
+    function loginfoAction() {
+        $fileName = $this->_request->getParam('fileName');
+        $directory = "/storage/html/eTradeFastWebhooksTest/eTradeFastPhp/log/";
+    
+        $file = fopen($directory.$fileName, "r");
+        $fileContent = '';
+        //Output a line of the file until the end is reached
+        //feof() check if file read end EOF
+        while (!feof($file)) {
+            //fgets() Read row by row
+            $fileContent .= fgets($file) . "<br />";
+        }
+        fclose($file);
+    
+        $this->view->fileContent = $fileContent;
+        echo $fileContent;
         exit;
     }
 }
