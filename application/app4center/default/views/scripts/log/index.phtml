@@ -74,7 +74,6 @@
 	});
 
 	function showLog(fileName) {
-		alert(fileName);
 		$("#logInfoDiv").html("").load('/a/log/loginfo', {fileName:fileName}, function () {
 			layer.open({
 				type: 1,
@@ -89,7 +88,7 @@
 					// 	layer.close(index)
 					// }
 					$("#logInfoDiv").html("").hide();
-					return false;
+					// return false;
 				}
 			});
 		});
