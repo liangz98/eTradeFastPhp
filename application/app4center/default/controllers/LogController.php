@@ -53,9 +53,24 @@ class LogController extends Seed_Controller_Action4Admin {
         // unset($row);
         //得到后的数组
         // var_dump($arr);
+    
+    
+        $fileContent = '';
+        //Output a line of the file until the end is reached
+        //feof() check if file read end EOF
+        while(!feof($file))
+        {
+            //fgets() Read row by row
+            $fileContent .= fgets($file). "<br />";
+        }
+        fclose($file);
+        
+        
+        
         $this->view->firstLog = $file;
         $this->view->fileList = $fileList;
         $this->view->testStr = "test STR";
+        $this->view->fileContent = $fileContent;
     }
     
     
