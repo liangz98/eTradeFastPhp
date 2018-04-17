@@ -23,20 +23,18 @@
 			]]
 		});
 
-		// var tableIns = table.render({
-		// 	elem: '#id'
-		// 	,url: '/api/data' //设置异步接口
-		// 	,id: 'idTest'
-		// });
-        //
-		// tableIns.reload({
-		// 	page: {
-		// 		curr: 1 //重新从第 1 页开始
-		// 	}
-		// });
-		
 		$("#reloadBtn").click(function () {
-			alert("in");
+			var tableIns = table.render({
+				elem: '#demo'
+				,url: '/a/log/logfilelist' //设置异步接口
+				,id: 'idTest'
+			});
+
+			tableIns.reload({
+				page: {
+					curr: 1 //重新从第 1 页开始
+				}
+			});
 		});
 	});
 
