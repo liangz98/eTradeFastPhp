@@ -105,7 +105,7 @@ class LogController extends Seed_Controller_Action4Admin {
         $fileList = scandir($directory, 1);
         foreach ($fileList as $index => $value) {
             if ($index >= $start && $index <= $end) {
-                $files[$index]['id'] = $index;
+                $files[$index]['id'] = $index + 1;
                 $files[$index]['name'] = $value;
                 $files[$index]['fileTime'] = $value. ' ' . date('Y-m-d H:i:s', filectime($directory.$value));
                 $files[$index]['page'] = $page;
