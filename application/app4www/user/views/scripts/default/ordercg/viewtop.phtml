@@ -23,8 +23,8 @@
 
     <!--订单未开始-->
     <div class="clearfix pb10 dn" <?php if ($this->vestut==-1){echo 'style="display:block;"';}?>>
-        <div class="or_curs tl"><label class="or_lb"><!--订单号码--><?php echo $this->translate('orderNo');?></label><span class="w_curstor"><?php echo $this->orders["orderNo"];?></div>
-        <div class="or_curs tl"><label class="or_lb"><!--订单汇率--><?php echo $this->translate('Prities');?></label><span class="w_curstor huilv"></div>
+		<div class="or_curs tl"><label class="or_lb"><!--订单号码--><?php echo $this->translate('orderNo');?></label><span class="w_curstor"><?php echo $this->orders["orderNo"];?></span></div>
+		<div class="or_curs tl"><label class="or_lb"><!--订单汇率--><?php echo $this->translate('Prities');?></label><span class="w_curstor huilv"></span></div>
         <div class="or_curs clearfix" style="width:100%;"><label class="or_lb"><!--进度说明--><?php echo $this->translate('progressING');?></label>
             <span class="w_curstor" style="width:740px;"><?php echo $this->plan['plan'];?></span></div>
         <div class="or_curs tl"><label class="or_lb"><?php echo $this->translate('stateING');?><!--当前状态--></label>
@@ -33,8 +33,8 @@
 
     <!--确认订单-->
     <div class="clearfix pb10 dn" <?php if ($this->vestut==0){echo 'style="display:block;"';}?>>
-        <div class="or_curs tl"><label class="or_lb"><!--订单号码--><?php echo $this->translate('orderNo');?></label><span class="w_curstor"><?php echo $this->orders["orderNo"];?></div>
-        <div class="or_curs tl"><label class="or_lb"><!--订单汇率--><?php echo $this->translate('Prities');?></label><span class="w_curstor huilv"></div>
+		<div class="or_curs tl"><label class="or_lb"><!--订单号码--><?php echo $this->translate('orderNo');?></label><span class="w_curstor"><?php echo $this->orders["orderNo"];?></span></div>
+		<div class="or_curs tl"><label class="or_lb"><!--订单汇率--><?php echo $this->translate('Prities');?></label><span class="w_curstor huilv"></span></div>
         <div class="or_curs clearfix" style="width:100%;"><label class="or_lb"><!--进度说明--><?php echo $this->translate('progressING');?></label>
             <span class="w_curstor" style="width:740px;"><?php echo $this->plan['plan'];?></span></div>
         <div class="or_curs tl clearfix" style="width: 820px;padding: 10PX 45px;">
@@ -53,8 +53,8 @@
     <!--签订合同-->
     <?php if ($this->vestut >= 1): ?>
 	<div class="clearfix pb10 signTopDiv" <?php if ($this->vestut > 3): ?>style="display: none;"<?php endif; ?> >
-        <div class="or_curs tl"><label class="or_lb"><!--订单号码--><?php echo $this->translate('orderNo');?></label><span class="w_curstor"><?php echo $this->orders["orderNo"];?></div>
-        <div class="or_curs tl"><label class="or_lb"><!--订单汇率--><?php echo $this->translate('Prities');?></label><span class="w_curstor huilv"></div>
+		<div class="or_curs tl"><label class="or_lb"><!--订单号码--><?php echo $this->translate('orderNo');?></label><span class="w_curstor"><?php echo $this->orders["orderNo"];?></span></div>
+		<div class="or_curs tl"><label class="or_lb"><!--订单汇率--><?php echo $this->translate('Prities');?></label><span class="w_curstor huilv"></span></div>
         <div class="or_curs clearfix" style="width:100%;"><label class="or_lb"><!--进度说明--><?php echo $this->translate('progressING');?></label>
             <span class="w_curstor" style="width:740px;"><?php echo $this->plan['plan'];?></span></div>
         <div id="key" class="or_curs tl clearfix " style="<?php  if($this->plan['display']==0){echo 'display:none;';}?> width: 820px;padding: 10px 45px;">
