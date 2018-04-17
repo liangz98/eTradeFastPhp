@@ -50,7 +50,7 @@ class LogController extends Seed_Controller_Action4Admin {
         unset($row);
         //得到后的数组
         // var_dump($arr);
-        $this->view->firstLog = $arr;
+        $this->view->firstLog = $file;
         $this->view->testStr = "test STR";
     }
     
