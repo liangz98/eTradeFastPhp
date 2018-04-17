@@ -30,7 +30,7 @@ class LogController extends Seed_Controller_Action4Admin {
         $this->view->logs = $logs;
         $this->view->conditions = $conditions;
     
-        $this->view->firstLog = $arr;
+        $this->view->testStr = "test STR";
     }
     
     
