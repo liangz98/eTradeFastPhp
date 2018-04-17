@@ -109,7 +109,7 @@ class LogController extends Seed_Controller_Action4Admin {
                     $files[$index]['id'] = $index + 1;
                     $files[$index]['name'] = $value;
                     $files[$index]['fileTime'] = date('Y-m-d H:i:s', filectime($directory . $value));
-                    $files[$index]['fileSize'] = filesize($directory . $value);
+                    $files[$index]['fileSize'] = $this->changeFileSize(filesize($directory . $value), 'kb');
                     $files[$index]['page'] = $page;
                     $files[$index]['limit'] = $limit;
                 }
@@ -119,6 +119,19 @@ class LogController extends Seed_Controller_Action4Admin {
         $result['data'] = $files;
         echo json_encode($result);
         exit;
+    }
+    
+    function changeFileSize($size, $format) {
+        $p = 0;
+        if ($format == 'kb') {
+            $p = 1;
+        } elseif ($format == 'mb') {
+            $p = 2;
+        } elseif ($format == 'gb') {
+            $p = 3;
+        }
+        $size /= pow(1024, $p);
+        return number_format($size, 3);
     }
     
     function loginfoAction() {
