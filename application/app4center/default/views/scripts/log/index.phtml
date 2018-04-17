@@ -62,6 +62,7 @@
 			,height: 315
 			,url: '/a/log/testdata' //数据接口
 			,page: true //开启分页
+			,limit: 10
 			,cols: [[ //表头
 				{field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
 				,{field: 'username', title: '用户名', width:80}
@@ -77,14 +78,6 @@
 
 	});
 
-	var table = layui.table;
-
-	//转换静态表格
-	table.init('demo', {
-		height: 315 //设置高度
-		,limit: 10 //注意：请务必确保 limit 参数（默认：10）是与你服务端限定的数据条数一致
-		//支持所有基础参数
-	});
 </script>
 <?php
 foreach ($this->fileList as $file):
