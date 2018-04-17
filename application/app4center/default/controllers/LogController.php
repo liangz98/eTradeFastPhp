@@ -93,10 +93,9 @@ class LogController extends Seed_Controller_Action4Admin {
         $files = array();
     
         $result['code'] = 0;
-        $result['msg'] = 0;
+        $result['msg'] = "";
         $result['count'] = 0;
     
-        $page = $page == 1 ? $page - 1 : $page *10;
         $limit = $limit < 10 ? 10 : $limit;
         
         $start = $page * $limit - $limit - 1;
@@ -112,6 +111,7 @@ class LogController extends Seed_Controller_Action4Admin {
                 $files[$index]['page'] = $page;
                 $files[$index]['limit'] = $limit;
             }
+            $result['count']++;
         }
         $result['data'] = $files;
         echo json_encode($result);
