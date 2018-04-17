@@ -53,7 +53,7 @@
 <?php
 foreach ($this->fileList as $file):
 ?>
-<div><?php echo $file; ?></div>
+<div><?php echo $file. ' ' . filectime($file); ?> </div>
 <?php
 endforeach;
 ?>
