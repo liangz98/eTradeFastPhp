@@ -139,12 +139,16 @@
 
     <!--game over-->
     <div class="clearfix pb10 dn" <?php if ($this->vestut>=63){echo 'style="display:block;"';}?>>
-        <div class="or_curs tl"><label class="or_lb"><!--订单号码--><?php echo $this->translate('orderNo');?></label><span class="w_curstor"><?php echo $this->orders["orderNo"];?></div>
-        <div class="or_curs tl"><label class="or_lb"><!--订单汇率--><?php echo $this->translate('Prities');?></label><span class="w_curstor huilv"></div>
+		<div class="or_curs tl"><label class="or_lb"><!--订单号码--><?php echo $this->translate('orderNo');?></label><span class="w_curstor"><?php echo $this->orders["orderNo"];?></span></div>
+		<div class="or_curs tl"><label class="or_lb"><!--订单汇率--><?php echo $this->translate('Prities');?></label><span class="w_curstor huilv"></span></div>
         <div class="or_curs clearfix" style="width:100%;"><label class="or_lb"><!--进度说明--><?php echo $this->translate('progressING');?></label>
-            <span class="w_curstor" style="width:740px;"><?php echo $this->plan['plan'];?></div>
+			<span class="w_curstor" style="width:740px;"><?php echo $this->plan['plan'];?></span>
+		</div>
         <div class="or_curs tl"><label class="or_lb"><!--当前状态--><?php echo $this->translate('stateING');?></label>
-            <span class="w_curstor"><?php  echo  $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ORDER_STATUS'],$this->orders["orderStatus"]);?><!--完成--></span></div>
+            <span class="w_curstor">
+				<?php  echo  $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ORDER_STATUS'],$this->orders["orderStatus"]);?><!--完成-->
+			</span>
+		</div>
     </div>
 </div>
 
