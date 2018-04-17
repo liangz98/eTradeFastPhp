@@ -47,7 +47,7 @@ class LogController extends Seed_Controller_Action4Admin {
         
         /* 改成读取本地日志文件 */
     
-        $str = file_get_contents('/log/mod2018-04-17-16.log.txt');//将整个文件内容读入到一个字符串中
+        $str = file_get_contents('/ky/mod2018-04-17-16.log.txt');//将整个文件内容读入到一个字符串中
         $str_encoding = mb_convert_encoding($str, 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');//转换字符集（编码）
         $arr = explode("\r\n", $str_encoding);//转换成数组
     
