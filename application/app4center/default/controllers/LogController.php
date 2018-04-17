@@ -96,20 +96,20 @@ class LogController extends Seed_Controller_Action4Admin {
         $result['msg'] = 0;
         $result['count'] = 0;
     
-        $page = $page == 1 ? $page : $page *10;
-        $limit = $page == 1 ? $limit : $page + $limit;
+        $page = $page == 1 ? $page - 1 : $page *10;
+        $limit = $limit < 10 ? 10 : $limit;
+        $limit = $page + $limit;
     
         $directory = "/storage/html/eTradeFastWebhooksTest/eTradeFastPhp/log/";
         $fileList = scandir($directory, 1);
         foreach ($fileList as $index => $value) {
-            // if ($index >= $page && $index <= $limit) {
-            
+            if ($index >= $page && $index <= $limit) {
                 $files[$index]['id'] = $index;
                 $files[$index]['name'] = $value;
                 $files[$index]['fileTime'] = $value. ' ' . date('Y-m-d H:i:s', filectime($directory.$value));
                 $files[$index]['page'] = $page;
-            $files[$index]['limit'] = $limit;
-            // }
+                $files[$index]['limit'] = $limit;
+            }
         }
         $result['data'] = $files;
         echo json_encode($result);
