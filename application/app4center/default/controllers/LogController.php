@@ -98,7 +98,7 @@ class LogController extends Seed_Controller_Action4Admin {
     
         $limit = $limit < 10 ? 10 : $limit;
         
-        $start = $page * $limit - $limit - 1;
+        $start = $page * $limit - $limit;
         $end = $page * $limit - 1;
     
         $directory = "/storage/html/eTradeFastWebhooksTest/eTradeFastPhp/log/";
