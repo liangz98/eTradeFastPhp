@@ -38,6 +38,9 @@ class LogController extends Seed_Controller_Action4Admin {
         $filePath = "/storage/html/eTradeFastWebhooksTest/eTradeFastPhp/log/mod2018-04-17-16.log.txt";
         $file = fopen($filePath, "r");
     
+        $directory = "/storage/html/eTradeFastWebhooksTest/eTradeFastPhp/log/";
+        $fileList = scandir($directory);
+    
         // $str = file_get_contents('/ky/mod2018-04-17-16.log.txt');//将整个文件内容读入到一个字符串中
         // $str_encoding = mb_convert_encoding($file, 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');//转换字符集（编码）
         // $arr = explode("\r\n", $str_encoding);//转换成数组
@@ -51,6 +54,7 @@ class LogController extends Seed_Controller_Action4Admin {
         //得到后的数组
         // var_dump($arr);
         $this->view->firstLog = $file;
+        $this->view->fileList = $fileList;
         $this->view->testStr = "test STR";
     }
     
