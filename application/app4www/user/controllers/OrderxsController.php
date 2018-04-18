@@ -1467,10 +1467,10 @@ class OrderxsController extends Kyapi_Controller_Action
             $_requestOb = $this->_requestObject;
     
             $deliverySupplier = array();
-            $deliverySupplier['deliverySupplier']['deliveryID'] = $deliveryID;
-            $deliverySupplier['deliverySupplier']['supplierID'] = $supplierID;
-            $deliverySupplier['deliverySupplier']['expressType'] = $expressType;
-            $deliverySupplier['deliverySupplier']['expressNo'] = $expressNo;
+            $deliverySupplier['deliveryID'] = $deliveryID;
+            $deliverySupplier['supplierID'] = $supplierID;
+            $deliverySupplier['expressType'] = $expressType;
+            $deliverySupplier['expressNo'] = $expressNo;
             
             // var_dump($deliverySupplier);
             // print_r("----------------");
