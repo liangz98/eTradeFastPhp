@@ -73,13 +73,11 @@
 						?>
 						<div class="layui-input-inline expressShow" style="width: 400px;">
 							<div class="layui-form-mid layui-word-aux">
-                                <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['EXPRESS_TYPE'], $deliverySupplier->expressType); ?>&nbsp;&nbsp;<?php echo $deliverySupplier->expressNo ?>
+                                <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['EXPRESS_TYPE'], $deliverySupplier->expressType); ?>&nbsp;&nbsp;
+								<?php echo $deliverySupplier->expressNo ?>&nbsp;&nbsp;
+								<a href='javascript:void(0)' class="billingExpressEdit line-height-35 link-hover"><?php echo $this->translate('edit'); ?></a>
 							</div>
 						</div>
-						<div class="layui-input-inline expressShow" style="width: 80px;">
-							<a href='javascript:void(0)' class="billingExpressEdit line-height-35 link-hover"><?php echo $this->translate('edit'); ?></a>
-						</div>
-						
 						<?php
 						else:
 						?>
