@@ -1255,9 +1255,9 @@ $(".billingInfo").click(function () {
 			var deliveryID = $(this).attr("deliveryID_");
 			var supplierID = $(this).attr("supplierID_");
 			var expressType = $("#expressType").val();
-			var expressName = $("#expressType").text();
+			var expressName = $("#expressType").find("option:selected").text();
 			var expressNo = $("#expressNo").val();
-
+			
 			var editExpressNo = '/user/orderxs/editexpresssave';
 			$.post(editExpressNo,
 			{

@@ -62,11 +62,3 @@
 <script type="text/html" id="titleTpl">
 	<a href="javascript:void(0)" onclick="showLog('{{d.name}}')" class="layui-table-link">{{d.name}}</a>
 </script>
-<?php
-foreach ($this->fileList as $file):
-?>
-<!--<div>--><?php //echo $file. ' ' . date('Y-m-d H:i:s', filectime('/storage/html/eTradeFastWebhooksTest/eTradeFastPhp/log/'.$file)); ?><!-- </div>-->
-<?php
-endforeach;
-?>
-<?php //var_dump($this->fileList); ?>

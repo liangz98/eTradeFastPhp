@@ -29,48 +29,6 @@ class LogController extends Seed_Controller_Action4Admin {
         ), $conditions, "log_id DESC");
         $this->view->logs = $logs;
         $this->view->conditions = $conditions;
-    
-    
-        /* 读取本地日志文件 */
-    
-        // $filePath = $_SERVER["DOCUMENT_ROOT"] . "/checkdata/app/files/nlp.txt";
-        // $filePath = "/storage/html/eTradeFastWebhooksTest/eTradeFastPhp/public/ky/mod2018-04-17-16.log.txt";
-        $filePath = "/storage/html/eTradeFastWebhooksTest/eTradeFastPhp/log/mod2018-04-17-16.log.txt";
-        $file = fopen($filePath, "r");
-    
-        $directory = "/storage/html/eTradeFastWebhooksTest/eTradeFastPhp/log/";
-        $fileList = scandir($directory, 1);
-    
-        // $str = file_get_contents('/ky/mod2018-04-17-16.log.txt');//将整个文件内容读入到一个字符串中
-        // $str_encoding = mb_convert_encoding($file, 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');//转换字符集（编码）
-        // $arr = explode("\r\n", $str_encoding);//转换成数组
-    
-        //去除值中的空格
-        // foreach ($arr as &$row) {
-        //     $row = trim($row);
-        // }
-        //
-        // unset($row);
-        //得到后的数组
-        // var_dump($arr);
-    
-    
-        $fileContent = '';
-        //Output a line of the file until the end is reached
-        //feof() check if file read end EOF
-        while(!feof($file))
-        {
-            //fgets() Read row by row
-            $fileContent .= fgets($file). "<br />";
-        }
-        fclose($file);
-        
-        
-        
-        $this->view->firstLog = $file;
-        $this->view->fileList = $fileList;
-        $this->view->testStr = "test STR";
-        $this->view->fileContent = $fileContent;
     }
     
     
@@ -101,6 +59,7 @@ class LogController extends Seed_Controller_Action4Admin {
         $start = $page * $limit - $limit;
         $end = $page * $limit - 1;
     
+        // $directory = "/storage/html/kuaiyi/log/";
         $directory = "/storage/html/eTradeFastWebhooksTest/eTradeFastPhp/log/";
         $fileList = scandir($directory, 1);
         foreach ($fileList as $index => $value) {
@@ -123,6 +82,8 @@ class LogController extends Seed_Controller_Action4Admin {
     
     function loginfoAction() {
         $fileName = $this->_request->getParam('fileName');
+    
+        // $directory = "/storage/html/kuaiyi/log/";
         $directory = "/storage/html/eTradeFastWebhooksTest/eTradeFastPhp/log/";
     
         $file = fopen($directory.$fileName, "r");
