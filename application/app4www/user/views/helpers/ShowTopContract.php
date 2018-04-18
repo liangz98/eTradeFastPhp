@@ -15,11 +15,11 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
 
         foreach ($Arr as $k => $valueObject) {
     
-            if (is_object($valueObject)) {
-                $attachmentList = $valueObject->attachmentList;
-            } else if (is_array($valueObject)) {
-                $attachmentList = $valueObject["attachmentList"];
-            }
+            // if (is_object($valueObject)) {
+            //     $attachmentList = $valueObject->attachmentList;
+            // } else if (is_array($valueObject)) {
+            //     $attachmentList = $valueObject["attachmentList"];
+            // }
             
             var_dump($valueObject); exit;
             
