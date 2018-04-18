@@ -591,7 +591,11 @@ function initPdfView(pdfUrl, obj) {
 		shade: 0.6,	//遮罩透明度
 		// anim: 1,	//0-6的动画形式，-1不开启
 		scrollbar: false,
-		content: $("#signViewDiv")
+		content: $("#signViewDiv"),
+		cancel: function(index, layero) {
+			alert(layer.index);
+			return false;
+		}
 	});
 
 	$(".download-button").attr("contractID_", obj.id);
