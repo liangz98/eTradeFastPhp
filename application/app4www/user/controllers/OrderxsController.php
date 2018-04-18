@@ -1474,7 +1474,7 @@ class OrderxsController extends Kyapi_Controller_Action
             
             var_dump($deliverySupplier);
             print_r("----------------");
-            $delObj = $this->arrayToObject($deliverySupplier);
+            $delObj = json_encode($deliverySupplier);
             print_r("-------2222222222---------");
             var_dump($delObj);
             exit;
