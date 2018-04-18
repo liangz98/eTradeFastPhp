@@ -442,6 +442,7 @@ return array(
     'deliveryBillTips_D'      => '收件人：付先生',
     'deliveryBillTips_E'      => '联系电话：0755-83687432',
     'deliveryBillTips_F'      => '客服人员收到增值税发票原件并检验后，会尽快处理后续工作',
+    'expressNo'             => '快递单号',
 
 
 
