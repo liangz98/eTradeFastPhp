@@ -77,8 +77,8 @@
 						<div class="or_curs tl clearfix " style="width: 820px; padding: 10px 45px;">
 							<dl class="fl download_doc">
 								<?php
-                                // $contractList = array();
-                                // $contractList[] = $deliverySupplier->purContract;
+                                $contractList = array();
+                                $contractList[] = $deliverySupplier->purContract;
                                 echo $this->ShowTopContract($deliverySupplier->purContract, $this->accountID, 'CRSE', null, $this->hasIDCertificate);
 								?>
 							</dl>
