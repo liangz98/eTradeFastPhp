@@ -54,7 +54,6 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
                 $IMG .= '<input type="hidden" id="contractName_'.$v['contractID'].'" value="'.$v['contractName'].'" />';
                 $IMG .= '<input type="hidden" id="ext_'.$v['contractID'].'" value="'.$v['ext'].'" />';
     
-    
                 if ($v['isEContract']) {
                     if (!$hasIDCertificate) {
                         $IMG .= '<a href="javascript:void(0)" onclick="contractSignViewNO(\'' . $v['contractID'] . '\')" class="order_contract_sign fr">签署</a>';
