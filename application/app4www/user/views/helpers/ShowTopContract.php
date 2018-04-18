@@ -13,7 +13,7 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
     
         $hasNoEContract = "False";
 
-        foreach ($Arr as $k => $valueObject) {
+        foreach ($Arr as $k => $v) {
     
             // if (is_object($valueObject)) {
             //     $attachmentList = $valueObject->attachmentList;
@@ -21,7 +21,7 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
             //     $attachmentList = $valueObject["attachmentList"];
             // }
             
-            var_dump($valueObject); exit;
+            // var_dump($valueObject); exit;
             
             if (count($v['attachmentList']) > 0) {
                 $attachmentList = $v['attachmentList'];
