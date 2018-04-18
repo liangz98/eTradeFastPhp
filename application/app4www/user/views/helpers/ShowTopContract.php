@@ -13,6 +13,7 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
     
         $hasNoEContract = "False";
 
+        var_dump($Arr); exit;
         foreach ($Arr as $k => $v) {
             if (count($v['attachmentList']) > 0) {
                 $attachmentList = $v['attachmentList'];
