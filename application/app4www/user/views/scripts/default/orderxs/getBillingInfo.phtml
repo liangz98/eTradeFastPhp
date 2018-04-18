@@ -79,9 +79,9 @@
 							
 							<dl class="fl download_doc">
 								<?php
-                                $contractList = array();
-                                $contractList[] = $deliverySupplier->purContract;
-								echo $this->ShowTopContract($contractList, $this->accountID, 'CRSE', null, $this->hasIDCertificate);
+                                // $contractList = array();
+                                // $contractList[] = $deliverySupplier->purContract;
+								echo $this->ShowTopContract($deliverySupplier->purContract, $this->accountID, 'CRSE', null, $this->hasIDCertificate);
 								?>
 							</dl>
 						</div>
