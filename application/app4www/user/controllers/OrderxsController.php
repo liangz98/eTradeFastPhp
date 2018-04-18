@@ -1473,7 +1473,9 @@ class OrderxsController extends Kyapi_Controller_Action
             $deliverySupplier['deliverySupplier']['expressNo'] = $expressNo;
             
             var_dump($deliverySupplier);
+            print_r("----------------");
             $delObj = $this->arrayToObject($deliverySupplier);
+            print_r("-------2222222222---------");
             var_dump($delObj);
             exit;
             
