@@ -1479,7 +1479,7 @@ class OrderxsController extends Kyapi_Controller_Action
             // var_dump($delObj);
             // exit;
             
-            $resultObject = $this->json->editExpressNoApi($_requestOb, json_encode($deliverySupplier));
+            $resultObject = $this->json->editExpressNoApi($_requestOb, json_encode((object)$deliverySupplier));
             echo $resultObject->status;
         }
         exit;
