@@ -1466,11 +1466,11 @@ class OrderxsController extends Kyapi_Controller_Action
             $expressNo = $this->_request->getPost('expressNo');
             $_requestOb = $this->_requestObject;
     
-            $deliverySupplier = array('deliveryID' => $deliveryID, 'supplierID' => $supplierID, 'expressType' => $expressType, 'expressNo' => $expressNo);
-            // $deliverySupplier["deliveryID"] = $deliveryID;
-            // $deliverySupplier["supplierID"] = $supplierID;
-            // $deliverySupplier["expressType"] = $expressType;
-            // $deliverySupplier["expressNo"] = $expressNo;
+            $deliverySupplier = new Kyapi_Model_DeliverySupplier();
+            $deliverySupplier->deliveryID = $deliveryID;
+            $deliverySupplier->supplierID = $supplierID;
+            $deliverySupplier->expressType = $expressType;
+            $deliverySupplier->expressNo = $expressNo;
             
             // var_dump($deliverySupplier);
             // print_r("----------------");
@@ -1479,7 +1479,7 @@ class OrderxsController extends Kyapi_Controller_Action
             // var_dump($delObj);
             // exit;
             
-            $resultObject = $this->json->editExpressNoApi($_requestOb, json_encode($deliverySupplier));
+            $resultObject = $this->json->editExpressNoApi($_requestOb, $deliverySupplier);
             echo $resultObject->status;
         }
         exit;
