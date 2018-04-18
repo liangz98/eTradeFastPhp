@@ -400,7 +400,6 @@
 </div>
 <?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
 <script type="text/javascript">
-var layBillinfoIndex = 0;
 layui.use('form', function(){
 	var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
 
@@ -592,14 +591,7 @@ function initPdfView(pdfUrl, obj) {
 		shade: 0.6,	//遮罩透明度
 		// anim: 1,	//0-6的动画形式，-1不开启
 		scrollbar: false,
-		content: $("#signViewDiv"),
-		cancel: function(index, layero) {
-			alert(layer.index);
-			if (layBillinfoIndex != 0) {
-				layer.title('标题变了', layBillinfoIndex);
-			}
-			
-		}
+		content: $("#signViewDiv")
 	});
 
 	$(".download-button").attr("contractID_", obj.id);
@@ -1242,11 +1234,7 @@ $(".billingInfo").click(function () {
 			skin: 'layui-layer-rim',
 			scrollbar: false,
 			shade: 0.5,
-			content: $("#billingInfoDiv"),
-			success: function(layero, index){
-				console.log(layero, index);
-				layBillinfoIndex = index;
-			}
+			content: $("#billingInfoDiv")
 		});
 
 		layui.use('form', function() {
