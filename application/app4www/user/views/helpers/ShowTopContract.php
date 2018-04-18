@@ -76,13 +76,13 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
                 if (!$v['isDeleted'] && !$v['isCancel'] && !$v['isClosed']) {
                     if (($v['firstParty'] != null && $v['firstParty'] == $accountID && $v['firstPartySigningDate'] == null) || ($v['secondParty'] != null && $v['secondParty'] == $accountID && $v['secondPartySigningDate'] == null) || ($v['thirdParty'] != null && $v['thirdParty'] == $accountID && $v['thirdPartySigningDate'] == null)) {
                         if (!$hasIDCertificate) {
-                            $IMG .= '<a href="#" onclick="contractSignViewNO(\'' . $v['contractID'] . '\')" class="order_contract_sign fr">签署</a>';
+                            $IMG .= '<a href="javascript:void(0)" onclick="contractSignViewNO(\'' . $v['contractID'] . '\')" class="order_contract_sign fr">签署</a>';
                         } else {
                             if ($v['isEContract']) {
-                                $IMG .= '<a href="#" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr">签署</a>';
+                                $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr">签署</a>';
                             } else {
                                 $hasNoEContract = "True";
-                                $IMG .= '<a href="#" id="' . $v['contractID'] . '" onclick="initSignViewNoEContract(this)" class="order_contract_sign fr">下载</a>';
+                                $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initSignViewNoEContract(this)" class="order_contract_sign fr">下载</a>';
                             }
                         }
                     }
@@ -90,7 +90,7 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
                         if (($v['firstParty'] != null && $v['firstParty'] == $accountID && $v['firstPartySigningDate'] != null) || ($v['secondParty'] != null && $v['secondParty'] == $accountID && $v['secondPartySigningDate'] != null) || ($v['thirdParty'] != null && $v['thirdParty'] == $accountID && $v['thirdPartySigningDate'] != null)) {
                 
                             $IMG .= '<input type="hidden" id="isSign_' . $v['contractID'] . '" value="true">';
-                            $IMG .= '<a href="#" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">已签署</a>';
+                            $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">已签署</a>';
                         }
                     }
                     $IMG .= '</li>';
