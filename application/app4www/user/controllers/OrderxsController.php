@@ -1472,10 +1472,10 @@ class OrderxsController extends Kyapi_Controller_Action
             $deliverySupplier['deliverySupplier']['expressType'] = $expressType;
             $deliverySupplier['deliverySupplier']['expressNo'] = $expressNo;
             
-            var_dump($deliverySupplier);
-            $delObj = $this->arrayToObject($deliverySupplier);
-            var_dump($delObj);
-            exit;
+            // var_dump($deliverySupplier);
+            // $delObj = $this->arrayToObject($deliverySupplier);
+            // var_dump($delObj);
+            // exit;
             
             $resultObject = $this->json->editExpressNoApi($_requestOb, $this->arrayToObject($deliverySupplier));
             echo $resultObject->status;

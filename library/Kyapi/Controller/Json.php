@@ -914,6 +914,14 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
     
+    /** 编辑快递单号接口 **/
+    public function editExpressNoApi($requestObject, $deliverySupplier) {
+        $_url = $this->url . '/orderapi/orderApi!editExpressNo.action';
+        $_params = json_encode(array("requestObject" => $requestObject, "deliverySupplier" => $deliverySupplier));
+        $resultObject = $this->vpost($_url, $_params); //输出目标地址源码
+        return $resultObject;
+    }
+    
     /**销售订单列表统计接口**/
     public function countSaleOrderStatusApi($_requestObject) {
         $_url=$this->url.'/orderapi/orderApi!countSaleOrderStatus.action';
