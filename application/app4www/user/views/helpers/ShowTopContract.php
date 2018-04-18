@@ -2,6 +2,29 @@
 
 class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
     
+    //数组转对象
+    public function arrayToObject($e){
+        
+        if( gettype($e)!='array' )
+            return;
+        foreach($e as $k=>$v){
+            if( gettype($v)=='array' || getType($v)=='object' )
+                $e[$k]=(object)arrayToObject($v);
+        }
+        return (object)$e;
+    }
+    
+    //对象转数组
+    public function objectToArray($e){
+        $e=(array)$e;
+        foreach($e as $k=>$v){
+            if( gettype($v)=='resource' ) return;
+            if( gettype($v)=='object' || gettype($v)=='array' )
+                $e[$k]=(array)$this->objectToArray($v);
+        }
+        return $e;
+    }
+    
     function ShowTopContract($Arr, $accountID, $key, $client, $hasIDCertificate) {
         //$accountID;
         //$client;
@@ -16,7 +39,8 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
         foreach ($Arr as $k => $v) {
             // var_dump($v->attachmentList); exit;
             if (is_object($v)) {
-                objectToArray($v);
+                // objectToArray($v);
+                $this->objectToArray($v);
             }
             
             echo "in".is_object($v); exit;
