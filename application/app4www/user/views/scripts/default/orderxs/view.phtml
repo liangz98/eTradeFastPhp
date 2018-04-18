@@ -1242,7 +1242,11 @@ $(".billingInfo").click(function () {
 			skin: 'layui-layer-rim',
 			scrollbar: false,
 			shade: 0.5,
-			content: $("#billingInfoDiv")
+			content: $("#billingInfoDiv"),
+			success: function(layero, index){
+				console.log(layero, index);
+				layBillinfoIndex = index;
+			}
 		});
 
 		layui.use('form', function() {
