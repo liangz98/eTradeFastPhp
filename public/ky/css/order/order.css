@@ -14,6 +14,10 @@
     text-align: left !important;
 }
 
+.line-height-35 {
+    line-height: 35px;
+}
+
 .billInfoTop {
     height: 160px;
     text-align: left;
