@@ -400,6 +400,7 @@
 </div>
 <?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
 <script type="text/javascript">
+var layBillinfoIndex = 0;
 layui.use('form', function(){
 	var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
 
@@ -594,7 +595,10 @@ function initPdfView(pdfUrl, obj) {
 		content: $("#signViewDiv"),
 		cancel: function(index, layero) {
 			alert(layer.index);
-			return false;
+			if (layBillinfoIndex != 0) {
+				layer.title('标题变了', layBillinfoIndex);
+			}
+			
 		}
 	});
 
