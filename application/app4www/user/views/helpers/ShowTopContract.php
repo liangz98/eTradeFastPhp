@@ -96,6 +96,8 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
                     $IMG .= '</li>';
         
                 }
+            } else {
+                $IMG .= '<label>暂无数据！</label>';
             }
         }
         $IMG .= '<input type="hidden" id="hasNoEContract" value="'.$hasNoEContract.'" />';
