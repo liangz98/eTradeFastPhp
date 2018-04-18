@@ -1255,11 +1255,35 @@ $(".billingInfo").click(function () {
 			var deliveryID = $(this).attr("deliveryID_");
 			var supplierID = $(this).attr("supplierID_");
 			var expressType = $("#expressType").val();
+			var expressName = $("#expressType").text();
 			var expressNo = $("#expressNo").val();
-			alert(deliveryID);
-			alert(supplierID);
-			alert(expressType);
-			alert(expressNo);
+
+			var editExpressNo = '/user/orderxs/editexpresssave';
+			$.post(editExpressNo,
+			{
+				deliveryID: deliveryID,
+				supplierID: supplierID,
+				expressType: expressType,
+				expressNo: expressNo
+			},
+			function (data) {
+			}, 'json')
+			.success(function (data) {
+				$(".expressName_").html(expressName);
+				$(".expressNo_").html(expressNo);
+				
+				$("#expressType").val(expressType);
+				$("#expressNo").val(expressNo);
+
+				$(".expressShow").show();
+				$(".expressEdit").hide();
+			})
+			.error(function () {
+				console.log("network error");
+			})
+			.complete(function () {
+				console.log("complete");
+			});
 		});
 	});
 });

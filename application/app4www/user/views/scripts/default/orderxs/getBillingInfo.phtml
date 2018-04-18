@@ -70,8 +70,8 @@
 
 						<div class="layui-input-inline expressShow" style="width: 400px; <?php if ($deliverySupplier->expressNo == null || $deliverySupplier->expressNo == '') { echo 'display: none;';} ?>">
 							<div class="layui-form-mid layui-word-aux">
-                                <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['EXPRESS_TYPE'], $deliverySupplier->expressType); ?>&nbsp;&nbsp;
-								<?php echo $deliverySupplier->expressNo ?>&nbsp;&nbsp;
+								<label class="expressName_"><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['EXPRESS_TYPE'], $deliverySupplier->expressType); ?></label>&nbsp;&nbsp;
+								<label class="expressNo_"><?php echo $deliverySupplier->expressNo ?></label>&nbsp;&nbsp;
 								<a href='javascript:void(0)' class="billingExpressEdit link-hover"><?php echo $this->translate('edit'); ?></a>
 							</div>
 						</div>
@@ -111,7 +111,7 @@
                                 <?php
                                 $supplierList = array();
                                 $supplierList[] = $deliverySupplier->supplier;
-                                echo $this->ShowTopContract($supplierList, $this->accountID, 'CRSE', null, $this->hasIDCertificate);
+                                echo $this->ShowTopContract($supplierList, $this->accountID, 'CRII', null, $this->hasIDCertificate);
                                 ?>
 							</dl>
 						</div>

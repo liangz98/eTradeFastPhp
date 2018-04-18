@@ -1457,6 +1457,27 @@ class OrderxsController extends Kyapi_Controller_Action
         }
     }
     
+    // 编辑物流信息
+    public function editexpresssaveAction() {
+        if ($this->_request->isPost()) {
+            $deliveryID = $this->_request->getPost('deliveryID');
+            $supplierID = $this->_request->getPost('supplierID');
+            $expressType = $this->_request->getPost('expressType');
+            $expressNo = $this->_request->getPost('expressNo');
+            $_requestOb = $this->_requestObject;
+    
+            $deliverySupplier = array();
+            $deliverySupplier['deliverySupplier']['deliveryID'] = $deliveryID;
+            $deliverySupplier['deliverySupplier']['supplierID'] = $supplierID;
+            $deliverySupplier['deliverySupplier']['expressType'] = $expressType;
+            $deliverySupplier['deliverySupplier']['expressNo'] = $expressNo;
+            
+            $resultObject = $this->json->editExpressNoApi($_requestOb, $this->arrayToObject($deliverySupplier));
+            echo $resultObject->status;
+        }
+        exit;
+    }
+    
     // 封装银行列表
     public function genbankaccountlistAction() {
         $bankOptions = "";
