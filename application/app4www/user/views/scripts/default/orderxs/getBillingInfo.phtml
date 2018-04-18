@@ -74,10 +74,21 @@
 
 					<div class="layui-form-item margin-bottom-1">
 						<label class="layui-form-label width-100 text-align-left billingInfoFont font-blue">供货合同</label>
+						<div class="or_curs tl clearfix " style="width: 820px; padding: 10px 45px;">
+							<h3><?php echo $this->translate('files');?></h3>
+							
+							<dl class="fl download_doc">
+								<?php
+                                $contractList = array();
+                                $contractList[] = $deliverySupplier->purContract;
+								echo $this->ShowTopContract($contractList, $this->accountID, 'CRSE', null, $this->hasIDCertificate);
+								?>
+							</dl>
+						</div>
 					</div>
 
 					<div class="layui-form-item margin-bottom-1">
-						<label class="layui-form-label width-100 text-align-left billingInfoFont font-blue">增税发票模版</label>
+						<label class="layui-form-label width-100 text-align-left billingInfoFont font-blue">开票指引</label>
 					</div>
 				</div>
 			</div>

@@ -675,7 +675,6 @@ class OrderxsController extends Kyapi_Controller_Action
         // 取回当前公司的企业认证状态
         $_accountID = $this->view->accountID;
         $account = $this->json->getAccountApi($_requestOb, $_accountID);
-        // echo "11: ".json_decode($account)->result->isECommAccount;
         $this->view->hasIDCertificate = json_decode($account)->result->hasIDCertificate;
     
         $accountData = $this->objectToArray(json_decode($account)->result);
@@ -1432,6 +1431,11 @@ class OrderxsController extends Kyapi_Controller_Action
         $delivery = json_decode($resultObject)->result;
         $this->view->delivery = json_decode($resultObject)->result;
         $this->view->deliverySupplierList = $delivery->deliverySupplierList;
+    
+        // 取回当前公司的企业认证状态
+        $_accountID = $this->view->accountID;
+        $account = $this->json->getAccountApi($_requestOb, $_accountID);
+        $this->view->hasIDCertificate = json_decode($account)->result->hasIDCertificate;
         
         if (defined('SEED_WWW_TPL')) {
             if ($delivery->needTransfer && $delivery->transferRequestDate == null) {
@@ -1443,6 +1447,8 @@ class OrderxsController extends Kyapi_Controller_Action
                 $billingInfo = json_decode($billingInfoResultObject)->result;
                 $this->view->billingInfo = $billingInfo;
                 $this->view->deliverySupplierList = $billingInfo->deliverySupplierList;
+                // $purContractAttachmentList = $billingInfo->deliverySupplierList->purContract->attachmentList;
+                
                 $content = $this->view->render(SEED_WWW_TPL . "/orderxs/getBillingInfo.phtml");
                 echo $content;
                 exit;
