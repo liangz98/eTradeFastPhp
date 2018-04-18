@@ -18,6 +18,10 @@
     line-height: 35px;
 }
 
+.link-hover:hover {
+    color: #FFB800;
+}
+
 .billInfoTop {
     height: 160px;
     text-align: left;
