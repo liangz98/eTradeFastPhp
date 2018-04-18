@@ -111,6 +111,7 @@ return array(
     'accept'=>'Accept',
     'reject'=>'Reject',
     'edit' => 'Edit',
+    'save' => 'Save',
     'submit'=>'Submit',
     'submitCHECK' => 'Submitted for Review',
     'print' => 'Print',

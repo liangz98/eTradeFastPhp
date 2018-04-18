@@ -103,6 +103,7 @@ return array(
     'accept'=>'接收邀请',
     'reject'=>'拒绝邀请',
     'edit' => '编辑',
+    'save' => '保存',
     'submit'=>'提交',
     'submitCHECK' => '提交审核',
     'print' => '打印',
