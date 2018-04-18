@@ -14,7 +14,7 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
         $hasNoEContract = "False";
 
         foreach ($Arr as $k => $v) {
-            echo "in".is_object($v); exit;
+            var_dump($v->attachmentList); exit;
     
             // if (is_object($valueObject)) {
             //     $attachmentList = $valueObject->attachmentList;
