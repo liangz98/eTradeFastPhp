@@ -13,8 +13,17 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
     
         $hasNoEContract = "False";
 
-        var_dump($Arr); exit;
-        foreach ($Arr as $k => $v) {
+        foreach ($Arr as $k => $valueObject) {
+    
+            $attachmentList = array();
+            if (is_object($valueObject)) {
+                $attachmentList = $valueObject->attachmentList;
+            } else if (is_array($valueObject)) {
+                $attachmentList = $valueObject["attachmentList"];
+            }
+            
+            var_dump($attachmentList); exit;
+            
             if (count($v['attachmentList']) > 0) {
                 $attachmentList = $v['attachmentList'];
                 $pdfUrl = $this->view->seed_Setting['KyUrlex'] . '/doc/download.action?sid=' . session_id() . '&nid=' . $attachmentList[0]['attachID'] . '&vid=' . $attachmentList[0]['verifyID'];
