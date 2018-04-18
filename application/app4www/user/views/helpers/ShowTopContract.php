@@ -40,7 +40,7 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
             // var_dump($v->attachmentList); exit;
             if (is_object($v)) {
                 // objectToArray($v);
-                $this->objectToArray($v);
+                $v = $this->objectToArray($v);
             }
             
             echo "in".is_object($v); exit;
