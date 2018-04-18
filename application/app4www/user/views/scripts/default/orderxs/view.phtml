@@ -1252,7 +1252,14 @@ $(".billingInfo").click(function () {
 			$(".expressEdit").show();
 		});
 		$(".billingExpressEditSave").click(function () {
-		
+			var deliveryID = $(this).attr("deliveryID_");
+			var supplierID = $(this).attr("supplierID_");
+			var expressType = $("#expressType").val();
+			var expressNo = $("#expressNo").val();
+			alert(deliveryID);
+			alert(supplierID);
+			alert(expressType);
+			alert(expressNo);
 		});
 	});
 });

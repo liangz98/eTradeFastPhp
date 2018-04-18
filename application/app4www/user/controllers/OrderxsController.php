@@ -1429,6 +1429,7 @@ class OrderxsController extends Kyapi_Controller_Action
         $resultObject = $this->json->getDeliveryView($_requestOb, $deliveryID);
         
         $delivery = json_decode($resultObject)->result;
+        $this->view->deliveryID = $deliveryID;
         $this->view->delivery = json_decode($resultObject)->result;
         $this->view->deliverySupplierList = $delivery->deliverySupplierList;
     
