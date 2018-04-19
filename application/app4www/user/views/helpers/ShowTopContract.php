@@ -122,8 +122,10 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
                         }
                     }
                 }
-                
-                
+    
+                print_r("isESigned: ".$isESigned.'<br />');
+                print_r("isPSigned: ".$isPSigned.'<br />');
+                print_r("so: ".(!$isESigned || !$isPSigned).'<br />');
     
                 // 电子签
                 if ($v['isEContract']) {
