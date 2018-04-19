@@ -5,21 +5,26 @@
         </div>
         <div class="nav fr">
             <ul class="nav_list">
-                <?php  if(!empty($this->userID)){echo
-                '<span style="width:200px;float:left;display:inline-block;line-height:76px;margin-left:-200px;text-align:center;color:#fff;">
-                    <a style="color:#DCDCDD;" href="/user/index">'.$this->userLoginName.'</a>&nbsp;|
-                    <a style="color:#DCDCDD;" href="/user/Logout"><!--退出-->'.$this->translate('nav_exit').'</a>
-                </span>';}
-                else{
-                '<li class="nav-item">
-                    <a href="/user/login"><!-- 注册登录 -->'. $this->translate('register').$this->translate('nav_login') .'</a>
-                </li>';}?>
-				<li class="nav-item  cur">
-					<a href="/user/index"><!-- 基础服务 --><?php echo $this->translate('nav_baseservice');?></a>
+				<?php
+				if (!empty($this->userID)):
+				?>
+				<span style="width:200px;float:left;display:inline-block;line-height:76px;margin-left:-200px;text-align:center;color:#fff;">
+                    <a style="color:#DCDCDD;" href="/user/index"><?php echo $this->userLoginName; ?></a>&nbsp;&nbsp;
+                    <a style="color:#DCDCDD;" href="/user/Logout"><?php echo $this->translate('nav_exit'); ?></a>
+                </span>
+				<?php
+				else:
+				?>
+				<li class="nav-item">
+					<a href="/user/login"><?php echo $this->translate('register').$this->translate('nav_login'); ?></a>
 				</li>
-                <!--<li class="nav-item  cur">-->
-                <!--    <a href="/"><!-- 基础服务 -->--><?php //echo $this->translate('nav_baseservice');?><!--</a>-->
-                <!--</li>-->
+				<?php
+				endif;
+				?>
+				
+				<li class="nav-item  cur">
+					<a href="/user/index"><?php echo $this->translate('nav_index');?></a>
+				</li>
                 <li class="nav-item">
                     <a href="/user/finance"><!-- 金融服务 --><?php echo $this->translate('nav_finservice');?></a>
                 </li>
