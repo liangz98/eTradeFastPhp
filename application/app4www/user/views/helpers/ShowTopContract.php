@@ -56,9 +56,9 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
                 
                 // 是否企业签
                 $needESign = false; // 是否需要企业签
-                $isESigned = false; // 企业是否已经签了
+                $isESigned = True; // 企业是否已经签了
                 $needPSign = false; // 是否需要个人签
-                $isPSigned = false;   // 个人是否已经签了
+                $isPSigned = True;   // 个人是否已经签了
                 $isPartPrincipal = false;   // 当前用户是否可以签
                 
                 print_r("accountID: ".$accountID.'<br />');
@@ -68,8 +68,8 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
                     print_r("in First".'<br />');
                     // 企业
                     if ($v['firstPartySignMode'] == "E" || $v['firstPartySignMode'] == "B") {
-                        if ($v['firstPartySigningDate'] != null) {
-                            $isESigned = true;
+                        if ($v['firstPartySigningDate'] == null) {
+                            $isESigned = false;
                         }
                     }
     
@@ -78,8 +78,8 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
                         // 签署人是否当前用户
                         if ($this->view->userID == $v['firstPartyPrincipal']) {
                             // 是否未签
-                            if ($v['firstPartyPrincipalSigningDate'] != null) {
-                                $isPSigned = true;
+                            if ($v['firstPartyPrincipalSigningDate'] == null) {
+                                $isPSigned = false;
                             }
                         }
                     }
@@ -87,8 +87,8 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
                     print_r("in Second");
                     // 企业
                     if ($v['secondPartySignMode'] == "E" || $v['secondPartySignMode'] == "B") {
-                        if ($v['secondPartySigningDate'] != null) {
-                            $isESigned = true;
+                        if ($v['secondPartySigningDate'] == null) {
+                            $isESigned = false;
                         }
                     }
     
@@ -97,8 +97,8 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
                         // 签署人是否当前用户
                         if ($this->view->userID == $v['secondPartyPrincipal']) {
                             // 是否未签
-                            if ($v['secondPartyPrincipalSigningDate'] != null) {
-                                $isPSigned = true;
+                            if ($v['secondPartyPrincipalSigningDate'] == null) {
+                                $isPSigned = false;
                             }
                         }
                     }
@@ -106,8 +106,8 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
                     print_r("in Third");
                     // 企业
                     if ($v['thirdPartySignMode'] == "E" || $v['thirdPartySignMode'] == "B") {
-                        if ($v['thirdPartySigningDate'] != null) {
-                            $isESigned = true;
+                        if ($v['thirdPartySigningDate'] == null) {
+                            $isESigned = false;
                         }
                     }
     
@@ -116,8 +116,8 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
                         // 签署人是否当前用户
                         if ($this->view->userID == $v['thirdPartyPrincipal']) {
                             // 是否未签
-                            if ($v['thirdPartyPrincipalSigningDate'] != null) {
-                                $isPSigned = true;
+                            if ($v['thirdPartyPrincipalSigningDate'] == null) {
+                                $isPSigned = false;
                             }
                         }
                     }
