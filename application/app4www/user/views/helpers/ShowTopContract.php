@@ -61,11 +61,11 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
                 $isPSigned = false;   // 个人是否已经签了
                 $isPartPrincipal = false;   // 当前用户是否可以签
                 
-                print_r("accountID: ".$accountID);
-                print_r("userID: ".$this->view->userID);
+                print_r("accountID: ".$accountID.'<br />');
+                print_r("userID: ".$this->view->userID.'<br />');
                 
                 if ($v['firstParty'] != null && $v['firstParty'] == $accountID) {
-                    print_r("in First");
+                    print_r("in First".'<br />');
                     // 企业
                     if ($v['firstPartySignMode'] == "E" || $v['firstPartySignMode'] == "B") {
                         if ($v['firstPartySigningDate'] != null) {
@@ -127,12 +127,14 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
     
                 // 电子签
                 if ($v['isEContract']) {
+                    print_r("in EContract".'<br />');
                     if (!$isESigned || !$isPSigned) {
                         $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr">签署</a>';
                     } else {
                         $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">已签署</a>';
                     }
                 } else {
+                    print_r("in not EContract".'<br />');
                     $hasNoEContract = "True";
                     // 非网签未签署
                     if (($v['firstParty'] != null && $v['firstParty'] == $accountID && $v['firstPartySigningDate'] == null) || ($v['secondParty'] != null && $v['secondParty'] == $accountID && $v['secondPartySigningDate'] == null) || ($v['thirdParty'] != null && $v['thirdParty'] == $accountID && $v['thirdPartySigningDate'] == null)) {
