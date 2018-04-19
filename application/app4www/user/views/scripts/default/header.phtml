@@ -1,5 +1,5 @@
 <div class="header_wrap">
-	<div class="header w1200 m0a ofh clearfix">
+	<div>
 		<div class="logo fl">
 			<a href="/"><img src="/ky/images/logo.png"></a>
 		</div>
@@ -17,12 +17,10 @@
 				</li>
                 
                 <?php if (!empty($this->userID)): ?>
-				<li class="nav-item">
-					<!--<span style="width:200px;float:right;display:inline-block;line-height:76px;margin-left:-200px;text-align:center;color:#fff;">-->
-						<a style="color:#DCDCDD;" href="/user/index"><?php echo $this->userLoginName; ?></a>&nbsp;&nbsp;
-						<a style="color:#DCDCDD;" href="/user/Logout"><?php echo $this->translate('nav_exit'); ?></a>
-					<!--</span>-->
-				</li>
+				<span style="width:200px;float:right;display:inline-block;line-height:76px;margin-left:-200px;text-align:center;color:#fff;">
+					<a style="color:#DCDCDD;" href="/user/index"><?php echo $this->userLoginName; ?></a>&nbsp;&nbsp;
+					<a style="color:#DCDCDD;" href="/user/Logout"><?php echo $this->translate('nav_exit'); ?></a>
+				</span>
                 <?php else: ?>
 				<li class="nav-item">
 					<a href="/user/login"><?php echo $this->translate('register') . $this->translate('nav_login'); ?></a>
