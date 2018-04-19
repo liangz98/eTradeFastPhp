@@ -592,12 +592,6 @@ function initPdfView(pdfUrl, obj) {
 		}
 	});
 
-	if ($("#isSign_" + obj.id).val() == 'true') {
-		$(".sign-button").hide();
-	} else {
-		$(".sign-button").show();
-	}
-
 	var signTitle = "<?php echo $this->translate('signTitle');?>";
 	layer.open({
 		type: 1,	//Page层类型
@@ -611,8 +605,18 @@ function initPdfView(pdfUrl, obj) {
 	});
 
 	$(".download-button").attr("contractID_", obj.id);
-	$(".sign-button").attr("contractID_", obj.id);
-	$(".person-sign-button").attr("contractID_", obj.id);
+	
+	if ($("#isESigned_" + obj.id).val() == 'true') {
+		$(".sign-button").hide();
+	} else {
+		$(".sign-button").show().attr("contractID_", obj.id);
+	}
+
+	if ($("#isPSigned_" + obj.id).val() == 'true') {
+		$(".person-sign-button").hide();
+	} else {
+		$(".person-sign-button").show().attr("contractID_", obj.id);
+	}
 }
 
 //document.getElementById('prev').addEventListener('click', onPrevPage);

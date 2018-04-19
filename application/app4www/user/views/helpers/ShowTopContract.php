@@ -55,14 +55,8 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
                 $IMG .= '<input type="hidden" id="ext_'.$v['contractID'].'" value="'.$v['ext'].'" />';
                 
                 // 是否企业签
-                $needESign = false; // 是否需要企业签
                 $isESigned = True; // 企业是否已经签了
-                $needPSign = false; // 是否需要个人签
                 $isPSigned = True;   // 个人是否已经签了
-                $isPartPrincipal = false;   // 当前用户是否可以签
-                
-                print_r("accountID: ".$accountID.'<br />');
-                print_r("userID: ".$this->view->userID.'<br />');
                 
                 if ($v['firstParty'] != null && $v['firstParty'] == $accountID) {
                     print_r("in First".'<br />');
@@ -123,20 +117,17 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
                     }
                 }
     
-                print_r("isESigned: ".$isESigned.'<br />');
-                print_r("isPSigned: ".$isPSigned.'<br />');
-                print_r("so: ".(!$isESigned || !$isPSigned).'<br />');
+                $IMG .= '<input type="hidden" id="isESigned_'.$v['contractID'].'" value="'.$isESigned.'" />';
+                $IMG .= '<input type="hidden" id="isPSigned_'.$v['contractID'].'" value="'.$isPSigned.'" />';
     
                 // 电子签
                 if ($v['isEContract']) {
-                    print_r("in EContract".'<br />');
                     if (!$isESigned || !$isPSigned) {
                         $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr">签署</a>';
                     } else {
                         $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">已签署</a>';
                     }
                 } else {
-                    print_r("in not EContract".'<br />');
                     $hasNoEContract = "True";
                     // 非网签未签署
                     if (($v['firstParty'] != null && $v['firstParty'] == $accountID && $v['firstPartySigningDate'] == null) || ($v['secondParty'] != null && $v['secondParty'] == $accountID && $v['secondPartySigningDate'] == null) || ($v['thirdParty'] != null && $v['thirdParty'] == $accountID && $v['thirdPartySigningDate'] == null)) {
