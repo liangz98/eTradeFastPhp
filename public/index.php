@@ -17,7 +17,7 @@ define('SEED_LIB_ROOT',realpath('../library'));
 //日志根目录
 define('SEED_LOG_ROOT',realpath('../log'));
 //应用根目录
-define('SEED_APP_ROOT',realpath('../application/app4www/user'));
+define('SEED_APP_ROOT',realpath('../application/app4www/www'));
 //配置根目录
 define('SEED_CONF_ROOT',realpath('../config'));
 //缓存根目录
@@ -33,7 +33,7 @@ if(file_exists(SEED_LICENSE_ROOT."/auth.php")){
 }
 
 //默认控制器
-define('SEED_CONTROLLER_DIRECTORY',realpath('../application/app4www/user/controllers'));
+define('SEED_CONTROLLER_DIRECTORY',realpath('../application/app4www/www/controllers'));
 //timezone
 date_default_timezone_set('Asia/Chongqing');
 
