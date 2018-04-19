@@ -704,8 +704,6 @@ class OrderxsController extends Kyapi_Controller_Action
         
         $this->view->vestut = $existDatt['vendorExecStatus'];
         $this->view->veorderID = $existDatt['orderID'];
-        //处理进度说明逻辑
-        $this->view->plan = $this->planAction($existDatt);
     
     
         // 取回物流信息

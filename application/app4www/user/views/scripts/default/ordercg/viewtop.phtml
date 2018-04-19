@@ -61,7 +61,7 @@
 		<div class="or_curs tl"><label class="or_lb"><!--订单汇率--><?php echo $this->translate('Prities');?></label><span class="w_curstor huilv"></span></div>
         <div class="or_curs clearfix" style="width:100%;"><label class="or_lb"><!--进度说明--><?php echo $this->translate('progressING');?></label>
             <span class="w_curstor" style="width:740px;"><?php echo $this->plan['plan'];?></span></div>
-        <div id="key" class="or_curs tl clearfix " style="<?php  if($this->plan['display']==0){echo 'display:none;';}?> width: 820px;padding: 10px 45px;">
+        <div id="key" class="or_curs tl clearfix " style="width: 820px;padding: 10px 45px;">
             <h3><!--文件--><?php echo $this->translate('files');?></h3>
             <dl class="fl download_doc"><?php echo $this->ShowTopContract($this->contractList, $this->accountID, 'ODTA', $this->orders['client'], $this->hasIDCertificate);?></dl>
         </div>

@@ -719,8 +719,6 @@ class ordercgController extends Kyapi_Controller_Action
 
 		$this->view->vestut=$existDatt['buyerExecStatus'];
 		$this->view->veorderID=$existDatt['orderID'];
-        //处理进度说明逻辑
-        $this->view->plan=$this->planAction($existDatt);
         
         // 取回物流信息
         $deliveryList = $this->json->listDelivery($_requestOb, $_orderID);
