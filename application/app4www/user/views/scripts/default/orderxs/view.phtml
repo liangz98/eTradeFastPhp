@@ -813,11 +813,11 @@ function initSignViewNoEContract(obj) {
 
 	var htmlList = '<tr data-row=' + rowIndex + '>';
 	
-	htmlList += '<td><a href="#" id="" onclick="">' + $("#contractName_" + obj.id).val() + '</a></td>';
+	htmlList += '<td><a href="#" id="" onclick="doDownload(\''+obj.id+'\')">' + $("#contractName_" + obj.id).val() + '</a></td>';
 
 	htmlList += '<td>' + $("#ext_" + obj.id).val() + '</td>';
 	
-	htmlList += '<td><a href="#" id="" onclick="" class="order_contract_sign fr">下载</a></td>';
+	htmlList += '<td><a href="#" id="" onclick="doDownload(\''+obj.id+'\')" class="order_contract_sign fr">下载</a></td>';
 
 	htmlList += '</td></tr>';
 	//在行最后添加数据
@@ -826,6 +826,10 @@ function initSignViewNoEContract(obj) {
 	$("#signNoEContractConfirmBtn").attr("contractID_", obj.id);
 	// alert(obj.id);
 	// alert($("#contractName_" + obj.id).val());
+}
+
+function doDownload(objID) {
+	window.location.href = $("#contractAttachUrl_" + objID).val();
 }
 // ********************   显示非网签上传合同层 End  *************************************
 

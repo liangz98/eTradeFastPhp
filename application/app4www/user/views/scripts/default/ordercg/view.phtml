@@ -908,7 +908,7 @@ function initSignViewNoEContract(obj) {
 
 	var htmlList = '<tr data-row=' + rowIndex + '>';
 
-	htmlList += '<td><a href="#" id="" onclick="">' + $("#contractName_" + obj.id).val() + '</a></td>';
+	htmlList += '<td><a href="#" id="" onclick="doDownload(\''+obj.id+'\')">' + $("#contractName_" + obj.id).val() + '</a></td>';
 
 	htmlList += '<td>' + $("#ext_" + obj.id).val() + '</td>';
 
