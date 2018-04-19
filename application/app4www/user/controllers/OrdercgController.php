@@ -1530,7 +1530,7 @@ class ordercgController extends Kyapi_Controller_Action
         if ($this->_request->isPost()) {
             
             $_requestOb = $this->_requestObject;
-            $existData = $this->json->getSignMobile($_requestOb);
+            $existData = $this->json->getPersonSignMobileApi($_requestOb);
             $res = json_decode($existData)->result;
             $msg = $res;
         }
@@ -1543,7 +1543,7 @@ class ordercgController extends Kyapi_Controller_Action
         if ($this->_request->isPost()) {
             
             $_requestOb = $this->_requestObject;
-            $existData = $this->json->sendSignAuthCode($_requestOb);
+            $existData = $this->json->sendPersonSignAuthCodeApi($_requestOb);
             $res = json_decode($existData)->result;
             $msg = $res;
         }
@@ -1559,7 +1559,7 @@ class ordercgController extends Kyapi_Controller_Action
             $authCode = $this->_request->getParam('signAuthCode');
             
             $_requestOb = $this->_requestObject;
-            $existData = $this->json->doSignPDF($_requestOb, $contractID, $authCode);
+            $existData = $this->json->doPersonSignPDFApi($_requestOb, $contractID, $authCode);
             $res = json_decode($existData)->result;
             $msg = $res;
         }
