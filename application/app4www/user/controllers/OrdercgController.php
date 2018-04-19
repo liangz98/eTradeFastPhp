@@ -1522,4 +1522,48 @@ class ordercgController extends Kyapi_Controller_Action
         echo json_encode($msg);
         exit;
     }
+    
+    // ***************  个人  ***************************
+    
+    public function getpersonsignmobileAction() {
+        $msg = 0;
+        if ($this->_request->isPost()) {
+            
+            $_requestOb = $this->_requestObject;
+            $existData = $this->json->getSignMobile($_requestOb);
+            $res = json_decode($existData)->result;
+            $msg = $res;
+        }
+        echo json_encode($msg);
+        exit;
+    }
+    
+    public function sendpersonsignauthcodeAction() {
+        $msg = 0;
+        if ($this->_request->isPost()) {
+            
+            $_requestOb = $this->_requestObject;
+            $existData = $this->json->sendSignAuthCode($_requestOb);
+            $res = json_decode($existData)->result;
+            $msg = $res;
+        }
+        echo json_encode($msg);
+        exit;
+    }
+    
+    public function dopersonsignpdfAction() {
+        $msg = 0;
+        if ($this->_request->isPost()) {
+            
+            $contractID = $this->_request->getParam('contractID');
+            $authCode = $this->_request->getParam('signAuthCode');
+            
+            $_requestOb = $this->_requestObject;
+            $existData = $this->json->doSignPDF($_requestOb, $contractID, $authCode);
+            $res = json_decode($existData)->result;
+            $msg = $res;
+        }
+        echo json_encode($msg);
+        exit;
+    }
 }

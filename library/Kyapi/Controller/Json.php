@@ -1454,6 +1454,28 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
     
+    /* 网签 个人 获取验证手机号 */
+    public function getPersonSignMobileApi($_requestObject) {
+        $_url=$this->url.'/contractapi/contractApi!getPersSignMobile.action';
+        $_params =json_encode(array("requestObject"=>$_requestObject));
+        $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
+        return $resultObject;
+    }
+    /* 网签 个人 获取短信验证码 */
+    public function sendPersonSignAuthCodeApi($_requestObject) {
+        $_url=$this->url.'/contractapi/contractApi!sendPersSignAuthCode.action';
+        $_params =json_encode(array("requestObject"=>$_requestObject));
+        $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
+        return $resultObject;
+    }
+    /* 网签 个人 签署 */
+    public function doPersonSignPDFApi($_requestObject, $contractID, $authCode) {
+        $_url=$this->url.'/contractapi/contractApi!doPersSignPDF.action';
+        $_params =json_encode(array("requestObject"=>$_requestObject, "contractID" => $contractID, "authCode" => $authCode));
+        $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
+        return $resultObject;
+    }
+    
     /*5.3 合同PDF文件下载URL*/
     public function getPdfUrl($_requestObject,$contractID){
 

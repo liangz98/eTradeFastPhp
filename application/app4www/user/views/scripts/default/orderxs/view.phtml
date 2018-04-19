@@ -656,12 +656,47 @@ $(".sign-button").bind("click",function(){
 		content: $('#doSignPDFLayDiv')
 	});
 });
+
+$(".person-sign-button").bind("click",function(){
+	var getSignMobile = '/user/ordercg/getpersonsignmobile';
+	$.post(getSignMobile,
+		{
+
+		},
+		function (data) {
+		}, 'json')
+		.success(function (data) {
+			var mobileStr = "<?php echo $this->translate('mobilephone');?>";
+			$("#signMobileInput").val(mobileStr + " " +data);
+		})
+		.error(function () {
+			console.log("network error");
+		})
+		.complete(function () {
+			console.log("complete");
+		});
+
+	var signTitle = "<?php echo $this->translate('signTitle');?>";
+	layer.open({
+		type: 1,
+		title: signTitle,
+		shadeClose: true,
+		shade: 0.2,
+		area: ['500px', '420px'],
+		content: $('#doSignPDFLayDiv')
+	});
+	$("#signSendAuthCodeBtn").attr("personSend", "true");
+	$("#singConfirmBtn").attr("personSend", "true");
+});
 // ********************   获取验证手机号码 End  *************************************
 
 
 // ********************   获取短信验证码 Start  *************************************
 $("#signSendAuthCodeBtn").click(function () {
 	var sendSignAuthCode = '/user/ordercg/sendsignauthcode';
+	if ($(this).attr("personSend") == "true") {
+		sendSignAuthCode = '/user/ordercg/sendpersonsignauthcode';
+	}
 	$.post(sendSignAuthCode,
 		{
 
@@ -716,6 +751,9 @@ function settime(obj) { //发送验证码倒计时
 // ********************   获取短信验证码 Start  *************************************
 $("#singConfirmBtn").click(function () {
 	var doSignPDF = '/user/ordercg/dosignpdf';
+	if ($(this).attr("personSend") == "true") {
+		doSignPDF = '/user/ordercg/dopersonsignpdf';
+	}
 	$.post(doSignPDF,
 		{
 			contractID: $(".sign-button").attr("contractID_"),
