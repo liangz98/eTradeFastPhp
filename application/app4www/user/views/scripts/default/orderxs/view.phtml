@@ -104,8 +104,8 @@
 		.person-sign-button {
 			position: absolute;
 			height: 100px;
-			width: 200px;
-			top: 50px;
+			width: 100px;
+			top: 180px;
 			right: 20px;
 			background: #b4d145;
 			display: block;
@@ -121,7 +121,7 @@
 			position: absolute;
 			height: 100px;
 			width: 100px;
-			top: 300px;
+			top: 320px;
 			right: 20px;
 			background: #7180eb;
 			display: block;
@@ -612,6 +612,7 @@ function initPdfView(pdfUrl, obj) {
 
 	$(".download-button").attr("contractID_", obj.id);
 	$(".sign-button").attr("contractID_", obj.id);
+	$(".person-sign-button").attr("contractID_", obj.id);
 }
 
 //document.getElementById('prev').addEventListener('click', onPrevPage);

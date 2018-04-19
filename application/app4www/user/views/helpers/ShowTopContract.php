@@ -53,17 +53,54 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
                 $IMG .= '<input type="hidden" id="contractID_'.$v['contractID'].'" value="'.$v['contractID'].'" />';
                 $IMG .= '<input type="hidden" id="contractName_'.$v['contractID'].'" value="'.$v['contractName'].'" />';
                 $IMG .= '<input type="hidden" id="ext_'.$v['contractID'].'" value="'.$v['ext'].'" />';
+                
+                // 是否企业签
+                $needESign = false; // 是否需要企业签
+                $isESigned = false; // 企业是否已经签了
+                if ($v['PartSignMode'] == "E" || $v['PartSignMode'] == "B") {
+                    $needESign = true;
+                    if (($v['firstParty'] != null && $v['firstParty'] == $accountID && $v['firstPartySigningDate'] != null) || ($v['secondParty'] != null && $v['secondParty'] == $accountID && $v['secondPartySigningDate'] != null) || ($v['thirdParty'] != null && $v['thirdParty'] == $accountID && $v['thirdPartySigningDate'] != null)) {
+                        $isESigned = true;
+                    }
+                }
+                
+                $needPSign = false; // 是否需要个人签
+                $isPSigned = false;   // 个人是否已经签了
+                $isPartPrincipal = false;   // 当前用户是否可以签
+                // 是否个人签
+                if ($v['PartSignMode'] == "P" || $v['PartSignMode'] == "B") {
+                    $needPSign = true;
+        
+                    // 签署人是否当前用户
+                    if ($this->view->userID == $v['PartPrincipal']) {
+                        $isPartPrincipal = true;
     
+                        // 是否未签
+                        if ($v['PartPrincipalSigningDate'] != null) {
+                            $isPSigned = true;
+                        }
+                    }
+                }
+    
+                // 电子签
                 if ($v['isEContract']) {
-                    if (!$hasIDCertificate) {
-                        $IMG .= '<a href="javascript:void(0)" onclick="contractSignViewNO(\'' . $v['contractID'] . '\')" class="order_contract_sign fr">签署</a>';
-                    } else {
+                    if (!$isESigned || !$isPSigned) {
                         $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr">签署</a>';
+                    } else {
+                        $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">已签署</a>';
                     }
                 } else {
                     $hasNoEContract = "True";
-                    $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initSignViewNoEContract(this)" class="order_contract_sign fr">下载</a>';
+                    // 非网签未签署
+                    if (($v['firstParty'] != null && $v['firstParty'] == $accountID && $v['firstPartySigningDate'] == null) || ($v['secondParty'] != null && $v['secondParty'] == $accountID && $v['secondPartySigningDate'] == null) || ($v['thirdParty'] != null && $v['thirdParty'] == $accountID && $v['thirdPartySigningDate'] == null)) {
+                        $hasNoEContract = "True";
+                        $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initSignViewNoEContract(this)" class="order_contract_sign fr">下载</a>';
+                    } else {
+                        $IMG .= '<input type="hidden" id="isSign_' . $v['contractID'] . '" value="true">';
+                        $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">已签署</a>';
+                    }
                 }
+                
                 $IMG .= '</li>';
             } else {
                 $IMG .= '<label>暂无数据！</label>';
