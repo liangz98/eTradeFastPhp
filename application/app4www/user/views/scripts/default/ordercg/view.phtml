@@ -161,6 +161,24 @@
 	font-size: large;
 	color:#ffffff;
 }
+
+.person-sign-button {
+	position: absolute;
+	height: 100px;
+	width: 100px;
+	top: 180px;
+	right: 20px;
+	background: #b4d145;
+	display: block;
+	line-height: 100px;
+	opacity: 0.6;
+	border-radius: 50px;
+	text-align: center;
+	cursor: pointer;
+	font-size: large;
+	color:#ffffff;
+}
+
 .download-button {
 	position: absolute;
 	height: 100px;
@@ -669,12 +687,6 @@ function initPdfView(pdfUrl, obj) {
 
 	});
 
-	if ($("#isSign_" + obj.id).val() == 'true') {
-		$(".sign-button").hide();
-	} else {
-		$(".sign-button").show();
-	}
-
 	var signTitle = "<?php echo $this->translate('signTitle');?>";
 	layer.open({
 		type: 1,	//Page层类型
@@ -688,7 +700,18 @@ function initPdfView(pdfUrl, obj) {
 	});
 
 	$(".download-button").attr("contractID_", obj.id);
-	$(".sign-button").attr("contractID_", obj.id);
+
+	if ($("#isESigned_" + obj.id).val() == 1) {
+		$(".sign-button").hide();
+	} else {
+		$(".sign-button").show().attr("contractID_", obj.id);
+	}
+
+	if ($("#isPSigned_" + obj.id).val() == 1) {
+		$(".person-sign-button").hide();
+	} else {
+		$(".person-sign-button").show().attr("contractID_", obj.id);
+	}
 }
 
 //document.getElementById('prev').addEventListener('click', onPrevPage);
@@ -728,12 +751,47 @@ $(".sign-button").bind("click",function(){
 		content: $('#doSignPDFLayDiv')
 	});
 });
+
+$(".person-sign-button").bind("click",function(){
+	var getSignMobile = '/user/ordercg/getpersonsignmobile';
+	$.post(getSignMobile,
+		{
+
+		},
+		function (data) {
+		}, 'json')
+		.success(function (data) {
+			var mobileStr = "<?php echo $this->translate('mobilephone');?>";
+			$("#signMobileInput").val(mobileStr + " " +data);
+		})
+		.error(function () {
+			console.log("network error");
+		})
+		.complete(function () {
+			console.log("complete");
+		});
+
+	var signTitle = "<?php echo $this->translate('signTitle');?>";
+	layer.open({
+		type: 1,
+		title: signTitle,
+		shadeClose: true,
+		shade: 0.2,
+		area: ['500px', '420px'],
+		content: $('#doSignPDFLayDiv')
+	});
+	$("#signSendAuthCodeBtn").attr("personSend", "true");
+	$("#singConfirmBtn").attr("personSend", "true");
+});
 // ********************   获取验证手机号码 End  *************************************
 
 
 // ********************   获取短信验证码 Start  *************************************
 $("#signSendAuthCodeBtn").click(function () {
 	var sendSignAuthCode = '/user/ordercg/sendsignauthcode';
+	if ($(this).attr("personSend") == "true") {
+		sendSignAuthCode = '/user/ordercg/sendpersonsignauthcode';
+	}
 	$.post(sendSignAuthCode,
 		{
 	
@@ -788,6 +846,9 @@ function settime(obj) { //发送验证码倒计时
 // ********************   获取短信验证码 Start  *************************************
 $("#singConfirmBtn").click(function () {
 	var doSignPDF = '/user/ordercg/dosignpdf';
+	if ($(this).attr("personSend") == "true") {
+		doSignPDF = '/user/ordercg/dopersonsignpdf';
+	}
 	$.post(doSignPDF,
 		{
 			contractID: $(".sign-button").attr("contractID_"),
