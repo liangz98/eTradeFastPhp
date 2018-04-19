@@ -912,7 +912,8 @@ function initSignViewNoEContract(obj) {
 
 	htmlList += '<td>' + $("#ext_" + obj.id).val() + '</td>';
 
-	htmlList += '<td><a href="#" id="" onclick="" class="order_contract_sign fr">下载</a></td>';
+	var contractID_download = $("#contractAttachUrl_" + contractID_).val();
+	htmlList += '<td><a href="#" id="" onclick="javascript:window.location.href="' + contractID_download + '" class="order_contract_sign fr">下载</a></td>';
 
 	htmlList += '</td></tr>';
 	//在行最后添加数据
