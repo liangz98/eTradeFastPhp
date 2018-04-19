@@ -61,6 +61,7 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
                 $isPSigned = false;   // 个人是否已经签了
                 $isPartPrincipal = false;   // 当前用户是否可以签
                 
+                echo "1";exit;
                 
                 if ($v['firstParty'] != null && $v['firstParty'] == $accountID) {
                     // 企业
