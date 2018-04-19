@@ -64,6 +64,7 @@ return array(
     'nav_Miss' => 'Mrs.',
     'nav_user' => 'User Center',
     'register' => 'Register',
+    'nav_index' => 'Index',
     'nav_baseservice' => 'Basic Services',
     'nav_finservice' => 'Financial Services',
     'nav_channel' => 'Financial Channels',

@@ -55,6 +55,7 @@ return array(
     'nav_Miss' => '小姐',
     'nav_user' => '用户中心',
     'register' => '注册',
+    'nav_index' => '首页',
     'nav_baseservice' => '基础服务',
     'nav_finservice' => '金融服务',
     'nav_channel' => '金融项目',
