@@ -20,7 +20,6 @@ class IndexController extends Kyapi_Controller_Action
 
     public function indexAction()
     {
-        echo "11"; exit;
         $sortlistM = new Seed_Model_Sortlist('system');
         $insertData=array();
         $is_sortlist = $sortlistM->fetchRows(null,array('user_id'=>$this->view->userID),'id desc');
