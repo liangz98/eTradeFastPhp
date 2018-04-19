@@ -73,7 +73,7 @@ class IndexController extends Kyapi_Controller_Action
 
 
         //获取6个模块数据
-        $_DataOrderXS = $this->json->listSaleOrderApi($this->_requestObject, null, null, null, 0, 5);
+        $_DataOrderXS = $this->json->listSaleOrderApi($this->_requestObject, '04', null, null, 0, 5);
         $_OrderXS=$this->objectToArray(json_decode($_DataOrderXS));
         $this->view->orderXS=$_OrderXS['result'];
 
