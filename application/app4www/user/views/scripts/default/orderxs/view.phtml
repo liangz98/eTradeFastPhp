@@ -606,13 +606,13 @@ function initPdfView(pdfUrl, obj) {
 
 	$(".download-button").attr("contractID_", obj.id);
 	
-	if ($("#isESigned_" + obj.id).val() == 'true') {
+	if ($("#isESigned_" + obj.id).val() == 1) {
 		$(".sign-button").hide();
 	} else {
 		$(".sign-button").show().attr("contractID_", obj.id);
 	}
 
-	if ($("#isPSigned_" + obj.id).val() == 'true') {
+	if ($("#isPSigned_" + obj.id).val() == 1) {
 		$(".person-sign-button").hide();
 	} else {
 		$(".person-sign-button").show().attr("contractID_", obj.id);
