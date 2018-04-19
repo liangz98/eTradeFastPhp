@@ -57,30 +57,68 @@ class Zend_View_Helper_ShowTopContract extends Shop_View_Helper {
                 // 是否企业签
                 $needESign = false; // 是否需要企业签
                 $isESigned = false; // 企业是否已经签了
-                if ($v['PartSignMode'] == "E" || $v['PartSignMode'] == "B") {
-                    $needESign = true;
-                    if (($v['firstParty'] != null && $v['firstParty'] == $accountID && $v['firstPartySigningDate'] != null) || ($v['secondParty'] != null && $v['secondParty'] == $accountID && $v['secondPartySigningDate'] != null) || ($v['thirdParty'] != null && $v['thirdParty'] == $accountID && $v['thirdPartySigningDate'] != null)) {
-                        $isESigned = true;
-                    }
-                }
-                
                 $needPSign = false; // 是否需要个人签
                 $isPSigned = false;   // 个人是否已经签了
                 $isPartPrincipal = false;   // 当前用户是否可以签
-                // 是否个人签
-                if ($v['PartSignMode'] == "P" || $v['PartSignMode'] == "B") {
-                    $needPSign = true;
-        
-                    // 签署人是否当前用户
-                    if ($this->view->userID == $v['PartPrincipal']) {
-                        $isPartPrincipal = true;
+                
+                
+                if ($v['firstParty'] != null && $v['firstParty'] == $accountID) {
+                    // 企业
+                    if ($v['firstPartySignMode'] == "E" || $v['firstPartySignMode'] == "B") {
+                        if ($v['firstPartySigningDate'] != null) {
+                            $isESigned = true;
+                        }
+                    }
     
-                        // 是否未签
-                        if ($v['PartPrincipalSigningDate'] != null) {
-                            $isPSigned = true;
+                    // 个人
+                    if ($v['firstPartySignMode'] == "P" || $v['firstPartySignMode'] == "B") {
+                        // 签署人是否当前用户
+                        if ($this->view->userID == $v['firstPartyPrincipal']) {
+                            // 是否未签
+                            if ($v['firstPartyPrincipalSigningDate'] != null) {
+                                $isPSigned = true;
+                            }
+                        }
+                    }
+                } elseif ($v['secondParty'] != null && $v['secondParty'] == $accountID) {
+                    // 企业
+                    if ($v['secondPartySignMode'] == "E" || $v['secondPartySignMode'] == "B") {
+                        if ($v['secondPartySigningDate'] != null) {
+                            $isESigned = true;
+                        }
+                    }
+    
+                    // 个人
+                    if ($v['secondPartySignMode'] == "P" || $v['secondPartySignMode'] == "B") {
+                        // 签署人是否当前用户
+                        if ($this->view->userID == $v['secondPartyPrincipal']) {
+                            // 是否未签
+                            if ($v['secondPartyPrincipalSigningDate'] != null) {
+                                $isPSigned = true;
+                            }
+                        }
+                    }
+                } elseif ($v['thirdParty'] != null && $v['thirdParty'] == $accountID) {
+                    // 企业
+                    if ($v['thirdPartySignMode'] == "E" || $v['thirdPartySignMode'] == "B") {
+                        if ($v['thirdPartySigningDate'] != null) {
+                            $isESigned = true;
+                        }
+                    }
+    
+                    // 个人
+                    if ($v['thirdPartySignMode'] == "P" || $v['thirdPartySignMode'] == "B") {
+                        // 签署人是否当前用户
+                        if ($this->view->userID == $v['thirdPartyPrincipal']) {
+                            // 是否未签
+                            if ($v['thirdPartyPrincipalSigningDate'] != null) {
+                                $isPSigned = true;
+                            }
                         }
                     }
                 }
+                
+                
     
                 // 电子签
                 if ($v['isEContract']) {
