@@ -23,7 +23,7 @@ class LoginController extends Kyapi_Controller_Action {
             $this->view->rememberName = $_COOKIE['username'];
         }
         if ($this->_request->isPost()) {
-            print_r("post in");
+            print_r("post in"); exit;
             // 请求服务端方法
             $_requestOb = $this->_requestObject;
             $loginName = $this->_request->getParam('ecommloginname');
