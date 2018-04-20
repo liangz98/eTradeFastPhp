@@ -5,17 +5,16 @@
  * Date: 2016/7/12
  * Time: 17:26
  */
-class IndexController extends Kyapi_Controller_Action
-{
-    public function preDispatch()
-    {
+class IndexController extends Kyapi_Controller_Action {
+    
+    public function preDispatch() {
         $this->view->cur_pos = 'index';
         //清除 免登陆session
         $this->IsAuth($this->view->visitor);
-
-        echo "in";exit;
-        if(empty($this->view->userID)){
-            Mobile_Browser::redirect('请先登录系统！',$this->view->seed_Setting['user_app_server']."/login");
+        
+        echo "in"; exit;
+        if (empty($this->view->userID)) {
+            Mobile_Browser::redirect('请先登录系统！', $this->view->seed_Setting['user_app_server'] . "/login");
         }
     }
 
