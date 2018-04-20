@@ -11,8 +11,9 @@ class IndexController extends Kyapi_Controller_Action {
         $this->view->cur_pos = 'index';
         //清除 免登陆session
         $this->IsAuth($this->view->visitor);
+    
+        echo $_SESSION['rev_session']['userID'];
         
-        echo "in"; exit;
         if (empty($this->view->userID)) {
             Mobile_Browser::redirect('请先登录系统！', $this->view->seed_Setting['user_app_server'] . "/login");
         }

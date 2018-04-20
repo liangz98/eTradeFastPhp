@@ -20,7 +20,7 @@
 .error{margin:0;font-size: 14px;height: 30px;}
 </style>
 <script type="text/javascript">
-function doLogin(){ 
+function doLogin(){
     $("#login_form").validate({
         event: "keyup",
         rules: {},
@@ -33,8 +33,9 @@ function doLogin(){
                 success: function() {
                 }
             };
+    
             $('#login_form').ajaxSubmit(options);
-
+    
         }
     });
 }
@@ -72,20 +73,21 @@ function doLogin(){
     </div>
 <?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?><script src="/ky/js/jquery.validate.js"></script>
 <script>
-    function changing(){
-        document.getElementById('checkpic').src="/user/check/code?"+Math.random();
-    }
-    $(function(){
-    $("#login_form").validate({
-        submitHandler: function() {
-            form.submit();
-        }
-    })
-});
-jQuery.validator.addMethod("mail", function (value, element) {
-    var mail = /^[a-zA-Z0-9._%-]+@([a-zA-Z0-9-]+\.)+[a-z]{2,4}$/;
-    return this.optional(element) || (mail.test(value));
-}, "<?php echo $this->translate('email').$this->translate('de_format');?>");
+	function changing() {
+		document.getElementById('checkpic').src = "/user/check/code?" + Math.random();
+	}
+
+	$(function () {
+		$("#login_form").validate({
+			submitHandler: function () {
+				form.submit();
+			}
+		});
+	});
+	jQuery.validator.addMethod("mail", function (value, element) {
+		var mail = /^[a-zA-Z0-9._%-]+@([a-zA-Z0-9-]+\.)+[a-z]{2,4}$/;
+		return this.optional(element) || (mail.test(value));
+	}, "<?php echo $this->translate('email') . $this->translate('de_format');?>");
 </script>
 </body>
 </html>

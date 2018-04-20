@@ -22,6 +22,8 @@ class LoginController extends Kyapi_Controller_Action {
         if (!empty($_COOKIE['username'])) {
             $this->view->rememberName = $_COOKIE['username'];
         }
+        
+        
         if ($this->_request->isPost()) {
             // 请求服务端方法
             $_requestOb = $this->_requestObject;
@@ -149,6 +151,7 @@ class LoginController extends Kyapi_Controller_Action {
             $redis->set('PHPREDIS_ACTIVE_SESSION:' . session_id(), $userDetail['user_id'], 86400);
             
             if ($userKY['status'] != 1) {
+                
                 // $this->view->is_code=$userKY['result'];
                 setcookie("iscode", '1', time() + 3600);
                 Shop_Browser::redirect($userKY['errorCode'] . ':' . $userKY['error'], $this->view->seed_Setting['user_app_server'] . "/login");
