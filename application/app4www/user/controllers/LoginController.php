@@ -163,6 +163,8 @@ class LoginController extends Kyapi_Controller_Action {
                     Shop_Browser::redirect($this->view->translate('tip_login_sucess'), $url);
                 }
                 Shop_Browser::redirect($this->view->translate('tip_login_sucess'), $this->view->seed_Setting['user_app_server'] . "/index");
+                
+                // $this->redirect($this->view->seed_Setting['user_app_server'] . "/index");
             }
             
         }

@@ -79,7 +79,12 @@ function doLogin(){
 
 	$(function () {
 		$("#login_form").validate({
-			submitHandler: function () {
+			submitHandler: function (form) {
+				//$.ajax({
+				//	url: '<?php //echo $this->baseUrl();?>///login',
+				//	data: form.serialize(),
+				//	type: "POST"
+				//});
 				form.submit();
 			}
 		});
