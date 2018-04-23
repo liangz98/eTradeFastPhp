@@ -1,93 +1,139 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<title>快移</title>
-<meta name="description" content="">
-<meta name="keywords" content="">
-<link href="/ky/css/base.css" rel="stylesheet">
-<link href="/ky/css/style.css" rel="stylesheet">
-<link href="/ky/css/swiper-3.3.1.min.css" rel="stylesheet">
-<script type="text/javascript" src="/ky/js/jquery.js"></script>
-<script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
-<script type="text/javascript" src="/ky/js/swiper-3.3.1.jquery.min.js"></script>
-<script type="text/javascript" src="/js/center/seed.form.js"></script>
-<script type="text/javascript" src="/js/center/jquery.form.js"></script>
-<script type="text/javascript" src="/ky/js/www.js"></script>
-<!--//<script type="text/javascript" src="/js/tips.js"></script>-->
-<style type="text/css">
-.error{margin:0;font-size: 14px;height: 30px;}
-</style>
-<script type="text/javascript">
-function doLogin(){
-    $("#login_form").validate({
-        event: "keyup",
-        rules: {},
-        messages: {},
-        submitHandler: function() {
-            SeedMsgBox('<?php echo $this->translate('in_save');?>');/*正在保存中..*/
-            var options = {
-                target:     '#SeedMsgTxt',
-                url:        '<?php echo $this->baseUrl();?>/login',
-                success: function() {
-                }
-            };
-    
-            $('#login_form').ajaxSubmit(options);
-    
-        }
-    });
-}
-</script>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>快移</title>
+	<!-- Bootstrap CSS -->
+	<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<!-- font-awesome CSS -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+
+
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+
+	<style type="text/css">
+		.nav-pills li {
+			width: 45%;
+			text-align: center;
+		}
+		.nav-pills li a {
+			background-color: inherit;
+			color: #f0ad4e;
+		}
+	</style>
 </head>
-<body style="overflow-x:hidden;overflow-y:hidden">
-<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
-    <div class="content">
-        <div class="logindiv">
-    	<form action="" method="post" name="login_form" id="login_form">
-            <div class="login_box fr tc">
-                    <label class="lagin_lab1 mt50"><!--用户名--><?php echo $this->translate('username');?></label>
-                <p class="tl f20">
-                    <i class="user_icon"></i><input value="<?php echo $this->rememberName;?>" class="login_txt1" name="ecommloginname" id="ecommloginname" type="text" data-rule-mail="true" required data-msg-required="<?php echo $this->translate('de_null');?>" placeholder="<?php echo $this->translate('tip_login_name');?>" /><!--请输入用户名-->
-                </p>
-                    <label class="lagin_lab1"><!--密码--><?php echo $this->translate('password');?></label>
-                <p class="tl f20">
-                    <i class="pw_icon"></i><input class="login_txt1" name="ecommpasswsd" id="ecommpasswsd" type="password" required data-msg-required="<?php echo $this->translate('de_null');?>" placeholder="<?php echo $this->translate('is_passwd');?>" /><!--请提供8-30位数字、大小写字母-->
-                </p>
-                <?php if($this->is_code=='1'):?>
-                    <label class="lagin_lab1"><!--验证码--><?php echo $this->translate('codes');?></label>
-                    <p class="tl f20">
-                        <input style=" width: 120px;float: left;" class="login_txt1" name="vcode" id="vcode" type="text" required data-msg-required="<?php echo $this->translate('de_null');?>" placeholder="<?php echo $this->translate('tip_code');?>" /><!--请输入验证码-->
-                        <img style="width: 120px;float: left;margin-left: 5px;padding: 3px 0;" id="checkpic" onclick="changing();" src='/user/check/code' />
-                    </p>
-                <?php endif;?>
-                <p class="tc f16">
-                    <span><input <?php if(!empty($this->rememberName)){echo 'checked="checked"';}?> type="checkbox" name="remember" value="1"><!--记住账号--><?php echo $this->translate('tip_remeber');?></span>
-                    <a class="ml50" href="./forget"><!--忘记密码--><?php echo $this->translate('forgetPSD');?>?</a>
-                    <a class="ml20" href="./register"><!--免费注册--><?php echo $this->translate('userRegister');?></a>
-                </p>
-                <input class="login_bnt2" name="" type="submit" value="<?php echo $this->translate('login');?>" onclick="doLogin()"/><!--登录 LOGIN-->
-            </div></form>
-        </div>
-    </div>
-<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?><script src="/ky/js/jquery.validate.js"></script>
-<script>
+<body>
+
+<nav class="navbar navbar-default navbar-static-top" style="margin-bottom: 0px;">
+	<div class="container">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="javascript:void(0)">
+				<img alt="Brand" src="/ky/images/logo.png" style="width: 70%; margin-top: -10px;">
+			</a>
+		</div>
+		<div class="collapse navbar-collapse">
+			<p class="navbar-text" style="font-size: 30px; font-family: inherit; margin-left: -30px; margin-bottom: 20px; line-height: 30px;">
+				欢迎登录
+			</p>
+		</div>
+	</div>
+</nav>
+
+<div class="container-fluid" style="background-image: url('/ky/images/index/index_bg.jpg'); height: 700px;">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4 col-md-offset-8" style="background-color: #f5f5f5; margin-top: 100px;">
+
+				<ul class="nav nav-pills" style="margin-top: 20px;">
+					<li><a href="#">Home</a></li>
+					<li><a href="#">Profile</a></li>
+				</ul>
+				
+				<hr>
+				<form class="form-horizontal" style="margin-top: 30px;margin-bottom: 50px;">
+					<div class="form-group" style="margin-left: 15px; width: 90%;">
+						<label class="sr-only" for="exampleInputAmount"></label>
+						<div class="input-group">
+							<div class="input-group-addon">
+								<span class="glyphicon glyphicon-user" aria-hidden="true" style="color: #777"></span>
+							</div>
+							<input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount">
+						</div>
+					</div>
+
+					<div class="form-group" style="margin-left: 15px; width: 90%;">
+						<label class="sr-only" for="exampleInputAmount"></label>
+						<div class="input-group">
+							<div class="input-group-addon">
+								<span class="glyphicon glyphicon-lock" aria-hidden="true" style="color: #777"></span>
+							</div>
+							<input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount">
+						</div>
+					</div>
+
+					<div class="form-group" style="margin-left: 15px; width: 90%;">
+						<div class="pull-right">
+							<label style="color: #777">
+								忘记密码
+							</label>
+						</div>
+					</div>
+
+					<div class="form-group" style="margin-left: 15px; width: 90%;">
+						<button type="button" class="btn btn-warning btn-default btn-block">登 录</button>
+					</div>
+
+					<div class="form-group" style="margin-left: 15px; width: 90%;">
+						<div class="col-sm-offset-4 col-sm-4">
+							<div class="text-center">
+								<!--<div style="background-color: #f0ad4e; float: left;"><i class="far fa-user-circle"></i></div>-->
+								<i class="far fa-user-circle" style="color: #f0ad4e;"></i>
+								<label style="color: #777">立即注册</label>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<footer style="position: absolute; bottom: 0; padding: 40px 0; width: 100%; height: 160px; background-color: #f5f5f5;">
+	<div class="container">
+		<p>Blog template built for <a href="http://getbootstrap.com">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+		<p>
+			<a href="#">Back to top</a>
+		</p>
+	</div>
+</footer>
+
+<!-- Optional JavaScript -->
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="/ky/js/jquery.validate.js"></script>
+<script type="text/javascript">
+	function doLogin() {
+		$("#login_form").validate({
+			event: "keyup",
+			rules: {},
+			messages: {},
+			submitHandler: function (form) {
+				form.submit();
+			}
+		});
+	}
+
 	function changing() {
 		document.getElementById('checkpic').src = "/user/check/code?" + Math.random();
 	}
 
 	$(function () {
-		$("#login_form").validate({
-			submitHandler: function (form) {
-				//$.ajax({
-				//	url: '<?php //echo $this->baseUrl();?>///login',
-				//	data: form.serialize(),
-				//	type: "POST"
-				//});
-				form.submit();
-			}
-		});
+
 	});
 	jQuery.validator.addMethod("mail", function (value, element) {
 		var mail = /^[a-zA-Z0-9._%-]+@([a-zA-Z0-9-]+\.)+[a-z]{2,4}$/;

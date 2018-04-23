@@ -2,15 +2,14 @@
 
 class OrderxsController extends Kyapi_Controller_Action
 {
-    public function preDispatch()
-    {
+    public function preDispatch() {
         $this->view->cur_pos = 'info';
         //清除 免登陆session
         $this->IsAuth($this->view->visitor);
-
-        if(empty($this->view->userID)){
+        
+        if (empty($this->view->userID)) {
             // 提示：请先登录系统
-            Mobile_Browser::redirect($this->view->translate('tip_login_please'),$this->view->seed_Setting['user_app_server']."/login");
+            Mobile_Browser::redirect($this->view->translate('tip_login_please'), $this->view->seed_Setting['user_app_server'] . "/login");
         }
         $this->view->cur_pos = $this->_request->getParam('controller');
         $cururl = $this->getRequestUri();
@@ -19,11 +18,11 @@ class OrderxsController extends Kyapi_Controller_Action
             $this->indexAction();
             exit;
         }
-
+        
         preg_match('/(.*)\.html/', $cururl, $arr);
-
+        
         if (isset($arr[1]) && !empty($arr[1])) {
-
+            
             preg_match_all('/^\/user\/orderxs\/(index|top|price)-([\d]+)-([\d]+).html/isU', $cururl, $arr);
             if (is_array($arr) && count($arr) > 1) {
                 $this->_request->setParam('status', $arr[2][0]);
@@ -31,9 +30,8 @@ class OrderxsController extends Kyapi_Controller_Action
                 $this->indexAction();
                 exit;
             }
-//没有找到相关信息！
+            //没有找到相关信息！
             Mobile_Browser::redirect($this->view->translate('tip_find_no'), $this->view->seed_BaseUrl . "/");
-
         }
     }
 

@@ -751,12 +751,14 @@ function settime(obj) { //发送验证码倒计时
 // ********************   获取短信验证码 Start  *************************************
 $("#singConfirmBtn").click(function () {
 	var doSignPDF = '/user/ordercg/dosignpdf';
+	var contractID = $(".sign-button").attr("contractID_");
 	if ($(this).attr("personSend") == "true") {
 		doSignPDF = '/user/ordercg/dopersonsignpdf';
+		contractID = $(".person-sign-button").attr("contractID_");
 	}
 	$.post(doSignPDF,
 		{
-			contractID: $(".sign-button").attr("contractID_"),
+			contractID: contractID,
 			signAuthCode: $("#signAuthCode").val()
 		},
 		function (data) {
