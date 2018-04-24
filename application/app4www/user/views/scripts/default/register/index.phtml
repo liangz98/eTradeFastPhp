@@ -128,13 +128,20 @@
     $(function () {
         document.register_form.sub.disabled = true;
         $('#check_doc').click(function () {
-            //页面层
-            layer.open({
-                type: 1,
-                title: false,
-                area: ['600px', '450px'], //宽高
-                content: '合作协议'
-            });
+			$.post('/register/servicehtml', {}, function(str){
+				layer.open({
+					type: 1,
+					content: str //注意，如果str是object，那么需要字符拼接。
+				});
+			});
+			
+            // //页面层
+            // layer.open({
+            //     type: 1,
+            //     title: false,
+            //     area: ['600px', '450px'], //宽高
+            //     content: '合作协议'
+            // });
         })
     });
 

@@ -177,4 +177,10 @@ class RegisterController extends Kyapi_Controller_Action
         echo $resultObject;
         exit;
     }
+    
+    public function servicehtmlAction() {
+        $content = $this->view->render(SEED_WWW_TPL."/register/service_.phtml");
+        echo $content;
+        exit;
+    }
 }
