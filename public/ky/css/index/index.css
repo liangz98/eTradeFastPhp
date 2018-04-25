@@ -94,6 +94,16 @@
     margin-bottom: 5px;
 }
 
+.footer-body .row:first-child div:last-child img:first-child {
+    width: 64px;
+}
+
+.footer-body .row:first-child div:last-child img {
+    margin-top: 45px;
+    margin-right: 20px;
+    float: left;
+}
+
 .footer-body hr {
     height:1px;
     border-top:1px solid #dddddd;
