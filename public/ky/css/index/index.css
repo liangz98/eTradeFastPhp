@@ -24,11 +24,21 @@
 }
 
 .body-font div:first-child {
-    font-size: 30px;
+    font-size: 80px;
     color: #fff;
+    margin-top: 90px;
 }
 
 .body-font div:nth-child(2) {
+    color: #fff;
+    font-size: 25px;
+}
+
+.body-font div:nth-last-of-type(2) {
+
+}
+
+.body-font div:last-child {
 
 }
 
