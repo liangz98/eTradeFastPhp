@@ -156,14 +156,8 @@
 <script type="text/javascript">
 	$().ready(function() {
 		$("#login_form").validate({
-			rules: {
-				ecommloginname: {
-					required: true,
-					email: true
-				}
-			},
 			messages: {
-				email: "请输入一个正确的邮箱"
+				ecommloginname: "<?php echo $this->translate('is_emails');?>"
 			},
 			errorPlacement: function(error, element) {
 				// Append error within linked label
