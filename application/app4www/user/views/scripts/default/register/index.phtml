@@ -114,17 +114,15 @@
 
 <?php echo $this->render(SEED_WWW_TPL . '/footer.phtml'); ?>
 <script type="text/javascript">
-    //弹出框
-    var regBtn = $("#regBtn");
-    $("#regText").change(function () {
-    	alert("in");
-        var that = $(this);
-        that.prop("checked", that.prop("checked"));
-        if (that.prop("checked")) {
-        } else {
-            regBtn.prop("disabled", true)
-        }
-    });
+    // var regBtn = $("#regBtn");
+    // $("#regText").change(function () {
+    //     var that = $(this);
+    //     that.prop("checked", that.prop("checked"));
+    //     if (that.prop("checked")) {
+    //     } else {
+    //         regBtn.prop("disabled", true)
+    //     }
+    // });
 
     $(function () {
         document.register_form.sub.disabled = true;
