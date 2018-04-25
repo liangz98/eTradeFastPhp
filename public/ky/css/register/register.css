@@ -21,6 +21,12 @@
     background-color: #fff;
 }
 
+.register-form-body .form-group:last-child {
+    margin-top: 40px;
+    margin-left: 140px;
+    width: 71%;
+}
+
 .register-user-info {
     margin: -30px -15px 30px -15px;
     padding-top: 5px;
