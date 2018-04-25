@@ -1,0 +1,9 @@
+/* 登录框 */
+.nav-pills li {
+    width: 45%;
+    text-align: center;
+}
+.nav-pills li a {
+    background-color: inherit;
+    color: #f0ad4e;
+}
