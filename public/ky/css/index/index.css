@@ -8,7 +8,7 @@
     margin-top: -10px;
 }
 
-.top-memu div div p {
+.top-memu div div p:first-child {
     font-size: 30px;
     font-family: inherit;
     margin-left: -30px;
