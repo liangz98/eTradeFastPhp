@@ -1,3 +1,16 @@
+/**/
+.top-memu {
+    margin-bottom: 0px;
+}
+
+.top-memu div div a img {
+    width: 70%; margin-top: -10px;
+}
+
+.top-memu div div p {
+    font-size: 30px; font-family: inherit; margin-left: -30px; margin-bottom: 20px; line-height: 30px;
+}
+
 /* 登录框 */
 .nav-pills li {
     width: 45%;
