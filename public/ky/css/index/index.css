@@ -66,4 +66,12 @@
     color: #f0ad4e;
 }
 
+.login-body-form {
+    margin-top: 30px;margin-bottom: 50px;
+}
+
+.login-body-form div {
+    margin-left: 15px; width: 90%;
+}
+
 /* footer */
