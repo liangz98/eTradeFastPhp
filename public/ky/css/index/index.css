@@ -48,6 +48,14 @@
 }
 
 /* 登录框 */
+.login-body {
+    background-color: #fff; margin-top: 100px;
+}
+
+.nav-pills {
+    margin-top: 20px;
+}
+
 .nav-pills li {
     width: 45%;
     text-align: center;
