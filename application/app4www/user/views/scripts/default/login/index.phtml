@@ -67,14 +67,14 @@
 				</ul>
 				
 				<hr>
-				<form class="form-horizontal login-body-form" action="<?php echo $this->baseUrl();?>/login" method="post" name="login_form" id="login_form">
+				<form class="form-horizontal login-body-form" action="<?php echo $this->baseUrl();?>/login" method="post" id="login_form">
 					<div class="form-group">
 						<label class="sr-only" for="ecommloginname"></label>
 						<div class="input-group">
 							<div class="input-group-addon">
 								<span class="glyphicon glyphicon-user" aria-hidden="true" style="color: #777"></span>
 							</div>
-							<input type="text" class="form-control" name="ecommloginname" id="ecommloginname" required placeholder="用户名/电子邮箱">
+							<input type="email" class="form-control" name="ecommloginname" id="ecommloginname" required placeholder="用户名/电子邮箱">
 						</div>
 					</div>
 
@@ -84,7 +84,7 @@
 							<div class="input-group-addon">
 								<span class="glyphicon glyphicon-lock" aria-hidden="true" style="color: #777"></span>
 							</div>
-							<input type="text" class="form-control" name="ecommpasswsd" id="ecommpasswsd" type="password" required placeholder="登录密码">
+							<input type="password" class="form-control" name="ecommpasswsd" id="ecommpasswsd" required placeholder="登录密码">
 						</div>
 					</div>
 
@@ -95,15 +95,14 @@
 					</div>
 
 					<div class="form-group">
-						<button type="button" class="btn btn-warning btn-default btn-block" onclick="doLogin()"><?php echo $this->translate('login'); ?></button>
+						<button type="submit" class="btn btn-warning btn-default btn-block"><?php echo $this->translate('login'); ?></button>
 					</div>
 
 					<div class="form-group">
 						<div class="col-sm-offset-4 col-sm-4">
 							<div class="text-center">
 								<!--<div style="background-color: #f0ad4e; float: left;"><i class="far fa-user-circle"></i></div>-->
-								<i class="far fa-user-circle" style="color: #f0ad4e;"></i>
-								<label style="color: #777"><?php echo $this->translate('userRegister'); ?></label>
+								<a href="./register"><i class="far fa-user-circle" style="color: #f0ad4e;"></i>&nbsp;<?php echo $this->translate('userRegister'); ?></a>
 							</div>
 						</div>
 					</div>
@@ -153,18 +152,40 @@
 <!-- Optional JavaScript -->
 <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="/ky/js/jquery.validate.js"></script>
+<script src="/ky/js/jquery.validate.min.js"></script>
 <script type="text/javascript">
-	function doLogin() {
-		alert("in");
+	$().ready(function() {
 		$("#login_form").validate({
-			event: "keyup",
-			rules: {},
-			messages: {},
+			rules: {
+				ecommloginname: {
+					required: true,
+					email: true
+				}
+			},
+			messages: {
+				email: "请输入一个正确的邮箱"
+			},
+			errorPlacement: function(error, element) {
+				// Append error within linked label
+				$(element)
+					.closest( "form" )
+					.find( "label[for='" + element.attr( "id" ) + "']" )
+					.parent().addClass("has-error has-feedback")
+					.append( error );
+			},
+			success: function(label) {
+				$(label)
+					.parent().addClass("has-success has-feedback").removeClass("has-error");
+			},
+			// rules: {},
+			// messages: {},
 			submitHandler: function (form) {
 				form.submit();
 			}
 		});
+	});
+	function doLogin() {
+	
 	}
 
 	function changing() {
