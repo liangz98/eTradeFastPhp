@@ -1,14 +1,35 @@
-/**/
+/* header */
 .top-memu {
     margin-bottom: 0px;
 }
 
 .top-memu div div a img {
-    width: 70%; margin-top: -10px;
+    width: 70%;
+    margin-top: -10px;
 }
 
 .top-memu div div p {
-    font-size: 30px; font-family: inherit; margin-left: -30px; margin-bottom: 20px; line-height: 30px;
+    font-size: 30px;
+    font-family: inherit;
+    margin-left: -30px;
+    margin-bottom: 20px;
+    line-height: 30px;
+}
+
+/* body */
+.index-body {
+    background-image: url('/ky/images/index/index_bg_2.jpg');
+    height: 700px;
+    background-size: cover;
+}
+
+.body-font div:first-child {
+    font-size: 30px;
+    color: #fff;
+}
+
+.body-font div:nth-child(2) {
+
 }
 
 /* 登录框 */
@@ -16,7 +37,10 @@
     width: 45%;
     text-align: center;
 }
+
 .nav-pills li a {
     background-color: inherit;
     color: #f0ad4e;
 }
+
+/* footer */
