@@ -34,16 +34,47 @@
 				<div class="register-user-info">
 					User Info
 				</div>
+				
 				<div class="form-group">
-					<label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+					<label for="name" class="col-sm-2 control-label"><?php echo $this->translate('name'); ?></label>
 					<div class="col-sm-10">
-						<input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+						<input type="text" class="form-control" name="name" id="name" required placeholder="<?php echo $this->translate('name'); ?>">
 					</div>
 				</div>
+				
 				<div class="form-group">
-					<label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+					<label for="ecommloginname" class="col-sm-2 control-label"><?php echo $this->translate('elogname'); ?></label>
 					<div class="col-sm-10">
-						<input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+						<input type="email" class="form-control" name="ecommloginname" id="ecommloginname" required placeholder="<?php echo $this->translate('elogname'); ?>">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="ecommpasswsd" class="col-sm-2 control-label"><?php echo $this->translate('password'); ?></label>
+					<div class="col-sm-10">
+						<input type="password" class="form-control" name="ecommpasswsd" id="ecommpasswsd" required placeholder="<?php echo $this->translate('password'); ?>">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="checkecommrpasswsd" class="col-sm-2 control-label"><?php echo $this->translate('confirmPSD'); ?></label>
+					<div class="col-sm-10">
+						<input type="password" class="form-control" id="checkecommrpasswsd" required placeholder="<?php echo $this->translate('confirmPSD'); ?>">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="mobilePhone" class="col-sm-2 control-label"><?php echo $this->translate('phone'); ?></label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" name="mobilePhone" id="mobilePhone" required placeholder="<?php echo $this->translate('phone'); ?>">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-offset-4 col-sm-4">
+						<div class="text-center">
+							<a href="./register"><i class="far fa-user-circle" style="color: #f0ad4e;"></i>&nbsp;<?php echo $this->translate('userRegister'); ?></a>
+						</div>
 					</div>
 				</div>
 			</form>

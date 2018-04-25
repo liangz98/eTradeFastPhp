@@ -18,6 +18,17 @@
     margin-top: 30px;
     margin-bottom: 30px;
     border: 1px solid #e2e2e2;
+    background-color: #fff;
+}
+
+.register-user-info {
+    margin: -30px -15px 30px -15px;
+    padding-top: 5px;
+    padding-left: 20px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #e2e2e2;
+    color: #01AAED;
+    background-color: #eee;
 }
 
 
