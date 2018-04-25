@@ -1,100 +1,17 @@
+/* header */
+.top-memu div div p:last-child {
+    margin-top: 35px;
+}
+
+.top-memu div div p:last-child a {
+    color: #01AAED;
+}
+
+
 /* body */
 .register-body {
     height: 560px;
 }
 
-.body-font div:first-child {
-    font-size: 70px;
-    color: #fff;
-    margin-top: 110px
-}
-
-.body-font div:nth-child(2) {
-    color: #fff;
-    font-size: 25px;
-    margin-top: 15px;
-}
-
-.body-font div:nth-last-of-type(2) {
-    color: #fff;
-    font-size: 25px;
-    margin-top: 15px;
-}
-
-.body-font div:last-child {
-    color: #fff;
-    font-size: 25px;
-    margin-top: 15px;
-}
-
-/* 登录框 */
-.login-body {
-    background-color: #fff;
-    margin-top: 100px;
-}
-
-.nav-pills {
-    margin-top: 20px;
-}
-
-.nav-pills li {
-    width: 45%;
-    text-align: center;
-}
-
-.nav-pills li a {
-    background-color: inherit;
-    color: #f0ad4e;
-}
-
-.login-body-form {
-    margin-top: 30px;
-    margin-bottom: 50px;
-}
-
-.login-body-form .form-group {
-    margin-left: 15px;
-    width: 90%;
-}
-
-.login-body-form .form-group a {
-    color: #777;
-}
 
 /* footer */
-.footer-body {
-    position: absolute;
-    /*bottom: 0;*/
-    padding: 20px 0;
-    width: 100%;
-    background-color: #f5f5f5;
-}
-
-.footer-body .row:first-child h4 {
-    color: #777;
-    margin-bottom: 20px;
-}
-
-.footer-body .row:first-child p, .footer-body .row:last-child div p {
-    color: #777;
-    margin-bottom: 5px;
-}
-
-.footer-body .row:first-child div:last-child img:first-child {
-    width: 64px;
-}
-
-.footer-body .row:first-child div:last-child img {
-    margin-top: 45px;
-    margin-right: 20px;
-    float: left;
-}
-
-.footer-body hr {
-    height: 1px;
-    border-top: 1px solid #dddddd;
-}
-
-.error {
-    color: #d9534f;
-}
