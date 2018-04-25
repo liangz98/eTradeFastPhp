@@ -24,22 +24,27 @@
 }
 
 .body-font div:first-child {
-    font-size: 80px;
+    font-size: 70px;
     color: #fff;
-    margin-top: 90px;
+    margin-top: 110px
 }
 
 .body-font div:nth-child(2) {
     color: #fff;
     font-size: 25px;
+    margin-top: 15px;
 }
 
 .body-font div:nth-last-of-type(2) {
-
+    color: #fff;
+    font-size: 25px;
+    margin-top: 15px;
 }
 
 .body-font div:last-child {
-
+    color: #fff;
+    font-size: 25px;
+    margin-top: 15px;
 }
 
 /* 登录框 */
