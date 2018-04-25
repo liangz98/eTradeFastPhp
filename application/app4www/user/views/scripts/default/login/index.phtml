@@ -1,25 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-	<!-- Required meta tags -->
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
 	<title>快移</title>
-	<!-- Bootstrap CSS -->
-	<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-	<!-- font-awesome CSS -->
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
-
-	<link href="/ky/css/index/index.css" rel="stylesheet">
-
-	<meta name="description" content="">
-	<meta name="keywords" content="">
-
-	<style type="text/css">
-	
-	</style>
 </head>
 <body>
 
@@ -156,20 +139,31 @@
 <script type="text/javascript">
 	$().ready(function() {
 		$("#login_form").validate({
+			rules: {
+				ecommpasswsd: {
+					isValidPassword: true,
+					minlength: 8,
+					maxlength: 30
+				}
+			},
 			messages: {
-				ecommloginname: "<?php echo $this->translate('is_emails');?>"
+				ecommloginname: "<?php echo $this->translate('is_emails');?>",
+				ecommpasswsd : {
+					minlength: "<?php echo $this->translate('mat_psd');?>",
+					maxlength: "<?php echo $this->translate('is_passwd');?>"
+				}
 			},
 			errorPlacement: function(error, element) {
 				// Append error within linked label
 				$(element)
 					.closest( "form" )
 					.find( "label[for='" + element.attr( "id" ) + "']" )
-					.parent().addClass("has-error has-feedback")
+					.parent().addClass("has-error").removeClass("has-success")
 					.append( error );
 			},
 			success: function(label) {
 				$(label)
-					.parent().addClass("has-success has-feedback").removeClass("has-error");
+					.parent().addClass("has-success").removeClass("has-error");
 			},
 			// rules: {},
 			// messages: {},
@@ -178,9 +172,6 @@
 			}
 		});
 	});
-	function doLogin() {
-	
-	}
 
 	function changing() {
 		document.getElementById('checkpic').src = "/user/check/code?" + Math.random();
@@ -189,10 +180,12 @@
 	$(function () {
 
 	});
-	jQuery.validator.addMethod("mail", function (value, element) {
-		var mail = /^[a-zA-Z0-9._%-]+@([a-zA-Z0-9-]+\.)+[a-z]{2,4}$/;
-		return this.optional(element) || (mail.test(value));
-	}, "<?php echo $this->translate('email') . $this->translate('de_format');?>");
+
+	// 邮政编码验证
+	jQuery.validator.addMethod("isValidPassword", function(value, element) {
+		var regExp=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,30}$/;
+		return this.optional(element) || (regExp.test(value));
+	}, "<?php echo $this->translate('is_passwd');?>");
 </script>
 </body>
 </html>
