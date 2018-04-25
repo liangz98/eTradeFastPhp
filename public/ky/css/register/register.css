@@ -10,11 +10,6 @@
 
 /* body */
 .register-body {
-    background-color: #fff;
-}
-
-.register-form-div {
-    height: 560px;
     background-color: #f5f5f5;
 }
 
@@ -25,20 +20,20 @@
     background-color: #fff;
 }
 
-.register-form-div .form-group {
+.register-form-body {
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+.register-form-body .form-group {
     margin-left: 15px;
     width: 90%;
 }
 
-.register-form-div .form-group:last-child {
+.register-form-body .form-group:last-child {
     margin-top: 40px;
     margin-left: 140px;
     width: 71%;
-}
-
-.register-form-body {
-    margin-top: 30px;
-    margin-bottom: 50px;
 }
 
 .register-user-info {
