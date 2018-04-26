@@ -134,7 +134,7 @@ return array(
     'is_comname'=>"请填写真实的公司名称",
     'is_regadress'=>"请填写公司的联系地址",
     'ps_email'=>"admin@eTrade.com",
-    'is_xieyi'=>"《快移交易平台服务使用协议》",
+    'service_contract'=>"《快移交易云平台服务协议》",
     'check_service_contract'=>"请阅读并同意相关服务条款",
 //登录/注册/表单/合作伙伴/我的卖家/买家/通讯录
     'username' => '用户名',

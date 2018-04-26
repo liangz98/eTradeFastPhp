@@ -110,7 +110,7 @@
 						<label>
 							<input type="checkbox" value="" name="serviceContract" id="serviceContract" required>
 							<input type="hidden" id="isReadServiceContract" value="false">
-                            <?php echo $this->translate('agree'); ?>&nbsp;<?php echo $this->translate('is_xieyi'); ?>
+                            <?php echo $this->translate('agree'); ?>&nbsp;<?php echo $this->translate('service_contract'); ?>
 						</label>
 					</div>
 				</div>
@@ -183,10 +183,18 @@
 			$.post('/register/servicehtml', {}, function(service){
 				layer.open({
 					type: 1,
-					title: '《快移交易云平台服务协议》',
+					title: "<?php echo $this->translate('service_contract'); ?>",
 					area: ['1024px', '97%'],
 					scrollbar: false,
-					content: service
+					content: service,
+					success: function(layero, index){
+						$(".layui-layer-content").scroll(function () {
+							// console.log(this.scrollHeight);
+							if (this.scrollHeight - this.scrollTop === this.clientHeight) {
+								$("#isReadServiceContract").val('true');
+							}
+						});
+					}
 				});
 			});
 		});
