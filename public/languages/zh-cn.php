@@ -132,7 +132,7 @@ return array(
     'is_phone'=>"15880000001",
     'is_tel'=>"请填写有效的固定电话",
     'is_comname'=>"请填写真实的公司名称",
-    'is_regadress'=>"该内容同时作为公司的联系地址",
+    'is_regadress'=>"请填写公司的联系地址",
     'ps_email'=>"admin@eTrade.com",
     'is_xieyi'=>"《快移交易平台服务使用协议》",
 //登录/注册/表单/合作伙伴/我的卖家/买家/通讯录
