@@ -176,33 +176,41 @@
 	});
 
 	$(function () {
-		
+		$("#serviceContract").click(function () {
+			if ($("#isReadServiceContract").val() == 'false') {
+				$("#serviceContract").prop('checked', false);
+				toReadServiceContract();
+			}
+		});
 		$("#check_doc").click(function () {
 			if ($("#isReadServiceContract").val() == 'false') {
 				$("#serviceContract").prop('checked', false);
 			}
-
-			$.post('/register/servicehtml', {}, function(service){
-				layer.open({
-					type: 1,
-					title: "<?php echo $this->translate('service_contract'); ?>",
-					area: ['1024px', '97%'],
-					scrollbar: false,
-					content: service,
-					success: function(layero, index){
-						$(".layui-layer-content").scroll(function () {
-							// console.log(this.scrollHeight);
-							if (this.scrollHeight - this.scrollTop === this.clientHeight) {
-								console.log("in");
-								$("#isReadServiceContract").val('true');
-								$("#serviceContract").prop('checked', true);
-							}
-						});
-					}
-				});
-			});
+			toReadServiceContract();
 		});
 	});
+	
+	function toReadServiceContract() {
+		$.post('/register/servicehtml', {}, function(service){
+			layer.open({
+				type: 1,
+				title: "<?php echo $this->translate('service_contract'); ?>",
+				area: ['1024px', '97%'],
+				scrollbar: false,
+				content: service,
+				success: function(layero, index){
+					$(".layui-layer-content").scroll(function () {
+						// console.log(this.scrollHeight);
+						if (this.scrollHeight - this.scrollTop === this.clientHeight) {
+							console.log("in");
+							$("#isReadServiceContract").val('true');
+							$("#serviceContract").prop('checked', true);
+						}
+					});
+				}
+			});
+		});
+	}
 
 	// 邮箱登录名验证
 	jQuery.validator.addMethod("checkLoginName", function(value, element) {
