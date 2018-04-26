@@ -119,6 +119,18 @@
 <script type="text/javascript">
 	$().ready(function() {
 		$("#register_form").validate({
+			errorPlacement: function(error, element) {
+				// Append error within linked label
+				$(element)
+					.closest( "form" )
+					.find( "label[for='" + element.attr( "id" ) + "']" )
+					.parent().addClass("has-error").removeClass("has-success")
+					.append( error );
+			},
+			success: function(label) {
+				console.log("in");
+				$(label).parent().addClass("has-success").removeClass("has-error");
+			},
 			submitHandler: function (form) {
 				form.submit();
 			}
