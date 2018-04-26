@@ -146,7 +146,7 @@
 
 	});
 
-	// 邮政编码验证
+	// 密码规验证(8-30位  字母数字)
 	jQuery.validator.addMethod("isValidPassword", function(value, element) {
 		var regExp=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,30}$/;
 		return this.optional(element) || (regExp.test(value));
