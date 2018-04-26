@@ -137,9 +137,9 @@
 					.append( error );
 			},
 			success: function(label) {
-				// var forName = $(label).attr("for");
-				// $("label[for='" + forName + "']").parent().addClass("has-success").removeClass("has-error");
-				// $(label).hidden();
+				var forName = $(label).attr("for");
+				$("label[for='" + forName + "']").parent().addClass("has-success").removeClass("has-error");
+				$(label).hidden();
 			},
 			highlight: function (element) {
 				$("label[for='" + element.id + "']").parent().addClass("has-error").removeClass("has-success");
