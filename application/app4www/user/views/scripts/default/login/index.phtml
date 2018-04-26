@@ -137,11 +137,12 @@
 					.append( error );
 			},
 			success: function(label) {
+				$(label).hidden();
 				var forName = $(label).attr("for");
 				$("label[for='" + forName + "']").parent().addClass("has-success").removeClass("has-error");
-
 			},
 			highlight: function (element) {
+				$("#"+element.id+"-error").show();
 				$("label[for='" + element.id + "']").parent().addClass("has-error").removeClass("has-success");
 			},
 			submitHandler: function (form) {
