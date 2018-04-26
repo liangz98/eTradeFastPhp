@@ -32,7 +32,7 @@
 		<div class="col-md-10 col-md-offset-1 register-form-div">
 			<form class="form-horizontal register-form-body" action="<?php echo $this->baseUrl();?>/register" method="post" id="register_form">
 				<div class="register-user-info">
-					User Info
+                    <?php echo $this->translate('userTT'); ?>
 				</div>
 				
 				<div class="form-group">
@@ -71,7 +71,7 @@
 				</div>
 
 				<div class="register-company-info">
-					Company Info
+                    <?php echo $this->translate('companyINF'); ?>
 				</div>
 
 				<div class="form-group">
@@ -84,7 +84,9 @@
 				<div class="form-group">
 					<label for="regdcountryCode" class="col-sm-2 control-label"><?php echo $this->translate('regaddress'); ?></label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" name="regdcountryCode" id="regdcountryCode" required placeholder="<?php echo $this->translate('is_regadress'); ?>">
+						<select class="form-control" name="regdcountryCode" id="regdcountryCode" required>
+                            <?php echo $this->ShowDictionaryList($this->dic_Setting['COUNTRY_ISO_CODE'], $this->userlangCode, $this->dic_Setting['COUNTRY_ISO_CODE']); ?>
+						</select>
 					</div>
 				</div>
 

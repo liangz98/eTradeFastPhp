@@ -26,8 +26,8 @@
 }
 
 .register-form-body .form-group {
-    margin-left: 15px;
-    width: 90%;
+    margin-left: 45px;
+    width: 82%;
 }
 
 .register-form-body .form-group:last-child {
@@ -38,9 +38,20 @@
 
 .register-user-info {
     margin: -30px -15px 30px -15px;
-    padding-top: 5px;
+    padding-top: 10px;
     padding-left: 20px;
-    padding-bottom: 5px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e2e2e2;
+    color: #01AAED;
+    background-color: #eee;
+}
+
+.register-company-info {
+    margin: 40px -15px 30px -15px;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-bottom: 10px;
+    border-top: 1px solid #e2e2e2;
     border-bottom: 1px solid #e2e2e2;
     color: #01AAED;
     background-color: #eee;
