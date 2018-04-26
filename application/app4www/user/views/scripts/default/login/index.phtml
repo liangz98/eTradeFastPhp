@@ -5,7 +5,7 @@
 	<title>快移</title>
 	<link href="/ky/css/index/index.css" rel="stylesheet">
 </head>
-<body>
+<body onLoad="document.login_form.ecommloginname.focus()">
 
 <nav class="navbar navbar-default navbar-static-top top-memu">
 	<div class="container">
@@ -51,7 +51,7 @@
 				</ul>
 				
 				<hr>
-				<form class="form-horizontal login-body-form" action="<?php echo $this->baseUrl();?>/login" method="post" id="login_form">
+				<form class="form-horizontal login-body-form" action="<?php echo $this->baseUrl();?>/login" method="post" id="login_form" name="login_form">
 					<div class="form-group">
 						<label class="sr-only" for="ecommloginname"></label>
 						<div class="input-group">
