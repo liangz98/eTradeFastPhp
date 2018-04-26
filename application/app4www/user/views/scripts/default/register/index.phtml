@@ -176,9 +176,10 @@
 	});
 
 	$(function () {
-		$("#serviceContract").click(function () {
+		
+		$("#check_doc").click(function () {
 			if ($("#isReadServiceContract").val() == 'false') {
-				$(this).prop('checked', false);
+				$("#serviceContract").prop('checked', false);
 			}
 
 			$.post('/register/servicehtml', {}, function(service){
