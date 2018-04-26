@@ -718,6 +718,7 @@ return array(
     'tip_active_04' => '验证码超时，请重新验证!',
     'tip_active_05' => '验证成功',
 
+    'tip_eComm_login_name'    => '用户名/电子邮箱',
     'tip_login_name'    => '请输入登录用户名',
     'tip_code'          => '请输入验证码',
     'tip_remember'       => '记住账号',
