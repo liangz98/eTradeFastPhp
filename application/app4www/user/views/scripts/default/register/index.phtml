@@ -116,4 +116,13 @@
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
+<script type="text/javascript">
+	$().ready(function() {
+		$("#register_form").validate({
+			submitHandler: function (form) {
+				form.submit();
+			}
+		});
+	});
+</script>
 </body>
