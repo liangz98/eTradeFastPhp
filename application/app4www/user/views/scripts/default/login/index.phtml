@@ -125,8 +125,12 @@
 					.append( error );
 			},
 			success: function(label) {
-				$(label)
-					.parent().addClass("has-success").removeClass("has-error");
+				var forName = $(label).attr("for");
+				$("label[for='" + forName + "']").parent().addClass("has-success").removeClass("has-error");
+
+			},
+			highlight: function (element) {
+				$("label[for='" + element.id + "']").parent().addClass("has-error").removeClass("has-success");
 			},
 			submitHandler: function (form) {
 				form.submit();
