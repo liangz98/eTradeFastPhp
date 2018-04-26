@@ -121,4 +121,5 @@
 
 .error {
     color: #d9534f;
+    margin-bottom: 0 !important;
 }
