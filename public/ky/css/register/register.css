@@ -31,9 +31,13 @@
 }
 
 .register-form-body .form-group:last-child {
-    margin-top: 40px;
+    margin-top: 20px;
     margin-left: 247px;
     width: 58%;
+}
+
+.register-form-body .form-group:last-child div:first-child {
+    margin-bottom: 20px;
 }
 
 .register-user-info {
