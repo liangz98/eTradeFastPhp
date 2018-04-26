@@ -81,6 +81,10 @@
     color: #777;
 }
 
+.forgotPSD {
+    line-height: 35px;
+}
+
 /* footer */
 .footer-body {
     position: absolute;

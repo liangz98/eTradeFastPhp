@@ -730,7 +730,7 @@ return array(
 
    'tip_login_name'=>'请输入登录用户名',
    'tip_code'=>'请输入验证码',
-    'tip_remeber'=>'记住账号',
+    'tip_remember'=>'记住账号',
    'tip_find_pwd'=>'确 定',
    'tip_login_back'=>'返回登录',
    'tip_pwd_ts'=>'*请输入8-14位数字/英文，不能有特殊字符',
