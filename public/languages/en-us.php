@@ -157,6 +157,7 @@ return array(
     'newPSD' => 'New Password',
     'loginPSD' => 'Password',
     'companyFU' => 'Full Company Name',
+    'regd_company_name' => '营业执照公司名称',
     'regaddress'=>'Company Address',
     'companyEM'=>'Company Email',
     'address' => 'Address',

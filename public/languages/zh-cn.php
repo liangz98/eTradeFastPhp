@@ -149,6 +149,7 @@ return array(
     'newPSD' => '新 密 码',
     'loginPSD' => '登录密码',
     'companyFU' => '公司全称',
+    'regd_company_name' => '营业执照公司名称',
     'regaddress'=>'公司地址',
     'companyEM'=>'公司邮箱',
     'address' => '地址',

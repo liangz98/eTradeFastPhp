@@ -52,21 +52,21 @@
 				<div class="form-group">
 					<label for="ecommpasswsd" class="col-sm-2 control-label"><?php echo $this->translate('password'); ?></label>
 					<div class="col-sm-10">
-						<input type="password" class="form-control" name="ecommpasswsd" id="ecommpasswsd" required placeholder="<?php echo $this->translate('password'); ?>">
+						<input type="password" class="form-control" name="ecommpasswsd" id="ecommpasswsd" required placeholder="<?php echo $this->translate('password').'('.$this->translate('is_passwd').')'; ?>">
 					</div>
 				</div>
 
 				<div class="form-group">
 					<label for="checkecommrpasswsd" class="col-sm-2 control-label"><?php echo $this->translate('confirmPSD'); ?></label>
 					<div class="col-sm-10">
-						<input type="password" class="form-control" id="checkecommrpasswsd" required placeholder="<?php echo $this->translate('confirmPSD'); ?>">
+						<input type="password" class="form-control" id="checkecommrpasswsd" required placeholder="<?php echo $this->translate('is_rpasswd'); ?>">
 					</div>
 				</div>
 
 				<div class="form-group">
 					<label for="mobilePhone" class="col-sm-2 control-label"><?php echo $this->translate('phone'); ?></label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" name="mobilePhone" id="mobilePhone" required placeholder="<?php echo $this->translate('phone'); ?>">
+						<input type="text" class="form-control" name="mobilePhone" id="mobilePhone" required placeholder="<?php echo $this->translate('is_phone'); ?>">
 					</div>
 				</div>
 
@@ -75,14 +75,7 @@
 				</div>
 
 				<div class="form-group">
-					<label for="accountName" class="col-sm-2 control-label"><?php echo $this->translate('companyFU'); ?></label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control" name="accountName" id="accountName" required placeholder="<?php echo $this->translate('is_comname'); ?>">
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label for="regdcountryCode" class="col-sm-2 control-label"><?php echo $this->translate('regaddress'); ?></label>
+					<label for="regdcountryCode" class="col-sm-2 control-label"><?php echo $this->translate('address'); ?></label>
 					<div class="col-sm-10">
 						<select class="form-control" name="regdcountryCode" id="regdcountryCode" required>
                             <?php echo $this->ShowDictionaryList($this->dic_Setting['COUNTRY_ISO_CODE'], $this->userlangCode, $this->dic_Setting['COUNTRY_ISO_CODE']); ?>
@@ -94,6 +87,13 @@
 					<label for="regdAddress" class="col-sm-2 control-label"></label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" name="regdAddress" id="regdAddress" required placeholder="<?php echo $this->translate('is_regadress'); ?>">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="accountName" class="col-sm-2 control-label"><?php echo $this->translate('regd_company_name'); ?></label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" name="accountName" id="accountName" required placeholder="<?php echo $this->translate('is_comname'); ?>">
 					</div>
 				</div>
 
