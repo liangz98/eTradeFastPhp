@@ -36,10 +36,6 @@
     width: 58%;
 }
 
-.register-form-body .form-group:last-child div:first-child {
-    margin-bottom: 20px;
-}
-
 .register-user-info {
     margin: -30px -15px 30px -15px;
     padding-top: 10px;
