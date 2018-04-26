@@ -6,7 +6,7 @@
 	<link href="/ky/css/index/index.css" rel="stylesheet">
 	<link href="/ky/css/register/register.css" rel="stylesheet">
 </head>
-<body>
+<body onload="document.register_form.name.focus()">
 
 <nav class="navbar navbar-default navbar-static-top top-memu">
 	<div class="container">
@@ -30,7 +30,7 @@
 <div class="container-fluid register-body">
 	<div class="container">
 		<div class="col-md-10 col-md-offset-1 register-form-div">
-			<form class="form-horizontal register-form-body" action="<?php echo $this->baseUrl();?>/register" method="post" id="register_form">
+			<form class="form-horizontal register-form-body" action="<?php echo $this->baseUrl();?>/register" method="post" id="register_form" name="register_form">
 				<div class="register-user-info">
                     <?php echo $this->translate('userTT'); ?>
 				</div>
