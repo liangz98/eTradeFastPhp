@@ -106,7 +106,7 @@
 
 				<div class="form-group">
 					<label for="serviceContract" class="col-sm-3 control-label"></label>
-					<div class="checkbox">
+					<div class="checkbox col-sm-9">
 						<label>
 							<input type="checkbox" value="" name="serviceContract" id="serviceContract" required>
                             <?php echo $this->translate('agree'); ?>&nbsp;<?php echo $this->translate('is_xieyi'); ?>
@@ -147,6 +147,9 @@
 					required: "<?php echo $this->translate('de_null'); ?>",
 					minlength: "<?php echo $this->translate('mat_psd');?>",
 					maxlength: "<?php echo $this->translate('is_passwd');?>"
+				},
+				serviceContract: {
+					required: "<?php echo $this->translate('check_service_contract'); ?>"
 				}
 			},
 			errorPlacement: function(error, element) {

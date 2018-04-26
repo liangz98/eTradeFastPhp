@@ -143,6 +143,7 @@ return array(
     'is_regadress'=>"Company legal address",
     'ps_email'=>"admin@eTrade.com",
     'is_xieyi'=>"《Etradfast Trading Platform Services User Agreement》",
+    'check_service_contract'=>"请阅读并同意相关服务条款",
 //登录/注册/表单/合作伙伴/我的卖家/买家/通讯录
     'username' => 'User Name',
     'password' => 'Password',
