@@ -109,6 +109,7 @@
 					<div class="checkbox col-sm-9">
 						<label>
 							<input type="checkbox" value="" name="serviceContract" id="serviceContract" required>
+							<input type="hidden" id="isReadServiceContract" value="false">
                             <?php echo $this->translate('agree'); ?>&nbsp;<?php echo $this->translate('is_xieyi'); ?>
 						</label>
 					</div>
@@ -170,6 +171,24 @@
 			submitHandler: function (form) {
 				form.submit();
 			}
+		});
+	});
+
+	$(function () {
+		$("#serviceContract").click(function () {
+			if ($("#isReadServiceContract").val() == 'false') {
+				$(this).prop('checked', false);
+			}
+
+			$.post('/register/servicehtml', {}, function(service){
+				layer.open({
+					type: 1,
+					title: '《快移交易云平台服务协议》',
+					area: ['1024px', '97%'],
+					scrollbar: false,
+					content: service
+				});
+			});
 		});
 	});
 
