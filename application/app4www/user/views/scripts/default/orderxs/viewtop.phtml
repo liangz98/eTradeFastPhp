@@ -152,9 +152,9 @@
 								<a class="layui-btn layui-btn-warm deliveryDeliverViewBtn" deliveryID_="<?php echo $v->deliveryID; ?>">发货</a>
 							<?php elseif ($v->deliveryStatus == 2): ?>
 								<a class="layui-btn layui-btn-warm deliveryDeliverViewBtn" deliveryID_="<?php echo $v->deliveryID; ?>">发货</a>
-                            <?php elseif ($v->deliveryStatus == 3 && $v->vendorPaymentStatus == 3): ?>
+                            <?php elseif (!$this->orders->isSelfSupport && $v->deliveryStatus == 3 && $v->vendorPaymentStatus == 3): ?>
 								<a href='javascript:void(0)' class="billingInfo" deliveryID_="<?php echo $v->deliveryID; ?>" >开票资料</a>
-                            <?php elseif ($v->deliveryStatus == 4 && $v->vendorPaymentStatus == 3): ?>
+                            <?php elseif (!$this->orders->isSelfSupport && $v->deliveryStatus == 4 && $v->vendorPaymentStatus == 3): ?>
 								<a href='javascript:void(0)' class="billingInfo" deliveryID_="<?php echo $v->deliveryID; ?>" >开票资料</a>
                             <?php endif; ?>
 						</td>
