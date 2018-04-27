@@ -16,7 +16,7 @@
 .register-form-div {
     margin-top: 30px;
     margin-bottom: 30px;
-    border: 1px solid #e2e2e2;
+    border: 1px solid #ccc;
     background-color: #fff;
 }
 
@@ -41,9 +41,9 @@
     padding-top: 10px;
     padding-left: 20px;
     padding-bottom: 10px;
-    border-bottom: 1px solid #e2e2e2;
+    border-bottom: 1px solid #ccc;
     color: #01AAED;
-    background-color: #eee;
+    background-color: #f4f4f4;
 }
 
 .register-company-info {
@@ -51,10 +51,10 @@
     padding-top: 10px;
     padding-left: 20px;
     padding-bottom: 10px;
-    border-top: 1px solid #e2e2e2;
-    border-bottom: 1px solid #e2e2e2;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
     color: #01AAED;
-    background-color: #eee;
+    background-color: #f4f4f4;
 }
 
 
