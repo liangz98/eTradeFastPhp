@@ -71,6 +71,22 @@
 							<input type="password" class="form-control" name="ecommpasswsd" id="ecommpasswsd" required placeholder="登录密码">
 						</div>
 					</div>
+                    
+                    <?php if ($this->is_code == '1'):?>
+					<div class="form-group">
+						<ul class="list-inline">
+							<li>
+								<label class="sr-only" for="vcode"></label>
+								<div class="input-group">
+									<input type="text" class="form-control" name="vcode" id="vcode" required placeholder="<?php echo $this->translate('tip_code');?>">
+								</div>
+							</li>
+							<li class="pull-right">
+								<img class="login-authCode_pic" id="authCodePic" src='/user/check/code' />
+							</li>
+						</ul>
+					</div>
+                    <?php endif;?>
 
 					<div class="form-group">
 						<ul class="list-inline">
@@ -151,12 +167,14 @@
 		});
 	});
 
-	function changing() {
-		document.getElementById('checkpic').src = "/user/check/code?" + Math.random();
-	}
+	// function changing() {
+	// 	document.getElementById('checkpic').src = "/user/check/code?" + Math.random();
+	// }
 
 	$(function () {
-
+		$("#authCodePic").click(function () {
+			$(this).attr("src", "/user/check/code?" + Math.random());
+		});
 	});
 
 	// 密码规验证(8-30位  字母数字)
