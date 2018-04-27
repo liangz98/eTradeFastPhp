@@ -31,8 +31,34 @@
 	<div class="container">
 		<div class="col-md-10 col-md-offset-1 register-form-div">
 			<form class="form-horizontal register-form-body" action="<?php echo $this->baseUrl();?>/register" method="post" id="register_form" name="register_form">
-				<div class="register-user-info">
-                    <?php echo $this->translate('userTT'); ?>
+				<div class="form-group">
+					<label for="regdcountryCode" class="col-sm-3 control-label"><?php echo $this->translate('address'); ?></label>
+					<div class="col-sm-9">
+						<select class="form-control" name="regdcountryCode" id="regdcountryCode" required>
+                            <?php echo $this->ShowDictionaryList($this->dic_Setting['COUNTRY_ISO_CODE'], $this->userlangCode, $this->dic_Setting['COUNTRY_ISO_CODE']); ?>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="regdAddress" class="col-sm-3 control-label"></label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" name="regdAddress" id="regdAddress" required placeholder="<?php echo $this->translate('is_regadress'); ?>">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="accountName" class="col-sm-3 control-label"><?php echo $this->translate('regd_company_name'); ?></label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" name="accountName" id="accountName" required placeholder="<?php echo $this->translate('is_comname'); ?>">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="email" class="col-sm-3 control-label"><?php echo $this->translate('companyEM'); ?></label>
+					<div class="col-sm-9">
+						<input type="email" class="form-control" name="email" id="email" required placeholder="<?php echo $this->translate('ps_email'); ?>">
+					</div>
 				</div>
 				
 				<div class="form-group">
@@ -67,40 +93,6 @@
 					<label for="mobilePhone" class="col-sm-3 control-label"><?php echo $this->translate('phone'); ?></label>
 					<div class="col-sm-9">
 						<input type="text" class="form-control" name="mobilePhone" id="mobilePhone" required placeholder="<?php echo $this->translate('is_phone'); ?>">
-					</div>
-				</div>
-
-				<div class="register-company-info">
-                    <?php echo $this->translate('companyINF'); ?>
-				</div>
-
-				<div class="form-group">
-					<label for="regdcountryCode" class="col-sm-3 control-label"><?php echo $this->translate('address'); ?></label>
-					<div class="col-sm-9">
-						<select class="form-control" name="regdcountryCode" id="regdcountryCode" required>
-                            <?php echo $this->ShowDictionaryList($this->dic_Setting['COUNTRY_ISO_CODE'], $this->userlangCode, $this->dic_Setting['COUNTRY_ISO_CODE']); ?>
-						</select>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label for="regdAddress" class="col-sm-3 control-label"></label>
-					<div class="col-sm-9">
-						<input type="text" class="form-control" name="regdAddress" id="regdAddress" required placeholder="<?php echo $this->translate('is_regadress'); ?>">
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<label for="accountName" class="col-sm-3 control-label"><?php echo $this->translate('regd_company_name'); ?></label>
-					<div class="col-sm-9">
-						<input type="text" class="form-control" name="accountName" id="accountName" required placeholder="<?php echo $this->translate('is_comname'); ?>">
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label for="email" class="col-sm-3 control-label"><?php echo $this->translate('companyEM'); ?></label>
-					<div class="col-sm-9">
-						<input type="email" class="form-control" name="email" id="email" required placeholder="<?php echo $this->translate('ps_email'); ?>">
 					</div>
 				</div>
 
