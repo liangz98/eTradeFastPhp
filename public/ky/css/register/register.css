@@ -65,12 +65,14 @@
 	font-family:"Microsoft YaHei UI";
 }
 
-.container4register{
-	width: 960px;
-}
+
 
 /* footer */
 
+
+.container4register{
+	width: 960px;
+}
 
 label.error {
     margin-left: 210px;
