@@ -45,6 +45,16 @@ class LoginController extends Kyapi_Controller_Action {
             
             $resultObject = $this->json->loginApi($_requestOb, $_loginName, $_password, $_authCode);
             $userKY = $this->objectToArray(json_decode($resultObject));
+    
+            // 登录失败，重定向
+            if ($userKY['status'] != 1) {
+                $this->redirect("/login");
+                // Shop_Browser::redirect($userKY['errorCode'] . ':' . $userKY['error'], $this->view->seed_Setting['user_app_server'] . "/login");
+            } else {
+                $this->redirect("/index");
+            }
+            
+            
             $existData = $userKY['result'];
             
             $userDetail = array();
