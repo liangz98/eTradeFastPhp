@@ -155,10 +155,7 @@
 			success: function(label) {
 				var forName = $(label).attr("for");
 				$("label[for='" + forName + "']").parent().addClass("has-success").removeClass("has-error");
-				if ($(label)) {
-					$(label).hidden();
-				}
-				
+				$(label).hide();
 			},
 			highlight: function (element) {
 				$("label[for='" + element.id + "']").parent().addClass("has-error").removeClass("has-success");
