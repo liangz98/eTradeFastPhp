@@ -155,21 +155,28 @@ class LoginController extends Kyapi_Controller_Action {
     
     
     
-            $this->redirect("/");
+            // $this->redirect("/");
+            
+            $this->redirect($this->view->seed_Setting['user_app_server'] . "/index");
+    
+    
+            // $content = $this->view->render(SEED_WWW_TPL . "/index/index.phtml");
+            // echo $content;
+            // exit;
             
             
-            // if ($userKY['status'] != 1) {
-            //     setcookie("iscode", '1', time() + 3600);
-            //     Shop_Browser::redirect($userKY['errorCode'] . ':' . $userKY['error'], $this->view->seed_Setting['user_app_server'] . "/login");
-            // } else {
-            //     setcookie("iscode", '1', time() - 3600);
-            //     //登录OK
-            //     if ($_SESSION['url']) {
-            //         $url = $_SESSION['url'];
-            //         Shop_Browser::redirect($this->view->translate('tip_login_sucess'), $url);
-            //     }
-            //     Shop_Browser::redirect($this->view->translate('tip_login_sucess'), $this->view->seed_Setting['user_app_server'] . "/index");
-            // }
+            if ($userKY['status'] != 1) {
+                setcookie("iscode", '1', time() + 3600);
+                Shop_Browser::redirect($userKY['errorCode'] . ':' . $userKY['error'], $this->view->seed_Setting['user_app_server'] . "/login");
+            } else {
+                setcookie("iscode", '1', time() - 3600);
+                //登录OK
+                if ($_SESSION['url']) {
+                    $url = $_SESSION['url'];
+                    Shop_Browser::redirect($this->view->translate('tip_login_sucess'), $url);
+                }
+                Shop_Browser::redirect($this->view->translate('tip_login_sucess'), $this->view->seed_Setting['user_app_server'] . "/index");
+            }
             
         }
         if (defined('SEED_WWW_TPL')) {
