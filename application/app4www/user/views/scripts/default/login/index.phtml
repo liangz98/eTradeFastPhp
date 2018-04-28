@@ -130,12 +130,10 @@
 
 <script type="text/javascript">
 	$().ready(function() {
-		console.log($.cookie("rmbUser"));
 		if ($.cookie("rmbUser") == "true") {
 			$("#remember").attr("checked", true);
 			$("#ecommloginname").val($.cookie("username"));
 		}
-		
 		
 		$("#login_form").validate({
 			rules: {
@@ -170,10 +168,10 @@
 				$("label[for='" + element.id + "']").parent().addClass("has-error").removeClass("has-success");
 			},
 			submitHandler: function (form) {
-				if ($("#remember").attr("checked")) {
+				if ($("#remember").prop('checked')) {
 					var str_username = $("#ecommloginname").val();
-					$.cookie("rmbUser", "true", {expires: 7}); //存储一个带7天期限的cookie
-					$.cookie("username", str_username, {expires: 7});
+					$.cookie("rmbUser", "true", {expires: 365}); //存储一个带7天期限的cookie
+					$.cookie("username", str_username, {expires: 365});
 				} else {
 					$.cookie("rmbUser", "false", {expire: -1});
 					$.cookie("username", "", {expires: -1});

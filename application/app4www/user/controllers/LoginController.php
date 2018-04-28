@@ -15,17 +15,9 @@ class LoginController extends Kyapi_Controller_Action {
      */
     
     function indexAction() {
-        // if (!empty($_COOKIE['eCommLoginName'])) {
-        //     echo 'userName:'.$_COOKIE['eCommLoginName'] . "|";
-        //     $this->view->rememberName = $_COOKIE['eCommLoginName'];
-        // }
         if (!empty($_COOKIE['needAuthCode'])) {
             $this->view->needAuthCode = $_COOKIE['needAuthCode'];
-    
-            echo 'authCode:'.$_COOKIE['needAuthCode'] . "|";
         }
-        
-        
         
         if ($this->_request->isPost()) {
             // 请求服务端方法
@@ -37,17 +29,6 @@ class LoginController extends Kyapi_Controller_Action {
             
             $authCode = $this->_request->getParam('authCode');
             $authCode = trim($authCode);
-            //判断是否为自动登录
-            $remember = $this->_request->getParam('remember');
-            $_remember = trim($remember);
-            
-            // if (!empty($_remember)) {
-            //     // 把用户名放到cookie里面
-            //     setcookie("username", $loginName, time() + 3600 * 24 * 365);
-            //     $_COOKIE["username"] = $loginName;
-            // } else {
-            //     setcookie ("username", "", time() - 1);
-            // }
             
             // Login
             $resultObject = $this->json->loginApi($_requestOb, $loginName, $password, $authCode);
@@ -58,18 +39,6 @@ class LoginController extends Kyapi_Controller_Action {
                 // 需要验证码的cookie
                 setcookie("needAuthCode", "1", time() + 3600);
                 $_COOKIE["needAuthCode"] = "1";
-    
-    
-                // echo $_remember . "|";
-                // if (!empty($_remember)) {
-                //     // 把用户名放到cookie里面
-                //     setcookie("eCommLoginName", $loginName, time() + 3600 * 24 * 365);
-                //     $_COOKIE["eCommLoginName"] = $loginName;
-                // } else {
-                //     setcookie ("eCommLoginName", "", time() - 3600);
-                //     $_COOKIE["eCommLoginName"] = "";
-                // }
-                // $this->forward("/");
                 
                 $content = $this->view->render(SEED_WWW_TPL . "/login/index.phtml");
                 echo $content;
