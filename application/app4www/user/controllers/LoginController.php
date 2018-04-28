@@ -153,34 +153,7 @@ class LoginController extends Kyapi_Controller_Action {
             $redis->set('PHPREDIS_ACTIVE_USERS:' . $userDetail['user_id'], 'PHPREDIS_SESSION:' . session_id(), 86400);
             $redis->set('PHPREDIS_ACTIVE_SESSION:' . session_id(), $userDetail['user_id'], 86400);
     
-    
-    
             $this->redirect("/");
-            // echo $this->view->seed_Setting['user_app_server']; exit;
-            
-            // echo $this->view->seed_Setting['www_app_server']; exit;
-            
-            // $this->redirect($this->view->seed_Setting['user_app_server'] . "/index");
-    
-    
-            // $content = $this->view->render(SEED_WWW_TPL . "/index/index.phtml");
-            // echo $content;
-            // exit;
-            
-            
-            if ($userKY['status'] != 1) {
-                setcookie("iscode", '1', time() + 3600);
-                Shop_Browser::redirect($userKY['errorCode'] . ':' . $userKY['error'], $this->view->seed_Setting['user_app_server'] . "/login");
-            } else {
-                setcookie("iscode", '1', time() - 3600);
-                //登录OK
-                if ($_SESSION['url']) {
-                    $url = $_SESSION['url'];
-                    Shop_Browser::redirect($this->view->translate('tip_login_sucess'), $url);
-                }
-                Shop_Browser::redirect($this->view->translate('tip_login_sucess'), $this->view->seed_Setting['user_app_server'] . "/index");
-            }
-            
         }
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/login/index.phtml");

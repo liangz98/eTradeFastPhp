@@ -23,7 +23,7 @@
             <h4><!--银行账户详细--><?php echo $this->translate('accountNO').$this->translate('info');?></h4>
             <?php if($this->CompAdmin==true):?>
             <?php if($bank['bankAcctStatus']=='04'||$bank['bankAcctStatus']=='03'):?>
-            <a class="p_ed fr mt10" href=<?php echo WWW.'user/bank/edit?'.base64_encode($this->bank['bankAcctID']);?> ></a>
+            <a class="p_ed fr mt10" href=<?php echo '/user/bank/edit?'.base64_encode($this->bank['bankAcctID']);?> ></a>
             <?php endif;?>
             <?php endif;?>
         </div>

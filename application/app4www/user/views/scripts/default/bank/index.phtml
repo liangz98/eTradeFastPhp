@@ -26,7 +26,7 @@
                    <input class="search_inp" name="keyword" placeholder="<?php echo $this->translate('INPkw_bk');?>" type="text">
                    <input class="ss_btn" type="submit" value="">
                <?php if($this->CompAdmin==true && count($this->bank_isAllowAdd)>0):?>
-                   <!--新增--><a title="<?php echo $this->translate('add');?>" href=<?php echo WWW.'user/bank/add';?> class="addb_box fr"></a>
+                   <!--新增--><a title="<?php echo $this->translate('add');?>" href=<?php echo '/user/bank/add';?> class="addb_box fr"></a>
                <?php endif;?>
            </form>
         </div>
@@ -50,19 +50,19 @@
 
                         <tr style="height: 71px;">
                             <?php $bank['bankAcctStatus']=='03'?$linked='edit':$linked='view';?>
-                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo WWW.'user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>"><?php echo $bank['bankAcctNo'];?></a></td>
-                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo WWW.'user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>"><?php echo $bank['bankAcctName'];?></a></td>
-                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo WWW.'user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>">
+                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>"><?php echo $bank['bankAcctNo'];?></a></td>
+                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>"><?php echo $bank['bankAcctName'];?></a></td>
+                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>">
                                     <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['BANK_ACCOUNT_TYPE'],$bank['bankAcctType']);?></a></td>
-                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo WWW.'user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>"><?php echo $bank['bankName'];?></a></td>
-                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo WWW.'user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>"><?php echo $bank['swiftcode'];?></a></td>
-                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo WWW.'user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>">
+                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>"><?php echo $bank['bankName'];?></a></td>
+                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>"><?php echo $bank['swiftcode'];?></a></td>
+                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>">
                                 <?php if($bank['isDefault']==1){echo $this->translate('yes');}else{echo $this->translate('no');}?></a></td>
-                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo WWW.'user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>"><?php echo $this->Dicst[$bank['bankAcctStatus']];?></a></td>
+                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>"><?php echo $this->Dicst[$bank['bankAcctStatus']];?></a></td>
                             <td>
                                 <div class="cc_box">
                                     <?php if($bank['bankAcctStatus']=='04'||$bank['bankAcctStatus']=='03'):?>
-                                    <a title="<?php echo $this->translate('edit');?>" class="p_ed" href="<?php echo WWW.'user/bank/edit?'.base64_encode($bank['bankAcctID']);?>"></a>
+                                    <a title="<?php echo $this->translate('edit');?>" class="p_ed" href="<?php echo '/user/bank/edit?'.base64_encode($bank['bankAcctID']);?>"></a>
                                     <a title="<?php echo $this->translate('delete');?>" class="p_del"
                                        href="javascript:;"  id="<?php echo $bank['bankAcctID'];?>" data-url="/user/bank/delete" data-msg1="<?php echo $this->translate('is_delete');?>"
                                        data-msg2="<?php echo $this->translate('delete_y');?>" data-msg3="<?php echo $this->translate('delete_n');?>"  onclick="doOption(this);"></a>

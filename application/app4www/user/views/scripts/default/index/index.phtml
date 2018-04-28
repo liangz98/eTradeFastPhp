@@ -69,13 +69,13 @@
         <div class="user_wrap w940 clearfix" style=" background: #f5f5f5;">
             <div class="user fl">
                 <div class="tx_wrap fl">
-                    <a target="_blank" href="<?php echo WWW; ?>user/index/edit"><img src="/ky/images/user_tx.png"></a>
-                    <p><a  target="_blank" href="<?php echo WWW; ?>user/index/edit"><?php echo $this->userLoginName; ?></a></p>
+                    <a target="_blank" href="/user/index/edit"><img src="/ky/images/user_tx.png"></a>
+                    <p><a  target="_blank" href="/user/index/edit"><?php echo $this->userLoginName; ?></a></p>
                 </div>
             </div>
             <div class="user_info fl">
                 <div class="clearfix" style="position:relative;">
-                    <h2 class="fl"><a href="<?php echo WWW; ?>user/company"><?php echo $this->accountName; ?></a></h2>
+                    <h2 class="fl"><a href="/user/company"><?php echo $this->accountName; ?></a></h2>
                     <i class="company_icon fr" style="margin: 7px 20px 0 0;"></i>
                     <div class="company_box" style="left:602px;"><img
                                 src="<?php echo WWWURL; ?>/qrcode?from=<?php echo base64_encode($this->e['accountName']); ?>"
@@ -128,7 +128,7 @@
                                     <ul>
                                         <?php if (is_array($this->orderXS) && count($this->orderXS) > 0): ?>
                                             <?php foreach ($this->orderXS as $k1 => $orderxs): ?>
-                                                <li><a href="<?php  echo WWW.'user/orderxs/view?'.base64_encode($orderxs['orderID']);?>"><?php echo $orderxs['orderNo']; ?></a>
+                                                <li><a href="<?php  echo '/user/orderxs/view?'.base64_encode($orderxs['orderID']);?>"><?php echo $orderxs['orderNo']; ?></a>
                                                 </li>
                                             <?php endforeach; ?>
                                         <?php endif; ?>
@@ -142,7 +142,7 @@
                                     <ul>
                                         <?php if (is_array($this->orderCG) && count($this->orderCG) > 0): ?>
                                             <?php foreach ($this->orderCG as $k2 => $ordercg): ?>
-                                                <li><a href="<?php  echo WWW.'user/ordercg/view?'.base64_encode($ordercg['orderID']);?>"><?php echo $ordercg['orderNo']; ?></a>
+                                                <li><a href="<?php  echo '/user/ordercg/view?'.base64_encode($ordercg['orderID']);?>"><?php echo $ordercg['orderNo']; ?></a>
                                                 </li>
                                             <?php endforeach; ?>
                                         <?php endif; ?>
@@ -156,7 +156,7 @@
                                     <ul>
                                         <?php if (is_array($this->Goods) && count($this->Goods) > 0): ?>
                                             <?php foreach ($this->Goods as $k3 => $Goods): ?>
-                                                <li><a href="<?php  echo WWW.'user/goods/view?'.base64_encode($Goods['productID']);?>"><?php echo $Goods['productName']; ?></a>
+                                                <li><a href="<?php  echo '/user/goods/view?'.base64_encode($Goods['productID']);?>"><?php echo $Goods['productName']; ?></a>
                                                 </li>
                                             <?php endforeach; ?>
                                         <?php endif; ?>
@@ -170,7 +170,7 @@
                                     <ul>
                                         <?php if (is_array($this->Purchase) && count($this->Purchase) > 0): ?>
                                             <?php foreach ($this->Purchase as $k1 => $Purchase): ?>
-                                                <li><a href="<?php  echo WWW.'user/purchase/view?'.base64_encode($Purchase['productID']);?>"><?php echo $Purchase['productName'];  ?></a>
+                                                <li><a href="<?php  echo '/user/purchase/view?'.base64_encode($Purchase['productID']);?>"><?php echo $Purchase['productName'];  ?></a>
                                                 </li>
                                             <?php endforeach; ?>
                                         <?php endif; ?>
@@ -184,7 +184,7 @@
                                     <ul>
                                         <?php if (is_array($this->Buyer) && count($this->Buyer) > 0): ?>
                                             <?php foreach ($this->Buyer as $k1 => $Buyer): ?>
-                                                <li><a href="<?php  echo WWW.'user/buyer/view?'.base64_encode($Buyer['toID']);?>"><?php echo $Buyer['toName']; ?></a>
+                                                <li><a href="<?php  echo '/user/buyer/view?'.base64_encode($Buyer['toID']);?>"><?php echo $Buyer['toName']; ?></a>
                                                 </li>
                                             <?php endforeach; ?>
                                         <?php endif; ?>
@@ -198,7 +198,7 @@
                                     <ul>
                                         <?php if (is_array($this->Vendor) && count($this->Vendor) > 0): ?>
                                             <?php foreach ($this->Vendor as $k1 => $Vendor): ?>
-                                                <li><a href="<?php  echo WWW.'user/vendor/view?'.base64_encode($Vendor['toID']);?>"><?php echo $Vendor['toName']; ?></a>
+                                                <li><a href="<?php  echo '/user/vendor/view?'.base64_encode($Vendor['toID']);?>"><?php echo $Vendor['toName']; ?></a>
                                                 </li>
                                             <?php endforeach; ?>
                                         <?php endif; ?>

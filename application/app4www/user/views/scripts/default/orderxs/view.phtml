@@ -159,7 +159,7 @@
                         <h4><!--订单信息预览--><?php echo $this->translate('view').$this->translate('orderINF');?></h4>
 
                         <?php if($this->CompOrderAdmin==true && $this->allowEdit==1):?>
-                            <a class="p_ed fr mt10" href="<?php echo WWW.'user/orderxs/edit?'.base64_encode($this->orderid);?>"></a>
+                            <a class="p_ed fr mt10" href="<?php echo '/user/orderxs/edit?'.base64_encode($this->orderid);?>"></a>
                         <?php endif;?>
 
                     </div>

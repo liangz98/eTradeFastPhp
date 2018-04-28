@@ -49,7 +49,7 @@
                     <input class="ss_btn" type="submit" value="">
                     <?php if($this->CompProductAdmin==true||$this->CompOrderAdmin==true):?>
                         <?php if(count($this->purchase_isAllowAdd)>0):?>
-                    <a href=<?php echo WWW.'user/purchase/add';?> class="addb_box fr"></a>
+                    <a href=<?php echo '/user/purchase/add';?> class="addb_box fr"></a>
                     <?php endif;?>
                     <?php endif;?>
                 </p>
@@ -75,19 +75,19 @@
                 <?php if(is_array($this->e) && count($this->e)>0):?>
                     <?php foreach ($this->e as $k=>$goods):?>
                         <tr>
-                            <td><a href="<?php if(!empty($this->purchase_isAllowView)){echo WWW.'user/purchase/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
+                            <td><a href="<?php if(!empty($this->purchase_isAllowView)){echo '/user/purchase/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
                                     <?php echo $this->ShowUPimg($goods['attachmentList']);?></a></td>
-                            <td><a href="<?php if(!empty($this->purchase_isAllowView)){echo WWW.'user/purchase/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
+                            <td><a href="<?php if(!empty($this->purchase_isAllowView)){echo '/user/purchase/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
                                 <?php echo $goods['productName'];?></a></td>
-                            <td><a href="<?php if(!empty($this->purchase_isAllowView)){echo WWW.'user/purchase/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
+                            <td><a href="<?php if(!empty($this->purchase_isAllowView)){echo '/user/purchase/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
                                 <?php echo $goods['productBrand'];?></a></td>
-                            <td><a href="<?php if(!empty($this->purchase_isAllowView)){echo WWW.'user/purchase/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
+                            <td><a href="<?php if(!empty($this->purchase_isAllowView)){echo '/user/purchase/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
                                 <?php echo $goods['productModel'];?></a></td>
-                            <td><a href="<?php if(!empty($this->purchase_isAllowView)){echo WWW.'user/purchase/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
+                            <td><a href="<?php if(!empty($this->purchase_isAllowView)){echo '/user/purchase/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
                                 <?php echo $goods['hscode'];?></a></td>
-                            <td><a href="<?php if(!empty($this->purchase_isAllowView)){echo WWW.'user/purchase/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
+                            <td><a href="<?php if(!empty($this->purchase_isAllowView)){echo '/user/purchase/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
                                 <?php echo $goods['rebateRate'];?></a></td>
-                            <td><a href="<?php if(!empty($this->purchase_isAllowView)){echo WWW.'user/purchase/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
+                            <td><a href="<?php if(!empty($this->purchase_isAllowView)){echo '/user/purchase/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
                                 <?php echo $goods['supplierName'];?></a></td>
                             <!--                            <td><span class="t_state wuxiao"></span></td>-->
                         <?php if($this->CompProductAdmin==true||$this->CompOrderAdmin==true):?>
@@ -96,12 +96,12 @@
                                     <?php if ($goods['productStatus']!=05):?>
                                         <!--编辑-->
                                         <a title="<?php echo $this->translate('edit');?>" style="display:inline-block;" class="t_edit p_ed"
-                                           href=<?php echo WWW.'user/purchase/edit?'.base64_encode($goods['productID']);?>></a>
+                                           href=<?php echo '/user/purchase/edit?'.base64_encode($goods['productID']);?>></a>
                                     <?php endif;?>
                                     <?php if ($goods['productStatus']==00||$goods['productStatus']==01||$goods['productStatus']==03):?>
                                         <!--复制-->
                                         <a title="<?php echo $this->translate('copy');?>" style="display:inline-block;"  class="t_edit p_copy"
-                                           href=<?php echo WWW.'user/purchase/copy?'.base64_encode($goods['productID']);?>></a>
+                                           href=<?php echo '/user/purchase/copy?'.base64_encode($goods['productID']);?>></a>
                                     <?php endif;?>
                                     <?php if ($goods['allowInvalid']==true):?>
                                         <!--禁用-->   <a title="<?php echo $this->translate('disable');?>" style="display:inline-block;"  class="t_edit p_jy"

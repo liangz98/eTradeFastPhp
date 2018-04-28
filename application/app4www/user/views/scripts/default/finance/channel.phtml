@@ -65,8 +65,8 @@
     <div class="finance_box clearfix">
 
         <ul class="chl">
-            <a href="<?php echo WWW; ?>user/finance/channel/crnCode/CNY"><li id="<?php echo  ($this->crnCode == 'CNY') ? 'lion' :''?>"><span>CNY</span></li></a>
-            <a href="<?php echo WWW; ?>user/finance/channel/crnCode/USD"><li id="<?php echo  ($this->crnCode == 'USD') ? 'lion' :''?>"><span>USD</span></li></a>
+            <a href="/user/finance/channel/crnCode/CNY"><li id="<?php echo  ($this->crnCode == 'CNY') ? 'lion' :''?>"><span>CNY</span></li></a>
+            <a href="/user/finance/channel/crnCode/USD"><li id="<?php echo  ($this->crnCode == 'USD') ? 'lion' :''?>"><span>USD</span></li></a>
         </ul>
         <div class="ic_table" style="">
             <div class="ifc_cn" style="">
@@ -201,7 +201,7 @@
                 <div class="list list1">
                     <div class="tabCon">
                         <div id="s1">
-                            <form action="<?php echo WWW; ?>user/finance/channel" method="post">
+                            <form action="/user/finance/channel" method="post">
                                 <dl class="mt10 fl w">
                                     <dt class="fl"> <!--金融项目号--><?php echo $this->translate('finance').$this->translate('Finance_itermNo');?></dt>
                                     <dd><input class="st_input_f" type="text" name="factoringNo"></dd>
@@ -293,7 +293,7 @@
                                 <p><!--项目金额--><?php echo $this->translate('loanAmount');?><span><?php echo $v['crnCode']?>&nbsp;<?php echo $this->ShowToPrice($v['factoringActualFinancingAmount'])?></span></p>
                                 <p><!--状态--><?php echo $this->translate('tradingStatus');?><span>
                                     <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['CHANNEL_STATUS'], $v['channelStatus']); ?></span></p>
-                                <a style="margin-left: -50px;" href="<?php echo WWW; ?>user/finance/channelview/id/<?php echo $v['channelID']?>">
+                                <a style="margin-left: -50px;" href="/user/finance/channelview/id/<?php echo $v['channelID']?>">
                                     <span><!--详情--><?php echo $this->translate('Saltter_INF');?></span></a>
                             </div>
                             <div class="cn_cont_b">

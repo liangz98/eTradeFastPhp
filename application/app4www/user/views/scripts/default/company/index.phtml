@@ -52,7 +52,7 @@
                     <h4><!--查看公司信息--><?php echo $this->translate('view') . $this->translate('companyINF'); ?><i
                                 class="company_icon"></i><!--点击查看公司快移码--></h4>
                     <?php if ($this->CompAdmin == true): ?>
-                        <a class="p_ed fr mt10 mr30" href="<?php echo WWW; ?>user/company/edit"></a>
+                        <a class="p_ed fr mt10 mr30" href="/user/company/edit"></a>
                     <?php endif; ?>
                     <div class="company_box"><img
                                 src="<?php echo WWWURL; ?>/qrcode?from=<?php echo base64_encode($this->e['accountName']); ?>"

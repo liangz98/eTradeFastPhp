@@ -23,7 +23,7 @@
             <div class="info_tit">
                 <h4><!--查看产品详情--><?php echo $this->translate('view').$this->translate('goodsINF');?></h4>
                 <?php if($this->CompProductAdmin==true||$this->CompOrderAdmin==true||$this->goods['productStatus']!=05):?>
-                <a class="p_ed fr mt10" href="<?php echo WWW.'user/goods/edit?'.base64_encode($this->goods['productID']);?>"></a>
+                <a class="p_ed fr mt10" href="<?php echo '/user/goods/edit?'.base64_encode($this->goods['productID']);?>"></a>
                 <?php endif;?>
             </div>
             <div class="info_cont info_cont1 company_info clearfix">

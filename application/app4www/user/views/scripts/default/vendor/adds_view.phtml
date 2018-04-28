@@ -83,7 +83,7 @@
         </div>
         <div class="com_btn_box tc">
             <?php if($this->extData['isShowVendorBtn']):?>
-            <a class="buyer_ed_view" href="<?php echo WWW.'user/vendor/addv?'.base64_encode($this->toID);?>"><?php echo $this->translate('sendVendor');?></a><!--邀请为卖家-->
+            <a class="buyer_ed_view" href="<?php echo '/user/vendor/addv?'.base64_encode($this->toID);?>"><?php echo $this->translate('sendVendor');?></a><!--邀请为卖家-->
             <?php endif;?>
             <input type="button" value="<?php echo $this->translate('return');?>" onclick="javascript:window.opener=null;window.open('','_self');window.close();"><!--返回-->
         </div>

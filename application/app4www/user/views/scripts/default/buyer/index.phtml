@@ -24,10 +24,10 @@
         <div class="order_table order_tableh">
             <ul class="order_state2 order_state3 clearfix">
                 <li <?php if ($this->status == 01): ?><?php echo "class='on'"; ?><?php endif; ?> ><a
-                            href="<?php echo WWW; ?>user/buyer/index-01-1.html">
+                            href="/user/buyer/index-01-1.html">
                         <!--有效--><?php echo $this->translate('valid'); ?></a></li>
                 <li <?php if ($this->status == 02): ?><?php echo "class='on'"; ?><?php endif; ?> ><a
-                            href="<?php echo WWW; ?>user/buyer/index-02-1.html">
+                            href="/user/buyer/index-02-1.html">
                         <!--待处理--><?php echo $this->translate('waiting'); ?>（<span
                                 class="wh_num"><?php if (!empty($this->clConut['02'])) {
                                 echo $this->clConut['02'];
@@ -35,7 +35,7 @@
                                 echo '0';
                             } ?></span>）</a></li>
                 <li <?php if ($this->status == 00): ?><?php echo "class='on'"; ?><?php endif; ?> ><a
-                            href="<?php echo WWW; ?>user/buyer/index-00-1.html">
+                            href="/user/buyer/index-00-1.html">
                         <!--审核中--><?php echo $this->translate('audit'); ?>（<span
                                 class="wh_num"><?php if (!empty($this->clConut['00'])) {
                                 echo $this->clConut['00'];
@@ -52,8 +52,8 @@
                 <input class="ss_btn" type="submit" value="">
                 <?php if ($this->CompPartnerAdmin == true || $this->CompOrderAdmin == true): ?>
                     <?php if (count($this->buyer_isAllowAdd) > 0): ?>
-                        <a href="<?php echo WWW; ?>user/buyer/add" class="addb_box fr"></a>
-                        <a href="<?php echo WWW; ?>user/buyer/adds" class="p_n_sh fr"></a>
+                        <a href="/user/buyer/add" class="addb_box fr"></a>
+                        <a href="/user/buyer/adds" class="p_n_sh fr"></a>
                     <?php endif; ?>
                 <?php endif; ?>
             </form>

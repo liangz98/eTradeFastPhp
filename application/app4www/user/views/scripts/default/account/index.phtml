@@ -25,9 +25,9 @@
             <form action="#" method="post">
                     <input class="search_inp" name="keyword" placeholder="<?php echo $this->translate('INPkw_ac');?>" type="text">
                     <input class="ss_btn" type="submit" value="">
-                    <a href=<?php if($this->PStatus=='01'){ echo WWW.'user/account/index-00-1.html';}else{echo WWW.'user/account/index-01-1.html';}?>> <span class="ac_all_st"><em  <?php if($this->PStatus!='01'){ echo 'class="ac_all_bg"';}?>></em></span></a><span class="ac_all_t"><?php echo $this->translate('CHK_account');?></span>
+                    <a href=<?php if($this->PStatus=='01'){ echo '/user/account/index-00-1.html';}else{echo '/user/account/index-01-1.html';}?>> <span class="ac_all_st"><em  <?php if($this->PStatus!='01'){ echo 'class="ac_all_bg"';}?>></em></span></a><span class="ac_all_t"><?php echo $this->translate('CHK_account');?></span>
                 <?php if($this->CompAdmin==true && count($this->account_isAllowAdd)>0):?>
-                <!--新增--><a title="<?php echo $this->translate('add');?>" href=<?php echo WWW.'user/account/add';?> class="addb_box fr"></a>
+                <!--新增--><a title="<?php echo $this->translate('add');?>" href=<?php echo '/user/account/add';?> class="addb_box fr"></a>
                <?php endif;?>
             </form>
         </div>
@@ -47,9 +47,9 @@
             <?php if(is_array($this->userList) && count($this->userList)>0):?>
                 <?php foreach ($this->userList as $k=>$ulist):?>
                     <tr style="height: 71px;">
-                        <td><a href="<?php if(!empty($this->account_isAllowView)){echo WWW.'user/account/view?'.base64_encode($ulist['contactID']);}?>"><?php echo $ulist['name'];?></a></td>
-                        <td><a href="<?php if(!empty($this->account_isAllowView)){echo WWW.'user/account/view?'.base64_encode($ulist['contactID']);}?>"><?php echo $ulist['ecommloginname'];?></a></td>
-                        <td><a href="<?php if(!empty($this->account_isAllowView)){echo WWW.'user/account/view?'.base64_encode($ulist['contactID']);}?>">
+                        <td><a href="<?php if(!empty($this->account_isAllowView)){echo '/user/account/view?'.base64_encode($ulist['contactID']);}?>"><?php echo $ulist['name'];?></a></td>
+                        <td><a href="<?php if(!empty($this->account_isAllowView)){echo '/user/account/view?'.base64_encode($ulist['contactID']);}?>"><?php echo $ulist['ecommloginname'];?></a></td>
+                        <td><a href="<?php if(!empty($this->account_isAllowView)){echo '/user/account/view?'.base64_encode($ulist['contactID']);}?>">
                                 <?php echo $this->ShowDictionaryTo('datatest_setting',$this->userlangCode,$this->dic_Setting['ECOMM_STATUS'],$ulist['ecommstatus']);?>
                             </a></td><!--用户状态 字典代码 ECOMM_STATUS-->
                         <td><dl class="acct_role">
@@ -59,7 +59,7 @@
                                     <?php endforeach;?>
                                 <?php endif;?>
                                 <a title="<?php echo $role_name;?>"
-                                   href="<?php if(!empty($this->account_isAllowView)){echo WWW.'user/account/view?'.base64_encode($ulist['contactID']);}?>">
+                                   href="<?php if(!empty($this->account_isAllowView)){echo '/user/account/view?'.base64_encode($ulist['contactID']);}?>">
                                     <?php echo $role_name;?></a>
                                </dl></td>
                         <!--员工状态 字典代码 CONTACT_STATUS-->
@@ -76,7 +76,7 @@
 
                         <td>
                             <div class="cc_box">
-                                <a title="<?php echo $this->translate('edit');?>" class="p_ed" href="<?php echo WWW.'user/account/edit?'.base64_encode($ulist['contactID']);?>"></a>
+                                <a title="<?php echo $this->translate('edit');?>" class="p_ed" href="<?php echo '/user/account/edit?'.base64_encode($ulist['contactID']);?>"></a>
                                 <?php  if($this->CompAdmin==true):?>
                                 <!--禁用-->   <a title="<?php echo $this->translate('disable');?>"  <?php if ($ulist['contactStatus']=='01'){echo 'style="display:inline-block;"';}?>  class="t_edit p_jy"
                                                href="javascript:;" id="<?php echo $ulist['contactID'];?>" data-url="/user/account/invalid"
