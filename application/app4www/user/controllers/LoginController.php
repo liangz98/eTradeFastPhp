@@ -156,7 +156,9 @@ class LoginController extends Kyapi_Controller_Action {
     
     
             // $this->redirect("/");
-            echo $this->view->seed_Setting['user_app_server'];
+            echo $this->view->seed_Setting['user_app_server']; exit;
+            
+            echo $this->view->seed_Setting['www_app_server']; exit;
             
             $this->redirect($this->view->seed_Setting['user_app_server'] . "/index");
     
