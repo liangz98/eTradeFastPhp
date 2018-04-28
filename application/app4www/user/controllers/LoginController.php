@@ -15,9 +15,17 @@ class LoginController extends Kyapi_Controller_Action {
      */
     
     function indexAction() {
-        if (!empty($_COOKIE['username'])) {
-            $this->view->rememberName = $_COOKIE['username'];
+        // if (!empty($_COOKIE['eCommLoginName'])) {
+        //     echo 'userName:'.$_COOKIE['eCommLoginName'] . "|";
+        //     $this->view->rememberName = $_COOKIE['eCommLoginName'];
+        // }
+        if (!empty($_COOKIE['needAuthCode'])) {
+            $this->view->needAuthCode = $_COOKIE['needAuthCode'];
+    
+            echo 'authCode:'.$_COOKIE['needAuthCode'] . "|";
         }
+        
+        
         
         if ($this->_request->isPost()) {
             // 请求服务端方法
@@ -32,25 +40,45 @@ class LoginController extends Kyapi_Controller_Action {
             //判断是否为自动登录
             $remember = $this->_request->getParam('remember');
             $_remember = trim($remember);
-            if (!empty($_remember)) {
-                // 把用户名放到cookie里面
-                setcookie("username", $loginName, time() + 3600 * 24 * 365);
-                // 加了密的密码放到cookie里面
-                // setcookie("password", $_password, time() + 3600*24*365);
-            }
             
+            // if (!empty($_remember)) {
+            //     // 把用户名放到cookie里面
+            //     setcookie("username", $loginName, time() + 3600 * 24 * 365);
+            //     $_COOKIE["username"] = $loginName;
+            // } else {
+            //     setcookie ("username", "", time() - 1);
+            // }
+            
+            // Login
             $resultObject = $this->json->loginApi($_requestOb, $loginName, $password, $authCode);
             $userKY = $this->objectToArray(json_decode($resultObject));
     
             // 登录失败，重定向到登录页
             if ($userKY['status'] != 1) {
-                // $this->redirect("/login");
+                // 需要验证码的cookie
+                setcookie("needAuthCode", "1", time() + 3600);
+                $_COOKIE["needAuthCode"] = "1";
+    
+    
+                // echo $_remember . "|";
+                // if (!empty($_remember)) {
+                //     // 把用户名放到cookie里面
+                //     setcookie("eCommLoginName", $loginName, time() + 3600 * 24 * 365);
+                //     $_COOKIE["eCommLoginName"] = $loginName;
+                // } else {
+                //     setcookie ("eCommLoginName", "", time() - 3600);
+                //     $_COOKIE["eCommLoginName"] = "";
+                // }
+                // $this->forward("/");
                 
-                $this->view->needAuthCode = 1;
                 $content = $this->view->render(SEED_WWW_TPL . "/login/index.phtml");
                 echo $content;
                 exit;
             }
+    
+            // 删除需要验证码的cookie
+            setcookie("needAuthCode", "", time() - 1);
+            $_COOKIE["needAuthCode"] = "";
             
             
             $existData = $userKY['result'];

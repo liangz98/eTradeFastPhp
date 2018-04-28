@@ -23,10 +23,11 @@ class IndexController extends Kyapi_Controller_Action {
     
     public function indexAction() {
         if (empty($_SESSION['rev_session']['userID'])) {
-            $this->view->is_code = $_COOKIE['iscode'];  // 前台验证码是否出现
-            if (!empty($_COOKIE['username'])) {
-                $this->view->rememberName = $_COOKIE['username'];
-            }
+            // $this->view->is_code = $_COOKIE['iscode'];  // 前台验证码是否出现
+    
+            // if (!empty($_COOKIE['username'])) {
+            //     $this->view->rememberName = $_COOKIE['username'];
+            // }
             
             if (defined('SEED_WWW_TPL')) {
                 $content = $this->view->render(SEED_WWW_TPL . "/login/index.phtml");
