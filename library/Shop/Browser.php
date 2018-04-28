@@ -1,6 +1,7 @@
 <?php
 class Shop_Browser {
 	public static function get_client_ip(){
+	    echo "in client"; exit;
 		if (getenv("HTTP_CLIENT_IP") && strcasecmp(getenv("HTTP_CLIENT_IP"), "unknown"))
 		$ip = getenv("HTTP_CLIENT_IP");
 		else if (getenv("HTTP_X_FORWARDED_FOR") && strcasecmp(getenv("HTTP_X_FORWARDED_FOR"), "unknown"))
@@ -15,7 +16,7 @@ class Shop_Browser {
 	}
 
 	public static function view_page($url,$timeOut=30,$header=0,$cookie=""){
-	    echo "in"; exit;
+        echo "in view page"; exit;
 		$ch = curl_init();
 		if(!$ch)return null;
 		$userAgent=isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2; .NET4.0C; .NET4.0E)';
@@ -37,6 +38,7 @@ class Shop_Browser {
 		return $content;
 	}
     public static function info($msg,$redirect_url=null,$wait_time=1000,$target="window"){
+        echo "in info"; exit;
         $sec = $wait_time/1000;
         $html=<<<EOD
 		<script type="text/javascript" src="/ky/layer/layer.js"></script>
@@ -201,6 +203,7 @@ public static function tip_show($msg,$redirect_url=null,$wait_time=2000,$target=
     }
     
     public static function  isMobile(){
+        echo "in is mobile"; exit;
     	$useragent=isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
     	$useragent_commentsblock=preg_match('|\(.*?\)|',$useragent,$matches)>0?$matches[0]:'';
     	function CheckSubstrs($substrs,$text){
