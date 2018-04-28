@@ -657,6 +657,7 @@ class OrderxsController extends Kyapi_Controller_Action
 
     /*查看订单*/
     public function viewAction() {
+        echo "in";exit;
         //读取数据字典
         $cacheM = new Seed_Model_Cache2File();
         $DATAlist = $cacheM->get("datatest_setting");
