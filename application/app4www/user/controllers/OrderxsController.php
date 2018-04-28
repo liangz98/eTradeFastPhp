@@ -37,7 +37,6 @@ class OrderxsController extends Kyapi_Controller_Action
 
     public function indexAction()
     {
-        echo "in ";
         try {
 
             $f1 = new Seed_Filter_Alnum();
