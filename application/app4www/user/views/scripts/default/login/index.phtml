@@ -72,13 +72,17 @@
 						</div>
 					</div>
                     
-                    <?php if ($this->is_code == '1'):?>
+                    <?php if ($this->needAuthCode == '1'):?>
 					<div class="form-group">
 						<ul class="list-inline">
 							<li>
-								<label class="sr-only" for="vcode"></label>
+								<label class="sr-only" for="authCode"></label>
 								<div class="input-group">
+<<<<<<< HEAD
 									<input type="text" class="form-control" name="vcode" id="vcode" required placeholder="<?php echo $this->translate('tip_code');?>">
+=======
+									<input type="text" class="form-control" name="authCode" id="authCode" required placeholder="<?php echo $this->translate('tip_code');?>" style="height:38px;font-size:16px;color:#999999;">
+>>>>>>> 2c213841c56ca29c70e9c4392a056534cb588588
 								</div>
 							</li>
 							<li class="pull-right">
@@ -93,7 +97,7 @@
 							<li>
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" value="" <?php if (!empty($this->rememberName)) {echo 'checked';} ?> >
+										<input type="checkbox" value="1" name="remember" id="remember" <?php if (!empty($this->rememberName)) {echo 'checked';} ?> >
                                         <?php echo $this->translate('tip_remember');?>
 									</label>
 								</div>
@@ -126,8 +130,15 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+<script src="/ky/js/jquery.cookie.js"></script>
+
 <script type="text/javascript">
 	$().ready(function() {
+		if ($.cookie("rmbUser") == "true") {
+			$("#remember").attr("checked", true);
+			$("#ecommloginname").val($.cookie("username"));
+		}
+		
 		$("#login_form").validate({
 			rules: {
 				ecommpasswsd: {
@@ -155,13 +166,21 @@
 			success: function(label) {
 				var forName = $(label).attr("for");
 				$("label[for='" + forName + "']").parent().addClass("has-success").removeClass("has-error");
-				$(label).hidden();
+				$(label).remove();
 			},
 			highlight: function (element) {
 				$("label[for='" + element.id + "']").parent().addClass("has-error").removeClass("has-success");
-				$("#"+element.id+"-error").show();
 			},
 			submitHandler: function (form) {
+				if ($("#remember").prop('checked')) {
+					var str_username = $("#ecommloginname").val();
+					$.cookie("rmbUser", "true", {expires: 365}); //存储一个带7天期限的cookie
+					$.cookie("username", str_username, {expires: 365});
+				} else {
+					$.cookie("rmbUser", "false", {expire: -1});
+					$.cookie("username", "", {expires: -1});
+					$.cookie("password", "", {expires: -1});
+				}
 				form.submit();
 			}
 		});
