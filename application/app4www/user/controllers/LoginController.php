@@ -39,10 +39,8 @@ class LoginController extends Kyapi_Controller_Action {
                 // 需要验证码的cookie
                 setcookie("needAuthCode", "1", time() + 3600);
                 $_COOKIE["needAuthCode"] = "1";
-                
-                $content = $this->view->render(SEED_WWW_TPL . "/login/index.phtml");
-                echo $content;
-                exit;
+    
+                $this->redirect("/login");
             }
     
             // 删除需要验证码的cookie
