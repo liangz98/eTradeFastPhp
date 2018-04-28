@@ -154,7 +154,7 @@ class LoginController extends Kyapi_Controller_Action {
             $redis->set('PHPREDIS_ACTIVE_SESSION:' . session_id(), $userDetail['user_id'], 86400);
     
     
-            $this->redirect("/index");
+            // $this->redirect("/index");
             
             
             if ($userKY['status'] != 1) {
