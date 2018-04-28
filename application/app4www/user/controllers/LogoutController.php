@@ -20,18 +20,14 @@ class LogoutController extends Kyapi_Controller_Action {
         Seed_Cookie::setCookie('PHPSESSID', '', $expiretime, $this->view->seed_Setting['cookie_path'], $this->view->seed_Setting['cookie_host']);
         $ajax = trim($this->_request->getParam('ajax'));
         
-        if ($ajax == '1' && !empty($_SERVER['HTTP_REFERER'])) {
-            //推出提示:
-            // Shop_Browser::redirect($this->view->translate('tip_login_out'), $_SERVER['HTTP_REFERER']);
+        // if ($ajax == '1' && !empty($_SERVER['HTTP_REFERER'])) {
+        //     //推出提示:
+        //     Shop_Browser::redirect($this->view->translate('tip_login_out'), $_SERVER['HTTP_REFERER']);
+        // } else {
+        //     Shop_Browser::redirect($this->view->translate('tip_login_out'), $this->view->seed_Setting['www_app_server']);
+        // }
     
-            $this->redirect($_SERVER['HTTP_REFERER']);
-        } else {
-            // Shop_Browser::redirect($this->view->translate('tip_login_out'), $this->view->seed_Setting['www_app_server']);
-    
-            $this->redirect($this->view->seed_Setting['www_app_server']);
-        }
-    
-        
+        $this->redirect("/");
         exit;
     }
 }

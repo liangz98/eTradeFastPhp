@@ -155,12 +155,12 @@ class LoginController extends Kyapi_Controller_Action {
     
     
     
-            // $this->redirect("/");
+            $this->redirect("/");
             // echo $this->view->seed_Setting['user_app_server']; exit;
             
-            echo $this->view->seed_Setting['www_app_server']; exit;
+            // echo $this->view->seed_Setting['www_app_server']; exit;
             
-            $this->redirect($this->view->seed_Setting['user_app_server'] . "/index");
+            // $this->redirect($this->view->seed_Setting['user_app_server'] . "/index");
     
     
             // $content = $this->view->render(SEED_WWW_TPL . "/index/index.phtml");
