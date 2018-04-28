@@ -15,43 +15,41 @@ class LoginController extends Kyapi_Controller_Action {
      */
     
     function indexAction() {
-        
-        //前台验证码 效验是否出现
-        $this->view->is_code = $_COOKIE['iscode'];
-        
         if (!empty($_COOKIE['username'])) {
             $this->view->rememberName = $_COOKIE['username'];
         }
-        
         
         if ($this->_request->isPost()) {
             // 请求服务端方法
             $_requestOb = $this->_requestObject;
             $loginName = $this->_request->getParam('ecommloginname');
-            $_loginName = trim($loginName);
+            $loginName = trim($loginName);
             $password = $this->_request->getParam('ecommpasswsd');
-            $_password = trim($password);
+            $password = trim($password);
             
-            $vcode = $this->_request->getParam('vcode');
-            $_authCode = trim($vcode);
+            $authCode = $this->_request->getParam('authCode');
+            $authCode = trim($authCode);
             //判断是否为自动登录
             $remember = $this->_request->getParam('remember');
             $_remember = trim($remember);
             if (!empty($_remember)) {
-                //如果用户选择了，记录登录状态就把用户名和加了密的密码放到cookie里面
-                setcookie("username", $_loginName, time() + 3600 * 24 * 365);
-                // setcookie("password",$_password,time()+3600*24*365);
+                // 把用户名放到cookie里面
+                setcookie("username", $loginName, time() + 3600 * 24 * 365);
+                // 加了密的密码放到cookie里面
+                // setcookie("password", $_password, time() + 3600*24*365);
             }
             
-            $resultObject = $this->json->loginApi($_requestOb, $_loginName, $_password, $_authCode);
+            $resultObject = $this->json->loginApi($_requestOb, $loginName, $password, $authCode);
             $userKY = $this->objectToArray(json_decode($resultObject));
     
-            // 登录失败，重定向
+            // 登录失败，重定向到登录页
             if ($userKY['status'] != 1) {
-                $this->redirect("/login");
-                // Shop_Browser::redirect($userKY['errorCode'] . ':' . $userKY['error'], $this->view->seed_Setting['user_app_server'] . "/login");
-            } else {
-                $this->redirect("/index");
+                // $this->redirect("/login");
+                
+                $this->view->needAuthCode = 1;
+                $content = $this->view->render(SEED_WWW_TPL . "/login/index.phtml");
+                echo $content;
+                exit;
             }
             
             
@@ -159,10 +157,12 @@ class LoginController extends Kyapi_Controller_Action {
             $redis->connect($config);
             $redis->set('PHPREDIS_ACTIVE_USERS:' . $userDetail['user_id'], 'PHPREDIS_SESSION:' . session_id(), 86400);
             $redis->set('PHPREDIS_ACTIVE_SESSION:' . session_id(), $userDetail['user_id'], 86400);
+    
+    
+            $this->redirect("/index");
+            
             
             if ($userKY['status'] != 1) {
-                
-                // $this->view->is_code=$userKY['result'];
                 setcookie("iscode", '1', time() + 3600);
                 Shop_Browser::redirect($userKY['errorCode'] . ':' . $userKY['error'], $this->view->seed_Setting['user_app_server'] . "/login");
             } else {
@@ -173,8 +173,6 @@ class LoginController extends Kyapi_Controller_Action {
                     Shop_Browser::redirect($this->view->translate('tip_login_sucess'), $url);
                 }
                 Shop_Browser::redirect($this->view->translate('tip_login_sucess'), $this->view->seed_Setting['user_app_server'] . "/index");
-                
-                // $this->redirect($this->view->seed_Setting['user_app_server'] . "/index");
             }
             
         }

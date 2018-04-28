@@ -72,13 +72,13 @@
 						</div>
 					</div>
                     
-                    <?php if ($this->is_code == '1'):?>
+                    <?php if ($this->needAuthCode == '1'):?>
 					<div class="form-group">
 						<ul class="list-inline">
 							<li>
-								<label class="sr-only" for="vcode"></label>
+								<label class="sr-only" for="authCode"></label>
 								<div class="input-group">
-									<input type="text" class="form-control" name="vcode" id="vcode" required placeholder="<?php echo $this->translate('tip_code');?>" style="height:38px;font-size:16px;color:#999999;">
+									<input type="text" class="form-control" name="authCode" id="authCode" required placeholder="<?php echo $this->translate('tip_code');?>" style="height:38px;font-size:16px;color:#999999;">
 								</div>
 							</li>
 							<li class="pull-right">
@@ -155,7 +155,10 @@
 			success: function(label) {
 				var forName = $(label).attr("for");
 				$("label[for='" + forName + "']").parent().addClass("has-success").removeClass("has-error");
-				$(label).hidden();
+				if ($(label)) {
+					$(label).hidden();
+				}
+				
 			},
 			highlight: function (element) {
 				$("label[for='" + element.id + "']").parent().addClass("has-error").removeClass("has-success");
