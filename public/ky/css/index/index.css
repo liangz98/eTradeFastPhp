@@ -21,7 +21,7 @@
 /* body */
 .index-body {
     background-image: url('/ky/images/index/index_bg_2.jpg');
-    height: 700px;
+    height: 600px;
     background-size: cover;
 }
 
@@ -104,7 +104,7 @@
 /* footer */
 .footer-body {
     position: absolute;
-    bottom: 0;
+    /*bottom: 0;*/
     padding: 20px 0;
     width: 100%;
     background-color: #f6f6f6;
