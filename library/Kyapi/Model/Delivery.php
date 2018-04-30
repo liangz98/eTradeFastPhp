@@ -7,7 +7,10 @@
  * Time: 21:21
  *  公司信息编辑实例类
  */
-class Kyapi_Model_Delivery
-{
+class Kyapi_Model_Delivery {
+    
+    public $deliveryID;
     public $orderID;
+    public $deliverySupplierList;
+    
 }

@@ -13,4 +13,5 @@ class Kyapi_Model_DeliverySupplier
     public $supplierID;
     public $expressType;
     public $expressNo;
+    public $bankAcctID;
 }

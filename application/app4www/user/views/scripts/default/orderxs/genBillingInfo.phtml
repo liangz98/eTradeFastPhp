@@ -16,13 +16,14 @@
 			<label class="layui-form-label width-120">供应商名称</label>
 			<div class="layui-input-block">
 				<div class="layui-form-mid layui-word-aux"><?php echo $deliverySupplier->supplierName ?></div>
+				<input type="hidden" name="supplierID" value="<?php echo $deliverySupplier->supplierID ?>" >
 			</div>
 		</div>
 
 		<div class="layui-form-item">
-			<label class="layui-form-label width-120" for="bankName">选择银行帐户</label>
+			<label class="layui-form-label width-120" for="bankAcctID">选择银行帐户</label>
 			<div class="layui-input-block margin-left-150" style="width: 500px;">
-				<select name="bankName" id="bankName" lay-verify="required" lay-search="" lay-filter="bankName">
+				<select name="bankAcctID" id="bankAcctID" lay-verify="required" lay-search="" lay-filter="bankAcctID">
 					<option value=""><?php echo $this->translate('et_select'); ?></option>
                     <?php echo $this->ShowBankAccountList(); ?>
 				</select>

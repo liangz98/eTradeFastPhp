@@ -1350,6 +1350,29 @@ $(".billingInfo").click(function () {
 				console.log("complete");
 			});
 		});
+		
+		$("#addBankAccountBtn").click(function () {
+			var deliveryID = $(this).attr("deliveryID_");
+			var supplierID = document.getElementsByName("supplierID");
+			var bankAcctID = document.getElementsByName("bankAcctID");
+
+			var genBillingInfo = '/user/orderxs/genbillinginfo';
+			$.post(genBillingInfo,
+			{
+				deliveryID: deliveryID,
+				supplierID: supplierID,
+				bankAcctID: bankAcctID
+			},
+			function (data) {
+			}, 'json')
+			.success(function (data) {
+				layer.closeAll();
+
+				// setTimeout(function(){
+				// 	$("#company-auth").trigger("click");
+				// }, 500);
+			});
+		});
 	});
 });
 // ********************   开票资料 End  *************************************

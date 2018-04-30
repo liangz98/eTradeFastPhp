@@ -1454,7 +1454,21 @@ class OrderxsController extends Kyapi_Controller_Action
     
     public function genbillinginfoAction() {
         if ($this->_request->isPost()) {
-        
+            $deliveryID = $this->_request->getParam('deliveryID');
+            $supplierID = $this->_request->getParam('supplierID');
+            $bankAcctID = $this->_request->getParam('bankAcctID');
+            
+            $delivery = new Kyapi_Model_Delivery();
+            $delivery->deliveryID = $deliveryID;
+            
+            foreach ($supplierID as $index => $value) {
+                $deliverySupplier = new Kyapi_Model_DeliverySupplier();
+                $deliverySupplier->supplierID = $value;
+                $deliverySupplier->bankAcctID = $bankAcctID[$index];
+                $delivery->deliverySupplierList[$index] = $deliverySupplier;
+            }
+            
+            var_dump($delivery); exit;
         }
     }
     
