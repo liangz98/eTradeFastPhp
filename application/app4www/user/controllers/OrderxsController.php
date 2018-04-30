@@ -1460,11 +1460,23 @@ class OrderxsController extends Kyapi_Controller_Action
             
             $delivery = new Kyapi_Model_Delivery();
             $delivery->deliveryID = $deliveryID;
+    
+            $_supplierID = explode("|", $supplierID);
+            foreach ($_supplierID as $k => $v) {
+                if (!$v)
+                    unset($_supplierID[$k]);
+            }
+    
+            $_bankAcctID = explode("|", $bankAcctID);
+            foreach ($_supplierID as $k => $v) {
+                if (!$v)
+                    unset($_bankAcctID[$k]);
+            }
             
-            foreach ($supplierID as $index => $value) {
+            foreach ($_supplierID as $index => $value) {
                 $deliverySupplier = new Kyapi_Model_DeliverySupplier();
                 $deliverySupplier->supplierID = $value;
-                $deliverySupplier->bankAcctID = $bankAcctID[$index];
+                $deliverySupplier->bankAcctID = $_bankAcctID[$index];
                 $delivery->deliverySupplierList[$index] = $deliverySupplier;
             }
             

@@ -1354,17 +1354,25 @@ $(".billingInfo").click(function () {
 		$(".genBillInfoBtn").click(function () {
 			alert("in");
 			var deliveryID = $(this).attr("deliveryID_");
-			alert(deliveryID);
+			
+			var supplierIDArray = "";
 			var supplierID = document.getElementsByName("supplierID");
-			alert(supplierID);
+			for (var i = 0, j = supplierID.length; i < j; i++) {
+				supplierIDArray += supplierID[i].value + "|";
+			}
+			
+			var bankAcctIDArray = "";
 			var bankAcctID = document.getElementsByName("bankAcctID");
+			for (var i = 0, j = bankAcctID.length; i < j; i++) {
+				bankAcctIDArray += bankAcctID[i].value + "|";
+			}
 
 			var genBillingInfo = '/user/orderxs/genbillinginfo';
 			$.post(genBillingInfo,
 			{
 				deliveryID: deliveryID,
-				supplierID: supplierID,
-				bankAcctID: bankAcctID
+				supplierID: supplierIDArray,
+				bankAcctID: bankAcctIDArray
 			},
 			function (data) {
 			}, 'json')
