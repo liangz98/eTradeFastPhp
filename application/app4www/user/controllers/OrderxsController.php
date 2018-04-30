@@ -1481,7 +1481,7 @@ class OrderxsController extends Kyapi_Controller_Action
             }
     
             $_requestOb = $this->_requestObject;
-            $_resultData = $this->json->genBillingInfoApi($_requestOb, $deliveryID);
+            $_resultData = $this->json->genBillingInfoApi($_requestOb, $delivery);
             $existData = json_decode($_resultData);
     
             echo json_encode($existData->status);
