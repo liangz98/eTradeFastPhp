@@ -1452,6 +1452,12 @@ class OrderxsController extends Kyapi_Controller_Action
         }
     }
     
+    public function genbillinginfoAction() {
+        if ($this->_request->isPost()) {
+        
+        }
+    }
+    
     // 编辑物流信息
     public function editexpresssaveAction() {
         if ($this->_request->isPost()) {
