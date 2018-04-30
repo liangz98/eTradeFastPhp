@@ -1352,7 +1352,6 @@ $(".billingInfo").click(function () {
 		});
 		
 		$(".genBillInfoBtn").click(function () {
-			alert("in");
 			var deliveryID = $(this).attr("deliveryID_");
 			
 			var supplierIDArray = "";
@@ -1367,21 +1366,24 @@ $(".billingInfo").click(function () {
 				bankAcctIDArray += bankAcctID[i].value + "|";
 			}
 
+			$(".genBillInfoBtn").attr("disabled", true);
 			var genBillingInfo = '/user/orderxs/genbillinginfo';
 			$.post(genBillingInfo,
-			{
-				deliveryID: deliveryID,
-				supplierID: supplierIDArray,
-				bankAcctID: bankAcctIDArray
-			},
-			function (data) {
-			}, 'json')
-			.success(function (data) {
-				layer.closeAll();
+				{
+					deliveryID: deliveryID,
+					supplierID: supplierIDArray,
+					bankAcctID: bankAcctIDArray
+				},
+				function (data) {
+				}, 'json')
+				.success(function (data) {
+					layer.closeAll();
 
-				// setTimeout(function(){
-				// 	$("#company-auth").trigger("click");
-				// }, 500);
+					setTimeout(function () {
+					$("#company-auth").trigger("click");
+				}, 500);
+
+				$(".genBillInfoBtn").attr("disabled", false);
 			});
 		});
 	});
