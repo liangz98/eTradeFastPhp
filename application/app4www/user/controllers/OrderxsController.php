@@ -1479,8 +1479,13 @@ class OrderxsController extends Kyapi_Controller_Action
                 $deliverySupplier->bankAcctID = $_bankAcctID[$index];
                 $delivery->deliverySupplierList[$index] = $deliverySupplier;
             }
-            
-            var_dump($delivery); exit;
+    
+            $_requestOb = $this->_requestObject;
+            $_resultData = $this->json->genBillingInfoApi($_requestOb, $deliveryID);
+            $existData = json_decode($_resultData);
+    
+            echo json_encode($existData->status);
+            exit;
         }
     }
     
