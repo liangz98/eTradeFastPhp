@@ -1352,8 +1352,11 @@ $(".billingInfo").click(function () {
 		});
 		
 		$(".genBillInfoBtn").click(function () {
+			alert("in");
 			var deliveryID = $(this).attr("deliveryID_");
+			alert(deliveryID);
 			var supplierID = document.getElementsByName("supplierID");
+			alert(supplierID);
 			var bankAcctID = document.getElementsByName("bankAcctID");
 
 			var genBillingInfo = '/user/orderxs/genbillinginfo';
