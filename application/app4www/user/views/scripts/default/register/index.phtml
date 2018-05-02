@@ -195,9 +195,12 @@
 		});
 
 		$("#changeCompanyRegister,#changePersonRegister").click(function () {
-            if ($(this).attr("isPersonAccount") === 'false') {
+            if ($(this).attr("isPersonAccount") === 'true') {
                 $(".regdAddress,.accountName,.email").hide();
-
+                $("#isPersonAccount").val("true");
+            } else {
+                $(".regdAddress,.accountName,.email").show();
+                $("#isPersonAccount").val("false");
             }
         });
 	});
