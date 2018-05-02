@@ -13,4 +13,6 @@ class Kyapi_Model_requestObject
     public $sessionID;
     public $accountID;
     public $contactPreference;
+    public $timeZone;
+    public $client;
 }
