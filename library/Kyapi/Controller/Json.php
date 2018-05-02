@@ -1172,11 +1172,10 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
     }
 
     /*2.3结算 取汇款银行信息接口*/
-    public  function paymentgetRechargeBank($_requestObject)
-    {
-        $_url=$this->url.'/paymentapi/paymentApi!getRechargeBank.action';
-        $_params =json_encode(array("requestObject"=>$_requestObject));
-        $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
+    public function paymentgetRechargeBank($_requestObject) {
+        $_url = $this->url . '/paymentapi/paymentApi!getRechargeBank.action';
+        $_params = json_encode(array("requestObject" => $_requestObject));
+        $resultObject = $this->vpost($_url, $_params); //输出目标地址源码
         return $resultObject;
     }
 
