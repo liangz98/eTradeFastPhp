@@ -32,10 +32,12 @@
 		<div class="col-md-10 col-md-offset-1 col-xs-12 register-form-div">
 			<form class="form-horizontal register-form-body" action="<?php echo $this->baseUrl();?>/register" method="post" id="register_form" name="register_form">
 
+                <input type="hidden" name="isPersonAccount" id="isPersonAccount" value="false">
+
 				<div class="register-company-info">
                     <ul class="list-inline">
-                        <li><a href="javascript:void(0)"><?php echo $this->translate('companyRegister'); ?></a></li>
-                        <li><a href="javascript:void(0)"><?php echo $this->translate('personRegister'); ?></a></li>
+                        <li><a href="javascript:void(0)" id="changeCompanyRegister" isPersonAccount="false"><?php echo $this->translate('companyRegister'); ?></a></li>
+                        <li><a href="javascript:void(0)" id="changePersonRegister" isPersonAccount="true"><?php echo $this->translate('personRegister'); ?></a></li>
                     </ul>
 				</div>
 
@@ -191,6 +193,10 @@
 			}
 			toReadServiceContract();
 		});
+
+		$("#changeCompanyRegister,#changePersonRegister").click(function () {
+            alert($(this).attr("isPersonAccount"));
+        });
 	});
 
 	function toReadServiceContract() {
