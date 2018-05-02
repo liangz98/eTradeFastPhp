@@ -50,21 +50,21 @@
 					</div>
 				</div>
 
-				<div class="form-group">
+				<div class="form-group regdAddress">
 					<label for="regdAddress" class="col-sm-3 control-label"></label>
 					<div class="col-sm-7">
 						<input type="text" class="form-control" name="regdAddress" id="regdAddress" required placeholder="<?php echo $this->translate('is_regadress'); ?>">
 					</div>
 				</div>
 
-				<div class="form-group">
+				<div class="form-group accountName">
 					<label for="accountName" class="col-sm-3 control-label"><?php echo $this->translate('regd_company_name'); ?></label>
 					<div class="col-sm-7">
 						<input type="text" class="form-control" name="accountName" id="accountName" required placeholder="<?php echo $this->translate('is_comname'); ?>">
 					</div>
 				</div>
 
-				<div class="form-group">
+				<div class="form-group email">
 					<label for="email" class="col-sm-3 control-label"><?php echo $this->translate('companyEM'); ?></label>
 					<div class="col-sm-7">
 						<input type="email" class="form-control" name="email" id="email" required placeholder="<?php echo $this->translate('ps_email'); ?>">
@@ -195,7 +195,10 @@
 		});
 
 		$("#changeCompanyRegister,#changePersonRegister").click(function () {
-            alert($(this).attr("isPersonAccount"));
+            if ($(this).attr("isPersonAccount") === 'false') {
+                $(".regdAddress,.accountName,.email").hide();
+
+            }
         });
 	});
 
