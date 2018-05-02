@@ -29,7 +29,7 @@
 
 <div class="container-fluid register-body">
 	<div class="container">
-		<div class="col-md-10 col-md-offset-1 register-form-div">
+		<div class="col-md-10 col-md-offset-1 col-xs-12 register-form-div">
 			<form class="form-horizontal register-form-body" action="<?php echo $this->baseUrl();?>/register" method="post" id="register_form" name="register_form">
 
 				<div class="register-company-info">
@@ -37,8 +37,8 @@
 				</div>
 
 				<div class="form-group">
-					<label for="regdcountryCode" class="col-sm-3 control-label"><?php echo $this->translate('address'); ?></label>
-					<div class="col-sm-9">
+					<label for="regdcountryCode" class="col-sm-3 col-xs-12 control-label"><?php echo $this->translate('address'); ?></label>
+					<div class="col-sm-7">
 						<select class="form-control" name="regdcountryCode" id="regdcountryCode" required>
                             <?php echo $this->ShowDictionaryList($this->dic_Setting['COUNTRY_ISO_CODE'], $this->userlangCode, $this->dic_Setting['COUNTRY_ISO_CODE']); ?>
 						</select>
@@ -47,63 +47,63 @@
 
 				<div class="form-group">
 					<label for="regdAddress" class="col-sm-3 control-label"></label>
-					<div class="col-sm-9">
+					<div class="col-sm-7">
 						<input type="text" class="form-control" name="regdAddress" id="regdAddress" required placeholder="<?php echo $this->translate('is_regadress'); ?>">
 					</div>
 				</div>
-				
+
 				<div class="form-group">
 					<label for="accountName" class="col-sm-3 control-label"><?php echo $this->translate('regd_company_name'); ?></label>
-					<div class="col-sm-9">
+					<div class="col-sm-7">
 						<input type="text" class="form-control" name="accountName" id="accountName" required placeholder="<?php echo $this->translate('is_comname'); ?>">
 					</div>
 				</div>
 
 				<div class="form-group">
 					<label for="email" class="col-sm-3 control-label"><?php echo $this->translate('companyEM'); ?></label>
-					<div class="col-sm-9">
+					<div class="col-sm-7">
 						<input type="email" class="form-control" name="email" id="email" required placeholder="<?php echo $this->translate('ps_email'); ?>">
 					</div>
 				</div>
-				
+
 				<div class="form-group">
 					<label for="name" class="col-sm-3 control-label"><?php echo $this->translate('name'); ?></label>
-					<div class="col-sm-9">
+					<div class="col-sm-7">
 						<input type="text" class="form-control" name="name" id="name" required placeholder="<?php echo $this->translate('name'); ?>">
 					</div>
 				</div>
-				
+
 				<div class="form-group">
 					<label for="ecommloginname" class="col-sm-3 control-label"><?php echo $this->translate('elogname'); ?></label>
-					<div class="col-sm-9">
+					<div class="col-sm-7">
 						<input type="email" class="form-control" name="ecommloginname" id="ecommloginname" required placeholder="<?php echo $this->translate('elogname'); ?>">
 					</div>
 				</div>
 
 				<div class="form-group">
 					<label for="ecommpasswsd" class="col-sm-3 control-label"><?php echo $this->translate('password'); ?></label>
-					<div class="col-sm-9">
+					<div class="col-sm-7">
 						<input type="password" class="form-control" name="ecommpasswsd" id="ecommpasswsd" required placeholder="<?php echo $this->translate('password').'('.$this->translate('is_passwd').')'; ?>">
 					</div>
 				</div>
 
 				<div class="form-group">
 					<label for="checkecommrpasswsd" class="col-sm-3 control-label"><?php echo $this->translate('confirmPSD'); ?></label>
-					<div class="col-sm-9">
+					<div class="col-sm-7">
 						<input type="password" class="form-control" name="checkecommrpasswsd" id="checkecommrpasswsd" required placeholder="<?php echo $this->translate('is_rpasswd'); ?>">
 					</div>
 				</div>
 
 				<div class="form-group">
 					<label for="mobilePhone" class="col-sm-3 control-label"><?php echo $this->translate('phone'); ?></label>
-					<div class="col-sm-9">
+					<div class="col-sm-7">
 						<input type="text" class="form-control" name="mobilePhone" id="mobilePhone" required placeholder="<?php echo $this->translate('is_phone'); ?>">
 					</div>
 				</div>
 
 				<div class="form-group">
 					<label for="serviceContract" class="col-sm-3 control-label"></label>
-					<div class="checkbox col-sm-9">
+					<div class="checkbox col-sm-7">
 						<label>
 							<input type="checkbox" value="" name="serviceContract" id="serviceContract" required>
 							<input type="hidden" id="isReadServiceContract" value="false">
@@ -187,7 +187,7 @@
 			toReadServiceContract();
 		});
 	});
-	
+
 	function toReadServiceContract() {
 		$.post('/register/servicehtml', {}, function(service){
 			layer.open({
