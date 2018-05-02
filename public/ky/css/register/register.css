@@ -26,15 +26,11 @@
 }
 
 .register-form-body .form-group {
-    /*margin-left: 45px;*/
 	margin-bottom: 30px;
-    /*width: 82%;*/
 }
 
 .register-form-body .form-group:last-child {
     margin-top: 20px;
-    /*margin-left: 247px;*/
-    /*width: 58%;*/
 }
 
 .register-user-info {
@@ -69,16 +65,6 @@
 
 
 /* footer */
-
-
-.container4register{
-	width: 970px;
-}
-
-.row4register{
-	margin: 0px 80px;
-}
-
 label.error {
     margin-left: 210px;
 }
