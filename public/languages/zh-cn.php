@@ -135,11 +135,13 @@ return array(
     'service_contract'=>"《快移交易云平台服务协议》",
     'check_service_contract'=>"请阅读并同意相关服务条款",
     //登录/注册/表单/合作伙伴/我的卖家/买家/通讯录
+    'alreadyRegistered' => '已经注册，现在就',
     'companyRegister' => '公司注册',
     'personRegister' => '个人注册',
     'username' => '用户名',
     'password' => '密码',
     'elogname'=>'登录名',
+    'login_s'=>'登录',
     'login'=>'登录 LOGIN',
     'forgetPSD' => '忘记密码',
     'longPSD' => '原始密码',

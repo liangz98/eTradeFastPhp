@@ -145,11 +145,13 @@ return array(
     'service_contract'=>"《Etradfast Trading Platform Services User Agreement》",
     'check_service_contract'=>"请阅读并同意相关服务条款",
     //登录/注册/表单/合作伙伴/我的卖家/买家/通讯录
+    'alreadyRegistered' => '已经注册，现在就',
     'companyRegister' => '公司注册',
     'personRegister' => '个人注册',
     'username' => 'User Name',
     'password' => 'Password',
     'elogname'=>'User Name',
+    'login_s'=>'LOGIN In',
     'login'=>'LOGIN In',
     'forgetPSD' => 'Forgot password?',
     'longPSD' => 'Old Password',
