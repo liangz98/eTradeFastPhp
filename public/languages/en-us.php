@@ -144,7 +144,9 @@ return array(
     'ps_email'=>"admin@eTrade.com",
     'service_contract'=>"《Etradfast Trading Platform Services User Agreement》",
     'check_service_contract'=>"请阅读并同意相关服务条款",
-//登录/注册/表单/合作伙伴/我的卖家/买家/通讯录
+    //登录/注册/表单/合作伙伴/我的卖家/买家/通讯录
+    'companyRegister' => '公司注册',
+    'personRegister' => '个人注册',
     'username' => 'User Name',
     'password' => 'Password',
     'elogname'=>'User Name',
@@ -1053,7 +1055,7 @@ return array(
     'user140029'=>'identityNo参数不能为空',
     'user600002'=>'实名认证信息不匹配',
     'user444444'=>'实名认证每日只允许提交3次，请24小时后再尝试。',
-    
+
     /* Attach Type */
     'PREPARE_GOODS'               => '备货相关附件',
     'EXAMINE_GOODS'               => '验货相关附件',

@@ -122,8 +122,6 @@ return array(
     'xieyi'=>'合作协议',
     'agree'=>'同意',
 
-
-
     //注册页表单注释文字
     'is_name'=>"请填写真实姓名",
     'is_emlog'=>"例：zhangsan@etradfast.com",
@@ -136,7 +134,9 @@ return array(
     'ps_email'=>"admin@eTrade.com",
     'service_contract'=>"《快移交易云平台服务协议》",
     'check_service_contract'=>"请阅读并同意相关服务条款",
-//登录/注册/表单/合作伙伴/我的卖家/买家/通讯录
+    //登录/注册/表单/合作伙伴/我的卖家/买家/通讯录
+    'companyRegister' => '公司注册',
+    'personRegister' => '个人注册',
     'username' => '用户名',
     'password' => '密码',
     'elogname'=>'登录名',
@@ -490,7 +490,7 @@ return array(
     'receivingVIEW' => '收货相关附件查看',
     'deliverVIEW' => '发货相关附件查看',
     'examineVIEW' => '验货相关附件查看',
-    
+
     'tipQualityNoNull' => '请上传质量保证函正本!',
 
     'timeCLASS' => '按时间分类',
@@ -1141,7 +1141,7 @@ return array(
     /*金融补充*/
     'Finance_doc_title'=>'文档签署及放款',
     'Finance_doc_write'=>'文档签署',
-    
+
     /* Attach Type */
     'PREPARE_GOODS'               => '备货相关附件',
     'EXAMINE_GOODS'               => '验货相关附件',
@@ -1151,6 +1151,6 @@ return array(
     'QUALITY_AGREE_FORMAL'        => '质量保证函正本',
     'RECEIPT_CONFIRMATION_TEMPL'  => '收货确认函模板',
     'RECEIPT_CONFIRMATION_FORMAL' => '收货确认函正本',
-    
+
 );
 ?>

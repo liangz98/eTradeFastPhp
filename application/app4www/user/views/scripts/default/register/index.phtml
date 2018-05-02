@@ -33,7 +33,10 @@
 			<form class="form-horizontal register-form-body" action="<?php echo $this->baseUrl();?>/register" method="post" id="register_form" name="register_form">
 
 				<div class="register-company-info">
-                    <?php echo $this->translate('companyINF'); ?>
+                    <ul class="list-inline">
+                        <li><a href="javascript:void(0)"><?php echo $this->translate('companyRegister'); ?></a></li>
+                        <li><a href="javascript:void(0)"><?php echo $this->translate('personRegister'); ?></a></li>
+                    </ul>
 				</div>
 
 				<div class="form-group">
@@ -107,7 +110,7 @@
 						<label>
 							<input type="checkbox" value="" name="serviceContract" id="serviceContract" required>
 							<input type="hidden" id="isReadServiceContract" value="false">
-                            <?php echo $this->translate('agree'); ?>&nbsp;
+                            <?php echo $this->translate('check_service_contract'); ?>&nbsp;
 						</label>
 						<a href="javascript:void(0)" id="check_doc" style="color: #01AAED;"><?php echo $this->translate('service_contract'); ?></a>
 					</div>
