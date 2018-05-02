@@ -151,7 +151,7 @@ return array(
     'username' => 'User Name',
     'password' => 'Password',
     'elogname'=>'User Name',
-    'login_s'=>'LOGIN In',
+    'login_s'=>'LOGIN',
     'login'=>'LOGIN In',
     'forgetPSD' => 'Forgot password?',
     'longPSD' => 'Old Password',
