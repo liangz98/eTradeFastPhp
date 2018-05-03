@@ -57,6 +57,7 @@ class LoginController extends Kyapi_Controller_Action {
             $userDetail['crnCode'] = $existData['account']['crnCode'];  //公司默认货币
             $userDetail['user_name'] = $existData['name'];
             $userDetail['ecommloginname'] = $existData['ecommloginname'];//登陆名
+            $userDetail['isPersonAccount'] = $existData['isPersonAccount']; // 是否个人用户
             $userDetail['ecommrole'] = $existData['ecommrole'];//用户权限
             $contactPreference = $existData['contactPreference'];//个性化
             $userDetail['contactPreference']['contactID'] = $contactPreference['contactID'];
