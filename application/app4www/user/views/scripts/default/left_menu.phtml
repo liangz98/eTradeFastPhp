@@ -8,10 +8,18 @@
             <dt><?php echo $this->translate($r1["menu_lang"]);?></dt>
             <?php foreach($r1['nav'] as $k2=>$r2):?>
                 <dd <?php if(preg_match_all('/'.$r2["link_url"].'/',$this->newUrl,$rs)){echo 'class="on"';}?>>
-                       <a id="a_<?php echo $r2["menu_id"]?>" <?php if($r2["menu_blank"]=="1"){echo 'target="_blank"';}?> href="<?php echo $this->seed_BaseUrl."/".$r2["link_url"]?>" >
-                          <?php echo  $this->translate($r2["menu_lang"]);?></a>
+                   <a id="a_<?php echo $r2["menu_id"]?>" <?php if($r2["menu_blank"]=="1"){echo 'target="_blank"';}?> href="<?php echo $this->seed_BaseUrl."/".$r2["link_url"]?>" >
+                      <?php echo  $this->translate($r2["menu_lang"]);?>
+                   </a>
                 </dd>
             <?php endforeach;?>
+            <?php if ($r1["menu_lang"] == "userINF" && $this->isPersonAccount == 1): ?>
+                <dd <?php if(preg_match_all('/bank/', $this->newUrl, $rs)){echo 'class="on"';}?>>
+                    <a id="a_740" href="<?php echo $this->seed_BaseUrl."/bank" ?>" >
+                        <?php echo  $this->translate("bankNO");?>
+                    </a>
+                </dd>
+            <?php endif;?>
     <?php endforeach;?>
     <?php endif;?>
 </div>
