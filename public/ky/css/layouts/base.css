@@ -4,6 +4,13 @@ body {
 }
 
 /* header */
+.index-person-top {
+    z-index: 1000;
+}
+
+.index-header {
+    z-index: 999 !important;
+}
 
 /* footer */
 .footer-body {
