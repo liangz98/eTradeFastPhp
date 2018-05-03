@@ -42,6 +42,20 @@
                     </ul>
 				</div>
 
+				<div class="form-group accountName">
+					<label for="accountName" class="col-sm-3 control-label"><?php echo $this->translate('regd_company_name'); ?></label>
+					<div class="col-sm-7">
+						<input type="text" class="form-control" name="accountName" id="accountName" required placeholder="<?php echo $this->translate('is_comname'); ?>">
+					</div>
+				</div>
+
+				<div class="form-group email">
+					<label for="email" class="col-sm-3 control-label"><?php echo $this->translate('companyEM'); ?></label>
+					<div class="col-sm-7">
+						<input type="email" class="form-control" name="email" id="email" required placeholder="<?php echo $this->translate('ps_email'); ?>">
+					</div>
+				</div>
+
 				<div class="form-group">
 					<label for="regdCountryCode" class="col-sm-3 col-xs-12 control-label"><?php echo $this->translate('address'); ?></label>
 					<div class="col-sm-7">
@@ -58,24 +72,17 @@
 					</div>
 				</div>
 
-				<div class="form-group accountName">
-					<label for="accountName" class="col-sm-3 control-label"><?php echo $this->translate('regd_company_name'); ?></label>
-					<div class="col-sm-7">
-						<input type="text" class="form-control" name="accountName" id="accountName" required placeholder="<?php echo $this->translate('is_comname'); ?>">
-					</div>
-				</div>
-
-				<div class="form-group email">
-					<label for="email" class="col-sm-3 control-label"><?php echo $this->translate('companyEM'); ?></label>
-					<div class="col-sm-7">
-						<input type="email" class="form-control" name="email" id="email" required placeholder="<?php echo $this->translate('ps_email'); ?>">
-					</div>
-				</div>
-
 				<div class="form-group">
 					<label for="name" class="col-sm-3 control-label"><?php echo $this->translate('name'); ?></label>
 					<div class="col-sm-7">
 						<input type="text" class="form-control" name="name" id="name" required placeholder="<?php echo $this->translate('name'); ?>">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="mobilePhone" class="col-sm-3 control-label"><?php echo $this->translate('phone'); ?></label>
+					<div class="col-sm-7">
+						<input type="text" class="form-control" name="mobilePhone" id="mobilePhone" required placeholder="<?php echo $this->translate('is_phone'); ?>">
 					</div>
 				</div>
 
@@ -89,7 +96,7 @@
 				<div class="form-group">
 					<label for="ecommpasswsd" class="col-sm-3 control-label"><?php echo $this->translate('password'); ?></label>
 					<div class="col-sm-7">
-						<input type="password" class="form-control" name="ecommpasswsd" id="ecommpasswsd" required placeholder="<?php echo $this->translate('password').'('.$this->translate('is_passwd').')'; ?>">
+						<input type="password" class="form-control" name="ecommpasswsd" id="ecommpasswsd" required placeholder="<?php echo $this->translate('is_passwd'); ?>">
 					</div>
 				</div>
 
@@ -97,13 +104,6 @@
 					<label for="checkecommrpasswsd" class="col-sm-3 control-label"><?php echo $this->translate('confirmPSD'); ?></label>
 					<div class="col-sm-7">
 						<input type="password" class="form-control" name="checkecommrpasswsd" id="checkecommrpasswsd" required placeholder="<?php echo $this->translate('is_rpasswd'); ?>">
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label for="mobilePhone" class="col-sm-3 control-label"><?php echo $this->translate('phone'); ?></label>
-					<div class="col-sm-7">
-						<input type="text" class="form-control" name="mobilePhone" id="mobilePhone" required placeholder="<?php echo $this->translate('is_phone'); ?>">
 					</div>
 				</div>
 
