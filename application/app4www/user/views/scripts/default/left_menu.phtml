@@ -5,7 +5,7 @@
                continue;
             } ?>
 
-            <dt><?php echo $this->translate($r1["menu_lang"]);?></dt>
+            <dt><?php echo $this->translate($r1["menu_lang"]);?> | <?php echo $this->isPersonAccount; ?></dt>
             <?php foreach($r1['nav'] as $k2=>$r2):?>
                 <dd <?php if(preg_match_all('/'.$r2["link_url"].'/',$this->newUrl,$rs)){echo 'class="on"';}?>>
                        <a id="a_<?php echo $r2["menu_id"]?>" <?php if($r2["menu_blank"]=="1"){echo 'target="_blank"';}?> href="<?php echo $this->seed_BaseUrl."/".$r2["link_url"]?>" >
