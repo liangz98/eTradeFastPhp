@@ -3,13 +3,15 @@
         <div class="row pull-right">
             <ul class="list-inline">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">李健名 <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $this->userLoginName; ?> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">修改个人资料</a></li>
-                        <li><a href="#">退出</a></li>
+                        <li><a href="/user/index/edit">修改个人资料</a></li>
+                        <li><a href="/user/logout"><?php echo $this->translate('nav_exit'); ?></a></li>
                     </ul>
                 </li>
-                <li></li>
+                <li><a href="/user/index/edit"><?php echo $this->translate('userINF'); ?></a></li>
+                <li><a href="#">快移金融</a></li>
+                <li><a href="#">手机快移</a></li>
             </ul>
         </div>
     </div>
@@ -32,38 +34,38 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">首页 <span class="sr-only">(current)</span></a></li>
+                <li class="active"><a href="#"><?php echo $this->translate('nav_index'); ?> <span class="sr-only">(current)</span></a></li>
                 <!--<li><a href="#">Link</a></li>-->
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">订单中心 <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $this->translate('orderIN'); ?> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">销售订单</a></li>
-                        <li><a href="#">采购订单</a></li>
+                        <li><a href="/user/orderxs"><?php echo $this->translate('orderSALLE'); ?></a></li>
+                        <li><a href="/user/ordercg"><?php echo $this->translate('orderBUY'); ?></a></li>
                     </ul>
                 </li>
 
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">合作伙伴 <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $this->translate('partners'); ?> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">我的买家</a></li>
-                        <li><a href="#">我的卖家</a></li>
+                        <li><a href="/user/buyer"><?php echo $this->translate('buyers'); ?></a></li>
+                        <li><a href="/user/vendor"><?php echo $this->translate('vendors'); ?></a></li>
                     </ul>
                 </li>
 
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">商品管理 <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $this->translate('goods'); ?> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">我的商品</a></li>
-                        <li><a href="#">采购的商品</a></li>
+                        <li><a href="/user/goods"><?php echo $this->translate('goodsME'); ?></a></li>
+                        <li><a href="/user/purchase"><?php echo $this->translate('goodsBUY'); ?></a></li>
                     </ul>
                 </li>
 
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">公司管理 <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $this->translate('companyMNG'); ?> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">公司信息</a></li>
-                        <li><a href="#">员工信息</a></li>
-                        <li><a href="#">银行帐户</a></li>
+                        <li><a href="/user/company"><?php echo $this->translate('companyINF'); ?></a></li>
+                        <li><a href="/user/account"><?php echo $this->translate('personNO'); ?></a></li>
+                        <li><a href="/user/bank"><?php echo $this->translate('bankNO'); ?></a></li>
                     </ul>
                 </li>
             </ul>

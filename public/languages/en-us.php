@@ -242,6 +242,10 @@ return array(
     'orderSALLE' => 'Sales Order',
     'orderBUY' => 'Purchase Order',
 
+    'partners' => 'Partners',
+    'buyer' => 'Buyers',
+    'vendor' => 'Vendors',
+
     'cooperationPTE' => 'Cooperation Partners',
     'cooperationC' => 'Buyers',
     'cooperationB' => 'Vendors',

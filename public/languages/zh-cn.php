@@ -232,6 +232,10 @@ return array(
     'orderSALLE' => '销售订单',
     'orderBUY' => '采购订单',
 
+    'partners' => '合作伙伴',
+    'buyers' => '我的买家',
+    'vendors' => '我的卖家',
+
     'cooperationPTE' => '合作伙伴',
     'cooperationC' => '我的买家',
     'cooperationB' => '我的卖家',
