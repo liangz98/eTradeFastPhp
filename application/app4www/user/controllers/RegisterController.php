@@ -135,7 +135,19 @@ class RegisterController extends Kyapi_Controller_Action
                         /****将权限菜单更新入redis缓存 END******/
 
                         //将session写入redis
-                        $_SESSION['rev_session'] = array('userID' => $userDetail['user_id'], 'accountID' => $userDetail['user_account'], 'accountName' => $userDetail['accountName'], 'crnCode' => $userDetail['crnCode'], 'userName' => $userDetail['user_name'], 'userLoginName' => $userDetail['ecommloginname'], 'contactPreference' => $userDetail['contactPreference'], 'menus' => $_Menus, 'role_nav' => $rowsArr, 'ecommrole' => $userDetail['ecommrole']);
+                        $_SESSION['rev_session'] = array(
+                            'userID'            => $userDetail['user_id'],
+                            'accountID'         => $userDetail['accountID'],
+                            'accountName'       => $userDetail['accountName'],
+                            'crnCode'           => $userDetail['crnCode'],
+                            'userName'          => $userDetail['user_name'],
+                            'userLoginName'     => $userDetail['ecommloginname'],
+                            'isPersonAccount'   => $userDetail['isPersonAccount'],
+                            'contactPreference' => $userDetail['contactPreference'],
+                            'menus'             => $_Menus,
+                            'role_nav'          => $rowsArr,
+                            'ecommrole'         => $userDetail['ecommrole']
+                        );
 
                         //  redis写入对应键值对
                         $config = array();

@@ -1,7 +1,7 @@
 <?php
 
 class LoginController extends Kyapi_Controller_Action {
-    
+
     public function preDispatch() {
         $this->view->cur_pos = 'login';
         if (!empty($this->view->userID)) {
@@ -9,16 +9,16 @@ class LoginController extends Kyapi_Controller_Action {
             Mobile_Browser::redirect($this->view->translate('tip_login_two'), $this->view->seed_Setting['user_app_server'] . "/index");
         }
     }
-    
+
     /**
      * @throws Exception
      */
-    
+
     function indexAction() {
         if (!empty($_COOKIE['needAuthCode'])) {
             $this->view->needAuthCode = $_COOKIE['needAuthCode'];
         }
-        
+
         if ($this->_request->isPost()) {
             // 请求服务端方法
             $_requestOb = $this->_requestObject;
@@ -26,30 +26,30 @@ class LoginController extends Kyapi_Controller_Action {
             $loginName = trim($loginName);
             $password = $this->_request->getParam('ecommpasswsd');
             $password = trim($password);
-            
+
             $authCode = $this->_request->getParam('authCode');
             $authCode = trim($authCode);
-            
+
             // Login
             $resultObject = $this->json->loginApi($_requestOb, $loginName, $password, $authCode);
             $userKY = $this->objectToArray(json_decode($resultObject));
-    
+
             // 登录失败，重定向到登录页
             if ($userKY['status'] != 1) {
                 // 需要验证码的cookie
                 setcookie("needAuthCode", "1", time() + 3600);
                 $_COOKIE["needAuthCode"] = "1";
-    
+
                 $this->redirect("/login");
             }
-    
+
             // 删除需要验证码的cookie
             setcookie("needAuthCode", "", time() - 1);
             $_COOKIE["needAuthCode"] = "";
-            
-            
+
+
             $existData = $userKY['result'];
-            
+
             $userDetail = array();
             $userDetail['user_id'] = $existData['contactID'];
             $userDetail['accountID'] = $existData['account']['accountID'];//公司ID
@@ -79,7 +79,7 @@ class LoginController extends Kyapi_Controller_Action {
                 $userDetail['contactPreference']['regdCountryCode'] = 'CN';
                 $userDetail['contactPreference']['regdAddress'] = '';
             }
-            
+
             /****将权限菜单更新入redis缓存 start****/
             $menuM = new Seed_Model_Menu('system');
             $rows = array();
@@ -92,7 +92,7 @@ class LoginController extends Kyapi_Controller_Action {
                 ));
             }
             // $rowsAtt = Seed_Common::arrayUnique($rows,'menu_id');
-            
+
             $rowsArr = array();
             foreach ($rows as $k1 => $v1) {
                 foreach ($v1 as $k2 => $v2) {
@@ -101,11 +101,11 @@ class LoginController extends Kyapi_Controller_Action {
                     }
                 }
             }
-            
+
             $menus = array();
             $nav = array();
             foreach ($rowsArr as $k3 => $v3) {
-                
+
                 if ($v3['parent'] == '737') {
                     $menus[$v3['menu_id']]['menu_id'] = $v3['menu_id'];
                     $menus[$v3['menu_id']]['menu_lang'] = $v3['menu_lang'];
@@ -130,7 +130,7 @@ class LoginController extends Kyapi_Controller_Action {
             }
             $_Menus = Kyapi_Common::multi_array_sort($menus, 'order_by');
             /****将权限菜单更新入redis缓存 END******/
-            
+
             //将session写入redis
             $_SESSION['rev_session'] = array(
                 'userID'            => $userDetail['user_id'],
@@ -139,6 +139,7 @@ class LoginController extends Kyapi_Controller_Action {
                 'crnCode'           => $userDetail['crnCode'],
                 'userName'          => $userDetail['user_name'],
                 'userLoginName'     => $userDetail['ecommloginname'],
+                'isPersonAccount'   => $userDetail['isPersonAccount'],
                 'contactPreference' => $userDetail['contactPreference'],
                 'menus'             => $_Menus,
                 'role_nav'          => $rowsArr,
@@ -152,7 +153,7 @@ class LoginController extends Kyapi_Controller_Action {
             $redis->connect($config);
             $redis->set('PHPREDIS_ACTIVE_USERS:' . $userDetail['user_id'], 'PHPREDIS_SESSION:' . session_id(), 86400);
             $redis->set('PHPREDIS_ACTIVE_SESSION:' . session_id(), $userDetail['user_id'], 86400);
-    
+
             $this->redirect("/");
         }
         if (defined('SEED_WWW_TPL')) {

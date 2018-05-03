@@ -239,18 +239,19 @@ class Kyapi_Controller_Action extends Zend_Controller_Action{
       //  print_r($_SESSION['rev_session']);
         if( !empty($_SESSION['rev_session']) ){
             //创建视图变量 传递用户信息
-            $this->view->userID=$userID=$_SESSION['rev_session']['userID'];
-            $this->view->accountID=$accountID=$_SESSION['rev_session']['accountID'];
-            $this->view->accountName=$accountName=$_SESSION['rev_session']['accountName'];
-            $this->view->crnCode=$accountName=$_SESSION['rev_session']['crnCode'];
-            $this->view->userLoginName=$userLoginName=$_SESSION['rev_session']['userName'];
-            $this->view->ecommloginname=$ecommloginname=$_SESSION['rev_session']['userLoginName'];
-            $this->view->userRole=$userRole=$_SESSION['rev_session']['ecommrole'];
-            $this->view->submenus =$_SESSION['rev_session']['menus'] ;//会员中心左侧菜单
-            $submenus=$_SESSION['rev_session']['role_nav'] ;
-            $this->view->newUrl=$_SERVER['REQUEST_URI']; //当前 URL 决定菜单高亮
-            $this->view->userlangCode=$userlangCode=$_SESSION['rev_session']['contactPreference']['langCode'];
-            $this->view->userrgCode=$userrgCode=$_SESSION['rev_session']['contactPreference']['regdCountryCode'];
+            $this->view->userID = $userID = $_SESSION['rev_session']['userID'];
+            $this->view->accountID = $accountID = $_SESSION['rev_session']['accountID'];
+            $this->view->accountName = $accountName = $_SESSION['rev_session']['accountName'];
+            $this->view->crnCode = $accountName = $_SESSION['rev_session']['crnCode'];
+            $this->view->userLoginName = $userLoginName = $_SESSION['rev_session']['userName'];
+            $this->view->isPersonAccount = $userLoginName = $_SESSION['rev_session']['isPersonAccount'];
+            $this->view->ecommloginname = $ecommloginname = $_SESSION['rev_session']['userLoginName'];
+            $this->view->userRole = $userRole = $_SESSION['rev_session']['ecommrole'];
+            $this->view->submenus = $_SESSION['rev_session']['menus'];//会员中心左侧菜单
+            $submenus = $_SESSION['rev_session']['role_nav'];
+            $this->view->newUrl = $_SERVER['REQUEST_URI']; //当前 URL 决定菜单高亮
+            $this->view->userlangCode = $userlangCode = $_SESSION['rev_session']['contactPreference']['langCode'];
+            $this->view->userrgCode = $userrgCode = $_SESSION['rev_session']['contactPreference']['regdCountryCode'];
 
             //判断登录状态是否authorder  免登陆，visitor==1 免登陆状态
             if(!empty($_SESSION['rev_session']['visitor'])){$this->view->visitor=$_SESSION['rev_session']['visitor'];}
