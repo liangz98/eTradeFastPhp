@@ -76,7 +76,9 @@
             <div class="user_info fl">
                 <div class="clearfix" style="position:relative;">
                     <h2 class="fl">
-                        <a href="<?php if ($this->isPersonAccount != 1): ?>/user/company<?php elseif ($this->isPersonAccount != 1): ?>/index/edit<?php endif;?>"><?php echo $this->accountName; ?></a>
+                        <a href="<?php if ($this->isPersonAccount != 1): ?>/user/company<?php else: ?>/index/edit<?php endif;?>">
+                            <?php echo $this->accountName; ?>
+                        </a>
                     </h2>
                     <i class="company_icon fr" style="margin: 7px 20px 0 0;"></i>
                     <div class="company_box" style="left:602px;"><img
