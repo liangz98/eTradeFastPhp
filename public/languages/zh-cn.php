@@ -128,7 +128,6 @@ return array(
     'is_passwd'=>"请设置8-30位，包含数字、大小写字母的密码",
     'is_rpasswd'=>"请再次输入密码",
     'is_phone'=>"15880000001",
-	'is_elogname'=>"zhangsan@etradFast.com",
     'is_tel'=>"请填写有效的固定电话",
     'is_comname'=>"请填写营业执照的企业名称",
     'is_regadress'=>"请填写公司的联系地址",
