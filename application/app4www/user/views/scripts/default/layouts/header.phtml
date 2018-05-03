@@ -60,6 +60,7 @@
                     </ul>
                 </li>
 
+                <?php if ($this->isPersonAccount != 1): ?>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $this->translate('companyMNG'); ?> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -68,6 +69,7 @@
                         <li><a href="/user/bank"><?php echo $this->translate('bankNO'); ?></a></li>
                     </ul>
                 </li>
+                <?php endif;?>
             </ul>
         </div>
     </div>
