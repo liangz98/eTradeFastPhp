@@ -3,7 +3,7 @@
 <head>
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
 	<title>快移</title>
-	<link href="/ky/css/index/index.css" rel="stylesheet">
+	<link href="/ky/css/login/login.css" rel="stylesheet">
 </head>
 <body onload="document.login_form.ecommloginname.focus()">
 
@@ -24,7 +24,7 @@
 
 <div class="container-fluid index-body">
 	<div class="container">
-		
+
 		<div class="row">
 
 			<div class="col-md-8 hidden-xs">
@@ -43,13 +43,13 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="col-md-4 login-body">
 				<ul class="nav nav-pills">
 					<li><a href="javascript:void(0)">密码登录</a></li>
 					<li><a href="javascript:void(0)">扫描登录</a></li>
 				</ul>
-				
+
 				<hr>
 				<form class="form-horizontal login-body-form" action="<?php echo $this->baseUrl();?>/login" method="post" id="login_form" name="login_form">
 					<div class="form-group">
@@ -71,7 +71,7 @@
 							<input type="password" class="form-control" name="ecommpasswsd" id="ecommpasswsd" required placeholder="登录密码"  style="height:38px;font-size:16px;color:#333333;">
 						</div>
 					</div>
-                    
+
                     <?php if ($this->needAuthCode == '1'):?>
 					<div class="form-group">
 						<ul class="list-inline">
@@ -134,7 +134,7 @@
 			$("#remember").attr("checked", true);
 			$("#ecommloginname").val($.cookie("username"));
 		}
-		
+
 		$("#login_form").validate({
 			rules: {
 				ecommpasswsd: {

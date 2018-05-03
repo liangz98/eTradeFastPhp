@@ -36,7 +36,7 @@ function comment_list(){
 <?php echo $this->render('default/header.phtml');?>
 <div id="content">
 	<div class="bigdiv">
-    	<div class="location"><a href="/index">首页</a> &gt; 
+    	<div class="location"><a href="/login">首页</a> &gt;
     	   <?php if (is_array($this->parent_cates)){
 		    	   	foreach ($this->parent_cates as $k => $cate){
 		    	   		echo '<a href="/products/top-'.$cate['cate_id'].'.html">'.$cate['cate_name'].'</a>'.'&gt; ';
@@ -45,7 +45,7 @@ function comment_list(){
     	   ?>
     	   <?php echo $this->escape($this->goods['goods_name']);?>
         </div>
-        
+
         <div class="bigbor">
         	<div class="mainshow">
                 <div class="image">
@@ -61,15 +61,15 @@ function comment_list(){
                              <?php foreach ($this->photos as $k => $photo):?>
                                 <li><img src="<?php echo $this->showImage($photo['normal_image']);?>" alt="产品展示图"/></li>
                              <?php endforeach;?>
-                             <?php endif;?>  
+                             <?php endif;?>
                             </ul>
                         </dt>
                     </dl>
-                </div>  
-                
+                </div>
+
                 <?php echo $this->render('default/products/goods_main.phtml');?>
         	</div>
-            
+
             <div class="list">
             	<ul>
             	   <?php if (is_array($this->recommend_goodses) && count($this->recommend_goodses)>0):?>
@@ -81,10 +81,10 @@ function comment_list(){
                         <p class="price"><del><?php echo $this->showPrice($goods['market_price']);?></del><?php echo $this->showPrice($goods['shop_price']);?></p>
                     </li>
                     <?php endforeach;?>
-                   <?php endif;?> 
+                   <?php endif;?>
                 </ul>
         	</div>
-            
+
             <div class="layout" id="goods_cont">
             	<script type="text/javascript" src="<?php echo $this->escape($this->seed_Setting['static_app_server']);?>/sendyou/js/tab.js"></script>
                 <dl class="goods_cont">
@@ -132,7 +132,7 @@ function comment_list(){
                         </div>
                     </dd>
                 </dl>
-            </div>           
+            </div>
         </div>
     </div>
 </div>

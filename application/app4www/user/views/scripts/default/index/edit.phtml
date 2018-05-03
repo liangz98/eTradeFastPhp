@@ -156,7 +156,7 @@
                     function (data) {
 
                         layer.msg(data, {icon: 1});
-                        location.href = '<?php echo $this->BaseUrl();?>/index';
+                        location.href = '../../../../../../../public/ky/css/login';
 
                     }, "json");
 
@@ -175,7 +175,7 @@
                     function (data) {
 
                         layer.msg(data, {icon: 1});
-                        location.href = '<?php echo $this->BaseUrl();?>/index';
+                        location.href = '../../../../../../../public/ky/css/login';
 
                     }, "json");
 
@@ -416,7 +416,7 @@ $(function(){
     	var name = $("#name").val();
     	var identityNo = $("#identityNo").val();
     	var mobilePhone = $("#mobilePhone").val();
-    	
+
     	$("#et_auth_name").html(name);
 		$("#et_auth_identityNo").html(identityNo);
 		$("#et_auth_mobilePhone").html(mobilePhone);
@@ -434,7 +434,7 @@ $(function(){
 				auth_error.hide();
 			});
 		}
-		
+
         layer.open({
             type: 1,
             title: false,
@@ -461,8 +461,8 @@ $(function(){
             content: $('#et-layer-userauth2')
         })
     });
-    
-    
+
+
     $('#et-layer-userauth-edit').click(function () {
         layer.closeAll();
     });
