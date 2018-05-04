@@ -37,10 +37,10 @@
 
 				<div class="register-type-info">
                     <div class="row">
-						<div class="col-md-6">
+						<div class="col-md-6 text-center">
 							<a href="javascript:void(0)" id="changeCompanyRegister" ispersonaccount="false">企业注册</a>
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-6 text-center">
 							<a href="javascript:void(0)" id="changePersonRegister" ispersonaccount="true">个人注册</a>
 						</div>
 					</div> 
@@ -199,6 +199,16 @@
 			toReadServiceContract();
 		});
 
+		$("#changeCompanyRegister).click(function () {
+                $(this).addClass("active");
+                $("#changePersonRegister").removeClass("active");
+        });
+
+		$("#changePersonRegister).click(function () {
+                $(this).addClass("active");
+                $("#changeCompanyRegister").removeClass("active");
+        });
+		
 		$("#changeCompanyRegister,#changePersonRegister").click(function () {
             if ($(this).attr("isPersonAccount") === 'true') {
                 $(".accountName,.email").hide();
