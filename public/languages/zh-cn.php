@@ -234,8 +234,8 @@ return array(
     'orderBUY' => '采购订单',
 
     'partners' => '合作伙伴',
-    'buyers' => '我的买家',
-    'vendors' => '我的卖家',
+    'partners_buyers' => '我的买家',
+    'partners_vendors' => '我的卖家',
 
     'cooperationPTE' => '合作伙伴',
     'cooperationC' => '我的买家',

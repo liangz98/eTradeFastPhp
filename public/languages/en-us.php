@@ -244,8 +244,8 @@ return array(
     'orderBUY' => 'Purchase Order',
 
     'partners' => 'Partners',
-    'buyer' => 'Buyers',
-    'vendor' => 'Vendors',
+    'partners_buyer' => 'Buyers',
+    'partners_vendor' => 'Vendors',
 
     'cooperationPTE' => 'Cooperation Partners',
     'cooperationC' => 'Buyers',
