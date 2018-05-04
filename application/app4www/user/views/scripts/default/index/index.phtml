@@ -35,9 +35,12 @@
                     <!-- Default panel contents -->
                     <div class="panel-heading">
                         <ul class="list-inline">
-                            <li><i class="fas fa-clipboard-list"></i> Panel heading</li>
-                            <li class="pull-right">销售订单</li>
-                            <li class="pull-right">采购订单</li>
+                            <li>
+                                <i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;
+                                <?php echo $this->translate('order'); ?>
+                            </li>
+                            <li class="pull-right"><?php echo $this->translate('orderSALLE'); ?></li>
+                            <li class="pull-right"><?php echo $this->translate('orderBUY'); ?></li>
                         </ul>
                     </div>
                     <div class="panel-body">
@@ -70,7 +73,16 @@
 
                 <div class="panel panel-warning">
                     <!-- Default panel contents -->
-                    <div class="panel-heading">Panel heading</div>
+                    <div class="panel-heading">
+                        <ul class="list-inline">
+                            <li>
+                                <i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;
+                                <?php echo $this->translate('goods_4_index'); ?>
+                            </li>
+                            <li class="pull-right"><?php echo $this->translate('goodsME'); ?></li>
+                            <li class="pull-right"><?php echo $this->translate('goodsBUY'); ?></li>
+                        </ul>
+                    </div>
                     <div class="panel-body">
                         <p>...</p>
                     </div>
@@ -103,7 +115,17 @@
 
                 <div class="panel panel-info">
                     <!-- Default panel contents -->
-                    <div class="panel-heading"><i class="fas fa-users"></i> Panel heading</div>
+                    <div class="panel-heading">
+                        <ul class="list-inline">
+                            <li>
+                                <i class="fas fa-users"></i>&nbsp;&nbsp;
+                                <?php echo $this->translate('partners'); ?>
+                            </li>
+                            <li class="pull-right"><?php echo $this->translate('buyers'); ?></li>
+                            <li class="pull-right"><?php echo $this->translate('vendors'); ?></li>
+                        </ul>
+
+                    </div>
                     <div class="panel-body">
                         <p>...</p>
                     </div>

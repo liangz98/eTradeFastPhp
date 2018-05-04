@@ -227,6 +227,7 @@ return array(
     'lawITEM' => '法律条款',
 
 //用户中心左侧导航
+    'order' => '订单',
     'orderIN' => '订单中心',
     'orderREQ' => '退税申请',
     'orderSALLE' => '销售订单',
@@ -246,6 +247,7 @@ return array(
     'sendVendor' => '邀请为卖家',
 
     'goods' => '商品管理',
+    'goods_4_index' => '商品',
     'goodsME' => '我的商品',
     'goodsINF'=>'商品详情',
     'goodsBUY' => '采购的商品',

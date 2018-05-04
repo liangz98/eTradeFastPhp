@@ -237,6 +237,7 @@ return array(
     'lawITEM' => 'Legal Notices',
 
 //用户中心左侧导航
+    'order' => 'Order',
     'orderIN' => 'Order Center',
     'orderREQ' => 'Tax Rebates Application',
     'orderSALLE' => 'Sales Order',
@@ -256,6 +257,7 @@ return array(
     'sendVendor' => 'Invite Vendors',
 
     'goods' => 'Products',
+    'goods_4_index' => 'Products',
     'goodsME' => 'Our Products',
     'goodsINF'=>'Product Info.',
     'goodsBUY' => 'Product Procurement',
