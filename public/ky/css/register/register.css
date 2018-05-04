@@ -78,6 +78,18 @@
 	padding: 10px 0px;
 }
 
+.register-type-info .row div:after {
+    border: none;
+    border-radius: 0;
+    border-bottom: 2px solid #5FB878;
+    
+    position: absolute;
+    left: 0;
+    top: 0;
+    content: '';
+    width: 100%;
+}
+
 .form-group label{
 	font-size: 14px;
 	color: #999999;
