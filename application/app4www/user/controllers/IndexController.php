@@ -23,14 +23,11 @@ class IndexController extends Kyapi_Controller_Action {
 
     public function indexAction() {
         if (empty($_SESSION['rev_session']['userID'])) {
-
-            $this->redirect($_SERVER['HTTP_REFERER']);
-
-           // if (defined('SEED_WWW_TPL')) {
-           //     $content = $this->view->render(SEED_WWW_TPL . "/login/index.phtml");
-           //     echo $content;
-           //     exit;
-           // }
+            if (defined('SEED_WWW_TPL')) {
+                $content = $this->view->render(SEED_WWW_TPL . "/login/index.phtml");
+                echo $content;
+                exit;
+            }
         } else {
             $sortlistM = new Seed_Model_Sortlist('system');
             $insertData=array();
