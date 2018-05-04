@@ -6,33 +6,36 @@
  * Time: 17:26
  */
 class IndexController extends Kyapi_Controller_Action {
-    
+
     /*
     public function preDispatch() {
         $this->view->cur_pos = 'index';
         //清除 免登陆session
         $this->IsAuth($this->view->visitor);
-    
+
         // echo $_SESSION['rev_session']['userID'];
-        
+
         if (empty($this->view->userID)) {
             Mobile_Browser::redirect('请先登录系统！', $this->view->seed_Setting['user_app_server'] . "/login");
         }
     }
     */
-    
+
     public function indexAction() {
         if (empty($_SESSION['rev_session']['userID'])) {
-            if (defined('SEED_WWW_TPL')) {
-                $content = $this->view->render(SEED_WWW_TPL . "/login/index.phtml");
-                echo $content;
-                exit;
-            }
+
+            $this->redirect($_SERVER['HTTP_REFERER']);
+
+           // if (defined('SEED_WWW_TPL')) {
+           //     $content = $this->view->render(SEED_WWW_TPL . "/login/index.phtml");
+           //     echo $content;
+           //     exit;
+           // }
         } else {
             $sortlistM = new Seed_Model_Sortlist('system');
             $insertData=array();
             $is_sortlist = $sortlistM->fetchRows(null,array('user_id'=>$this->view->userID),'id desc');
-    
+
             if(!empty($is_sortlist)){
                 $sort=$is_sortlist['0']['sort'];
                 $sort_arr=explode(",",$sort);
@@ -45,13 +48,13 @@ class IndexController extends Kyapi_Controller_Action {
             $this->view->sort=$sort;
             $this->view->sortArr=$sort_arr;
             $this->view->len=$len;
-    
+
             //会员中心订单数量统计
             $orderCount = $this->json->countOrderStatusApi($this->_requestObject);
             $existCOUNT= json_decode($orderCount);
             $existCOUNT = $this->objectToArray($existCOUNT);
             $this->view->COUNT = $existCOUNT['result'];
-    
+
             //开始处理【顶部】最新订单状态查询
             $orderNEW = $this->json->getQuickSaleOrderApi($this->_requestObject);
             $existNEW = json_decode($orderNEW);
@@ -77,41 +80,41 @@ class IndexController extends Kyapi_Controller_Action {
             }
             //订单进度
             $this->view->plan=$this->planAction($this->view->newE);
-    
-    
-    
-    
+
+
+
+
             //获取6个模块数据
             $_DataOrderXS = $this->json->listSaleOrderApi($this->_requestObject, '04', null, null, 0, 5);
             $_OrderXS=$this->objectToArray(json_decode($_DataOrderXS));
             $this->view->orderXS=$_OrderXS['result'];
-    
+
             $_DataOrderCG = $this->json->listPurOrderApi($this->_requestObject, '04', null, null, 0, 5);
             $_OrderCG=$this->objectToArray(json_decode($_DataOrderCG ));
             $this->view->orderCG=$_OrderCG['result'];
-    
+
             $_DataGoods = $this->json->listSaleProductApi($this->_requestObject, null, null, null, 0, 5);
             $_Goods=$this->objectToArray(json_decode($_DataGoods));
             $this->view->Goods=$_Goods['result'];
-    
+
             $_DataPurchase = $this->json->listPurProductApi($this->_requestObject, null, null, null, 0, 5);
             $_Purchase=$this->objectToArray(json_decode($_DataPurchase));
             $this->view->Purchase=$_Purchase['result'];
-    
+
             $_DataBuyer = $this->json->listBuyerPartnerApi($this->_requestObject, null, null, null, 0, 5);
             $_Buyer=$this->objectToArray(json_decode($_DataBuyer));
             $this->view->Buyer=$_Buyer['result'];
-    
+
             $_DataVendor = $this->json->listVendorPartnerApi($this->_requestObject, null, null, null, 0, 5);
             $_Vendor=$this->objectToArray(json_decode($_DataVendor));
             $this->view->Vendor=$_Vendor['result'];
-    
+
             if ($this->_request->isPost()) {
                 $order = $this->_request->getParam('order');
                 $itemid = trim($this->_request->getParam('id'));
                 $insertData['sort'] = $itemid;
                 $insertData['user_id'] = $this->view->userID;
-        
+
                 if (!empty ($itemid)) {
                     if ($order != $itemid) {
                         if (empty($is_sortlist)) {
@@ -119,11 +122,11 @@ class IndexController extends Kyapi_Controller_Action {
                         } else {
                             $sortlistM->updateRow($insertData, array('user_id' => $insertData['user_id']));
                         }
-                
+
                     }
                 }
             }
-    
+
             if (defined('SEED_WWW_TPL')) {
                 $content = $this->view->render(SEED_WWW_TPL . "/index/index.phtml");
                 echo $content;
@@ -342,7 +345,7 @@ class IndexController extends Kyapi_Controller_Action {
             //获取account数据集合
             $_requestOb=$this->_requestObject;
             $resultObject= $this->json->doPersRealNameAuth($_requestOb);
-    
+
             // 取回接口请求状态
             $apiStatus = json_decode($resultObject)->status;
             if ($apiStatus == 1) {
