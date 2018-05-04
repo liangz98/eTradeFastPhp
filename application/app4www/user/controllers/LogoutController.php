@@ -21,7 +21,7 @@ class LogoutController extends Kyapi_Controller_Action {
         $ajax = trim($this->_request->getParam('ajax'));
 
 
-        $this->redirect($_SERVER['HTTP_REFERER']);
+        $this->redirect("../");
         exit;
     }
 }
