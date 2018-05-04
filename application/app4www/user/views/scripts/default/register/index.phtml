@@ -201,12 +201,12 @@
 
 		$("#changeCompanyRegister").click(function () {
                 $(this).parent().addClass("active");
-                $("#changePersonRegister").removeClass("active");
+                $("#changePersonRegister").parent().removeClass("active");
         });
 
 		$("#changePersonRegister").click(function () {
                 $(this).parent().addClass("active");
-                $("#changeCompanyRegister").removeClass("active");
+                $("#changeCompanyRegister").parent().removeClass("active");
         });
 		
 		$("#changeCompanyRegister,#changePersonRegister").click(function () {
