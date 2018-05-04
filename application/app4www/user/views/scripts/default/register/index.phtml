@@ -200,12 +200,12 @@
 		});
 
 		$("#changeCompanyRegister").click(function () {
-                $(this).addClass("active");
+                $(this).parent().addClass("active");
                 $("#changePersonRegister").removeClass("active");
         });
 
 		$("#changePersonRegister").click(function () {
-                $(this).addClass("active");
+                $(this).parent().addClass("active");
                 $("#changeCompanyRegister").removeClass("active");
         });
 		
