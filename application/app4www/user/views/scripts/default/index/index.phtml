@@ -31,7 +31,7 @@
                     </div>
                 </div>
 
-                <div class="panel panel-primary">
+                <div class="panel panel-primary" id="_saleOrder">
                     <!-- Default panel contents -->
                     <div class="panel-heading">
                         <ul class="list-inline">
@@ -191,7 +191,9 @@
 	});
 
 	$(function () {
+        $("#_saleOrder").load("<?php echo $this->BaseUrl();?>/index/listsaleorder", {
 
+        });
 	});
 
     layui.use('laydate', function() {

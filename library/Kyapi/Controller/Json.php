@@ -712,24 +712,54 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
     /**订单模块的接口**/
-    /**销售订单的列表接口**/
-    public function listSaleOrderApi( $_requestObject, $_queryParams, $_querySorts,$_keyword, $_skip, $_limit)
-    {
+    /**销售订单的列表接口*
+     * @param $_requestObject
+     * @param $orderStatus
+     * @param $_querySorts
+     * @param $_keyword
+     * @param $_skip
+     * @param $_limit
+     * @return mixed
+     */
+    public function listSaleOrderApi($_requestObject, $orderStatus, $_querySorts, $_keyword, $_skip, $_limit) {
         // 如果调用java平台的hessian服务 需要指定你传递参数的类型,特别是整形和字符串.
-        $_url=$this->url.'/orderapi/orderApi!listSaleOrder.action';
-        $_params =json_encode(array("requestObject"=>$_requestObject,"orderStatus"=> $_queryParams,"querySorts"=> $_querySorts,"keyword"=> $_keyword,"skip"=> $_skip,"limit"=> $_limit));
-        $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
+        $_url = $this->url . '/orderapi/orderApi!listSaleOrder.action';
+        $_params = json_encode(array(
+            "requestObject" => $_requestObject,
+            "orderStatus"   => $orderStatus,
+            "querySorts"    => $_querySorts,
+            "keyword"       => $_keyword,
+            "skip"          => $_skip,
+            "limit"         => $_limit
+        ));
+        $resultObject = $this->vpost($_url, $_params); //输出目标地址源码
         return $resultObject;
     }
-    /**采购订单的列表接口**/
-    public function listPurOrderApi( $_requestObject, $_queryParams, $_querySorts,$_keyword, $_skip, $_limit)
-    {
+
+    /**采购订单的列表接口*
+     * @param $_requestObject
+     * @param $orderStatus
+     * @param $_querySorts
+     * @param $_keyword
+     * @param $_skip
+     * @param $_limit
+     * @return mixed
+     */
+    public function listPurOrderApi($_requestObject, $orderStatus, $_querySorts, $_keyword, $_skip, $_limit) {
         // 如果调用java平台的hessian服务 需要指定你传递参数的类型,特别是整形和字符串.
-        $_url=$this->url.'/orderapi/orderApi!listPurOrder.action';
-        $_params =json_encode(array("requestObject"=>$_requestObject,"orderStatus"=> $_queryParams,"querySorts"=> $_querySorts,"keyword"=> $_keyword,"skip"=> $_skip,"limit"=> $_limit));
-        $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
+        $_url = $this->url . '/orderapi/orderApi!listPurOrder.action';
+        $_params = json_encode(array(
+            "requestObject" => $_requestObject,
+            "orderStatus"   => $orderStatus,
+            "querySorts"    => $_querySorts,
+            "keyword"       => $_keyword,
+            "skip"          => $_skip,
+            "limit"         => $_limit
+        ));
+        $resultObject = $this->vpost($_url, $_params); //输出目标地址源码
         return $resultObject;
     }
+
     /**新增订单接口（保存草稿）**/
     public function addOrderApi( $_requestObject, $_order)
     {
@@ -827,7 +857,7 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
         return $resultObject;
     }
-    
+
     /** 发货单列表接口 **/
     public function listDelivery($_requestObject, $_orderID) {
         $_url=$this->url.'/orderapi/orderApi!listDelivery.action';
@@ -835,7 +865,7 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
         return $resultObject;
     }
-    
+
     /** 发货单详情接口 **/
     public function getDeliveryView($_requestObject, $deliveryID) {
         $_url=$this->url.'/orderapi/orderApi!getDeliveryView.action';
@@ -843,7 +873,7 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
         return $resultObject;
     }
-    
+
     /** 订单商品列表接口 **/
     public function listOrderItem($_requestObject, $orderID) {
         $_url=$this->url.'/orderapi/orderApi!listOrderItem.action';
@@ -851,7 +881,7 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
         return $resultObject;
     }
-    
+
     /** 备货接口 **/
     public function doPrepareGoodsApi($_requestObject, $delivery, $deliveryItemList, $_attachList) {
         $_url = $this->url . '/orderapi/orderApi!doPrepareGoods.action';
@@ -859,7 +889,7 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         $resultObject = $this->vpost($_url, $_params); //输出目标地址源码
         return $resultObject;
     }
-    
+
     /** 编辑备货单 **/
     public function editDeliveryApi($_requestObject, $deliveryID, $deliveryItemList, $_attachList) {
         $_url = $this->url . '/orderapi/orderApi!editDelivery.action';
@@ -867,7 +897,7 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         $resultObject = $this->vpost($_url, $_params); //输出目标地址源码
         return $resultObject;
     }
-    
+
     /** 删除备货单 **/
     public function delDeliveryApi($_requestObject, $deliveryID) {
         $_url = $this->url . '/orderapi/orderApi!delDelivery.action';
@@ -875,7 +905,7 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         $resultObject = $this->vpost($_url, $_params); //输出目标地址源码
         return $resultObject;
     }
-    
+
     /**验货接口**/
     public function doExamineGoodsApi($_requestObject, $deliveryID,$_attachList) {
         $_url=$this->url.'/orderapi/orderApi!doExamineGoods.action';
@@ -897,7 +927,7 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
         return $resultObject;
     }
-    
+
     /** 生成发票资料接口 **/
     public function genBillingInfoApi($requestObject, $delivery) {
         $_url = $this->url . '/orderapi/orderApi!genBillingInfo.action';
@@ -905,7 +935,7 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         $resultObject = $this->vpost($_url, $_params); //输出目标地址源码
         return $resultObject;
     }
-    
+
     /** 获取发票资料接口 **/
     public function getBillingInfoApi($requestObject, $deliveryID) {
         $_url = $this->url . '/orderapi/orderApi!getBillingInfo.action';
@@ -913,7 +943,7 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         $resultObject = $this->vpost($_url, $_params); //输出目标地址源码
         return $resultObject;
     }
-    
+
     /** 编辑快递单号接口 **/
     public function editExpressNoApi($requestObject, $deliverySupplier) {
         $_url = $this->url . '/orderapi/orderApi!editExpressNo.action';
@@ -921,7 +951,7 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         $resultObject = $this->vpost($_url, $_params); //输出目标地址源码
         return $resultObject;
     }
-    
+
     /**销售订单列表统计接口**/
     public function countSaleOrderStatusApi($_requestObject) {
         $_url=$this->url.'/orderapi/orderApi!countSaleOrderStatus.action';
@@ -1393,7 +1423,7 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
         return $resultObject;
     }
-    
+
     /*4.12 企业重新实名认证 申请*/
     public function   doEntRealNameReAuth($_requestObject,$_account){
         $_url=$this->url.'/accountapi/accountApi!doEntRealNameReAuth.action';
@@ -1452,7 +1482,7 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
         return $resultObject;
     }
-    
+
     /* 网签 个人 获取验证手机号 */
     public function getPersonSignMobileApi($_requestObject) {
         $_url=$this->url.'/contractapi/contractApi!getPersSignMobile.action';
@@ -1474,7 +1504,7 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
         return $resultObject;
     }
-    
+
     /*5.3 合同PDF文件下载URL*/
     public function getPdfUrl($_requestObject,$contractID){
 
@@ -1490,7 +1520,7 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
         return $resultObject;
     }
-    
+
     /* 数据字典模糊查找URL*/
     public function dataDictFuzzyQuery($dataDictCode, $keyword, $valuePCode) {
         $_url=$this->url.'/commonapi/commonApi!dataDictFuzzyQuery.action';

@@ -1,0 +1,22 @@
+<table class="table table-bordered listSaleOrder">
+    <thead>
+    <tr>
+        <th><?php echo $this->translate('orderNo'); ?></th>
+        <th><?php echo $this->translate('buyers'); ?></th>
+        <th><?php echo $this->translate('orderItem'); ?></th>
+        <th><?php echo $this->translate('orderTotal'); ?></th>
+        <th><?php echo $this->translate('state'); ?></th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($this->saleOrderList as $saleOrder): ?>
+        <tr>
+            <td><?php echo $saleOrder->orderNo; ?></td>
+            <td>2016-11-29</td>
+            <td>人生就像是一场修行</td>
+            <td></td>
+            <td></td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
