@@ -7,10 +7,4 @@
     height: 70px;
 }
 
-.order-header-info ul li:nth-child(2) {
-    margin-left: 20px;
-}
 
-.order-header-info ul li:last-child {
-    margin-top: 15px;
-}
