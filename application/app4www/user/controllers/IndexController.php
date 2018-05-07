@@ -512,7 +512,7 @@ class IndexController extends Kyapi_Controller_Action {
         $this->view->orderList = json_decode($resultObject)->result;
 
         if (defined('SEED_WWW_TPL')) {
-            $content = $this->view->render(SEED_WWW_TPL . "/index/_listSaleOrder.phtml");
+            $content = $this->view->render(SEED_WWW_TPL . "/index/_listOrder.phtml");
             echo $content;
             exit;
         }
