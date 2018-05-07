@@ -48,7 +48,7 @@
                     </div>
 
                     <!-- Table -->
-                    <div id="_saleOrder"></div>
+                    <div id="_orderList"></div>
                 </div>
 
                 <div class="panel panel-warning">
@@ -68,29 +68,7 @@
                     </div>
 
                     <!-- Table -->
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th>昵称</th>
-                                <th>加入时间</th>
-                                <th>签名</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>贤心</td>
-                                <td>2016-11-29</td>
-                                <td>人生就像是一场修行</td>
-                            </tr>
-                            <tr>
-                                <td>许闲心</td>
-                                <td>2016-11-28</td>
-                                <td>于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <div class="table-responsive" id="_productList"></div>
                 </div>
 
                 <div class="panel panel-info">
@@ -111,38 +89,7 @@
                     </div>
 
                     <!-- Table -->
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th class="hidden-xs">First Name</th>
-                                <th>Last Name</th>
-                                <th>Username</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>@twitter</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <div class="table-responsive" id="_partnerList"></div>
                 </div>
 
             </div>
@@ -165,19 +112,38 @@
 	});
 
 	$(function () {
-	    initOrderList("listsaleorder");
+        initList("_orderList", "listsaleorder");
+        initList("_productList", "listsaleproduct");
+        initList("_partnerList", "listbuyerpartner");
 
+        // 订单
 	    $(".saleOrderListBtn").click(function () {
-            initOrderList("listsaleorder");
+            initList("_orderList", "listsaleorder");
         });
         $(".purOrderListBtn").click(function () {
-            initOrderList("listpurorder");
+            initList("_orderList", "listpurorder");
+        });
+
+        // 商品
+        $(".saleProductListBtn").click(function () {
+            initList("_productList", "listsaleproduct");
+        });
+        $(".purProductListBtn").click(function () {
+            initList("_productList", "listpurproduct");
+        });
+
+        // 合作伙伴
+        $(".buyerPartnerListBtn").click(function () {
+            initList("_partnerList", "listbuyerpartner");
+        });
+        $(".vendorPartnerListBtn").click(function () {
+            initList("_partnerList", "listvendorpartner");
         });
 	});
 
-	function initOrderList(obj) {
-        $("#_saleOrder").fadeOut().html(function () {
-            $(this).load("<?php echo $this->BaseUrl();?>/index/" + obj).fadeIn();
+	function initList(initObj, actionName) {
+        $("#" + initObj).fadeOut().html(function () {
+            $(this).load("<?php echo $this->BaseUrl();?>/index/" + actionName).fadeIn();
         });
     }
 
