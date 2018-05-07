@@ -26,14 +26,14 @@
                             <div class="row order-header-info">
                                 <div class="col-xs-12 col-md-6">
                                     <ul class="list-unstyled">
-                                        <li class="pull-left"><i class="fas fa-edit" style="color: #db7039;"></i></li>
+                                        <li class="pull-left"><i class="fas fa-edit" style="color: #db3eb3;"></i></li>
                                         <li><?php echo $this->translate('checkIN');?></li>
                                         <li class="clearfix"><p class="text-center"><?php echo intval($this->COUNT['01']); ?></p></li>
                                     </ul>
                                 </div>
                                 <div class="col-xs-12 col-md-6">
                                     <ul class="list-unstyled">
-                                        <li class="pull-left"><i class="far fa-check-square" style="color: #ffff00"></i></li>
+                                        <li class="pull-left"><i class="far fa-check-square" style="color: #ffcb16"></i></li>
                                         <li><?php echo $this->translate('checkR');?></li>
                                         <li class="clearfix"><p class="text-center"><?php echo intval($this->COUNT['02']); ?></p></li>
                                     </ul>
@@ -47,7 +47,7 @@
                                 </div>
                                 <div class="col-xs-12 col-md-6">
                                     <ul class="list-unstyled">
-                                        <li class="pull-left"><i class="fal fa-credit-card" style="color: #00bfff;"></i></li>
+                                        <li class="pull-left"><i class="fas fa-credit-card" style="color: #00bfff;"></i></li>
                                         <li><?php echo $this->translate('finished');?></li>
                                         <li class="clearfix"><p class="text-center"><?php echo intval($this->COUNT['10']); ?></p></li>
                                     </ul>
@@ -55,32 +55,28 @@
                             </div>
                         </div>
                         <div class="col-xs-12 col-md-3">
-                            <div class="row">
+                            <div class="row bank-header-info">
                                 <div class="col-xs-12 col-md-6">
-                                    <ul class="list-inline">
-                                        <li></li>
-                                        <li><?php echo $this->translate('bankAccount');?></li>
+                                    <ul class="list-unstyled">
+                                        <li><p class="text-center"><?php echo $this->translate('bankAccount');?></p></li>
                                         <li><?php echo ""; ?></li>
                                     </ul>
                                 </div>
                                 <div class="col-xs-12 col-md-6">
-                                    <ul class="list-inline">
-                                        <li></li>
-                                        <li><?php echo $this->translate('currency');?></li>
+                                    <ul class="list-unstyled">
+                                        <li><p class="text-center"><?php echo $this->translate('currency');?></p></li>
                                         <li><?php echo $this->crnCode; ?></li>
                                     </ul>
                                 </div>
                                 <div class="col-xs-12 col-md-6">
-                                    <ul class="list-inline">
-                                        <li></li>
-                                        <li><?php echo $this->translate('contacts');?></li>
+                                    <ul class="list-unstyled">
+                                        <li><p class="text-center"><?php echo $this->translate('contacts');?></p></li>
                                         <li><?php echo ""; ?></li>
                                     </ul>
                                 </div>
                                 <div class="col-xs-12 col-md-6">
-                                    <ul class="list-inline">
-                                        <li></li>
-                                        <li><?php echo $this->translate('company').$this->translate('state');?></li>
+                                    <ul class="list-unstyled">
+                                        <li><p class="text-center"><?php echo $this->translate('company').$this->translate('state');?></p></li>
                                         <li>
                                             <?php echo $this->ShowDictionaryTo($this->dic_Setting['ACCOUNT_STATUS'], $this->userlangCode, $this->dic_Setting['ACCOUNT_STATUS'], $this->accountStatus); ?>
                                         </li>
