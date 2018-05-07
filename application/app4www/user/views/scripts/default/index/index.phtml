@@ -46,35 +46,6 @@
                     <div class="panel-body">
                         <p>...</p>
                     </div>
-
-                    <!-- Table -->
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th><?php echo $this->translate('orderNo'); ?></th>
-                            <th><?php echo $this->translate('buyers'); ?></th>
-                            <th><?php echo $this->translate('orderItem'); ?></th>
-                            <th><?php echo $this->translate('orderTotal'); ?></th>
-                            <th><?php echo $this->translate('state'); ?></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>贤心</td>
-                            <td>2016-11-29</td>
-                            <td>人生就像是一场修行</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>许闲心</td>
-                            <td>2016-11-28</td>
-                            <td>于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        </tbody>
-                    </table>
                 </div>
 
                 <div class="panel panel-warning">
@@ -187,13 +158,13 @@
 
 <script type="text/javascript">
 	$().ready(function() {
-
-	});
-
-	$(function () {
         $("#_saleOrder").load("<?php echo $this->BaseUrl();?>/index/listsaleorder", {
 
         });
+	});
+
+	$(function () {
+
 	});
 
     layui.use('laydate', function() {
