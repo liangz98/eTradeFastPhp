@@ -60,7 +60,7 @@
 					</div>
 				</div>
 
-				<div class="form-group">
+				<div class="form-group address">
 					<label for="regdCountryCode" class="col-sm-3 col-xs-12 control-label"><?php echo $this->translate('address'); ?></label>
 					<div class="col-sm-7">
 						<select class="form-control" name="regdCountryCode" id="regdCountryCode" required>
@@ -69,7 +69,7 @@
 					</div>
 				</div>
 
-				<div class="form-group">
+				<div class="form-group address">
 					<label for="regdAddress" class="col-sm-3 control-label"></label>
 					<div class="col-sm-7">
 						<input type="text" class="form-control" name="regdAddress" id="regdAddress" required placeholder="<?php echo $this->translate('is_regadress'); ?>">
@@ -83,7 +83,7 @@
 					</div>
 				</div>
 
-				<div class="form-group">
+				<div class="form-group phone">
 					<label for="mobilePhone" class="col-sm-3 control-label"><?php echo $this->translate('phone'); ?></label>
 					<div class="col-sm-7">
 						<input type="text" class="form-control" name="mobilePhone" id="mobilePhone" required placeholder="<?php echo $this->translate('is_phone'); ?>">
@@ -213,9 +213,11 @@
             if ($(this).attr("isPersonAccount") === 'true') {
                 $(".accountName,.email").hide();
                 $("#isPersonAccount").val("true");
+                $(".phone").after($(".address"));
             } else {
                 $(".accountName,.email").show();
                 $("#isPersonAccount").val("false");
+                $(".email").after($(".address"));
             }
         });
 	});
