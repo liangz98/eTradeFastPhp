@@ -31,7 +31,7 @@
                     </div>
                 </div>
 
-                <div class="panel panel-primary" id="_saleOrder">
+                <div class="panel panel-primary">
                     <!-- Default panel contents -->
                     <div class="panel-heading">
                         <ul class="list-inline">
@@ -46,6 +46,9 @@
                     <div class="panel-body">
                         <p>...</p>
                     </div>
+
+                    <!-- Table -->
+                    <div id="_saleOrder"></div>
                 </div>
 
                 <div class="panel panel-warning">
@@ -162,7 +165,7 @@
 	});
 
 	$(function () {
-        $("#_saleOrder").append().load("<?php echo $this->BaseUrl();?>/index/listsaleorder", {
+        $("#_saleOrder").load("<?php echo $this->BaseUrl();?>/index/listsaleorder", {
 
         });
 	});
@@ -170,7 +173,7 @@
     layui.use('laydate', function() {
         var laydate = layui.laydate;
 
-        //直接嵌套显示
+        // 直接嵌套显示
         laydate.render({
             elem: '#test-n1',
             position: 'static',
