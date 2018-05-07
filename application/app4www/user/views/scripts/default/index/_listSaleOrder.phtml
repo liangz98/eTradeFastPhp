@@ -5,7 +5,7 @@
         <th><?php echo $this->translate('buyers'); ?></th>
         <th><?php echo $this->translate('orderItem'); ?></th>
         <th><?php echo $this->translate('orderTotal'); ?></th>
-        <th><?php echo $this->translate('orderStatue.01'); ?></th>
+        <th><?php echo $this->translate('state'); ?></th>
     </tr>
     </thead>
     <tbody>
@@ -14,14 +14,16 @@
             <td><?php echo $saleOrder->orderNo; ?></td>
             <td><?php echo $saleOrder->buyerName; ?></td>
             <td>
-
+                <?php echo date('Y-m-d H:i:s', strtotime($saleOrder->lastUpdate)); ?>
             </td>
             <td>
                 <?php echo $saleOrder->buyerCrnCode. ' '; ?>
                 <label class="saleOrderTotalAmount_"></label>
                 <script type="text/javascript">$(".saleOrderTotalAmount_").html(formatCurrency(<?php echo $saleOrder->totalAmount;?>, 2));</script>
             </td>
-            <td><?php echo date('Y-m-d H:i:s', strtotime($saleOrder->lastUpdate)); ?></td>
+            <td>
+                <?php echo $this->ShowDictionaryTo($this->dic_Setting["ORDER_STATUS"], $this->userlangCode, $this->dic_Setting["ORDER_STATUS"], $saleOrder->orderStatus); ?>
+            </td>
         </tr>
     <?php endforeach; ?>
     </tbody>
