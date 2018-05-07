@@ -170,9 +170,9 @@ class LoginController extends Kyapi_Controller_Action {
     public function qrloginimgAction() {
         $_requestOb = $this->_requestObject;
         $resultObject = $this->json->getLoginQrImgApi($_requestOb);
-        $qrLoginImg = json_decode($resultObject)->result;
+        // $qrLoginImg = json_decode($resultObject)->result;
 
-        echo $qrLoginImg;
+        echo $resultObject;
         exit;
     }
 }

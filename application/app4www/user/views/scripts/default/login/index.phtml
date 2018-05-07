@@ -198,11 +198,11 @@
 
         $("#switcher_plogin").click(function () {
             $("#qrLoginImg").hide();
-            $("#login-body-form").show();
+            $("#login_form").show();
         });
 
 		$("#switcher_qlogin").click(function () {
-            $("#login-body-form").hide();
+            $("#login_form").hide();
             $("#qrLoginImg").html("").load("<?php echo $this->BaseUrl();?>/login/qrloginimg").show();
         });
 	});
