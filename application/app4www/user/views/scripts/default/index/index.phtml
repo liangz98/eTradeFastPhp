@@ -59,26 +59,28 @@
                                 <div class="col-xs-12 col-md-6">
                                     <ul class="list-unstyled">
                                         <li><p class="text-center"><?php echo $this->translate('bankAccount');?></p></li>
-                                        <li><?php echo ""; ?></li>
+                                        <li><p class="text-center"><?php echo ""; ?></p></li>
                                     </ul>
                                 </div>
                                 <div class="col-xs-12 col-md-6">
                                     <ul class="list-unstyled">
                                         <li><p class="text-center"><?php echo $this->translate('currency');?></p></li>
-                                        <li><?php echo $this->crnCode; ?></li>
+                                        <li><p class="text-center"><?php echo $this->crnCode; ?></p></li>
                                     </ul>
                                 </div>
                                 <div class="col-xs-12 col-md-6">
                                     <ul class="list-unstyled">
                                         <li><p class="text-center"><?php echo $this->translate('contacts');?></p></li>
-                                        <li><?php echo ""; ?></li>
+                                        <li><p class="text-center"><?php echo ""; ?></p></li>
                                     </ul>
                                 </div>
                                 <div class="col-xs-12 col-md-6">
                                     <ul class="list-unstyled">
                                         <li><p class="text-center"><?php echo $this->translate('company').$this->translate('state');?></p></li>
                                         <li>
+                                            <p class="text-center">
                                             <?php echo $this->ShowDictionaryTo($this->dic_Setting['ACCOUNT_STATUS'], $this->userlangCode, $this->dic_Setting['ACCOUNT_STATUS'], $this->accountStatus); ?>
+                                            </p>
                                         </li>
                                     </ul>
                                 </div>
