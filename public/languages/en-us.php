@@ -708,7 +708,7 @@ return array(
     'invoice' => 'Invoice',
     'delete' => 'Delete',
 
-    'companys' => 'Invite',
+    'company' => 'Company',
     'invitation' => 'Invite',
 
 

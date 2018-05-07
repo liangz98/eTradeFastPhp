@@ -60,6 +60,7 @@ class RegisterController extends Kyapi_Controller_Action
                         $userDetail['user_id'] = $existData['contactID'];
                         $userDetail['accountID'] = $existData['account']['accountID'];//公司ID
                         $userDetail['accountName'] = $existData['account']['accountName'];//公司名称
+                        $userDetail['accountStatus'] = $existData['account']['accountStatus'];//公司状态
                         $userDetail['crnCode'] = $existData['account']['crnCode'];  //公司默认货币
                         $userDetail['user_name'] = $existData['name'];
                         $userDetail['ecommloginname'] = $existData['ecommloginname'];//登陆名
@@ -140,6 +141,7 @@ class RegisterController extends Kyapi_Controller_Action
                             'userID'            => $userDetail['user_id'],
                             'accountID'         => $userDetail['accountID'],
                             'accountName'       => $userDetail['accountName'],
+                            'accountStatus'     => $userDetail['accountStatus'],
                             'crnCode'           => $userDetail['crnCode'],
                             'userName'          => $userDetail['user_name'],
                             'userLoginName'     => $userDetail['ecommloginname'],

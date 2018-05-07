@@ -701,7 +701,7 @@ return array(
     'invoice' => '发票',
     'delete' => '删除',
 
-    'companys' => '公司',
+    'company' => '公司',
     'invitation' => '邀请',
 
     // 后台返回状态说明

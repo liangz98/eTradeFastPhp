@@ -23,10 +23,70 @@
                             <?php echo $this->accountName; ?>
                         </div>
                         <div class="col-xs-12 col-md-3">
-                            <?php echo $this->accountName; ?>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <ul class="list-inline">
+                                        <li></li>
+                                        <li><?php echo $this->translate('checkIN');?></li>
+                                        <li><?php echo intval($this->COUNT['01']); ?></li>
+                                    </ul>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <ul class="list-inline">
+                                        <li></li>
+                                        <li><?php echo $this->translate('checkR');?></li>
+                                        <li><?php echo intval($this->COUNT['02']); ?></li>
+                                    </ul>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <ul class="list-inline">
+                                        <li></li>
+                                        <li><?php echo $this->translate('running');?></li>
+                                        <li><?php echo intval($this->COUNT['03']) + intval($this->COUNT['04']); ?></li>
+                                    </ul>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <ul class="list-inline">
+                                        <li></li>
+                                        <li><?php echo $this->translate('finished');?></li>
+                                        <li><?php echo intval($this->COUNT['10']); ?></li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-xs-12 col-md-3">
-                            <?php echo $this->accountName; ?>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <ul class="list-inline">
+                                        <li></li>
+                                        <li><?php echo $this->translate('bankAccount');?></li>
+                                        <li><?php echo ""; ?></li>
+                                    </ul>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <ul class="list-inline">
+                                        <li></li>
+                                        <li><?php echo $this->translate('currency');?></li>
+                                        <li><?php echo $this->crnCode; ?></li>
+                                    </ul>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <ul class="list-inline">
+                                        <li></li>
+                                        <li><?php echo $this->translate('contacts');?></li>
+                                        <li><?php echo ""; ?></li>
+                                    </ul>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <ul class="list-inline">
+                                        <li></li>
+                                        <li><?php echo $this->translate('company').$this->translate('state');?></li>
+                                        <li>
+                                            <?php echo $this->ShowDictionaryTo($this->dic_Setting['ACCOUNT_STATUS'], $this->userlangCode, $this->dic_Setting['ACCOUNT_STATUS'], $this->accountStatus); ?>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -48,7 +108,7 @@
                     </div>
 
                     <!-- Table -->
-                    <div id="_orderList"></div>
+                    <div class="table-responsive" id="_orderList"></div>
                 </div>
 
                 <div class="panel panel-warning">
