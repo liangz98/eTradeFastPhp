@@ -456,6 +456,10 @@ return array(
     'orderID' => '订单ID',
     'orderNo' => '订单号',
     'orderItem' => '商品',
+    'orderStatue' => [
+        '01' => '有效',
+        '02' => '无效'
+    ],
     'orderTotal' => '金额',
     'shopPrities' => '订单汇率',
     'Prities' => '订单汇率',
