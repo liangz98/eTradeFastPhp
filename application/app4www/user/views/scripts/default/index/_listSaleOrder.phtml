@@ -13,7 +13,7 @@
         <tr>
             <td><?php echo $saleOrder->orderNo; ?></td>
             <td><?php echo $saleOrder->buyerName; ?></td>
-            <td><?php echo $saleOrder->buyerCrnCode. ' '; ?><script language="JavaScript">document.write(<?php echo $saleOrder->totalAmount; ?>, 2);</script></td>
+            <td><?php echo $saleOrder->buyerCrnCode. ' '; ?><script language="JavaScript">document.write(formatCurrency(<?php echo $saleOrder->totalAmount; ?>, 2));</script></td>
             <td><?php echo date('Y-m-d H:i:s', strtotime($saleOrder->lastUpdate)); ?></td>
             <td></td>
         </tr>
