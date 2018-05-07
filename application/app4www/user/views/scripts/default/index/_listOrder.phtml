@@ -16,12 +16,11 @@
             <td>
                 <?php echo date('Y-m-d H:i:s', strtotime($order->lastUpdate)); ?>
             </td>
-            <td>
+            <td class="text-right">
                 <?php echo $order->buyerCrnCode. ' '; ?>
-                <label class="saleOrderTotalAmount_"></label>
-                <script type="text/javascript">$(".saleOrderTotalAmount_").html(formatCurrency(<?php echo $order->totalAmount;?>, 2));</script>
+                <?php echo number_format($order->totalAmount,2); ?>
             </td>
-            <td class="text-center">
+            <td>
                 <?php echo $this->ShowDictionaryTo($this->dic_Setting["ORDER_STATUS"], $this->userlangCode, $this->dic_Setting["ORDER_STATUS"], $order->orderStatus); ?>
             </td>
         </tr>
