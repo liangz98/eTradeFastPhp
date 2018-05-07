@@ -203,7 +203,13 @@
 
 		$("#switcher_qlogin").click(function () {
             $("#login_form").hide();
-            $("#qrLoginImg").html("").load("<?php echo $this->BaseUrl();?>/login/qrloginimg").show();
+
+            $.get("<?php echo $this->BaseUrl();?>/login/qrloginimg",function(data,status){
+                console.log("qlStatus: " + status);
+                $("#qrLoginImg").html("<img src='"+data+"' />").show();
+            });
+
+            <!--$("#qrLoginImg").html("").load("<?php echo $this->BaseUrl();?>/login/qrloginimg").show();-->
         });
 	});
 
