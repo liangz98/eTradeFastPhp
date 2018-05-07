@@ -462,8 +462,10 @@ return array(
 
     //订单信息预览
     'orderVINF' => 'Order Preview',
-    'orderID' => 'Order No.',
+    'orderID' => 'Order ID',
     'orderNo' => 'Order No.',
+    'orderItem' => '商品',
+    'orderTotal' => '金额',
     'shopPrities' => 'Currency',
     'Prities' => 'Currency',
     'orderPrice' => 'Amount',

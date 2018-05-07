@@ -49,7 +49,7 @@ return array(
     'going008v'=>'订单已经进入结算状态，请到结算分页或结算中心等待买方付款。',
 
 
-//头部主导航
+    //头部主导航
     'nav_login' => '登录',
     'nav_Mr' => '先生',
     'nav_Miss' => '小姐',
@@ -69,7 +69,7 @@ return array(
     'NoRegister'=>'暂未注册',
     'NoData'=>'无',
 
-//用户角色
+    //用户角色
     'CompUser'=>'普通用户',
     'CompAdmin'=>'公司管理员',
     'SOAdmin'=>'订舱单管理员',
@@ -83,7 +83,7 @@ return array(
     'CompPartnerAdmin'=>'合作伙伴管理员',
 
 
-//常用状态
+    //常用状态
     'last' => '上一步',
     'next' => '下一步',
     'saveDRAFT' => '保存草稿',
@@ -212,7 +212,7 @@ return array(
 
     'CHK_account'=>'呈现全部状态',
 
-//友情链接
+    //友情链接
     'about_ef' => '关于快移',
     'marketC' => '营销中心',
     'contactUS' => '联系我们',
@@ -220,13 +220,13 @@ return array(
     'joinUS' => '诚征英才',
     'siteMAP' => '网站地图',
 
-//底部链接
+    //底部链接
     'findJOB' => '查找职位',
     'about' => '关于',
     'privacy' => '隐私',
     'lawITEM' => '法律条款',
 
-//用户中心左侧导航
+    //用户中心左侧导航
     'order' => '订单',
     'orderIN' => '订单中心',
     'orderREQ' => '退税申请',
@@ -263,7 +263,7 @@ return array(
     'tradeLIST' => '交易记录',
 
 
-//个人信息右侧title
+    // 个人信息右侧title
     'myINF'=>'个人信息',
     'myPHOTO'=>'头像上传',
     'editPWD'=>'修改密码',
@@ -278,14 +278,14 @@ return array(
 
 
 
-//附件部分
+    // 附件部分
     'files' => '文件',
     'filename' => '文件名称',
     'finding' => '查找目标',
     'find'=>'查找',
     'Nodata'=>'暂无数据',
 
-//个人信息公司模块
+    // 个人信息公司模块
     'companyEWM'=>'查看公司快移码',
     'companyMNG' => '公司管理',
     'comNAME' => '公司名称',
@@ -319,11 +319,11 @@ return array(
     'GOODSLS' => '商品相关图片资料',
     'UPGOODSLS' => '可上传商品外观图、包装图、生产许可证等',
     'UPBank' => '相关银行资料',
-//个人信息人员与账号模块（有些字段已经存在 下面模块不再进行说明）
+    // 个人信息人员与账号模块（有些字段已经存在 下面模块不再进行说明）
     'state' => '状态',
     'ACTcheck'=>'验证',
     'valids' => '启用',
-//产品&订单中心状态
+    // 产品&订单中心状态
     'valid' => '有效',
     'checkP' => '审核中',
     'checkIN' => '审核中',
@@ -334,7 +334,7 @@ return array(
     'draft' => '草稿',
     'void' => '无效',
 
-//产品页面
+    // 产品页面
     'productNAME' => '商品名称',
     'productENNAME' => '英文名称',
     'brand' => '品牌',
@@ -350,7 +350,7 @@ return array(
     'HSCODE' => 'HSCODE',
     'uprice' => '单价',
     'number' => '数量',
-    //订单商品列表补充
+    // 订单商品列表补充
     'orderprice' => '价格',
     'ordertotal' => '金额',
     'quantity' => '件数',
@@ -371,7 +371,7 @@ return array(
     'productionMode'=>'生产方式',
     'image' => '图片',
     'RLCT' => '监管条件',
-//新增商品页面
+    // 新增商品页面
     'orderGOODS' => '订单商品',
     'imgGOODS' => '商品图片',
 
@@ -380,7 +380,7 @@ return array(
 
 
 
-//银行账户模块
+    // 银行账户模块
     'accountNO' => '银行账号',
     'accountTP' => '账号类型',
     'accountFA' => '外汇账户',
@@ -394,14 +394,14 @@ return array(
     'accountSCD' => 'SWIFT CODE',
     'accountBZ' => '备注',
 
-//订单状态标题
+    // 订单状态标题
     'orderSTATUS' => '订单状态',
     'orderADD' => '新增订单',
     'partnerADM' => '合作伙伴管理',
     'partner' => '合作伙伴',
     'partnerINF' => '合作伙伴信息',
     'userINF' => '个人中心',
-    //最近订单进度
+    // 最近订单进度
     'orderStatus'           => '当前订单进度',
     'orderStatus01'         => '最近更新订单进度',
     'confirming'            => '确认订单',
@@ -451,10 +451,12 @@ return array(
 
 
 
-    //订单信息预览
+    // 订单信息预览
     'orderVINF' => '订单信息预览',
-    'orderID' => '订单号',
-    'orderNo' => '订单号码',
+    'orderID' => '订单ID',
+    'orderNo' => '订单号',
+    'orderItem' => '商品',
+    'orderTotal' => '金额',
     'shopPrities' => '订单汇率',
     'Prities' => '订单汇率',
     'orderPrice' => '订单金额',
@@ -479,7 +481,7 @@ return array(
     'progressING' => '进度说明',
     'stateING' => '当前状态',
     'operatING' => '当前操作',
-    //我有异议
+    // 我有异议
     'objection' => '我有异议»',
 
 
@@ -506,7 +508,7 @@ return array(
     'selectROLE' => '选择角色',
 
 
-//新增订单模块
+    //新增订单模块
     //流程start
     'orderINF01' => '填写订单基本资料',
     'orderINF02' => '添加商品至订单',
@@ -633,13 +635,13 @@ return array(
 
 
 
-//订单退税服务
+    //订单退税服务
     'serviceDBK' => '退税服务',
     'ispayDBK' => '是否需要垫付退税款',
     'needDBK' => '退税要求',
 
 
-//个人/订单中心
+    //个人/订单中心
     'historyNO' => '历史交易笔数',
     'performanceB' => '业绩余额',
     'audit' => '审核中',
@@ -697,7 +699,7 @@ return array(
     'companys' => '公司',
     'invitation' => '邀请',
 
-    //后台返回状态说明
+    // 后台返回状态说明
     'is_delete'=>'您确认要删除吗?',
     'is_invalid'=>'您确认要禁用吗?',
     'is_valid'=>'您确认要启用吗?',
@@ -814,7 +816,7 @@ return array(
     'tip_exchange_fail'   => '结汇失败',
 
 
-//结算
+    // 结算
     'Saltter_IN'=>'结算中心',
     'Saltter_Bank'=>'银行账户管理',
     'Saltter_Turn'=>'转账',
