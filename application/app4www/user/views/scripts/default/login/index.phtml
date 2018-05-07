@@ -47,7 +47,7 @@
 
 			<div class="col-md-4 login-body">
 				<ul class="nav nav-pills">
-					<li><a href="javascript:void(0)" id="switcher_plogin">密码登录</a></li>
+					<li><a href="javascript:void(0)" id="switcher_plogin">帐号密码登录</a></li>
 					<li><a href="javascript:void(0)" id="switcher_qlogin">扫码登录</a></li>
 				</ul>
 
@@ -206,7 +206,7 @@
 
             $.get("<?php echo $this->BaseUrl();?>/login/qrloginimg",function(data,status){
                 console.log("qlStatus: " + status);
-                $("#qrLoginImg").html("<img src='data:image/gif;base64,"+data+"' />").show();
+                $("#qrLoginImg").html("<img src=\"data:image/gif;base64,"+data+"\" />").show();
             });
         });
 	});
