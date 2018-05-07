@@ -12,9 +12,9 @@
     <?php foreach ($this->saleOrderList as $saleOrder): ?>
         <tr>
             <td><?php echo $saleOrder->orderNo; ?></td>
-            <td>2016-11-29</td>
-            <td>人生就像是一场修行</td>
-            <td></td>
+            <td><?php echo $saleOrder->buyerName; ?></td>
+            <td><?php echo $saleOrder->buyerCrnCode. ' '; ?><script>formatCurrency(<?php echo $saleOrder->totalAmount; ?>, 2);</script></td>
+            <td><?php echo date('Y-m-d H:i:s', strtotime($saleOrder->lastUpdate)); ?></td>
             <td></td>
         </tr>
     <?php endforeach; ?>
