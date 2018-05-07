@@ -206,10 +206,7 @@
 
             $.get("<?php echo $this->BaseUrl();?>/login/qrloginimg",function(data,status){
                 console.log("qlStatus: " + status);
-                // $("#qrLoginImg").html("<img src='data:image/jpeg;base64,"+data+"' />").show();
-
-                document.getElementById('qrLoginImg').innerHTML= (data);
-                $("#qrLoginImg").show();
+                $("#qrLoginImg").html("<img src='data:image/gif;base64,"+data+"' />").show();
             });
         });
 	});
