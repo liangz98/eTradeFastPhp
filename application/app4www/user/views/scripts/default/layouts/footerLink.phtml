@@ -9,3 +9,13 @@
 <script src="/ky/layer/layer.js"></script>
 <script src="/ky/layui/layui.js"></script>
 <script src="/ky/js/funLib.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $('.navbar-nav').find('a').each(function () {
+            if (this.href === document.location.href || document.location.href.search(this.href) >= 0) {
+                $(this).parent().addClass('active'); // this.className = 'active';
+            }
+        });
+    });
+</script>
