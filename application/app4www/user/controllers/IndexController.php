@@ -509,10 +509,23 @@ class IndexController extends Kyapi_Controller_Action {
         $_requestOb = $this->_requestObject;
         $orderStatus = "04";
         $resultObject = $this->json->listSaleOrderApi($_requestOb, $orderStatus, null, null, 0, 5);
-        $this->view->saleOrderList = json_decode($resultObject)->result;
+        $this->view->orderList = json_decode($resultObject)->result;
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/index/_listSaleOrder.phtml");
+            echo $content;
+            exit;
+        }
+    }
+
+    public function listpurorderAction() {
+        $_requestOb = $this->_requestObject;
+        $orderStatus = "04";
+        $resultObject = $this->json->listPurOrderApi($_requestOb, $orderStatus, null, null, 0, 5);
+        $this->view->orderList = json_decode($resultObject)->result;
+
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/index/_listOrder.phtml");
             echo $content;
             exit;
         }

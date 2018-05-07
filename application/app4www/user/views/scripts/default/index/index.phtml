@@ -39,8 +39,8 @@
                                 <i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;
                                 <?php echo $this->translate('order'); ?>
                             </li>
-                            <li class="pull-right"><?php echo $this->translate('orderBUY'); ?></li>
-                            <li class="pull-right"><?php echo $this->translate('orderSALLE'); ?></li>
+                            <li class="pull-right purOrderListBtn"><?php echo $this->translate('orderBUY'); ?></li>
+                            <li class="pull-right saleOrderListBtn"><?php echo $this->translate('orderSALLE'); ?></li>
                         </ul>
                     </div>
                     <div class="panel-body">
@@ -165,8 +165,19 @@
 	});
 
 	$(function () {
-        $("#_saleOrder").load("<?php echo $this->BaseUrl();?>/index/listsaleorder");
+	    initOrderList("listsaleorder");
+
+	    $(".saleOrderListBtn").click(function () {
+            initOrderList("listsaleorder");
+        });
+        $(".purOrderListBtn").click(function () {
+            initOrderList("listpurorder");
+        });
 	});
+
+	function initOrderList(obj) {
+        $("#_saleOrder")..html("").load("<?php echo $this->BaseUrl();?>/index/" + obj);
+    }
 
     layui.use('laydate', function() {
         var laydate = layui.laydate;
