@@ -161,13 +161,11 @@
 
 <script type="text/javascript">
 	$().ready(function() {
-        $("#_saleOrder").load("<?php echo $this->BaseUrl();?>/index/listsaleorder", {
 
-        });
 	});
 
 	$(function () {
-
+        $("#_saleOrder").load("<?php echo $this->BaseUrl();?>/index/listsaleorder");
 	});
 
     layui.use('laydate', function() {
