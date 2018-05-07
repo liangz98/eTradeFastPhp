@@ -300,6 +300,7 @@ return array(
     'industry' => '行业',
     'ONcountry'=>'所在国家',
     'ONlimit'=>'合作额度',
+    'partner_regdCountryCode' => '所在国家',
     'all' => '所有人',
     'dateUP' => '成立日期',
     'type' => '类型',

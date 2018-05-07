@@ -1,1 +1,4 @@
 
+.purOrderListBtn, .saleOrderListBtn, .purProductListBtn, .saleProductListBtn, .vendorPartnerListBtn, .buyerPartnerListBtn {
+    cursor: pointer;
+}

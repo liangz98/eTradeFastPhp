@@ -39,8 +39,8 @@
                                 <i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;
                                 <?php echo $this->translate('order'); ?>
                             </li>
-                            <li class="pull-right purOrderListBtn" style="cursor: pointer;"><?php echo $this->translate('orderBUY'); ?></li>
-                            <li class="pull-right saleOrderListBtn" style="cursor: pointer;"><?php echo $this->translate('orderSALLE'); ?></li>
+                            <li class="pull-right purOrderListBtn"><?php echo $this->translate('orderBUY'); ?></li>
+                            <li class="pull-right saleOrderListBtn"><?php echo $this->translate('orderSALLE'); ?></li>
                         </ul>
                     </div>
                     <div class="panel-body">
@@ -59,8 +59,8 @@
                                 <i class="fas fa-boxes"></i>&nbsp;&nbsp;
                                 <?php echo $this->translate('goods_4_index'); ?>
                             </li>
-                            <li class="pull-right"><?php echo $this->translate('goodsBUY'); ?></li>
-                            <li class="pull-right"><?php echo $this->translate('goodsME'); ?></li>
+                            <li class="pull-right purProductListBtn"><?php echo $this->translate('goodsBUY'); ?></li>
+                            <li class="pull-right saleProductListBtn"><?php echo $this->translate('goodsME'); ?></li>
                         </ul>
                     </div>
                     <div class="panel-body">
@@ -101,8 +101,8 @@
                                 <i class="fas fa-users"></i>&nbsp;&nbsp;
                                 <?php echo $this->translate('partners'); ?>
                             </li>
-                            <li class="pull-right"><?php echo $this->translate('partners_vendors'); ?></li>
-                            <li class="pull-right"><?php echo $this->translate('partners_buyers'); ?></li>
+                            <li class="pull-right vendorPartnerListBtn"><?php echo $this->translate('partners_vendors'); ?></li>
+                            <li class="pull-right buyerPartnerListBtn"><?php echo $this->translate('partners_buyers'); ?></li>
                         </ul>
 
                     </div>
@@ -176,7 +176,9 @@
 	});
 
 	function initOrderList(obj) {
-        $("#_saleOrder").html("").load("<?php echo $this->BaseUrl();?>/index/" + obj);
+        $("#_saleOrder").fadeOut().html(function () {
+            $(this).load("<?php echo $this->BaseUrl();?>/index/" + obj).fadeIn();
+        });
     }
 
     layui.use('laydate', function() {

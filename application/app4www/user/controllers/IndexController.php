@@ -505,6 +505,7 @@ class IndexController extends Kyapi_Controller_Action {
 
     }
 
+    // 销售订单列表
     public function listsaleorderAction() {
         $_requestOb = $this->_requestObject;
         $orderStatus = "04";
@@ -518,6 +519,7 @@ class IndexController extends Kyapi_Controller_Action {
         }
     }
 
+    // 采购订单列表
     public function listpurorderAction() {
         $_requestOb = $this->_requestObject;
         $orderStatus = "04";
@@ -526,6 +528,58 @@ class IndexController extends Kyapi_Controller_Action {
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/index/_listOrder.phtml");
+            echo $content;
+            exit;
+        }
+    }
+
+    // 我的商品列表
+    public function listsaleproductAction() {
+        $_requestOb = $this->_requestObject;
+        $resultObject = $this->json->listSaleProductApi($_requestOb, null, null, null, 0, 5);
+        $this->view->productList = json_decode($resultObject)->result;
+
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/index/_listProduct.phtml");
+            echo $content;
+            exit;
+        }
+    }
+
+    // 采购的商品列表
+    public function listpurproductAction() {
+        $_requestOb = $this->_requestObject;
+        $resultObject = $this->json->listPurProductApi($_requestOb, null, null, null, 0, 5);
+        $this->view->productList = json_decode($resultObject)->result;
+
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/index/_listProduct.phtml");
+            echo $content;
+            exit;
+        }
+    }
+
+    // 我的买家列表
+    public function listbuyerpartnerAction() {
+        $_requestOb = $this->_requestObject;
+        $resultObject = $this->json->listBuyerPartnerApi($_requestOb, null, null, null, 0, 5);
+        $this->view->partnerList = json_decode($resultObject)->result;
+
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/index/_listPartner.phtml");
+            echo $content;
+            exit;
+        }
+    }
+
+    // 我的卖家列表
+    public function listvendorpartnerAction() {
+        $_requestOb = $this->_requestObject;
+        $resultObject = $this->json->listVendorPartnerApi($_requestOb, null, null, null, 0, 5);
+        $this->view->partnerList = json_decode($resultObject)->result;
+
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/index/_listPartner.phtml");
             echo $content;
             exit;
         }

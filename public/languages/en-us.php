@@ -309,6 +309,7 @@ return array(
     'industry' => 'Industry',
     'ONcountry'=>'Country Region',
     'ONlimit'=>'Market Region',
+    'partner_regdCountryCode' => '所在国家',
     'all' => 'All',
     'dateUP' => 'Est. Date',
     'type' => 'Type',

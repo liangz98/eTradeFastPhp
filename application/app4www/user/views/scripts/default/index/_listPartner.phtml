@@ -1,0 +1,34 @@
+<table class="table table-bordered listSaleOrder">
+    <thead>
+    <tr>
+        <th><?php echo $this->translate('comNAME'); ?></th>
+        <th><?php echo $this->translate('industry'); ?></th>
+        <th><?php echo $this->translate('partner_regdCountryCode'); ?></th>
+        <th><?php echo $this->translate('state'); ?></th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($this->partnerList as $partner): ?>
+        <tr>
+            <td>
+                <?php if ($this->userrgCode == 'CN') {
+                    echo $partner->toName;
+                } elseif (!empty($partner->toEnName)) {
+                    echo $partner->toEnName;
+                } else {
+                    echo $partner->toName;
+                } ?>
+            </td>
+            <td>
+                <?php echo $this->ShowDictionaryTo($this->dic_Setting['ISIC_INDUSTRY_TYPE'], $this->userlangCode, $this->dic_Setting['ISIC_INDUSTRY_TYPE'], $partner->industryCode); ?>
+            </td>
+            <td>
+                <?php echo $this->ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'], $this->userlangCode, $this->dic_Setting['COUNTRY_ISO_CODE'], $partner->regdCountryCode); ?>
+            </td>
+            <td>
+                <?php echo $this->ShowDictionaryTo($this->dic_Setting["PARTNER_STATUS"], $this->userlangCode, $this->dic_Setting["PARTNER_STATUS"], $partner->partnerStatus); ?>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
