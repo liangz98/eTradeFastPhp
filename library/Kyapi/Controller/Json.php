@@ -1528,5 +1528,18 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
         return $resultObject;
     }
+
+    /** 登录界面取QR图片返回是gif格式
+     * @param $_requestObject
+     * @return mixed
+     */
+    public function getLoginQrImgApi($_requestObject) {
+        $_url = $this->url . '/contactapi/contactApi!getLoginQrImg.action';
+        $_params = json_encode(array(
+            "requestObject" => $_requestObject
+        ));
+        $resultObject = $this->vpost($_url, $_params); //输出目标地址源码
+        return $resultObject;
+    }
 }
 ?>

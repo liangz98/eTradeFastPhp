@@ -165,4 +165,14 @@ class LoginController extends Kyapi_Controller_Action {
             exit;
         }
     }
+
+    // 获取登录Qr图片
+    public function qrloginimgAction() {
+        $_requestOb = $this->_requestObject;
+        $resultObject = $this->json->getLoginQrImgApi($_requestOb);
+        $qrLoginImg = json_decode($resultObject)->result;
+
+        echo $qrLoginImg;
+        exit;
+    }
 }

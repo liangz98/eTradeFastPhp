@@ -47,8 +47,8 @@
 
 			<div class="col-md-4 login-body">
 				<ul class="nav nav-pills">
-					<li><a href="javascript:void(0)">密码登录</a></li>
-					<li><a href="javascript:void(0)">扫码登录</a></li>
+					<li><a href="javascript:void(0)" id="switcher_plogin">密码登录</a></li>
+					<li><a href="javascript:void(0)" id="switcher_qlogin">扫码登录</a></li>
 				</ul>
 
 				<hr>
@@ -119,6 +119,10 @@
 						</div>
 					</div>
 				</form>
+
+                <div id="qrLoginImg">
+
+                </div>
 			</div>
 		</div>
 	</div>
@@ -191,6 +195,16 @@
 		$("#authCodePic").click(function () {
 			$(this).attr("src", "/user/check/code?" + Math.random());
 		});
+
+        $("#switcher_plogin").click(function () {
+            $("#qrLoginImg").hide();
+            $("#login-body-form").show();
+        });
+
+		$("#switcher_qlogin").click(function () {
+            $("#login-body-form").hide();
+            $("#qrLoginImg").html("").load("<?php echo $this->BaseUrl();?>/login/qrloginimg").show();
+        });
 	});
 
 	// 密码规验证(8-30位  字母数字)
