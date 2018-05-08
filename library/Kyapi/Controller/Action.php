@@ -293,23 +293,27 @@ class Kyapi_Controller_Action extends Zend_Controller_Action{
 
 
 
-        //requestObject 入参条件
+        // requestObject 入参条件
         $_requestObject = new Kyapi_Model_requestObject();
-        if(!empty($_SESSION) ){
-            $_requestObject->sessionID = session_id();
-        }else{
-            $_requestObject->sessionID = "sessionNull";
-        }
-        $_requestObject->userID= $userID=$this->view->userID;
-        $_requestObject->accountID= $accountID=$this->view->accountID;
-        if(empty($userlangCode))$userlangCode="zh_CN";
-        $this->view->userlangCode=$userlangCode;
+        // if(!empty($_SESSION) ){
+        //     $_requestObject->sessionID = session_id();
+        // }else{
+        //     $_requestObject->sessionID = "sessionNull";
+        // }
+        // 获取sessionID
+        $_requestObject->sessionID = session_id();
+
+        $_requestObject->userID = $userID = $this->view->userID;
+        $_requestObject->accountID = $accountID = $this->view->accountID;
+        if (empty($userlangCode))
+            $userlangCode = "zh_CN";
+        $this->view->userlangCode = $userlangCode;
         $_requestObject->lang = $userlangCode;
         // $_requestObject->client = "192.168.5.100";
         $_requestObject->client = $_SERVER['REMOTE_ADDR'];
         $_requestObject->timeZone = "GMT +8:00";
-        $this->_requestObject=$_requestObject;
-         $this->view->reqOb=$_requestObject;
+        $this->_requestObject = $_requestObject;
+        $this->view->reqOb = $_requestObject;
     }
 
     /**
