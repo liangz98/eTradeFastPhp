@@ -172,7 +172,16 @@ class LoginController extends Kyapi_Controller_Action {
         $resultObject = $this->json->getLoginQrImgApi($_requestOb);
         // $qrLoginImg = json_decode($resultObject)->result;
 
-        echo $resultObject;
+        $base64_image = $this->base64EncodeImage($resultObject);
+        echo $base64_image;
         exit;
+    }
+
+    function base64EncodeImage ($image_file) {
+        // $base64_image = '';
+        $image_info = getimagesize($image_file);
+        $image_data = fread(fopen($image_file, 'r'), filesize($image_file));
+        $base64_image = 'data:' . $image_info['mime'] . ';base64,' . chunk_split(base64_encode($image_data));
+        return $base64_image;
     }
 }
