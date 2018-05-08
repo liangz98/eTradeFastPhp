@@ -84,6 +84,11 @@
     margin-bottom: 50px;
 }
 
+.login-body-form input {
+    height: 38px;
+    font-size: 14px;
+}
+
 .login-body-form .form-group {
     margin-left: 15px;
     width: 90%;

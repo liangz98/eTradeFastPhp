@@ -171,17 +171,8 @@ class LoginController extends Kyapi_Controller_Action {
         $_requestOb = $this->_requestObject;
         $resultObject = $this->json->getLoginQrImgApi($_requestOb);
         // 接收到的文件是utf8的二进制文件, 在页面呈现时要转成base64
-        // $base64_image = base64_encode($resultObject);
-        $base64_image = $this->base64EncodeImage($resultObject);
+        $base64_image = base64_encode($resultObject);
         echo $base64_image;
         exit;
-    }
-
-    function base64EncodeImage ($image_file) {
-        // $base64_image = '';
-        $image_info = getimagesize($image_file);
-        $image_data = fread(fopen($image_file, 'r'), filesize($image_file));
-        $base64_image = 'data:' . $image_info['mime'] . ';base64,' . base64_encode($image_data);
-        return $base64_image;
     }
 }
