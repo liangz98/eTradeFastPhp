@@ -307,9 +307,11 @@ class LoginController extends Kyapi_Controller_Action {
         } else {
             // 接口请求错误的情况下, 将接口错误返回给页面
             $msg = $this->view->translate(trim(json_decode($resultObject)->errorCode));
+
+            // $msg = json_decode($resultObject)->errorCode;
         }
 
-        echo json_encode($msg);
+        echo $msg;
         exit;
     }
 }

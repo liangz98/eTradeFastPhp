@@ -212,32 +212,43 @@
             $("#login_form").show();
 
             clearInterval(ref);
+            ref = '';
         });
 
         // 扫码登录
-		$("#switcher_qlogin").click(function () {
+		$("#switcher_qlogin, #qrLoginImg").click(function () {
             $("#login_form").hide();
             $(".qr-row").addClass("show").removeClass("hidden");
+            getQrLoginImg();
 
-            $.get("<?php echo $this->BaseUrl();?>/login/qrloginimg",function(data){
-                $("#qrLoginImg").html("<img src=\"data:image/gif;base64,"+data+"\" class=\"img-thumbnail center-block\" />");
-            });
-
-            ref = setInterval(function(){
-                pollQrLogin();
-            }, 5000);
+            if (ref === '') {
+                ref = setInterval(function(){
+                    pollQrLogin();
+                }, 5000);
+            }
         });
 	});
 
+	function getQrLoginImg() {
+        $.get("<?php echo $this->BaseUrl();?>/login/qrloginimg",function(data){
+            $("#qrLoginImg").html("<img src=\"data:image/gif;base64,"+data+"\" class=\"img-thumbnail center-block\" />");
+        });
+    }
+
+	// 轮询定时器
 	function pollQrLogin() {
         var qrLogin = '/user/login/qrlogin';
-        $.post(qrLogin, function () {
+        $.post(qrLogin, function (data) {
+            if (data === "1") {
+                clearInterval(ref);
+                ref = '';
 
-        }, 'json').success(function (data) {
-            if (data === 1) {
-                location.href = "/";
+                window.location.reload();
             } else {
-                console.log(data);
+                if (data === "timeout" || data === "fail") {
+                    // timeout 时更新一次QrImg
+                    getQrLoginImg();
+                }
             }
         });
     }
