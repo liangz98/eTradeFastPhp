@@ -120,10 +120,10 @@
 					</div>
 				</form>
 
-                <div class="row">
+                <div class="row qr-row">
                     <div class="col-md-10 col-md-offset-1" id="qrLoginImg"></div>
                     <div class="col-md-10 col-md-offset-1">
-                        <a href="#" class="btn btn-default btn-lg active" role="button">使用手机快移扫描登录</a>
+                        <a href="#" class="btn btn-default btn-lg active center-block" role="button">使用手机快移扫描登录</a>
                     </div>
                 </div>
 			</div>
@@ -208,7 +208,7 @@
             $("#login_form").hide();
 
             $.get("<?php echo $this->BaseUrl();?>/login/qrloginimg",function(data){
-                $("#qrLoginImg").html("<img src=\"data:image/gif;base64,"+data+"\" class=\"center-block\" />").show();
+                $("#qrLoginImg").html("<img src=\"data:image/gif;base64,"+data+"\" class=\"img-thumbnail center-block\" />").show();
             });
         });
 	});

@@ -111,6 +111,10 @@
     margin-top: 8px;
 }
 
+.qr-row {
+    margin-bottom: 30px;
+}
+
 #qrLoginImg img {
     width: 200px;
     margin-bottom: 30px;
