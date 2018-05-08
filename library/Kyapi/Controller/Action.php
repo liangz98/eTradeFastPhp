@@ -300,6 +300,7 @@ class Kyapi_Controller_Action extends Zend_Controller_Action{
         // }else{
         //     $_requestObject->sessionID = "sessionNull";
         // }
+
         // 获取sessionID
         $_requestObject->sessionID = session_id();
 
