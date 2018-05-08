@@ -457,7 +457,7 @@ class GoodsController extends Kyapi_Controller_Action
             // 请求Hessian服务端方法bankAcctID
             $_objID = $this->_request->getPost('delID');
             $_requestOb=$this->_requestObject;
-            $opData= $this->json->confrimProductApi($_requestOb,$_objID);
+            $opData= $this->json->confirmProductApi($_requestOb,$_objID);
             echo $opData;
         }
         exit;

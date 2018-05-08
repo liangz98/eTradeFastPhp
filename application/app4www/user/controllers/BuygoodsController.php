@@ -323,7 +323,7 @@ class BuygoodsController extends Kyapi_Controller_Action
 		$productID=$_SERVER['QUERY_STRING'];
 		$_productID =base64_decode($productID);
 		$_requestOb=$this->_requestObject;
-		$existData= $userM->confrimProductApi($_requestOb,$_productID);
+		$existData= $userM->confirmProductApi($_requestOb,$_productID);
 
 		if ($existData->status != 1) {
 			echo $existData->error, "<br />",

@@ -120,10 +120,16 @@
 					</div>
 				</form>
 
-                <div class="row qr-row">
+                <div class="row qr-row hidden">
                     <div class="col-md-10 col-md-offset-1" id="qrLoginImg"></div>
                     <div class="col-md-10 col-md-offset-1">
-                        <a href="#" class="btn btn-default btn-lg active center-block" role="button">使用手机快移扫描登录</a>
+                        <a href="#" class="btn btn-default center-block" role="button">使用手机快移扫描登录</a>
+                    </div>
+
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="text-center">
+                            <a href="/register"><i class="far fa-user-circle" style="color: #f0ad4e;"></i>&nbsp;<?php echo $this->translate('userRegister'); ?></a>
+                        </div>
                     </div>
                 </div>
 			</div>
@@ -137,6 +143,7 @@
 <script src="/ky/js/jquery.cookie.js"></script>
 
 <script type="text/javascript">
+    var ref = "";
 	$().ready(function() {
 		if ($.cookie("rmbUser") == "true") {
 			$("#remember").attr("checked", true);
@@ -199,19 +206,41 @@
 			$(this).attr("src", "/user/check/code?" + Math.random());
 		});
 
+		// 密码登录
         $("#switcher_plogin").click(function () {
-            $("#qrLoginImg").hide();
+            $(".qr-row").addClass("hidden").removeClass("show");
             $("#login_form").show();
+
+            clearInterval(ref);
         });
 
+        // 扫码登录
 		$("#switcher_qlogin").click(function () {
             $("#login_form").hide();
+            $(".qr-row").addClass("show").removeClass("hidden");
 
             $.get("<?php echo $this->BaseUrl();?>/login/qrloginimg",function(data){
-                $("#qrLoginImg").html("<img src=\"data:image/gif;base64,"+data+"\" class=\"img-thumbnail center-block\" />").show();
+                $("#qrLoginImg").html("<img src=\"data:image/gif;base64,"+data+"\" class=\"img-thumbnail center-block\" />");
             });
+
+            ref = setInterval(function(){
+                pollQrLogin();
+            }, 5000);
         });
 	});
+
+	function pollQrLogin() {
+        var qrLogin = '/user/login/qrlogin';
+        $.post(qrLogin, function () {
+
+        }, 'json').success(function (data) {
+            if (data === 1) {
+                location.href = "/";
+            } else {
+                console.log(data);
+            }
+        });
+    }
 
 	// 密码规验证(8-30位  字母数字)
 	jQuery.validator.addMethod("isValidPassword", function(value, element) {
