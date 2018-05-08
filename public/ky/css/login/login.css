@@ -89,6 +89,10 @@
     font-size: 14px;
 }
 
+.login-body-form input[type=checkbox] {
+    height: 13px;
+}
+
 .login-body-form .form-group {
     margin-left: 15px;
     width: 90%;
@@ -104,4 +108,5 @@
 
 .login-authCode_pic {
     width: 120px;
+    margin-top: 8px;
 }
