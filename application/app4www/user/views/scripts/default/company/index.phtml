@@ -16,11 +16,6 @@
             <div class="col-md-3 company-navigation">
                 <div class="panel panel-default">
                     <div class="panel-heading"><?php echo $this->translate('companyMNG'); ?></div>
-                    <!--<ul class="nav nav-pills nav-stacked">
-     p-                 <li role="presentation" class="active"><a href="#">Home</a></li>
-                        <li role="presentation"><a href="#">Profile</a></li>
-                        <li role="presentation"><a href="#">Messages</a></li>
-                    </ul>-->
                     <div class="list-group">
                         <a href="/user/company" class="list-group-item"><?php echo $this->translate('companyINF'); ?></a>
                         <a href="/user/account" class="list-group-item"><?php echo $this->translate('personNO'); ?></a>
@@ -31,7 +26,7 @@
             </div>
             <div class="col-md-9 company-main">
                 <div class="page-header">
-                    <h1><?php echo $this->e['accountName']; ?> <small><?php echo $this->translate('companyINF'); ?></small></h1>
+                    <h1><?php echo $this->e['accountName']; ?> <span class="label label-success">Success</span><small><?php echo $this->translate('companyINF'); ?></small></h1>
                 </div>
 
                 <div class="panel panel-default">
