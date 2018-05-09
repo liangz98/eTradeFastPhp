@@ -11,3 +11,26 @@
     content: "";
     background-color: #e36209;
 }
+
+.et-ico {
+    width: 22px;
+    height: 22px;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+.et-ico-auth-cno{
+    background:url(../ico/companyauth-no.png) no-repeat 0 0;
+}
+.et-ico-auth-cok{
+    background:url(../ico/companyauth-ok.png) no-repeat 0 0;
+}
+.et-ico-auth-cing{
+    background:url(../ico/companyauth-ing.png) no-repeat 0 0;
+}
+.et-ico-auth-uno{
+    background:url(../ico/userauth-no.png) no-repeat 0 0;
+}
+.et-ico-auth-uok{
+    background:url(../ico/userauth-ok.png) no-repeat 0 0;
+}
