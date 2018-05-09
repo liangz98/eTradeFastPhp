@@ -12,6 +12,10 @@
     background-color: #e36209;
 }
 
+.company-main h2, .company-main h3 {
+    margin-top: 15px;
+}
+
 .et-ico {
     width: 22px;
     height: 22px;
@@ -38,6 +42,8 @@
 .dl-horizontal dt {
     text-align: left;
     width: 110px;
+    font-weight: normal;
+    color: #777;
 }
 
 .dl-horizontal dd {
@@ -46,7 +52,7 @@
 }
 
 .dl-horizontal dd:first-of-type {
-    margin-top: 15px;
+    margin-top: 20px;
 }
 
 .dl-horizontal dd:first-of-type, .dl-horizontal dd:nth-of-type(2) {
