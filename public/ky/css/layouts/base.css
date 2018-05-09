@@ -6,11 +6,11 @@ body {
 /* header */
 .index-person-top {
     z-index: 1000;
+    background-color: #e3e4e5;
 }
 
 .index-header {
     z-index: 999 !important;
-    background-color: #e3e4e5;
 }
 
 .dropdown:hover .dropdown-menu {
