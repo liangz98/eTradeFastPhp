@@ -12,6 +12,10 @@
     background-color: #e36209;
 }
 
+.company-img img {
+    margin-top: 15px;
+}
+
 .company-main h2, .company-main h3 {
     margin-top: 15px;
 }
