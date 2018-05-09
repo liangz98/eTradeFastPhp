@@ -10,6 +10,7 @@ body {
 
 .index-header {
     z-index: 999 !important;
+    background-color: #e3e4e5;
 }
 
 .dropdown:hover .dropdown-menu {
@@ -22,7 +23,7 @@ body {
     /*bottom: 0;*/
     padding: 20px 0;
     width: 100%;
-    background-color: #f6f6f6;
+    background-color: #e3e4e5;
 }
 
 .footer-body .row:first-child h4 {

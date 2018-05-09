@@ -20,17 +20,17 @@
     padding: 0;
 }
 .et-ico-auth-cno{
-    background:url(../ico/companyauth-no.png) no-repeat 0 0;
+    background:url('/ky/ico/companyauth-no.png') no-repeat 0 0;
 }
 .et-ico-auth-cok{
-    background:url(../ico/companyauth-ok.png) no-repeat 0 0;
+    background:url('/ky/ico/companyauth-ok.png') no-repeat 0 0;
 }
 .et-ico-auth-cing{
-    background:url(../ico/companyauth-ing.png) no-repeat 0 0;
+    background:url('/ky/ico/companyauth-ing.png') no-repeat 0 0;
 }
 .et-ico-auth-uno{
-    background:url(../ico/userauth-no.png) no-repeat 0 0;
+    background:url('/ky/ico/userauth-no.png') no-repeat 0 0;
 }
 .et-ico-auth-uok{
-    background:url(../ico/userauth-ok.png) no-repeat 0 0;
+    background:url('/ky/ico/userauth-ok.png') no-repeat 0 0;
 }
