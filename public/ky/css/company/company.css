@@ -2,7 +2,7 @@
     margin-top: 0 !important;
 }
 
-.nav-selected {
+.nav-selected:before {
     position: absolute;
     top: 0;
     bottom: 0;
