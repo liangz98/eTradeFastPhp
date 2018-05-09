@@ -313,7 +313,7 @@ return array(
     'ECC' => '企业海关编码',
     'businessLicenseNo' => '统一社会信用代码',
     'TICNO' => '纳税人企业名称',
-    'company_profile' => '公司资料档案',
+    'company_profile' => '档案资料',
     'UPMBLS' => '请扫描营业执照并上传',
     'UPICBNO' => '请扫描工商注册证并上传',
     'UPCOMFJ' => '可上传公司营业执照、生产许可证、商标等',
