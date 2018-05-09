@@ -199,7 +199,7 @@ return array(
     'phone' => '联系电话',
     'company_phone' => '公司电话',
     'company_fax' => '公司传真',
-    'comSITE' => '公司网址',
+    'company_website' => '公司网址',
     'company_email' => '公司电子邮箱',
     'INPkw_ac'=>'可输入姓名、移动电话、电子邮箱等关键字',
     'INPkw_bk'=>'可输入账户名称、银行名称、帐号等关键字',

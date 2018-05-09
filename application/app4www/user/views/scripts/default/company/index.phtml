@@ -54,9 +54,12 @@
                             <dd>
                                 <?php echo $this->e['email']; ?>
                                 <?php if ($this->CompAdmin == true): ?>
-                                    <a href="javascript:void(0)" id="acEmail"><?php echo $this->translate('ACTcheck'); ?></a>
+                                    <button type="button" id="acEmail" class="btn btn-warning btn-xs"><?php echo $this->translate('ACTcheck'); ?></button>
                                 <?php endif; ?>
                             </dd>
+
+                            <dt><?php echo $this->translate('company_website'); ?></dt>
+                            <dd><?php echo $this->e['website']; ?></dd>
                         </dl>
                     </div>
                 </div>

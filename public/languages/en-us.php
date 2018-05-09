@@ -209,7 +209,7 @@ return array(
     'phone' => 'Phone',
     'company_phone' => 'Company Phone',
     'company_fax' => 'Company Fax',
-    'comSITE' => 'Website',
+    'company_website' => 'Website',
     'company_email' => 'Company Email',
     'INPkw_ac'=>'Enter keywords such as name, phone, email',
     'INPkw_bk'=>'Enter keywords such as account name, Bank name, account number',
