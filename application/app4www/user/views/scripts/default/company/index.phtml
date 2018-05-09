@@ -17,13 +17,13 @@
                 <div class="panel panel-default">
                     <div class="panel-heading"><?php echo $this->translate('companyMNG'); ?></div>
                     <div class="list-group">
-                        <a href="/user/company" class="list-group-item nav-selected"><?php echo $this->translate('companyINF'); ?></a>
+                        <a href="/user/company" class="list-group-item"><?php echo $this->translate('companyINF'); ?></a>
                         <a href="/user/account" class="list-group-item"><?php echo $this->translate('personNO'); ?></a>
                         <a href="/user/bank" class="list-group-item"><?php echo $this->translate('bankNO'); ?></a>
                     </div>
                 </div>
-
             </div>
+
             <div class="col-md-9 company-main">
                 <div class="page-header">
                     <h1><?php echo $this->e['accountName']; ?></h1>
@@ -108,7 +108,20 @@
 	});
 
 	$(function () {
+        $('.company-navigation').find('a').each(function () {
+            // if (this.href === document.location.href || document.location.href.search(this.href) >= 0) {
+            $(this).removeClass('nav-selected');
 
+            if (this.href === document.location.href) {
+                $(this).addClass('nav-selected'); // this.className = 'active';
+
+                console.log(this.href);
+                console.log(document.location.href);
+                console.log(this.href === document.location.href);
+                console.log(document.location.href.search(this.href) >= 0);
+                console.log($(this));
+            }
+        });
 	});
 </script>
 </body>
