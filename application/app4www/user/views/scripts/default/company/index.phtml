@@ -40,6 +40,7 @@
 
                             <div class="col-md-10">
                                 <h3>
+                                    <span class="profile__heading-edit pull-right  btn btn-xs" data-type="base"><i class="fa fa-pencil" aria-hidden="true"></i>编辑</span>
                                     <?php echo $this->e['accountName']; ?>
                                     <small>
                                         <a href="javascript:void(0)">
@@ -51,9 +52,6 @@
                                                 <span id="company-auth" class="et-ico et-ico-auth-cok"></span>
                                             <?php endif; ?>
                                         </a>&nbsp;
-                                        <?php if ($this->CompAdmin == true): ?>
-                                        <i class="far fa-edit" style="color: #ec971f;"></i>
-                                        <?php endif; ?>
                                     </small>
                                 </h3>
                                 <?php if ($this->e['accountEnName']): ?>
