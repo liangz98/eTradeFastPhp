@@ -34,3 +34,21 @@
 .et-ico-auth-uok{
     background:url('/ky/ico/userauth-ok.png') no-repeat 0 0;
 }
+
+.dl-horizontal dt {
+    text-align: left;
+    width: 110px;
+}
+
+.dl-horizontal dd {
+    margin-left: 110px;
+    margin-bottom: 15px;
+}
+
+.dl-horizontal dd:first-of-type {
+    margin-top: 15px;
+}
+
+.dl-horizontal dd:first-of-type, .dl-horizontal dd:nth-of-type(2) {
+    margin-bottom: 0;
+}
