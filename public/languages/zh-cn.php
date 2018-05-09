@@ -272,7 +272,7 @@ return array(
     'WebINF'=>'平台账号信息',
 
     'basicINF' => '基本信息',
-    'companyINF' => '公司信息',
+    'company_info' => '公司信息',
     'personNO' => '员工信息',
     'bankNO' => '银行账号',
     'file' => '文档',
@@ -313,7 +313,7 @@ return array(
     'ECC' => '企业海关编码',
     'businessLicenseNo' => '统一社会信用代码',
     'TICNO' => '纳税人企业名称',
-    'MBLS' => '公司资料档案',
+    'company_profile' => '公司资料档案',
     'UPMBLS' => '请扫描营业执照并上传',
     'UPICBNO' => '请扫描工商注册证并上传',
     'UPCOMFJ' => '可上传公司营业执照、生产许可证、商标等',

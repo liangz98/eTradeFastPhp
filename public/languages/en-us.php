@@ -282,7 +282,7 @@ return array(
     'WebINF'=>'Account Info.',
 
     'basicINF' => 'Info.',
-    'companyINF' => 'Company Info.',
+    'company_info' => 'Company Info.',
     'personNO' => 'Staff Info.',
     'bankNO' => 'Bank Account',
     'file' => 'Files',
@@ -322,7 +322,7 @@ return array(
     'ECC' => 'Enterprise Code',
     'businessLicenseNo' => 'Tax ID Number',
     'TICNO' => 'Taxpayer Name',
-    'MBLS' => 'Company profile',
+    'company_profile' => 'Company profile',
     'UPMBLS' => 'Please scan and upload your business license',
     'UPICBNO' => 'Please scan and upload your tax registration certificate',
     'UPCOMFJ' => 'Please scan and upload your production licenses and trademarks',

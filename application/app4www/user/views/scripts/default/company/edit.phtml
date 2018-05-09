@@ -39,7 +39,7 @@
         <form name="company_form" id="company_form" method="post" enctype="multipart/form-data" action="">
             <div class="info_cont clearfix">
                 <div class="n_o_c_tit">
-                    <h4><!--编辑公司信息--><?php echo $this->translate('edit').$this->translate('companyINF');?></h4>
+                    <h4><!--编辑公司信息--><?php echo $this->translate('edit').$this->translate('company_info');?></h4>
                 </div>
                 <div class="o_c_content">
                     <?php if($this->userrgCode):?>
@@ -170,7 +170,7 @@
             <!-- 公司资料档案 -->
             <!-- 附件上传 -->
             <div class="yyzz_box info_cont pb20">
-                <div class="zzname  n_o_c_tit"><h4><!-- 公司资料档案 --><?php echo $this->translate('MBLS');?></h4></div>
+                <div class="zzname  n_o_c_tit"><h4><!-- 公司资料档案 --><?php echo $this->translate('company_profile');?></h4></div>
                 <?php echo $this-> ShowWebuploader($this->attlist,$this->biz_Setting['CONTRACT'],$this->attach_Setting['000000'],"0");?>
             </div>
             <?php echo $this->render(SEED_WWW_TPL.'/btn_confirm.phtml');?>

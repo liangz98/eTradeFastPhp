@@ -34,14 +34,14 @@
 				<div class="register-user-info">
                     <?php echo $this->translate('userTT'); ?>
 				</div>
-				
+
 				<div class="form-group">
 					<label for="name" class="col-sm-3 control-label"><?php echo $this->translate('name'); ?></label>
 					<div class="col-sm-9">
 						<input type="text" class="form-control" name="name" id="name" required placeholder="<?php echo $this->translate('name'); ?>">
 					</div>
 				</div>
-				
+
 				<div class="form-group">
 					<label for="ecommloginname" class="col-sm-3 control-label"><?php echo $this->translate('elogname'); ?></label>
 					<div class="col-sm-9">
@@ -71,7 +71,7 @@
 				</div>
 
 				<div class="register-company-info">
-                    <?php echo $this->translate('companyINF'); ?>
+                    <?php echo $this->translate('company_info'); ?>
 				</div>
 
 				<div class="form-group">
@@ -89,7 +89,7 @@
 						<input type="text" class="form-control" name="regdAddress" id="regdAddress" required placeholder="<?php echo $this->translate('is_regadress'); ?>">
 					</div>
 				</div>
-				
+
 				<div class="form-group">
 					<label for="accountName" class="col-sm-3 control-label"><?php echo $this->translate('regd_company_name'); ?></label>
 					<div class="col-sm-9">
@@ -189,7 +189,7 @@
 			toReadServiceContract();
 		});
 	});
-	
+
 	function toReadServiceContract() {
 		$.post('/register/servicehtml', {}, function(service){
 			layer.open({

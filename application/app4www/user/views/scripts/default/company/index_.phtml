@@ -49,7 +49,7 @@
 
             <div class="info_cont clearfix">
                 <div class="n_o_c_tit">
-                    <h4><!--查看公司信息--><?php echo $this->translate('view') . $this->translate('companyINF'); ?><i
+                    <h4><!--查看公司信息--><?php echo $this->translate('view') . $this->translate('company_info'); ?><i
                                 class="company_icon"></i><!--点击查看公司快移码--></h4>
                     <?php if ($this->CompAdmin == true): ?>
                         <a class="p_ed fr mt10 mr30" href="/user/company/edit"></a>
@@ -168,7 +168,7 @@
             <!-- 公司资料档案 -->
             <!-- 附件上传 -->
             <div class="yyzz_box info_cont pb20">
-                <div class="zzname  n_o_c_tit"><h4><!-- 公司资料档案 --><?php echo $this->translate('MBLS'); ?></h4></div>
+                <div class="zzname  n_o_c_tit"><h4><!-- 公司资料档案 --><?php echo $this->translate('company_profile'); ?></h4></div>
                 <?php echo $this->ShowWebuploader($this->attlist, $this->biz_Setting['CONTRACT'], $this->attach_Setting['000000'], "1", $this->accountID); ?>
             </div>
         </form>

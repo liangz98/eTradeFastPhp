@@ -17,7 +17,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading"><?php echo $this->translate('companyMNG'); ?></div>
                     <div class="list-group">
-                        <a href="/user/company" class="list-group-item"><?php echo $this->translate('companyINF'); ?></a>
+                        <a href="/user/company" class="list-group-item"><?php echo $this->translate('company_info'); ?></a>
                         <a href="/user/account" class="list-group-item"><?php echo $this->translate('personNO'); ?></a>
                         <a href="/user/bank" class="list-group-item"><?php echo $this->translate('bankNO'); ?></a>
                     </div>
@@ -25,6 +25,53 @@
             </div>
 
             <div class="col-md-9 company-main">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <ul class="nav nav-tabs">
+                            <li role="presentation" class="active"><a href="#"><?php echo $this->translate('company_info'); ?></a></li>
+                            <li role="presentation"><a href="#"><?php echo $this->translate('company_profile'); ?></a></li>
+                        </ul>
+
+                        <div class="row">
+                            <div class="col-md-2">
+
+                            </div>
+
+                            <div class="col-md-10">
+                                <dl class="dl-horizontal">
+                                    <?php if ($this->e['accountEnName']): ?>
+                                        <dt><?php echo $this->translate('enNAME'); ?></dt>
+                                        <dd><?php echo $this->e['accountEnName']; ?></dd>
+                                    <?php endif; ?>
+
+                                    <dt><?php echo $this->translate('address'); ?></dt>
+                                    <dd><?php echo $this->ShowDictionaryTo($this->dic_Setting["COUNTRY_ISO_CODE"], $this->userlangCode, $this->dic_Setting["COUNTRY_ISO_CODE"], $this->e['regdCountryCode']) . "&nbsp;&nbsp;" . $this->regdCountryCode . $this->e['regdAddress']; ?></dd>
+                                    <?php if ($this->e['regdEnAddress']): ?>
+                                        <dd><?php echo $this->e['regdEnAddress']; ?></dd>
+                                    <?php endif; ?>
+
+                                    <dt><?php echo $this->translate('company_phone'); ?></dt>
+                                    <dd><?php echo $this->e['phone']; ?></dd>
+
+                                    <dt><?php echo $this->translate('company_fax'); ?></dt>
+                                    <dd><?php echo $this->e['fax']; ?></dd>
+
+                                    <dt><?php echo $this->translate('company_email'); ?></dt>
+                                    <dd>
+                                        <?php echo $this->e['email']; ?>
+                                        <?php if ($this->CompAdmin == true): ?>
+                                            <button type="button" id="acEmail" class="btn btn-warning btn-xs"><?php echo $this->translate('ACTcheck'); ?></button>
+                                        <?php endif; ?>
+                                    </dd>
+
+                                    <dt><?php echo $this->translate('company_website'); ?></dt>
+                                    <dd><?php echo $this->e['website']; ?></dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="page-header">
                     <h1>
                         <?php echo $this->e['accountName']; ?>
@@ -45,40 +92,6 @@
                     </h1>
                 </div>
 
-                <div class="panel panel-default">
-                    <div class="panel-heading"><?php echo $this->translate('companyINF'); ?></div>
-                    <div class="panel-body">
-                        <dl class="dl-horizontal">
-                            <?php if ($this->e['accountEnName']): ?>
-                            <dt><?php echo $this->translate('enNAME'); ?></dt>
-                            <dd><?php echo $this->e['accountEnName']; ?></dd>
-                            <?php endif; ?>
-
-                            <dt><?php echo $this->translate('address'); ?></dt>
-                            <dd><?php echo $this->ShowDictionaryTo($this->dic_Setting["COUNTRY_ISO_CODE"], $this->userlangCode, $this->dic_Setting["COUNTRY_ISO_CODE"], $this->e['regdCountryCode']) . "&nbsp;&nbsp;" . $this->regdCountryCode . $this->e['regdAddress']; ?></dd>
-                            <?php if ($this->e['regdEnAddress']): ?>
-                            <dd><?php echo $this->e['regdEnAddress']; ?></dd>
-                            <?php endif; ?>
-
-                            <dt><?php echo $this->translate('company_phone'); ?></dt>
-                            <dd><?php echo $this->e['phone']; ?></dd>
-
-                            <dt><?php echo $this->translate('company_fax'); ?></dt>
-                            <dd><?php echo $this->e['fax']; ?></dd>
-
-                            <dt><?php echo $this->translate('company_email'); ?></dt>
-                            <dd>
-                                <?php echo $this->e['email']; ?>
-                                <?php if ($this->CompAdmin == true): ?>
-                                    <button type="button" id="acEmail" class="btn btn-warning btn-xs"><?php echo $this->translate('ACTcheck'); ?></button>
-                                <?php endif; ?>
-                            </dd>
-
-                            <dt><?php echo $this->translate('company_website'); ?></dt>
-                            <dd><?php echo $this->e['website']; ?></dd>
-                        </dl>
-                    </div>
-                </div>
 
                 <div class="panel panel-default">
                     <div class="panel-heading"><?php echo $this->translate('company_business_license'); ?></div>
