@@ -49,6 +49,14 @@
 
                             <dt><?php echo $this->translate('company_fax'); ?></dt>
                             <dd><?php echo $this->e['fax']; ?></dd>
+
+                            <dt><?php echo $this->translate('company_email'); ?></dt>
+                            <dd>
+                                <?php echo $this->e['email']; ?>
+                                <?php if ($this->CompAdmin == true): ?>
+                                    <a href="javascript:void(0)" id="acEmail"><?php echo $this->translate('ACTcheck'); ?></a>
+                                <?php endif; ?>
+                            </dd>
                         </dl>
                     </div>
                 </div>

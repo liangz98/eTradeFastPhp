@@ -210,7 +210,7 @@ return array(
     'company_phone' => 'Company Phone',
     'company_fax' => 'Company Fax',
     'comSITE' => 'Website',
-    'comEMAIL' => 'Company Email',
+    'company_email' => 'Company Email',
     'INPkw_ac'=>'Enter keywords such as name, phone, email',
     'INPkw_bk'=>'Enter keywords such as account name, Bank name, account number',
     'INPkw_par_buyer'=>'Enter keywords such as buyer',
