@@ -109,15 +109,8 @@
 
 	$(function () {
         $('.company-navigation').find('a').each(function () {
-            // if (this.href === document.location.href || document.location.href.search(this.href) >= 0) {
             if (this.href === document.location.href) {
-                $(this).addClass('nav-selected'); // this.className = 'active';
-
-                console.log(this.href);
-                console.log(document.location.href);
-                console.log(this.href === document.location.href);
-                console.log(document.location.href.search(this.href) >= 0);
-                console.log($(this));
+                $(this).addClass('nav-selected');
             } else {
                 $(this).removeClass('nav-selected');
             }
