@@ -309,7 +309,7 @@ return array(
     'type3' => '03供应商',
     'website' => '网址',
     'ICBNO' => '工商注册号',
-    'ECC' => '企业海关编码',
+    'ECC' => '海关编码',
     'businessLicenseNo' => '信用代码',
     'TICNO' => '纳税人企业名称',
     'company_profile' => '档案资料',
