@@ -87,6 +87,7 @@
 .active	{
 	background-color: white;
 	border-top: 2px solid red;
+	box-sizing: border-box;
 }
 
 
