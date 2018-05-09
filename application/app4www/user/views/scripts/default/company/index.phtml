@@ -63,6 +63,36 @@
                         </dl>
                     </div>
                 </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><?php echo $this->translate('company_business_license'); ?></div>
+                    <div class="panel-body">
+                        <dl class="dl-horizontal">
+                            <dt><?php echo $this->translate('company_legal_form'); ?></dt>
+                            <dd><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ACCOUNT_LEGALFORM'], $this->e['legalForm']); ?></dd>
+
+                            <dt><?php echo $this->translate('company_incorporation_date'); ?></dt>
+                            <dd>
+                                <?php if ($this->e['incorporationDate']) {
+                                    echo date('Y-m-d', strtotime($this->e['incorporationDate']));
+                                } else {
+                                    echo null;
+                                } ?>
+                            </dd>
+
+                            <dt><?php echo $this->translate('industry'); ?></dt>
+                            <dd>
+                                <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ISIC_INDUSTRY_TYPE'], $this->e['industryCode']); ?>
+                            </dd>
+
+                            <dt><?php echo $this->translate('ECC'); ?></dt>
+                            <dd><?php echo $this->e['customsCode']; ?></dd>
+
+                            <dt><?php echo $this->translate('businessLicenseNo'); ?></dt>
+                            <dd><?php echo $this->e['businessLicenseNo']; ?></dd>
+                        </dl>
+                    </div>
+                </div>
             </div>
 		</div>
 	</div>
