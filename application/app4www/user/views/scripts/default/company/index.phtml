@@ -40,7 +40,9 @@
 
                             <div class="col-md-10">
                                 <h3>
-                                    <span class="profile-heading-edit pull-right  btn btn-xs" data-type="base"><i class="fas fa-pencil-alt" aria-hidden="true"></i>编辑</span>
+                                    <?php if ($this->CompAdmin == true): ?>
+                                    <span class="profile-heading-edit pull-right btn btn-xs" data-type="base"><i class="fas fa-pencil-alt" aria-hidden="true"></i>编辑</span>
+                                    <?php endif; ?>
                                     <?php echo $this->e['accountName']; ?>
                                     <small>
                                         <a href="javascript:void(0)">
