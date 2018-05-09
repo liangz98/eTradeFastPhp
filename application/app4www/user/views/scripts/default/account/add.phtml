@@ -175,7 +175,7 @@
                          <input type="checkbox" name="ecommrole[]" value="CompSettleAdmin" ><span class="account_add_span"><?php echo $this->translate('CompSettleAdmin');?></span>
                        </div>
                    </div>
-                
+
                    <div>
                        <label class="labelbox"><!-- 订单联系人 --><?php echo $this->translate('orderContact');?></label>
                        <input class="u_radio" type="radio" name="isPublicContact" value="1"><?php echo $this->translate('yes');?>
@@ -185,8 +185,8 @@
                </div>
                 <?php echo $this->render(SEED_WWW_TPL.'/btn_confirm.phtml');?>
             </form>
-            
-        </div>           
+
+        </div>
     </div>
 </div>
 <?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
@@ -253,7 +253,7 @@ jQuery.validator.addMethod("phone", function (value, element) {
 jQuery.validator.addMethod("mobile", function (value, element) {
     var mobile = /^[\d|\-|\+|\s]+$/;
   return this.optional(element) || (mobile.test(value));
-}, "<?php echo $this->translate('mobilephone').$this->translate('de_format');?>");
+}, "<?php echo $this->translate('mobile_phone').$this->translate('de_format');?>");
 jQuery.validator.addMethod("fax",function(value,element){
     var fax = /^[\d|\-|\+|\s]+$/;
     return this.optional(element) || (fax.test(value));

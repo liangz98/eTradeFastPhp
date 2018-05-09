@@ -20,7 +20,7 @@
     <div class="o_content fr w940 bt5">
         <div class="info_tit clearfix">
            <h4 ><!--新增合作伙伴--><?php echo $this->translate('add').$this->translate('cooperationC');?></h4>
-        </div> 
+        </div>
         <div class="acc_add_box">
         <form action="#" method="post" id="buyer_add_form">
             <div class="bank_box">
@@ -69,7 +69,7 @@ jQuery.validator.addMethod("mail", function (value, element) {
 jQuery.validator.addMethod("mobile", function (value, element) {
     var mobile = /^[\d|\-|\+|\s]+$/;
     return this.optional(element) || (mobile.test(value));
-}, "<?php echo $this->translate('mobilephone').$this->translate('de_format').",PS:13700001122";?>");
+}, "<?php echo $this->translate('mobile_phone').$this->translate('de_format').",PS:13700001122";?>");
 </script>
 </body>
 </html>

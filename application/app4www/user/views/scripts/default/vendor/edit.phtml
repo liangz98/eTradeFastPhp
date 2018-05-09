@@ -81,7 +81,7 @@ jQuery.validator.addMethod("mail", function (value, element) {
 jQuery.validator.addMethod("mobile", function (value, element) {
     var mobile = /^[\d|\-|\+|\s]+$/;
     return this.optional(element) || (mobile.test(value));
-}, "<?php echo $this->translate('mobilephone').$this->translate('de_format').",PS:13700001122";?>");
+}, "<?php echo $this->translate('mobile_phone').$this->translate('de_format').",PS:13700001122";?>");
 </script>
 </body>
 </html>

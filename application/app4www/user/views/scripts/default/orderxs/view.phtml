@@ -14,7 +14,7 @@
 
 	<!-- order css -->
 	<link href="/ky/css/order/order.css" rel="stylesheet">
-	
+
 	<script type="text/javascript" src="/ky/js/jquery.js"></script>
 	<script type="text/javascript" src="/ky/js/jquery.wallform.js"></script>
 	<script type="text/javascript" src="/ky/js/www.js"></script>
@@ -446,7 +446,7 @@ $(function(){
 	} else {
 		$("#attactUpDiv").hide();
 	}
-	
+
 	/*  编辑订单 必备：orderType DT为内贸  IT为外贸*/
 	orderType='<?php echo $this->orders['orderType'];?>';
 	if(orderType=='DT'){
@@ -497,7 +497,7 @@ $(function(){
 		$('#BYdate').removeClass('on');
 		$('#BYevent').addClass('on');
 	});
-	
+
 	$('#wendang').click(function(){
 		$('#attachment').load( '<?php echo $this->BaseUrl();?>/orderxs/attachment',{'orderID':orderID});
 	});
@@ -605,7 +605,7 @@ function initPdfView(pdfUrl, obj) {
 	});
 
 	$(".download-button").attr("contractID_", obj.id);
-	
+
 	if ($("#isESigned_" + obj.id).val() == 1) {
 		$(".sign-button").hide();
 	} else {
@@ -636,7 +636,7 @@ $(".sign-button").bind("click",function(){
 		function (data) {
 		}, 'json')
 		.success(function (data) {
-			var mobileStr = "<?php echo $this->translate('mobilephone');?>";
+			var mobileStr = "<?php echo $this->translate('mobile_phone');?>";
 			$("#signMobileInput").val(mobileStr + " " +data);
 		})
 		.error(function () {
@@ -666,7 +666,7 @@ $(".person-sign-button").bind("click",function(){
 		function (data) {
 		}, 'json')
 		.success(function (data) {
-			var mobileStr = "<?php echo $this->translate('mobilephone');?>";
+			var mobileStr = "<?php echo $this->translate('mobile_phone');?>";
 			$("#signMobileInput").val(mobileStr + " " +data);
 		})
 		.error(function () {
@@ -814,17 +814,17 @@ function initSignViewNoEContract(obj) {
 	}
 
 	var htmlList = '<tr data-row=' + rowIndex + '>';
-	
+
 	htmlList += '<td><a href="#" id="" onclick="doDownload(\''+obj.id+'\')">' + $("#contractName_" + obj.id).val() + '</a></td>';
 
 	htmlList += '<td>' + $("#ext_" + obj.id).val() + '</td>';
-	
+
 	htmlList += '<td><a href="#" id="" onclick="doDownload(\''+obj.id+'\')" class="order_contract_sign fr">下载</a></td>';
 
 	htmlList += '</td></tr>';
 	//在行最后添加数据
 	$("#signViewNoEContractDiv tr:last").after(htmlList);
-	
+
 	$("#signNoEContractConfirmBtn").attr("contractID_", obj.id);
 	// alert(obj.id);
 	// alert($("#contractName_" + obj.id).val());
@@ -839,7 +839,7 @@ function doDownload(objID) {
 // ********************   非网签签署合同提交按钮 Start  *************************************
 $("#signNoEContractConfirmBtn").click(function () {
 	var contractID = $(this).attr("contractID_");
-	
+
 	var nidArr = "";
 	var nid = document.getElementsByName("attachNid[]");
 	for (var i = 0, j = nid.length; i < j; i++) {
@@ -860,8 +860,8 @@ $("#signNoEContractConfirmBtn").click(function () {
 	for (var i = 0, j = attachType.length; i < j; i++) {
 		attachTypeArr += attachType[i].value + "|";
 	}
-	
-	
+
+
 	$.post(
 		'<?php echo $this->BaseUrl();?>/orderxs/agree',
 		{'contractID': contractID, 'name': nameArr, 'nid': nidArr, 'size': sizeArr, 'attachType': attachTypeArr},
@@ -1272,7 +1272,7 @@ $(".deliveryTopBtn").click(function () {
 		$(".deliveryTopDiv").show();
 		$(".paymentTopDiv").hide();
 	}
-	
+
 });
 
 $(".paymentTopBtn").click(function () {
@@ -1287,7 +1287,7 @@ $(".paymentTopBtn").click(function () {
 // ********************   开票资料 Start  *************************************
 $(".billingInfo").click(function () {
 	var deliveryID = $(this).attr("deliveryID_");
-	
+
 	$("#billingInfoDiv").html("").load("<?php echo $this->BaseUrl();?>/orderxs/deliverbillinginfo", {
 		deliveryID: deliveryID
 	}, function () {
@@ -1311,7 +1311,7 @@ $(".billingInfo").click(function () {
 			var element = layui.element;
 			element.render();
 		});
-		
+
 		$(".billingExpressEdit").click(function () {
 			$(".expressShow").hide();
 			$(".expressEdit").show();
@@ -1322,7 +1322,7 @@ $(".billingInfo").click(function () {
 			var expressType = $("#expressType").val();
 			var expressName = $("#expressType").find("option:selected").text();
 			var expressNo = $("#expressNo").val();
-			
+
 			var editExpressNo = '/user/orderxs/editexpresssave';
 			$.post(editExpressNo,
 			{
@@ -1336,7 +1336,7 @@ $(".billingInfo").click(function () {
 			.success(function (data) {
 				$(".expressName_").html(expressName);
 				$(".expressNo_").html(expressNo);
-				
+
 				$("#expressType").val(expressType);
 				$("#expressNo").val(expressNo);
 
@@ -1350,16 +1350,16 @@ $(".billingInfo").click(function () {
 				console.log("complete");
 			});
 		});
-		
+
 		$(".genBillInfoBtn").click(function () {
 			var deliveryID = $(this).attr("deliveryID_");
-			
+
 			var supplierIDArray = "";
 			var supplierID = document.getElementsByName("supplierID");
 			for (var i = 0, j = supplierID.length; i < j; i++) {
 				supplierIDArray += supplierID[i].value + "|";
 			}
-			
+
 			var bankAcctIDArray = "";
 			var bankAcctID = document.getElementsByName("bankAcctID");
 			for (var i = 0, j = bankAcctID.length; i < j; i++) {

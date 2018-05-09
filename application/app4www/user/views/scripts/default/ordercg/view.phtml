@@ -4,14 +4,14 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
+
     <title>快移</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
     <link href="/ky/css/base.css" rel="stylesheet">
     <link href="/ky/css/style.css" rel="stylesheet">
 	<link href="/ky/css/authpage.css" rel="stylesheet">
-	
+
     <script type="text/javascript" src="/ky/js/jquery.js"></script>
     <script type="text/javascript" src="/ky/js/jquery.wallform.js"></script>
     <script type="text/javascript" src="/ky/js/www.js"></script>
@@ -28,7 +28,7 @@
 	<script type="text/javascript" src="/ky/pdf/pdf.js"></script>
 	<script type="text/javascript" src="/ky/pdf/pdf.worker.js"></script>
 
-	
+
 	<style type="text/css">
 .bg_box {
 	width: 880px;
@@ -548,7 +548,7 @@ $(function () {
 	} else {
 		$("#attactUpDiv").hide();
 	}
-	
+
 	/*  编辑订单 必备：orderType DT为内贸  IT为外贸*/
 	orderType='<?php echo $this->orders['orderType'];?>';
 	if(orderType=='DT'){
@@ -726,12 +726,12 @@ $(".sign-button").bind("click",function(){
 	var getSignMobile = '/user/ordercg/getsignmobile';
 	$.post(getSignMobile,
 		{
-		
+
 		},
 		function (data) {
 		}, 'json')
 		.success(function (data) {
-			var mobileStr = "<?php echo $this->translate('mobilephone');?>";
+			var mobileStr = "<?php echo $this->translate('mobile_phone');?>";
 			$("#signMobileInput").val(mobileStr + " " +data);
 		})
 		.error(function () {
@@ -740,7 +740,7 @@ $(".sign-button").bind("click",function(){
 		.complete(function () {
 			console.log("complete");
 		});
-	
+
 	var signTitle = "<?php echo $this->translate('signTitle');?>";
 	layer.open({
 		type: 1,
@@ -761,7 +761,7 @@ $(".person-sign-button").bind("click",function(){
 		function (data) {
 		}, 'json')
 		.success(function (data) {
-			var mobileStr = "<?php echo $this->translate('mobilephone');?>";
+			var mobileStr = "<?php echo $this->translate('mobile_phone');?>";
 			$("#signMobileInput").val(mobileStr + " " +data);
 		})
 		.error(function () {
@@ -794,14 +794,14 @@ $("#signSendAuthCodeBtn").click(function () {
 	}
 	$.post(sendSignAuthCode,
 		{
-	
+
 		},
 		function (data) {
 		}, 'json')
 		.success(function (data) {
 			var sendingStr = "<?php echo $this->translate('signAuthCodeSending');?>";
 			$("#signSendAuthCodeBtn").text(sendingStr);
-   
+
 			sendSignAuthCodeCountDown();
 		})
 		.error(function () {
@@ -992,7 +992,7 @@ $(".deliveryViewClass").click(function (obj) {
 
 $(".deliveryExamineBtn").click(function () {
 	var deliveryID = $(this).attr("deliveryID_");
-	
+
 	$("#deliveryExamineViewDiv").html("").load("<?php echo $this->BaseUrl();?>/ordercg/examine", {
 		deliveryID: deliveryID
 	}, function () {
@@ -1037,7 +1037,7 @@ $(".deliveryExamineBtn").click(function () {
 				auth_error.show();
 				return false;
 			}
-			
+
 			var examineGoods = '/user/ordercg/examinesave';
 			$.post(examineGoods,
 				{

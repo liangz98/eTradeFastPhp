@@ -26,12 +26,30 @@
             </div>
             <div class="col-md-9 company-main">
                 <div class="page-header">
-                    <h1><?php echo $this->e['accountName']; ?> <small><?php echo $this->translate('companyINF'); ?></small></h1>
+                    <h1><?php echo $this->e['accountName']; ?></h1>
                 </div>
 
                 <div class="panel panel-default">
+                    <div class="panel-heading"><?php echo $this->translate('companyINF'); ?></div>
                     <div class="panel-body">
-                        Panel content
+                        <dl class="dl-horizontal">
+                            <?php if ($this->e['accountEnName']): ?>
+                            <dt><?php echo $this->translate('enNAME'); ?></dt>
+                            <dd><?php echo $this->e['accountEnName']; ?></dd>
+                            <?php endif; ?>
+
+                            <dt><?php echo $this->translate('address'); ?></dt>
+                            <dd><?php echo $this->ShowDictionaryTo($this->dic_Setting["COUNTRY_ISO_CODE"], $this->userlangCode, $this->dic_Setting["COUNTRY_ISO_CODE"], $this->e['regdCountryCode']) . "&nbsp;&nbsp;" . $this->regdCountryCode . $this->e['regdAddress']; ?></dd>
+                            <?php if ($this->e['regdEnAddress']): ?>
+                            <dd><?php echo $this->e['regdEnAddress']; ?></dd>
+                            <?php endif; ?>
+
+                            <dt><?php echo $this->translate('company_phone'); ?></dt>
+                            <dd><?php echo $this->e['phone']; ?></dd>
+
+                            <dt><?php echo $this->translate('company_fax'); ?></dt>
+                            <dd><?php echo $this->e['fax']; ?></dd>
+                        </dl>
                     </div>
                 </div>
             </div>

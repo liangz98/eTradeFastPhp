@@ -334,7 +334,7 @@
     jQuery.validator.addMethod("mobile", function (value, element) {
         var mobile = /^[\d|\-|\+|\s]+$/;
         return this.optional(element) || (mobile.test(value));
-    }, "<?php echo $this->translate('mobilephone') . $this->translate('de_format');?>");
+    }, "<?php echo $this->translate('mobile_phone') . $this->translate('de_format');?>");
     jQuery.validator.addMethod("fax", function (value, element) {
         var fax = /^[\d|\-|\+|\s]+$/;
         return this.optional(element) || (fax.test(value));
