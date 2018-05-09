@@ -91,7 +91,7 @@
                         </dl>
                     <?php endif;?>
                     <dl class="fl">
-                        <dt class="fl"><!-- 语言 --><?php echo $this->translate('dLANG');?></dt>
+                        <dt class="fl"><!-- 语言 --><?php echo $this->translate('langCode');?></dt>
                         <dd class="language">
                             <select class="dq_select" name="langCode" id="langCode">
                                 <?php echo $this->ShowDictionaryList('datatest_setting',$this->userlangCode,$this->dic_Setting['SYS_LANG'],$this->e['langCode']);?>
@@ -100,7 +100,7 @@
                         </dd>
                     </dl>
                     <dl class="fl">
-                        <dt class="fl"><!-- 货币 --><?php echo $this->translate('defaultCCY');?></dt>
+                        <dt class="fl"><!-- 货币 --><?php echo $this->translate('crnCode');?></dt>
                         <dd class="fl doller">
                             <?php if($this->e['accountStatus']==01){echo $this->e['crnCode'];}?>
                             <select   <?php if($this->e['accountStatus']==01){echo 'style="display:none;"  name="crnCode" ';} ?>  class="dq_select" id="crnCode" required data-msg-required="<?php echo $this->translate('de_null');?>">
