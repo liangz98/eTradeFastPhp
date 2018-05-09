@@ -12,6 +12,21 @@
     background-color: #e36209;
 }
 
+.profile-heading-edit {
+    border: none;
+    box-shadow: none;
+    margin-left: 8px;
+    color: #999;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.profile-heading-edit:hover {
+    cursor: pointer;
+    background-color: #FCF8E3;
+    color: #8A6D3B;
+}
+
 .company-img img {
     margin-top: 15px;
 }
