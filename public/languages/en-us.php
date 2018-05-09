@@ -302,7 +302,7 @@ return array(
     'enNAME' => 'English Name',
     'enAdress' => 'English Adress',
     'company_legal_form' => 'Legal Forms',
-    'comlegals' => 'Files',
+    'legalForm' => 'Legal Forms',
     'crnCode' => 'Currency',
     'langCode' => 'Language',
     'timezone'=>'Timezone',
