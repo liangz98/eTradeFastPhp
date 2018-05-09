@@ -43,7 +43,13 @@
                                     <?php echo $this->e['accountName']; ?>
                                     <small>
                                         <a href="javascript:void(0)">
-                                            <span id="company-auth" class="et-ico et-ico-auth-cok"></span>
+                                            <?php if ($this->e['entRealAuthStatus'] == 0 || $this->e['entRealAuthStatus'] == -1): ?>
+                                                <i id="company-auth" class="et-ico et-ico-auth-cno"></i>
+                                            <?php elseif ($this->e['entRealAuthStatus'] == 1 || $this->e['entRealAuthStatus'] == 3 || $this->e['entRealAuthStatus'] == -2 || $this->e['entRealAuthStatus'] == -3): ?>
+                                                <i id="company-auth" class="et-ico et-ico-auth-cing"></i>
+                                            <?php elseif ($this->e['entRealAuthStatus'] == 2): ?>
+                                                <i id="company-auth" class="et-ico et-ico-auth-cok"></i>
+                                            <?php endif; ?>
                                         </a>
                                         <?php if ($this->CompAdmin == true): ?>
                                         <i class="far fa-edit" style="color: #ec971f;"></i>
