@@ -1,15 +1,17 @@
 <div class="modal-header et-auth-bg-no">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title" ><?php echo $this->translate('et_auth_verify'); ?></h4>
-    <form id="msForm">
-        <!-- progressbar -->
-        <ul id="progressbar">
-            <li class="active">企业基本信息认证</li>
-            <li class="active">银行信息认证、打款</li>
-            <li class="activation">验证打款金额</li>
-            <li>完成</li>
-        </ul>
-    </form>
+    <div class="table-responsive">
+        <form id="msForm">
+            <!-- progressbar -->
+            <ul id="progressbar">
+                <li class="active">企业基本信息认证</li>
+                <li class="active">银行信息认证、打款</li>
+                <li class="activation">验证打款金额</li>
+                <li>完成</li>
+            </ul>
+        </form>
+    </div>
     <p><em>*</em> <?php echo $this->translate('et_auth_amount'); ?></p>
 </div>
 

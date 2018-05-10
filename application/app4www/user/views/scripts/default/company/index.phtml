@@ -52,11 +52,11 @@
                                         <small>
                                             <a href="javascript:void(0)">
                                                 <?php if ($this->e['entRealAuthStatus'] == 0 || $this->e['entRealAuthStatus'] == -1): ?>
-                                                    <span id="company-auth" class="et-ico et-ico-auth-cno"></span>
+                                                    <span id="company-auth" class="et-ico et-ico-auth-cno" data-toggle="modal" data-target="#authModal"></span>
                                                 <?php elseif ($this->e['entRealAuthStatus'] == 1 || $this->e['entRealAuthStatus'] == 3 || $this->e['entRealAuthStatus'] == -2 || $this->e['entRealAuthStatus'] == -3 || $this->e['entRealAuthStatus'] == -4): ?>
-                                                    <span id="company-auth" class="et-ico et-ico-auth-cing" data-toggle="modal" data-target="#myModal"></span>
+                                                    <span id="company-auth" class="et-ico et-ico-auth-cing" data-toggle="modal" data-target="#authModal"></span>
                                                 <?php elseif ($this->e['entRealAuthStatus'] == 2): ?>
-                                                    <span id="company-auth" class="et-ico et-ico-auth-cok"></span>
+                                                    <span id="company-auth" class="et-ico et-ico-auth-cok" data-toggle="modal" data-target="#authModal"></span>
                                                 <?php endif; ?>
                                             </a>
                                         </small>
@@ -131,13 +131,8 @@
                     </div>
                 </div>
 
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                    Launch demo modal
-                </button>
-
                 <!-- Modal -->
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content"></div>
                     </div>
@@ -165,7 +160,7 @@
             }
         });
 
-        $('#myModal').on('show.bs.modal', function (event) {
+        $('#authModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget); // Button that triggered the modal
             var recipient = button.data('whatever'); // Extract info from data-* attributes
             // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
