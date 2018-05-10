@@ -104,7 +104,7 @@
                             valuePCode: cityCode + ',' + bankCode
                         },
                         dataType: "json",
-                        success: function(data){
+                        success: function (data) {
                             var optionString = "";
                             $.each(data, function (i, item) {
                                 console.log(item);
@@ -117,12 +117,12 @@
                     });
                 } else {
                     var str = '<?php echo $this->translate("et_select"); ?>';
-                    $("#subbranchName").empty().html('<option value="">'+str+'</option>');
+                    $("#subbranchName").empty().html('<option value="">' + str + '</option>');
                     form.render('select');
                 }
             });
 
-            form.on('select(provinceName)', function(data){
+            form.on('select(provinceName)', function (data) {
                 var provinceCode = data.value;
                 if (provinceCode !== '') {
                     var fuzzyQuery = '/user/company/fuzzy';
@@ -135,7 +135,7 @@
                             valuePCode: provinceCode
                         },
                         dataType: "json",
-                        success: function(data){
+                        success: function (data) {
                             var optionString = '';
                             $.each(data, function (i, item) {
                                 console.log(item);
@@ -151,7 +151,7 @@
                 }
             });
 
-            form.on('select(cityName)', function(data){
+            form.on('select(cityName)', function (data) {
                 var bankCode = $("#bankName").val();
                 var cityCode = data.value;
 
@@ -166,7 +166,7 @@
                             valuePCode: cityCode + ',' + bankCode
                         },
                         dataType: "json",
-                        success: function(data){
+                        success: function (data) {
                             var optionString = "";
                             $.each(data, function (i, item) {
                                 console.log(item);
@@ -179,7 +179,7 @@
                     });
                 } else {
                     var str = '<?php echo $this->translate("et_select"); ?>';
-                    $("#subbranchName").empty().html('<option value="">'+str+'</option>');
+                    $("#subbranchName").empty().html('<option value="">' + str + '</option>');
                     form.render('select');
                 }
             });
@@ -189,7 +189,7 @@
             form.render();
         });
 
-        layui.use('element', function(){
+        layui.use('element', function () {
             var element = layui.element;
             element.render();
         });
