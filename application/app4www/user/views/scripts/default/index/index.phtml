@@ -89,7 +89,7 @@
                     </div>
                 </div>
 
-                <div class="panel panel-order">
+                <div class="panel">
                     <!-- Default panel contents -->
                     <div class="panel-heading">
                         <ul class="list-inline">
@@ -163,6 +163,12 @@
 	$().ready(function() {
 
 	});
+
+    $(function () {
+        $("#_orderList").parent().css('background-color', '#f5f8fa');
+        $("#_productList").parent().css('background-color', '#f8f8ff');
+        $("#_partnerList").parent().css('background-color', '#fffafa');
+    });
 
 	$(function () {
         initList("_orderList", "listsaleorder");
