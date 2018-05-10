@@ -129,6 +129,7 @@ return array(
     'en_use'=>'Congratulations, user name available',
     'xieyi'=>'Cooperation Agreement',
     'agree'=>'Approve',
+    'close'=>'Close',
 
 
 

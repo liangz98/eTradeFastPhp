@@ -341,7 +341,9 @@ class CompanyController extends Kyapi_Controller_Action
             if ($apiStatus == 1) {
                 // 取回企业认证状态
                 if (json_decode($resultObject)->result->errCode == 0) {
-                    $msg = json_decode($resultObject)->result->errCode;
+                    $msg = 0;
+                } else if (json_decode($resultObject)->result->data->entRealAuthStatus == -4) {
+                    $msg = -4;
                 } else {
                     $msg = json_decode($resultObject)->result->msg;
                 }

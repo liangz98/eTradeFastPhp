@@ -86,16 +86,12 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-primary" id="doConfirmBtn">Save changes</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $this->translate('close'); ?></button>
+    <button type="button" class="btn btn-primary" id="doConfirmBtn"><?php echo $this->translate('confirm'); ?></button>
 </div>
 
 <script type="text/javascript">
     $(function () {
-        // $(".modal-content").addClass("et-auth-bg-no");
-        //
-        // $(".modal-footer").css("background-color", "#fff");
-
         $("#doConfirmBtn").click(function () {
             var authVerifyAmount = $("#authVerifyAmount").val();
 
@@ -104,10 +100,15 @@
             $.post(companyDoAuthPay, {
                 authVerifyAmount: authVerifyAmount
             }, function (data) {
-                if (data == '0') {
+                if (data === '0') {
                     $('#myModal').modal('hide');
                     setTimeout(function () {
                         $("#company-auth").removeClass("et-ico-auth-cno et-ico-auth-cing").addClass("et-ico-auth-cok").trigger("click");
+                    }, 500);
+                } else if (data === '-4') {
+                    $('#myModal').modal('hide');
+                    setTimeout(function () {
+                        $("#company-auth").trigger("click");
                     }, 500);
                 } else {
                     console.log("err: " + data);
