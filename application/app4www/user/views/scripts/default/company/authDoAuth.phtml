@@ -1,52 +1,100 @@
-<div id="authViewDiv_" class="layui-form">
-	<div class="et-auth-top et-auth-bg-no" style="height: 200px; text-align: left;">
-		<h3><?php echo $this->translate('companySignh3'); ?></h3>
-		<form id="msform">
-			<!-- progressbar -->
-			<ul id="progressbar">
-				<li class="activing">企业基本信息认证</li>
-				<li>银行信息认证、打款</li>
-				<li>验证打款金额</li>
-				<li>完成</li>
-			</ul>
-		</form>
-		<p><?php echo $this->translate('companySignp01'); ?></p>
-	</div>
-	<div class="et-auth-error" style="display: none;"></div>
-
-	<div class="">
-		<div style="margin-top: 20px;"></div>
-
-		<div class="layui-form-item">
-			<label class="layui-form-label" style="width: 120px"><!--企业名称--><?php echo $this->translate('et_auth_name'); ?><em>*</em></label>
-			<div class="layui-input-block" style="margin-left: 150px; width: 360px;">
-				<input type="text" name="auth_name" value="<?php echo $this->account->accountName; ?>" lay-verify="et_auth_name" autocomplete="off" placeholder="请输入<?php echo $this->translate('et_auth_name'); ?>" class="layui-input">
-			</div>
-		</div>
-
-		<div class="layui-form-item">
-			<label class="layui-form-label" style="width: 120px"><!--统一社会信用代码--><?php echo $this->translate('et_auth_code'); ?><em>*</em></label>
-			<div class="layui-input-block" style="margin-left: 150px; width: 360px;">
-				<input type="text" name="auth_code" value="<?php echo $this->account->businessLicenseNo; ?>" lay-verify="auth_code" autocomplete="off" placeholder="请输入<?php echo $this->translate('et_auth_code'); ?>" class="layui-input">
-			</div>
-		</div>
-
-		<div class="layui-form-item">
-			<label class="layui-form-label" style="width: 120px"><!--负责人姓名--><?php echo $this->translate('et_auth_mg_name'); ?><em>*</em></label>
-			<div class="layui-input-block" style="margin-left: 150px; width: 360px;">
-				<input type="text" name="auth_mg_name" value="<?php echo $this->account->legalPersonName; ?>" lay-verify="auth_mg_name" autocomplete="off" placeholder="请输入<?php echo $this->translate('et_auth_mg_name'); ?>" class="layui-input">
-			</div>
-		</div>
-
-		<div class="layui-form-item">
-			<label class="layui-form-label" style="width: 120px"><!--负责人身份证号码--><?php echo $this->translate('et_auth_mg_id'); ?><em>*</em></label>
-			<div class="layui-input-block" style="margin-left: 150px; width: 360px;">
-				<input type="text" name="auth_mg_id" value="<?php echo $this->account->legalPersonIdentityNo; ?>" lay-verify="auth_mg_name" autocomplete="off" placeholder="请输入<?php echo $this->translate('et_auth_mg_id'); ?>" class="layui-input">
-			</div>
-		</div>
-
-		<div class="et-auth-row" style="text-align: center;">
-			<button class="layui-btn layui-btn-warm" id="doAuthBtn"><?php echo $this->translate('next'); ?></button>
-		</div>
-	</div>
+<div class="modal-header et-auth-bg-no">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" ><?php echo $this->translate('companySignh3'); ?></h4>
+    <div class="table-responsive">
+        <form id="msForm">
+            <!-- progressbar -->
+            <ul id="progressbar">
+                <li class="activation">企业基本信息认证</li>
+                <li>银行信息认证、打款</li>
+                <li>验证打款金额</li>
+                <li>完成</li>
+            </ul>
+        </form>
+    </div>
+    <p><em>*</em> <?php echo $this->translate('companySignp01'); ?></p>
 </div>
+
+<div class="modal-body">
+    <div class="row">
+        <div class="et-auth-error" style="display: none;"></div>
+    </div>
+
+    <div class="row">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label for="auth_name" class="col-sm-3 control-label"><?php echo $this->translate('et_auth_name'); ?></label>
+                <div class="col-sm-10 col-sm-8">
+                    <input type="text" class="form-control" id="auth_name" name="auth_name" value="<?php echo $this->account->accountName; ?>" placeholder="请输入<?php echo $this->translate('et_auth_name'); ?>">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="auth_code" class="col-sm-3 control-label"><?php echo $this->translate('et_auth_code'); ?></label>
+                <div class="col-sm-10 col-sm-8">
+                    <input type="text" class="form-control" id="auth_code" name="auth_code" value="<?php echo $this->account->businessLicenseNo; ?>" placeholder="请输入<?php echo $this->translate('et_auth_code'); ?>">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="auth_code" class="col-sm-3 control-label"><?php echo $this->translate('et_auth_code'); ?></label>
+                <div class="col-sm-10 col-sm-8">
+                    <input type="text" class="form-control" id="auth_code" name="auth_code" value="<?php echo $this->account->businessLicenseNo; ?>" placeholder="请输入<?php echo $this->translate('et_auth_code'); ?>">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="auth_mg_name" class="col-sm-3 control-label"><?php echo $this->translate('et_auth_mg_name'); ?></label>
+                <div class="col-sm-10 col-sm-8">
+                    <input type="text" class="form-control" id="auth_mg_name" name="auth_mg_name" value="<?php echo $this->account->legalPersonName; ?>" placeholder="请输入<?php echo $this->translate('et_auth_mg_name'); ?>">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="auth_mg_id" class="col-sm-3 control-label"><?php echo $this->translate('et_auth_mg_id'); ?></label>
+                <div class="col-sm-10 col-sm-8">
+                    <input type="text" class="form-control" id="auth_mg_id" name="auth_mg_id" value="<?php echo $this->account->legalPersonIdentityNo; ?>" placeholder="请输入<?php echo $this->translate('et_auth_mg_id'); ?>">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $this->translate('close'); ?></button>
+    <button type="button" class="btn btn-primary" id="doConfirmBtn"><?php echo $this->translate('next'); ?></button>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $("#doConfirmBtn").click(function () {
+            var auth_name = $('input[name="auth_name"]').val();
+            var auth_code = $('input[name="auth_code"]').val();
+            var auth_mg_name = $('input[name="auth_mg_name"]').val();
+            var auth_mg_id = $('input[name="auth_mg_id"]').val();
+
+            $("#doConfirmBtn").attr("disabled", true);
+            var companyDO = '/user/company/doauth';
+            $.post(companyDO, {
+                auth_name: auth_name,
+                auth_code: auth_code,
+                auth_mg_name: auth_mg_name,
+                auth_mg_id: auth_mg_id
+            }, function (data) {
+                if (data === '0') {
+                    $('#myModal').modal('hide');
+                    setTimeout(function () {
+                        $("#company-auth").removeClass("et-ico-auth-cno").addClass("et-ico-auth-cing").trigger("click");
+                    }, 500);
+                } else if (data === '-4') {
+                    $('#myModal').modal('hide');
+                    setTimeout(function () {
+                        $("#company-auth").trigger("click");
+                    }, 500);
+                } else {
+                    console.log("err: " + data);
+                }
+                $("#doConfirmBtn").attr("disabled", false);
+            });
+        });
+    });
+</script>
