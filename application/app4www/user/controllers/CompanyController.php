@@ -372,7 +372,7 @@ class CompanyController extends Kyapi_Controller_Action
             $existData = $this->json->dataDictFuzzyQuery($dataDictCode, $keyword, $valuePCode);
             $res = json_decode($existData)->result;
             $msg = $res;
-            // var_dump($res);
+            // var_dump($existData);
             // exit;
 
             // foreach ($res as $value) {
@@ -381,6 +381,7 @@ class CompanyController extends Kyapi_Controller_Action
             // exit;
         }
         echo json_encode($msg);
+        // echo $msg;
         exit;
     }
 
