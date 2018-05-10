@@ -15,3 +15,6 @@
     margin-top: 15px;
 }
 
+.panel .panel-heading {
+	border: 1px solid #ccc;
+}
