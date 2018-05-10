@@ -15,3 +15,21 @@
     margin-top: 15px;
 }
 
+.panel {
+	border-color: #ccc;
+}
+
+.panel .panel-heading {
+	border: none;
+	color: #fff;
+	font-size: 16px;
+	position: relative;
+	left: -1px;
+	top: -1px;
+	width: 100.3%;
+}
+
+.panel-order .panel-heading {
+	background-color: #d8bfd8;
+}
+
