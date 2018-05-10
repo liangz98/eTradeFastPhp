@@ -280,17 +280,19 @@ class CompanyController extends Kyapi_Controller_Action
             if ($apiStatus == 1) {
                 // 取回企业认证状态
                 if (json_decode($resultObject)->result->errCode == 0) {
-                    $msg = json_decode($resultObject)->result->errCode;
+                    $msg = 0;
+                } else if (json_decode($resultObject)->result->data->entRealAuthStatus == -4) {
+                    $msg = -4;
                 } else {
                     $msg = json_decode($resultObject)->result->msg;
                 }
 
             } else {
                 // 接口请求错误的情况下, 将接口错误返回给页面
-                $msg = $this->view->translate(trim(json_decode($resultObject)->errorCode));
+                $msg = json_decode($resultObject)->errorCode;
             }
         }
-        echo json_encode($msg);
+        echo $msg;
         exit;
     }
 
@@ -312,7 +314,9 @@ class CompanyController extends Kyapi_Controller_Action
             if ($apiStatus == 1) {
                 // 取回企业认证状态
                 if (json_decode($resultObject)->result->errCode == 0) {
-                    $msg = json_decode($resultObject)->result->errCode;
+                    $msg = 0;
+                } else if (json_decode($resultObject)->result->data->entRealAuthStatus == -4) {
+                    $msg = -4;
                 } else {
                     $msg = json_decode($resultObject)->result->msg;
                 }
@@ -322,7 +326,7 @@ class CompanyController extends Kyapi_Controller_Action
                 $msg = $this->view->translate(trim(json_decode($resultObject)->errorCode));
             }
         }
-        echo json_encode($msg);
+        echo $msg;
         exit;
     }
 
@@ -353,7 +357,7 @@ class CompanyController extends Kyapi_Controller_Action
                 $msg = $this->view->translate(trim(json_decode($resultObject)->errorCode));
             }
         }
-        echo json_encode($msg);
+        echo $msg;
         exit;
     }
 

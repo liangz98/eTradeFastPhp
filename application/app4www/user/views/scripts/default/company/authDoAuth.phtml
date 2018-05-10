@@ -16,10 +16,9 @@
 </div>
 
 <div class="modal-body">
-    <div class="row">
-        <div class="et-auth-error" style="display: none;"></div>
+    <div class="alert alert-danger hidden" role="alert">
+        <strong>Warning!</strong> <p>Better check yourself, you're not looking too good.</p>
     </div>
-
     <div class="row">
         <form class="form-horizontal">
             <div class="form-group">
@@ -81,16 +80,17 @@
                 auth_mg_id: auth_mg_id
             }, function (data) {
                 if (data === '0') {
-                    $('#myModal').modal('hide');
+                    $('#authModal').modal('hide');
                     setTimeout(function () {
                         $("#company-auth").removeClass("et-ico-auth-cno").addClass("et-ico-auth-cing").trigger("click");
                     }, 500);
                 } else if (data === '-4') {
-                    $('#myModal').modal('hide');
+                    $('#authModal').modal('hide');
                     setTimeout(function () {
                         $("#company-auth").trigger("click");
                     }, 500);
                 } else {
+                    $(".alert").removeClass('hidden').addClass('show').find('p').html(data);
                     console.log("err: " + data);
                 }
                 $("#doConfirmBtn").attr("disabled", false);

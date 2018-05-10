@@ -103,12 +103,12 @@
                 authVerifyAmount: authVerifyAmount
             }, function (data) {
                 if (data === '0') {
-                    $('#myModal').modal('hide');
+                    $('#authModal').modal('hide');
                     setTimeout(function () {
                         $("#company-auth").removeClass("et-ico-auth-cno et-ico-auth-cing").addClass("et-ico-auth-cok").trigger("click");
                     }, 500);
                 } else if (data === '-4') {
-                    $('#myModal').modal('hide');
+                    $('#authModal').modal('hide');
                     setTimeout(function () {
                         $("#company-auth").trigger("click");
                     }, 500);
