@@ -15,11 +15,11 @@
     margin-top: 15px;
 }
 
-.panel {
+.etf-row .panel {
 	border-color: #ccc;
 }
 
-.panel .panel-heading {
+.etf-row .panel .etf-heading {
 	border: none;
 	color: #fff;
 	font-size: 16px;
@@ -29,7 +29,4 @@
 	width: 100.3%;
 }
 
-.panel-order .panel-heading {
-	background-color: #d8bfd8;
-}
 
