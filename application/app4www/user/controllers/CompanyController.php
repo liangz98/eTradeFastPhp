@@ -254,6 +254,10 @@ class CompanyController extends Kyapi_Controller_Action
                 $content = $this->view->render(SEED_WWW_TPL . "/company/authView.phtml");
                 echo $content;
                 exit;
+            } else {
+                $content = $this->view->render(SEED_WWW_TPL . "/company/authErrView.phtml");
+                echo $content;
+                exit;
             }
         }
     }
