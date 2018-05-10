@@ -1944,9 +1944,9 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
     /* 企业实名认证 银行帐户信息 */
-    public function doEntRealNameToPay($_requestObject, $acctName, $auth_acctNo, $bankName, $proviceName, $cityName, $subbranchName){
+    public function doEntRealNameToPay($_requestObject, $acctName, $auth_acctNo, $bankName, $provinceName, $cityName, $subbranchName){
         $_url=$this->url.'/accountapi/accountApi!doEntRealNameToPay.action';
-        $_params =json_encode(array("requestObject"=>$_requestObject, "acctName" => $acctName, "acctNo" => $auth_acctNo, "bankName" => $bankName, "proviceName" => $proviceName, "cityName" => $cityName, "subbranchName" => $subbranchName));
+        $_params =json_encode(array("requestObject"=>$_requestObject, "acctName" => $acctName, "acctNo" => $auth_acctNo, "bankName" => $bankName, "proviceName" => $provinceName, "cityName" => $cityName, "subbranchName" => $subbranchName));
         $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
         return $resultObject;
     }
