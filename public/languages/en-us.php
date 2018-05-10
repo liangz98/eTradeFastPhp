@@ -5,7 +5,6 @@ return array(
     'document'=>'Document',
     'get_lg'=>'en_US',    //语言编码
     'language'=>'English',//语言
-    'englich'=>'English',//语言
     'chinese'=>'Chinese',//语言
 
     // 错误代码

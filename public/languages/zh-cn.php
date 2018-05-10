@@ -5,7 +5,6 @@ return array(
     'document'=>'文档',
     'get_lg'=>'en_US',    //语言编码
     'language'=>'English',//语言
-    'englich'=>'English',//语言
     'chinese'=>'Chinese',//语言
     //订单顶部进度说明
 
