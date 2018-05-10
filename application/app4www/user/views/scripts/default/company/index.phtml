@@ -13,7 +13,7 @@
 <div class="container-fluid index-body">
 	<div class="container">
 		<div class="row">
-            <div class="col-md-3 company-navigation">
+            <div class="col-md-3 company-navigation hidden-xs">
                 <div class="panel panel-default">
                     <div class="panel-heading"><?php echo $this->translate('companyMNG'); ?></div>
                     <div class="list-group">
@@ -140,12 +140,9 @@
                 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-                            </div>
                             <div class="modal-body">
-                                ...
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <div class="modal-body-content"></div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -184,7 +181,10 @@
             // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
             var modal = $(this);
             // modal.find('.modal-title').text('New message to ' + recipient);
-            modal.find('.modal-body input').val(recipient);
+            // modal.find('.modal-body input').val(recipient);
+            modal.find('.modal-body-content').html("").load("<?php echo $this->BaseUrl();?>/company/authview", {
+
+            });
         })
 	});
 </script>

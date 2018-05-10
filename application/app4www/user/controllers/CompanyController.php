@@ -24,12 +24,12 @@ class CompanyController extends Kyapi_Controller_Action
         $existData = $this->objectToArray(json_decode($userKY));
         $existDatt = $existData['result'];
         $this->view->e = $existDatt;
-    
+
         $this->view->accountID = $_accountID;
-        
+
         // echo $existDatt['legalPersonName'];exit;
-        
-        
+
+
         if (!empty($existDatt['incorporationDate']['date'])) {
             $creatDate = date('Y-m-d', strtotime($existDatt['incorporationDate']['date']));
         } else {
@@ -231,12 +231,12 @@ class CompanyController extends Kyapi_Controller_Action
         $accountID = $this->view->accountID;
         $_requestOb = $this->_requestObject;
         $resultObject = $this->json->getAccountApi($_requestOb, $accountID);
-    
+
         $account = json_decode($resultObject)->result;
         $this->view->account = json_decode($resultObject)->result;
         $entRealAuthStatus = $account->entRealAuthStatus;
-        
-    
+
+
         if (defined('SEED_WWW_TPL')) {
             if ($entRealAuthStatus == 0 || $entRealAuthStatus == -1) {
                 $content = $this->view->render(SEED_WWW_TPL . "/company/authDoAuth.phtml");
@@ -257,7 +257,7 @@ class CompanyController extends Kyapi_Controller_Action
             }
         }
     }
-    
+
     // 企业认证 - 基本信息
     public function doauthAction() {
         $msg = 0;
@@ -268,7 +268,7 @@ class CompanyController extends Kyapi_Controller_Action
             $Account->businessLicenseNo = $this->_request->getParam('auth_code');
             $Account->legalPersonName = $this->_request->getParam('auth_mg_name');
             $Account->legalPersonIdentityNo = $this->_request->getParam('auth_mg_id');
-            
+
             $_requestOb = $this->_requestObject;
             $resultObject = $this->json->doEntRealNameAuth($_requestOb, $Account);
             // 取回接口请求状态
@@ -280,7 +280,7 @@ class CompanyController extends Kyapi_Controller_Action
                 } else {
                     $msg = json_decode($resultObject)->result->msg;
                 }
-                
+
             } else {
                 // 接口请求错误的情况下, 将接口错误返回给页面
                 $msg = $this->view->translate(trim(json_decode($resultObject)->errorCode));
@@ -289,7 +289,7 @@ class CompanyController extends Kyapi_Controller_Action
         echo json_encode($msg);
         exit;
     }
-    
+
     // 企业认证 - 银行信息
     public function doauthpayAction() {
         $msg = 0;
@@ -300,7 +300,7 @@ class CompanyController extends Kyapi_Controller_Action
             $proviceName = $this->_request->getParam('proviceName');
             $cityName = $this->_request->getParam('cityName');
             $subbranchName = $this->_request->getParam('subbranchName');
-            
+
             $_requestOb = $this->_requestObject;
             $resultObject = $this->json->doEntRealNameToPay($_requestOb, $acctName, $auth_acctNo, $bankName, $proviceName, $cityName, $subbranchName);
             // 取回接口请求状态
@@ -312,7 +312,7 @@ class CompanyController extends Kyapi_Controller_Action
                 } else {
                     $msg = json_decode($resultObject)->result->msg;
                 }
-        
+
             } else {
                 // 接口请求错误的情况下, 将接口错误返回给页面
                 $msg = $this->view->translate(trim(json_decode($resultObject)->errorCode));
@@ -321,17 +321,17 @@ class CompanyController extends Kyapi_Controller_Action
         echo json_encode($msg);
         exit;
     }
-    
+
     // 企业认证 - 银行打款金额验证
     public function authconfirmAction() {
         $msg = 0;
         if ($this->_request->isPost()) {
             //获取account数据集合
             $verifyAmount = $this->_request->getParam('authVerifyAmount');
-            
+
             $_requestOb = $this->_requestObject;
             $resultObject = $this->json->doEntRealNameVerify($_requestOb, $verifyAmount);
-    
+
             // 取回接口请求状态
             $apiStatus = json_decode($resultObject)->status;
             if ($apiStatus == 1) {
@@ -341,7 +341,7 @@ class CompanyController extends Kyapi_Controller_Action
                 } else {
                     $msg = json_decode($resultObject)->result->msg;
                 }
-        
+
             } else {
                 // 接口请求错误的情况下, 将接口错误返回给页面
                 $msg = $this->view->translate(trim(json_decode($resultObject)->errorCode));
@@ -358,13 +358,13 @@ class CompanyController extends Kyapi_Controller_Action
             $dataDictCode = $this->_request->getParam('dataDictCode');
             $keyword = $this->_request->getParam('keyword');
             $valuePCode = $this->_request->getParam('valuePCode');
-    
+
             $existData = $this->json->dataDictFuzzyQuery($dataDictCode, $keyword, $valuePCode);
             $res = json_decode($existData)->result;
             $msg = $res;
             // var_dump($res);
             // exit;
-            
+
             // foreach ($res as $value) {
             //     echo 'nameText:'.$value->nameText.' valueCode:'.$value->valueCode.' | ';
             // }
@@ -373,12 +373,12 @@ class CompanyController extends Kyapi_Controller_Action
         echo json_encode($msg);
         exit;
     }
-    
+
     public function finddatadictlistAction() {
         $msg = 0;
         if ($this->_request->isPost()) {
             $dataDictCode = $this->_request->getParam('dataDictCode');
-    
+
             $_requestOb = $this->_requestObject;
             $existData = $this->json->findDataDictListApi($_requestOb, $dataDictCode);
             $res = json_decode($existData)->result;
