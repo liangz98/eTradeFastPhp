@@ -11,8 +11,6 @@ class RegisterController extends Kyapi_Controller_Action
         }
     }
     function indexAction(){
-
-
         if ($this->_request->isPost()) {
             try {
                 $_requestOb=$this->_requestObject;

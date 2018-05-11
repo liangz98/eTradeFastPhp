@@ -49,9 +49,14 @@ body {
 
 }
 
+.company-main-edit .form-group:first-child {
+    margin-top: 15px;
+}
+
 .company-main-edit .control-label {
     font-weight: normal;
     color: #777;
+    text-align: left !important;
 }
 
 .et-ico {

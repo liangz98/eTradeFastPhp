@@ -60,8 +60,7 @@ class CompanyController extends Kyapi_Controller_Action
         exit;
     }
 
-    public function editAction()
-    {
+    public function editAction() {
         //获取信息
         $_accountID = $this->view->accountID;
         $_requestOb = $this->_requestObject;
@@ -85,7 +84,7 @@ class CompanyController extends Kyapi_Controller_Action
                 $Atachlist = array();
                 $Atachlist["attachID"] = $this->_request->getParam('attachNid');
                 $Atachlist["attachType"] = $this->_request->getParam('attachType');
-//                $Atachlist["bizType"] = $this->_request->getParam("bizType");
+                //                $Atachlist["bizType"] = $this->_request->getParam("bizType");
                 $Atachlist["attachName"] = $this->_request->getParam("attachName");
                 $Atachlist["attachSize"] = $this->_request->getParam("attachSize");
                 $_attach2 = array();
@@ -158,13 +157,7 @@ class CompanyController extends Kyapi_Controller_Action
                 $existDatt = $existData['result'];
                 $this->view->e = $existDatt;
 
-                if ($existData['status'] != 1) {
-                    //编辑失败
-                    Seed_Browser::redirect($this->view->translate('tip_edit_fail') . $existData['error'], $this->view->seed_Setting['user_app_server'] . "/company");
-                } else {
-                    //编辑成功
-                    Shop_Browser::redirect($this->view->translate('tip_edit_sucess'), $this->view->seed_Setting['user_app_server'] . "/company");
-                }
+                $this->redirect("/company");
             } catch (Exception $e) {
                 Shop_Browser::redirect($e->getMessage());
             }
