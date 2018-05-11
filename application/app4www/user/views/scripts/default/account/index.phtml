@@ -5,6 +5,7 @@
 	<title>快移</title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/account/account.css" rel="stylesheet">
+    <link href="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -44,7 +45,7 @@
                     </div>
 
                     <!-- Table -->
-                    <table class="table">
+                    <table data-toggle="table">
                         <thead>
                         <tr>
                             <th><?php echo $this->translate('name'); ?></th>
@@ -130,6 +131,10 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script src="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.js"></script>
+<script src="/ky/bootstrap-table-1.12.1-dist/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="/ky/bootstrap-table-1.12.1-dist/locale/bootstrap-table-en-US.min.js"></script>
 
 <script type="text/javascript">
 	$().ready(function() {
