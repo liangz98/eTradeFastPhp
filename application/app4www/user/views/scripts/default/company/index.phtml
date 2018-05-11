@@ -47,7 +47,7 @@
                                     <h3>
                                         <?php if ($this->CompAdmin == true): ?>
                                             <a class="profile-heading-edit pull-right btn btn-xs" data-type="base" href="/user/company/edit">
-                                                <i class="fas fa-pencil-alt" aria-hidden="true"></i>编辑
+                                                <i class="fas fa-pencil-alt" aria-hidden="true"></i><?php echo $this->translate('edit'); ?>
                                             </a>
                                         <?php endif; ?>
                                         <?php echo $this->e['accountName']; ?>
