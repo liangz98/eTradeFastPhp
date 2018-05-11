@@ -66,7 +66,7 @@
                                         <div class="form-group">
                                             <label for="email" class="col-sm-2 control-label"><?php echo $this->translate('email'); ?></label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control" name="email" id="email" placeholder="" value="<?php echo $this->e['email']; ?>" >
+                                                <input type="email" class="form-control" name="email" id="email" placeholder="" value="<?php echo $this->e['email']; ?>" >
                                             </div>
                                         </div>
 
@@ -110,6 +110,7 @@
                                                 <p class="form-control-static">
                                                     <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ISIC_INDUSTRY_TYPE'], $this->e['industryCode']); ?>
                                                 </p>
+                                                <input type="hidden" name="industryCode" value="<?php echo $this->e['industryCode']; ?>" >
                                             </div>
                                         </div>
 

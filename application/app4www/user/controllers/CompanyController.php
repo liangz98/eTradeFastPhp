@@ -119,7 +119,7 @@ class CompanyController extends Kyapi_Controller_Action
                 //判断国家是否允许修改
                 $_company->regdCountryCode = empty($regdCountryCode) ? $existDatt['regdCountryCode'] : $regdCountryCode;
 
-                // $_company->industryCode = $this->_request->getParam('industryCode');
+                $_company->industryCode = $this->_request->getParam('industryCode');
                 $_company->crnCode = $this->_request->getParam('crnCode');
                 $_company->langCode = $this->_request->getParam('langCode');
                 $_company->phone = $this->_request->getParam('phone');
