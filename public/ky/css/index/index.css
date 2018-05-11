@@ -30,5 +30,6 @@
 }
 
 .ent-img {
-	width: 140px;
-	padding: 0px 0px !important;
+	width: 140px !important;
+	padding: 0px 0px;
+}
