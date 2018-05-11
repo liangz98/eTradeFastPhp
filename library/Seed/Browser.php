@@ -1,21 +1,21 @@
 <?php
 class Seed_Browser {
-	public static function get_client_ip(){ 
-		if (getenv("HTTP_CLIENT_IP") && strcasecmp(getenv("HTTP_CLIENT_IP"), "unknown")) 
-		$ip = getenv("HTTP_CLIENT_IP"); 
-		else if (getenv("HTTP_X_FORWARDED_FOR") && strcasecmp(getenv("HTTP_X_FORWARDED_FOR"), "unknown")) 
-		$ip = getenv("HTTP_X_FORWARDED_FOR"); 
-		else if (getenv("REMOTE_ADDR") && strcasecmp(getenv("REMOTE_ADDR"), "unknown")) 
-		$ip = getenv("REMOTE_ADDR"); 
-		else if (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'], "unknown")) 
-		$ip = $_SERVER['REMOTE_ADDR']; 
-		else 
-		$ip = "unknown"; 
-		return($ip); 
-	} 
-	
+	public static function get_client_ip(){
+		if (getenv("HTTP_CLIENT_IP") && strcasecmp(getenv("HTTP_CLIENT_IP"), "unknown"))
+		$ip = getenv("HTTP_CLIENT_IP");
+		else if (getenv("HTTP_X_FORWARDED_FOR") && strcasecmp(getenv("HTTP_X_FORWARDED_FOR"), "unknown"))
+		$ip = getenv("HTTP_X_FORWARDED_FOR");
+		else if (getenv("REMOTE_ADDR") && strcasecmp(getenv("REMOTE_ADDR"), "unknown"))
+		$ip = getenv("REMOTE_ADDR");
+		else if (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'], "unknown"))
+		$ip = $_SERVER['REMOTE_ADDR'];
+		else
+		$ip = "unknown";
+		return($ip);
+	}
+
 	public static function view_page($url,$referer=0,$timeOut=30,$header=0,$cookie=""){
-		
+
 		$ch = curl_init();
 		if(!$ch)return null;
 		$userAgent=isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36';
@@ -24,7 +24,7 @@ class Seed_Browser {
 		if(!empty($referer))curl_setopt($ch, CURLOPT_REFERER, $referer);
 		curl_setopt ($ch, CURLOPT_HEADER, $header);
 		if(!empty($cookie))curl_setopt ($ch, CURLOPT_COOKIE,$cookie);
-		curl_setopt	($ch, CURLOPT_FOLLOWLOCATION,true); 
+		curl_setopt	($ch, CURLOPT_FOLLOWLOCATION,true);
 		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 //		curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 1);
 		curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0);
@@ -40,8 +40,8 @@ class Seed_Browser {
 
 	public static function info($msg,$redirect_url=null,$wait_time=1000,$target="window"){
 		$sec = $wait_time/1000;
-		$html=<<<EOD
-		<script type="text/javascript" src="/ky/layer/layer.js"></script>
+		$html= <<<EOD
+		<script type="text/javascript" src="/ky/layer-v3.1.1/layer.js"></script>
 	   <script type='text/javascript'>
 		layer.open({
   			type: 1 //Page层类型
@@ -60,7 +60,7 @@ EOD;
 	}
 
 
-	
+
 	public static function redirect($msg,$redirect_url,$wait_time=1000,$target="window"){
 		$sec = $wait_time/1000;
    		$html=<<<EOD
@@ -209,7 +209,7 @@ EOD;
         die($html);
     }
 
-    
+
     public static function error($msg){
    		$html=<<<EOD
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -266,7 +266,7 @@ EOD;
 EOD;
     	die($html);
     }
-    
+
     public static function tip_show($msg,$redirect_url=null,$wait_time=1000,$target='window'){
    		$html="";
     	if($redirect_url!=null){
@@ -316,17 +316,17 @@ EOD;
     	}else{
     		$html.= '<p>'.$msg.'</p>';
     	}
-    	
+
     	die($html);
     }
-    
+
     public static function turn_url($msg,$redirect_url){
     	if(empty($redirect_url))
     		 $redirect_url = "http://".$_SERVER['HTTP_HOST'].$_SERVER['HTTP_REFERER'];
-    	
+
     	echo "<script type='text/javascript'>window.location.href='".$redirect_url."'</script>";
     	exit;
     }
-    
+
 }
 ?>

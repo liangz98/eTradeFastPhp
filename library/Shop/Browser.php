@@ -40,8 +40,8 @@ class Shop_Browser {
     public static function info($msg,$redirect_url=null,$wait_time=1000,$target="window"){
         echo "in info"; exit;
         $sec = $wait_time/1000;
-        $html=<<<EOD
-		<script type="text/javascript" src="/ky/layer/layer.js"></script>
+        $html= <<<EOD
+		<script type="text/javascript" src="/ky/layer-v3.1.1/layer.js"></script>
 	   <script type='text/javascript'>
 	   $(document).ready(function(){
 		layer.open({
@@ -201,7 +201,7 @@ public static function tip_show($msg,$redirect_url=null,$wait_time=2000,$target=
 
     	die($html);
     }
-    
+
     public static function  isMobile(){
         echo "in is mobile"; exit;
     	$useragent=isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';

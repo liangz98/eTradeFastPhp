@@ -13,7 +13,7 @@
     <script type="text/javascript" src="/ky/js/jquery.form.js"></script>
     <script type="text/javascript" src="/ky/js/www.js"></script>
     <script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
-    <script type="text/javascript" src="/ky/layer/layer.js"></script>
+    <script type="text/javascript" src="/ky/layer-v3.1.1/layer.js"></script>
     <style type="text/css">
         .order_state2 li{width:150px;}
     </style>
@@ -36,7 +36,7 @@
         </div>
         <div class="qysearch_box">
             <form action="#" method="post">
-                <p> 
+                <p>
                     <input class="search_inp" name="keyword" <?php if(!empty($this->keyword)){echo "value=".$this->keyword;}?>  placeholder="<?php echo $this->translate('INPkw_goodes');?>" type="text"><!--可输入名称、HSCode、型号、品牌等关键字-->
                     <input class="ss_btn"  type="submit" value="">
                     <?php if($this->CompProductAdmin==true||$this->CompOrderAdmin==true):?>
