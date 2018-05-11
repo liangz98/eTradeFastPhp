@@ -29,25 +29,91 @@
                     <!-- Default panel contents -->
                     <div class="panel-heading"><?php echo $this->translate('personNO'); ?></div>
                     <div class="panel-body">
-                        <p>...</p>
+                        <form class="form-horizontal">
+                            <div class="form-group" style="margin-bottom: 0 !important;">
+                                <label for="keyword" class="sr-only">keyword</label>
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fas fa-search"></i></span>
+                                        <input type="text" class="form-control" id="keyword" placeholder="<?php echo $this->translate('INPkw_ac');?>">
+                                    </div>
+                                </div>
+                            </div>
+                            <!--<button type="submit" class="btn btn-default">Confirm identity</button>-->
+                        </form>
                     </div>
 
                     <!-- Table -->
                     <table class="table">
                         <thead>
                         <tr>
-                            <th width="150"><<?php echo $this->translate('name'); ?></th>
-                            <th width="200"><?php echo $this->translate('username'); ?></th>
-                            <th width="70"><?php echo $this->translate('userP'); ?></th>
-                            <th width="200"><?php echo $this->translate('userROLE'); ?></th>
-                            <th width="70"><?php echo $this->translate('userPT'); ?></th>
-                            <th width="70"><?php echo $this->translate('accountDF'); ?></th>
-                            <th width="80"><?php echo $this->translate('madeTT'); ?></th>
+                            <th><?php echo $this->translate('name'); ?></th>
+                            <th><?php echo $this->translate('username'); ?></th>
+                            <th><?php echo $this->translate('userP'); ?></th>
+                            <th width="200px"><?php echo $this->translate('userROLE'); ?></th>
+                            <th><?php echo $this->translate('userPT'); ?></th>
+                            <th><?php echo $this->translate('accountDF'); ?></th>
+                            <th><?php echo $this->translate('madeTT'); ?></th>
                         </tr>
                         </thead>
                         <tbody>
                         <?php if (is_array($this->userList) && count($this->userList) > 0): ?>
-
+                            <?php foreach ($this->userList as $k => $user): ?>
+                            <tr>
+                                <td>
+                                    <a href="<?php if (!empty($this->account_isAllowView)) {echo '/user/account/view?'.base64_encode($user['contactID']);}?>"><?php echo $user['name'];?></a>
+                                </td>
+                                <td>
+                                    <a href="<?php if (!empty($this->account_isAllowView)) {echo '/user/account/view?'.base64_encode($user['contactID']);}?>"><?php echo $user['ecommloginname'];?></a>
+                                </td>
+                                <td>
+                                    <a href="<?php if (!empty($this->account_isAllowView)) {echo '/user/account/view?'.base64_encode($user['contactID']);}?>">
+                                        <?php echo $this->ShowDictionaryTo($this->dic_Setting['ECOMM_STATUS'], $this->userlangCode, $this->dic_Setting['ECOMM_STATUS'], $user['ecommstatus']); ?>
+                                    </a>
+                                </td>
+                                <td style="overflow:hidden; text-overflow:ellipsis;">
+                                    <?php $role_name = ""; if ($user['ecommrole']): ?>
+                                        <?php foreach (explode(",", $user['ecommrole']) as $k2 => $role): ?>
+                                            <?php $role_name .= $this->ShowDictionaryTo($this->dic_Setting['ECOMM_ROLE'], $this->userlangCode, $this->dic_Setting['ECOMM_ROLE'], $role) . ','; ?>
+                                        <?php endforeach;?>
+                                    <?php endif;?>
+                                    <a href="<?php if(!empty($this->account_isAllowView)) {echo '/user/account/view?'.base64_encode($user['contactID']);}?>">
+                                        <?php echo $role_name;?>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="javascript:void(0)" >
+                                        <?php echo $user['contactStatus'] == '01' ? $this->translate('normal') : $this->translate('disable'); ?>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="javascript:void(0)" id="<?php echo $user['contactID'];?>" data-url="/user/account/default"
+                                       data-msg1="<?php echo $this->translate('is_default');?>" data-msg2="<?php echo $this->translate('tip_default_sucess');?>"
+                                       data-msg3="<?php echo $this->translate('tip_default_fail');?>" <?php if($this->CompAdmin==true){echo'onclick="doOption(this);"';}?> >
+                                        <?php if($user['isDefaultPublic']==true){echo $this->translate('yes');}else{echo $this->translate('no');};?>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a title="<?php echo $this->translate('edit');?>" class="p_ed" href="<?php echo '/user/account/edit?'.base64_encode($user['contactID']);?>">
+                                        <i class="far fa-edit"></i>
+                                    </a>
+                                    <?php if ($this->CompAdmin == true): ?>
+                                        <a title="<?php echo $this->translate('disable');?>"  <?php if ($user['contactStatus']=='01'){echo 'style="display:inline-block;"';}?>  class="t_edit p_jy"
+                                           href="javascript:void(0)" id="<?php echo $user['contactID'];?>" data-url="/user/account/invalid"
+                                           data-msg1="<?php echo $this->translate('is_invalid');?>" data-msg2="<?php echo $this->translate('tip_invalid_sucess');?>"
+                                           data-msg3="<?php echo $this->translate('tip_invalid_fail');?>" onclick="doOption(this);">
+                                            <i class="fas fa-ban"></i>
+                                        </a>
+                                        <a title="<?php echo $this->translate('valids');?>" <?php if ($user['contactStatus']=='02'){  echo 'style="display:inline-block;"';}?>  class="t_edit p_qy"
+                                           href="javascript:void(0)" id="<?php echo $user['contactID'];?>" data-url="/user/account/valid"
+                                           data-msg1="<?php echo $this->translate('is_valid');?>" data-msg2="<?php echo $this->translate('tip_valid_sucess');?>"
+                                           data-msg3="<?php echo $this->translate('tip_valid_fail');?>" onclick="doOption(this);">
+                                            <i class="far fa-check-circle"></i>
+                                        </a>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
                                 <td colspan="7"><?php echo $this->translate('noData'); ?></td>
