@@ -335,7 +335,7 @@ return array(
     'UPBank' => 'Relevant banking information.',
 //个人信息人员与账号模块（有些字段已经存在 下面模块不再进行说明）
     'state' => 'Status',
-    'ACTcheck'=>'Verify',
+    'verify'=>'Verify',
     'valids' => 'Valid',
 //产品&订单中心状态
     'valid' => 'Valid',

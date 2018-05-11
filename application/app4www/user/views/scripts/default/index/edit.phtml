@@ -264,7 +264,7 @@
                         <label class="labelbox"><!-- 电子邮箱 --><?php echo $this->translate('email');?></label>
                         <input class="must" style="border:1px solid #DF7E20;" type="text" name="email" id="email" value="<?php echo $this->e['email'];?>" tabindex="1" data-rule-mail="email" required data-msg-required="<?php echo $this->translate('de_null');?>" />
                         <?php if (!empty($this->e['email']) && empty($this->e['emailVerifyTime']) && $this->accountID==$this->e['accountID']):?>
-                            <a href="#" id="acEmail"><?php echo $this->translate('ACTcheck'); ?></a>
+                            <a href="#" id="acEmail"><?php echo $this->translate('verify'); ?></a>
                         <?php endif; ?>
                     </div>
 
@@ -331,7 +331,7 @@
                         <label class="labelbox"><!-- 登录名 --><?php echo $this->translate('elogname');?></label>
                         &nbsp;&nbsp;&nbsp;<?php echo $this->e['ecommloginname'];?>
                         <?php if (!empty($this->e['ecommloginname']) && $this->e['ecommstatus'] == "NV"&& $this->userID==$this->e['contactID']): ?>
-                            <a href="#" id="acReg"><?php echo $this->translate('ACTcheck'); ?></a>
+                            <a href="#" id="acReg"><?php echo $this->translate('verify'); ?></a>
                         <?php endif;?>
                     </div>
                     <div></div>

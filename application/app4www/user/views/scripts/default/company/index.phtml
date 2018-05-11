@@ -46,7 +46,9 @@
                                 <div class="col-md-10">
                                     <h3>
                                         <?php if ($this->CompAdmin == true): ?>
-                                            <span class="profile-heading-edit pull-right btn btn-xs" data-type="base"><i class="fas fa-pencil-alt" aria-hidden="true"></i>编辑</span>
+                                            <a class="profile-heading-edit pull-right btn btn-xs" data-type="base" href="/user/company">
+                                                <i class="fas fa-pencil-alt" aria-hidden="true"></i>编辑
+                                            </a>
                                         <?php endif; ?>
                                         <?php echo $this->e['accountName']; ?>
                                         <small>
@@ -79,7 +81,7 @@
                                         <dd>
                                             <?php echo $this->e['email']; ?>
                                             <?php if ($this->CompAdmin == true): ?>
-                                                <button type="button" id="acEmail" class="btn btn-warning btn-xs"><?php echo $this->translate('ACTcheck'); ?></button>
+                                                <button type="button" id="acEmail" class="btn btn-warning btn-xs"><?php echo $this->translate('verify'); ?></button>
                                             <?php endif; ?>
                                         </dd>
 
