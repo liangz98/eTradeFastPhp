@@ -119,14 +119,13 @@ class CompanyController extends Kyapi_Controller_Action
                 //判断国家是否允许修改
                 $_company->regdCountryCode = empty($regdCountryCode) ? $existDatt['regdCountryCode'] : $regdCountryCode;
 
-                $_company->industryCode = $this->_request->getParam('industryCode');
+                // $_company->industryCode = $this->_request->getParam('industryCode');
                 $_company->crnCode = $this->_request->getParam('crnCode');
                 $_company->langCode = $this->_request->getParam('langCode');
                 $_company->phone = $this->_request->getParam('phone');
                 $_company->fax = $this->_request->getParam('fax');
                 $_company->email = $this->_request->getParam('email');
                 $_company->website = $this->_request->getParam('website');
-                $_company->dunsnumber = $this->_request->getParam('dunsnumber');
                 $_company->legalForm = $this->_request->getParam('legalForm');
                 //时间处理.注所有时间处理均在父类Action 的方法DateTo 中实现
                 $ddtime = $this->_request->getParam("incorporationDate");
