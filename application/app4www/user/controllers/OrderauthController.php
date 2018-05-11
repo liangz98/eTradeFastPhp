@@ -68,10 +68,10 @@ class orderauthController extends Kyapi_Controller_Action
 		$this->view->acctID =$userKY2['accountID'];
         $existDatt=$userKY2['result'];
         //当前返回数据为空时 前端显示为无
-        if(!isset($existDatt['packingDesc']))$existDatt['packingDesc']=$this->view->translate('NoData');  //包装描述
-        if(!isset($existDatt['financingRequest']))$existDatt['financingRequest']=$this->view->translate('NoData');  //金融要求
-        if(!isset($existDatt['customClearanceRequest']))$existDatt['customClearanceRequest']=$this->view->translate('NoData'); //报关要求
-        if(!isset($existDatt['shippingRequest']))$existDatt['shippingRequest']=$this->view->translate('NoData');   //物流要求
+        if(!isset($existDatt['packingDesc']))$existDatt['packingDesc']=$this->view->translate('noData');  //包装描述
+        if(!isset($existDatt['financingRequest']))$existDatt['financingRequest']=$this->view->translate('noData');  //金融要求
+        if(!isset($existDatt['customClearanceRequest']))$existDatt['customClearanceRequest']=$this->view->translate('noData'); //报关要求
+        if(!isset($existDatt['shippingRequest']))$existDatt['shippingRequest']=$this->view->translate('noData');   //物流要求
 
         $this->view->orders=$existDatt;
         //判断是否请求合同签订

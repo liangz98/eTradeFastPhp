@@ -37,7 +37,7 @@ class ordercgController extends Kyapi_Controller_Action
 
 		}
 	}
-    
+
     public function indexAction() {
         try {
             $f1 = new Seed_Filter_Alnum();
@@ -45,34 +45,34 @@ class ordercgController extends Kyapi_Controller_Action
             if (empty($mod)) {
                 $mod = "index";
             }
-        
+
             $_orderStatus = strval($this->_request->getParam('status'));
             if (empty($_orderStatus)) {
                 $_orderStatus = '04';
             }
-        
+
             $_queryParams = $this->_request->getParam('queryParams');
             if (empty($_queryParams)) {
                 $_querySorts = null;
             }
-        
+
             $_querySorts = $this->_request->getParam('querySorts');
             if (empty($_querySorts)) {
                 $_querySorts = null;
             }
-        
+
             $_keyword = $this->_request->getParam('keyword');
             if (empty($_keyword)) {
                 $_keyword = null;
             }
-        
+
             $page = intval($this->_request->getParam('page'));
             if ($page < 1)
                 $page = 1;
             $_limit = 5;
             $_skip = $_limit * ($page - 1);
-        
-        
+
+
             //统计所有商品数量
             $orderCount = $this->json->countPurOrderStatusApi($this->_requestObject);
             $countArr = json_decode($orderCount);
@@ -82,13 +82,13 @@ class ordercgController extends Kyapi_Controller_Action
             $_resultData = $this->json->listPurOrderApi($this->_requestObject, $_queryParams, $_querySorts, $_keyword, $_skip, $_limit);
             $existData = json_decode($_resultData);
             $existDatt = $this->objectToArray($existData);
-        
+
             $this->view->e = $existDatt['result'];
-        
+
             //开始处理【顶部】最新订单状态查询
             $orderNEW = $this->json->getQuickPruOrderApi($this->_requestObject);
             $existNEW = json_decode($orderNEW);
-        
+
             //对象转换ARRAY
             $existNEWtt = $this->objectToArray($existNEW);
             $this->view->newE = $existNEWtt['result'];
@@ -97,23 +97,23 @@ class ordercgController extends Kyapi_Controller_Action
             $this->view->veorderID = $existNEWtt['result']['orderID'];
             //订单进度
             $this->view->plan = $this->planAction($existNEWtt['result']);
-        
+
             //统计正常状态数量、分页
             $existCount = $existDatt['extData'];
             $total = $existCount['totalSize'];
             $page = $existCount['totalPage'];
-        
+
             //设置视图订单状态
             $this->view->status = $_orderStatus;
             $this->view->status == '00' ? $linked = 'edit' : $linked = 'view';
             $this->view->linked = $linked;
-    
+
             // 取回物流信息
             $_requestOb=$this->_requestObject;
             $_orderID = $existNEWtt['result']['orderID'];
             $deliveryList = $this->json->listDelivery($_requestOb, $_orderID);
             $this->view->deliveryList = json_decode($deliveryList)->result;
-        
+
             $file = "user/ordercg/" . $mod . "-" . $_orderStatus;
             $_limit = 5;
             $pageObj = new Seed_Page($this->_request, $total, $_limit);
@@ -126,8 +126,8 @@ class ordercgController extends Kyapi_Controller_Action
         } catch (Exception $e) {
             Shop_Browser::redirect($e->getMessage());
         }
-    
-    
+
+
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/ordercg/index.phtml");
             echo $content;
@@ -397,10 +397,10 @@ class ordercgController extends Kyapi_Controller_Action
 		$viewData =$userView->result;
 		$Viewlist=$this->objectToArray($viewData);
         //当前返回数据为空时 前端显示为无
-        if(!isset($Viewlist['packingDesc']))$Viewlist['packingDesc']=$this->view->translate('NoData');  //包装描述
-        if(!isset($Viewlist['financingRequest']))$Viewlist['financingRequest']=$this->view->translate('NoData');  //金融要求
-        if(!isset($Viewlist['customClearanceRequest']))$Viewlist['customClearanceRequest']=$this->view->translate('NoData'); //报关要求
-        if(!isset($Viewlist['shippingRequest']))$Viewlist['shippingRequest']=$this->view->translate('NoData');   //物流要求
+        if(!isset($Viewlist['packingDesc']))$Viewlist['packingDesc']=$this->view->translate('noData');  //包装描述
+        if(!isset($Viewlist['financingRequest']))$Viewlist['financingRequest']=$this->view->translate('noData');  //金融要求
+        if(!isset($Viewlist['customClearanceRequest']))$Viewlist['customClearanceRequest']=$this->view->translate('noData'); //报关要求
+        if(!isset($Viewlist['shippingRequest']))$Viewlist['shippingRequest']=$this->view->translate('noData');   //物流要求
 		$this->view->orders=$Viewlist;
 
 		//处理根据返回的运输方式来判断 起运|卸货|交货查询的缓存目录名称
@@ -656,7 +656,7 @@ class ordercgController extends Kyapi_Controller_Action
 			exit;
 		}
 	}
-    
+
     public function viewAction() {
 		//读取数据字典
 		$cacheM = new Seed_Model_Cache2File();
@@ -670,7 +670,7 @@ class ordercgController extends Kyapi_Controller_Action
 		$_requestOb=$this->_requestObject;
 		$_resultKY=$this->json->getOrderApi($_requestOb,$_orderID);
 		$userKY=json_decode($_resultKY);
-  
+
 		// 取回当前公司的企业认证状态
         $_accountID = $this->view->accountID;
         $account = $this->json->getAccountApi($_requestOb, $_accountID);
@@ -680,10 +680,10 @@ class ordercgController extends Kyapi_Controller_Action
 		$existData =$userKY->result;
 		$existDatt=$this->objectToArray($existData);
         //当前返回数据为空时 前端显示为无
-        if(!isset($existDatt['packingDesc']))$existDatt['packingDesc']=$this->view->translate('NoData');  //包装描述
-        if(!isset($existDatt['financingRequest']))$existDatt['financingRequest']=$this->view->translate('NoData');  //金融要求
-        if(!isset($existDatt['customClearanceRequest']))$existDatt['customClearanceRequest']=$this->view->translate('NoData'); //报关要求
-        if(!isset($existDatt['shippingRequest']))$existDatt['shippingRequest']=$this->view->translate('NoData');   //物流要求
+        if(!isset($existDatt['packingDesc']))$existDatt['packingDesc']=$this->view->translate('noData');  //包装描述
+        if(!isset($existDatt['financingRequest']))$existDatt['financingRequest']=$this->view->translate('noData');  //金融要求
+        if(!isset($existDatt['customClearanceRequest']))$existDatt['customClearanceRequest']=$this->view->translate('noData'); //报关要求
+        if(!isset($existDatt['shippingRequest']))$existDatt['shippingRequest']=$this->view->translate('noData');   //物流要求
 
         $this->view->orders=$existDatt;
         //判断是否请求合同签订
@@ -696,8 +696,8 @@ class ordercgController extends Kyapi_Controller_Action
         }
 
         $this->view->contractList=empty($contractList)?null:$contractList;
-        
-        
+
+
 		//处理根据返回的运输方式来判断 起运|卸货|交货查询的缓存目录名称
 		if ($existDatt['shippingMethod'] == 'SEA') {
 			$this->view->port = "SEA_PORT";
@@ -719,7 +719,7 @@ class ordercgController extends Kyapi_Controller_Action
 
 		$this->view->vestut=$existDatt['buyerExecStatus'];
 		$this->view->veorderID=$existDatt['orderID'];
-        
+
         // 取回物流信息
         $deliveryList = $this->json->listDelivery($_requestOb, $_orderID);
         $this->view->deliveryList = json_decode($deliveryList)->result;
@@ -734,7 +734,7 @@ class ordercgController extends Kyapi_Controller_Action
 		}else{
 			$this->view->allowEdit=0;
 		}
-    
+
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/ordercg/view.phtml");
             echo $content;
@@ -879,7 +879,7 @@ class ordercgController extends Kyapi_Controller_Action
 //				$_attachList[$k]->bizID=$_attach2[$k]['bizID'];
             }
         }
-        
+
         $_requestOb = $this->_requestObject;
         if (count($_attachList) == 0) {
             $_attachList = null;
@@ -895,24 +895,24 @@ class ordercgController extends Kyapi_Controller_Action
 //		}
 		exit;
 	}
-    
+
     // 详情 - view
     public function deliveryviewAction() {
         $deliveryID = $this->_request->getParam('deliveryID');
         $_requestOb = $this->_requestObject;
         $resultObject = $this->json->getDeliveryView($_requestOb, $deliveryID);
-        
+
         $delivery = json_decode($resultObject)->result;
         $this->view->delivery = json_decode($resultObject)->result;
         $attachmentList = $delivery->attachmentList;
-        
+
         $this->view->prepareAttachmentList = array();   // 备货
         $this->view->examineAttachmentList = array();   // 验货
         $this->view->deliverAttachmentList = array();   // 发货
         $this->view->receiptAttachmentList = array();   // 收货
         $this->view->qualityAttachmentList = array();   // 质量保证函正本
         $this->view->receiptConfirmationAttachmentList = array();   // 收货确认函正本
-        
+
         foreach ($attachmentList as $k => $v) {
             if ($v->attachType == "DLPG") {
                 $this->view->prepareAttachmentList[] = $v;
@@ -928,24 +928,24 @@ class ordercgController extends Kyapi_Controller_Action
                 $this->view->receiptConfirmationAttachmentList[] = $v;
             }
         }
-        
+
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/ordercg/deliveryView.phtml");
             echo $content;
             exit;
         }
     }
-    
+
     // 验货 - view
     public function examineAction() {
         $deliveryID = $this->_request->getParam('deliveryID');
         $_requestOb = $this->_requestObject;
         $resultObject = $this->json->getDeliveryView($_requestOb, $deliveryID);
-        
+
         $delivery = json_decode($resultObject)->result;
         $this->view->delivery = json_decode($resultObject)->result;
         $attachmentList = $delivery->attachmentList;
-        
+
         $this->view->attachmentList = array();
         $this->view->templAttachmentList = array();
         if ($delivery->deliveryStatus = 1) {
@@ -957,14 +957,14 @@ class ordercgController extends Kyapi_Controller_Action
                 }
             }
         }
-        
+
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/ordercg/deliveryExamine.phtml");
             echo $content;
             exit;
         }
     }
-	
+
 	// 验货 - 保存
     public function examinesaveAction() {
 		$_requestOb = $this ->_requestObject;
@@ -1020,28 +1020,28 @@ class ordercgController extends Kyapi_Controller_Action
 				$_attachList[$k]->bizType="OD";
 			}
 		}
-    
+
         if (count($_attachList) == 0) {
             $_attachList = null;
         }
-        
+
 		$_resultData = $this->json->doExamineGoodsApi($_requestOb, $deliveryID, $_attachList);
 		$existData = json_decode($_resultData);
         echo json_encode($existData->status);
 
 		exit;
 	}
-    
+
     // 收货 - view
     public function receiptAction() {
         $deliveryID = $this->_request->getParam('deliveryID');
         $_requestOb = $this->_requestObject;
         $resultObject = $this->json->getDeliveryView($_requestOb, $deliveryID);
-        
+
         $delivery = json_decode($resultObject)->result;
         $this->view->delivery = json_decode($resultObject)->result;
         $attachmentList = $delivery->attachmentList;
-        
+
         $this->view->attachmentList = array();
         $this->view->templAttachmentList = array();
         if ($delivery->deliveryStatus = 1) {
@@ -1053,14 +1053,14 @@ class ordercgController extends Kyapi_Controller_Action
                 }
             }
         }
-        
+
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/ordercg/deliveryReceipt.phtml");
             echo $content;
             exit;
         }
     }
-	
+
 	//收货 - 保存
     public function receiptsaveAction() {
 		$_requestOb=$this->_requestObject;
@@ -1070,12 +1070,12 @@ class ordercgController extends Kyapi_Controller_Action
 		$size=$_POST['size'];
         $attachType = $_POST['attachType'];
         $deliveryID = $_POST['deliveryID'];
-		
+
         $_nid=explode("|",$nid);
 		$_name=explode("|",$name);
 		$_size=explode("|",$size);
         $_attachType = explode("|", $attachType);
-        
+
 		foreach( $_nid as $k=>$v){
 			if( !$v )
 				unset( $_nid[$k] );
@@ -1098,7 +1098,7 @@ class ordercgController extends Kyapi_Controller_Action
 		$attach['name']=$_name;
 		$attach['size']=$_size;
         $attach['attachType']=$_attachType;
-        
+
 		$_attach2=array();
 		foreach($attach as $k =>$v){
 			foreach($v as $k1=>$v1){
@@ -1117,7 +1117,7 @@ class ordercgController extends Kyapi_Controller_Action
 				$_attachList[$k]->bizType="OD";
 			}
 		}
-    
+
         if (count($_attachList) == 0) {
             $_attachList = null;
         }
@@ -1127,7 +1127,7 @@ class ordercgController extends Kyapi_Controller_Action
 
 		exit;
 	}
-	
+
 	//订单跟踪日志
 	public function trackAction()
 	{
@@ -1478,11 +1478,11 @@ class ordercgController extends Kyapi_Controller_Action
         }
         return $exArray;
     }
-    
+
     public function getsignmobileAction() {
         $msg = 0;
         if ($this->_request->isPost()) {
-            
+
             $_requestOb = $this->_requestObject;
             $existData = $this->json->getSignMobile($_requestOb);
             $res = json_decode($existData)->result;
@@ -1491,11 +1491,11 @@ class ordercgController extends Kyapi_Controller_Action
         echo json_encode($msg);
         exit;
     }
-    
+
     public function sendsignauthcodeAction() {
         $msg = 0;
         if ($this->_request->isPost()) {
-            
+
             $_requestOb = $this->_requestObject;
             $existData = $this->json->sendSignAuthCode($_requestOb);
             $res = json_decode($existData)->result;
@@ -1504,14 +1504,14 @@ class ordercgController extends Kyapi_Controller_Action
         echo json_encode($msg);
         exit;
     }
-    
+
     public function dosignpdfAction() {
         $msg = 0;
         if ($this->_request->isPost()) {
-    
+
             $contractID = $this->_request->getParam('contractID');
             $authCode = $this->_request->getParam('signAuthCode');
-    
+
             $_requestOb = $this->_requestObject;
             $existData = $this->json->doSignPDF($_requestOb, $contractID, $authCode);
             $res = json_decode($existData)->result;
@@ -1520,13 +1520,13 @@ class ordercgController extends Kyapi_Controller_Action
         echo json_encode($msg);
         exit;
     }
-    
+
     // ***************  个人  ***************************
-    
+
     public function getpersonsignmobileAction() {
         $msg = 0;
         if ($this->_request->isPost()) {
-            
+
             $_requestOb = $this->_requestObject;
             $existData = $this->json->getPersonSignMobileApi($_requestOb);
             $res = json_decode($existData)->result;
@@ -1535,11 +1535,11 @@ class ordercgController extends Kyapi_Controller_Action
         echo json_encode($msg);
         exit;
     }
-    
+
     public function sendpersonsignauthcodeAction() {
         $msg = 0;
         if ($this->_request->isPost()) {
-            
+
             $_requestOb = $this->_requestObject;
             $existData = $this->json->sendPersonSignAuthCodeApi($_requestOb);
             $res = json_decode($existData)->result;
@@ -1548,14 +1548,14 @@ class ordercgController extends Kyapi_Controller_Action
         echo json_encode($msg);
         exit;
     }
-    
+
     public function dopersonsignpdfAction() {
         $msg = 0;
         if ($this->_request->isPost()) {
-            
+
             $contractID = $this->_request->getParam('contractID');
             $authCode = $this->_request->getParam('signAuthCode');
-            
+
             $_requestOb = $this->_requestObject;
             $existData = $this->json->doPersonSignPDFApi($_requestOb, $contractID, $authCode);
             $res = json_decode($existData)->result;

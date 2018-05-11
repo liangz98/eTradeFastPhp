@@ -23,6 +23,40 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-9 company-main">
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading"><?php echo $this->translate('personNO'); ?></div>
+                    <div class="panel-body">
+                        <p>...</p>
+                    </div>
+
+                    <!-- Table -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th width="150"><<?php echo $this->translate('name'); ?></th>
+                            <th width="200"><?php echo $this->translate('username'); ?></th>
+                            <th width="70"><?php echo $this->translate('userP'); ?></th>
+                            <th width="200"><?php echo $this->translate('userROLE'); ?></th>
+                            <th width="70"><?php echo $this->translate('userPT'); ?></th>
+                            <th width="70"><?php echo $this->translate('accountDF'); ?></th>
+                            <th width="80"><?php echo $this->translate('madeTT'); ?></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php if (is_array($this->userList) && count($this->userList) > 0): ?>
+
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="7"><?php echo $this->translate('noData'); ?></td>
+                            </tr>
+                        <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 		</div>
 	</div>
 </div>

@@ -6,7 +6,7 @@ class OrderxsController extends Kyapi_Controller_Action
         $this->view->cur_pos = 'info';
         //清除 免登陆session
         $this->IsAuth($this->view->visitor);
-        
+
         if (empty($this->view->userID)) {
             // 提示：请先登录系统
             Mobile_Browser::redirect($this->view->translate('tip_login_please'), $this->view->seed_Setting['user_app_server'] . "/login");
@@ -18,11 +18,11 @@ class OrderxsController extends Kyapi_Controller_Action
             $this->indexAction();
             exit;
         }
-        
+
         preg_match('/(.*)\.html/', $cururl, $arr);
-        
+
         if (isset($arr[1]) && !empty($arr[1])) {
-            
+
             preg_match_all('/^\/user\/orderxs\/(index|top|price)-([\d]+)-([\d]+).html/isU', $cururl, $arr);
             if (is_array($arr) && count($arr) > 1) {
                 $this->_request->setParam('status', $arr[2][0]);
@@ -400,9 +400,9 @@ class OrderxsController extends Kyapi_Controller_Action
         $Viewlist = $this->objectToArray($viewData);
         //当前返回数据为空时 前端显示为无
         if(!isset($Viewlist['packingDesc']))$Viewlist['packingDesc']=$this->view->translate('NoData');  //包装描述
-        if(!isset($Viewlist['financingRequest']))$Viewlist['financingRequest']=$this->view->translate('NoData');  //金融要求
-        if(!isset($Viewlist['customClearanceRequest']))$Viewlist['customClearanceRequest']=$this->view->translate('NoData'); //报关要求
-        if(!isset($Viewlist['shippingRequest']))$Viewlist['shippingRequest']=$this->view->translate('NoData');   //物流要求
+        if(!isset($Viewlist['financingRequest']))$Viewlist['financingRequest']=$this->view->translate('noData');  //金融要求
+        if(!isset($Viewlist['customClearanceRequest']))$Viewlist['customClearanceRequest']=$this->view->translate('noData'); //报关要求
+        if(!isset($Viewlist['shippingRequest']))$Viewlist['shippingRequest']=$this->view->translate('noData');   //物流要求
         $this->view->orders = $Viewlist;
 
         //处理根据返回的运输方式来判断 起运|卸货|交货查询的缓存目录名称
@@ -664,49 +664,49 @@ class OrderxsController extends Kyapi_Controller_Action
         $orderID = $_SERVER['QUERY_STRING'];
         $_orderID = base64_decode($orderID);
         $this->view->orderid = $_orderID;
-    
+
         $_requestOb = $this->_requestObject;
         $_resultKY = $this->json->getOrderApi($_requestOb, $_orderID);
         $userKY = json_decode($_resultKY);
-    
+
         // 取回当前公司的企业认证状态
         $_accountID = $this->view->accountID;
         $account = $this->json->getAccountApi($_requestOb, $_accountID);
         $this->view->hasIDCertificate = json_decode($account)->result->hasIDCertificate;
-    
+
         $accountData = $this->objectToArray(json_decode($account)->result);
         $this->view->account = $accountData;
-    
-    
+
+
         $existData = $userKY->result;
         $existDatt = $this->objectToArray($existData);
 
         //当前返回数据为空时 前端显示为无
         if (!isset($existDatt['packingDesc']))
-            $existDatt['packingDesc'] = $this->view->translate('NoData');  //包装描述
+            $existDatt['packingDesc'] = $this->view->translate('noData');  //包装描述
         if (!isset($existDatt['financingRequest']))
-            $existDatt['financingRequest'] = $this->view->translate('NoData');  //金融要求
+            $existDatt['financingRequest'] = $this->view->translate('noData');  //金融要求
         if (!isset($existDatt['customClearanceRequest']))
-            $existDatt['customClearanceRequest'] = $this->view->translate('NoData'); //报关要求
+            $existDatt['customClearanceRequest'] = $this->view->translate('noData'); //报关要求
         if (!isset($existDatt['shippingRequest']))
-            $existDatt['shippingRequest']=$this->view->translate('NoData');   //物流要求
-    
+            $existDatt['shippingRequest']=$this->view->translate('noData');   //物流要求
+
         $this->view->orders = $existDatt;
-    
+
         // 订单合同列表
         $bizType = 'OD';
         $listBizContractResultObject = $this->json->listBizContract($_requestOb, $bizType, $_orderID);
         $listBizContract = json_decode($listBizContractResultObject)->result;
         $this->view->contractList = empty($listBizContract) ? null : $this->objectToArray($listBizContract);
-        
+
         $this->view->vestut = $existDatt['vendorExecStatus'];
         $this->view->veorderID = $existDatt['orderID'];
-    
-    
+
+
         // 取回物流信息
         $deliveryList = $this->json->listDelivery($_requestOb, $_orderID);
         $this->view->deliveryList = json_decode($deliveryList)->result;
-    
+
         // 是否存在已完成的物流
         $this->view->hasOneTakeOverDelivery = False;
         $deliveryData = $this->objectToArray(json_decode($deliveryList));
@@ -717,7 +717,7 @@ class OrderxsController extends Kyapi_Controller_Action
                 break;
             }
         }
-    
+
         // 物流相关附件
         $this->view->DLPG = array();    // 备货相关附件
         $this->view->DLEG = array();    // 验货相关附件
@@ -728,15 +728,15 @@ class OrderxsController extends Kyapi_Controller_Action
         $this->view->DLCT = array();    // 收货确认函模板
         $this->view->DLCF = array();    // 收货确认函正本
         $deliveryAttachDataList = $deliveryData['result'];
-    
-    
+
+
         //处理根据返回的运输方式来判断 起运|卸货|交货查询的缓存目录名称
         if ($existDatt['shippingMethod'] == 'SEA') {
             $this->view->port = "SEA_PORT";
             $this->view->loadingPort = $existDatt['loadingPort'];
             $this->view->dischargePort = $existDatt['dischargePort'];
             $this->view->deliveryPort = $existDatt['deliveryPort'];
-    
+
         } else if ($existDatt['shippingMethod'] == 'AIR') {
             $this->view->port = "AIR_PORT";
             $this->view->loadingPort = $existDatt['loadingPort'];
@@ -748,7 +748,7 @@ class OrderxsController extends Kyapi_Controller_Action
             $this->view->dischargePort = $existDatt['dischargeCity'];
             $this->view->deliveryPort = $existDatt['deliveryCity'];
         };
-    
+
         if ($this->view->accountID == $existDatt['client']) {
             if ($existDatt['orderStatus'] == 05 || $existDatt['orderStatus'] == 00 || $existDatt['orderStatus'] == 02) {
                 $this->view->allowEdit = 1;
@@ -758,8 +758,8 @@ class OrderxsController extends Kyapi_Controller_Action
         } else {
             $this->view->allowEdit = 0;
         }
-    
-    
+
+
         //判断港口/城市
         if ($existDatt['shippingMethod'] == 'SEA') {
             $this->view->shipping = 'SEA_PORT';
@@ -768,7 +768,7 @@ class OrderxsController extends Kyapi_Controller_Action
         } else {
             $this->view->shipping = 'CITY_ISO_CODE';
         }
-    
+
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/orderxs/view.phtml");
             echo $content;
@@ -1059,24 +1059,24 @@ class OrderxsController extends Kyapi_Controller_Action
         echo json_encode($existData->status);
         exit;
     }
-    
+
     /* 发货单详情 */
     public function deliveryviewAction() {
         $deliveryID = $this->_request->getParam('deliveryID');
         $_requestOb = $this->_requestObject;
         $resultObject = $this->json->getDeliveryView($_requestOb, $deliveryID);
-    
+
         $delivery = json_decode($resultObject)->result;
         $this->view->delivery = json_decode($resultObject)->result;
         $attachmentList = $delivery->attachmentList;
-    
+
         $this->view->prepareAttachmentList = array();   // 备货
         $this->view->examineAttachmentList = array();   // 验货
         $this->view->deliverAttachmentList = array();   // 发货
         $this->view->receiptAttachmentList = array();   // 收货
         $this->view->qualityAttachmentList = array();   // 质量保证函正本
         $this->view->receiptConfirmationAttachmentList = array();   // 收货确认函正本
-    
+
         foreach ($attachmentList as $k => $v) {
             if ($v->attachType == "DLPG") {
                 $this->view->prepareAttachmentList[] = $v;
@@ -1092,25 +1092,25 @@ class OrderxsController extends Kyapi_Controller_Action
                 $this->view->receiptConfirmationAttachmentList[] = $v;
             }
         }
-    
+
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/orderxs/deliveryView.phtml");
             echo $content;
             exit;
         }
     }
-    
+
     // 订单商品列表
     public function listorderitemAction() {
         $orderID = $this->_request->getParam('orderID');
         $deliveryCrnCode = $this->_request->getParam('deliveryCrnCode');
         $_requestOb = $this->_requestObject;
         $resultObject = $this->json->listOrderItem($_requestOb, $orderID);
-        
-    
+
+
         $this->view->orderItemList = json_decode($resultObject)->result;
         $this->view->deliveryCrnCode = $deliveryCrnCode;
-        
+
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/orderxs/deliveryAdd.phtml");
             echo $content;
@@ -1148,7 +1148,7 @@ class OrderxsController extends Kyapi_Controller_Action
             if (!$v)
                 unset($_attachType[$k]);
         }
-        
+
         $attach = array();
         $attach['nid'] = $_nid;
         $attach['name'] = $_name;
@@ -1175,10 +1175,10 @@ class OrderxsController extends Kyapi_Controller_Action
 
         $delivery = new Kyapi_Model_Delivery();
         $delivery->orderID = $_orderID;
-    
+
         $orderItemID = explode("|", $_POST['orderItemID']);
         $deliveryQuantity = explode("|", $_POST['deliveryQuantity']);
-    
+
         foreach ($orderItemID as $k => $v) {
             if (!$v)
                 unset($orderItemID[$k]);
@@ -1187,14 +1187,14 @@ class OrderxsController extends Kyapi_Controller_Action
             if (!$v)
                 unset($deliveryQuantity[$k]);
         }
-        
+
         $deliveryItemList = array();
         foreach ($orderItemID as $index => $value) {
             $deliveryItemList[$index] = new Kyapi_Model_DeliveryItem();
             $deliveryItemList[$index]->orderItemID = $value;
             $deliveryItemList[$index]->deliveryQuantity = $deliveryQuantity[$index];
         }
-    
+
         if (count($_attachList) == 0) {
             $_attachList = null;
         }
@@ -1204,32 +1204,32 @@ class OrderxsController extends Kyapi_Controller_Action
         echo json_encode($existData->status);
         exit;
     }
-    
+
     // 编辑备货单 - view
     public function editdeliveryAction() {
         $deliveryID = $this->_request->getParam('deliveryID');
         $_requestOb = $this->_requestObject;
         $resultObject = $this->json->getDeliveryView($_requestOb, $deliveryID);
-        
+
         $delivery = json_decode($resultObject)->result;
         $this->view->delivery = json_decode($resultObject)->result;
         $attachmentList = $delivery->attachmentList;
-    
+
         $this->view->attachmentList = array();
         foreach ($attachmentList as $k => $v) {
-            
+
             if ($v->attachType == "DLPG") {
                 $this->view->attachmentList[] = $v;
             }
         }
-        
+
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/orderxs/deliveryEdit.phtml");
             echo $content;
             exit;
         }
     }
-    
+
     // 编辑备货单 - 保存
     public function editdeliverysaveAction() {
         $_requestOb = $this->_requestObject;
@@ -1243,7 +1243,7 @@ class OrderxsController extends Kyapi_Controller_Action
         $_name = explode("|", $name);
         $_size = explode("|", $size);
         $_attachType = explode("|", $attachType);
-    
+
         foreach ($_nid as $k => $v) {
             if (!$v)
                 unset($_nid[$k]);
@@ -1260,13 +1260,13 @@ class OrderxsController extends Kyapi_Controller_Action
             if (!$v)
                 unset($_attachType[$k]);
         }
-    
+
         $attach = array();
         $attach['nid'] = $_nid;
         $attach['name'] = $_name;
         $attach['size'] = $_size;
         $attach['attachType'] = $_attachType;
-    
+
         $_attach2 = array();
         foreach ($attach as $k => $v) {
             foreach ($v as $k1 => $v1) {
@@ -1284,11 +1284,11 @@ class OrderxsController extends Kyapi_Controller_Action
                 $_attachList[$k]->bizType = "OD";
             }
         }
-    
-    
+
+
         $orderItemID = explode("|", $_POST['orderItemID']);
         $deliveryQuantity = explode("|", $_POST['deliveryQuantity']);
-    
+
         foreach ($orderItemID as $k => $v) {
             if (!$v)
                 unset($orderItemID[$k]);
@@ -1297,33 +1297,33 @@ class OrderxsController extends Kyapi_Controller_Action
             if (!$v)
                 unset($deliveryQuantity[$k]);
         }
-    
+
         $deliveryItemList = array();
         foreach ($orderItemID as $index => $value) {
             $deliveryItemList[$index] = new Kyapi_Model_DeliveryItem();
             $deliveryItemList[$index]->itemID = $value;
             $deliveryItemList[$index]->deliveryQuantity = $deliveryQuantity[$index];
         }
-    
+
         if (count($_attachList) == 0) {
             $_attachList = null;
         }
         $_resultData = $this->json->editDeliveryApi($_requestOb, $deliveryID, $deliveryItemList, $_attachList);
         $existData = json_decode($_resultData);
-        
+
         echo json_encode($existData->status);
         exit;
     }
-    
+
     // 删除备货单
     public function deldeliveryAction() {
         $_requestOb = $this->_requestObject;
         // 请求Hessian服务端方法
         $deliveryID = $_POST['deliveryID'];
-        
+
         $_resultData = $this->json->delDeliveryApi($_requestOb, $deliveryID);
         $existData = json_decode($_resultData);
-        
+
         echo json_encode($existData->status);
         exit;
     }
@@ -1333,25 +1333,25 @@ class OrderxsController extends Kyapi_Controller_Action
         $deliveryID = $this->_request->getParam('deliveryID');
         $_requestOb = $this->_requestObject;
         $resultObject = $this->json->getDeliveryView($_requestOb, $deliveryID);
-    
+
         $delivery = json_decode($resultObject)->result;
         $this->view->delivery = json_decode($resultObject)->result;
         $attachmentList = $delivery->attachmentList;
-    
+
         $this->view->attachmentList = array();
         foreach ($attachmentList as $k => $v) {
             if ($v->attachType == "DLDG") {
                 $this->view->attachmentList[] = $v;
             }
         }
-    
+
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/orderxs/deliveryDeliver.phtml");
             echo $content;
             exit;
         }
     }
-    
+
     // 发货 - 保存
     public function deliversaveAction() {
         $_requestOb = $this->_requestObject;
@@ -1365,7 +1365,7 @@ class OrderxsController extends Kyapi_Controller_Action
         $_name = explode("|", $name);
         $_size = explode("|", $size);
         $_attachType = explode("|", $attachType);
-        
+
         foreach ($_nid as $k => $v) {
             if (!$v)
                 unset($_nid[$k]);
@@ -1388,7 +1388,7 @@ class OrderxsController extends Kyapi_Controller_Action
         $attach['name'] = $_name;
         $attach['size'] = $_size;
         $attach['attachType']=$_attachType;
-        
+
         $_attach2 = array();
         foreach ($attach as $k => $v) {
             foreach ($v as $k1 => $v1) {
@@ -1416,23 +1416,23 @@ class OrderxsController extends Kyapi_Controller_Action
 
         exit;
     }
-    
+
     // 开票资料 - view
     public function deliverbillinginfoAction() {
         $deliveryID = $this->_request->getParam('deliveryID');
         $_requestOb = $this->_requestObject;
         $resultObject = $this->json->getDeliveryView($_requestOb, $deliveryID);
-        
+
         $delivery = json_decode($resultObject)->result;
         $this->view->deliveryID = $deliveryID;
         $this->view->delivery = json_decode($resultObject)->result;
         $this->view->deliverySupplierList = $delivery->deliverySupplierList;
-    
+
         // 取回当前公司的企业认证状态
         $_accountID = $this->view->accountID;
         $account = $this->json->getAccountApi($_requestOb, $_accountID);
         $this->view->hasIDCertificate = json_decode($account)->result->hasIDCertificate;
-        
+
         if (defined('SEED_WWW_TPL')) {
             if ($delivery->needTransfer && $delivery->transferRequestDate == null) {
                 $content = $this->view->render(SEED_WWW_TPL . "/orderxs/genBillingInfo.phtml");
@@ -1444,51 +1444,51 @@ class OrderxsController extends Kyapi_Controller_Action
                 $this->view->billingInfo = $billingInfo;
                 $this->view->deliverySupplierList = $billingInfo->deliverySupplierList;
                 // $purContractAttachmentList = $billingInfo->deliverySupplierList->purContract->attachmentList;
-                
+
                 $content = $this->view->render(SEED_WWW_TPL . "/orderxs/getBillingInfo.phtml");
                 echo $content;
                 exit;
             }
         }
     }
-    
+
     public function genbillinginfoAction() {
         if ($this->_request->isPost()) {
             $deliveryID = $this->_request->getParam('deliveryID');
             $supplierID = $this->_request->getParam('supplierID');
             $bankAcctID = $this->_request->getParam('bankAcctID');
-            
+
             $delivery = new Kyapi_Model_Delivery();
             $delivery->deliveryID = $deliveryID;
-    
+
             $_supplierID = explode("|", $supplierID);
             foreach ($_supplierID as $k => $v) {
                 if (!$v)
                     unset($_supplierID[$k]);
             }
-    
+
             $_bankAcctID = explode("|", $bankAcctID);
             foreach ($_supplierID as $k => $v) {
                 if (!$v)
                     unset($_bankAcctID[$k]);
             }
-            
+
             foreach ($_supplierID as $index => $value) {
                 $deliverySupplier = new Kyapi_Model_DeliverySupplier();
                 $deliverySupplier->supplierID = $value;
                 $deliverySupplier->bankAcctID = $_bankAcctID[$index];
                 $delivery->deliverySupplierList[$index] = $deliverySupplier;
             }
-    
+
             $_requestOb = $this->_requestObject;
             $_resultData = $this->json->genBillingInfoApi($_requestOb, $delivery);
             $existData = json_decode($_resultData);
-    
+
             echo json_encode($existData->status);
             exit;
         }
     }
-    
+
     // 编辑物流信息
     public function editexpresssaveAction() {
         if ($this->_request->isPost()) {
@@ -1497,26 +1497,26 @@ class OrderxsController extends Kyapi_Controller_Action
             $expressType = $this->_request->getPost('expressType');
             $expressNo = $this->_request->getPost('expressNo');
             $_requestOb = $this->_requestObject;
-    
+
             $deliverySupplier = new Kyapi_Model_DeliverySupplier();
             $deliverySupplier->deliveryID = $deliveryID;
             $deliverySupplier->supplierID = $supplierID;
             $deliverySupplier->expressType = $expressType;
             $deliverySupplier->expressNo = $expressNo;
-            
+
             // var_dump($deliverySupplier);
             // print_r("----------------");
             // $delObj = json_encode($deliverySupplier);
             // print_r("-------2222222222---------");
             // var_dump($delObj);
             // exit;
-            
+
             $resultObject = $this->json->editExpressNoApi($_requestOb, $deliverySupplier);
             echo $resultObject->status;
         }
         exit;
     }
-    
+
     // 封装银行列表
     public function genbankaccountlistAction() {
         $bankOptions = "";
@@ -1662,7 +1662,7 @@ class OrderxsController extends Kyapi_Controller_Action
         $this->view->TOTM = array();    // 派车单
         $this->view->EDCT = array();    // 报关单
         $this->view->PL4C = array();    // 装箱单
-    
+
         $this->view->DLPG = array();    // 备货相关附件
         $this->view->DLEG = array();    // 验货相关附件
         $this->view->DLDG = array();    // 发货相关附件
@@ -1671,26 +1671,26 @@ class OrderxsController extends Kyapi_Controller_Action
         $this->view->DLQF = array();    // 质量保证函正本
         $this->view->DLCT = array();    // 收货确认函模板
         $this->view->DLCF = array();    // 收货确认函正本
-    
+
         foreach ($doc as $k => $v) {
             if ($v['attachType'] == "SOTM") {
                 $this->view->SOTM[] = $v;
                 //订舱单
                 $this->view->SOTM_name = $this->view->translate('booking') . '(' . $v['attachType'] . ')';
             }
-        
+
             if ($v['attachType'] == "TOTM") {
                 $this->view->TOTM[] = $v;
                 //派车单
                 $this->view->TOTM_name = $this->view->translate('carsbook') . '(' . $v['attachType'] . ')';
             }
-        
+
             if ($v['attachType'] == "EDCT") {
                 $this->view->EDCT[] = $v;
                 //报关单
                 $this->view->EDCT_name = $this->view->translate('customs') . '(' . $v['attachType'] . ')';
             }
-        
+
             if ($v['attachType'] == "PL4C") {
                 $this->view->PL4C[] = $v;
                 //装箱单
@@ -1706,27 +1706,27 @@ class OrderxsController extends Kyapi_Controller_Action
                 //委托书
                 $this->view->ODTA_name = $this->view->translate('proxyNo') . '(' . $v['attachType'] . ')';
             }
-        
+
             if ($v['attachType'] == "ODSE") {
-            
+
                 $this->view->ODSE[] = $v;
                 //盖章委托书
                 $this->view->ODSE_name = $this->view->translate('delegation') . '(' . $v['attachType'] . ')';
             }
-        
+
             if ($v['attachType'] == "CRCT") {
-            
+
                 $this->view->CRCT[] = $v;
                 //合同范本
                 $this->view->CRCT_name = $this->view->translate('contract_tmp') . '(' . $v['attachType'] . ')';
             }
-        
+
             if ($v['attachType'] == "CRSE") {
                 $this->view->CRSE[] = $v;
                 //盖章合同
                 $this->view->CRSE_name = $this->view->translate('contract_seal') . '(' . $v['attachType'] . ')';
             }
-        
+
             if ($v['attachType'] == "ODBQ") {
                 $this->view->ODBQ[] = $v;
                 //买家计价单
@@ -1737,72 +1737,72 @@ class OrderxsController extends Kyapi_Controller_Action
                 //卖家计价单
                 $this->view->ODVQ_name = $this->view->translate('seller') . $this->view->translate('valuationNo') . '(' . $v['attachType'] . ')';
             }
-        
+
             if ($v['attachType'] == "ODQA") {
                 $this->view->ODQA[] = $v;
                 //质保函范本
                 $this->view->ODQA_name = $this->view->translate('quality_tmp') . '(' . $v['attachType'] . ')';
             }
-        
+
             if ($v['attachType'] == "ODQS") {
                 $this->view->ODQS[] = $v;
                 //盖章质保函
                 $this->view->ODQS_name = $this->view->translate('quality_seal') . '(' . $v['attachType'] . ')';
             }
-        
+
             // *******************
-    
+
             // 备货相关附件
             if ($v['attachType'] == "DLPG") {
                 $this->view->DLPG[] = $v;
                 $this->view->DLPG_name = $this->view->translate('stockVIEW') . '(' . $v['attachType'] . ')';
             }
-    
+
             // 验货相关附件
             if ($v['attachType'] == "DLEG") {
                 $this->view->DLEG[] = $v;
                 $this->view->DLEG_name = $this->view->translate('stockVIEW') . '(' . $v['attachType'] . ')';
             }
-    
+
             // 发货相关附件
             if ($v['attachType'] == "DLDG") {
                 $this->view->DLDG[] = $v;
                 $this->view->DLDG_name = $this->view->translate('deliverVIEW') . '(' . $v['attachType'] . ')';
             }
-    
+
             // 收货相关附件
             if ($v['attachType'] == "DLRG") {
                 $this->view->DLRG[] = $v;
                 $this->view->DLRG_name = $this->view->translate('receivingVIEW') . '(' . $v['attachType'] . ')';
             }
-    
+
             // 质量保证函模板
             if ($v['attachType'] == "DLQT") {
                 $this->view->DLQT[] = $v;
                 $this->view->DLQT_name = $this->view->translate('quality_tmp') . '(' . $v['attachType'] . ')';
             }
-    
+
             // 质量保证函正本
             if ($v['attachType'] == "DLQF") {
                 $this->view->DLQF[] = $v;
                 $this->view->DLQF_name = $this->view->translate('quality_seal') . '(' . $v['attachType'] . ')';
             }
-    
+
             // 收货确认函模板
             if ($v['attachType'] == "DLCT") {
                 $this->view->DLCT[] = $v;
                 $this->view->DLCT_name = $this->view->translate('receipt_confirmation_templ') . '(' . $v['attachType'] . ')';
             }
-    
+
             // 收货确认函正本
             if ($v['attachType'] == "DLCF") {
                 $this->view->DLCF[] = $v;
                 $this->view->DLCF_name = $this->view->translate('receipt_confirmation_formal') . '(' . $v['attachType'] . ')';
             }
         }
-    
+
         $this->view->doc = $doc;
-    
+
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/orderxs/attachment.phtml");
             echo $content;

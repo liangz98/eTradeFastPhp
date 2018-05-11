@@ -79,7 +79,6 @@ return array(
     'madeTT' =>'Op.',
     'saleING'=>'Sales',
     'NoRegister'=>'Unregistered',
-    'NoData'=>'No Data',
 
 //用户角色
     'CompUser'=>'Average user',
@@ -297,7 +296,7 @@ return array(
     'filename' => 'File Name',
     'finding' => 'Search Target',
     'find'=>'Search',
-    'Nodata'=>'No Results',
+    'noData'=>'No Results',
 
 //个人信息公司模块
     'companyEWM'=>'Click to view the company code',

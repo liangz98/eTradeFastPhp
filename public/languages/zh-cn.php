@@ -67,7 +67,6 @@ return array(
     'madeTT' =>'操作',
     'saleING'=>'销售',
     'NoRegister'=>'暂未注册',
-    'NoData'=>'无',
 
     //用户角色
     'CompUser'=>'普通用户',
@@ -285,7 +284,7 @@ return array(
     'filename' => '文件名称',
     'finding' => '查找目标',
     'find'=>'查找',
-    'Nodata'=>'暂无数据',
+    'noData'=>'暂无数据',
 
     // 个人信息公司模块
     'companyEWM'=>'查看公司快移码',
