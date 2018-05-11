@@ -45,11 +45,6 @@
 
                                 <div class="col-md-10">
                                     <h3>
-                                        <?php if ($this->CompAdmin == true): ?>
-                                            <a class="profile-heading-edit pull-right btn btn-xs" data-type="base" href="/user/company">
-                                                <i class="fas fa-pencil-alt" aria-hidden="true"></i>编辑
-                                            </a>
-                                        <?php endif; ?>
                                         <?php echo $this->e['accountName']; ?>
                                     </h3>
                                     <?php if ($this->e['accountEnName']): ?>
@@ -58,7 +53,7 @@
                                         </p>
                                     <?php endif; ?>
 
-                                    <form class="form-horizontal">
+                                    <form class="form-horizontal company-main-edit">
 
                                         <div class="form-group">
                                             <label for="regdAddress" class="col-sm-3 control-label"><?php echo $this->translate('address'); ?></label>
@@ -158,11 +153,13 @@
                                             </div>
                                         </div>
 
+                                        <?php if ($this->CompAdmin == true): ?>
                                         <div class="form-group">
                                             <div class="col-sm-offset-3 col-sm-9">
                                                 <button type="submit" class="btn btn-warning"><?php echo $this->translate('save'); ?></button>
                                             </div>
                                         </div>
+                                        <?php endif; ?>
                                     </form>
                                 </div>
                             </div>
