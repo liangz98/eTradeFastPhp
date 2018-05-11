@@ -13,8 +13,8 @@
 <script type="text/javascript">
     $(function () {
         $('.navbar-nav').find('a').each(function () {
-            if (this.href === document.location.href || document.location.href.search(this.href) >= 0) {
-            // if (this.href === document.location.href) {
+            // if (this.href === document.location.href || document.location.href.search(this.href) >= 0) {
+            if (this.href === document.location.href) {
                 if (!$(this).parents("li").hasClass('active')) {
                     $('.navbar-nav').find('li').removeClass('active');
                     $(this).parents("li").addClass('active'); // this.className = 'active';
