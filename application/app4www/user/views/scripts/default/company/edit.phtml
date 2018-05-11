@@ -64,8 +64,103 @@
                                             <label for="regdAddress" class="col-sm-3 control-label"><?php echo $this->translate('address'); ?></label>
                                             <div class="col-sm-9">
                                                 <p class="form-control-static"><?php echo $this->ShowDictionaryTo($this->dic_Setting["COUNTRY_ISO_CODE"], $this->userlangCode, $this->dic_Setting["COUNTRY_ISO_CODE"], $this->e['regdCountryCode']); ?></p>
-                                                <input type="text" class="form-control" name="regdAddress" id="regdAddress" placeholder="Password" value="<?php echo $this->e['regdAddress']; ?>" >
-                                                <input type="text" class="form-control" name="regdEnAddress" id="regdEnAddress" placeholder="Password" value="<?php echo $this->e['regdEnAddress']; ?>" >
+                                                <input type="text" class="form-control" name="regdAddress" id="regdAddress" placeholder="" value="<?php echo $this->e['regdAddress']; ?>" >
+                                                <input type="text" class="form-control" name="regdEnAddress" id="regdEnAddress" placeholder="" value="<?php echo $this->e['regdEnAddress']; ?>" >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="email" class="col-sm-3 control-label"><?php echo $this->translate('email'); ?></label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="email" id="email" placeholder="" value="<?php echo $this->e['email']; ?>" >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="phone" class="col-sm-3 control-label"><?php echo $this->translate('company_phone'); ?></label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="phone" id="phone" placeholder="" value="<?php echo $this->e['phone']; ?>" >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="fax" class="col-sm-3 control-label"><?php echo $this->translate('company_fax'); ?></label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="fax" id="fax" placeholder="" value="<?php echo $this->e['fax']; ?>" >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="website" class="col-sm-3 control-label"><?php echo $this->translate('company_website'); ?></label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="website" id="website" placeholder="" value="<?php echo $this->e['website']; ?>" >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label"><?php echo $this->translate('company_incorporation_date'); ?></label>
+                                            <div class="col-sm-9">
+                                                <p class="form-control-static">
+                                                    <?php if ($this->e['incorporationDate']) {
+                                                        echo date('Y-m-d', strtotime($this->e['incorporationDate']));
+                                                    } else {
+                                                        echo null;
+                                                    } ?>
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label"><?php echo $this->translate('industry'); ?></label>
+                                            <div class="col-sm-9">
+                                                <p class="form-control-static">
+                                                    <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ISIC_INDUSTRY_TYPE'], $this->e['industryCode']); ?>
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="legalForm" class="col-sm-3 control-label"><?php echo $this->translate('company_legal_form'); ?></label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control" name="legalForm" id="legalForm">
+                                                    <?php echo $this-> ShowDictionaryList($this->dic_Setting['ACCOUNT_LEGALFORM'] ,$this->userlangCode,$this->dic_Setting['ACCOUNT_LEGALFORM'], $this->e['legalForm']);?>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label"><?php echo $this->translate('businessLicenseNo'); ?></label>
+                                            <div class="col-sm-9">
+                                                <p class="form-control-static"><?php echo $this->e['businessLicenseNo']; ?></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label"><?php echo $this->translate('ECC'); ?></label>
+                                            <div class="col-sm-9">
+                                                <p class="form-control-static"><?php echo $this->e['customsCode']; ?></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label"><?php echo $this->translate('crnCode'); ?></label>
+                                            <div class="col-sm-9">
+                                                <p class="form-control-static"><?php echo $this->ShowDictionaryTo($this->dic_Setting['CURRENCY'], $this->userlangCode, $this->dic_Setting['CURRENCY'], $this->e['crnCode']); ?></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="langCode" class="col-sm-3 control-label"><?php echo $this->translate('langCode'); ?></label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control" name="langCode" id="langCode">
+                                                    <?php echo $this-> ShowDictionaryList($this->dic_Setting['SYS_LANG'] ,$this->userlangCode,$this->dic_Setting['SYS_LANG'], $this->e['langCode']);?>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-3 col-sm-9">
+                                                <button type="submit" class="btn btn-warning"><?php echo $this->translate('save'); ?></button>
                                             </div>
                                         </div>
                                     </form>
@@ -101,7 +196,8 @@
 
 	$(function () {
         $('.company-navigation').find('a').each(function () {
-            if (this.href === document.location.href) {
+            if (this.href === document.location.href || document.location.href.search(this.href) >= 0) {
+            // if (this.href === document.location.href) {
                 $(this).addClass('nav-selected');
             } else {
                 $(this).removeClass('nav-selected');
