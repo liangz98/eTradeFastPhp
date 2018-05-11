@@ -40,7 +40,7 @@
                             <div role="tabpanel" class="tab-pane active row" id="info">
                                 <div class="col-md-2 company-img">
                                     <img class="img-responsive img-thumbnail" alt="110x110" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgdmlld0JveD0iMCAwIDE0MCAxNDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzE0MHgxNDAKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNjMyYTBkYTliZSB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE2MzJhMGRhOWJlIj48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjQ0LjA1NDY4NzUiIHk9Ijc0LjUiPjE0MHgxNDA8L3RleHQ+PC9nPjwvZz48L3N2Zz4=" data-holder-rendered="true">
-                                    <img class="img-responsive img-thumbnail" alt="110x110" src="<?php echo WWWURL; ?>/qrcode?from=<?php echo base64_encode($this->e['accountName']); ?>" >
+                                    <img class="img-responsive img-thumbnail" alt="110x110" src="/qrcode?from=<?php echo base64_encode($this->e['accountName']); ?>" >
                                 </div>
 
                                 <div class="col-md-10">
@@ -165,8 +165,8 @@
         });
 
         $('#authModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget); // Button that triggered the modal
-            var recipient = button.data('whatever'); // Extract info from data-* attributes
+            // var button = $(event.relatedTarget); // Button that triggered the modal
+            // var recipient = button.data('whatever'); // Extract info from data-* attributes
             // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
             // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
             var modal = $(this);
@@ -176,18 +176,17 @@
         });
 
         $("#acEmail").click(function () {
-            layer.confirm('您是如何看待前端开发？', {
-                btn: ['重要','奇葩'] //按钮
-            }, function(){
-                layer.msg('的确很重要', {icon: 1});
-            }, function(){
-                layer.msg('也可以这样2', {
-                    time: 20000, //20s后自动关闭
-                    btn: ['明白了', '知道了']
-                });
+            layer.confirm('<?php echo $this->translate("is_email")?>', {
+                btn: ['<?php echo $this->translate("verify");?>', '<?php echo $this->translate("close");?>']
+            }, function (index) {
+                $.post('<?php echo $this->BaseUrl();?>/check/accountemailnotice',
+                    function (data) {
+                        layer.msg(data, {icon: 1});
+                    }, "json");
+                layer.close(index);
+            }, function (index) {
+                layer.close(index);
             });
-
-
         });
 	});
 </script>
