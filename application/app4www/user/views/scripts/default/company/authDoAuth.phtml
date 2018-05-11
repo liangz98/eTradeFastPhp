@@ -80,7 +80,7 @@
                 } else if (data === '-4') {
                     $('#authModal').modal('hide');
                     setTimeout(function () {
-                        $("#company-auth").trigger("click");
+                        $("#company-auth").removeClass("et-ico-auth-cing et-ico-auth-cok").addClass("et-ico-auth-cno").trigger("click");
                     }, 500);
                 } else {
                     $(".alert").removeClass('hidden').addClass('show').find('p').html(data);

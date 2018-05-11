@@ -51,9 +51,9 @@
                                         <?php echo $this->e['accountName']; ?>
                                         <small>
                                             <a href="javascript:void(0)">
-                                                <?php if ($this->e['entRealAuthStatus'] == 0 || $this->e['entRealAuthStatus'] == -1): ?>
+                                                <?php if ($this->e['entRealAuthStatus'] == 0 || $this->e['entRealAuthStatus'] == -1 || $this->e['entRealAuthStatus'] == -4): ?>
                                                     <span id="company-auth" class="et-ico et-ico-auth-cno" data-toggle="modal" data-target="#authModal"></span>
-                                                <?php elseif ($this->e['entRealAuthStatus'] == 1 || $this->e['entRealAuthStatus'] == 3 || $this->e['entRealAuthStatus'] == -2 || $this->e['entRealAuthStatus'] == -3 || $this->e['entRealAuthStatus'] == -4): ?>
+                                                <?php elseif ($this->e['entRealAuthStatus'] == 1 || $this->e['entRealAuthStatus'] == 3 || $this->e['entRealAuthStatus'] == -2 || $this->e['entRealAuthStatus'] == -3): ?>
                                                     <span id="company-auth" class="et-ico et-ico-auth-cing" data-toggle="modal" data-target="#authModal"></span>
                                                 <?php elseif ($this->e['entRealAuthStatus'] == 2): ?>
                                                     <span id="company-auth" class="et-ico et-ico-auth-cok" data-toggle="modal" data-target="#authModal"></span>
