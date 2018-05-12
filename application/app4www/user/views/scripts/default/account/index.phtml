@@ -108,14 +108,14 @@
                 field: 'contactStatus',
                 title: '<?php echo $this->translate("userPT"); ?>',
                 formatter: function (value) {
-                    console.log(value);
-                    console.log(value === '01');
-                    console.log("========================");
                     return (value === '01') ? '<?php echo $this->translate('normal') ?>' : '<?php echo $this->translate('disable'); ?>';
                 }
             }, {
                 field: 'isDefaultPublic',
-                title: '<?php echo $this->translate("accountDF"); ?>'
+                title: '<?php echo $this->translate("accountDF"); ?>',
+                formatter: function (value) {
+                    return (value === 'true') ? '<?php echo $this->translate('yes') ?>' : '<?php echo $this->translate('no'); ?>';
+                }
             }, {
                 title: '<?php echo $this->translate("madeTT"); ?>',
                 formatter: function (value, row, index) {
