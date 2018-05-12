@@ -99,7 +99,8 @@
                 field: 'ecommstatus',
                 title: '<?php echo $this->translate("userP"); ?>',
                 formatter: function (value) {
-                    return "<?php echo $this->ShowDictionaryTo($this->dic_Setting['ECOMM_STATUS'], $this->userlangCode, $this->dic_Setting['ECOMM_STATUS'], " + value + "); ?>";
+                    console.log(value);
+                    return '<?php echo $this->ShowDictionaryTo($this->dic_Setting["ECOMM_STATUS"], $this->userlangCode, $this->dic_Setting["ECOMM_STATUS"], ' + value + '); ?>';
                 }
             }, {
                 field: 'ecommrole',
@@ -114,9 +115,7 @@
                 field: 'isDefaultPublic',
                 title: '<?php echo $this->translate("accountDF"); ?>',
                 formatter: function (value) {
-                    console.log(value);
-                    console.log(value === true);
-                    return (value === 'true') ? '<?php echo $this->translate('yes') ?>' : '<?php echo $this->translate('no'); ?>';
+                    return (value === true) ? '<?php echo $this->translate('yes') ?>' : '<?php echo $this->translate('no'); ?>';
                 }
             }, {
                 title: '<?php echo $this->translate("madeTT"); ?>',
