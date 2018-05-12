@@ -100,7 +100,7 @@
                 title: '<?php echo $this->translate("userP"); ?>',
                 formatter: function (value) {
                     console.log(value);
-                    var str = '<?php echo $this->ShowDictionaryTo($this->dic_Setting["ECOMM_STATUS"], $this->userlangCode, $this->dic_Setting["ECOMM_STATUS"], ' + value + '); ?>';
+                    var str = '<?php echo $this->ShowDictionaryTo($this->dic_Setting["ECOMM_STATUS"], $this->userlangCode, $this->dic_Setting["ECOMM_STATUS"], "NV"); ?>';
                     console.log(str);
                 }
             }, {
