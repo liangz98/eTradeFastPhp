@@ -100,10 +100,13 @@
                 title: '<?php echo $this->translate("userP"); ?>'
             }, {
                 field: 'ecommrole',
-                title: '<?php echo $this->translate("userROLE"); ?>'
+                title: '<?php echo $this->translate("userROLE"); ?>',
+                formatter: function (value) {
+                    return "<?php echo $this->ShowDictionaryTo($this->dic_Setting['ECOMM_STATUS'], $this->userlangCode, $this->dic_Setting['ECOMM_STATUS'], " + value + "); ?>";
+                }
             }, {
                 field: 'contactStatus',
-                title: '<?php echo $this->translate("userPT"); ?>'
+                title: '<?php echo $this->translate("userPT"); ?>',
                 formatter: function (value) {
                     return value === '01' ? '<?php echo $this->translate('normal') ?>' : '<?php echo $this->translate('disable'); ?>';
                 }
