@@ -99,7 +99,13 @@
                 field: 'ecommstatus',
                 title: '<?php echo $this->translate("userP"); ?>',
                 formatter: function (value) {
-                    return "<?php echo $this->ShowDictionaryTo($this->dic_Setting['ECOMM_STATUS'], $this->userlangCode, $this->dic_Setting['ECOMM_STATUS'], '" + value + "'); ?>";
+                    var result ="";
+                    if (value === 'NV') {
+                        result = "<?php echo $this->ShowDictionaryTo($this->dic_Setting['ECOMM_STATUS'], $this->userlangCode, $this->dic_Setting['ECOMM_STATUS'], 'NV'); ?>";
+                    } else {
+                        result = "<?php echo $this->ShowDictionaryTo($this->dic_Setting['ECOMM_STATUS'], $this->userlangCode, $this->dic_Setting['ECOMM_STATUS'], 'AT'); ?>";
+                    }
+                    return result;
                 }
             }, {
                 field: 'ecommrole',
