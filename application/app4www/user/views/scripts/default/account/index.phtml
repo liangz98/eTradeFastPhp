@@ -133,7 +133,7 @@
                     return '<a title="' + editTitle+ '" href="' + href + '">'
                         + '<i class="far fa-edit"></i>'
                         + '</a>'
-                        <?php if ($this->CompAdmin == false): ?>
+                        <?php if ($this->CompAdmin == true): ?>
                         + '<a title="' + disableTitle+ '" href="' + href + '">'
                         + '<i class="fas fa-ban"></i>'
                         + '</a>'

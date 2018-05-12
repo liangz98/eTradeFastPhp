@@ -19,3 +19,12 @@ body {
 #contact_search_form input {
     width: 320px;
 }
+
+#contactListTable {
+    margin-left: 15px;
+    width: 95%;
+}
+
+.fixed-table-pagination {
+    margin: 0 15px;
+}
