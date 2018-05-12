@@ -97,18 +97,22 @@
                 title: '<?php echo $this->translate("username"); ?>'
             }, {
                 field: 'ecommstatus',
-                title: '<?php echo $this->translate("userP"); ?>'
-            }, {
-                field: 'ecommrole',
-                title: '<?php echo $this->translate("userROLE"); ?>',
+                title: '<?php echo $this->translate("userP"); ?>',
                 formatter: function (value) {
                     return "<?php echo $this->ShowDictionaryTo($this->dic_Setting['ECOMM_STATUS'], $this->userlangCode, $this->dic_Setting['ECOMM_STATUS'], " + value + "); ?>";
                 }
             }, {
+                field: 'ecommrole',
+                title: '<?php echo $this->translate("userROLE"); ?>'
+            }, {
                 field: 'contactStatus',
                 title: '<?php echo $this->translate("userPT"); ?>',
                 formatter: function (value) {
-                    return (value === 'true') ? '<?php echo $this->translate('normal') ?>' : '<?php echo $this->translate('disable'); ?>';
+                    console.log(value);
+                    console.log(value == 'true');
+                    console.log(value === 'true');
+                    console.log("========================");
+                    return (value == 'true') ? '<?php echo $this->translate('normal') ?>' : '<?php echo $this->translate('disable'); ?>';
                 }
             }, {
                 field: 'isDefaultPublic',
