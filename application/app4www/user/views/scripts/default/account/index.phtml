@@ -109,10 +109,9 @@
                 title: '<?php echo $this->translate("userPT"); ?>',
                 formatter: function (value) {
                     console.log(value);
-                    console.log(value == 'true');
-                    console.log(value === 'true');
+                    console.log(value === '01');
                     console.log("========================");
-                    return (value == 'true') ? '<?php echo $this->translate('normal') ?>' : '<?php echo $this->translate('disable'); ?>';
+                    return (value === '01') ? '<?php echo $this->translate('normal') ?>' : '<?php echo $this->translate('disable'); ?>';
                 }
             }, {
                 field: 'isDefaultPublic',
