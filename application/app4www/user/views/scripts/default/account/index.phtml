@@ -104,6 +104,9 @@
             }, {
                 field: 'contactStatus',
                 title: '<?php echo $this->translate("userPT"); ?>'
+                formatter: function (value) {
+                    return value === '01' ? '<?php echo $this->translate('normal') ?>' : '<?php echo $this->translate('disable'); ?>';
+                }
             }, {
                 field: 'isDefaultPublic',
                 title: '<?php echo $this->translate("accountDF"); ?>'
