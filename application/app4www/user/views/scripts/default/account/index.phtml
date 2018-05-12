@@ -81,7 +81,7 @@
             sidePagination: 'server',
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             pageNumber: 1,
-            pageSize: 2,
+            pageSize: 10,
             queryParams: function(params) {
                 return {
                     limit: params.limit,
@@ -114,6 +114,8 @@
                 field: 'isDefaultPublic',
                 title: '<?php echo $this->translate("accountDF"); ?>',
                 formatter: function (value) {
+                    console.log(value);
+                    console.log(value === true);
                     return (value === 'true') ? '<?php echo $this->translate('yes') ?>' : '<?php echo $this->translate('no'); ?>';
                 }
             }, {
