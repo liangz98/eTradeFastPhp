@@ -99,7 +99,7 @@
                 field: 'ecommstatus',
                 title: '<?php echo $this->translate("userP"); ?>',
                 formatter: function (value) {
-                    return '<?php echo $this->ShowDictionaryTo($this->dic_Setting["ECOMM_STATUS"], $this->userlangCode, $this->dic_Setting["ECOMM_STATUS"], "NV"); ?>';
+                    return "<?php echo $this->ShowDictionaryTo($this->dic_Setting['ECOMM_STATUS'], $this->userlangCode, $this->dic_Setting['ECOMM_STATUS'], '" + value + "'); ?>";
                 }
             }, {
                 field: 'ecommrole',
