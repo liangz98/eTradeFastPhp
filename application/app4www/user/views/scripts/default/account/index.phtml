@@ -30,12 +30,14 @@
                     <!-- Default panel contents -->
                     <div class="panel-heading"><?php echo $this->translate('personNO'); ?></div>
                     <div class="panel-body">
-                        <form class="form-inline" action="javascript:void(0)" onsubmit="contactSearch()" id="contact_search_form">
+                        <form class="form-horizontal" action="javascript:void(0)" onsubmit="contactSearch()" id="contact_search_form">
                             <div class="form-group" style="margin-bottom: 0 !important;">
                                 <label for="keyword" class="sr-only">keyword</label>
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fas fa-search"></i></span>
-                                    <input type="text" class="form-control" name="keyword" id="keyword" placeholder="<?php echo $this->translate('INPkw_ac');?>">
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fas fa-search"></i></span>
+                                        <input type="text" class="form-control" name="keyword" id="keyword" placeholder="<?php echo $this->translate('INPkw_ac');?>">
+                                    </div>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary"> Go </button>
