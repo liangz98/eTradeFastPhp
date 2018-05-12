@@ -133,7 +133,7 @@
                     return '<a title="' + editTitle+ '" href="' + href + '">'
                         + '<i class="far fa-edit"></i>'
                         + '</a>'
-
+                        <?php if ($this->CompAdmin == true): ?>
                         + '<a title="' + disableTitle+ '" href="' + href + '">'
                         + '<i class="fas fa-ban"></i>'
                         + '</a>'
@@ -141,6 +141,8 @@
                         + '<a title="' + validTitle+ '" href="' + href + '">'
                         + '<i class="far fa-check-circle"></i>'
                         + '</a>'
+                        <?php endif; ?>
+                    ;
                 }
             }]
         });
