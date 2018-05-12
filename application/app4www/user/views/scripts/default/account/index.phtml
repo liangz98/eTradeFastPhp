@@ -90,14 +90,33 @@
                 };
             },
             columns: [{
-                field: 'id',
-                title: 'Item ID'
-            }, {
                 field: 'name',
-                title: 'Item Name'
+                title: '<?php echo $this->translate("name"); ?>'
             }, {
-                field: 'email',
-                title: 'email'
+                field: 'ecommloginname',
+                title: '<?php echo $this->translate("username"); ?>'
+            }, {
+                field: 'ecommstatus',
+                title: '<?php echo $this->translate("userP"); ?>'
+            }, {
+                field: 'ecommrole',
+                title: '<?php echo $this->translate("userROLE"); ?>'
+            }, {
+                field: 'contactStatus',
+                title: '<?php echo $this->translate("userPT"); ?>'
+            }, {
+                field: 'isDefaultPublic',
+                title: '<?php echo $this->translate("accountDF"); ?>'
+            }, {
+                title: '<?php echo $this->translate("madeTT"); ?>',
+                formatter: function (value, row, index) {
+                    var title = "<?php echo $this->translate("edit");?>";
+                    var href = "<?php echo '/user/account/edit?'.base64_encode(" + row.contactID + ");?>";
+
+                    return '<a title="' + title+ '" class="p_ed" href="' + href + '">'
+                        + '<i class="far fa-edit"></i>'
+                        + '</a>';
+                }
             }]
         });
 
