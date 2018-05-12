@@ -15,3 +15,7 @@ body {
     content: "";
     background-color: #e36209;
 }
+
+#contact_search_form input {
+    width: 320px;
+}
