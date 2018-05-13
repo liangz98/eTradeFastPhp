@@ -149,10 +149,7 @@ class AccountController extends Kyapi_Controller_Action
             $_account['phone'] = $this->_request->getParam('phone');
 
             $ecommrole = $this->_request->getParam('ecommrole');
-            $_account['ecommrole'] = implode(',', $ecommrole);
-
-            var_dump($_account);
-
+            $_account['ecommrole'] = implode(',', $ecommrole);  // 将数组转成字符串, 并以逗号分隔
             $_account['mobilePhone'] = $this->_request->getParam('mobilePhone');
             $_account['email'] = $this->_request->getParam('email');
             $_account['salutation'] = $this->_request->getParam('salutation');
@@ -200,12 +197,14 @@ class AccountController extends Kyapi_Controller_Action
             $userKY = $this->json->addContactApi($_requestOb, $_account);
             $userEdit = $this->objectToArray(json_decode($userKY));
 
-            $this->redirect("/account");
-
             if ($userEdit['status'] != 1) {
                 $this->view->errMsg = $userEdit['error'];
             } else {
-                $this->redirect("/account");
+                $this->view->errMsg = $this->view->translate('tip_add_success');
+                // $this->redirect("/account");
+                $content = $this->view->render(SEED_WWW_TPL . "/account/index.phtml");
+                echo $content;
+                exit;
             }
         } else {
             $accountID = $this->view->accountID;
@@ -295,7 +294,11 @@ class AccountController extends Kyapi_Controller_Action
             if ($userEdit['status'] != 1) {
                 $this->view->errMsg = $userEdit['error'];
             } else {
-                $this->redirect("/account");
+                $this->view->errMsg = $this->view->translate('tip_edit_success');
+                // $this->redirect("/account");
+                $content = $this->view->render(SEED_WWW_TPL . "/account/index.phtml");
+                echo $content;
+                exit;
             }
         }
         if (defined('SEED_WWW_TPL')) {
