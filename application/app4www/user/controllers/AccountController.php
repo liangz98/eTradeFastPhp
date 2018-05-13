@@ -199,7 +199,6 @@ class AccountController extends Kyapi_Controller_Action
             $userData = $this->objectToArray(json_decode($userKY));
 
             $this->redirect("/account");
-
         } else {
             $accountID = $this->view->accountID;
             $requestObject = $this->_requestObject;
@@ -221,6 +220,8 @@ class AccountController extends Kyapi_Controller_Action
         $_requestOb = $this->_requestObject;
         $contactId = $_SERVER['QUERY_STRING'];
         $_contactID = base64_decode($contactId);
+
+        echo $_contactID;exit;
         $userKY = $this->json->getContactApi($_requestOb, $_contactID);
         $userData = $this->objectToArray(json_decode($userKY));
         $this->view->e = $userData['result'];

@@ -33,7 +33,11 @@
                             <div class="form-group">
                                 <label for="name" class="col-sm-2 control-label"><?php echo $this->translate('name'); ?></label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="name" id="name" placeholder="<?php echo $this->translate('is_name');?>" required>
+                                    <?php if ($this->e['realAuthStatus']!=0&&$this->e['realAuthStatus']!=-1):?>
+                                    <p class="form-control-static"><?php echo $this->e['name']; ?></p>
+                                    <?php else:?>
+                                    <input type="text" class="form-control" name="name" id="name" placeholder="<?php echo $this->translate('is_name');?>" value="<?php echo $this->e['name']; ?>" required>
+                                    <?php endif; ?>
                                 </div>
                             </div>
 
