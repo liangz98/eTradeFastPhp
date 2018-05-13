@@ -4,6 +4,8 @@ class AccountController extends Kyapi_Controller_Action
     public function preDispatch()
     {
         $this->view->cur_pos = 'account';
+
+        echo $this->view->errMsg;
         //清除 免登陆session
         $this->IsAuth($this->view->visitor);
 
@@ -196,9 +198,15 @@ class AccountController extends Kyapi_Controller_Action
             $_account['identityNo'] = $this->_request->getParam('identityNo');
 
             $userKY = $this->json->addContactApi($_requestOb, $_account);
-            $userData = $this->objectToArray(json_decode($userKY));
+            $userEdit = $this->objectToArray(json_decode($userKY));
 
             $this->redirect("/account");
+
+            if ($userEdit['status'] != 1) {
+                $this->view->errMsg = $userEdit['error'];
+            } else {
+                $this->redirect("/account");
+            }
         } else {
             $accountID = $this->view->accountID;
             $requestObject = $this->_requestObject;
@@ -220,82 +228,78 @@ class AccountController extends Kyapi_Controller_Action
         $_requestOb = $this->_requestObject;
         $contactId = $_SERVER['QUERY_STRING'];
         $_contactID = base64_decode($contactId);
-
-        echo $_contactID;exit;
         $userKY = $this->json->getContactApi($_requestOb, $_contactID);
         $userData = $this->objectToArray(json_decode($userKY));
         $this->view->e = $userData['result'];
         $this->view->ecommrole = explode(",", $userData['result']['ecommrole']);
 
         if ($this->_request->isPost()) {
-                //编辑用户信息
-                $_account = array();
-                $_account['contactID'] = $_contactID;
-             //   $_account['name'] = $this->_request->getParam('name');
-                $_account['ecommloginname'] = $userData['result']['ecommloginname'];
-                $_account['phone'] = $this->_request->getParam('phone');
+            //编辑用户信息
+            $_account = array();
+            $_account['contactID'] = $_contactID;
+            //   $_account['name'] = $this->_request->getParam('name');
+            $_account['ecommloginname'] = $userData['result']['ecommloginname'];
+            $_account['phone'] = $this->_request->getParam('phone');
             //判断是否为默认联系人
-//                $isDefaultPublic=($this->_request->getParam('isDefaultPublic')=='1')?true:false;
-//                $_account['isDefaultPublic']=$isDefaultPublic;
+            //                $isDefaultPublic=($this->_request->getParam('isDefaultPublic')=='1')?true:false;
+            //                $_account['isDefaultPublic']=$isDefaultPublic;
             //判断是否为订单联系人
-            $isPublicContact=$this->_request->getParam('isPublicContact');
-            if($isPublicContact=='1'){
-                $_account['isPublicContact']=true;
-            }else{
-                $_account['isPublicContact']=false;
+            $isPublicContact = $this->_request->getParam('isPublicContact');
+            if ($isPublicContact == '1') {
+                $_account['isPublicContact'] = true;
+            } else {
+                $_account['isPublicContact'] = false;
             }
             //员工状态 4.10 文档提出 编辑、view页面停用  contactStatus
-                $emrole=$this->_request->getParam('ecommrole');
-                $emrole2=implode(',',$emrole);
-                $_account['ecommrole'] = $emrole2;
-                $_account['mobilePhone'] = $this->_request->getParam('mobilePhone');
-                $_account['email'] = $this->_request->getParam('email');
-                $_account['salutation'] = $this->_request->getParam('salutation');
-                $ddtime= $this->_request->getParam('birthdate');
+            $emrole = $this->_request->getParam('ecommrole');
+            $emrole2 = implode(',', $emrole);
+            $_account['ecommrole'] = $emrole2;
+            $_account['mobilePhone'] = $this->_request->getParam('mobilePhone');
+            $_account['email'] = $this->_request->getParam('email');
+            $_account['salutation'] = $this->_request->getParam('salutation');
+            $ddtime = $this->_request->getParam('birthdate');
             if (!empty($ddtime)) {
                 $date3 = date("Y-m-d\TH:i:s", strtotime($ddtime));
             } else {
                 $date3 = null;
             }
-                $_account['birthdate'] = $date3;
-                $_account['department'] = $this->_request->getParam('department');
-                $_account['title'] = $this->_request->getParam('title');
-                $_account['sex'] = $this->_request->getParam('sex');
-                $_account['fax'] = $this->_request->getParam('fax');
-                $_account['assistantName'] = $this->_request->getParam('assistantName');
-                $_account['assistantPhone'] = $this->_request->getParam('assistantPhone');
-                $_account['mailingCountryCode'] = $this->_request->getParam('mailingCountryCode');
-                $_account['mailingStateCode'] = $this->_request->getParam('mailingStateCode');
-                $_account['mailingCityCode'] = $this->_request->getParam('mailingCityCode');
-                $_account['mailingAddress'] = $_account['mailingCountryCode'].$_account['mailingStateCode'].$_account['mailingCityCode'];
-                $_account['mailingStreet'] = $this->_request->getParam('mailingStreet');
-                $_account['mailingZipCode'] = $this->_request->getParam('mailingZipCode');
-                $_account['mailingStreet'] = $this->_request->getParam('mailingStreet');
-                 /*添加字段证件号码  证件类型*/
-                $_account['identityType'] = '01';
-              //  $_account['identityType'] = $this->_request->getParam('identityType');
+            $_account['birthdate'] = $date3;
+            $_account['department'] = $this->_request->getParam('department');
+            $_account['title'] = $this->_request->getParam('title');
+            $_account['sex'] = $this->_request->getParam('sex');
+            $_account['fax'] = $this->_request->getParam('fax');
+            $_account['assistantName'] = $this->_request->getParam('assistantName');
+            $_account['assistantPhone'] = $this->_request->getParam('assistantPhone');
+            $_account['mailingCountryCode'] = $this->_request->getParam('mailingCountryCode');
+            $_account['mailingStateCode'] = $this->_request->getParam('mailingStateCode');
+            $_account['mailingCityCode'] = $this->_request->getParam('mailingCityCode');
+            $_account['mailingAddress'] = $_account['mailingCountryCode'] . $_account['mailingStateCode'] . $_account['mailingCityCode'];
+            $_account['mailingStreet'] = $this->_request->getParam('mailingStreet');
+            $_account['mailingZipCode'] = $this->_request->getParam('mailingZipCode');
+            $_account['mailingStreet'] = $this->_request->getParam('mailingStreet');
+            /*添加字段证件号码  证件类型*/
+            $_account['identityType'] = '01';
+            //  $_account['identityType'] = $this->_request->getParam('identityType');
             //判断状态修改name 和身份证号码
-            if($userData['result']['realAuthStatus']==0||$userData['result']['realAuthStatus']==-1){
+            if ($userData['result']['realAuthStatus'] == 0 || $userData['result']['realAuthStatus'] == -1) {
                 $_account['name'] = $this->_request->getParam('name');
                 $_account['identityNo'] = $this->_request->getParam('identityNo');
-            }else{
+            } else {
                 $_account['name'] = $userData['result']['name'];
                 $_account['identityNo'] = $userData['result']['identityNo'];
             }
 
-                $userKY = $this->json->editContactApi($_requestOb, $_account);
-               $userEdit= $this->objectToArray(json_decode($userKY));
+            $userKY = $this->json->editContactApi($_requestOb, $_account);
+            $userEdit = $this->objectToArray(json_decode($userKY));
 
-                if ($userEdit['status']!= 1) {
-                    //编辑失败
-                    Shop_Browser::redirect($this->view->translate('tip_edit_fail').$userEdit['error'], $this->view->seed_Setting['user_app_server'].'/account');
-                } else {
-                    //编辑成功
-                    Shop_Browser::redirect($this->view->translate('tip_edit_success'), $this->view->seed_Setting['user_app_server'].'/account');
-                }
+            if ($userEdit['status'] != 1) {
+                $this->view->errMsg = $userEdit['error'];
+            } else {
+                $this->redirect("/account");
+            }
         }
-        if(defined('SEED_WWW_TPL')){
-            $content = $this->view->render(SEED_WWW_TPL."/account/edit.phtml");
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/account/edit.phtml");
             echo $content;
             exit;
         }
