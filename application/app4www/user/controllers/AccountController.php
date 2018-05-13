@@ -116,34 +116,21 @@ class AccountController extends Kyapi_Controller_Action
 
     public function contactlistajaxAction() {
         $msg = array();
-        // $msg = "{total: 10, row: [{id: 1,name: 'Item 1',price: '$1'}, {id: 2,name: 'Item 2',price: '$2'}]}";
+        $_requestOb = $this->_requestObject;
 
-        // $testArray = Array();
-        // $testArray["total"] = 10;
-        // $user = array();
-        // $user["id"] = 1;
-        // $user["name"] = "Item 1";
-        // $user["email"] = "email 1";
-        // $testArray["rows"][0] = $user;
-        //
-        // $user["id"] = 1;
-        // $user["name"] = "Item 2";
-        // $user["email"] = "email 2";
-        // $testArray["rows"][1] = $user;
-        //
-        // echo json_encode($testArray);
-        // exit;
-            $_requestOb = $this->_requestObject;
-            $queryParams =new queryAccount();
-        $queryParams->contactStatus= "01";
+        $contactStatus = $this->_request->getParam('contactStatus');
+        $queryParams = array();
+        if (empty($contactStatus)) {
+            $queryParams['contactStatus'] = '01';
+        }
 
-            $querySorts = new querySorts();
-            $querySorts->createTime = "DESC";
+        $querySorts = array();
+        $querySorts['createTime'] = "DESC";
 
-            $keyword = $this->_request->getParam('keyword');
-            if (empty($keyword)) {
-                $keyword = null;
-            }
+        $keyword = $this->_request->getParam('keyword');
+        if (empty($keyword)) {
+            $keyword = null;
+        }
 
         $limit = $this->_request->getParam('limit');
         if (empty($limit) || $limit <= 0) {
@@ -155,15 +142,18 @@ class AccountController extends Kyapi_Controller_Action
             $skip = 0;
         }
 
+        if (is_array($queryParams)) {
+            $queryParams = $this->arrayToObject($queryParams);
+        }
 
-            $resultObject = $this->json->listContactApi($_requestOb, $queryParams, $querySorts, $keyword, $skip, $limit);
+        if (is_array($querySorts)) {
+            $querySorts = $this->arrayToObject($querySorts);
+        }
 
-            // $msg = json_decode($resultObject)->result;
-
+        $resultObject = $this->json->listContactApi($_requestOb, $queryParams, $querySorts, $keyword, $skip, $limit);
         $msg["total"] = json_decode($resultObject)->extData->totalSize;
         $msg["rows"] = json_decode($resultObject)->result;
 
-            // var_dump($msg);exit;
         echo json_encode($msg);
         exit;
     }
@@ -275,7 +265,7 @@ class AccountController extends Kyapi_Controller_Action
             if ($userData['status']!= 1) {
                 Shop_Browser::redirect($this->view->translate('tip_add_fail').$userData['error'],$this->view->seed_Setting['user_app_server'].'/account');
             } else {
-                Shop_Browser::redirect($this->view->translate('tip_add_sucess'),$this->view->seed_Setting['user_app_server'].'/account');
+                Shop_Browser::redirect($this->view->translate('tip_add_success'),$this->view->seed_Setting['user_app_server'].'/account');
             }
 
         }
@@ -361,7 +351,7 @@ class AccountController extends Kyapi_Controller_Action
                     Shop_Browser::redirect($this->view->translate('tip_edit_fail').$userEdit['error'], $this->view->seed_Setting['user_app_server'].'/account');
                 } else {
                     //编辑成功
-                    Shop_Browser::redirect($this->view->translate('tip_edit_sucess'), $this->view->seed_Setting['user_app_server'].'/account');
+                    Shop_Browser::redirect($this->view->translate('tip_edit_success'), $this->view->seed_Setting['user_app_server'].'/account');
                 }
         }
         if(defined('SEED_WWW_TPL')){

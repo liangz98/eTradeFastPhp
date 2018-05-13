@@ -190,7 +190,7 @@ class PurchaseController extends Kyapi_Controller_Action
 				if ($existData->status != 1) {
 					Seed_Browser::redirect($this->view->translate('tip_add_fail'). $existData->error,$this->view->seed_BaseUrl ."/purchase");
 				} else {
-					Shop_Browser::redirect($this->view->translate('tip_add_sucess'),$this->view->seed_BaseUrl ."/purchase");
+					Shop_Browser::redirect($this->view->translate('tip_add_success'),$this->view->seed_BaseUrl ."/purchase");
 				}
 			} catch (HttpError $ex) {
 				Shop_Browser::redirect($ex->getMessage());
@@ -287,7 +287,7 @@ class PurchaseController extends Kyapi_Controller_Action
                     //编辑失败
 					Shop_Browser::redirect($this->view->translate('tip_edit_fail').$existData->error,$this->view->seed_BaseUrl ."/purchase");
 				} else {
-					Shop_Browser::redirect($this->view->translate('tip_edit_sucess'),$this->view->seed_BaseUrl ."/purchase");
+					Shop_Browser::redirect($this->view->translate('tip_edit_success'),$this->view->seed_BaseUrl ."/purchase");
 				}
 			} catch (HttpError $ex) {
 				echo $ex->getMessage();
@@ -388,7 +388,7 @@ class PurchaseController extends Kyapi_Controller_Action
 					Shop_Browser::redirect($this->view->translate('tip_add_fail').$existData->error,$this->view->seed_BaseUrl ."/purchase");
 				} else {
                     //复制：新增成功
-					Shop_Browser::redirect($this->view->translate('tip_add_sucess'),$this->view->seed_BaseUrl ."/purchase");
+					Shop_Browser::redirect($this->view->translate('tip_add_success'),$this->view->seed_BaseUrl ."/purchase");
 				}
 			} catch (HttpError $ex) {
 				echo $ex->getMessage();

@@ -260,7 +260,7 @@ class BuyerController extends Kyapi_Controller_Action
 			Shop_Browser::redirect($this->view->translate('tip_request_fail').$existData->error,'/user/buyer');
 		} else {
 		    //邀请成功
-			Shop_Browser::redirect($this->view->translate('tip_request_sucess'),'/user/buyer');
+			Shop_Browser::redirect($this->view->translate('tip_request_success'),'/user/buyer');
 		}
         exit;
 	}
@@ -294,7 +294,7 @@ class BuyerController extends Kyapi_Controller_Action
 				    //添加失败
 					Shop_Browser::redirect($this->view->translate('tip_add_fail').$existData->error,'/user/buyer');
 				} else {
-					Shop_Browser::redirect($this->view->translate('tip_add_sucess'),'/user/buyer');
+					Shop_Browser::redirect($this->view->translate('tip_add_success'),'/user/buyer');
 				}
 
 			} catch (HttpError $ex) {
@@ -371,7 +371,7 @@ class BuyerController extends Kyapi_Controller_Action
 			    //编辑失败
 				Shop_Browser::redirect($this->view->translate('tip_edit_fail').$existData->error,'/user/buyer');
 			} else {
-				Shop_Browser::redirect($this->view->translate('tip_edit_sucess'),'/user/buyer');
+				Shop_Browser::redirect($this->view->translate('tip_edit_success'),'/user/buyer');
 			}
 		}
 		if(defined('SEED_WWW_TPL')){

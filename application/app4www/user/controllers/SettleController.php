@@ -574,7 +574,7 @@ class SettleController extends Kyapi_Controller_Action
                 Shop_Browser::redirect($this->view->translate('tip_payment_fail').$existData->error,$this->view->seed_BaseUrl . "/settle");
             } else {
                 //支付成功
-                Shop_Browser::redirect($this->view->translate('tip_payment_sucess'),$this->view->seed_BaseUrl . "/settle");
+                Shop_Browser::redirect($this->view->translate('tip_payment_success'),$this->view->seed_BaseUrl . "/settle");
             }
 
         }
@@ -654,7 +654,7 @@ class SettleController extends Kyapi_Controller_Action
                 $_requestObject=$this->json->transferPaymentApi($this->_requestObject,$_paymentRequest);
                 $rebObject=json_decode($_requestObject);
                 if($rebObject->status==1){
-                    Shop_Browser::redirect($this->view->translate('tip_transfer_sucess'),$this->view->seed_BaseUrl . "/settle");
+                    Shop_Browser::redirect($this->view->translate('tip_transfer_success'),$this->view->seed_BaseUrl . "/settle");
                 }else{
                     Shop_Browser::redirect($this->view->translate('tip_transfer_fail'),$this->view->seed_BaseUrl . "/settle");
                 }
@@ -695,7 +695,7 @@ class SettleController extends Kyapi_Controller_Action
                 Seed_Browser::autoclose($this->view->translate('tip_edit_fail').$_Data->error,$this->view->seed_BaseUrl . "/settle");
             } else {
                 //编辑成功
-                Seed_Browser::autoclose($this->view->translate('tip_edit_sucess'),$this->view->seed_BaseUrl . "/settle");
+                Seed_Browser::autoclose($this->view->translate('tip_edit_success'),$this->view->seed_BaseUrl . "/settle");
             }
         }
         if(defined('SEED_WWW_TPL')){
@@ -722,7 +722,7 @@ class SettleController extends Kyapi_Controller_Action
                //忘记密码修改
                Seed_Browser::autoclose($this->view->translate('tip_edit_fail').$_Data->error,$this->view->seed_BaseUrl . "/settle");
            } else {
-               Seed_Browser::autoclose($this->view->translate('tip_edit_sucess'),$this->view->seed_BaseUrl . "/settle");
+               Seed_Browser::autoclose($this->view->translate('tip_edit_success'),$this->view->seed_BaseUrl . "/settle");
            }
        }
         if(defined('SEED_WWW_TPL')){
@@ -749,7 +749,7 @@ class SettleController extends Kyapi_Controller_Action
                      //初始化密码失败
                      Seed_Browser::autoclose($this->view->translate('tip_edit_fail').$_Data->error,$this->view->seed_BaseUrl . "/settle");
                  } else {
-                     Seed_Browser::autoclose($this->view->translate('tip_edit_sucess'),$this->view->seed_BaseUrl . "/settle");
+                     Seed_Browser::autoclose($this->view->translate('tip_edit_success'),$this->view->seed_BaseUrl . "/settle");
                  }
         }
         if(defined('SEED_WWW_TPL')){
@@ -838,7 +838,7 @@ class SettleController extends Kyapi_Controller_Action
             $_requestObject=$this->json->paymentaddRecharge($this->_requestObject,$_paymentRequest);
             $rebObject=json_decode($_requestObject);
             if($rebObject->status==1){
-                Shop_Browser::redirect($this->view->translate('tip_recharge_sucess'),$this->view->seed_BaseUrl . "/settle");
+                Shop_Browser::redirect($this->view->translate('tip_recharge_success'),$this->view->seed_BaseUrl . "/settle");
             }else{
                 Shop_Browser::redirect($this->view->translate('tip_recharge_fail'),$this->view->seed_BaseUrl . "/settle/pay");
             }
@@ -922,7 +922,7 @@ class SettleController extends Kyapi_Controller_Action
                 $_requestObject=$this->json->drawPaymentApi($this->_requestObject,$_paymentRequest);
                 $rebObject=json_decode($_requestObject);
                 if($rebObject->status==1){
-                    Shop_Browser::redirect($this->view->translate('tip_draw_sucess'),$this->view->seed_BaseUrl . "/settle");
+                    Shop_Browser::redirect($this->view->translate('tip_draw_success'),$this->view->seed_BaseUrl . "/settle");
                 }else{
                     Shop_Browser::redirect($this->view->translate('tip_draw_fail'),$this->view->seed_BaseUrl . "/settle/draw");
                 }
@@ -996,7 +996,7 @@ class SettleController extends Kyapi_Controller_Action
                 $_requestObject=$this->json->exchangePaymentApi($this->_requestObject,$_paymentRequest);
                 $rebObject=json_decode($_requestObject);
                 if($rebObject->status==1){
-                    Shop_Browser::redirect($this->view->translate('tip_exchange_sucess'),$this->view->seed_BaseUrl . "/settle");
+                    Shop_Browser::redirect($this->view->translate('tip_exchange_success'),$this->view->seed_BaseUrl . "/settle");
                 }else{
                     Shop_Browser::redirect($this->view->translate('tip_exchange_fail'),$this->view->seed_BaseUrl . "/settle/exchange");
                 }

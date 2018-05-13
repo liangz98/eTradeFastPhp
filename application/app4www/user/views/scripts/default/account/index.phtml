@@ -39,9 +39,18 @@
                                         <input type="text" class="form-control" name="keyword" id="keyword" placeholder="<?php echo $this->translate('INPkw_ac');?>">
                                     </div>
                                 </div>
-                                <div class="col-sm-5">
+                                <div class="col-sm-1">
                                     <button type="submit" class="btn btn-primary"> Go </button>
                                 </div>
+                                <?php if ($this->CompAdmin == true): ?>
+                                <div class="col-sm-4">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" id="shoAllContact"> <?php echo $this->translate('CHK_account');?>
+                                        </label>
+                                    </div>
+                                </div>
+                                <?php endif; ?>
                             </div>
                         </form>
                     </div>
@@ -134,19 +143,32 @@
                     var validTitle = "<?php echo $this->translate('enable');?>";
                     var href = "<?php echo '/user/account/edit?'.base64_encode(" + row.contactID + ");?>";
 
-                    return '<a title="' + editTitle+ '" href="' + href + '">'
+                    var result = '<a title="' + editTitle+ '" href="' + href + '">'
                         + '<i class="far fa-edit"></i>'
-                        + '</a>'
-                        <?php if ($this->CompAdmin == true): ?>
-                        + '<a title="' + disableTitle+ '" href="' + href + '">'
-                        + '<i class="fas fa-ban"></i>'
-                        + '</a>'
+                        + '</a>&nbsp;';
+                    <?php if ($this->CompAdmin == true): ?>
+                    if (row.contactStatus === '01') {
+                        result += '<a title="' + disableTitle + '" id="' + row.contactID + '" data-url="/user/account/invalid" data-msg1="<?php echo $this->translate("is_invalid");?>" '
+                            + 'data-msg2="<?php echo $this->translate("tip_invalid_success");?>" '
+                            + 'data-msg3="<?php echo $this->translate("tip_invalid_fail");?>" '
+                            + 'onclick="doOption(this);" '
+                            + '>'
+                            + '<i class="fas fa-ban"></i>'
+                            + '</a>';
+                    }
 
-                        + '<a title="' + validTitle+ '" href="' + href + '">'
-                        + '<i class="far fa-check-circle"></i>'
-                        + '</a>'
-                        <?php endif; ?>
-                    ;
+                    if (row.contactStatus === '02') {
+                        result += '<a title="' + validTitle + '" id="' + row.contactID + '" data-url="/user/account/valid" data-msg1="<?php echo $this->translate("is_valid");?>" '
+                            + 'data-msg2="<?php echo $this->translate("tip_valid_success");?>" '
+                            + 'data-msg3="<?php echo $this->translate("tip_valid_fail");?>" '
+                            + 'onclick="doOption(this);" '
+                            + '>'
+                            + '<i class="far fa-check-circle"></i>'
+                            + '</a>';
+                    }
+                    <?php endif; ?>
+
+                    return result;
                 }
             }]
         });
@@ -155,16 +177,65 @@
             contactSearch();
         });
 
+        $("#shoAllContact").click(function () {
+            var contactListTable = $('#contactListTable');
+            var options = {};
+            if ($(this).is(':checked')) {
+                options = {
+                    query:{
+                        contactStatus: "all"
+                    }
+                };
+            }
+            $(contactListTable).bootstrapTable('refresh', options);
+        });
 	});
 
 	function contactSearch() {
         var contactListTable = $('#contactListTable');
-        var opt = {
+        var options = {
             query:{
                 keyword: $("#keyword").val()
             }
         };
-        $(contactListTable).bootstrapTable('refresh', opt);
+        $(contactListTable).bootstrapTable('refresh', options);
+    }
+
+    function doOption(obj){
+        var url=$(obj).attr('data-url');
+        var id=$(obj).attr('id');
+        var msg1=$(obj).attr('data-msg1');
+        var msg2=$(obj).attr('data-msg2');
+        var msg3=$(obj).attr('data-msg3');
+        //询问框
+        layer.confirm(msg1, {
+            title: false,
+            closeBtn: 0,
+            btn: ['<?php echo $this->translate('yes');?>', '<?php echo $this->translate('no');?>'] //按钮
+        }, function () {
+            $.post(url,
+                {'delID': id},
+                function (data) {
+                    var contactListTable = $('#contactListTable');
+
+                    if (data.status === 1) {
+                        layer.msg('<span style="color: #EF8200;font-size: 16px;">' + msg2 + '</span>', {
+                            skin: 'del-class',
+                            icon: 1
+                        });
+                        $(contactListTable).bootstrapTable('refresh');
+                    } else {
+                        layer.msg('<span style="color: #EF8200;font-size: 16px;">' + msg3 + '</span><br>' + data.error, {
+                            skin: 'del-class',
+                            icon: 0
+                        });
+                        $(contactListTable).bootstrapTable('refresh');
+                    }
+                }, "json");
+
+        }, function () {
+            layer.closeAll();
+        });
     }
 </script>
 </body>

@@ -218,7 +218,7 @@ class IndexController extends Kyapi_Controller_Action {
                 Shop_Browser::redirect($this->view->translate('tip_edit_fail').$userEdit['error'], $this->view->seed_Setting['user_app_server'].'/index');
             } else {
                 //编辑成功
-                Shop_Browser::redirect($this->view->translate('tip_edit_sucess'), $this->view->seed_Setting['user_app_server'].'/index');
+                Shop_Browser::redirect($this->view->translate('tip_edit_success'), $this->view->seed_Setting['user_app_server'].'/index');
             }
         }
 
@@ -275,7 +275,7 @@ class IndexController extends Kyapi_Controller_Action {
                     //密码编辑失败
                     Shop_Browser::redirect($this->view->translate('tip_edit_fail'), $this->view->seed_Setting['user_app_server'].'/passwd');
                 } else {
-                    Shop_Browser::redirect($this->view->translate('tip_edit_sucess'), $this->view->seed_Setting['user_app_server'].'/index');
+                    Shop_Browser::redirect($this->view->translate('tip_edit_success'), $this->view->seed_Setting['user_app_server'].'/index');
                 }
 
             } catch (HttpError $ex) {

@@ -24,6 +24,18 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         parent::__construct($url);
     }
 
+    //数组转对象
+    public function arrayToObject($e) {
+
+        if (gettype($e) != 'array')
+            return;
+        foreach ($e as $k => $v) {
+            if (gettype($v) == 'array' || getType($v) == 'object')
+                $e[$k] = (object)arrayToObject($v);
+        }
+        return (object)$e;
+    }
+
     /**
      * 附件列表获取接口
      * @param $_requestObject
@@ -206,17 +218,16 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
      * 获取用户信息-用户列表
      * 调用JAVA服务端文件中的 获取用户列表 listContact方法
      * @param $_requestObject
-     * @param $_queryP
+     * @param $queryParams
      * @param $_querySorts
      * @param $_keyword
      * @param $_skip
      * @param $_limit
      * @return mixed
      */
-    public function listContactApi($_requestObject, $_queryP, $_querySorts, $_keyword, $_skip, $_limit)
-    {
+    public function listContactApi($_requestObject, $queryParams, $_querySorts, $_keyword, $_skip, $_limit) {
         $_url=$this->url.'/contactapi/contactApi!listContact.action';
-        $_params =json_encode(array("requestObject"=>$_requestObject,"queryParams"=>$_queryP,"querySorts"=>$_querySorts,"keyword"=>$_keyword,"skip"=>$_skip,"limit"=>$_limit));
+        $_params =json_encode(array("requestObject"=>$_requestObject,"queryParams"=>$queryParams,"querySorts"=>$_querySorts,"keyword"=>$_keyword,"skip"=>$_skip,"limit"=>$_limit));
         $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
         return $resultObject;
     }

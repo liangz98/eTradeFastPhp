@@ -66,7 +66,7 @@ class AuthcodeController extends Kyapi_Controller_Action
 				Seed_Browser::redirect($this->view->translate('tip_register_fail') . $resultObject->error, $this->view->seed_BaseUrl . "/login");
 			} else {
 			    //注册成功
-				Shop_Browser::redirect($this->view->translate('tip_register_sucess'), $this->view->seed_BaseUrl . "/login");
+				Shop_Browser::redirect($this->view->translate('tip_register_success'), $this->view->seed_BaseUrl . "/login");
 			}
 		}
 		if(defined('SEED_WWW_TPL')){
@@ -145,7 +145,7 @@ class AuthcodeController extends Kyapi_Controller_Action
                 Seed_Browser::redirect($this->view->translate('tip_register_fail') . $resultObject->error, $this->view->seed_BaseUrl . "/login");
             } else {
                 //注册成功
-                Shop_Browser::redirect($this->view->translate('tip_register_sucess'), $this->view->seed_BaseUrl . "/login");
+                Shop_Browser::redirect($this->view->translate('tip_register_success'), $this->view->seed_BaseUrl . "/login");
             }
         }
         if(defined('SEED_WWW_TPL')){

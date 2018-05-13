@@ -55,6 +55,8 @@ $registry->set('session', $session);
 $frontController = Zend_Controller_Front::getInstance();
 $frontController->throwExceptions(false);
 $frontController->setControllerDirectory(SEED_CONTROLLER_DIRECTORY);
+// 配置Controller和Action名称支持大小写
+$frontController->setParam('useCaseSensitiveActions',true);
 
 /** run! */
 $frontController->dispatch();
