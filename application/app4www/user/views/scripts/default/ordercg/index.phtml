@@ -109,7 +109,7 @@
                                 <div class="cc_box">
                                     <!--提交订单--> <a title="<?php echo $this->translate('submit');?>"  class="t_edit p_qr" <?php if ($orders['orderStatus']==00){ echo 'style="display:inline-block;"';}?>
                                                    href="javascript:;" id="<?php echo $orders['orderID'];?>" data-url="/user/ordercg/submit"
-                                                   data-msg1="<?php echo $this->translate('is_submit');?>" data-msg2="<?php echo $this->translate('tip_forReview_sucess');?>"
+                                                   data-msg1="<?php echo $this->translate('is_submit');?>" data-msg2="<?php echo $this->translate('tip_forReview_success');?>"
                                                    data-msg3="<?php echo $this->translate('tip_forReview_fail');?>" onclick="doOption(this);"></a>
 
                                     <!--编辑订单--> <a  title="<?php echo $this->translate('edit');?>"  class="t_edit p_ed" <?php if($this->accountID==$orders['client']){if ($orders['orderStatus']==05||$orders['orderStatus']==00||$orders['orderStatus']==02){ echo 'style="display:inline-block;"';}}?>
@@ -117,7 +117,7 @@
 
                                     <!--取消订单--> <a title="<?php echo $this->translate('cancel');?>"  class="t_edit p_delx" <?php if ($orders['orderStatus']==01||$orders['orderStatus']==02||$orders['orderStatus']==05){ echo 'style="display:inline-block;"';}?>
                                                    href="javascript:;" id="<?php echo $orders['orderID'];?>" data-url="/user/ordercg/cancel"
-                                                   data-msg1="<?php echo $this->translate('is_cancel');?>" data-msg2="<?php echo $this->translate('tip_cancel_sucess');?>"
+                                                   data-msg1="<?php echo $this->translate('is_cancel');?>" data-msg2="<?php echo $this->translate('tip_cancel_success');?>"
                                                    data-msg3="<?php echo $this->translate('tip_cancel_fail');?>" onclick="doOption(this);"></a>
 
                                     <!--删除订单--> <a title="<?php echo $this->translate('delete');?>"  class="t_edit p_del" <?php if ($orders['orderStatus']==00){ echo 'style="display:inline-block;"';}?>

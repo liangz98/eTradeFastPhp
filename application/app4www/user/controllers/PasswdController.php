@@ -26,7 +26,7 @@ class PasswdController extends Kyapi_Controller_Action
                     Shop_Browser::redirect($this->view->translate('tip_edit_fail'),'/user/passwd');
                 } else {
                     //编辑密码成功
-                    Shop_Browser::redirect($this->view->translate('tip_edit_sucess'),'/user/passwd');
+                    Shop_Browser::redirect($this->view->translate('tip_edit_success'),'/user/passwd');
                 }
 
             } catch (HttpError $ex) {

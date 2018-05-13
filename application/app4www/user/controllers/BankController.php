@@ -170,7 +170,7 @@ class BankController extends Kyapi_Controller_Action
                     if ($resultBank['status'] != 1) {
                      Shop_Browser::redirect($this->view->translate('tip_add_fail'). $resultBank['error'],$this->view->seed_Setting['user_app_server'].'/bank');
                     } else {
-                        Shop_Browser::redirect($this->view->translate('tip_add_sucess'),$this->view->seed_Setting['user_app_server'].'/bank');
+                        Shop_Browser::redirect($this->view->translate('tip_add_success'),$this->view->seed_Setting['user_app_server'].'/bank');
                     }
                 }
             } catch (HttpError $ex) {
@@ -253,7 +253,7 @@ class BankController extends Kyapi_Controller_Action
                 if ( $_resultBank['status'] != 1) {
                     Shop_Browser::redirect($this->view->translate('tip_edit_fail'). $_resultBank['error'],$this->view->seed_Setting['user_app_server'].'/bank');
                 } else {
-                    Shop_Browser::redirect($this->view->translate('tip_edit_sucess'),$this->view->seed_Setting['user_app_server'].'/bank');
+                    Shop_Browser::redirect($this->view->translate('tip_edit_success'),$this->view->seed_Setting['user_app_server'].'/bank');
                 }
             }
         }

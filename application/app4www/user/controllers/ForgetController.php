@@ -105,7 +105,7 @@ class ForgetController extends Kyapi_Controller_Action
                     Shop_Browser::redirect($this->view->translate('tip_reset_fail'),$this->view->seed_BaseUrl . "/login");
 				} else {
 				    //重置成功
-                    Shop_Browser::redirect($this->view->translate('tip_reset_sucess'),$this->view->seed_BaseUrl . "/login");
+                    Shop_Browser::redirect($this->view->translate('tip_reset_success'),$this->view->seed_BaseUrl . "/login");
 				}
 			} catch (Exception $e) {
                 Shop_Browser::redirect($e->getMessage(),$this->view->seed_BaseUrl . "/login");

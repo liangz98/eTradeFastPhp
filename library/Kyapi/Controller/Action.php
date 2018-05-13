@@ -74,7 +74,7 @@ class Kyapi_Controller_Action extends Zend_Controller_Action{
 //            $lan = strtolower($lan);
         }
 
-        $datapath='/languages/'.$lan.'.php';
+        $languagesPath='/languages/'.$lan.'.php';
         $locale=$this->getRequest()->getParam('locale');
         //语言选择模块
 //        if($locale=='zh-CN'){
@@ -85,7 +85,11 @@ class Kyapi_Controller_Action extends Zend_Controller_Action{
 //            $datapath='/languages/zh-CN.php';
 //        }
         //加载注册语言模块
-        $adapter = new Zend_Translate('array', (SEED_WWW_ROOT) .$datapath, $locale);
+        try {
+            $adapter = new Zend_Translate('array', (SEED_WWW_ROOT) . $languagesPath, $locale);
+        } catch (Zend_Translate_Exception $e) {
+
+        }
         Zend_Registry::set('Zend_Translate', $adapter);
 
 //        // 读取国家地址字段

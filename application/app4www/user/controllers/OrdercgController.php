@@ -368,7 +368,7 @@ class ordercgController extends Kyapi_Controller_Action
 					Seed_Browser::redirect($this->view->translate('tip_add_fail').$resultObject->error,$this->view->seed_BaseUrl ."/ordercg");
 				} else {
                     //添加订单成功
-					Shop_Browser::redirect($this->view->translate('tip_add_sucess'),$this->view->seed_BaseUrl ."/ordercg");
+					Shop_Browser::redirect($this->view->translate('tip_add_success'),$this->view->seed_BaseUrl ."/ordercg");
 				}
 			} catch (HttpError $ex) {
 				Shop_Browser::redirect($ex->getMessage());
@@ -643,7 +643,7 @@ class ordercgController extends Kyapi_Controller_Action
 					Seed_Browser::redirect($this->view->translate('tip_edit_fail') .$resultObject->error,$this->view->seed_BaseUrl ."/ordercg");
 				} else {
                     //编辑成功
-					Shop_Browser::redirect($this->view->translate('tip_edit_sucess'),$this->view->seed_BaseUrl ."/ordercg");
+					Shop_Browser::redirect($this->view->translate('tip_edit_success'),$this->view->seed_BaseUrl ."/ordercg");
 				}
 			} catch (HttpError $ex) {
 				Shop_Browser::redirect($ex->getMessage());

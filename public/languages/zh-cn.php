@@ -753,71 +753,71 @@ return array(
     'tip_bank_no'       => '银行附件不能为空！',
 
     'tip_register_ready'  => '该用户已注册！',
-    'tip_register_sucess' => '注册成功',
+    'tip_register_success' => '注册成功',
     'tip_register_fail'   => '注册失败',
 
-    'tip_reset_sucess' => '重置成功',
+    'tip_reset_success' => '重置成功',
     'tip_reset_fail'   => '重置失败',
     'tip_reset_pwd'    => '重置密码',
 
-    'tip_login_sucess' => '登录成功',
+    'tip_login_success' => '登录成功',
     'tip_login_fail'   => '登录失败',
     'tip_login_two'    => '已登录,请勿重复登录',
     'tip_login_out'    => '成功退出',
 
-    'tip_add_sucess' => '添加成功',
+    'tip_add_success' => '添加成功',
     'tip_add_fail'   => '添加失败',
 
-    'tip_payment_sucess' => '支付成功',
+    'tip_payment_success' => '支付成功',
     'tip_payment_fail'   => '支付失败',
     'tip_payment_pwd'    => '未设置支付密码',
 
-    'tip_edit_sucess' => '编辑成功',
+    'tip_edit_success' => '编辑成功',
     'tip_edit_fail'   => '编辑失败',
 
-    'tip_copy_sucess' => '复制成功',
+    'tip_copy_success' => '复制成功',
     'tip_copy_fail'   => '复制失败',
 
-    'tip_del_sucess' => '删除成功',
+    'tip_del_success' => '删除成功',
     'tip_del_fail'   => '删除失败',
 
-    'tip_valid_sucess' => '启用成功',
+    'tip_valid_success' => '启用成功',
     'tip_valid_fail'   => '启用失败',
 
-    'tip_invalid_sucess' => '禁用成功',
+    'tip_invalid_success' => '禁用成功',
     'tip_invalid_fail'   => '禁用失败',
 
-    'tip_accept_sucess' => '已成功接受邀请',
+    'tip_accept_success' => '已成功接受邀请',
     'tip_accept_fail'   => '接受邀请失败',
-    'tip_reject_sucess' => '已拒绝邀请',
+    'tip_reject_success' => '已拒绝邀请',
     'tip_reject_fail'   => '拒绝邀请失败',
 
-    'tip_confrim_sucess' => '成功确认',
-    'tip_confrim_fail'   => '确认失败',
+    'tip_confirm_success' => '成功确认',
+    'tip_confirm_fail'   => '确认失败',
 
-    'tip_forReview_sucess' => '提交成功',
+    'tip_forReview_success' => '提交成功',
     'tip_forReview_fail'   => '提交失败',
 
-    'tip_cancel_sucess' => '成功取消',
+    'tip_cancel_success' => '成功取消',
     'tip_cancel_fail'   => '取消失败 ',
 
-    'tip_default_sucess' => '设为默认成功',
+    'tip_default_success' => '设为默认成功',
     'tip_default_fail'   => '设为默认失败 ',
 
-    'tip_request_sucess' => '邀请成功',
+    'tip_request_success' => '邀请成功',
     'tip_request_fail'   => '邀请失败',
 
 
-    'tip_recharge_sucess' => '充值成功',
+    'tip_recharge_success' => '充值成功',
     'tip_recharge_fail'   => '充值失败',
 
-    'tip_draw_sucess' => '提现成功',
+    'tip_draw_success' => '提现成功',
     'tip_draw_fail'   => '提现失败',
 
-    'tip_transfer_sucess' => '转账成功',
+    'tip_transfer_success' => '转账成功',
     'tip_transfer_fail'   => '转账失败',
 
-    'tip_exchange_sucess' => '结汇成功',
+    'tip_exchange_success' => '结汇成功',
     'tip_exchange_fail'   => '结汇失败',
 
 

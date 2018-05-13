@@ -69,7 +69,7 @@
                         <!--是否默认联系人-->
                         <td>
                             <a href="#" href="javascript:;" id="<?php echo $ulist['contactID'];?>" data-url="/user/account/default"
-                               data-msg1="<?php echo $this->translate('is_default');?>" data-msg2="<?php echo $this->translate('tip_default_sucess');?>"
+                               data-msg1="<?php echo $this->translate('is_default');?>" data-msg2="<?php echo $this->translate('tip_default_success');?>"
                                data-msg3="<?php echo $this->translate('tip_default_fail');?>" <?php if($this->CompAdmin==true){echo'onclick="doOption(this);"';}?>>
                                 <?php if($ulist['isDefaultPublic']==true){echo $this->translate('yes');}else{echo $this->translate('no');};?></a>
                         </td>
@@ -80,12 +80,12 @@
                                 <?php  if($this->CompAdmin==true):?>
                                 <!--禁用-->   <a title="<?php echo $this->translate('disable');?>"  <?php if ($ulist['contactStatus']=='01'){echo 'style="display:inline-block;"';}?>  class="t_edit p_jy"
                                                href="javascript:;" id="<?php echo $ulist['contactID'];?>" data-url="/user/account/invalid"
-                                               data-msg1="<?php echo $this->translate('is_invalid');?>" data-msg2="<?php echo $this->translate('tip_invalid_sucess');?>"
+                                               data-msg1="<?php echo $this->translate('is_invalid');?>" data-msg2="<?php echo $this->translate('tip_invalid_success');?>"
                                                data-msg3="<?php echo $this->translate('tip_invalid_fail');?>" onclick="doOption(this);"></a>
 
                                <!--启用-->   <a title="<?php echo $this->translate('enable');?>" <?php if ($ulist['contactStatus']=='02'){  echo 'style="display:inline-block;"';}?>  class="t_edit p_qy"
                                               href="javascript:;" id="<?php echo $ulist['contactID'];?>" data-url="/user/account/valid"
-                                              data-msg1="<?php echo $this->translate('is_valid');?>" data-msg2="<?php echo $this->translate('tip_valid_sucess');?>"
+                                              data-msg1="<?php echo $this->translate('is_valid');?>" data-msg2="<?php echo $this->translate('tip_valid_success');?>"
                                               data-msg3="<?php echo $this->translate('tip_valid_fail');?>" onclick="doOption(this);"></a>
                                 <?php endif;?>
 
