@@ -46,6 +46,12 @@ div.index-info .col-md-3 {
 	padding: 10px 10px;
 }
 
-.panel table thead tr td,.panel table thead tr th {
+.panel table thead tr td,.panel table thead tr th,.panel table tbody tr td {
 	border: none;
+}
+
+.panel .etf-heading table thead {
+	border: 1px solid #ccc;
+	background-color: #f6f6f6;
+	color: #666;
 }
