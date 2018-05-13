@@ -167,9 +167,15 @@
 	});
 
 	$(function () {
-        $("#_orderList").parent().css('background-color', '#f5f8fa').prev(".etf-heading").css('background-color', '#a0cdeb');
-        $("#_productList").parent().css('background-color', '#f8f8ff').prev(".etf-heading").css('background-color', '#d8bfd8');
-        $("#_partnerList").parent().css('background-color', '#fffafa').prev(".etf-heading").css('background-color', '#fc9d9a');
+        var phOrder=$("#_orderList");
+        var phProduct=$("#_productList");
+        var phPartner=$("#_partnerList");
+        $(phOrder).parent().css('background-color', '#f5f8fa');
+        $(phOrder).prev(".etf-heading").css('background-color', '#a0cdeb');
+        $(phProduct).parent().css('background-color', '#f8f8ff');
+        $(phProduct).prev(".etf-heading").css('background-color', '#d8bfd8');
+        $(phPartner).parent().css('background-color', '#fffafa');
+        $(phPartner).prev(".etf-heading").css('background-color', '#fc9d9a');
 
         initList("_orderList", "listsaleorder");
         initList("_productList", "listsaleproduct");

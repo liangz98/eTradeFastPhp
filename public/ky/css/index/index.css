@@ -42,6 +42,16 @@ div.index-info .col-md-3 {
 	font-size: 14px;
 }
 
-.test {
-	
+.panel > .table-responsive {
+	padding: 10px 10px;
+}
+
+.panel table thead tr td,.panel table thead tr th,.panel table tbody tr td {
+	border: none;
+}
+
+.etf-heading + div table thead {
+	border: 1px solid #ccc;
+	background-color: #f6f6f6;
+	color: #666;
 }
