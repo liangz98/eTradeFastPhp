@@ -113,7 +113,7 @@
                        <select  class="dq_select"  name="sex"> <?php echo $this->ShowDictionaryList('datatest_setting',$this->userlangCode,$this->dic_Setting['SEX'],$this->e['sex']);?></select>
                    </div>
                    <div>
-                       <label class="labelbox"><!-- 生日 --><?php echo $this->translate('birthdate');?></label>
+                       <label class="labelbox"><!-- 生日 --><?php echo $this->translate('birthday');?></label>
                        <script language="javascript" type="text/javascript" src="/ky/My97DatePicker/WdatePicker.js"></script>
                        <input type="text" name="birthdate" value="" tabindex="1" onfocus="WdatePicker({minDate:'1900-01-01',maxDate:'2001-01-01'})">
                    </div>
@@ -152,7 +152,7 @@
                        <input class="must" style="border:1px solid #DF7E20;" type="text" name="mobilePhone" id="mobilePhone" placeholder="<?php echo $this->translate('is_phone');?>" tabindex="1"  data-rule-mobile="true" required data-msg-required="<?php echo $this->translate('de_null');?>" /><!--请填写有效的移动电话-->
                    </div>
                    <div>
-                       <label class="labelbox"><!-- 固定电话 --><?php echo $this->translate('telphone');?></label>
+                       <label class="labelbox"><!-- 固定电话 --><?php echo $this->translate('telephone');?></label>
                        <input class="must" style="border:1px solid #DF7E20;" type="text" name="phone" id="phone" placeholder="<?php echo $this->translate('is_tel');?>" value="" tabindex="1" data-rule-phone="true" required data-msg-required="<?php echo $this->translate('de_null');?>" /><!--请填写有效的固定电话-->
                    </div>
                    <div>

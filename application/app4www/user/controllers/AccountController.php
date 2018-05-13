@@ -136,27 +136,25 @@ class AccountController extends Kyapi_Controller_Action
         }
     }
 
-    public function addAction()
-    {
+    public function addAction() {
         if ($this->_request->isPost()) {
-
             // 设置请求数据
-            $_requestOb=$this->_requestObject;
+            $_requestOb = $this->_requestObject;
             //编辑用户信息
             $_account = array();
-//                $_account['contactID'] = $this->view->userID;
             $_account['name'] = $this->_request->getParam('name');
             $_account['ecommloginname'] = $this->_request->getParam('email');
             $_account['phone'] = $this->_request->getParam('phone');
 
-            $emrole=$this->_request->getParam('ecommrole');
-            $emrole2=implode(',',$emrole);
-            $_account['ecommrole'] = $emrole2;
+            $ecommrole = $this->_request->getParam('ecommrole');
+            $_account['ecommrole'] = implode(',', $ecommrole);
+
+            var_dump($_account);
 
             $_account['mobilePhone'] = $this->_request->getParam('mobilePhone');
             $_account['email'] = $this->_request->getParam('email');
             $_account['salutation'] = $this->_request->getParam('salutation');
-            $ddtime= $this->_request->getParam('birthdate');
+            $ddtime = $this->_request->getParam('birthdate');
             if (!empty($ddtime)) {
                 $date3 = date("Y-m-d\TH:i:s", strtotime($ddtime));
             } else {
@@ -165,15 +163,15 @@ class AccountController extends Kyapi_Controller_Action
             $_account['birthdate'] = $date3;
             $_account['department'] = $this->_request->getParam('department');
             //判断是否为默认联系人
-//            $isDefaultPublic=($this->_request->getParam('isDefaultPublic')=='1')?true:false;
-//            $_account['isDefaultPublic']=$isDefaultPublic;
+            //            $isDefaultPublic=($this->_request->getParam('isDefaultPublic')=='1')?true:false;
+            //            $_account['isDefaultPublic']=$isDefaultPublic;
             //判断是否为订单联系人
 
-            $isPublicContact=$this->_request->getParam('isPublicContact');
-            if($isPublicContact=='1'){
-                $_account['isPublicContact']=true;
-            }else{
-                $_account['isPublicContact']=false;
+            $isPublicContact = $this->_request->getParam('isPublicContact');
+            if ($isPublicContact == '1') {
+                $_account['isPublicContact'] = true;
+            } else {
+                $_account['isPublicContact'] = false;
             }
 
 
@@ -185,7 +183,7 @@ class AccountController extends Kyapi_Controller_Action
             $_account['mailingCountryCode'] = $this->_request->getParam('mailingCountryCode');
             $_account['mailingStateCode'] = $this->_request->getParam('mailingStateCode');
             $_account['mailingCityCode'] = $this->_request->getParam('mailingCityCode');
-            $_account['mailingAddress'] = $_account['mailingCountryCode'].$_account['mailingStateCode'].$_account['mailingCityCode'];
+            $_account['mailingAddress'] = $_account['mailingCountryCode'] . $_account['mailingStateCode'] . $_account['mailingCityCode'];
             $_account['mailingStreet'] = $this->_request->getParam('mailingStreet');
             $_account['mailingZipCode'] = $this->_request->getParam('mailingZipCode');
             $_account['othAddress'] = $this->_request->getParam('othAddress');
@@ -193,37 +191,40 @@ class AccountController extends Kyapi_Controller_Action
             $_account['certificateType'] = $this->_request->getParam('certificateType');
             $_account['certificateNo'] = $this->_request->getParam('certificateNo');
             /*添加字段证件号码  证件类型*/
-          //  $_account['identityType'] = $this->_request->getParam('identityType');
+            //  $_account['identityType'] = $this->_request->getParam('identityType');
             $_account['identityType'] = '01';
             $_account['identityNo'] = $this->_request->getParam('identityNo');
 
             $userKY = $this->json->addContactApi($_requestOb, $_account);
-            $userData= $this->objectToArray(json_decode($userKY));
+            $userData = $this->objectToArray(json_decode($userKY));
 
-            if ($userData['status']!= 1) {
-                Shop_Browser::redirect($this->view->translate('tip_add_fail').$userData['error'],$this->view->seed_Setting['user_app_server'].'/account');
-            } else {
-                Shop_Browser::redirect($this->view->translate('tip_add_success'),$this->view->seed_Setting['user_app_server'].'/account');
-            }
+            $this->redirect("/account");
 
+        } else {
+            $accountID = $this->view->accountID;
+            $requestObject = $this->_requestObject;
+
+            // 请求Hessian服务端方法
+            $resultObject = $this->json->getAccountApi($requestObject, $accountID);
+            $account = json_decode($resultObject)->result;
+            $this->view->account = $account;
         }
-        if(defined('SEED_WWW_TPL')){
-            $content = $this->view->render(SEED_WWW_TPL."/account/add.phtml");
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/account/add.phtml");
             echo $content;
             exit;
         }
     }
-    public function editAction()
-    {
-        // 设置请求数据
-        $_requestOb=$this->_requestObject;
-        $contactId=$_SERVER['QUERY_STRING'];
-        $_contactID =base64_decode($contactId);
-        $userKY= $this->json->getContactApi($_requestOb,$_contactID);
-        $userData= $this->objectToArray(json_decode($userKY));
-        $this->view->e=$userData['result'];
-        $this->view->ecommrole=explode(",",$userData['result']['ecommrole']);
 
+    public function editAction() {
+        // 设置请求数据
+        $_requestOb = $this->_requestObject;
+        $contactId = $_SERVER['QUERY_STRING'];
+        $_contactID = base64_decode($contactId);
+        $userKY = $this->json->getContactApi($_requestOb, $_contactID);
+        $userData = $this->objectToArray(json_decode($userKY));
+        $this->view->e = $userData['result'];
+        $this->view->ecommrole = explode(",", $userData['result']['ecommrole']);
 
         if ($this->_request->isPost()) {
                 //编辑用户信息

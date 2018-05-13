@@ -29,32 +29,185 @@
                     <!-- Default panel contents -->
                     <div class="panel-heading"><?php echo $this->translate('personNO'); ?></div>
                     <div class="panel-body">
-                        <form class="form-horizontal" action="javascript:void(0)" onsubmit="contactSearch()" id="contact_search_form">
-                            <div class="form-group" style="margin-bottom: 0 !important;">
-                                <label for="keyword" class="sr-only">keyword</label>
-                                <div class="col-sm-6">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fas fa-search"></i></span>
-                                        <input type="text" class="form-control" name="keyword" id="keyword" placeholder="<?php echo $this->translate('INPkw_ac');?>">
-                                    </div>
+                        <form class="form-horizontal" action="/user/account/add" onsubmit="contactSearch()" id="contact_add_form" method="post">
+                            <div class="form-group">
+                                <label for="name" class="col-sm-2 control-label"><?php echo $this->translate('name'); ?></label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="name" id="name" placeholder="<?php echo $this->translate('is_name');?>" required>
                                 </div>
-                                <div class="col-sm-1">
-                                    <button type="submit" class="btn btn-primary"> Go </button>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="salutation" class="col-sm-2 control-label"><?php echo $this->translate('title'); ?></label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="salutation" id="salutation" placeholder="<?php echo $this->translate('title');?>" >
                                 </div>
-                                <?php if ($this->CompAdmin == true): ?>
-                                <div class="col-sm-4">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sex" class="col-sm-2 control-label"><?php echo $this->translate('sex'); ?></label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" name="sex" id="sex">
+                                        <?php echo $this->ShowDictionaryList($this->dic_Setting['SEX'], $this->userlangCode, $this->dic_Setting['SEX'], $this->e['sex']); ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="birthdate" class="col-sm-2 control-label"><?php echo $this->translate('birthday'); ?></label>
+                                <div class="col-sm-9">
+                                    <input type="date" class="form-control" name="birthdate" id="birthdate" placeholder="<?php echo $this->translate('title');?>" >
+                                </div>
+                            </div>
+
+                            <?php if ($this->account->regdCountryCode == 'CN'): ?>
+                            <div class="form-group">
+                                <label for="identityType" class="col-sm-2 control-label"><?php echo $this->translate('certificateType'); ?></label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" name="identityType" id="identityType">
+                                        <?php echo $this->ShowDictionaryList($this->dic_Setting['SEX'], $this->userlangCode, $this->dic_Setting['ID_TYPE'], $this->e['identityType']); ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="identityNo" class="col-sm-2 control-label"><?php echo $this->translate('certificateNo'); ?></label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="identityNo" id="identityNo" placeholder="<?php echo $this->translate('certificateNo');?>" >
+                                </div>
+                            </div>
+                            <?php endif;?>
+
+                            <div class="form-group">
+                                <label for="department" class="col-sm-2 control-label"><?php echo $this->translate('division'); ?></label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="department" id="department" placeholder="<?php echo $this->translate('division');?>" >
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="title" class="col-sm-2 control-label"><?php echo $this->translate('job'); ?></label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="title" id="title" placeholder="<?php echo $this->translate('job');?>" >
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" class="col-sm-2 control-label"><?php echo $this->translate('email'); ?></label>
+                                <div class="col-sm-9">
+                                    <input type="email" class="form-control" name="email" id="email" placeholder="<?php echo $this->translate('is_emails');?>" >
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="mobilePhone" class="col-sm-2 control-label"><?php echo $this->translate('mobile'); ?></label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="mobilePhone" id="mobilePhone" placeholder="<?php echo $this->translate('is_phone');?>" >
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone" class="col-sm-2 control-label"><?php echo $this->translate('telephone'); ?></label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="phone" id="phone" placeholder="<?php echo $this->translate('is_tel');?>" >
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="fax" class="col-sm-2 control-label"><?php echo $this->translate('fax'); ?></label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="fax" id="fax" placeholder="<?php echo $this->translate('fax');?>" >
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="" class="col-sm-2 control-label"><?php echo $this->translate('userROLE'); ?></label>
+                                <div class="col-sm-9">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" id="shoAllContact"> <?php echo $this->translate('CHK_account');?>
+                                            <input type="checkbox" name="ecommrole[]" value="CompUser" checked="checked">
+                                            <?php echo $this->translate('CompUser');?>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="ecommrole[]" value="CompOrderAdmin">
+                                            <?php echo $this->translate('CompOrderAdmin');?>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="ecommrole[]" value="CompClerk">
+                                            <?php echo $this->translate('CompClerk');?>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="ecommrole[]" value="CompProductAdmin">
+                                            <?php echo $this->translate('CompProductAdmin');?>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="ecommrole[]" value="CompPartnerAdmin">
+                                            <?php echo $this->translate('CompPartnerAdmin');?>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="ecommrole[]" value="SOAdmin">
+                                            <?php echo $this->translate('SOAdmin');?>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="ecommrole[]" value="TOAdmin">
+                                            <?php echo $this->translate('TOAdmin');?>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="ecommrole[]" value="CompPublicInfoAdmin">
+                                            <?php echo $this->translate('CompPublicInfoAdmin');?>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="ecommrole[]" value="CompAdmin">
+                                            <?php echo $this->translate('CompAdmin');?>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="ecommrole[]" value="DeclarationAdmin">
+                                            <?php echo $this->translate('DeclarationAdmin');?>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="ecommrole[]" value="CompSettleAdmin">
+                                            <?php echo $this->translate('CompSettleAdmin');?>
                                         </label>
                                     </div>
                                 </div>
-                                <div class="col-sm-1">
-                                    <a title="<?php echo $this->translate('add');?>" href="/user/account/add" class="btn btn-default">
-                                        <i class="fas fa-user-plus"></i>
-                                    </a>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="isPublicContact" class="col-sm-2 control-label"><?php echo $this->translate('orderContact'); ?></label>
+                                <div class="col-sm-9">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="isPublicContact" value="1"> <?php echo $this->translate('yes');?>
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="isPublicContact" value="0" checked="checked"> <?php echo $this->translate('no');?>
+                                    </label>
                                 </div>
-                                <?php endif; ?>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-12 col-md-9 col-md-offset-2">
+                                    <button type="submit" class="btn btn-warning btn-default btn-block"><?php echo $this->translate('save'); ?></button>
+                                </div>
                             </div>
                         </form>
                     </div>

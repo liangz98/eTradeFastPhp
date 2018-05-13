@@ -205,7 +205,7 @@ return array(
     'city' => 'City',
     'street' => 'Street',
     'postcode' => 'Postcode',
-    'telphone' => 'Landline',
+    'telephone' => 'Landline',
     'call' => 'Contact No.',
     'mobile' => 'Mobile',
     'mobile_phone' => 'Mobile phone',

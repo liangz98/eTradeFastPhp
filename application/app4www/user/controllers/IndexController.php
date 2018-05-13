@@ -173,7 +173,7 @@ class IndexController extends Kyapi_Controller_Action {
             $_account['mobilePhone'] = $this->_request->getParam('mobilePhone');
             $_account['email'] = $this->_request->getParam('email');
             $_account['salutation'] = $this->_request->getParam('salutation');
-            $ddtime= $this->_request->getParam('birthdate');
+            $ddtime= $this->_request->getParam('birthday');
             if (!empty($ddtime)) {
                 $date3 = date("Y-m-d\TH:i:s", strtotime($ddtime));
             } else {
