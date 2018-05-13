@@ -1,6 +1,7 @@
 
 .purOrderListBtn, .saleOrderListBtn, .purProductListBtn, .saleProductListBtn, .vendorPartnerListBtn, .buyerPartnerListBtn {
     cursor: pointer;
+    font-size: 12px;
 }
 
 body {
@@ -66,4 +67,16 @@ div.index-info .col-md-3 {
 .etf-heading + div table thead {
 	border: 1px solid #ccc;
 	background-color: #f6f6f6;
+}
+
+.index-info .col-md-3:nth-child(2){
+	width: 30%;
+}
+
+div.etf-heading li.selected:before {
+	height: 100%;
+	width: 48px;
+	border-top: 2px solid #d9534f;
+	position:absolute;
+	content: "";
 }
