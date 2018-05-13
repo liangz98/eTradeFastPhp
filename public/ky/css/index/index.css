@@ -50,7 +50,7 @@ div.index-info .col-md-3 {
 	border: none;
 }
 
-.etf-heading table thead {
+.etf-heading + div table thead {
 	border: 1px solid #ccc;
 	background-color: #f6f6f6;
 	color: #666;
