@@ -1,6 +1,6 @@
 <?php
-/* 
-* 类用途: CURL实现抓取原创内容 
+/*
+* 类用途: CURL实现抓取原创内容
 */
 class Kyapi_Model_Curl
 {
@@ -36,11 +36,10 @@ class Kyapi_Model_Curl
 //        return $tmpInfo; // 返回数据
 //    }
 
-    public function vpost($url,$data)
-    {
+    public function vpost($url, $data) {
         // 模拟提交数据函数
-     //  echo $data;
-        $UserAgent ="Etrade_PhpAgent";
+        //  echo $data;
+        $UserAgent = "Etrade_PhpAgent";
         $curl = curl_init(); // 启动一个CURL会话
         curl_setopt($curl, CURLOPT_URL, $url); // 要访问的地址
         /*  curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0); // 对认证证书来源的检查

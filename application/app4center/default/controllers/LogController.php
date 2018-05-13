@@ -3,17 +3,17 @@
 class LogController extends Seed_Controller_Action4Admin {
     function preDispatch() {
     }
-    
+
     function indexAction() {
         $logM = new Seed_Model_Log('system');
-        
+
         $conditions = array();
         //查询条件
         if (trim($this->_request->getParam('user_name')) != '')
             $conditions['user_name'] = trim($this->_request->getParam('user_name'));
         if (trim($this->_request->getParam('user_id')) != '')
             $conditions['user_name'] = trim($this->_request->getParam('user_id'));
-        
+
         $perpage = 15;
         $page = intval($this->_request->getParam('page'));
         $total = $logM->fetchRowsCount($conditions);
@@ -30,8 +30,8 @@ class LogController extends Seed_Controller_Action4Admin {
         $this->view->logs = $logs;
         $this->view->conditions = $conditions;
     }
-    
-    
+
+
     function viewAction() {
         $log_id = $this->_request->getParam('log_id');
         if ($log_id < 1)
@@ -43,24 +43,31 @@ class LogController extends Seed_Controller_Action4Admin {
         $log['log_data'] = unserialize($log['log_data']);
         $this->view->log = $log;
     }
-    
+
     function logfilelistAction() {
         $page = $this->_request->getParam('page');
         $limit = $this->_request->getParam('limit');
         $result = array();
         $files = array();
-    
+
         $result['code'] = 0;
         $result['msg'] = "";
         $result['count'] = 0;
-    
+
         $limit = $limit < 10 ? 10 : $limit;
-        
+
         $start = $page * $limit - $limit;
         $end = $page * $limit - 1;
-    
+
+        // 正式
         // $directory = "/storage/html/kuaiyi/log/";
+
+        // 测试
         $directory = "/storage/html/eTradeFastWebhooksTest/eTradeFastPhp/log/";
+
+        // 本地
+        // $directory = "D:/kuaiyi/log/";
+
         $fileList = scandir($directory, 1);
         foreach ($fileList as $index => $value) {
             if (is_file($directory.$value)) {
@@ -79,13 +86,13 @@ class LogController extends Seed_Controller_Action4Admin {
         echo json_encode($result);
         exit;
     }
-    
+
     function loginfoAction() {
         $fileName = $this->_request->getParam('fileName');
-    
+
         // $directory = "/storage/html/kuaiyi/log/";
         $directory = "/storage/html/eTradeFastWebhooksTest/eTradeFastPhp/log/";
-    
+
         $file = fopen($directory.$fileName, "r");
         $fileContent = '';
         //Output a line of the file until the end is reached
@@ -95,11 +102,11 @@ class LogController extends Seed_Controller_Action4Admin {
             $fileContent .= fgets($file) . "<br />";
         }
         fclose($file);
-    
+
         echo $fileContent;
         exit;
     }
-    
+
     function changeFileSize($size, $format) {
         $p = 0;
         if ($format == 'kb') {
@@ -112,7 +119,7 @@ class LogController extends Seed_Controller_Action4Admin {
         $size /= pow(1024, $p);
         return number_format($size);
     }
-    
+
     function size($byte) {
         if ($byte < 1024) {
             $unit = "B";
@@ -138,11 +145,11 @@ class LogController extends Seed_Controller_Action4Admin {
             $byte = $this->round_dp($byte / 1073741824, 2);
             $unit = "GB";
         }
-    
+
         $byte .= ' '.$unit;
         return $byte;
     }
-    
+
     function round_dp($num, $dp) {
         $sh = pow(10, $dp);
         return (round($num * $sh) / $sh);

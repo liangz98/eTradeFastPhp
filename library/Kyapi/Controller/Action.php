@@ -44,8 +44,7 @@ class Kyapi_Controller_Action extends Zend_Controller_Action{
     public $sessionID;
     public $json;
 
-    public function init()
-    {
+    public function init() {
         $this->checkSystem();
         $this->initView();
         $this->initSetting();
@@ -55,7 +54,14 @@ class Kyapi_Controller_Action extends Zend_Controller_Action{
         $this->view->addHelperPath(SEED_LIB_ROOT . '/Shop/View/Helper');
         $this->initHelperSetting();
         $this->initCommon();//运行公用的一些代码
-        $this->json = new Kyapi_Controller_Json($this->view->seed_Setting['KyUrl']);
+
+        $kyUrl = $this->view->seed_Setting['KyUrl'];
+        if (empty($kyUrl) || $kyUrl == 'NULL') {
+            $kyUrl = 'https://123.207.120.251:8099';
+        }
+        // $this->json = new Kyapi_Controller_Json($this->view->seed_Setting['KyUrl']);
+        $this->json = new Kyapi_Controller_Json($kyUrl);
+
         //语言判断
         $_lang=$_SESSION['rev_session']['contactPreference']['langCode'];
         if($_lang=='en_US'){

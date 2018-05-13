@@ -3,3 +3,4 @@
 /cache
 /log
 /config
+/application/app4center/default/controllers/LogController.php
