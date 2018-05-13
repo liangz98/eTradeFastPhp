@@ -59,6 +59,10 @@ div.index-info .col-md-3 {
 	line-height: 2.5;
 }
 
+.panel table tbody tr:hover{
+	background-color: #fff;
+}
+
 .etf-heading + div table thead {
 	border: 1px solid #ccc;
 	background-color: #f6f6f6;
