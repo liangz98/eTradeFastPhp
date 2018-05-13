@@ -44,71 +44,9 @@ class AccountController extends Kyapi_Controller_Action
         }
     }
 
-    public function indexAction()
-    {
-
-        $f1 = new Seed_Filter_Alnum();
-        $mod = $f1->filter($this->_request->getParam('mod'));
-        if (empty($mod)) {$mod = "index";}
-
-        $_PStatus =strval($this->_request->getParam('status'));
-        if(empty( $_PStatus)){  $_PStatus ='01';}
-
-        $this->view->PStatus=$_PStatus;
-        $_querySorts=$this->_request->getParam('querySorts');
-        if(empty($_querySorts)){ $_querySorts =null;}
-
-        $_keyword=$this->_request->getParam('keyword');
-        if(empty($_keyword)){ $_keyword =null;}
-
-        $page =intval($this->_request->getParam('page'));
-        if($page<1)$page=1;
-        $_limit=8;
-        $_skip=$_limit*($page-1);
-
-
-        // 设置请求数据
-        $_requestOb=$this->_requestObject;
-        /*用户信息*/
-        $_queryP =new queryAccount();
-        /**contactStatus 01有效 02禁用*/
-        if($_PStatus=="00"){
-            $_queryP= null;
-        }else{
-            $_queryP->contactStatus= $_PStatus;
-        }
-
-        $_querySorts=new querySorts();
-        $_querySorts->createTime="DESC";
-
-
-        // 请求Hessian服务端方法
-        $userKY= $this->json->listContactApi($_requestOb,$_queryP,$_querySorts,$_keyword, $_skip, $_limit);
-        $userData= $this->objectToArray(json_decode($userKY));
-        $userList= $userData['result'];
-        $this->view->userList=$userList;
-
-
-        //统计正常状态数量、分页
-        $existCount = $userData['extData'];
-        $total = $existCount['totalSize'];
-        $page=$existCount['totalPage'];
-
-        //设置视图状态
-        $this->view->status= $_PStatus;
-
-        $file = "user/account/" . $mod . "-" . $_PStatus;
-        $_limit=8;
-        $pageObj = new Seed_Page($this->_request,$total,$_limit);
-        $this->view->page = $pageObj->getPageArray();
-        $this->view->page['pageurl'] = '/' . $file;
-        if ($page > $this->view->page['totalpage'])
-            $page = $this->view->page['totalpage'];
-        if ($page < 1) $page = 1;
-
-
-        if(defined('SEED_WWW_TPL')){
-            $content = $this->view->render(SEED_WWW_TPL."/account/index.phtml");
+    public function indexAction() {
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/account/index.phtml");
             echo $content;
             exit;
         }
