@@ -103,7 +103,6 @@ class Kyapi_Controller_Action extends Zend_Controller_Action{
 //            $this->view->PROVINCE=$setting['PROVINCE'];
 //            $this->view->CITY=$setting['CITY'];
 //        }
-
     }
 
     public function IsAuth($e){

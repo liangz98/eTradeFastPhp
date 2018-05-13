@@ -114,7 +114,7 @@ class AccountController extends Kyapi_Controller_Action
         }
     }
 
-    public function contactlistajaxAction() {
+    public function contactListAjaxAction() {
         $msg = array();
         $_requestOb = $this->_requestObject;
 
