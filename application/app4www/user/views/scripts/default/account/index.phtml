@@ -160,8 +160,18 @@
             }, {
                 field: 'isDefaultPublic',
                 title: '<?php echo $this->translate("accountDF"); ?>',
-                formatter: function (value) {
-                    return (value === true) ? '<?php echo $this->translate('yes') ?>' : '<?php echo $this->translate('no'); ?>';
+                formatter: function (value, row) {
+                    var result = (value === true) ? '<?php echo $this->translate('yes') ?>' : '<?php echo $this->translate('no'); ?>';
+                    <?php if ($this->CompAdmin == true): ?>
+                    result = '<a href="javascript:void(0)" id="' + row.contactID + '" data-url="/user/account/default" data-msg1="<?php echo $this->translate("is_default");?>" '
+                        + 'data-msg2="<?php echo $this->translate("tip_default_success");?>" '
+                        + 'data-msg3="<?php echo $this->translate("tip_default_fail");?>" '
+                        + 'onclick="doOption(this);" '
+                        + '>'
+                        + result
+                        + '</a>';
+                    <?php endif; ?>
+                    return result;
                 }
             }, {
                 title: '<?php echo $this->translate("madeTT"); ?>',
@@ -178,7 +188,7 @@
                         + '</a>&nbsp;';
                     <?php if ($this->CompAdmin == true): ?>
                     if (row.contactStatus === '01') {
-                        result += '<a title="' + disableTitle + '" id="' + row.contactID + '" data-url="/user/account/invalid" data-msg1="<?php echo $this->translate("is_invalid");?>" '
+                        result += '<a href="javascript:void(0)" title="' + disableTitle + '" id="' + row.contactID + '" data-url="/user/account/invalid" data-msg1="<?php echo $this->translate("is_invalid");?>" '
                             + 'data-msg2="<?php echo $this->translate("tip_invalid_success");?>" '
                             + 'data-msg3="<?php echo $this->translate("tip_invalid_fail");?>" '
                             + 'onclick="doOption(this);" '
@@ -188,7 +198,7 @@
                     }
 
                     if (row.contactStatus === '02') {
-                        result += '<a title="' + validTitle + '" id="' + row.contactID + '" data-url="/user/account/valid" data-msg1="<?php echo $this->translate("is_valid");?>" '
+                        result += '<a href="javascript:void(0)" title="' + validTitle + '" id="' + row.contactID + '" data-url="/user/account/valid" data-msg1="<?php echo $this->translate("is_valid");?>" '
                             + 'data-msg2="<?php echo $this->translate("tip_valid_success");?>" '
                             + 'data-msg3="<?php echo $this->translate("tip_valid_fail");?>" '
                             + 'onclick="doOption(this);" '
@@ -231,12 +241,12 @@
         $(contactListTable).bootstrapTable('refresh', options);
     }
 
-    function doOption(obj){
-        var url=$(obj).attr('data-url');
-        var id=$(obj).attr('id');
-        var msg1=$(obj).attr('data-msg1');
-        var msg2=$(obj).attr('data-msg2');
-        var msg3=$(obj).attr('data-msg3');
+    function doOption(obj) {
+        var url = $(obj).attr('data-url');
+        var id = $(obj).attr('id');
+        var msg1 = $(obj).attr('data-msg1');
+        var msg2 = $(obj).attr('data-msg2');
+        var msg3 = $(obj).attr('data-msg3');
         //询问框
         layer.confirm(msg1, {
             title: false,
