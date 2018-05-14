@@ -183,13 +183,13 @@
 
         // 订单
 	    $(".saleOrderListBtn").click(function () {
-            $(".saleOrderListBtn").addClass(".selected");
-            $(".purOrderListBtn").remove(".selected");
+            $(".saleOrderListBtn").addClass("selected");
+            $(".purOrderListBtn").removeClass("selected");
             initList("_orderList", "listsaleorder");
         });
         $(".purOrderListBtn").click(function () {
-            $(".purOrderListBtn").addClass(".selected");
-            $(".saleOrderListBtn").remove(".selected");
+            $(".purOrderListBtn").addClass("selected");
+            $(".saleOrderListBtn").removeClass("selected");
             initList("_orderList", "listpurorder");
         });
 
