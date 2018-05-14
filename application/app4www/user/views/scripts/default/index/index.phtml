@@ -183,9 +183,13 @@
 
         // 订单
 	    $(".saleOrderListBtn").click(function () {
+            $(".saleOrderListBtn").addClass(".selected");
+            $(".purOrderListBtn").remove(".selected");
             initList("_orderList", "listsaleorder");
         });
         $(".purOrderListBtn").click(function () {
+            $(".purOrderListBtn").addClass(".selected");
+            $(".saleOrderListBtn").remove(".selected");
             initList("_orderList", "listpurorder");
         });
 
