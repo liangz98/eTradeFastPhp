@@ -108,7 +108,7 @@
             },
             columns: [{
                 field: 'bankAcctNo',
-                title: '<?php echo $this->translate("accountNO"); ?>',
+                title: '<?php echo $this->translate("bankAcctNo"); ?>',
                 formatter: function (value, row) {
                     var base = new Base64();
                     var resultEnCode = base.encode(row.bankAcctID);

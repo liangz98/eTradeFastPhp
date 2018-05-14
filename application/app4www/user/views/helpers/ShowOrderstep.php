@@ -412,7 +412,7 @@ class Zend_View_Helper_ShowOrderstep
         $('#view_img').find(".del_to").remove();
     });
 });
-        EOD;  
+EOD;
         echo $html;
 	}
 }

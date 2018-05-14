@@ -84,7 +84,9 @@
 <script src="/ky/js/base64.js"></script>
 
 <script type="text/javascript">
-	$().ready(function() {
+    var dataDict = {};
+
+    $().ready(function() {
 
 	});
 
@@ -140,13 +142,16 @@
                 field: 'ecommstatus',
                 title: '<?php echo $this->translate("userP"); ?>',
                 formatter: function (value) {
-                    var result ="";
-                    if (value === 'NV') {
-                        result = "<?php echo $this->ShowDictionaryTo($this->dic_Setting['ECOMM_STATUS'], $this->userlangCode, $this->dic_Setting['ECOMM_STATUS'], 'NV'); ?>";
-                    } else {
-                        result = "<?php echo $this->ShowDictionaryTo($this->dic_Setting['ECOMM_STATUS'], $this->userlangCode, $this->dic_Setting['ECOMM_STATUS'], 'AT'); ?>";
-                    }
-                    return result;
+                    var dictCode = "ECOMM_STATUS";
+
+                    return getDataDict(dictCode, value);
+                    //return "<?php //echo $this->ShowDictionaryTo($this->dic_Setting['ECOMM_STATUS'], $this->userlangCode, $this->dic_Setting['ECOMM_STATUS'], $value); ?>//";
+                    //if (value === 'NV') {
+                    //    result = "<?php //echo $this->ShowDictionaryTo($this->dic_Setting['ECOMM_STATUS'], $this->userlangCode, $this->dic_Setting['ECOMM_STATUS'], 'NV'); ?>//";
+                    //} else {
+                    //    result = "<?php //echo $this->ShowDictionaryTo($this->dic_Setting['ECOMM_STATUS'], $this->userlangCode, $this->dic_Setting['ECOMM_STATUS'], 'AT'); ?>//";
+                    //}
+                    //return result;
                 }
             //}, {
             //    field: 'ecommrole',
@@ -276,6 +281,41 @@
         }, function () {
             layer.closeAll();
         });
+    }
+
+    function getDataDict(dictCode, value) {
+	    var result = "";
+        var langCode = '<?php echo $this->userlangCode; ?>';
+
+        if (jQuery.hasData(dataDict) && $.data(dataDict, dictCode)) {
+            var data = $.data(dataDict, dictCode);
+            $.each(data, function (i, item) {
+                if (item.code === value) {
+                    result = item.name;
+                }
+            });
+        } else {
+            var fuzzyQuery = '/user/account/dict-ajax';
+            $.ajax({
+                type: "POST",
+                url: fuzzyQuery,
+                data: {
+                    dictCode: dictCode,
+                    langCode: langCode
+                },
+                async: false,
+                dataType: "json",
+                success: function (data) {
+                    $.data(dataDict, dictCode, data);
+                    $.each(data, function (i, item) {
+                        if (item.code === value) {
+                            result = item.name;
+                        }
+                    });
+                }
+            });
+        }
+        return result;
     }
 </script>
 </body>
