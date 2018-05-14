@@ -4,7 +4,7 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
 	<title>快移</title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
-    <link href="/ky/css/company/company.css" rel="stylesheet">
+    <link href="/ky/css/company/account.css" rel="stylesheet">
 </head>
 <body>
 
@@ -24,93 +24,95 @@
                 </div>
             </div>
 
-            <div class="col-md-9 company-main">
+            <div class="col-md-9 account-view">
                 <div class="panel panel-default">
                     <div class="panel-heading"><?php echo $this->translate('personNO'); ?></div>
                     <div class="panel-body">
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active row" id="info">
-                                <div class="col-md-10">
+                                <div class="col-md-12">
                                     <h3>
                                         <?php if ($this->CompAdmin == true): ?>
-                                            <a class="profile-heading-edit pull-right btn btn-xs" data-type="base" href="/user/company/edit">
+                                            <a class="profile-heading-edit pull-right btn btn-xs" data-type="base" href="<?php echo '/user/account/edit?' . base64_encode($this->e['contactID']); ?>">
                                                 <i class="fas fa-pencil-alt" aria-hidden="true"></i><?php echo $this->translate('edit'); ?>
                                             </a>
                                         <?php endif; ?>
-                                        <?php echo $this->e['accountName']; ?>
-                                        <small>
-                                            <a href="javascript:void(0)">
-                                                <?php if ($this->e['entRealAuthStatus'] == 0 || $this->e['entRealAuthStatus'] == -1 || $this->e['entRealAuthStatus'] == -4): ?>
-                                                    <span id="company-auth" class="et-ico et-ico-auth-cno" data-toggle="modal" data-target="#authModal"></span>
-                                                <?php elseif ($this->e['entRealAuthStatus'] == 1 || $this->e['entRealAuthStatus'] == 3 || $this->e['entRealAuthStatus'] == -2 || $this->e['entRealAuthStatus'] == -3): ?>
-                                                    <span id="company-auth" class="et-ico et-ico-auth-cing" data-toggle="modal" data-target="#authModal"></span>
-                                                <?php elseif ($this->e['entRealAuthStatus'] == 2): ?>
-                                                    <span id="company-auth" class="et-ico et-ico-auth-cok" data-toggle="modal" data-target="#authModal"></span>
-                                                <?php endif; ?>
-                                            </a>
-                                        </small>
+                                        <?php echo $this->e['name']; ?>
                                     </h3>
-                                    <?php if ($this->e['accountEnName']): ?>
-                                        <p>
-                                            <?php echo $this->e['accountEnName']; ?>
-                                        </p>
-                                    <?php endif; ?>
 
                                     <dl class="dl-horizontal">
-                                        <dt><?php echo $this->translate('address'); ?></dt>
-                                        <dd><?php echo $this->ShowDictionaryTo($this->dic_Setting["COUNTRY_ISO_CODE"], $this->userlangCode, $this->dic_Setting["COUNTRY_ISO_CODE"], $this->e['regdCountryCode']); ?></dd>
-                                        <dd><?php echo $this->regdCountryCode . $this->e['regdAddress']; ?></dd>
-                                        <?php if ($this->e['regdEnAddress']): ?>
-                                            <dd><?php echo $this->e['regdEnAddress']; ?></dd>
-                                        <?php endif; ?>
+                                        <dt><?php echo $this->translate('title'); ?></dt>
+                                        <dd><?php echo $this->e['salutation']; ?></dd>
 
-                                        <dt><?php echo $this->translate('email'); ?></dt>
+                                        <dt><?php echo $this->translate('sex'); ?></dt>
+                                        <dd><?php echo $this->ShowDictionaryTo($this->dic_Setting['SEX'], $this->userlangCode, $this->dic_Setting['SEX'], $this->e['sex']); ?></dd>
+
+                                        <dt><?php echo $this->translate('birthday'); ?></dt>
                                         <dd>
-                                            <?php echo $this->e['email']; ?>
-                                            <?php if ($this->CompAdmin == true): ?>
-                                                <?php if (empty($this->e['emailVerifyTime'])): ?>
-                                                    <button type="button" id="acEmail" class="btn btn-warning btn-xs"><?php echo $this->translate('verify'); ?></button>
-                                                <?php endif; ?>
-                                            <?php endif; ?>
-                                        </dd>
-
-                                        <dt><?php echo $this->translate('company_phone'); ?></dt>
-                                        <dd><?php echo $this->e['phone']; ?></dd>
-
-                                        <dt><?php echo $this->translate('company_fax'); ?></dt>
-                                        <dd><?php echo $this->e['fax']; ?></dd>
-
-                                        <dt><?php echo $this->translate('company_website'); ?></dt>
-                                        <dd><?php echo $this->e['website']; ?></dd>
-
-                                        <dt><?php echo $this->translate('company_incorporation_date'); ?></dt>
-                                        <dd>
-                                            <?php if ($this->e['incorporationDate']) {
-                                                echo date('Y-m-d', strtotime($this->e['incorporationDate']));
+                                            <?php if ($this->e['birthdate']) {
+                                                echo date('Y-m-d', strtotime($this->e['birthdate']));
                                             } else {
                                                 echo null;
                                             } ?>
                                         </dd>
 
-                                        <dt><?php echo $this->translate('industry'); ?></dt>
+                                        <dt><?php echo $this->translate('division'); ?></dt>
+                                        <dd><?php echo $this->e['department']; ?></dd>
+
+                                        <dt><?php echo $this->translate('job'); ?></dt>
+                                        <dd><?php echo $this->e['title']; ?></dd>
+
+                                        <dt><?php echo $this->translate('email'); ?></dt>
                                         <dd>
-                                            <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ISIC_INDUSTRY_TYPE'], $this->e['industryCode']); ?>
+                                            <?php echo $this->e['email']; ?>
+                                            <?php if (!empty($this->e['email']) && $this->e['ecommstatus'] == "IN" && $this->CompAdmin == true): ?>
+                                                <a href="javascript:void(0)" id="acEmail"><?php echo $this->translate('invitation'); ?></a>
+                                            <?php endif; ?>
                                         </dd>
 
-                                        <dt><?php echo $this->translate('company_legal_form'); ?></dt>
-                                        <dd><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ACCOUNT_LEGALFORM'], $this->e['legalForm']); ?></dd>
+                                        <dt><?php echo $this->translate('mobile'); ?></dt>
+                                        <dd><?php echo $this->e['mobilePhone']; ?></dd>
 
-                                        <dt><?php echo $this->translate('businessLicenseNo'); ?></dt>
-                                        <dd><?php echo $this->e['businessLicenseNo']; ?></dd>
+                                        <dt><?php echo $this->translate('telephone'); ?></dt>
+                                        <dd><?php echo $this->e['phone']; ?></dd>
 
-                                        <dt><?php echo $this->translate('ECC'); ?></dt>
-                                        <dd><?php echo $this->e['customsCode']; ?></dd>
+                                        <dt><?php echo $this->translate('fax'); ?></dt>
+                                        <dd><?php echo $this->e['fax']; ?></dd>
 
-                                        <dt><?php echo $this->translate('crnCode'); ?></dt>
-                                        <dd><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['CURRENCY'], $this->e['crnCode']); ?></dd>
+                                        <dt><?php echo $this->translate('elogname'); ?></dt>
+                                        <dd><?php if(!empty($this->e['ecommloginname'])){echo $this->e['ecommloginname'];}else{echo $this->translate('NoRegister');}?></dd>
 
-                                        <dt><?php echo $this->translate('langCode'); ?></dt>
-                                        <dd><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['SYS_LANG'], $this->e['langCode']); ?></dd>
+                                        <dt><?php echo $this->translate('userP'); ?></dt>
+                                        <dd><?php echo $this->ShowDictionaryTo('datatest_setting', $this->userlangCode, $this->dic_Setting['ECOMM_STATUS'], $this->e['ecommstatus']); ?></dd>
+
+                                        <dt><?php echo $this->translate('Df_Contact'); ?></dt>
+                                        <dd>
+                                            <?php
+                                            if ($this->e['isDefaultPublic'] == true) {
+                                                echo $this->translate('yes');
+                                            } else {
+                                                echo $this->translate('no');
+                                            }
+                                            ?>
+                                        </dd>
+
+                                        <dt><?php echo $this->translate('orderContact'); ?></dt>
+                                        <dd>
+                                            <?php if ($this->e['isPublicContact'] == true) {
+                                                echo $this->translate('yes');
+                                            } else {
+                                                echo $this->translate('no');
+                                            } ?>
+                                        </dd>
+
+                                        <dt><?php echo $this->translate('userROLE'); ?></dt>
+                                        <dd>
+                                            <?php if ($this->e['ecommrole']): ?>
+                                                <?php foreach (explode(",", $this->e['ecommrole']) as $k2 => $roleDD): ?>
+                                                    <?php echo $this->ShowDictionaryTo('datatest_setting', $this->userlangCode, $this->dic_Setting['ECOMM_ROLE'], $roleDD) . ','; ?>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </dd>
                                     </dl>
                                 </div>
                             </div>

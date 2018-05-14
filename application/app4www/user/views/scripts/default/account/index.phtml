@@ -117,10 +117,25 @@
             },
             columns: [{
                 field: 'name',
-                title: '<?php echo $this->translate("name"); ?>'
+                title: '<?php echo $this->translate("name"); ?>',
+                formatter: function (value, row) {
+                    var base = new Base64();
+                    var resultEnCode = base.encode(row.contactID);
+                    var href = "/user/account/view?"+resultEnCode;
+                    return '<a href="' + href + '">' + value + '</a>';
+                }
             }, {
                 field: 'ecommloginname',
-                title: '<?php echo $this->translate("username"); ?>'
+                title: '<?php echo $this->translate("username"); ?>',
+                formatter: function (value, row) {
+                    if (value === undefined || value === '') {
+                        value = "-";
+                    }
+                    var base = new Base64();
+                    var resultEnCode = base.encode(row.contactID);
+                    var href = "/user/account/view?"+resultEnCode;
+                    return '<a href="' + href + '">' + value + '</a>';
+                }
             }, {
                 field: 'ecommstatus',
                 title: '<?php echo $this->translate("userP"); ?>',
