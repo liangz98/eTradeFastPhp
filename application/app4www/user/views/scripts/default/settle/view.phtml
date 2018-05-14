@@ -20,7 +20,7 @@
     <div class="o_content fr w940">
         <?php echo $this->render(SEED_WWW_TPL.'/bank/r_top_menu.phtml');?>
         <div class="n_o_c_tit">
-            <h4><!--银行账户详细--><?php echo $this->translate('accountNO').$this->translate('info');?></h4>
+            <h4><!--银行账户详细--><?php echo $this->translate('bankAcctNo').$this->translate('info');?></h4>
             <?php if($this->CompAdmin==true):?>
             <?php if($bank['bankAcctStatus']=='04'||$bank['bankAcctStatus']=='03'):?>
             <a class="p_ed fr mt10" href=<?php echo '/user/bank/edit?'.base64_encode($this->bank['bankAcctID']);?> ></a>
@@ -30,12 +30,12 @@
         <div class="o_c_content">
                 <table>
                     <tbody>
-                        <tr><td><span><!--账号--><?php echo $this->translate('accountNAME');?></span></td><td><?php echo $this->bank['bankAcctNo'];?></td></tr>
-                        <tr><td><span><!--账号名称--><?php echo $this->translate('accountNO');?></span></td><td><?php echo $this->bank['bankAcctName'];?></td></tr>
-                        <tr><td><span><!--账户类型--><?php echo $this->translate('accountTP');?></span></td>
+                        <tr><td><span><!--账号--><?php echo $this->translate('bankAcctName');?></span></td><td><?php echo $this->bank['bankAcctNo'];?></td></tr>
+                        <tr><td><span><!--账号名称--><?php echo $this->translate('bankAcctNo');?></span></td><td><?php echo $this->bank['bankAcctName'];?></td></tr>
+                        <tr><td><span><!--账户类型--><?php echo $this->translate('bankAcctType');?></span></td>
                             <td> <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userlangCode,'BANK_ACCOUNT_TYPE',$this->bank['bankAcctType']);?></td></tr>
                         <tr><td><span><!--银行名称--><?php echo $this->translate('accountBKname');?></span></td><td><?php echo $this->bank['bankName'];?></td></tr>
-                        <tr><td><span><!--SWITFCODE--><?php echo $this->translate('accountSCD');?></span></td><td><?php echo $this->bank['swiftcode'];?></td></tr>
+                        <tr><td><span><!--SWITFCODE--><?php echo $this->translate('SWIFTCode');?></span></td><td><?php echo $this->bank['swiftcode'];?></td></tr>
                         <tr><td><span><!--是否默认--><?php echo $this->translate('accountDF');?></span></td>
                             <td><?php if($this->bank['isDefault']){echo $this->translate('yes');}else{echo $this->translate('no');}?></td></tr>
                         <tr style="width: 100%;"><td><span><!--开户行地址--><?php echo $this->translate('accountADR');?></span></td><td><?php echo $this->bank['bankAddress'];?></td></tr>

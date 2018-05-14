@@ -382,17 +382,17 @@ return array(
 
 
     // 银行账户模块
-    'accountNO' => '银行账号',
-    'accountTP' => '账号类型',
+    'bankAcctNo' => '银行账号',
+    'bankAcctType' => '账号类型',
     'accountFA' => '外汇账户',
     'accountBA' => '基本账户',
-    'accountNAME' => '账号名称',
+    'bankAcctName' => '账号名称',
     'acctNO' => '账号',
-    'accountBK' => '所属银行',
+    'bankName' => '所属银行',
     'accountBKname' => '银行名称',
     'accountDF' => '默认',
     'accountADR' => '开户行地址',
-    'accountSCD' => 'SWIFT CODE',
+    'SWIFTCode' => 'SWIFT CODE',
     'accountBZ' => '备注',
 
     // 订单状态标题

@@ -1,122 +1,269 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<title>快移</title>
-<meta name="description" content="">
-<meta name="keywords" content="">
-<link href="/ky/css/base.css" rel="stylesheet">
-<link href="/ky/css/style.css" rel="stylesheet">
-<script type="text/javascript" src="/ky/js/jquery.js"></script>
-    <script type="text/javascript" src="/ky/js/seed.form.js"></script>
-    <script type="text/javascript" src="/ky/js/jquery.form.js"></script>
-<script type="text/javascript" src="/ky/js/www.js"></script>
-<script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
-    <script type="text/javascript" src="/ky/layer-v3.1.1/layer.js"></script>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+	<title>快移</title>
+    <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <!--<link href="/ky/css/bank/bank.css" rel="stylesheet">-->
+    <link href="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.css" rel="stylesheet">
 </head>
 <body>
-<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
-<div class="o_content_wrap w1200 m0a clearfix">
-    <?php echo $this->render(SEED_WWW_TPL.'/left_menu.phtml');?>
-    <div class="o_content fr w940">
-        <?php echo $this->render(SEED_WWW_TPL.'/bank/r_top_menu.phtml');?>
-       <div class="qysearch_box user_search">
-           <form action="#" method="post">
-                   <input class="search_inp" name="keyword" placeholder="<?php echo $this->translate('INPkw_bk');?>" type="text">
-                   <input class="ss_btn" type="submit" value="">
-               <?php if($this->CompAdmin==true && count($this->bank_isAllowAdd)>0):?>
-                   <!--新增--><a title="<?php echo $this->translate('add');?>" href=<?php echo '/user/bank/add';?> class="addb_box fr"></a>
-               <?php endif;?>
-           </form>
-        </div>
-        <table class="qy_table user_table2">
-            <thead>
-                <tr>
-                    <th width="120"><!--账号名称--><?php echo $this->translate('accountNO');?></th>
-                    <th width="180"><!--账号--><?php echo $this->translate('accountNAME');?></th>
-                    <th width="120"><!--账户类型--><?php echo $this->translate('accountTP');?></th>
-                    <th width="100"><!--所属银行--><?php echo $this->translate('accountBK');?></th>
-                    <th width="120"><!--SWITFCODE--><?php echo $this->translate('accountSCD');?></th>
-                    <th width="60"><!--是否默认--><?php echo $this->translate('accountDF');?></th>
-                    <th width="60"><!--状态--><?php echo $this->translate('state');?></th>
-                    <th width="100"><!-- 操作 --><?php echo $this->translate('madeTT');?></th>
-                </tr>
-            </thead>
-            <form id="delete_form" name="delete_form" method="post" action="">
-            <tbody>
-                <?php if(is_array($this->bankList) && count($this->bankList)>0):?>
-                    <?php foreach ($this->bankList as $k=>$bank):?>
 
-                        <tr style="height: 71px;">
-                            <?php $bank['bankAcctStatus']=='03'?$linked='edit':$linked='view';?>
-                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>"><?php echo $bank['bankAcctNo'];?></a></td>
-                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>"><?php echo $bank['bankAcctName'];?></a></td>
-                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>">
-                                    <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['BANK_ACCOUNT_TYPE'],$bank['bankAcctType']);?></a></td>
-                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>"><?php echo $bank['bankName'];?></a></td>
-                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>"><?php echo $bank['swiftcode'];?></a></td>
-                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>">
-                                <?php if($bank['isDefault']==1){echo $this->translate('yes');}else{echo $this->translate('no');}?></a></td>
-                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>"><?php echo $this->Dicst[$bank['bankAcctStatus']];?></a></td>
-                            <td>
-                                <div class="cc_box">
-                                    <?php if($bank['bankAcctStatus']=='04'||$bank['bankAcctStatus']=='03'):?>
-                                    <a title="<?php echo $this->translate('edit');?>" class="p_ed" href="<?php echo '/user/bank/edit?'.base64_encode($bank['bankAcctID']);?>"></a>
-                                    <a title="<?php echo $this->translate('delete');?>" class="p_del"
-                                       href="javascript:;"  id="<?php echo $bank['bankAcctID'];?>" data-url="/user/bank/delete" data-msg1="<?php echo $this->translate('is_delete');?>"
-                                       data-msg2="<?php echo $this->translate('delete_y');?>" data-msg3="<?php echo $this->translate('delete_n');?>"  onclick="doOption(this);"></a>
-                                    <?php endif;?>
-                                    <?php if($bank['bankAcctStatus']=='01'):?>
-                                    <a title="<?php echo $this->translate('disable');?>" class="p_jy" href="javascript:;" id="<?php echo $bank['bankAcctID'];?>" data-url="/user/bank/invalid" data-msg1="<?php echo $this->translate('is_invalid');?>" data-msg2="<?php echo $this->translate('tip_invalid_success');?>" data-msg3="<?php echo $this->translate('tip_invalid_fail');?>" onclick="doOption(this);"></a> <?php endif;?>
-                                    <?php if($bank['bankAcctStatus']=='02'):?>
-                                        <a title="<?php echo $this->translate('valid');?>" class="p_qy" href="javascript:;" id="<?php echo $bank['bankAcctID'];?>" data-url="/user/bank/valid" data-msg1="<?php echo $this->translate('is_valid');?>" data-msg2="<?php echo $this->translate('tip_valid_success');?>" data-msg3="<?php echo $this->translate('tip_valid_fail');?>" onclick="doOption(this);"></a> <?php endif;?>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
+
+<div class="container-fluid index-body">
+	<div class="container">
+		<div class="row">
+            <div class="col-md-3 company-navigation">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><?php echo $this->translate('companyMNG'); ?></div>
+                    <div class="list-group">
+                        <a href="/user/company" class="list-group-item"><?php echo $this->translate('company_info'); ?></a>
+                        <a href="/user/account" class="list-group-item"><?php echo $this->translate('personNO'); ?></a>
+                        <a href="/user/bank" class="list-group-item"><?php echo $this->translate('bankNO'); ?></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9 bank-main">
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading"><?php echo $this->translate('personNO'); ?></div>
+                    <div class="panel-body">
+                        <?php if (!empty($this->errMsg)): ?>
+                        <div class="alert alert-success alert-dismissible fade in" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <p><?php echo $this->errMsg; ?>!</p>
+                        </div>
+                        <?php endif; ?>
+
+                        <form class="form-horizontal" action="javascript:void(0)" onsubmit="bankSearch()" id="bank_search_form">
+                            <div class="form-group" style="margin-bottom: 0 !important;">
+                                <label for="keyword" class="sr-only">keyword</label>
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fas fa-search"></i></span>
+                                        <input type="text" class="form-control" name="keyword" id="keyword" placeholder="<?php echo $this->translate('INPkw_bk');?>">
+                                    </div>
                                 </div>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else:?>
-                    <tr><td colspan="8"> <?php echo $this->translate('noData');?></td></tr>
-                <?php endif;?>
-            </tbody>
-                </form>
-        </table>
-        <div class="page"> <?php echo $this->showProductPage($this->page);?> </div>
-    </div>
-</div>
-<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
-<script>
-    function doOption(obj){
-        var url=$(obj).attr('data-url');
-        var id=$(obj).attr('id');
-        var msg1=$(obj).attr('data-msg1');
-        var msg2=$(obj).attr('data-msg2');
-        var msg3=$(obj).attr('data-msg3');
-        //询问框
-        layer.confirm(msg1, {
-            title:false,
-            closeBtn: 0,
-            btn: ['<?php echo $this->translate('yes');?>','<?php echo $this->translate('no');?>'] //按钮
-        }, function(){
-            $.post( url,
-                {'delID':id},
-                function(data){
-                    if( data.status == 1){
-                        layer.msg('<span style="color: #EF8200;font-size: 16px;">'+msg2+'</span>', {skin:'del-class',icon: 1});
-                        parent.window.location.reload();
-                    }
-                    else{
-                        layer.msg('<span style="color: #EF8200;font-size: 16px;">'+msg3+'</span><br>'+data.error, {skin:'del-class',icon: 0});
-                        parent.window.location.reload();
-                    }
-                },"json");
+                                <div class="col-sm-1">
+                                    <button type="submit" class="btn btn-primary"> Go </button>
+                                </div>
+                                <?php if ($this->CompAdmin == true): ?>
+                                <div class="col-sm-1">
+                                    <a title="<?php echo $this->translate('add');?>" href="/user/bank/add" class="btn btn-default">
+                                        <i class="fas fa-user-plus"></i>
+                                    </a>
+                                </div>
+                                <?php endif; ?>
+                            </div>
+                        </form>
+                    </div>
 
-        }, function(){
-            layer.closeAll();
+                    <!-- Table -->
+                    <table id="bankListTable"></table>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script src="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.js"></script>
+<script src="/ky/bootstrap-table-1.12.1-dist/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="/ky/js/base64.js"></script>
+
+<script type="text/javascript">
+	$().ready(function() {
+
+	});
+
+	$(function () {
+        $('.company-navigation').find('a').each(function () {
+            if (this.href === document.location.href || document.location.href.search(this.href) >= 0) {
+                $(this).addClass('nav-selected');
+            } else {
+                $(this).removeClass('nav-selected');
+            }
         });
 
+        $('#bankListTable').bootstrapTable({
+            url: '/user/bank/bank-list-ajax',
+            method: 'post',
+            pagination: true,
+            classes: 'table table-no-bordered',
+            sidePagination: 'server',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            pageNumber: 1,
+            pageSize: 10,
+            queryParams: function(params) {
+                return {
+                    limit: params.limit,
+                    skip: params.offset,
+                    keyword: params.search
+                };
+            },
+            columns: [{
+                field: 'bankAcctNo',
+                title: '<?php echo $this->translate("accountNO"); ?>',
+                formatter: function (value, row) {
+                    var base = new Base64();
+                    var resultEnCode = base.encode(row.bankAcctID);
+                    var href = "/user/bank/view?"+resultEnCode;
+                    return '<a href="' + href + '">' + value + '</a>';
+                }
+            }, {
+                field: 'bankAcctName',
+                title: '<?php echo $this->translate("bankAcctName"); ?>',
+                formatter: function (value, row) {
+                    if (value === undefined || value === '') {
+                        value = "-";
+                    }
+                    var base = new Base64();
+                    var resultEnCode = base.encode(row.bankAcctID);
+                    var href = "/user/bank/view?"+resultEnCode;
+                    return '<a href="' + href + '">' + value + '</a>';
+                }
+            }, {
+                field: 'bankAcctID',
+                title: '<?php echo $this->translate("bankAcctType"); ?>',
+                formatter: function (value) {
+                    var result ="";
+                    if (value === 'NV') {
+                        result = "<?php echo $this->ShowDictionaryTo($this->dic_Setting['BANK_ACCOUNT_TYPE'], $this->userlangCode, $this->dic_Setting['BANK_ACCOUNT_TYPE'], 'NV'); ?>";
+                    } else {
+                        result = "<?php echo $this->ShowDictionaryTo($this->dic_Setting['BANK_ACCOUNT_TYPE'], $this->userlangCode, $this->dic_Setting['BANK_ACCOUNT_TYPE'], 'AT'); ?>";
+                    }
+                    return result;
+                }
+            //}, {
+            //    field: 'ecommrole',
+            //    title: '<?php //echo $this->translate("userROLE"); ?>//'
+            }, {
+                field: 'bankName',
+                title: '<?php echo $this->translate("bankName"); ?>'
+            }, {
+                field: 'swiftcode',
+                title: '<?php echo $this->translate("SWIFTCode"); ?>'
+            }, {
+                field: 'isDefault',
+                title: '<?php echo $this->translate("accountDF"); ?>',
+                formatter: function (value) {
+                    return (value === '1') ? '<?php echo $this->translate('yes') ?>' : '<?php echo $this->translate('no'); ?>';
+                }
+            }, {
+                field: 'bankAcctStatus',
+                title: '<?php echo $this->translate("state"); ?>',
+                formatter: function (value) {
+
+                }
+            }, {
+                title: '<?php echo $this->translate("madeTT"); ?>',
+                formatter: function (value, row, index) {
+                    var editTitle = "<?php echo $this->translate("edit");?>";
+                    var disableTitle = "<?php echo $this->translate('disable');?>";
+                    var validTitle = "<?php echo $this->translate('enable');?>";
+                    var base = new Base64();
+                    var resultEnCode = base.encode(row.contactID);
+                    var href = "/user/account/edit?"+resultEnCode;
+
+                    var result = '<a title="' + editTitle+ '" href="' + href + '">'
+                        + '<i class="far fa-edit"></i>'
+                        + '</a>&nbsp;';
+                    <?php if ($this->CompAdmin == true): ?>
+                    if (row.contactStatus === '01') {
+                        result += '<a href="javascript:void(0)" title="' + disableTitle + '" id="' + row.contactID + '" data-url="/user/account/invalid" data-msg1="<?php echo $this->translate("is_invalid");?>" '
+                            + 'data-msg2="<?php echo $this->translate("tip_invalid_success");?>" '
+                            + 'data-msg3="<?php echo $this->translate("tip_invalid_fail");?>" '
+                            + 'onclick="doOption(this);" '
+                            + '>'
+                            + '<i class="fas fa-ban"></i>'
+                            + '</a>';
+                    }
+
+                    if (row.contactStatus === '02') {
+                        result += '<a href="javascript:void(0)" title="' + validTitle + '" id="' + row.contactID + '" data-url="/user/account/valid" data-msg1="<?php echo $this->translate("is_valid");?>" '
+                            + 'data-msg2="<?php echo $this->translate("tip_valid_success");?>" '
+                            + 'data-msg3="<?php echo $this->translate("tip_valid_fail");?>" '
+                            + 'onclick="doOption(this);" '
+                            + '>'
+                            + '<i class="far fa-check-circle"></i>'
+                            + '</a>';
+                    }
+                    <?php endif; ?>
+
+                    return result;
+                }
+            }]
+        });
+
+        $("#searchContactBtn").click(function () {
+            contactSearch();
+        });
+
+        $("#shoAllContact").click(function () {
+            var contactListTable = $('#contactListTable');
+            var options = {};
+            if ($(this).is(':checked')) {
+                options = {
+                    query:{
+                        contactStatus: "all"
+                    }
+                };
+            }
+            $(contactListTable).bootstrapTable('refresh', options);
+        });
+	});
+
+	function contactSearch() {
+        var contactListTable = $('#contactListTable');
+        var options = {
+            query:{
+                keyword: $("#keyword").val()
+            }
+        };
+        $(contactListTable).bootstrapTable('refresh', options);
     }
 
+    function doOption(obj) {
+        var url = $(obj).attr('data-url');
+        var id = $(obj).attr('id');
+        var msg1 = $(obj).attr('data-msg1');
+        var msg2 = $(obj).attr('data-msg2');
+        var msg3 = $(obj).attr('data-msg3');
+        //询问框
+        layer.confirm(msg1, {
+            title: false,
+            closeBtn: 0,
+            btn: ['<?php echo $this->translate('yes');?>', '<?php echo $this->translate('no');?>'] //按钮
+        }, function () {
+            $.post(url,
+                {'delID': id},
+                function (data) {
+                    var contactListTable = $('#contactListTable');
+
+                    if (data.status === 1) {
+                        layer.msg('<span style="color: #EF8200;font-size: 16px;">' + msg2 + '</span>', {
+                            skin: 'del-class',
+                            icon: 1
+                        });
+                        $(contactListTable).bootstrapTable('refresh');
+                    } else {
+                        layer.msg('<span style="color: #EF8200;font-size: 16px;">' + msg3 + '</span><br>' + data.error, {
+                            skin: 'del-class',
+                            icon: 0
+                        });
+                        $(contactListTable).bootstrapTable('refresh');
+                    }
+                }, "json");
+
+        }, function () {
+            layer.closeAll();
+        });
+    }
 </script>
 </body>
 </html>

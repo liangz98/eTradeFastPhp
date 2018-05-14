@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>快移</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="/ky/css/base.css" rel="stylesheet">
+<link href="/ky/css/style.css" rel="stylesheet">
+<script type="text/javascript" src="/ky/js/jquery.js"></script>
+    <script type="text/javascript" src="/ky/js/seed.form.js"></script>
+    <script type="text/javascript" src="/ky/js/jquery.form.js"></script>
+<script type="text/javascript" src="/ky/js/www.js"></script>
+<script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
+    <script type="text/javascript" src="/ky/layer-v3.1.1/layer.js"></script>
+</head>
+<body>
+<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
+<div class="o_content_wrap w1200 m0a clearfix">
+    <?php echo $this->render(SEED_WWW_TPL.'/left_menu.phtml');?>
+    <div class="o_content fr w940">
+        <?php echo $this->render(SEED_WWW_TPL.'/bank/r_top_menu.phtml');?>
+       <div class="qysearch_box user_search">
+           <form action="#" method="post">
+                   <input class="search_inp" name="keyword" placeholder="<?php echo $this->translate('INPkw_bk');?>" type="text">
+                   <input class="ss_btn" type="submit" value="">
+               <?php if($this->CompAdmin==true && count($this->bank_isAllowAdd)>0):?>
+                   <!--新增--><a title="<?php echo $this->translate('add');?>" href=<?php echo '/user/bank/add';?> class="addb_box fr"></a>
+               <?php endif;?>
+           </form>
+        </div>
+        <table class="qy_table user_table2">
+            <thead>
+                <tr>
+                    <th width="120"><!--账号名称--><?php echo $this->translate('bankAcctNo');?></th>
+                    <th width="180"><!--账号--><?php echo $this->translate('bankAcctName');?></th>
+                    <th width="120"><!--账户类型--><?php echo $this->translate('bankAcctType');?></th>
+                    <th width="100"><!--所属银行--><?php echo $this->translate('bankName');?></th>
+                    <th width="120"><!--SWITFCODE--><?php echo $this->translate('SWIFTCode');?></th>
+                    <th width="60"><!--是否默认--><?php echo $this->translate('accountDF');?></th>
+                    <th width="60"><!--状态--><?php echo $this->translate('state');?></th>
+                    <th width="100"><!-- 操作 --><?php echo $this->translate('madeTT');?></th>
+                </tr>
+            </thead>
+            <form id="delete_form" name="delete_form" method="post" action="">
+            <tbody>
+                <?php if(is_array($this->bankList) && count($this->bankList)>0):?>
+                    <?php foreach ($this->bankList as $k=>$bank):?>
+
+                        <tr style="height: 71px;">
+                            <?php $bank['bankAcctStatus']=='03'?$linked='edit':$linked='view';?>
+                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>"><?php echo $bank['bankAcctNo'];?></a></td>
+                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>"><?php echo $bank['bankAcctName'];?></a></td>
+                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>">
+                                    <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['BANK_ACCOUNT_TYPE'],$bank['bankAcctType']);?></a></td>
+                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>"><?php echo $bank['bankName'];?></a></td>
+                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>"><?php echo $bank['swiftcode'];?></a></td>
+                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>">
+                                <?php if($bank['isDefault']==1){echo $this->translate('yes');}else{echo $this->translate('no');}?></a></td>
+                            <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>"><?php echo $this->Dicst[$bank['bankAcctStatus']];?></a></td>
+                            <td>
+                                <div class="cc_box">
+                                    <?php if($bank['bankAcctStatus']=='04'||$bank['bankAcctStatus']=='03'):?>
+                                    <a title="<?php echo $this->translate('edit');?>" class="p_ed" href="<?php echo '/user/bank/edit?'.base64_encode($bank['bankAcctID']);?>"></a>
+                                    <a title="<?php echo $this->translate('delete');?>" class="p_del"
+                                       href="javascript:;"  id="<?php echo $bank['bankAcctID'];?>" data-url="/user/bank/delete" data-msg1="<?php echo $this->translate('is_delete');?>"
+                                       data-msg2="<?php echo $this->translate('delete_y');?>" data-msg3="<?php echo $this->translate('delete_n');?>"  onclick="doOption(this);"></a>
+                                    <?php endif;?>
+                                    <?php if($bank['bankAcctStatus']=='01'):?>
+                                    <a title="<?php echo $this->translate('disable');?>" class="p_jy" href="javascript:;" id="<?php echo $bank['bankAcctID'];?>" data-url="/user/bank/invalid" data-msg1="<?php echo $this->translate('is_invalid');?>" data-msg2="<?php echo $this->translate('tip_invalid_success');?>" data-msg3="<?php echo $this->translate('tip_invalid_fail');?>" onclick="doOption(this);"></a> <?php endif;?>
+                                    <?php if($bank['bankAcctStatus']=='02'):?>
+                                        <a title="<?php echo $this->translate('valid');?>" class="p_qy" href="javascript:;" id="<?php echo $bank['bankAcctID'];?>" data-url="/user/bank/valid" data-msg1="<?php echo $this->translate('is_valid');?>" data-msg2="<?php echo $this->translate('tip_valid_success');?>" data-msg3="<?php echo $this->translate('tip_valid_fail');?>" onclick="doOption(this);"></a> <?php endif;?>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else:?>
+                    <tr><td colspan="8"> <?php echo $this->translate('noData');?></td></tr>
+                <?php endif;?>
+            </tbody>
+                </form>
+        </table>
+        <div class="page"> <?php echo $this->showProductPage($this->page);?> </div>
+    </div>
+</div>
+<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
+<script>
+    function doOption(obj){
+        var url=$(obj).attr('data-url');
+        var id=$(obj).attr('id');
+        var msg1=$(obj).attr('data-msg1');
+        var msg2=$(obj).attr('data-msg2');
+        var msg3=$(obj).attr('data-msg3');
+        //询问框
+        layer.confirm(msg1, {
+            title:false,
+            closeBtn: 0,
+            btn: ['<?php echo $this->translate('yes');?>','<?php echo $this->translate('no');?>'] //按钮
+        }, function(){
+            $.post( url,
+                {'delID':id},
+                function(data){
+                    if( data.status == 1){
+                        layer.msg('<span style="color: #EF8200;font-size: 16px;">'+msg2+'</span>', {skin:'del-class',icon: 1});
+                        parent.window.location.reload();
+                    }
+                    else{
+                        layer.msg('<span style="color: #EF8200;font-size: 16px;">'+msg3+'</span><br>'+data.error, {skin:'del-class',icon: 0});
+                        parent.window.location.reload();
+                    }
+                },"json");
+
+        }, function(){
+            layer.closeAll();
+        });
+
+    }
+
+</script>
+</body>
+</html>

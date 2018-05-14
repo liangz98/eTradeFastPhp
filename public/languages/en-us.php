@@ -394,17 +394,17 @@ return array(
 
 
 //银行账户模块
-    'accountNO' => 'Account Number',
-    'accountTP' => 'Account Type',
+    'bankAcctNo' => 'Bank Account Number',
+    'bankAcctType' => 'Bank Account Type',
     'accountFA' => 'Foreign Exchange Account',
     'accountBA' => 'Basic Account',
-    'accountNAME' => 'Account Name',
+    'bankAcctName' => 'Bank Account Name',
     'acctNO' => 'Account Number',
-    'accountBK' => 'Bank',
+    'bankName' => 'Bank',
     'accountBKname' => 'Name of Bank',
     'accountDF' => 'Default Account',
     'accountADR' => 'Bank Address',
-    'accountSCD' => 'SWIFT CODE',
+    'SWIFTCode' => 'SWIFT CODE',
     'accountBZ' => 'Notes',
 
     //订单状态标题
