@@ -284,14 +284,14 @@
     }
 
     function getDataDict(dictCode, value) {
-	    var result = "";
+	    var dictName = "";
         var langCode = '<?php echo $this->userlangCode; ?>';
 
         if (jQuery.hasData(dataDict) && $.data(dataDict, dictCode)) {
             var data = $.data(dataDict, dictCode);
             $.each(data, function (i, item) {
                 if (item.code === value) {
-                    result = item.name;
+                    dictName = item.name;
                 }
             });
         } else {
@@ -309,13 +309,13 @@
                     $.data(dataDict, dictCode, data);
                     $.each(data, function (i, item) {
                         if (item.code === value) {
-                            result = item.name;
+                            dictName = item.name;
                         }
                     });
                 }
             });
         }
-        return result;
+        return dictName;
     }
 </script>
 </body>
