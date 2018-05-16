@@ -405,7 +405,7 @@ return array(
     'accountDF' => 'Default Account',
     'accountADR' => 'Bank Address',
     'SWIFTCode' => 'SWIFT CODE',
-    'accountBZ' => 'Notes',
+    'remarks' => 'Remarks',
 
     //订单状态标题
     'orderSTATUS' => 'Order Status',
@@ -673,7 +673,6 @@ return array(
     'currSTATE' => 'Current Status',
     'myperson' => 'My Contacts',
     'thperson' => 'OPP. contacts',
-    'remarks' => 'Remarks',
 
     'clientNAME' => 'Client Name',
     'clientDATE' => 'Creation Date',

@@ -1,92 +1,144 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<title>快移</title>
-<meta name="description" content="">
-<meta name="keywords" content="">
-<link href="/ky/css/base.css" rel="stylesheet">
-<link href="/ky/css/style.css" rel="stylesheet">
-<script type="text/javascript" src="/ky/js/jquery.js"></script>
-<script type="text/javascript" src="/ky/js/jquery.wallform.js"></script>
-<script type="text/javascript" src="/ky/js/www.js"></script>
-<script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
-<!--<script type="text/javascript" src="/ky/js/prompt.js"></script>-->
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+	<title>快移</title>
+    <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <link href="/ky/css/bank/bank.css" rel="stylesheet">
 </head>
 <body>
-<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
-<div class="o_content_wrap w1200 m0a clearfix">
-    <?php echo $this->render(SEED_WWW_TPL.'/left_menu.phtml');?>
-    <div class="o_content fr w940">
-        <?php echo $this->render(SEED_WWW_TPL.'/bank/r_top_menu.phtml');?>
-        <div class="n_o_c_tit">
-            <h4><!--编辑银行账户--><?php echo $this->translate('edit').$this->translate('bankAcctNo');?></h4>
-        </div>
-        <div class="acc_add_box">
-           <form action="#" method="post" id="bank_edit_form" onsubmit="return toVaild()">
-               <div  class="bank_box">
-                   <label><!--账号--><?php echo $this->translate('bankAcctName');?></label>
-                   <input class="must" style="border: 1px solid #DF7E20;" type="text" name="bankAcctName" id="bankAcctName" value="<?php echo $this->bank['bankAcctName'];?>" required data-msg-required="<?php echo $this->translate('de_null');?>"/>
-               </div>
-               <div  class="bank_box">
-                   <label><!--账户名称--><?php echo $this->translate('bankAcctNo');?></label>
-                   <input class="must" style="border: 1px solid #DF7E20;" type="text" name="bankAcctNo" id="bankAcctNo" value="<?php echo $this->bank['bankAcctNo'];?>" required data-msg-required="<?php echo $this->translate('de_null');?>" />
-               </div>
-               <div  class="bank_box">
-                   <label><!--账户类型--><?php echo $this->translate('bankAcctType');?></label>
-                   <select style="width: 265px;padding: 0 5px;" name="bankAcctType">
-                       <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userLangCode,$this->dic_Setting['BANK_ACCOUNT_TYPE'],$this->bank['bankAcctType']);?>
-                   </select>
-               </div>
-               <div  class="bank_box">
-                   <label><!--银行名称--><?php echo $this->translate('accountBKname');?></label>
-                   <input class="must" style="border: 1px solid #DF7E20;" type="text" name="bankName" id="bankName" value="<?php echo $this->bank['bankName'];?>" required data-msg-required="<?php echo $this->translate('de_null');?>" />
-               </div>
-               <div  class="bank_box">
-                   <label><!--SWIFT CODE--><?php echo $this->translate('SWIFTCode');?></label>
-                   <input class="must" type="text" name="swiftcode"  value="<?php echo $this->bank['swiftcode'];?>"/>
-               </div>
 
-               <div  class="bank_box" style="width:100%">
-                   <label><!--开户行地址--><?php echo $this->translate('accountADR');?></label>
-                   <input  type="text" name="bankAddress" value="<?php echo $this->bank['bankAddress'];?>" />
-               </div>
-               <div  class="bank_box clearfix" style="width:100%;height: auto;">
-                   <label><!--备注--><?php echo $this->translate('accountBZ');?></label>
-                   <textarea class="spl_full" style="width:688px" name="remarks" cols="200" rows="5"><?php echo $this->bank['remarks'];?></textarea>
-               </div>
-               <div class="yyzz_box info_cont">
-                   <div class="zzname  n_o_c_tit"><h4><!-- 银行资料 --><?php echo $this->translate('UPBank');?></h4></div>
-                   <?php echo $this-> ShowWebuploader($this->bank['attachmentList'],$this->biz_Setting['BANK_ACCOUNT'],$this->attach_Setting['0000'],"0");?>
-               </div>
-               <?php echo $this->render(SEED_WWW_TPL.'/btn_confirm.phtml');?>
-           </form>
-        </div>
-    </div>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
+
+<div class="container-fluid index-body">
+	<div class="container">
+		<div class="row">
+            <div class="col-md-3 company-navigation hidden-xs">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><?php echo $this->translate('companyMNG'); ?></div>
+                    <div class="list-group">
+                        <a href="/user/company" class="list-group-item"><?php echo $this->translate('company_info'); ?></a>
+                        <a href="/user/account" class="list-group-item"><?php echo $this->translate('personNO'); ?></a>
+                        <a href="/user/bank" class="list-group-item"><?php echo $this->translate('bankNO'); ?></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9 bank-main">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <ul class="nav nav-tabs">
+                            <li role="presentation" class="active">
+                                <a href="#info" aria-controls="info" role="tab" data-toggle="tab"><?php echo $this->translate('bankNO'); ?></a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><?php echo $this->translate('UPBank'); ?></a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active row" id="info">
+                                <div class="col-md-10">
+                                    <form class="form-horizontal bank-main-edit" action="#" method="post" id="bank_edit_form" name="bank_edit_form">
+                                        <div class="form-group">
+                                            <label for="bankAcctName" class="col-sm-2 control-label"><?php echo $this->translate('bankAcctName'); ?></label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="bankAcctName" id="bankAcctName" placeholder="" value="<?php echo $this->bank['bankAcctName']; ?>"  required >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="bankAcctNo" class="col-sm-2 control-label"><?php echo $this->translate('bankAcctNo'); ?></label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="bankAcctNo" id="bankAcctNo" placeholder="" value="<?php echo $this->bank['bankAcctNo']; ?>" required >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="bankAcctType" class="col-sm-2 control-label"><?php echo $this->translate('bankAcctType'); ?></label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control" name="bankAcctType" id="bankAcctType">
+                                                    <?php echo $this->ShowDictionaryList($this->dic_Setting['BANK_ACCOUNT_TYPE'], $this->userLangCode, $this->dic_Setting['BANK_ACCOUNT_TYPE'], $this->bank['bankAcctType']); ?>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="bankName" class="col-sm-2 control-label"><?php echo $this->translate('accountBKname'); ?></label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="bankName" id="bankName" placeholder="" value="<?php echo $this->bank['bankName']; ?>" required >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="swiftcode" class="col-sm-2 control-label"><?php echo $this->translate('SWIFTCode'); ?></label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="swiftcode" id="swiftcode" placeholder="" value="<?php echo $this->bank['swiftcode']; ?>" >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="bankAddress" class="col-sm-2 control-label"><?php echo $this->translate('accountADR'); ?></label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="bankAddress" id="bankAddress" placeholder="" value="<?php echo $this->bank['bankAddress']; ?>" >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="remarks" class="col-sm-2 control-label"><?php echo $this->translate('remarks'); ?></label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="remarks" id="remarks" placeholder="" value="<?php echo $this->bank['remarks']; ?>" >
+                                            </div>
+                                        </div>
+
+                                        <?php if ($this->CompAdmin == true): ?>
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-2 col-sm-9">
+                                                <button type="submit" class="btn btn-warning"><?php echo $this->translate('save'); ?></button>
+                                            </div>
+                                        </div>
+                                        <?php endif; ?>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane row" id="profile">
+                                profile....
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content"></div>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
 </div>
-<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
-<script src="/ky/js/jquery.validate.js"></script>
-<script type="text/javascript" src="/ky/layer-v3.1.1/layer.js"></script>
-<script>
-    function toVaild(){
-        var isT=$('input[name="attachSize[]"]').val();
-        if(isT==null||isT==""){
-            layer.msg("<?php echo $this->translate('tip_bank_no');?>",{skin:'del-class',icon: 0});
-            return false;
-           }
-            else{
-            return true;
-                  }
-     }
 
-    $(function(){
-        $("#bank_edit_form").validate({
-            submitHandler: function() {
-                form.submit();
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script type="text/javascript">
+	$().ready(function() {
+
+	});
+
+	$(function () {
+        $('.company-navigation').find('a').each(function () {
+            if (this.href === document.location.href || document.location.href.search(this.href) >= 0) {
+            // if (this.href === document.location.href) {
+                $(this).addClass('nav-selected');
+            } else {
+                $(this).removeClass('nav-selected');
             }
-        })
-    });
+        });
+	});
 </script>
 </body>
 </html>

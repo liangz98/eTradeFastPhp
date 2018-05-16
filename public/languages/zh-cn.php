@@ -393,7 +393,7 @@ return array(
     'accountDF' => '默认',
     'accountADR' => '开户行地址',
     'SWIFTCode' => 'SWIFT CODE',
-    'accountBZ' => '备注',
+    'remarks' => '备注',
 
     // 订单状态标题
     'orderSTATUS' => '订单状态',
@@ -663,7 +663,6 @@ return array(
     'currSTATE' => '当前状态',
     'myperson' => '我方联系人',
     'thperson' => '对方联系人',
-    'remarks' => '备注',
 
     'clientNAME' => '客户名',
     'clientDATE' => '创建时间',
