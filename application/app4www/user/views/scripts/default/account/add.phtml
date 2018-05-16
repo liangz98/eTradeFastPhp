@@ -33,14 +33,14 @@
                             <div class="form-group">
                                 <label for="name" class="col-sm-2 control-label"><?php echo $this->translate('name'); ?></label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="name" id="name" placeholder="<?php echo $this->translate('is_name');?>" required>
+                                    <input type="text" class="form-control" name="name" id="name" placeholder="<?php echo $this->translate('is_name');?>" value="<?php echo $this->e['name']; ?>" required>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="salutation" class="col-sm-2 control-label"><?php echo $this->translate('title'); ?></label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="salutation" id="salutation" placeholder="<?php echo $this->translate('title');?>" >
+                                    <input type="text" class="form-control" name="salutation" id="salutation" placeholder="<?php echo $this->translate('title');?>" value="<?php echo $this->e['salutation']; ?>" >
                                 </div>
                             </div>
 
@@ -56,7 +56,7 @@
                             <div class="form-group">
                                 <label for="birthdate" class="col-sm-2 control-label"><?php echo $this->translate('birthday'); ?></label>
                                 <div class="col-sm-9">
-                                    <input type="date" class="form-control" name="birthdate" id="birthdate" placeholder="<?php echo $this->translate('title');?>" >
+                                    <input type="date" class="form-control" name="birthdate" id="birthdate" placeholder="<?php echo $this->translate('title');?>" <?php if (!empty($this->e['birthdate'])) { echo "value='". date('Y-m-d', strtotime($this->e['birthdate']) )."'"; }; ?> >
                                 </div>
                             </div>
 
@@ -73,7 +73,7 @@
                             <div class="form-group">
                                 <label for="identityNo" class="col-sm-2 control-label"><?php echo $this->translate('certificateNo'); ?></label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="identityNo" id="identityNo" placeholder="<?php echo $this->translate('certificateNo');?>" >
+                                    <input type="text" class="form-control" name="identityNo" id="identityNo" placeholder="<?php echo $this->translate('certificateNo');?>" value="<?php echo $this->e['identityNo'];?>" >
                                 </div>
                             </div>
                             <?php endif;?>
@@ -81,42 +81,42 @@
                             <div class="form-group">
                                 <label for="department" class="col-sm-2 control-label"><?php echo $this->translate('division'); ?></label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="department" id="department" placeholder="<?php echo $this->translate('division');?>" >
+                                    <input type="text" class="form-control" name="department" id="department" placeholder="<?php echo $this->translate('division');?>" value="<?php echo $this->e['department']; ?>" >
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="title" class="col-sm-2 control-label"><?php echo $this->translate('job'); ?></label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="title" id="title" placeholder="<?php echo $this->translate('job');?>" >
+                                    <input type="text" class="form-control" name="title" id="title" placeholder="<?php echo $this->translate('job');?>" value="<?php echo $this->e['title']; ?>" >
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="email" class="col-sm-2 control-label"><?php echo $this->translate('email'); ?></label>
                                 <div class="col-sm-9">
-                                    <input type="email" class="form-control" name="email" id="email" placeholder="<?php echo $this->translate('is_emails');?>" >
+                                    <input type="email" class="form-control" name="email" id="email" placeholder="<?php echo $this->translate('is_emails');?>" value="<?php echo $this->e['email']; ?>" >
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="mobilePhone" class="col-sm-2 control-label"><?php echo $this->translate('mobile'); ?></label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="mobilePhone" id="mobilePhone" placeholder="<?php echo $this->translate('is_phone');?>" >
+                                    <input type="text" class="form-control" name="mobilePhone" id="mobilePhone" placeholder="<?php echo $this->translate('is_phone');?>" value="<?php echo $this->e['mobilePhone']; ?>" >
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="phone" class="col-sm-2 control-label"><?php echo $this->translate('telephone'); ?></label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="phone" id="phone" placeholder="<?php echo $this->translate('is_tel');?>" >
+                                    <input type="text" class="form-control" name="phone" id="phone" placeholder="<?php echo $this->translate('is_tel');?>" value="<?php echo $this->e['phone']; ?>" >
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="fax" class="col-sm-2 control-label"><?php echo $this->translate('fax'); ?></label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="fax" id="fax" placeholder="<?php echo $this->translate('fax');?>" >
+                                    <input type="text" class="form-control" name="fax" id="fax" placeholder="<?php echo $this->translate('fax');?>" value="<?php echo $this->e['fax']; ?>" >
                                 </div>
                             </div>
 

@@ -235,6 +235,7 @@ class AccountController extends Kyapi_Controller_Action
             $userEdit = $this->objectToArray(json_decode($userKY));
 
             if ($userEdit['status'] != 1) {
+                $this->view->e = $this->objectToArray($_account);
                 $this->view->errMsg = $userEdit['error'];
             } else {
                 $this->view->errMsg = $this->view->translate('tip_add_success');
@@ -329,6 +330,7 @@ class AccountController extends Kyapi_Controller_Action
             $userEdit = $this->objectToArray(json_decode($userKY));
 
             if ($userEdit['status'] != 1) {
+                $this->view->e = $this->objectToArray($_account);
                 $this->view->errMsg = $userEdit['error'];
             } else {
                 $this->view->errMsg = $this->view->translate('tip_edit_success');

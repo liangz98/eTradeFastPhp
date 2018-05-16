@@ -90,8 +90,7 @@ class BankController extends Kyapi_Controller_Action
         exit;
     }
 
-    public function addAction()
-    {
+    public function addAction() {
         if ($this->_request->isPost()) {
             try {
                 //获取附件ID
@@ -122,10 +121,13 @@ class BankController extends Kyapi_Controller_Action
                 //附件end
 
                 // 设置请求数据
-                $_requestOb=$this->_requestObject;
+                $_requestOb = $this->_requestObject;
                 //判断是否为默认账户
-                if($this->_request->getParam('isDefault')=='1'){
-                    $_isdd=true;} else {$_isdd=false;}
+                if ($this->_request->getParam('isDefault') == '1') {
+                    $_isdd = true;
+                } else {
+                    $_isdd = false;
+                }
 
                 /*添加银行账户信息*/
                 $_bank = new Kyapi_Model_bank();
@@ -141,40 +143,58 @@ class BankController extends Kyapi_Controller_Action
                 $_bank->attachmentList = $_attachList;
 
                 if (empty($_attachList)) {
+                    $this->view->bank = $this->objectToArray($_bank);
+                    $this->view->errMsg = $this->view->translate('tip_add_fail') . $this->view->translate('tip_bank_no');
                     //银行附件不能为空
-                    Shop_Browser::redirect($this->view->translate('tip_add_fail').$this->view->translate('tip_bank_no'),$this->view->seed_Setting['user_app_server'].'/bank');
+                    // Shop_Browser::redirect($this->view->translate('tip_add_fail') . $this->view->translate('tip_bank_no'), $this->view->seed_Setting['user_app_server'] . '/bank');
                 } else {
-                    $addBank= $this->json->addBankAccountApi($_requestOb,$_bank);
-                    $resultBank =$this->objectToArray(json_decode($addBank));
+                    $addBank = $this->json->addBankAccountApi($_requestOb, $_bank);
+                    $resultBank = $this->objectToArray(json_decode($addBank));
                     $this->view->e = $resultBank['result'];
-                    if ($resultBank['status'] != 1) {
-                     Shop_Browser::redirect($this->view->translate('tip_add_fail'). $resultBank['error'],$this->view->seed_Setting['user_app_server'].'/bank');
+
+                    /*if ($resultBank['status'] != 1) {
+                        Shop_Browser::redirect($this->view->translate('tip_add_fail') . $resultBank['error'], $this->view->seed_Setting['user_app_server'] . '/bank');
                     } else {
-                        Shop_Browser::redirect($this->view->translate('tip_add_success'),$this->view->seed_Setting['user_app_server'].'/bank');
+                        Shop_Browser::redirect($this->view->translate('tip_add_success'), $this->view->seed_Setting['user_app_server'] . '/bank');
+                    }*/
+
+                    if ($resultBank['status'] != 1) {
+                        $this->view->bank = $this->objectToArray($_bank);
+                        $this->view->errMsg = $this->view->translate('tip_add_fail') . $resultBank['error'];
+                    } else {
+                        $this->view->errMsg = $this->view->translate('tip_add_success');
+                        $content = $this->view->render(SEED_WWW_TPL . "/bank/index.phtml");
+                        echo $content;
+                        exit;
                     }
                 }
             } catch (HttpError $ex) {
-                Shop_Browser::redirect($ex->getMessage(),$this->view->seed_Setting['user_app_server'].'/bank');
+                // Shop_Browser::redirect($ex->getMessage(), $this->view->seed_Setting['user_app_server'] . '/bank');
+
+                $this->view->errMsg = $ex->getMessage();
+                $content = $this->view->render(SEED_WWW_TPL . "/bank/index.phtml");
+                echo $content;
+                exit;
             }
         }
-        if(defined('SEED_WWW_TPL')){
-            $content = $this->view->render(SEED_WWW_TPL."/bank/add.phtml");
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/bank/add.phtml");
             echo $content;
             exit;
         }
     }
-    public function editAction()
-    {
-        // 请求Hessian服务端方法
-        $bankAcctID=$_SERVER['QUERY_STRING'];
-        $_bankAcctID =base64_decode($bankAcctID);
 
-        $_requestOb=$this->_requestObject;
-        $userKY= $this->json->getBankAccountApi($_requestOb,$_bankAcctID);
+    public function editAction() {
+        // 请求Hessian服务端方法
+        $bankAcctID = $_SERVER['QUERY_STRING'];
+        $_bankAcctID = base64_decode($bankAcctID);
+
+        $_requestOb = $this->_requestObject;
+        $userKY = $this->json->getBankAccountApi($_requestOb, $_bankAcctID);
 
         //获取银行账户明细
-        $resultBank =$this->objectToArray(json_decode($userKY));
-        $this->view->bank=$resultBank['result'];
+        $resultBank = $this->objectToArray(json_decode($userKY));
+        $this->view->bank = $resultBank['result'];
 
         if ($this->_request->isPost()) {
             //获取附件ID
@@ -205,10 +225,13 @@ class BankController extends Kyapi_Controller_Action
             //附件end
 
             // 设置请求数据
-            $_requestOb=$this->_requestObject;
+            $_requestOb = $this->_requestObject;
             //判断是否为默认账户
-            if($this->_request->getParam('isDefault')=='1'){
-                $_isdd=true;} else {$_isdd=false;}
+            if ($this->_request->getParam('isDefault') == '1') {
+                $_isdd = true;
+            } else {
+                $_isdd = false;
+            }
 
             /*添加银行账户信息*/
             $_bank = new Kyapi_Model_bank();
@@ -220,17 +243,18 @@ class BankController extends Kyapi_Controller_Action
             $_bank->bankName = $this->_request->getParam('bankName');
             $_bank->bankAddress = $this->_request->getParam('bankAddress');
             $_bank->swiftcode = $this->_request->getParam('swiftcode');
-           // $_bank->isDefault = $this->view->bank['isDefault'];//采用默认值 不编辑
+            // $_bank->isDefault = $this->view->bank['isDefault'];//采用默认值 不编辑
             $_bank->remarks = $this->_request->getParam('remarks');
             $_bank->attachmentList = $_attachList;
 
             if (empty($_attachList)) {
-                $this->view->errMsg = $this->view->translate('tip_edit_fail').$this->view->translate('tip_bank_no');
+                $this->view->bank = $this->objectToArray($_bank);
+                $this->view->errMsg = $this->view->translate('tip_edit_fail') . $this->view->translate('tip_bank_no');
                 //银行附件不能为空
                 // Shop_Browser::redirect($this->view->translate('tip_edit_fail').$this->view->translate('tip_bank_no'),$this->view->seed_Setting['user_app_server'].'/bank');
             } else {
                 $editBank = $this->json->editBankAccountApi($_requestOb, $_bank);
-                $_resultBank = $this->objectToArray(json_decode($editBank));
+                $resultBank = $this->objectToArray(json_decode($editBank));
 
                 /*if ( $_resultBank['status'] != 1) {
                     Shop_Browser::redirect($this->view->translate('tip_edit_fail'). $_resultBank['error'],$this->view->seed_Setting['user_app_server'].'/bank');
@@ -238,8 +262,9 @@ class BankController extends Kyapi_Controller_Action
                     Shop_Browser::redirect($this->view->translate('tip_edit_success'),$this->view->seed_Setting['user_app_server'].'/bank');
                 }*/
 
-                if ($_resultBank['status'] != 1) {
-                    $this->view->errMsg = $_resultBank['error'];
+                if ($resultBank['status'] != 1) {
+                    $this->view->bank = $this->objectToArray($_bank);
+                    $this->view->errMsg = $this->view->translate('tip_edit_fail'). $resultBank['error'];
                 } else {
                     $this->view->errMsg = $this->view->translate('tip_edit_success');
                     // $this->redirect("/account");
@@ -250,8 +275,8 @@ class BankController extends Kyapi_Controller_Action
             }
         }
 
-        if(defined('SEED_WWW_TPL')){
-            $content = $this->view->render(SEED_WWW_TPL."/bank/edit.phtml");
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/bank/edit.phtml");
             echo $content;
             exit;
         }
