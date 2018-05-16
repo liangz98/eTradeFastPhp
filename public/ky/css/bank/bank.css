@@ -30,7 +30,7 @@ body {
 }
 
 /* view */
-.bank-view h3, #info form div:first-child {
+.bank-view h3, .bank-main-edit div:first-child {
     margin-top: 15px;
 }
 
