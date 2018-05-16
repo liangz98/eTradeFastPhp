@@ -62,7 +62,7 @@
                     <p>
                         <label class="lagin_lab3 pr10"><!--公司地址：--><?php echo $this->translate('regaddress');?></label>
                         <select class="login_txt3" id="COUNTRY_CODE" name="countryCode" style="margin-bottom:20px;width:652px;height: 32px;">
-                            <?php echo $this->ShowDictionaryList3($this->dic_Setting['COUNTRY_ISO_CODE'],$this->userlangCode,$this->dic_Setting['COUNTRY_ISO_CODE'],$this->account['account']['regdCountryCode']);?>
+                            <?php echo $this->ShowDictionaryList3($this->dic_Setting['COUNTRY_ISO_CODE'],$this->userLangCode,$this->dic_Setting['COUNTRY_ISO_CODE'],$this->account['account']['regdCountryCode']);?>
                         </select>
                         <input class="login_txt3 must" style="margin-left:120px;" name="regdAddress" onblur="checkregd(this.value)" id="regdAddress" value="<?php echo $this->account['account']['regdAddress']?>" type="text" /><!--该内容同时作为公司的联系地址-->
                         <span id="e_regd" class="f12"></span><em class="w10 fr0 h20"></em>

@@ -40,19 +40,19 @@
                     </dl>
                     <dl class="fl">
                         <dt class="fl"><?php echo $this->translate('langCode');?><!--语言--></dt><dd class="buyer_contacts">
-                            <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['SYS_LANG'],$this->e['langCode']);?></dd>
+                            <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['SYS_LANG'],$this->e['langCode']);?></dd>
                     </dl>
                     <dl class="fl">
                         <dt class="fl"><?php echo $this->translate('currency');?><!--货币--></dt><dd class="fl price_rules">
-                            <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['CURRENCY'],$this->e['crnCode']);?></dd>
+                            <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['CURRENCY'],$this->e['crnCode']);?></dd>
                     </dl>
                     <dl class="fl">
                         <dt class="fl"><?php echo $this->translate('legalForm');?><!--形式--></dt>
-                        <dd class="buyer_contacts">  <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['ACCOUNT_LEGALFORM'], $this->e['legalForm']);?></dd>
+                        <dd class="buyer_contacts">  <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['ACCOUNT_LEGALFORM'], $this->e['legalForm']);?></dd>
                     </dl>
                     <dl class="fl">
                         <dt class="fl"><?php echo $this->translate('industry');?><!--行业--></dt><dd class="fl price_rules">
-                            <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['ISIC_INDUSTRY_TYPE'], $this->e['industryCode']);?> </dd>
+                            <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['ISIC_INDUSTRY_TYPE'], $this->e['industryCode']);?> </dd>
                     </dl>
                     <dl class="fl">
                         <dt class="fl">DUNS</dt><dd class="buyer_contacts"><?php echo $this->e['DUNS']?></dd>
@@ -74,7 +74,7 @@
                     </dl>
                     <dl class="fl" style="width: 100%;height: 120px;">
                         <dt class="fl"><?php echo $this->translate('address');?><!--地址--></dt><dd class="buyer_contacts">
-                            <?php echo $this-> ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'],$this->userlangCode,$this->dic_Setting['COUNTRY_ISO_CODE'], $this->e['regdCountryCode']);?>
+                            <?php echo $this-> ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'],$this->userLangCode,$this->dic_Setting['COUNTRY_ISO_CODE'], $this->e['regdCountryCode']);?>
                             &nbsp;&nbsp;
                             <?php echo $this->e['regdAddress']?></dd>
                     </dl>

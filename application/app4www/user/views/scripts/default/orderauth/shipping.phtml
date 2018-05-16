@@ -12,22 +12,22 @@
             </dl>
             <dl class="fl">
                 <dt class="fl"><!--运输方式--><?php echo $this->translate('moveMD');?></dt>
-                <dd class="buyer_contacts"><?php echo $this->ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['SHIPPING_METHOD'],$orders['shippingMethod']);?>
+                <dd class="buyer_contacts"><?php echo $this->ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['SHIPPING_METHOD'],$orders['shippingMethod']);?>
                </dd>
             </dl>
             <dl class="fl">
                 <dt class="fl"><!--放货方式--><?php echo $this->translate('saveSPP');?></dt>
-                <dd class="fl price_rules"><?php echo $this->ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['SO_RELEASE_WAY'],$orders['releaseWay']);?>
+                <dd class="fl price_rules"><?php echo $this->ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['SO_RELEASE_WAY'],$orders['releaseWay']);?>
                 </dd>
             </dl>
             <dl class="fl">
                 <dt class="fl"><!--是否分批--><?php echo $this->translate('isbatchSPP');?></dt>
-                <dd class="buyer_contacts"><?php echo $this->ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['TRUE_OR_FALSE'],$orders['canPartialShipment']);?>
+                <dd class="buyer_contacts"><?php echo $this->ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['TRUE_OR_FALSE'],$orders['canPartialShipment']);?>
                    </dd>
             </dl>
             <dl class="fl">
                 <dt class="fl"><!--状态--><?php echo $this->translate('state');?></dt>
-                <dd class="fl price_rules"><?php echo $this->ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['SHIPPING_ORDER_STATUS '],$orders['shippingStatus']);?>
+                <dd class="fl price_rules"><?php echo $this->ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['SHIPPING_ORDER_STATUS '],$orders['shippingStatus']);?>
                     </dd>
             </dl>
         </div>

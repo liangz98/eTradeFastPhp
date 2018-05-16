@@ -59,7 +59,7 @@
 							<div class="input-group-addon">
 								<span class="glyphicon glyphicon-user" aria-hidden="true" style="color: #777"></span>
 							</div>
-							<input type="email" class="form-control" name="ecommloginname" id="ecommloginname" value="<?php echo $this->rememberName;?>" required placeholder="<?php echo $this->translate('tip_eComm_login_name');?>">
+							<input type="email" class="form-control" name="ecommloginname" id="ecommloginname" value="<?php echo $this->rememberName;?>" required placeholder="<?php echo $this->translate('tip_eComm_login_name');?>" tabindex="1" >
 						</div>
 					</div>
 
@@ -69,7 +69,7 @@
 							<div class="input-group-addon">
 								<span class="glyphicon glyphicon-lock" aria-hidden="true" style="color: #777"></span>
 							</div>
-							<input type="password" class="form-control" name="ecommpasswsd" id="ecommpasswsd" required placeholder="登录密码">
+							<input type="password" class="form-control" name="ecommpasswsd" id="ecommpasswsd" required placeholder="登录密码" tabindex="2">
 						</div>
 					</div>
 
@@ -79,7 +79,7 @@
 							<li>
 								<label class="sr-only" for="authCode"></label>
 								<div class="input-group">
-									<input type="text" class="form-control" name="authCode" id="authCode" required placeholder="<?php echo $this->translate('tip_code');?>">
+									<input type="text" class="form-control" name="authCode" id="authCode" required placeholder="<?php echo $this->translate('tip_code');?>" tabindex="3">
 								</div>
 							</li>
 							<li class="pull-right">
@@ -94,7 +94,7 @@
 							<li>
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" value="1" name="remember" id="remember" <?php if (!empty($this->rememberName)) {echo 'checked';} ?> >
+										<input type="checkbox" value="1" name="remember" id="remember" <?php if (!empty($this->rememberName)) {echo 'checked';} ?> tabindex="4" >
                                         <?php echo $this->translate('tip_remember');?>
 									</label>
 								</div>
@@ -108,7 +108,7 @@
 					</div>
 
 					<div class="form-group">
-						<button type="submit" class="btn btn-warning btn-default btn-block"><?php echo $this->translate('login'); ?></button>
+						<button type="submit" class="btn btn-warning btn-default btn-block" tabindex="5"><?php echo $this->translate('login'); ?></button>
 					</div>
 
 					<div class="form-group">

@@ -78,7 +78,7 @@
                     </tr>
                     <tr>
                         <td><span><!-- 性别： --><?php echo $this->translate('sex'); ?></span></td>
-                        <td><?php echo $this->ShowDictionaryTo('datatest_setting', $this->userlangCode, $this->dic_Setting['SEX'], $this->e['sex']); ?></td>
+                        <td><?php echo $this->ShowDictionaryTo('datatest_setting', $this->userLangCode, $this->dic_Setting['SEX'], $this->e['sex']); ?></td>
                     </tr>
                     <tr>
                         <td><span><!-- 生日： --><?php echo $this->translate('birthday'); ?></span></td>
@@ -120,7 +120,7 @@
                     </tr>
                     <tr>
                         <td><span><!-- 用户状态 --><?php echo $this->translate('userP'); ?></span></td>
-                        <td><?php echo $this->ShowDictionaryTo('datatest_setting', $this->userlangCode, $this->dic_Setting['ECOMM_STATUS'], $this->e['ecommstatus']); ?>
+                        <td><?php echo $this->ShowDictionaryTo('datatest_setting', $this->userLangCode, $this->dic_Setting['ECOMM_STATUS'], $this->e['ecommstatus']); ?>
                         </td>
                     </tr>
                     <tr>
@@ -146,7 +146,7 @@
                         <td>
                             <?php if ($this->e['ecommrole']): ?>
                                 <?php foreach (explode(",", $this->e['ecommrole']) as $k2 => $roleDD): ?>
-                                    <?php echo $this->ShowDictionaryTo('datatest_setting', $this->userlangCode, $this->dic_Setting['ECOMM_ROLE'], $roleDD) . ','; ?>
+                                    <?php echo $this->ShowDictionaryTo('datatest_setting', $this->userLangCode, $this->dic_Setting['ECOMM_ROLE'], $roleDD) . ','; ?>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </td>

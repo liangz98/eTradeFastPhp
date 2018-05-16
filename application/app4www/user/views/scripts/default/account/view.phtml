@@ -45,7 +45,7 @@
                                         <dd><?php echo $this->e['salutation']; ?></dd>
 
                                         <dt><?php echo $this->translate('sex'); ?></dt>
-                                        <dd><?php echo $this->ShowDictionaryTo($this->dic_Setting['SEX'], $this->userlangCode, $this->dic_Setting['SEX'], $this->e['sex']); ?></dd>
+                                        <dd><?php echo $this->ShowDictionaryTo($this->dic_Setting['SEX'], $this->userLangCode, $this->dic_Setting['SEX'], $this->e['sex']); ?></dd>
 
                                         <dt><?php echo $this->translate('birthday'); ?></dt>
                                         <dd>
@@ -83,7 +83,7 @@
                                         <dd><?php if(!empty($this->e['ecommloginname'])){echo $this->e['ecommloginname'];}else{echo $this->translate('NoRegister');}?></dd>
 
                                         <dt><?php echo $this->translate('userP'); ?></dt>
-                                        <dd><?php echo $this->ShowDictionaryTo('datatest_setting', $this->userlangCode, $this->dic_Setting['ECOMM_STATUS'], $this->e['ecommstatus']); ?></dd>
+                                        <dd><?php echo $this->ShowDictionaryTo('datatest_setting', $this->userLangCode, $this->dic_Setting['ECOMM_STATUS'], $this->e['ecommstatus']); ?></dd>
 
                                         <dt><?php echo $this->translate('Df_Contact'); ?></dt>
                                         <dd>
@@ -109,7 +109,7 @@
                                         <dd>
                                             <?php if ($this->e['ecommrole']): ?>
                                                 <?php foreach (explode(",", $this->e['ecommrole']) as $k2 => $roleDD): ?>
-                                                    <?php echo $this->ShowDictionaryTo('datatest_setting', $this->userlangCode, $this->dic_Setting['ECOMM_ROLE'], $roleDD) . ','; ?>
+                                                    <?php echo $this->ShowDictionaryTo('datatest_setting', $this->userLangCode, $this->dic_Setting['ECOMM_ROLE'], $roleDD) . ','; ?>
                                                 <?php endforeach; ?>
                                             <?php endif; ?>
                                         </dd>

@@ -20,13 +20,13 @@
                 } ?>
             </td>
             <td>
-                <?php echo $this->ShowDictionaryTo($this->dic_Setting['ISIC_INDUSTRY_TYPE'], $this->userlangCode, $this->dic_Setting['ISIC_INDUSTRY_TYPE'], $partner->industryCode); ?>
+                <?php echo $this->ShowDictionaryTo($this->dic_Setting['ISIC_INDUSTRY_TYPE'], $this->userLangCode, $this->dic_Setting['ISIC_INDUSTRY_TYPE'], $partner->industryCode); ?>
             </td>
             <td>
-                <?php echo $this->ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'], $this->userlangCode, $this->dic_Setting['COUNTRY_ISO_CODE'], $partner->regdCountryCode); ?>
+                <?php echo $this->ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'], $this->userLangCode, $this->dic_Setting['COUNTRY_ISO_CODE'], $partner->regdCountryCode); ?>
             </td>
             <td>
-                <?php echo $this->ShowDictionaryTo($this->dic_Setting["PARTNER_STATUS"], $this->userlangCode, $this->dic_Setting["PARTNER_STATUS"], $partner->partnerStatus); ?>
+                <?php echo $this->ShowDictionaryTo($this->dic_Setting["PARTNER_STATUS"], $this->userLangCode, $this->dic_Setting["PARTNER_STATUS"], $partner->partnerStatus); ?>
             </td>
         </tr>
     <?php endforeach; ?>

@@ -39,7 +39,7 @@
 		</div>
 		<div class="or_curs tl">
 			<label class="or_lb"><!--当前状态--><?php echo $this->translate('stateING'); ?></label>
-			<span class="w_curstor"><!--当前订单未开始--><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ORDER_STATUS'], $this->orders["orderStatus"]); ?></span>
+			<span class="w_curstor"><!--当前订单未开始--><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ORDER_STATUS'], $this->orders["orderStatus"]); ?></span>
 		</div>
 	</div>
     <?php endif; ?>
@@ -69,7 +69,7 @@
 
 		<div class="or_curs tl">
 			<label class="or_lb"><!--当前状态--><?php echo $this->translate('stateING'); ?></label>
-			<span class="w_curstor"><!--当前订单未开始--><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ORDER_STATUS'], $this->orders["orderStatus"]); ?></span>
+			<span class="w_curstor"><!--当前订单未开始--><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ORDER_STATUS'], $this->orders["orderStatus"]); ?></span>
 		</div>
 		<div class="or_curs tl">
 			<label class="or_lb"><!--当前操作--><?php echo $this->translate('operatING'); ?></label>
@@ -82,7 +82,7 @@
 		</div>
 	</div>
     <?php endif; ?>
-	
+
     <!--签订合同-->
 	<?php if ($this->vestut >= 1): ?>
 	<div class="clearfix pb10 signTopDiv" <?php if ($this->vestut > 3): ?>style="display: none;"<?php endif; ?> >
@@ -109,7 +109,7 @@
 
 		<div class="or_curs tl">
 			<label class="or_lb"><!--当前状态--><?php echo $this->translate('stateING'); ?></label>
-			<span class="w_curstor"><!--当前订单未开始--><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ORDER_STATUS'], $this->orders["orderStatus"]); ?></span>
+			<span class="w_curstor"><!--当前订单未开始--><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ORDER_STATUS'], $this->orders["orderStatus"]); ?></span>
 		</div>
 	</div>
     <?php endif; ?>
@@ -144,7 +144,7 @@
 					<tr>
 						<td><span class="layui-badge" style="background-color: #4CAF50;"><?php echo $k + 1; ?></span></td>
 						<td class="deliveryViewClass" style="cursor: pointer;" deliveryID_="<?php echo $v->deliveryID; ?>" deliveryStatus_="<?php echo $v->deliveryStatus; ?>" deliveryNo_="<?php echo $v->deliveryNo; ?>"><?php echo $v->deliveryNo; ?></td>
-						<td class="deliveryViewClass" style="cursor: pointer;" deliveryID_="<?php echo $v->deliveryID; ?>" deliveryStatus_="<?php echo $v->deliveryStatus; ?>" deliveryNo_="<?php echo $v->deliveryNo; ?>"><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['DELIVERY_STATUE'], $v->deliveryStatus); ?></td>
+						<td class="deliveryViewClass" style="cursor: pointer;" deliveryID_="<?php echo $v->deliveryID; ?>" deliveryStatus_="<?php echo $v->deliveryStatus; ?>" deliveryNo_="<?php echo $v->deliveryNo; ?>"><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['DELIVERY_STATUE'], $v->deliveryStatus); ?></td>
 						<td class="deliveryViewClass" style="cursor: pointer;" deliveryID_="<?php echo $v->deliveryID; ?>" deliveryStatus_="<?php echo $v->deliveryStatus; ?>" deliveryNo_="<?php echo $v->deliveryNo; ?>"><?php $date = date_create($v->readyDate); echo date_format($date,"Y年m月d日"); ?></td>
 						<td class="deliveryViewClass" style="cursor: pointer;" deliveryID_="<?php echo $v->deliveryID; ?>" deliveryStatus_="<?php echo $v->deliveryStatus; ?>" deliveryNo_="<?php echo $v->deliveryNo; ?>"><?php $summary = $v->summary; $replaceStr = "<br />"; echo str_replace('\n', $replaceStr, $summary); ?></td>
 						<td style="text-align: center">
@@ -181,7 +181,7 @@
 	<!--结算-->
 	<?php if ($this->vestut >= 7): ?>
     <div class="clearfix pb10 paymentTopDiv" <?php if ($this->vestut != 15): ?>style="display: none;"<?php endif; ?> >
-		
+
     </div>
 	<?php endif; ?>
 
@@ -202,7 +202,7 @@
 		</div>
         <div class="or_curs tl">
             <label class="or_lb"><!--当前状态--><?php echo $this->translate('stateING'); ?></label>
-            <span class="w_curstor"><!--完成--><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ORDER_STATUS'], $this->orders["orderStatus"]); ?></span>
+            <span class="w_curstor"><!--完成--><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ORDER_STATUS'], $this->orders["orderStatus"]); ?></span>
         </div>
     </div>
 <?php endif; ?>
@@ -262,8 +262,8 @@
 				</div>
 			</div>
 		</div>
-		
-		
+
+
 		<div style="height: 12px"></div>
 		<div class="et-auth-row">
 			<button class="layui-btn" id="signNoEContractConfirmBtn"><?php echo $this->translate('signing'); ?></button>

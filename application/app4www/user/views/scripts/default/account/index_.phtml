@@ -50,12 +50,12 @@
                         <td><a href="<?php if(!empty($this->account_isAllowView)){echo '/user/account/view?'.base64_encode($ulist['contactID']);}?>"><?php echo $ulist['name'];?></a></td>
                         <td><a href="<?php if(!empty($this->account_isAllowView)){echo '/user/account/view?'.base64_encode($ulist['contactID']);}?>"><?php echo $ulist['ecommloginname'];?></a></td>
                         <td><a href="<?php if(!empty($this->account_isAllowView)){echo '/user/account/view?'.base64_encode($ulist['contactID']);}?>">
-                                <?php echo $this->ShowDictionaryTo('datatest_setting',$this->userlangCode,$this->dic_Setting['ECOMM_STATUS'],$ulist['ecommstatus']);?>
+                                <?php echo $this->ShowDictionaryTo('datatest_setting',$this->userLangCode,$this->dic_Setting['ECOMM_STATUS'],$ulist['ecommstatus']);?>
                             </a></td><!--用户状态 字典代码 ECOMM_STATUS-->
                         <td><dl class="acct_role">
                                 <?php $role_name="";if($ulist['ecommrole']):?>
                                     <?php foreach (explode(",",$ulist['ecommrole']) as $k2=>$roleDD):?>
-                                        <?php $role_name.=$this->ShowDictionaryTo('datatest_setting',$this->userlangCode,$this->dic_Setting['ECOMM_ROLE'],$roleDD).',';?>
+                                        <?php $role_name.=$this->ShowDictionaryTo('datatest_setting',$this->userLangCode,$this->dic_Setting['ECOMM_ROLE'],$roleDD).',';?>
                                     <?php endforeach;?>
                                 <?php endif;?>
                                 <a title="<?php echo $role_name;?>"

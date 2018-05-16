@@ -229,7 +229,7 @@
                     <div>
                         <label class="labelbox"><!-- 性别 --><?php echo $this->translate('sex');?></label>
                         <select class="dq_select"  name="sex">
-                            <?php echo $this->ShowDictionaryList('datatest_setting',$this->userlangCode,'SEX',$this->e['sex']);?></select>
+                            <?php echo $this->ShowDictionaryList('datatest_setting',$this->userLangCode,'SEX',$this->e['sex']);?></select>
                     </div>
                     <div>
                         <label class="labelbox"><!-- 生日 --><?php echo $this->translate('birthday');?></label>
@@ -246,7 +246,7 @@
     background: transparent;
     color: #000;
 ">
-                            <?php echo $this->ShowDictionaryList('datatest_setting',$this->userlangCode,'ID_TYPE',$this->e['identityType']);?></select>
+                            <?php echo $this->ShowDictionaryList('datatest_setting',$this->userLangCode,'ID_TYPE',$this->e['identityType']);?></select>
                     </div>
                     <div>
                         <label class="labelbox"><!-- 证件号码 --><?php echo $this->translate('certificateNo');?></label>
@@ -312,13 +312,13 @@
                     <div>
                         <label class="labelbox"><!-- 时区 --><?php echo $this->translate('timezone');?></label>
                         <select class="dq_select2" name="timeZone" id="timeZone">
-                            <?php echo $this->ShowDictionaryList('datatest_setting',$this->userlangCode,$this->dic_Setting['TIME_ZONE'],$this->e['contactPreference']['timeZone']);?>
+                            <?php echo $this->ShowDictionaryList('datatest_setting',$this->userLangCode,$this->dic_Setting['TIME_ZONE'],$this->e['contactPreference']['timeZone']);?>
                         </select>
                     </div>
                     <div>
                         <label class="labelbox"><!-- 语言 --><?php echo $this->translate('langCode');?></label>
                         <select class="dq_select" name="langCode" id="langCode">
-                            <?php echo $this->ShowDictionaryList('datatest_setting',$this->userlangCode,$this->dic_Setting['SYS_LANG'],$this->e['contactPreference']['langCode']);?>
+                            <?php echo $this->ShowDictionaryList('datatest_setting',$this->userLangCode,$this->dic_Setting['SYS_LANG'],$this->e['contactPreference']['langCode']);?>
                         </select>
                     </div> </div>
 
@@ -337,7 +337,7 @@
                     <div></div>
                     <div>
                         <label class="labelbox"><!-- 用户状态 --><?php echo $this->translate('userP');?></label><!--正常--><!--禁用-->&nbsp;&nbsp;&nbsp;
-                        <?php echo $this->ShowDictionaryTo('datatest_setting',$this->userlangCode,'ECOMM_STATUS',$this->e['ecommstatus']);?>
+                        <?php echo $this->ShowDictionaryTo('datatest_setting',$this->userLangCode,'ECOMM_STATUS',$this->e['ecommstatus']);?>
                     </div>
 
                     <div style="width: 88%;height:auto;">
@@ -345,7 +345,7 @@
                         <div style="margin-left:125px;">
                             <?php if($this->e['ecommrole']):?>
                                 <?php foreach (explode(",",$this->e['ecommrole']) as $k2=>$roleDD):?>
-                                    <?php echo $this->ShowDictionaryTo('datatest_setting',$this->userlangCode,'ECOMM_ROLE',$roleDD).',';?>
+                                    <?php echo $this->ShowDictionaryTo('datatest_setting',$this->userLangCode,'ECOMM_ROLE',$roleDD).',';?>
                                 <?php endforeach;?>
                             <?php endif;?>
                         </div>

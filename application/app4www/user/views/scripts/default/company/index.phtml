@@ -71,7 +71,7 @@
 
                                     <dl class="dl-horizontal">
                                         <dt><?php echo $this->translate('address'); ?></dt>
-                                        <dd><?php echo $this->ShowDictionaryTo($this->dic_Setting["COUNTRY_ISO_CODE"], $this->userlangCode, $this->dic_Setting["COUNTRY_ISO_CODE"], $this->e['regdCountryCode']); ?></dd>
+                                        <dd><?php echo $this->ShowDictionaryTo($this->dic_Setting["COUNTRY_ISO_CODE"], $this->userLangCode, $this->dic_Setting["COUNTRY_ISO_CODE"], $this->e['regdCountryCode']); ?></dd>
                                         <dd><?php echo $this->regdCountryCode . $this->e['regdAddress']; ?></dd>
                                         <?php if ($this->e['regdEnAddress']): ?>
                                             <dd><?php echo $this->e['regdEnAddress']; ?></dd>
@@ -107,11 +107,11 @@
 
                                         <dt><?php echo $this->translate('industry'); ?></dt>
                                         <dd>
-                                            <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ISIC_INDUSTRY_TYPE'], $this->e['industryCode']); ?>
+                                            <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ISIC_INDUSTRY_TYPE'], $this->e['industryCode']); ?>
                                         </dd>
 
                                         <dt><?php echo $this->translate('company_legal_form'); ?></dt>
-                                        <dd><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ACCOUNT_LEGALFORM'], $this->e['legalForm']); ?></dd>
+                                        <dd><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ACCOUNT_LEGALFORM'], $this->e['legalForm']); ?></dd>
 
                                         <dt><?php echo $this->translate('businessLicenseNo'); ?></dt>
                                         <dd><?php echo $this->e['businessLicenseNo']; ?></dd>
@@ -120,10 +120,10 @@
                                         <dd><?php echo $this->e['customsCode']; ?></dd>
 
                                         <dt><?php echo $this->translate('crnCode'); ?></dt>
-                                        <dd><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['CURRENCY'], $this->e['crnCode']); ?></dd>
+                                        <dd><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['CURRENCY'], $this->e['crnCode']); ?></dd>
 
                                         <dt><?php echo $this->translate('langCode'); ?></dt>
-                                        <dd><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['SYS_LANG'], $this->e['langCode']); ?></dd>
+                                        <dd><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['SYS_LANG'], $this->e['langCode']); ?></dd>
                                     </dl>
                                 </div>
                             </div>

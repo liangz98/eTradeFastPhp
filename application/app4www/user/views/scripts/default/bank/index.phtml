@@ -133,9 +133,9 @@
                 formatter: function (value) {
                     var result ="";
                     if (value === 'NV') {
-                        result = "<?php echo $this->ShowDictionaryTo($this->dic_Setting['BANK_ACCOUNT_TYPE'], $this->userlangCode, $this->dic_Setting['BANK_ACCOUNT_TYPE'], 'NV'); ?>";
+                        result = "<?php echo $this->ShowDictionaryTo($this->dic_Setting['BANK_ACCOUNT_TYPE'], $this->userLangCode, $this->dic_Setting['BANK_ACCOUNT_TYPE'], 'NV'); ?>";
                     } else {
-                        result = "<?php echo $this->ShowDictionaryTo($this->dic_Setting['BANK_ACCOUNT_TYPE'], $this->userlangCode, $this->dic_Setting['BANK_ACCOUNT_TYPE'], 'AT'); ?>";
+                        result = "<?php echo $this->ShowDictionaryTo($this->dic_Setting['BANK_ACCOUNT_TYPE'], $this->userLangCode, $this->dic_Setting['BANK_ACCOUNT_TYPE'], 'AT'); ?>";
                     }
                     return result;
                 }

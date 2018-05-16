@@ -99,123 +99,140 @@
             }
         });
 
-        $('#contactListTable').bootstrapTable({
-            url: '/user/account/contactlistajax',
-            method: 'post',
-            // showRefresh: true,
-            // search: true,
-            pagination: true,
-            classes: 'table table-no-bordered',
-            sidePagination: 'server',
-            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-            pageNumber: 1,
-            pageSize: 10,
-            queryParams: function(params) {
-                return {
-                    limit: params.limit,
-                    skip: params.offset,
-                    keyword: params.search
-                };
+        var fuzzyQuery = '/user/account/dict-ajax';
+        var dictCode = new Array("ECOMM_STATUS");
+        $.ajax({
+            type: "POST",
+            url: fuzzyQuery,
+            data: {
+                dictCode: dictCode,
+                langCode: '<?php echo $this->userLangCode; ?>'
             },
-            columns: [{
-                field: 'name',
-                title: '<?php echo $this->translate("name"); ?>',
-                formatter: function (value, row) {
-                    var base = new Base64();
-                    var resultEnCode = base.encode(row.contactID);
-                    var href = "/user/account/view?"+resultEnCode;
-                    return '<a href="' + href + '">' + value + '</a>';
-                }
-            }, {
-                field: 'ecommloginname',
-                title: '<?php echo $this->translate("username"); ?>',
-                formatter: function (value, row) {
-                    if (value === undefined || value === '') {
-                        value = "-";
-                    }
-                    var base = new Base64();
-                    var resultEnCode = base.encode(row.contactID);
-                    var href = "/user/account/view?"+resultEnCode;
-                    return '<a href="' + href + '">' + value + '</a>';
-                }
-            }, {
-                field: 'ecommstatus',
-                title: '<?php echo $this->translate("userP"); ?>',
-                formatter: function (value) {
-                    var dictCode = "ECOMM_STATUS";
+            dataType: "json",
+            success: function (data) {
+                $.data(dataDict, 'dataDict', data);
 
-                    return getDataDict(dictCode, value);
-                    //return "<?php //echo $this->ShowDictionaryTo($this->dic_Setting['ECOMM_STATUS'], $this->userlangCode, $this->dic_Setting['ECOMM_STATUS'], $value); ?>//";
-                    //if (value === 'NV') {
-                    //    result = "<?php //echo $this->ShowDictionaryTo($this->dic_Setting['ECOMM_STATUS'], $this->userlangCode, $this->dic_Setting['ECOMM_STATUS'], 'NV'); ?>//";
-                    //} else {
-                    //    result = "<?php //echo $this->ShowDictionaryTo($this->dic_Setting['ECOMM_STATUS'], $this->userlangCode, $this->dic_Setting['ECOMM_STATUS'], 'AT'); ?>//";
-                    //}
-                    //return result;
-                }
-            //}, {
-            //    field: 'ecommrole',
-            //    title: '<?php //echo $this->translate("userROLE"); ?>//'
-            }, {
-                field: 'contactStatus',
-                title: '<?php echo $this->translate("userPT"); ?>',
-                formatter: function (value) {
-                    return (value === '01') ? '<?php echo $this->translate('normal') ?>' : '<?php echo $this->translate('disable'); ?>';
-                }
-            }, {
-                field: 'isDefaultPublic',
-                title: '<?php echo $this->translate("accountDF"); ?>',
-                formatter: function (value, row) {
-                    var result = (value === true) ? '<?php echo $this->translate('yes') ?>' : '<?php echo $this->translate('no'); ?>';
-                    <?php if ($this->CompAdmin == true): ?>
-                    result = '<a href="javascript:void(0)" id="' + row.contactID + '" data-url="/user/account/default" data-msg1="<?php echo $this->translate("is_default");?>" '
-                        + 'data-msg2="<?php echo $this->translate("tip_default_success");?>" '
-                        + 'data-msg3="<?php echo $this->translate("tip_default_fail");?>" '
-                        + 'onclick="doOption(this);" '
-                        + '>'
-                        + result
-                        + '</a>';
-                    <?php endif; ?>
-                    return result;
-                }
-            }, {
-                title: '<?php echo $this->translate("madeTT"); ?>',
-                formatter: function (value, row, index) {
-                    var editTitle = "<?php echo $this->translate("edit");?>";
-                    var disableTitle = "<?php echo $this->translate('disable');?>";
-                    var validTitle = "<?php echo $this->translate('enable');?>";
-                    var base = new Base64();
-                    var resultEnCode = base.encode(row.contactID);
-                    var href = "/user/account/edit?"+resultEnCode;
+                $('#contactListTable').bootstrapTable({
+                    url: '/user/account/contactlistajax',
+                    method: 'post',
+                    // showRefresh: true,
+                    // search: true,
+                    pagination: true,
+                    classes: 'table table-no-bordered',
+                    sidePagination: 'server',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    pageNumber: 1,
+                    pageSize: 10,
+                    queryParams: function(params) {
+                        return {
+                            limit: params.limit,
+                            skip: params.offset,
+                            keyword: params.search
+                        };
+                    },
+                    columns: [{
+                        field: 'name',
+                        title: '<?php echo $this->translate("name"); ?>',
+                        formatter: function (value, row) {
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.contactID);
+                            var href = "/user/account/view?"+resultEnCode;
+                            return '<a href="' + href + '">' + value + '</a>';
+                        }
+                    }, {
+                        field: 'ecommloginname',
+                        title: '<?php echo $this->translate("username"); ?>',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '') {
+                                value = "-";
+                            }
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.contactID);
+                            var href = "/user/account/view?"+resultEnCode;
+                            return '<a href="' + href + '">' + value + '</a>';
+                        }
+                    }, {
+                        field: 'ecommstatus',
+                        title: '<?php echo $this->translate("userP"); ?>',
+                        formatter: function (value) {
+                            var result = "-";
+                            var data = $.data(dataDict, 'dataDict');
+                            $.each(data, function (key, item) {
+                                if (key === 'ECOMM_STATUS') {
+                                    $.each(item, function (i, dict) {
+                                        if (dict.code === value) {
+                                            result = dict.name;
+                                        }
+                                    });
+                                }
+                            });
+                            return result;
+                        }
+                        //}, {
+                        //    field: 'ecommrole',
+                        //    title: '<?php //echo $this->translate("userROLE"); ?>//'
+                    }, {
+                        field: 'contactStatus',
+                        title: '<?php echo $this->translate("userPT"); ?>',
+                        formatter: function (value) {
+                            return (value === '01') ? '<?php echo $this->translate('normal') ?>' : '<?php echo $this->translate('disable'); ?>';
+                        }
+                    }, {
+                        field: 'isDefaultPublic',
+                        title: '<?php echo $this->translate("accountDF"); ?>',
+                        formatter: function (value, row) {
+                            var result = (value === true) ? '<?php echo $this->translate('yes') ?>' : '<?php echo $this->translate('no'); ?>';
+                            <?php if ($this->CompAdmin == true): ?>
+                            result = '<a href="javascript:void(0)" id="' + row.contactID + '" data-url="/user/account/default" data-msg1="<?php echo $this->translate("is_default");?>" '
+                                + 'data-msg2="<?php echo $this->translate("tip_default_success");?>" '
+                                + 'data-msg3="<?php echo $this->translate("tip_default_fail");?>" '
+                                + 'onclick="doOption(this);" '
+                                + '>'
+                                + result
+                                + '</a>';
+                            <?php endif; ?>
+                            return result;
+                        }
+                    }, {
+                        title: '<?php echo $this->translate("madeTT"); ?>',
+                        formatter: function (value, row, index) {
+                            var editTitle = "<?php echo $this->translate("edit");?>";
+                            var disableTitle = "<?php echo $this->translate('disable');?>";
+                            var validTitle = "<?php echo $this->translate('enable');?>";
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.contactID);
+                            var href = "/user/account/edit?"+resultEnCode;
 
-                    var result = '<a title="' + editTitle+ '" href="' + href + '">'
-                        + '<i class="far fa-edit"></i>'
-                        + '</a>&nbsp;';
-                    <?php if ($this->CompAdmin == true): ?>
-                    if (row.contactStatus === '01') {
-                        result += '<a href="javascript:void(0)" title="' + disableTitle + '" id="' + row.contactID + '" data-url="/user/account/invalid" data-msg1="<?php echo $this->translate("is_invalid");?>" '
-                            + 'data-msg2="<?php echo $this->translate("tip_invalid_success");?>" '
-                            + 'data-msg3="<?php echo $this->translate("tip_invalid_fail");?>" '
-                            + 'onclick="doOption(this);" '
-                            + '>'
-                            + '<i class="fas fa-ban"></i>'
-                            + '</a>';
-                    }
+                            var result = '<a title="' + editTitle+ '" href="' + href + '">'
+                                + '<i class="far fa-edit"></i>'
+                                + '</a>&nbsp;';
+                            <?php if ($this->CompAdmin == true): ?>
+                            if (row.contactStatus === '01') {
+                                result += '<a href="javascript:void(0)" title="' + disableTitle + '" id="' + row.contactID + '" data-url="/user/account/invalid" data-msg1="<?php echo $this->translate("is_invalid");?>" '
+                                    + 'data-msg2="<?php echo $this->translate("tip_invalid_success");?>" '
+                                    + 'data-msg3="<?php echo $this->translate("tip_invalid_fail");?>" '
+                                    + 'onclick="doOption(this);" '
+                                    + '>'
+                                    + '<i class="fas fa-ban"></i>'
+                                    + '</a>';
+                            }
 
-                    if (row.contactStatus === '02') {
-                        result += '<a href="javascript:void(0)" title="' + validTitle + '" id="' + row.contactID + '" data-url="/user/account/valid" data-msg1="<?php echo $this->translate("is_valid");?>" '
-                            + 'data-msg2="<?php echo $this->translate("tip_valid_success");?>" '
-                            + 'data-msg3="<?php echo $this->translate("tip_valid_fail");?>" '
-                            + 'onclick="doOption(this);" '
-                            + '>'
-                            + '<i class="far fa-check-circle"></i>'
-                            + '</a>';
-                    }
-                    <?php endif; ?>
+                            if (row.contactStatus === '02') {
+                                result += '<a href="javascript:void(0)" title="' + validTitle + '" id="' + row.contactID + '" data-url="/user/account/valid" data-msg1="<?php echo $this->translate("is_valid");?>" '
+                                    + 'data-msg2="<?php echo $this->translate("tip_valid_success");?>" '
+                                    + 'data-msg3="<?php echo $this->translate("tip_valid_fail");?>" '
+                                    + 'onclick="doOption(this);" '
+                                    + '>'
+                                    + '<i class="far fa-check-circle"></i>'
+                                    + '</a>';
+                            }
+                            <?php endif; ?>
 
-                    return result;
-                }
-            }]
+                            return result;
+                        }
+                    }]
+                });
+            }
         });
 
         $("#searchContactBtn").click(function () {
@@ -283,9 +300,8 @@
         });
     }
 
-    function getDataDict(dictCode, value) {
+    /*function getDataDict(dictCode, value) {
 	    var dictName = "";
-        var langCode = '<?php echo $this->userlangCode; ?>';
 
         if (jQuery.hasData(dataDict) && $.data(dataDict, dictCode)) {
             var data = $.data(dataDict, dictCode);
@@ -316,7 +332,7 @@
             });
         }
         return dictName;
-    }
+    }*/
 </script>
 </body>
 </html>

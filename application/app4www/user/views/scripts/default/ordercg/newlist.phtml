@@ -18,7 +18,7 @@
 		<p class="icon_bg2 paymentTopBtn <?php if ($this->vestut > 3): ?><?php echo 'go gocursor'; ?><?php elseif ($this->vestut > 7): ?><?php echo 'gocursor finish'; ?><?php endif; ?>">
 			<!--结算中--><?php echo $this->translate('calculate'); ?></p>
     </div>
-	
+
     <div class="clearfix pb10" <?php if ($this->vestut==-1){echo 'style="display:block;"';}?> >
 		<div class="or_curs tl"><label class="or_lb"><!--订单号码--><?php echo $this->translate('orderNo');?></label><span class="w_curstor"><?php echo $this->newE["orderNo"];?></span></div>
 		<div class="or_curs tl"><label class="or_lb"><!--订单汇率--><?php echo $this->translate('Prities');?></label><span class="w_curstor huilv"></span></div>
@@ -29,7 +29,7 @@
 			</span>
 		</div>
         <div class="or_curs tl"><label class="or_lb"><!--当前状态--><?php echo $this->translate('stateING');?></label>
-            <span class="w_curstor"><?php  echo  $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ORDER_STATUS'],$this->newE["orderStatus"]);?><!--当前订单未开始--></span></div>
+            <span class="w_curstor"><?php  echo  $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ORDER_STATUS'],$this->newE["orderStatus"]);?><!--当前订单未开始--></span></div>
     </div>
 
 </div>

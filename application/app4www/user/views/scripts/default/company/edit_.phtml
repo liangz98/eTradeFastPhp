@@ -55,12 +55,12 @@
                         <dt class="fl"><!-- 地址 --><?php echo $this->translate('address');?></dt>
                         <dd style="width:84%;" class="address">
                             <?php if($this->e['accountStatus']==01):?>
-                            <a style="overflow: hidden; margin-right: 20px; display: block; float: left; color: rgb(0, 0, 0); font-size: 14px;" href="#" title=" <?php echo $this->ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'],$this->userlangCode,$this->dic_Setting['COUNTRY_ISO_CODE'],$this->e['regdCountryCode']);?>">
-                            <?php echo $this->ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'],$this->userlangCode,$this->dic_Setting['COUNTRY_ISO_CODE'],$this->e['regdCountryCode']);?>
+                            <a style="overflow: hidden; margin-right: 20px; display: block; float: left; color: rgb(0, 0, 0); font-size: 14px;" href="#" title=" <?php echo $this->ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'],$this->userLangCode,$this->dic_Setting['COUNTRY_ISO_CODE'],$this->e['regdCountryCode']);?>">
+                            <?php echo $this->ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'],$this->userLangCode,$this->dic_Setting['COUNTRY_ISO_CODE'],$this->e['regdCountryCode']);?>
                             </a>
                             <?php else:?>
                             <select   class=" dq_select" name="regdCountryCode" id="regdCountryCode">
-                                <?php echo $this->ShowDictionaryList($this->dic_Setting['COUNTRY_ISO_CODE'],$this->userlangCode,$this->dic_Setting['COUNTRY_ISO_CODE'],$this->e['regdCountryCode']);?>
+                                <?php echo $this->ShowDictionaryList($this->dic_Setting['COUNTRY_ISO_CODE'],$this->userLangCode,$this->dic_Setting['COUNTRY_ISO_CODE'],$this->e['regdCountryCode']);?>
                             </select>
                             <?php endif;?>
                             <input class="must" style="border: 1px solid #DF7E20;width:538px;" type="text" value="<?php echo $this->e['regdAddress'];?>" name="regdAddress" id="regdAddress" required data-msg-required="<?php echo $this->translate('de_null');?>" placeholder="<?php echo $this->translate('address');?>"/></dd>
@@ -79,12 +79,12 @@
                             <dt class="fl"><!-- 地址 --><?php echo $this->translate('address');?></dt>
                             <dd style="width:84%;" class="address">
                                 <?php if($this->e['accountStatus']==01):?>
-                                    <a style="overflow: hidden; margin-right: 20px; display: block; float: left; color: rgb(0, 0, 0); font-size: 14px;" href="#" title=" <?php echo $this->ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'],$this->userlangCode,$this->dic_Setting['COUNTRY_ISO_CODE'],$this->e['regdCountryCode']);?>">
-                                        <?php echo $this->ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'],$this->userlangCode,$this->dic_Setting['COUNTRY_ISO_CODE'],$this->e['regdCountryCode']);?>
+                                    <a style="overflow: hidden; margin-right: 20px; display: block; float: left; color: rgb(0, 0, 0); font-size: 14px;" href="#" title=" <?php echo $this->ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'],$this->userLangCode,$this->dic_Setting['COUNTRY_ISO_CODE'],$this->e['regdCountryCode']);?>">
+                                        <?php echo $this->ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'],$this->userLangCode,$this->dic_Setting['COUNTRY_ISO_CODE'],$this->e['regdCountryCode']);?>
                                     </a>
                                 <?php else:?>
                                     <select   class=" dq_select" name="regdCountryCode" id="regdCountryCode">
-                                        <?php echo $this->ShowDictionaryList($this->dic_Setting['COUNTRY_ISO_CODE'],$this->userlangCode,$this->dic_Setting['COUNTRY_ISO_CODE'],$this->e['regdCountryCode']);?>
+                                        <?php echo $this->ShowDictionaryList($this->dic_Setting['COUNTRY_ISO_CODE'],$this->userLangCode,$this->dic_Setting['COUNTRY_ISO_CODE'],$this->e['regdCountryCode']);?>
                                     </select>
                                 <?php endif;?>
                                 <input class="must" style="border: 1px solid #DF7E20;width:538px;" type="text" value="<?php echo $this->e['regdAddress'];?>" name="regdAddress" id="regdAddress" required data-msg-required="<?php echo $this->translate('de_null');?>" /></dd>
@@ -94,7 +94,7 @@
                         <dt class="fl"><!-- 语言 --><?php echo $this->translate('langCode');?></dt>
                         <dd class="language">
                             <select class="dq_select" name="langCode" id="langCode">
-                                <?php echo $this->ShowDictionaryList('datatest_setting',$this->userlangCode,$this->dic_Setting['SYS_LANG'],$this->e['langCode']);?>
+                                <?php echo $this->ShowDictionaryList('datatest_setting',$this->userLangCode,$this->dic_Setting['SYS_LANG'],$this->e['langCode']);?>
                             </select>
                         </dd>
                         </dd>
@@ -104,7 +104,7 @@
                         <dd class="fl doller">
                             <?php if($this->e['accountStatus']==01){echo $this->e['crnCode'];}?>
                             <select   <?php if($this->e['accountStatus']==01){echo 'style="display:none;"  name="crnCode" ';} ?>  class="dq_select" id="crnCode" required data-msg-required="<?php echo $this->translate('de_null');?>">
-                                <?php echo $this->ShowDictionaryList('datatest_setting',$this->userlangCode,$this->dic_Setting['CURRENCY'],$this->e['crnCode']);?>
+                                <?php echo $this->ShowDictionaryList('datatest_setting',$this->userLangCode,$this->dic_Setting['CURRENCY'],$this->e['crnCode']);?>
                             </select>
                         </dd>
                     </dl>
@@ -114,7 +114,7 @@
                         <dd class="fl dade">
                             <!--需要同时呈现code和Name-->
                             <select class="dq_select" name="legalForm" id="legalForm" required data-msg-required="<?php echo $this->translate('de_null');?>">
-                                <?php echo $this->ShowDictionaryList('datatest_setting',$this->userlangCode,$this->dic_Setting['ACCOUNT_LEGALFORM'],$this->e['legalForm']);?>
+                                <?php echo $this->ShowDictionaryList('datatest_setting',$this->userLangCode,$this->dic_Setting['ACCOUNT_LEGALFORM'],$this->e['legalForm']);?>
                             </select>
                         </dd>
                     </dl>
@@ -134,9 +134,9 @@
                     <dl class="fl"  style="width:100%">
                         <dt class="fl"><!-- 行业 --><?php echo $this->translate('industry');?></dt>
                         <dd class="fl dade">
-                            <?php if($this->e['accountStatus']==01){echo $this->ShowDictionaryTo('datatest_setting',$this->userlangCode,$this->dic_Setting['ISIC_INDUSTRY_TYPE'],$this->e['industryCode']);}?>
+                            <?php if($this->e['accountStatus']==01){echo $this->ShowDictionaryTo('datatest_setting',$this->userLangCode,$this->dic_Setting['ISIC_INDUSTRY_TYPE'],$this->e['industryCode']);}?>
                             <select name="industryCode"  <?php if($this->e['accountStatus']==01){echo 'style="display:none;"  name="industryCode"';}?> class="dq_select" id="industryCode" required data-msg-required="<?php echo $this->translate('de_null');?>">
-                                <?php echo $this->ShowDictionaryList('datatest_setting',$this->userlangCode,$this->dic_Setting['ISIC_INDUSTRY_TYPE'],$this->e['industryCode']);?>
+                                <?php echo $this->ShowDictionaryList('datatest_setting',$this->userLangCode,$this->dic_Setting['ISIC_INDUSTRY_TYPE'],$this->e['industryCode']);?>
                             </select>
                         </dd>
                     </dl>

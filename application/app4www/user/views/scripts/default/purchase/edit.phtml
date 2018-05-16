@@ -92,7 +92,7 @@
                 </dl>
                 <dl class="fl">
                     <dt class="fl"><!--采购单价--><?php echo $this->translate('purprice');?></dt><dd><select  class="spadd_dj" required data-msg-required="<?php echo $this->translate('de_null');?>" name="purchaseCrnCode" value="<?php echo $this->goods["purchaseCrnCode"];?>">
-                            <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userlangCode,$this->dic_Setting['CURRENCY'],$this->goods["purchaseCrnCode"]);?>
+                            <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userLangCode,$this->dic_Setting['CURRENCY'],$this->goods["purchaseCrnCode"]);?>
                         </select>
                         <input class="must" style="width:192px;margin-left:8px;border: 1px solid #DF7E20;" id="spadd_cg" type="text" name="purchaseUnitPrice" min="1" required data-msg-required="<?php echo $this->translate('de_null');?>" value="<?php echo $this->goods["purchaseUnitPrice"];?>"></dd>
                         <input class="must" style="width:192px;margin-left:8px;border: 1px solid #DF7E20;" type="hidden" name="unitPrice" min="1" required data-msg-required="<?php echo $this->translate('de_null');?>" value="<?php echo $this->goods["unitPrice"];?>">
@@ -100,7 +100,7 @@
                 <dl class="fl">
                     <dt class="fl"><!--交易单位--><?php echo $this->translate('unitB');?></dt><dd>
                         <select class="spadd_dj" required data-msg-required="<?php echo $this->translate('de_null');?>" name="pricingUnit"  value="<?php echo $this->goods["pricingUnit"];?>">
-                            <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userlangCode,$this->dic_Setting['PRODUCT_PRICING_UNIT'],$this->goods["pricingUnit"]);?>
+                            <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PRICING_UNIT'],$this->goods["pricingUnit"]);?>
                         </select></dd>
                 </dl>
                 <div id="hscode_p" class="fl">
@@ -114,7 +114,7 @@
                     <span id="hscode_span"><?php echo $this->translate('goodsPS01');?></span>    </div>
                 <dl class="fl">
                     <dt class="fl"><!--法定单位--><?php echo $this->translate('unitF');?></dt><dd>
-                        <em class="fl" id="pricingUnit-name"><?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['PRODUCT_PRICING_UNIT'],$this->goods["legalPricingUnit"]);?></em>
+                        <em class="fl" id="pricingUnit-name"><?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PRICING_UNIT'],$this->goods["legalPricingUnit"]);?></em>
                     <input type="hidden" name="legalPricingUnit" id="legalPricingUnit"   value="<?php echo $this->goods["legalPricingUnit"];?>"></dd>
                 </dl>
                 <dl class="fl">
@@ -154,7 +154,7 @@
                 <dl class="fl">
                     <dt class="fl"><!--包装类型--><?php echo $this->translate('packageTYPE');?></dt><dd>
                         <select class="spadd_sel"  required data-msg-required="<?php echo $this->translate('de_null');?>" name="packingType" >
-                            <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userlangCode,$this->dic_Setting['PRODUCT_PACKING_TYPE'],$this->goods['packingType']);?>
+                            <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PACKING_TYPE'],$this->goods['packingType']);?>
                         </select></dd>
                 </dl>
                 <div></div>

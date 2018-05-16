@@ -26,7 +26,7 @@
         <div class="st_box">
             <label class="st_lab"><!--状态--><?php echo $this->translate('Saltter_Status');?></label>
             <select class="st_sel" name="tradingStatus">
-                <?php echo $this->ShowDictionaryList("datatest_setting", $this->userlangCode, $this->dic_Setting['PAYMENT_STATUS'],$this->tradingStatus); ?>
+                <?php echo $this->ShowDictionaryList("datatest_setting", $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'],$this->tradingStatus); ?>
             </select>
         </div>
         <div class="st_box">
@@ -40,7 +40,7 @@
         <div class="st_box">
             <label class="st_lab"><!--交易分类--><?php echo $this->translate('Saltter_Class');?></label>
             <select class="st_sel" name="tradingType">
-                <?php echo $this->ShowDictionaryList("datatest_setting", $this->userlangCode, $this->dic_Setting['PAYMENT_TRADING_TYPE'],$this->tradingType); ?>
+                <?php echo $this->ShowDictionaryList("datatest_setting", $this->userLangCode, $this->dic_Setting['PAYMENT_TRADING_TYPE'],$this->tradingType); ?>
             </select>
         </div>
         <div class="st_box">
@@ -86,13 +86,13 @@
             <?php foreach ($this->e as $k=>$saltter):?>
                 <tr>
                     <td><?php echo date('Y-m-d H:i:s',strtotime($saltter['recordDate']));?></td>
-                    <td><?php echo $saltter['rptype']=='O'?$this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['PAYMENT_TRADING_TYPE'],$saltter['tradingType']):$this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['AR_AP_TYPE'],$saltter['rptype']);?></td>
+                    <td><?php echo $saltter['rptype']=='O'?$this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['PAYMENT_TRADING_TYPE'],$saltter['tradingType']):$this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['AR_AP_TYPE'],$saltter['rptype']);?></td>
                     <td><?php echo empty($saltter['subject'])?null:$saltter['subject'].'-';?>
                         <?php echo empty($saltter['transNo'])?null:$saltter['transNo'].'-';?>
                         <?php echo $saltter['remarks'];?></td>
                     <td><?php echo $saltter['customerName'];?></td>
                     <td><?php echo  $this->ShowToRptype($saltter['rptype']).$saltter['crnCode'].'&nbsp;&nbsp;'.$this->ShowToPrice($saltter['totalAmount']);?></td>
-                    <td><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['PAYMENT_STATUS'],$saltter['paymentStatus']);?></td>
+                    <td><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'],$saltter['paymentStatus']);?></td>
                     <td>
                         <?php if($saltter['allowPayment']):?>
                             <a style="color:#EF8200" href="/user/settle/payment?<?php echo base64_encode($saltter['tradingID']);?>">

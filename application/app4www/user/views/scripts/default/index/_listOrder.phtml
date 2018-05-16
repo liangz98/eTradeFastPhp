@@ -21,7 +21,7 @@
                 <?php echo number_format($order->totalAmount,2); ?>
             </td>
             <td>
-                <?php echo $this->ShowDictionaryTo($this->dic_Setting["ORDER_STATUS"], $this->userlangCode, $this->dic_Setting["ORDER_STATUS"], $order->orderStatus); ?>
+                <?php echo $this->ShowDictionaryTo($this->dic_Setting["ORDER_STATUS"], $this->userLangCode, $this->dic_Setting["ORDER_STATUS"], $order->orderStatus); ?>
             </td>
         </tr>
     <?php endforeach; ?>

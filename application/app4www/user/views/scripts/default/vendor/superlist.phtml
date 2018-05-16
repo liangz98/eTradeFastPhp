@@ -65,9 +65,9 @@
                         <td><input value="<?php echo $v['toName']; ?>" type="radio" name="checkbox"
                                    onclick="singleSelect(this)" id="<?php echo $v['toID']; ?>"></td>
                         <td><?php echo $v['toName']; ?></td>
-                        <td><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ISIC_INDUSTRY_TYPE'], $v['industryCode']); ?> </td>
-                        <td><?php echo $this->ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'], $this->userlangCode, $this->dic_Setting['COUNTRY_ISO_CODE'], $v['regdCountryCode']); ?></td>
-                        <td><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['PARTNER_STATUS'], $v['partnerStatus']); ?> </td>
+                        <td><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ISIC_INDUSTRY_TYPE'], $v['industryCode']); ?> </td>
+                        <td><?php echo $this->ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'], $this->userLangCode, $this->dic_Setting['COUNTRY_ISO_CODE'], $v['regdCountryCode']); ?></td>
+                        <td><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['PARTNER_STATUS'], $v['partnerStatus']); ?> </td>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>

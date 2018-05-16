@@ -260,7 +260,7 @@ class Kyapi_Controller_Action extends Zend_Controller_Action{
             $this->view->submenus = $_SESSION['rev_session']['menus'];//会员中心左侧菜单
             $submenus = $_SESSION['rev_session']['role_nav'];
             $this->view->newUrl = $_SERVER['REQUEST_URI']; //当前 URL 决定菜单高亮
-            $this->view->userlangCode = $userlangCode = $_SESSION['rev_session']['contactPreference']['langCode'];
+            $this->view->userLangCode = $userLangCode = $_SESSION['rev_session']['contactPreference']['langCode'];
             $this->view->userrgCode = $userrgCode = $_SESSION['rev_session']['contactPreference']['regdCountryCode'];
 
             //判断登录状态是否authorder  免登陆，visitor==1 免登陆状态
@@ -315,10 +315,10 @@ class Kyapi_Controller_Action extends Zend_Controller_Action{
 
         $_requestObject->userID = $userID = $this->view->userID;
         $_requestObject->accountID = $accountID = $this->view->accountID;
-        if (empty($userlangCode))
-            $userlangCode = "zh_CN";
-        $this->view->userlangCode = $userlangCode;
-        $_requestObject->lang = $userlangCode;
+        if (empty($userLangCode))
+            $userLangCode = "zh_CN";
+        $this->view->userLangCode = $userLangCode;
+        $_requestObject->lang = $userLangCode;
         // $_requestObject->client = "192.168.5.100";
         $_requestObject->client = $_SERVER['REMOTE_ADDR'];
         $_requestObject->timeZone = "GMT +8:00";

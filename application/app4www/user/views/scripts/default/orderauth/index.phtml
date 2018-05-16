@@ -322,7 +322,7 @@
 
                         <dl class="fl">
                             <dt class="fl"><!--结算方式--><?php echo $this->translate('remitMD'); ?></dt>
-                            <dd class="fl price_rules"> <?php echo $this->ShowDictionaryTo('datatest_setting', $this->userlangCode, $this->dic_Setting['PAYMENT_TERM'], $this->orders['paymentTerm']); ?></dd>
+                            <dd class="fl price_rules"> <?php echo $this->ShowDictionaryTo('datatest_setting', $this->userLangCode, $this->dic_Setting['PAYMENT_TERM'], $this->orders['paymentTerm']); ?></dd>
                         </dl>
                         <dl class="fl">
                             <dt class="fl"><!--支付期限--><?php echo $this->translate('payDD'); ?></dt>
@@ -343,7 +343,7 @@
                         </dl>
                         <dl class="fl">
                             <dt class="fl"><!--计价方式--><?php echo $this->translate('payJJ'); ?></dt>
-                            <dd class="buyer_contacts"><?php echo $this->ShowDictionaryTo('datatest_setting', $this->userlangCode, $this->dic_Setting['ORDER_QUOTATION_MODE'], $this->orders['quotationMode']); ?></dd>
+                            <dd class="buyer_contacts"><?php echo $this->ShowDictionaryTo('datatest_setting', $this->userLangCode, $this->dic_Setting['ORDER_QUOTATION_MODE'], $this->orders['quotationMode']); ?></dd>
                         </dl>
                         <dl class="fl">
                             <dt class="fl"><!--价格条款--><?php echo $this->translate('payPrice'); ?></dt>
@@ -351,7 +351,7 @@
                         </dl>
                         <dl class="fl">
                             <dt class="fl"><!--包装方式--><?php echo $this->translate('payCasing'); ?></dt>
-                            <dd class="fl price_rules"><?php echo $this->ShowDictionaryTo('datatest_setting', $this->userlangCode, $this->dic_Setting['ORDER_PACKING_MODE'], $this->orders['packingMode']); ?></dd>
+                            <dd class="fl price_rules"><?php echo $this->ShowDictionaryTo('datatest_setting', $this->userLangCode, $this->dic_Setting['ORDER_PACKING_MODE'], $this->orders['packingMode']); ?></dd>
                         </dl>
                         <dl class="fl" style="width:100%">
                             <dt class="fl"><!--包装说明--><?php echo $this->translate('packINF'); ?></dt>
@@ -380,7 +380,7 @@
                                             <label class="public_lab  mr10">
                                                 <!--包装类型--><?php echo $this->translate('packageTYPE'); ?></label>
                                             <span class="view_span"
-                                                  title="<?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['PRODUCT_PACKING_TYPE'], $goods['packingType']); ?>"><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['PRODUCT_PACKING_TYPE'], $goods['packingType']); ?></span>
+                                                  title="<?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['PRODUCT_PACKING_TYPE'], $goods['packingType']); ?>"><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['PRODUCT_PACKING_TYPE'], $goods['packingType']); ?></span>
                                         </p>
                                         <p>
                                             <label class="public_lab  mr10">
@@ -432,7 +432,7 @@
                                                     &nbsp;</span><?php echo round($goods['unitPrice'], 4); ?></td>
                                             <td><?php echo $goods['quantity']; ?>
                                                 <span id="num_dw"
-                                                      class="w30b">&nbsp;<?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['PRODUCT_PRICING_UNIT'], $goods['pricingUnit']); ?></span>
+                                                      class="w30b">&nbsp;<?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['PRODUCT_PRICING_UNIT'], $goods['pricingUnit']); ?></span>
                                             </td>
                                             <td><span class="w50b"><?php echo $this->orders['buyerCrnCode']; ?>
                                                     &nbsp;</span><?php echo $goods['totalPrice']; ?></td>
@@ -471,28 +471,28 @@
                     <div class="info_cont clearfix">
                         <dl class="fl">
                             <dt class="fl"><!--运输方式--><?php echo $this->translate('moveMD'); ?></dt>
-                            <dd class="place_contacts"><?php echo $this->ShowDictionaryTo('datatest_setting', $this->userlangCode, $this->dic_Setting['SHIPPING_METHOD'], $this->orders['shippingMethod']); ?></dd>
+                            <dd class="place_contacts"><?php echo $this->ShowDictionaryTo('datatest_setting', $this->userLangCode, $this->dic_Setting['SHIPPING_METHOD'], $this->orders['shippingMethod']); ?></dd>
                         </dl>
                         <dl class="fl" id="bgkan">
                             <dt class="fl"><!--报关口岸--><?php echo $this->translate('POCRC'); ?></dt>
-                            <dd class="fl packing_method"> <?php echo $this->ShowDictionaryTo($this->dic_Setting['EXPORT_POINTS'], $this->userlangCode, $this->dic_Setting['EXPORT_POINTS'], $this->orders['clearancePlace']); ?></dd>
+                            <dd class="fl packing_method"> <?php echo $this->ShowDictionaryTo($this->dic_Setting['EXPORT_POINTS'], $this->userLangCode, $this->dic_Setting['EXPORT_POINTS'], $this->orders['clearancePlace']); ?></dd>
                         </dl>
                         <dl class="fl">
                             <dt class="fl"><!--起运港--><?php echo $this->translate('portSHIP'); ?></dt>
                             <dd>
-                                <?php echo $this->ShowDictionaryTo($this->port, $this->userlangCode, $this->port, $this->orders['loadingPort']); ?>
+                                <?php echo $this->ShowDictionaryTo($this->port, $this->userLangCode, $this->port, $this->orders['loadingPort']); ?>
                             </dd>
                         </dl>
                         <dl class="fl">
                             <dt class="fl"><!--卸货港--><?php echo $this->translate('portDSCG'); ?></dt>
                             <dd>
-                                <?php echo $this->ShowDictionaryTo($this->port, $this->userlangCode, $this->port, $this->orders['dischargePort']); ?>
+                                <?php echo $this->ShowDictionaryTo($this->port, $this->userLangCode, $this->port, $this->orders['dischargePort']); ?>
                             </dd>
                         </dl>
                         <dl class="fl">
                             <dt class="fl"><!--交货港--><?php echo $this->translate('portDLVY'); ?></dt>
                             <dd>
-                                <?php echo $this->ShowDictionaryTo($this->port, $this->userlangCode, $this->port, $this->orders['deliveryPort']); ?>
+                                <?php echo $this->ShowDictionaryTo($this->port, $this->userLangCode, $this->port, $this->orders['deliveryPort']); ?>
                             </dd>
                         </dl>
                         <dl class="fl">
@@ -505,7 +505,7 @@
                             echo 'style="display:none;"';
                         } ?>>
                             <dt class="fl"><!--装柜类型--><?php echo $this->translate('isFCL'); ?></dt>
-                            <dd class="cabinet"><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['SHIPPING_SERVICE_TYPE'], $this->orders['shippingServiceType']); ?></dd>
+                            <dd class="cabinet"><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['SHIPPING_SERVICE_TYPE'], $this->orders['shippingServiceType']); ?></dd>
                         </dl>
 
                         <?php if($this->orders['sizeQuantityMap']):?>

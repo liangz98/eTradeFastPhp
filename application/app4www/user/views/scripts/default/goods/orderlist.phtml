@@ -75,7 +75,7 @@
                                 <label class="public_lab"><!--包装类型--><?php echo $this->translate('packageTYPE');?></label>
                                 <input class="packageTYPE" type="hidden" value="">
                                 <select class="n_sp4_3_txt js-example-basic-multiple"  name="packingType[]" style="width:160px;">
-                                    <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userlangCode,$this->dic_Setting['PRODUCT_PACKING_TYPE'],$goods['packingType']);?>
+                                    <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PACKING_TYPE'],$goods['packingType']);?>
                                 </select>
                             </p>
                             <p>
@@ -119,7 +119,7 @@
                                     <input class="w70b" type="text" name="unitPrice[]" id="unitPrice_<?php echo $goods['productID'];?>" onchange="divmul(this)" onblur="yzPrice(this)"  value=<?php echo round($goods['unitPrice'],4);?>></td>
 
                                 <td><input  style="float:left;" class="w70b" type="text" name="quantity[]" id="quantity_<?php echo $goods['productID'];?>" onchange="divNUM(this)"  onblur="isDigit(this);"  value="1"><!--默认金额 等价格 数量默认为1-->
-                                    <span id="num_dw" class="w30b"><?php echo $this->ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['PRODUCT_PRICING_UNIT'],$goods['pricingUnit']);?>
+                                    <span id="num_dw" class="w30b"><?php echo $this->ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PRICING_UNIT'],$goods['pricingUnit']);?>
                                         <input type="hidden" name="pricingUnit[]"   value="<?php echo $goods['pricingUnit'];?>"></span></td>
 
                                 <td><span class="w30b crnCode ordercrn"></span>

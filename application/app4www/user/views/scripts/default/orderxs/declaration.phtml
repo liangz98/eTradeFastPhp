@@ -16,19 +16,19 @@
             </dl>
             <dl class="fl">
                 <dt class="fl"><!--申报现场--><?php echo $this->translate('adressCHB');?></dt>
-                <dd class="fl price_rules"><?php echo $this->ShowDictionaryTo('EXPORT_POINTS',$this->userlangCode,$this->dic_Setting['EXPORT_POINTS'],$orders['declarationLocation']);?>
+                <dd class="fl price_rules"><?php echo $this->ShowDictionaryTo('EXPORT_POINTS',$this->userLangCode,$this->dic_Setting['EXPORT_POINTS'],$orders['declarationLocation']);?>
                 </dd>
             </dl>
             <dl class="fl">
                 <dt class="fl"><!--指运港/城市'destinationPort'] 'destinationCity'--><?php echo $this->translate('cityCHB');?></dt>
                 <dd class="buyer_contacts">
-                    <?php echo $this->ShowDictionaryTo('SEA_PORT',$this->userlangCode,$this->dic_Setting['EXPORT_POINTS'],$orders['destinationPort']);?>
-                    <?php echo $this->ShowDictionaryTo('CITY_ISO_CODE',$this->userlangCode,$this->dic_Setting['EXPORT_POINTS'],$orders['destinationCity']);?>
+                    <?php echo $this->ShowDictionaryTo('SEA_PORT',$this->userLangCode,$this->dic_Setting['EXPORT_POINTS'],$orders['destinationPort']);?>
+                    <?php echo $this->ShowDictionaryTo('CITY_ISO_CODE',$this->userLangCode,$this->dic_Setting['EXPORT_POINTS'],$orders['destinationCity']);?>
                     </dd>
             </dl>
             <dl class="fl">
                 <dt class="fl"><!--状态--><?php echo $this->translate('state');?></dt>
-                <dd class="fl price_rules"><?php echo $this->ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['EXPORT_DECLARATION_STATUS'],$orders['declarationStatus']);?>
+                <dd class="fl price_rules"><?php echo $this->ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['EXPORT_DECLARATION_STATUS'],$orders['declarationStatus']);?>
                  </dd>
             </dl>
 

@@ -53,7 +53,7 @@
                             <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>"><?php echo $bank['bankAcctNo'];?></a></td>
                             <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>"><?php echo $bank['bankAcctName'];?></a></td>
                             <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>">
-                                    <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['BANK_ACCOUNT_TYPE'],$bank['bankAcctType']);?></a></td>
+                                    <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['BANK_ACCOUNT_TYPE'],$bank['bankAcctType']);?></a></td>
                             <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>"><?php echo $bank['bankName'];?></a></td>
                             <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>"><?php echo $bank['swiftcode'];?></a></td>
                             <td><a href="<?php if(!empty($this->bank_isAllowView)){echo '/user/bank/'.$linked.'?'.base64_encode($bank['bankAcctID']);}?>">

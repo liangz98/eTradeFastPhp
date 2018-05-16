@@ -68,9 +68,9 @@
                             <td><a  target="_blank"  href="<?php echo '/user/vendor/adds_view?'.base64_encode($v['accountID']);?>"><?php echo $v['accountName'];?></a></td>
                             <td><a  target="_blank"  href="<?php echo '/user/vendor/adds_view?'.base64_encode($v['accountID']);?>"><?php echo $v['email'];?> </a></td>
                             <td><a  target="_blank"  href="<?php echo '/user/vendor/adds_view?'.base64_encode($v['accountID']);?>">
-                                    <?php echo $this-> ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'],$this->userlangCode,$this->dic_Setting['COUNTRY_ISO_CODE'], $v['regdCountryCode']);?></a></td>
+                                    <?php echo $this-> ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'],$this->userLangCode,$this->dic_Setting['COUNTRY_ISO_CODE'], $v['regdCountryCode']);?></a></td>
                             <td><a  target="_blank"  href="<?php echo '/user/vendor/adds_view?'.base64_encode($v['accountID']);?>">
-                                    <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['ISIC_INDUSTRY_TYPE'], $v['industryCode']);?> </a></td>
+                                    <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['ISIC_INDUSTRY_TYPE'], $v['industryCode']);?> </a></td>
                         </tr>
                 <?php endforeach; ?>
             <?php endif;?>

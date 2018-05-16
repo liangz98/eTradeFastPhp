@@ -153,7 +153,7 @@
                     <td><?php echo $saltter['subject'];?></td>
                     <td><?php echo  $saltter['crnCode'].$this->ShowToRptype($saltter['rptype']).$this->ShowToPrice($saltter['totalAmount']);?></td>
                     <td>
-                        <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['PAYMENT_STATUS'],$saltter['paymentStatus']);?></td>
+                        <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'],$saltter['paymentStatus']);?></td>
                     <td>
                         <?php if($saltter['allowPayment']):?>
                             <a style="color:#EF8200" href="/user/settle/payment?<?php echo base64_encode($saltter['tradingID']);?>">

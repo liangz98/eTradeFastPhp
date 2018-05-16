@@ -202,7 +202,7 @@
                     <p>
                         <label class="public_lab"><!--订单货币--><?php echo $this->translate('payCNY'); ?></label>
                         <select class="public_sel" id="CURRENCY" name="buyerCrnCode"  onmouseover="selectDATA(this)">
-                            <?php echo $this->ShowDictionaryList("datatest_setting", $this->userlangCode, $this->dic_Setting['CURRENCY']); ?>
+                            <?php echo $this->ShowDictionaryList("datatest_setting", $this->userLangCode, $this->dic_Setting['CURRENCY']); ?>
                         </select>
                     </p>
                     <p>
@@ -217,7 +217,7 @@
                     <p>
                         <label class="public_lab"><!--结算方式--><?php echo $this->translate('remitMD'); ?></label>
                         <select class="public_sel" id="PAYMENT_TERM" name="paymentTerm" >
-                            <?php echo $this->ShowDictionaryList("datatest_setting", $this->userlangCode, $this->dic_Setting['PAYMENT_TERM']); ?>
+                            <?php echo $this->ShowDictionaryList("datatest_setting", $this->userLangCode, $this->dic_Setting['PAYMENT_TERM']); ?>
                         </select>
                     </p>
                     <p style="line-height: 30px;">
@@ -247,19 +247,19 @@
                     <p>
                         <label class="public_lab"><!--计价方式--><?php echo $this->translate('payJJ'); ?></label>
                         <select class="public_sel" id="ORDER_QUOTATION_MODE" name="quotationMode">
-                            <?php echo $this->ShowDictionaryList("datatest_setting", $this->userlangCode, $this->dic_Setting['ORDER_QUOTATION_MODE']); ?>
+                            <?php echo $this->ShowDictionaryList("datatest_setting", $this->userLangCode, $this->dic_Setting['ORDER_QUOTATION_MODE']); ?>
                         </select>
                     </p>
                     <p>
                         <label class="public_lab"><!--价格条款--><?php echo $this->translate('payPrice'); ?></label>
                         <select class="public_sel" id="PRICE_TERM" name="priceTerm">
-                            <?php echo $this->ShowDictionaryList("datatest_setting", $this->userlangCode, $this->dic_Setting['PRICE_TERM']); ?>
+                            <?php echo $this->ShowDictionaryList("datatest_setting", $this->userLangCode, $this->dic_Setting['PRICE_TERM']); ?>
                         </select>
                     </p>
                     <p>
                         <label class="public_lab"><!--包装方式--><?php echo $this->translate('payCasing'); ?></label>
                         <select class="public_sel" id="ORDER_PACKING_MODE" name="packingMode">
-                            <?php echo $this->ShowDictionaryList("datatest_setting", $this->userlangCode, $this->dic_Setting['ORDER_PACKING_MODE']); ?>
+                            <?php echo $this->ShowDictionaryList("datatest_setting", $this->userLangCode, $this->dic_Setting['ORDER_PACKING_MODE']); ?>
                         </select>
                     </p>
                     <div class="pt5">
@@ -298,13 +298,13 @@
                         <p>
                             <label class="n_sp4_lab"><!--运输方式--><?php echo $this->translate('moveMD'); ?></label>
                             <select class="public_sel" id="SHIPPING_METHOD" name="shippingMethod">
-                                <?php echo $this->ShowDictionaryList("datatest_setting", $this->userlangCode, $this->dic_Setting['SHIPPING_METHOD']); ?>
+                                <?php echo $this->ShowDictionaryList("datatest_setting", $this->userLangCode, $this->dic_Setting['SHIPPING_METHOD']); ?>
                             </select>
                         </p>
                         <p id="bgkan">
                             <label class="n_sp4_lab"><!--报关口岸--><?php echo $this->translate('POCRC'); ?></label>
                             <select style="width: 250px;" class="public_sel js-example-basic-single" id="EXPORT_POINTS" name="clearancePlace">
-                                <?php echo $this->ShowDictionaryList($this->dic_Setting['EXPORT_POINTS'], $this->userlangCode, $this->dic_Setting['EXPORT_POINTS']); ?>
+                                <?php echo $this->ShowDictionaryList($this->dic_Setting['EXPORT_POINTS'], $this->userLangCode, $this->dic_Setting['EXPORT_POINTS']); ?>
                             </select>
                         </p>
                         <span id="gangkou">
@@ -342,7 +342,7 @@
                     <p>
                         <label class="n_sp4_lab"><!--装柜类型--><?php echo $this->translate('isFCL'); ?></label>
                         <select class="public_sel" id="SHIPPING_SERVICE_TYPE" name="shippingServiceType">
-                            <?php echo $this->ShowDictionaryList("datatest_setting", $this->userlangCode, $this->dic_Setting['SHIPPING_SERVICE_TYPE']); ?>
+                            <?php echo $this->ShowDictionaryList("datatest_setting", $this->userLangCode, $this->dic_Setting['SHIPPING_SERVICE_TYPE']); ?>
                         </select>
                     </p>
                     </br>

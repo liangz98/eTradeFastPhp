@@ -57,7 +57,7 @@
                                         <div class="form-group">
                                             <label for="regdAddress" class="col-sm-2 control-label"><?php echo $this->translate('address'); ?></label>
                                             <div class="col-sm-9">
-                                                <p class="form-control-static"><?php echo $this->ShowDictionaryTo($this->dic_Setting["COUNTRY_ISO_CODE"], $this->userlangCode, $this->dic_Setting["COUNTRY_ISO_CODE"], $this->e['regdCountryCode']); ?></p>
+                                                <p class="form-control-static"><?php echo $this->ShowDictionaryTo($this->dic_Setting["COUNTRY_ISO_CODE"], $this->userLangCode, $this->dic_Setting["COUNTRY_ISO_CODE"], $this->e['regdCountryCode']); ?></p>
                                                 <input type="text" class="form-control" name="regdAddress" id="regdAddress" placeholder="" value="<?php echo $this->e['regdAddress']; ?>" >
                                                 <input type="text" class="form-control" name="regdEnAddress" id="regdEnAddress" placeholder="" value="<?php echo $this->e['regdEnAddress']; ?>" >
                                             </div>
@@ -108,7 +108,7 @@
                                             <label class="col-sm-2 control-label"><?php echo $this->translate('industry'); ?></label>
                                             <div class="col-sm-9">
                                                 <p class="form-control-static">
-                                                    <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ISIC_INDUSTRY_TYPE'], $this->e['industryCode']); ?>
+                                                    <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ISIC_INDUSTRY_TYPE'], $this->e['industryCode']); ?>
                                                 </p>
                                                 <input type="hidden" name="industryCode" value="<?php echo $this->e['industryCode']; ?>" >
                                             </div>
@@ -118,7 +118,7 @@
                                             <label for="legalForm" class="col-sm-2 control-label"><?php echo $this->translate('company_legal_form'); ?></label>
                                             <div class="col-sm-9">
                                                 <select class="form-control" name="legalForm" id="legalForm">
-                                                    <?php echo $this-> ShowDictionaryList($this->dic_Setting['ACCOUNT_LEGALFORM'] ,$this->userlangCode,$this->dic_Setting['ACCOUNT_LEGALFORM'], $this->e['legalForm']);?>
+                                                    <?php echo $this-> ShowDictionaryList($this->dic_Setting['ACCOUNT_LEGALFORM'] ,$this->userLangCode,$this->dic_Setting['ACCOUNT_LEGALFORM'], $this->e['legalForm']);?>
                                                 </select>
                                             </div>
                                         </div>
@@ -140,7 +140,7 @@
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label"><?php echo $this->translate('crnCode'); ?></label>
                                             <div class="col-sm-9">
-                                                <p class="form-control-static"><?php echo $this->ShowDictionaryTo($this->dic_Setting['CURRENCY'], $this->userlangCode, $this->dic_Setting['CURRENCY'], $this->e['crnCode']); ?></p>
+                                                <p class="form-control-static"><?php echo $this->ShowDictionaryTo($this->dic_Setting['CURRENCY'], $this->userLangCode, $this->dic_Setting['CURRENCY'], $this->e['crnCode']); ?></p>
                                             </div>
                                         </div>
 
@@ -148,7 +148,7 @@
                                             <label for="langCode" class="col-sm-2 control-label"><?php echo $this->translate('langCode'); ?></label>
                                             <div class="col-sm-9">
                                                 <select class="form-control" name="langCode" id="langCode">
-                                                    <?php echo $this-> ShowDictionaryList($this->dic_Setting['SYS_LANG'] ,$this->userlangCode,$this->dic_Setting['SYS_LANG'], $this->e['langCode']);?>
+                                                    <?php echo $this-> ShowDictionaryList($this->dic_Setting['SYS_LANG'] ,$this->userLangCode,$this->dic_Setting['SYS_LANG'], $this->e['langCode']);?>
                                                 </select>
                                             </div>
                                         </div>

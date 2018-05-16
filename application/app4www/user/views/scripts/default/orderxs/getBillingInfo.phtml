@@ -70,7 +70,7 @@
 
 						<div class="layui-input-inline expressShow" style="width: 400px; <?php if ($deliverySupplier->expressNo == null || $deliverySupplier->expressNo == '') { echo 'display: none;';} ?>">
 							<div class="layui-form-mid layui-word-aux">
-								<label class="expressName_"><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['EXPRESS_TYPE'], $deliverySupplier->expressType); ?></label>&nbsp;&nbsp;
+								<label class="expressName_"><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['EXPRESS_TYPE'], $deliverySupplier->expressType); ?></label>&nbsp;&nbsp;
 								<label class="expressNo_"><?php echo $deliverySupplier->expressNo ?></label>&nbsp;&nbsp;
 								<a href='javascript:void(0)' class="billingExpressEdit link-hover"><?php echo $this->translate('edit'); ?></a>
 							</div>
@@ -78,7 +78,7 @@
 						<div class="layui-input-inline expressEdit" style="width: 180px; <?php if ($deliverySupplier->expressNo != null || $deliverySupplier->expressNo != '') { echo 'display: none;';} ?>">
 							<select name="expressType" id="expressType" lay-verify="required" lay-search="" lay-filter="expressType">
 								<option value=""><?php echo $this->translate('et_select'); ?></option>
-                                <?php echo $this->ShowDictionaryList("datatest_setting", $this->userlangCode, $this->dic_Setting['EXPRESS_TYPE'], $deliverySupplier->expressType);?>
+                                <?php echo $this->ShowDictionaryList("datatest_setting", $this->userLangCode, $this->dic_Setting['EXPRESS_TYPE'], $deliverySupplier->expressType);?>
 							</select>
 						</div>
 						<div class="layui-input-inline expressEdit" style="width: 220px; <?php if ($deliverySupplier->expressNo != null || $deliverySupplier->expressNo != '') { echo 'display: none;';} ?>">

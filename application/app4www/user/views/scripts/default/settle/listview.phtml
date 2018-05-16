@@ -31,7 +31,7 @@
         </div>
         <div class="st_box">
             <label class="st_lab2">
-                <!--应收/应付金额--><?php echo $this->ShowDictionaryTo("", $this->userlangCode, $this->div_Setting['AR_AP_TYPE'], $this->e['rptype']) . $this->translate('ordertotal'); ?>
+                <!--应收/应付金额--><?php echo $this->ShowDictionaryTo("", $this->userLangCode, $this->div_Setting['AR_AP_TYPE'], $this->e['rptype']) . $this->translate('ordertotal'); ?>
                 ：</label>
             <span><?php echo $this->e['crnCode'] . '+' . $this->ShowToPrice($this->e['totalAmount']); ?></span>
         </div>
@@ -61,7 +61,7 @@
         </div>
         <div class="st_box">
             <label class="st_lab2"><!--交易状态--><?php echo $this->translate('Saltter_Status'); ?>：</label>
-            <span><?php echo $this->ShowDictionaryTo("", $this->userlangCode, $this->dic_Setting['PAYMENT_TRADING_STATUS'], $this->e['tradingStatus']); ?>
+            <span><?php echo $this->ShowDictionaryTo("", $this->userLangCode, $this->dic_Setting['PAYMENT_TRADING_STATUS'], $this->e['tradingStatus']); ?>
                  </span>
         </div>
         <div class="st_box">
@@ -69,7 +69,7 @@
                 <!--收/付款状态--><?php echo $this->ShowToRptypeTitle($this->e['rptype'], 'Saltter_FTO_Status'); ?>
                 :</label>
             <span>
-                    <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['PAYMENT_STATUS'], $this->e['paymentStatus']); ?></span>
+                    <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'], $this->e['paymentStatus']); ?></span>
         </div>
     </div>
     <div class="st_jl_view mb30 clearfix" style="margin-left: 75px;">
@@ -102,7 +102,7 @@
                             <td><?php echo $DetailList['oppCustomerName'];; ?></td>
                             <td><?php echo $DetailList['crnCode'].$this->ShowToRptype($DetailList['rptype']).$this->ShowToPrice($DetailList['totalAmount']);?></td>
                             <td><?php echo $DetailList['crnCode'].$this->ShowToRptype($DetailList['rptype']).$this->ShowToPrice($DetailList['balanceAmount']);?></td>
-                            <td><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['PAYMENT_STATUS'], $DetailList['paymentStatus']); ?></td>
+                            <td><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'], $DetailList['paymentStatus']); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>
@@ -128,7 +128,7 @@
                             <td><?php echo $DetailList['explanation'];?></td>
                             <td><?php echo $DetailList['crnCode'].$this->ShowToRptype($DetailList['rptype']).(empty($DetailList['baseAmount'])?0:$this->ShowToPrice($DetailList['baseAmount'])); ?></td>
                             <td style="color: #d00000"><?php echo $DetailList['crnCode'].$this->ShowToRptype($DetailList['rptype']).$this->ShowToPrice($DetailList['totalAmount']); ?></td>
-                            <td><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['PAYMENT_REQUEST_STATUS'],$DetailList['requestStatus']); ?></td>
+                            <td><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['PAYMENT_REQUEST_STATUS'],$DetailList['requestStatus']); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>

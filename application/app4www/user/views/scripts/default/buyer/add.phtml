@@ -42,7 +42,7 @@
             <div class="bank_box" style="width:100%;">
                 <label class="company_address"><!--地址--><?php echo $this->translate('address');?></label>
                 <select class="spadd_sel w100" name="regdCountryCode" id="regdCountryCode">
-                    <?php echo $this-> ShowDictionaryList($this->dic_Setting['COUNTRY_ISO_CODE'],$this->userlangCode,$this->dic_Setting['COUNTRY_ISO_CODE']);?>
+                    <?php echo $this-> ShowDictionaryList($this->dic_Setting['COUNTRY_ISO_CODE'],$this->userLangCode,$this->dic_Setting['COUNTRY_ISO_CODE']);?>
                 </select>
                 <input style="border: 1px solid #DF7E20;width: 580px;" type="text" name="regdAddress" id="regdAddress" value="" tabindex="1" required data-msg-required="<?php echo $this->translate('de_null');?>" />
             </div>

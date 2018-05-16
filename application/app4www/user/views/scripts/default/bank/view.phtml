@@ -33,7 +33,7 @@
                         <tr><td><span><!--账号--><?php echo $this->translate('bankAcctName');?></span></td><td><?php echo $this->bank['bankAcctNo'];?></td></tr>
                         <tr><td><span><!--账号名称--><?php echo $this->translate('bankAcctNo');?></span></td><td><?php echo $this->bank['bankAcctName'];?></td></tr>
                         <tr><td><span><!--账户类型--><?php echo $this->translate('bankAcctType');?></span></td>
-                            <td> <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['BANK_ACCOUNT_TYPE'],$this->bank['bankAcctType']);?></td></tr>
+                            <td> <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['BANK_ACCOUNT_TYPE'],$this->bank['bankAcctType']);?></td></tr>
                         <tr><td><span><!--银行名称--><?php echo $this->translate('accountBKname');?></span></td><td><?php echo $this->bank['bankName'];?></td></tr>
                         <tr><td><span><!--SWITFCODE--><?php echo $this->translate('SWIFTCode');?></span></td><td><?php echo $this->bank['swiftcode'];?></td></tr>
                         <tr><td><span><!--是否默认--><?php echo $this->translate('accountDF');?></span></td>

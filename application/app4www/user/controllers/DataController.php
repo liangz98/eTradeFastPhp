@@ -118,7 +118,7 @@ class DataController extends Kyapi_Controller_Action
     public function portAction()
     {
 
-        $lang_code=$this->view->userlangCode;
+        $lang_code=$this->view->userLangCode;
 //        $condition='SEA_PORT';
 //        $keyword='2';
         $condition=$this->_request->getParam('type');
@@ -166,7 +166,7 @@ class DataController extends Kyapi_Controller_Action
         //$lang_code   语言版本
         //$e  缓存路径-》数据字典代码
         //$t 查询key
-        $lang_code=$this->view->userlangCode;
+        $lang_code=$this->view->userLangCode;
         $files=$this->_request->getParam('files');
         $e=$this->_request->getParam('e');
         $t=$this->_request->getParam('t');
@@ -448,7 +448,7 @@ class DataController extends Kyapi_Controller_Action
         //$lang_code   语言版本
         //$e  缓存路径-》数据字典代码
         //$t 查询key
-//        $lang_code=$this->view->userlangCode;
+//        $lang_code=$this->view->userLangCode;
 //        $files=$this->_request->getParam('files');
 //        $e=$this->_request->getParam('e');
 //        $t=$this->_request->getParam('t');

@@ -54,8 +54,8 @@ class orderauthController extends Kyapi_Controller_Action
         }else{
             $_requestObject2->sessionID = "ssssss2";
         }
-        if(empty($userlangCode))$userlangCode="zh_CN";
-        $_requestObject2->lang = $userlangCode;
+        if(empty($userLangCode))$userLangCode="zh_CN";
+        $_requestObject2->lang = $userLangCode;
         $_requestObject2->userID= $userKY['userID'];
         $_requestObject2->accountID= $userKY['accountID'];
         $_requestObject2->client = "192.168.5.100";

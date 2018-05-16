@@ -45,13 +45,13 @@
                 </dl>
                 <dl class="fl">
                     <dt class="fl"><!--销售价格--><?php echo $this->translate('saleprice');?></dt><dd>
-                        <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['CURRENCY'],$this->goods["crnCode"]);?>
+                        <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['CURRENCY'],$this->goods["crnCode"]);?>
                         <?php echo $this->goods["unitPrice"];?>
                      </dd>
                 </dl>
                 <dl class="fl">
                     <dt class="fl"><!--交易单位--><?php echo $this->translate('unitB');?></dt><dd>
-                        <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['PRODUCT_PRICING_UNIT'],$this->goods["pricingUnit"]);?>
+                        <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PRICING_UNIT'],$this->goods["pricingUnit"]);?>
                        </dd>
                 </dl>
                 <dl class="fl">
@@ -61,7 +61,7 @@
                 </dl>
                 <dl class="fl">
                     <dt class="fl"><!--法定单位--><?php echo $this->translate('unitF');?></dt>
-                    <dd><?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['PRODUCT_PRICING_UNIT'],$this->goods["legalPricingUnit"]);?></dd>
+                    <dd><?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PRICING_UNIT'],$this->goods["legalPricingUnit"]);?></dd>
                 </dl>
                 <dl class="fl">
                     <dt class="fl"><!--退税率--><?php echo $this->translate('RFRT');?></dt><dd><?php echo $this->goods["rebateRate"]*100;?>&nbsp;%</dd>
@@ -85,7 +85,7 @@
                 </dl>
                 <dl class="fl">
                     <dt class="fl"><!--生产方式--><?php echo $this->translate('productionMode');?></dt>
-                    <dd><?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['PRODUCT_PRODUCTION_MODE'],$this->goods["productionMode"]);?></dd>
+                    <dd><?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PRODUCTION_MODE'],$this->goods["productionMode"]);?></dd>
                 </dl>
             </div>
             <div class="info_cont info_cont1 company_info clearfix <?php if($this->goods["productionMode"]!=02):?>table2<?php endif;?>">
@@ -95,13 +95,13 @@
                 </dl>
                 <dl class="fl">
                     <dt class="fl"><!--采购单价--><?php echo $this->translate('purprice');?></dt><dd>
-                        <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['CURRENCY'],$this->goods["purchaseCrnCode"]);?>
+                        <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['CURRENCY'],$this->goods["purchaseCrnCode"]);?>
                         &nbsp;<?php echo $this->goods["purchaseUnitPrice"];?></dd>
                 </dl></div>
             <div class="info_cont info_cont1 company_info clearfix">
                 <dl class="fl">
                     <dt class="fl"><!--包装类型--><?php echo $this->translate('packageTYPE');?></dt><dd>
-                        <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userlangCode,$this->dic_Setting['PRODUCT_PACKING_TYPE'],$this->goods["packingType"]);?>
+                        <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PACKING_TYPE'],$this->goods["packingType"]);?>
                     </dd>
                 </dl>
                 <div></div>

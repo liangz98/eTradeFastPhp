@@ -28,7 +28,7 @@
         <div class="or_curs clearfix" style="width:100%;"><lable class="or_lb"><!--进度说明--><?php echo $this->translate('progressING');?></lable>
             <span class="w_curstor" style="width:740px;"><?php echo $this->plan['plan'];?></div>
         <div class="or_curs tl"><lable class="or_lb"><!--当前状态--><?php echo $this->translate('stateING');?></lable>
-            <span class="w_curstor"><!--当前订单未开始--><?php  echo  $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ORDER_STATUS'],$this->orders["orderStatus"]);?></span></div>
+            <span class="w_curstor"><!--当前订单未开始--><?php  echo  $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ORDER_STATUS'],$this->orders["orderStatus"]);?></span></div>
     </div>
 
     <!--确认订单-->
@@ -44,7 +44,7 @@
         </div>
 
         <div class="or_curs tl"><lable class="or_lb"><!--当前状态--><?php echo $this->translate('stateING');?></lable>
-            <span class="w_curstor"><?php  echo  $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ORDER_STATUS'],$this->orders["orderStatus"]);?><!--当前订单未开始--></span></div>
+            <span class="w_curstor"><?php  echo  $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ORDER_STATUS'],$this->orders["orderStatus"]);?><!--当前订单未开始--></span></div>
         <div class="or_curs tl"><lable class="or_lb"><!--当前操作--><?php echo $this->translate('operatING');?></lable>
             <input type="button"  <?php echo $this->orders["allowBuyerConfirm"]==1 ? 'class="yh_red" id="handle"':'class="yh_wite"';?> value="<?php echo $this->translate('confirmed');?>"><!--确认-->
             <span><!--我有异议--><?php echo $this->translate('objection');?></span>
@@ -63,7 +63,7 @@
         </div>
 
         <div class="or_curs tl"><lable class="or_lb"><!--当前状态--><?php echo $this->translate('stateING');?></lable>
-            <span class="w_curstor"><!--当前订单未开始--><?php  echo  $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ORDER_STATUS'],$this->orders["orderStatus"]);?></span></div>
+            <span class="w_curstor"><!--当前订单未开始--><?php  echo  $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ORDER_STATUS'],$this->orders["orderStatus"]);?></span></div>
 
     </div>
 
@@ -89,7 +89,7 @@
             </div>
         </div>
         <div class="or_curs tl"><lable class="or_lb"><!--当前状态--><?php echo $this->translate('stateING');?></lable>
-            <span class="w_curstor"><!--当前订单未开始--><?php  echo  $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ORDER_STATUS'],$this->orders["orderStatus"]);?></span></div>
+            <span class="w_curstor"><!--当前订单未开始--><?php  echo  $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ORDER_STATUS'],$this->orders["orderStatus"]);?></span></div>
         <div class="or_curs tl"><lable class="or_lb"><!--当前操作--><?php echo $this->translate('operatING');?></lable>
             <input type="button" <?php echo $this->orders["allowBuyerExamine"]==1 ? 'class="yh_red" id="handle"':'class="yh_wite"';?> value="<?php echo $this->translate('ckGOODS');?>"><!--验货-->
             <span><!--我有异议--><?php echo $this->translate('objection');?></span></div>
@@ -111,7 +111,7 @@
                 <?php if($this->bystut==7){echo $this-> ShowWebuploader($this->goods['attachmentList'],$this->biz_Setting['ORDER'],$this->attach_Setting['ODRG'],"0");}?>
             </div></div>
         <div class="or_curs tl"><lable class="or_lb"><!--当前状态--><?php echo $this->translate('stateING');?></lable>
-            <span class="w_curstor"><!--当前订单未开始--><?php  echo  $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ORDER_STATUS'],$this->orders["orderStatus"]);?></span></div>
+            <span class="w_curstor"><!--当前订单未开始--><?php  echo  $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ORDER_STATUS'],$this->orders["orderStatus"]);?></span></div>
         <div class="or_curs tl"><lable class="or_lb"><!--当前操作--><?php echo $this->translate('operatING');?></lable>
             <input type="button"  <?php echo $this->orders["allowBuyerReceive"]==1 ? 'class="yh_red" id="handle"':'class="yh_wite"';?> value="<?php echo $this->translate('reGOODS');?>"><!--收货-->
             <span><!--我有异议--><?php echo $this->translate('objection');?></span></div>
@@ -124,7 +124,7 @@
         <div class="or_curs clearfix" style="width:100%;"><lable class="or_lb"><!--进度说明--><?php echo $this->translate('progressING');?></lable>
             <span class="w_curstor" style="width:740px;"><?php echo $this->plan['plan'];?></span></div>
         <div class="or_curs tl"><lable class="or_lb"><!--当前状态--><?php echo $this->translate('stateING');?></lable>
-            <span class="w_curstor"><!--当前订单未开始--><?php  echo  $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ORDER_STATUS'],$this->orders["orderStatus"]);?></span></div>
+            <span class="w_curstor"><!--当前订单未开始--><?php  echo  $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ORDER_STATUS'],$this->orders["orderStatus"]);?></span></div>
         <div class="or_curs tl"><lable class="or_lb"><!--当前操作--><?php echo $this->translate('operatING');?></lable>
             <input type="button"  class="yh_wite" value="<?php echo $this->translate('calculated');?>"><!--结算-->
             <span><!--我有异议 $this->orders["allowBuyerSettle"]==1 ? 'class="yh_red" id="handle"':'class="yh_wite"'--><?php echo $this->translate('objection');?></span></div>
@@ -137,7 +137,7 @@
         <div class="or_curs clearfix" style="width:100%;"><lable class="or_lb"><!--进度说明--><?php echo $this->translate('progressING');?></lable>
             <span class="w_curstor" style="width:740px;"><?php echo $this->plan['plan'];?></div>
         <div class="or_curs tl"><lable class="or_lb"><!--当前状态--><?php echo $this->translate('stateING');?></lable>
-            <span class="w_curstor"><?php  echo  $this->ShowDictionaryTo("datatest_setting", $this->userlangCode, $this->dic_Setting['ORDER_STATUS'],$this->orders["orderStatus"]);?><!--完成--></span></div>
+            <span class="w_curstor"><?php  echo  $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ORDER_STATUS'],$this->orders["orderStatus"]);?><!--完成--></span></div>
     </div>
 </div>
 
