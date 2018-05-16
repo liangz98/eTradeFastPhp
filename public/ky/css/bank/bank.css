@@ -1,0 +1,68 @@
+body {
+    overflow-y:scroll;
+}
+
+.page-header {
+    margin-top: 0 !important;
+}
+
+.nav-selected:before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 2px;
+    content: "";
+    background-color: #e36209;
+}
+
+#contact_search_form input {
+    /*width: 320px;*/
+}
+
+#contactListTable {
+    margin-left: 15px;
+    width: 97%;
+}
+
+.fixed-table-pagination {
+    margin: 0 15px;
+}
+
+/* view */
+.profile-heading-edit {
+    border: none;
+    box-shadow: none;
+    margin-left: 8px;
+    color: #999;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.profile-heading-edit:hover {
+    cursor: pointer;
+    background-color: #FCF8E3;
+    color: #8A6D3B;
+}
+
+.profile-heading-edit .fa-pencil-alt {
+    font-size: 12px;
+    width: auto;
+    margin-right: 5px;
+}
+
+.dl-horizontal dt {
+    text-align: left;
+    width: 110px;
+    font-weight: normal;
+    color: #777;
+}
+
+.dl-horizontal dd {
+    margin-left: 110px;
+    margin-bottom: 15px;
+}
+
+.dl-horizontal dd:first-of-type {
+    margin-top: 20px;
+}

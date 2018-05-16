@@ -99,11 +99,11 @@
             }
         });
 
-        var fuzzyQuery = '/user/account/dict-ajax';
+        var dataDictQuery = '/user/account/dict-ajax';
         var dictCode = new Array("ECOMM_STATUS");
         $.ajax({
             type: "POST",
-            url: fuzzyQuery,
+            url: dataDictQuery,
             data: {
                 dictCode: dictCode,
                 langCode: '<?php echo $this->userLangCode; ?>'
