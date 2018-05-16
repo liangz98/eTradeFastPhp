@@ -30,6 +30,10 @@ body {
 }
 
 /* view */
+.bank-view h3 {
+    margin-top: 15px;
+}
+
 .profile-heading-edit {
     border: none;
     box-shadow: none;

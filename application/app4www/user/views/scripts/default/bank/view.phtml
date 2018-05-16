@@ -24,20 +24,28 @@
                 </div>
             </div>
 
-            <div class="col-md-9 account-view">
+            <div class="col-md-9 bank-view">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><?php echo $this->translate('bankNO'); ?></div>
                     <div class="panel-body">
+                        <ul class="nav nav-tabs">
+                            <li role="presentation" class="active">
+                                <a href="#info" aria-controls="info" role="tab" data-toggle="tab"><?php echo $this->translate('bankNO'); ?></a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><?php echo $this->translate('UPBank'); ?></a>
+                            </li>
+                        </ul>
+
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active row" id="info">
                                 <div class="col-md-12">
                                     <h3>
-                                        <?php if ($this->CompAdmin == true && ($bank['bankAcctStatus']=='03' || $bank['bankAcctStatus']=='04')): ?>
+                                        <?php if ($this->CompAdmin == true && ($this->bank['bankAcctStatus'] == '04' || $this->bank['bankAcctStatus'] == '03')): ?>
                                             <a class="profile-heading-edit pull-right btn btn-xs" data-type="base" href="<?php echo '/user/bank/edit?' . base64_encode($this->bank['bankAcctID']); ?>">
                                                 <i class="fas fa-pencil-alt" aria-hidden="true"></i><?php echo $this->translate('edit'); ?>
                                             </a>
                                         <?php endif; ?>
-                                        <?php echo $this->bank['name']; ?>
+                                        <?php echo $this->bank['bankAcctName']; ?>
                                     </h3>
 
                                     <dl class="dl-horizontal">
@@ -70,6 +78,10 @@
                                         <dd><?php echo $this->bank['remarks']; ?></dd>
                                     </dl>
                                 </div>
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane row" id="profile">
+                                profile...
                             </div>
                         </div>
                     </div>
