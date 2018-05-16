@@ -14,11 +14,11 @@ ul,li{list-style: none;padding:0;margin:0}
 .img-view {
     /*float: left;*/
 }
-.img-view img{ float: left;  margin-left: 10px; }
-.upload-image-list{width: 125px;height: 125px;  float: left;  margin-left: 15px;  }
+.img-view img{ float: left;  /*margin-left: 10px;*/ }
+.upload-image-list{width: 125px;height: 125px;  float: left;  /*margin-left: 15px;*/  }
 .fileinput-button {position: relative;  overflow: hidden;  height: 100%;  text-align: center;  width: 100%;  background: url("../images/plus.png") no-repeat scroll center center;  padding: 0;  float:left;}
 .fileinput-button input { position: absolute;  top: 0;  left: 0;  margin: 0;  opacity: 0;  filter: alpha(opacity=0); }
-.img_common {max-height: 100%;  max-width: 100%;  text-align: center;  margin-left: 10px;}
+.img_common {max-height: 100%;  max-width: 100%;  text-align: center;  /*margin-left: 10px;*/}
 .cover_words{ display: inline-block;padding: 74px 0 0;}
 .yyzz_box{width:100%;text-align:left;margin:0 auto;}
 .yyzz_box .zzname{color: #56859D;}
