@@ -5,7 +5,6 @@
 	<title>快移</title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/bank/bank.css" rel="stylesheet">
-    <link href="/ky/bootstrap-fileinput-4.4.8-dist/css/fileinput.css" media="all" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 
@@ -46,7 +45,7 @@
 
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active row" id="info">
-                                <div class="col-md-10">
+                                <div class="col-md-12">
                                     <form class="form-horizontal bank-main-edit" action="#" method="post" id="bank_edit_form" name="bank_edit_form">
                                         <div class="form-group">
                                             <label for="bankAcctName" class="col-sm-2 control-label"><?php echo $this->translate('bankAcctName'); ?></label>
@@ -102,17 +101,7 @@
                                         <div class="form-group">
                                             <label for="remarks" class="col-sm-2 control-label"><?php echo $this->translate('UPBank'); ?></label>
                                             <div class="col-sm-9">
-                                                <button type="button" class="layui-btn" id="test3"><i class="layui-icon layui-icon-upload"></i>上传文件</button>
-                                                <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
-                                                    预览图：
-                                                    <div class="layui-upload-list" id="demo2">
-                                                        <?php foreach ($this->bank['attachmentList'] as $attachment):
-                                                            $imgUrl = $this->seed_Setting['KyUrlex'].'/doc/temporary.action'.'?sid=' . session_id().'&nid=' . $attachment['attachID'].'&vid=' . $attachment['verifyID'];
-                                                            ?>
-                                                            <img src="<?php echo $imgUrl;?>" alt="" class="layui-upload-img">
-                                                        <?php endforeach; ?>
-                                                    </div>
-                                                </blockquote>
+                                                <?php echo $this-> ShowWebuploader($this->bank['attachmentList'],$this->biz_Setting['BANK_ACCOUNT'],$this->attach_Setting['0000'],"0");?>
                                             </div>
                                         </div>
 
@@ -149,8 +138,6 @@
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
-<script src="/ky/bootstrap-fileinput-4.4.8-dist/js/fileinput.min.js" type="text/javascript"></script>
-
 <script type="text/javascript">
 	$().ready(function() {
 
@@ -166,90 +153,6 @@
             }
         });
 	});
-
-    layui.use('upload', function(){
-        var $ = layui.jquery
-            ,upload = layui.upload;
-
-        var extData = {};
-
-        //指定允许上传的文件类型
-        upload.render({
-            elem: '#test3'
-            ,url: 'https://123.207.120.251:8099/etrade/doc/upload.action'
-            ,accept: 'file' //普通文件
-            ,data : extData
-            ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
-                // layer.load(); //上传loading
-                console.log(obj);
-                obj.preview(function(index, file, result){
-                    console.log(file.name);
-                    extData = {
-                        'name': file.name
-                    }
-                });
-            }
-            ,done: function(res){
-                console.log(res)
-            }
-        });
-
-        //多文件列表示例
-        var demoListView = $('#demoList')
-            ,uploadListIns = upload.render({
-            elem: '#testList'
-            ,url: '/upload/'
-            ,accept: 'file'
-            ,multiple: true
-            ,auto: false
-            ,bindAction: '#testListAction'
-            ,choose: function(obj){
-                var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
-                //读取本地文件
-                obj.preview(function(index, file, result){
-                    var tr = $(['<tr id="upload-'+ index +'">'
-                        ,'<td>'+ file.name +'</td>'
-                        ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
-                        ,'<td>等待上传</td>'
-                        ,'<td>'
-                        ,'<button class="layui-btn layui-btn-mini demo-reload layui-hide">重传</button>'
-                        ,'<button class="layui-btn layui-btn-mini layui-btn-danger demo-delete">删除</button>'
-                        ,'</td>'
-                        ,'</tr>'].join(''));
-
-                    //单个重传
-                    tr.find('.demo-reload').on('click', function(){
-                        obj.upload(index, file);
-                    });
-
-                    //删除
-                    tr.find('.demo-delete').on('click', function(){
-                        delete files[index]; //删除对应的文件
-                        tr.remove();
-                        uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
-                    });
-
-                    demoListView.append(tr);
-                });
-            }
-            ,done: function(res, index, upload){
-                if(res.code == 0){ //上传成功
-                    var tr = demoListView.find('tr#upload-'+ index)
-                        ,tds = tr.children();
-                    tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
-                    tds.eq(3).html(''); //清空操作
-                    return delete this.files[index]; //删除文件队列已经上传成功的文件
-                }
-                this.error(index, upload);
-            }
-            ,error: function(index, upload){
-                var tr = demoListView.find('tr#upload-'+ index)
-                    ,tds = tr.children();
-                tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
-                tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
-            }
-        });
-    });
 </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-var bizID = $('bizID').val();
+var bizID = $('#bizID').val();
 var attachType = '';
 var bizType = $('#bizType').val();
 var urlVal = $('#uploadURL').val();
