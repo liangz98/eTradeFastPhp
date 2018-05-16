@@ -56,7 +56,7 @@ class AccountController extends Kyapi_Controller_Action
 
     public function contactlistajaxAction() {
         $msg = array();
-        $_requestOb = $this->_requestObject;
+        $requestObject = $this->_requestObject;
 
         $contactStatus = $this->_request->getParam('contactStatus');
         $queryParams = array();
@@ -90,7 +90,7 @@ class AccountController extends Kyapi_Controller_Action
             $querySorts = $this->arrayToObject($querySorts);
         }
 
-        $resultObject = $this->json->listContactApi($_requestOb, $queryParams, $querySorts, $keyword, $skip, $limit);
+        $resultObject = $this->json->listContactApi($requestObject, $queryParams, $querySorts, $keyword, $skip, $limit);
         $msg["total"] = json_decode($resultObject)->extData->totalSize;
         $msg["rows"] = json_decode($resultObject)->result;
 

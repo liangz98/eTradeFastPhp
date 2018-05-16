@@ -28,7 +28,7 @@
             <div class="col-md-9 bank-main">
                 <div class="panel panel-default">
                     <!-- Default panel contents -->
-                    <div class="panel-heading"><?php echo $this->translate('personNO'); ?></div>
+                    <div class="panel-heading"><?php echo $this->translate('bankNO'); ?></div>
                     <div class="panel-body">
                         <?php if (!empty($this->errMsg)): ?>
                         <div class="alert alert-success alert-dismissible fade in" role="alert">
@@ -50,7 +50,7 @@
                                     <button type="submit" class="btn btn-primary"> Go </button>
                                 </div>
                                 <?php if ($this->CompAdmin == true): ?>
-                                <div class="col-sm-1">
+                                <div class="col-sm-1 col-sm-offset-4">
                                     <a title="<?php echo $this->translate('add');?>" href="/user/bank/add" class="btn btn-default">
                                         <i class="fas fa-user-plus"></i>
                                     </a>
@@ -77,6 +77,8 @@
 <script src="/ky/js/base64.js"></script>
 
 <script type="text/javascript">
+    var dataDict = {};
+
 	$().ready(function() {
 
 	});
@@ -90,118 +92,153 @@
             }
         });
 
-        $('#bankListTable').bootstrapTable({
-            url: '/user/bank/bank-list-ajax',
-            method: 'post',
-            pagination: true,
-            classes: 'table table-no-bordered',
-            sidePagination: 'server',
-            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-            pageNumber: 1,
-            pageSize: 10,
-            queryParams: function(params) {
-                return {
-                    limit: params.limit,
-                    skip: params.offset,
-                    keyword: params.search
-                };
+        var dataDictQuery = '/user/account/dict-ajax';
+        var dictCode = new Array("BANK_ACCOUNT_STATUS");
+        $.ajax({
+            type: "POST",
+            url: dataDictQuery,
+            data: {
+                dictCode: dictCode,
+                langCode: '<?php echo $this->userLangCode; ?>'
             },
-            columns: [{
-                field: 'bankAcctNo',
-                title: '<?php echo $this->translate("bankAcctNo"); ?>',
-                formatter: function (value, row) {
-                    var base = new Base64();
-                    var resultEnCode = base.encode(row.bankAcctID);
-                    var href = "/user/bank/view?"+resultEnCode;
-                    return '<a href="' + href + '">' + value + '</a>';
-                }
-            }, {
-                field: 'bankAcctName',
-                title: '<?php echo $this->translate("bankAcctName"); ?>',
-                formatter: function (value, row) {
-                    if (value === undefined || value === '') {
-                        value = "-";
-                    }
-                    var base = new Base64();
-                    var resultEnCode = base.encode(row.bankAcctID);
-                    var href = "/user/bank/view?"+resultEnCode;
-                    return '<a href="' + href + '">' + value + '</a>';
-                }
-            }, {
-                field: 'bankAcctID',
-                title: '<?php echo $this->translate("bankAcctType"); ?>',
-                formatter: function (value) {
-                    var result ="";
-                    if (value === 'NV') {
-                        result = "<?php echo $this->ShowDictionaryTo($this->dic_Setting['BANK_ACCOUNT_TYPE'], $this->userLangCode, $this->dic_Setting['BANK_ACCOUNT_TYPE'], 'NV'); ?>";
-                    } else {
-                        result = "<?php echo $this->ShowDictionaryTo($this->dic_Setting['BANK_ACCOUNT_TYPE'], $this->userLangCode, $this->dic_Setting['BANK_ACCOUNT_TYPE'], 'AT'); ?>";
-                    }
-                    return result;
-                }
-            //}, {
-            //    field: 'ecommrole',
-            //    title: '<?php //echo $this->translate("userROLE"); ?>//'
-            }, {
-                field: 'bankName',
-                title: '<?php echo $this->translate("bankName"); ?>'
-            }, {
-                field: 'swiftcode',
-                title: '<?php echo $this->translate("SWIFTCode"); ?>'
-            }, {
-                field: 'isDefault',
-                title: '<?php echo $this->translate("accountDF"); ?>',
-                formatter: function (value) {
-                    return (value === '1') ? '<?php echo $this->translate('yes') ?>' : '<?php echo $this->translate('no'); ?>';
-                }
-            }, {
-                field: 'bankAcctStatus',
-                title: '<?php echo $this->translate("state"); ?>',
-                formatter: function (value) {
+            dataType: "json",
+            success: function (data) {
+                $.data(dataDict, 'dataDict', data);
 
-                }
-            }, {
-                title: '<?php echo $this->translate("madeTT"); ?>',
-                formatter: function (value, row, index) {
-                    var editTitle = "<?php echo $this->translate("edit");?>";
-                    var disableTitle = "<?php echo $this->translate('disable');?>";
-                    var validTitle = "<?php echo $this->translate('enable');?>";
-                    var base = new Base64();
-                    var resultEnCode = base.encode(row.contactID);
-                    var href = "/user/account/edit?"+resultEnCode;
+                $('#bankListTable').bootstrapTable({
+                    url: '/user/bank/bank-list-ajax',
+                    method: 'post',
+                    pagination: true,
+                    classes: 'table table-no-bordered',
+                    sidePagination: 'server',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    pageNumber: 1,
+                    pageSize: 10,
+                    queryParams: function(params) {
+                        return {
+                            limit: params.limit,
+                            skip: params.offset,
+                            keyword: params.search
+                        };
+                    },
+                    columns: [{
+                        field: 'bankAcctNo',
+                        title: '<?php echo $this->translate("bankAcctNo"); ?>',
+                        formatter: function (value, row) {
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.bankAcctID);
+                            var href = "/user/bank/view?"+resultEnCode;
+                            return '<a href="' + href + '">' + value + '</a>';
+                        }
+                    }, {
+                        field: 'bankAcctName',
+                        title: '<?php echo $this->translate("bankAcctName"); ?>',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '') {
+                                value = "-";
+                            }
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.bankAcctID);
+                            var href = "/user/bank/view?"+resultEnCode;
+                            return '<a href="' + href + '">' + value + '</a>';
+                        }
+                    }, {
+                        field: 'bankAcctID',
+                        title: '<?php echo $this->translate("bankAcctType"); ?>',
+                        formatter: function (value) {
+                            var result ="";
+                            if (value === 'NV') {
+                                result = "<?php echo $this->ShowDictionaryTo($this->dic_Setting['BANK_ACCOUNT_TYPE'], $this->userLangCode, $this->dic_Setting['BANK_ACCOUNT_TYPE'], 'NV'); ?>";
+                            } else {
+                                result = "<?php echo $this->ShowDictionaryTo($this->dic_Setting['BANK_ACCOUNT_TYPE'], $this->userLangCode, $this->dic_Setting['BANK_ACCOUNT_TYPE'], 'AT'); ?>";
+                            }
+                            return result;
+                        }
+                    }, {
+                        field: 'bankName',
+                        title: '<?php echo $this->translate("bankName"); ?>'
+                    }, {
+                        field: 'swiftcode',
+                        title: '<?php echo $this->translate("SWIFTCode"); ?>'
+                    }, {
+                        field: 'isDefault',
+                        title: '<?php echo $this->translate("accountDF"); ?>',
+                        formatter: function (value) {
+                            return (value === '1') ? '<?php echo $this->translate('yes') ?>' : '<?php echo $this->translate('no'); ?>';
+                        }
+                    }, {
+                        field: 'bankAcctStatus',
+                        title: '<?php echo $this->translate("state"); ?>',
+                        formatter: function (value) {
+                            var result = "-";
+                            var data = $.data(dataDict, 'dataDict');
+                            $.each(data, function (key, item) {
+                                if (key === 'BANK_ACCOUNT_STATUS') {
+                                    $.each(item, function (i, dict) {
+                                        if (dict.code === value) {
+                                            result = dict.name;
+                                        }
+                                    });
+                                }
+                            });
+                            return result;
+                        }
+                    }, {
+                        title: '<?php echo $this->translate("madeTT"); ?>',
+                        formatter: function (value, row, index) {
+                            var editTitle = "<?php echo $this->translate("edit");?>";
+                            var delTitle = "<?php echo $this->translate('delete');?>";
+                            var disableTitle = "<?php echo $this->translate('disable');?>";
+                            var validTitle = "<?php echo $this->translate('valid');?>";
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.bankAcctID);
+                            var href = "/user/bank/edit?"+resultEnCode;
 
-                    var result = '<a title="' + editTitle+ '" href="' + href + '">'
-                        + '<i class="far fa-edit"></i>'
-                        + '</a>&nbsp;';
-                    <?php if ($this->CompAdmin == true): ?>
-                    if (row.contactStatus === '01') {
-                        result += '<a href="javascript:void(0)" title="' + disableTitle + '" id="' + row.contactID + '" data-url="/user/account/invalid" data-msg1="<?php echo $this->translate("is_invalid");?>" '
-                            + 'data-msg2="<?php echo $this->translate("tip_invalid_success");?>" '
-                            + 'data-msg3="<?php echo $this->translate("tip_invalid_fail");?>" '
-                            + 'onclick="doOption(this);" '
-                            + '>'
-                            + '<i class="fas fa-ban"></i>'
-                            + '</a>';
-                    }
+                            var result = '';
+                            <?php if ($this->CompAdmin == true): ?>
+                            if (row.bankAcctStatus === '03' || row.bankAcctStatus === '04') {
+                                result += '<a title="' + editTitle+ '" href="' + href + '">'
+                                    + '<i class="far fa-edit"></i>'
+                                    + '</a>&nbsp;';
 
-                    if (row.contactStatus === '02') {
-                        result += '<a href="javascript:void(0)" title="' + validTitle + '" id="' + row.contactID + '" data-url="/user/account/valid" data-msg1="<?php echo $this->translate("is_valid");?>" '
-                            + 'data-msg2="<?php echo $this->translate("tip_valid_success");?>" '
-                            + 'data-msg3="<?php echo $this->translate("tip_valid_fail");?>" '
-                            + 'onclick="doOption(this);" '
-                            + '>'
-                            + '<i class="far fa-check-circle"></i>'
-                            + '</a>';
-                    }
-                    <?php endif; ?>
+                                result += '<a href="javascript:void(0)" title="' + delTitle + '" id="' + row.bankAcctID + '" data-url="/user/bank/delete" data-msg1="<?php echo $this->translate("is_delete");?>" '
+                                    + 'data-msg2="<?php echo $this->translate("delete_y");?>" '
+                                    + 'data-msg3="<?php echo $this->translate("delete_n");?>" '
+                                    + 'onclick="doOption(this);" '
+                                    + '>'
+                                    + '<i class="far fa-trash-alt"></i>'
+                                    + '</a>';
+                            }
+                            if (row.bankAcctStatus === '01') {
+                                result += '<a href="javascript:void(0)" title="' + disableTitle + '" id="' + row.bankAcctID + '" data-url="/user/bank/invalid" data-msg1="<?php echo $this->translate("is_invalid");?>" '
+                                    + 'data-msg2="<?php echo $this->translate("tip_invalid_success");?>" '
+                                    + 'data-msg3="<?php echo $this->translate("tip_invalid_fail");?>" '
+                                    + 'onclick="doOption(this);" '
+                                    + '>'
+                                    + '<i class="fas fa-ban"></i>'
+                                    + '</a>';
+                            }
 
-                    return result;
-                }
-            }]
+                            if (row.bankAcctStatus === '02') {
+                                result += '<a href="javascript:void(0)" title="' + validTitle + '" id="' + row.bankAcctID + '" data-url="/user/bank/valid" data-msg1="<?php echo $this->translate("is_valid");?>" '
+                                    + 'data-msg2="<?php echo $this->translate("tip_valid_success");?>" '
+                                    + 'data-msg3="<?php echo $this->translate("tip_valid_fail");?>" '
+                                    + 'onclick="doOption(this);" '
+                                    + '>'
+                                    + '<i class="far fa-check-circle"></i>'
+                                    + '</a>';
+                            }
+                            <?php endif; ?>
+
+                            return result;
+                        }
+                    }]
+                });
+            }
         });
 
-        $("#searchContactBtn").click(function () {
-            contactSearch();
+        $("#searchBankBtn").click(function () {
+            bankSearch();
         });
 
         $("#shoAllContact").click(function () {
@@ -218,8 +255,8 @@
         });
 	});
 
-	function contactSearch() {
-        var contactListTable = $('#contactListTable');
+	function bankSearch() {
+        var contactListTable = $('#bankListTable');
         var options = {
             query:{
                 keyword: $("#keyword").val()
@@ -243,7 +280,7 @@
             $.post(url,
                 {'delID': id},
                 function (data) {
-                    var contactListTable = $('#contactListTable');
+                    var contactListTable = $('#bankListTable');
 
                     if (data.status === 1) {
                         layer.msg('<span style="color: #EF8200;font-size: 16px;">' + msg2 + '</span>', {

@@ -1,54 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<title>快移</title>
-<meta name="description" content="">
-<meta name="keywords" content="">
-<link href="/ky/css/base.css" rel="stylesheet">
-<link href="/ky/css/style.css" rel="stylesheet">
-<script type="text/javascript" src="/ky/js/jquery.js"></script>
-<script type="text/javascript" src="/ky/js/www.js"></script>
-<script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
-
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+	<title>快移</title>
+    <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <link href="/ky/css/account/account.css" rel="stylesheet">
 </head>
 <body>
-<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
-<div class="o_content_wrap w1200 m0a clearfix">
-    <?php echo $this->render(SEED_WWW_TPL.'/left_menu.phtml');?>
-    <div class="o_content fr w940">
-        <?php echo $this->render(SEED_WWW_TPL.'/bank/r_top_menu.phtml');?>
-        <div class="n_o_c_tit">
-            <h4><!--银行账户详细--><?php echo $this->translate('bankAcctNo').$this->translate('info');?></h4>
-            <?php if($this->CompAdmin==true):?>
-            <?php if($bank['bankAcctStatus']=='04'||$bank['bankAcctStatus']=='03'):?>
-            <a class="p_ed fr mt10" href=<?php echo '/user/bank/edit?'.base64_encode($this->bank['bankAcctID']);?> ></a>
-            <?php endif;?>
-            <?php endif;?>
-        </div>
-        <div class="o_c_content">
-                <table>
-                    <tbody>
-                        <tr><td><span><!--账号--><?php echo $this->translate('bankAcctName');?></span></td><td><?php echo $this->bank['bankAcctNo'];?></td></tr>
-                        <tr><td><span><!--账号名称--><?php echo $this->translate('bankAcctNo');?></span></td><td><?php echo $this->bank['bankAcctName'];?></td></tr>
-                        <tr><td><span><!--账户类型--><?php echo $this->translate('bankAcctType');?></span></td>
-                            <td> <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['BANK_ACCOUNT_TYPE'],$this->bank['bankAcctType']);?></td></tr>
-                        <tr><td><span><!--银行名称--><?php echo $this->translate('accountBKname');?></span></td><td><?php echo $this->bank['bankName'];?></td></tr>
-                        <tr><td><span><!--SWITFCODE--><?php echo $this->translate('SWIFTCode');?></span></td><td><?php echo $this->bank['swiftcode'];?></td></tr>
-                        <tr><td><span><!--是否默认--><?php echo $this->translate('accountDF');?></span></td>
-                            <td><?php if($this->bank['isDefault']){echo $this->translate('yes');}else{echo $this->translate('no');}?></td></tr>
-                        <tr style="width: 100%;"><td><span><!--开户行地址--><?php echo $this->translate('accountADR');?></span></td><td><?php echo $this->bank['bankAddress'];?></td></tr>
-                        <tr style="width: 100%;"><td><span><!--备注--><?php echo $this->translate('accountBZ');?></span></td><td><?php echo $this->bank['remarks'];?></td></tr>
-                    </tbody>
-                 </table>
-        </div>
-        <div class="yyzz_box info_cont">
-            <div class="zzname  n_o_c_tit"><h4><!-- 银行资料 --><?php echo $this->translate('UPBank');?></h4></div>
-            <?php echo $this-> ShowWebuploader($this->bank['attachmentList'],$this->biz_Setting['BANK_ACCOUNT'],$this->attach_Setting['000000'],"1", $this->bank['bankAcctID']);?>
-        </div>
-    </div>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
+
+<div class="container-fluid index-body">
+	<div class="container">
+		<div class="row">
+            <div class="col-md-3 company-navigation hidden-xs">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><?php echo $this->translate('companyMNG'); ?></div>
+                    <div class="list-group">
+                        <a href="/user/company" class="list-group-item"><?php echo $this->translate('company_info'); ?></a>
+                        <a href="/user/account" class="list-group-item"><?php echo $this->translate('personNO'); ?></a>
+                        <a href="/user/bank" class="list-group-item"><?php echo $this->translate('bankNO'); ?></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9 account-view">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><?php echo $this->translate('bankNO'); ?></div>
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active row" id="info">
+                                <div class="col-md-12">
+                                    <h3>
+                                        <?php if ($this->CompAdmin == true && ($bank['bankAcctStatus']=='03' || $bank['bankAcctStatus']=='04')): ?>
+                                            <a class="profile-heading-edit pull-right btn btn-xs" data-type="base" href="<?php echo '/user/bank/edit?' . base64_encode($this->bank['bankAcctID']); ?>">
+                                                <i class="fas fa-pencil-alt" aria-hidden="true"></i><?php echo $this->translate('edit'); ?>
+                                            </a>
+                                        <?php endif; ?>
+                                        <?php echo $this->bank['name']; ?>
+                                    </h3>
+
+                                    <dl class="dl-horizontal">
+                                        <dt><?php echo $this->translate('bankAcctName'); ?></dt>
+                                        <dd><?php echo $this->bank['bankAcctNo']; ?></dd>
+
+                                        <dt><?php echo $this->translate('bankAcctNo'); ?></dt>
+                                        <dd><?php echo $this->bank['bankAcctName']; ?></dd>
+
+                                        <dt><?php echo $this->translate('bankAcctType'); ?></dt>
+                                        <dd>
+                                            <?php echo $this->ShowDictionaryTo($this->dic_Setting['BANK_ACCOUNT_TYPE'], $this->userLangCode, $this->dic_Setting['BANK_ACCOUNT_TYPE'], $this->bank['bankAcctType']); ?>
+                                        </dd>
+
+                                        <dt><?php echo $this->translate('accountBKname'); ?></dt>
+                                        <dd><?php echo $this->bank['bankName']; ?></dd>
+
+                                        <dt><?php echo $this->translate('SWIFTCode'); ?></dt>
+                                        <dd><?php echo $this->bank['swiftcode']; ?></dd>
+
+                                        <dt><?php echo $this->translate('accountDF'); ?></dt>
+                                        <dd>
+                                            <?php if($this->bank['isDefault']){echo $this->translate('yes');}else{echo $this->translate('no');}?>
+                                        </dd>
+
+                                        <dt><?php echo $this->translate('accountADR'); ?></dt>
+                                        <dd><?php echo $this->bank['bankAddress']; ?></dd>
+
+                                        <dt><?php echo $this->translate('accountBZ'); ?></dt>
+                                        <dd><?php echo $this->bank['remarks']; ?></dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
 </div>
-<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script type="text/javascript">
+	$().ready(function() {
+
+	});
+
+	$(function () {
+        $('.company-navigation').find('a').each(function () {
+            if (this.href === document.location.href || document.location.href.search(this.href) >= 0) {
+                $(this).addClass('nav-selected');
+            } else {
+                $(this).removeClass('nav-selected');
+            }
+        });
+	});
+</script>
 </body>
 </html>

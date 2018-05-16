@@ -42,74 +42,54 @@ class BankController extends Kyapi_Controller_Action
         }
     }
 
-    public function indexAction()
-    {
-        $f1 = new Seed_Filter_Alnum();
-        $mod = $f1->filter($this->_request->getParam('mod'));
-        if (empty($mod)) {$mod = "index";}
-
-        $_PStatus =strval($this->_request->getParam('status'));
-        if(empty( $_PStatus)){  $_PStatus ="01";}
-
-        $_querySorts=$this->_request->getParam('querySorts');
-        if(empty($_querySorts)){ $_querySorts ="01";}
-
-        $_keyword=$this->_request->getParam('keyword');
-        if(empty($_keyword)){ $_keyword =null;}
-
-        $page =intval($this->_request->getParam('page'));
-        if($page<1)$page=1;
-        $_limit=8;
-        $_skip=$_limit*($page-1);
-        /*账户条件*/
-        $_queryP =new queryAccount();
-        $_queryP->accountID= $this->view->accountID;
-        $_queryP->contactStatus= $_PStatus;
-        /*排序条件*/
-//        $_queryP =new queryBank();
-//        $_queryP->contactStatus= $_PStatus;
-        //QU  查询排序条件
-        $_querySorts = new querySorts();
-        $_querySorts->createTime= "DESC";
-
-        $_requestOb=$this->_requestObject;
-        $userKY= $this->json->listBankAccountApi($_requestOb,null,$_querySorts,  $_keyword, $_skip, $_limit);
-        $existDatt =$this->objectToArray(json_decode($userKY));
-
-        //传递到视图
-        $this->view->bankList=$existDatt['result'];
-
-        //操作状态数据
-        $Dicst=array();
-        $Dicst['01']=$this->view->translate('valid');//有效
-        $Dicst['02']=$this->view->translate('disable');//禁用
-        $Dicst['03']=$this->view->translate('checkIN');//审核中
-        $Dicst['04']=$this->view->translate('checkNO');//审核未通过
-        $this->view->Dicst=$Dicst;
-
-        //统计正常状态数量、分页
-        $existCount = $existDatt['extData'];
-        $total = $existCount['totalSize'];
-        $page=$existCount['totalPage'];
-
-        //设置视图状态
-        $this->view->status= $_PStatus;
-
-        $file = "user/bank/" . $mod . "-" . $_PStatus;
-        $_limit=8;
-        $pageObj = new Seed_Page($this->_request,$total,$_limit);
-        $this->view->page = $pageObj->getPageArray();
-        $this->view->page['pageurl'] = '/' . $file;
-        if ($page > $this->view->page['totalpage'])
-            $page = $this->view->page['totalpage'];
-        if ($page < 1) $page = 1;
-
-        if(defined('SEED_WWW_TPL')){
-            $content = $this->view->render(SEED_WWW_TPL."/bank/index.phtml");
+    public function indexAction() {
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/bank/index.phtml");
             echo $content;
             exit;
         }
     }
+
+    public function bankListAjaxAction() {
+        $msg = array();
+        $requestObject = $this->_requestObject;
+
+        $queryParams = array();
+
+        $querySorts = array();
+        $querySorts['createTime'] = "DESC";
+
+        $keyword = $this->_request->getParam('keyword');
+        if (empty($keyword)) {
+            $keyword = null;
+        }
+
+        $limit = $this->_request->getParam('limit');
+        if (empty($limit) || $limit <= 0) {
+            $limit = 10;
+        }
+
+        $skip = $this->_request->getParam('skip');
+        if (empty($limit) || $limit <= 0) {
+            $skip = 0;
+        }
+
+        if (is_array($queryParams)) {
+            $queryParams = $this->arrayToObject($queryParams);
+        }
+
+        if (is_array($querySorts)) {
+            $querySorts = $this->arrayToObject($querySorts);
+        }
+
+        $resultObject = $this->json->listBankAccountApi($requestObject, $queryParams, $querySorts, $keyword, $skip, $limit);
+        $msg["total"] = json_decode($resultObject)->extData->totalSize;
+        $msg["rows"] = json_decode($resultObject)->result;
+
+        echo json_encode($msg);
+        exit;
+    }
+
     public function addAction()
     {
         if ($this->_request->isPost()) {
