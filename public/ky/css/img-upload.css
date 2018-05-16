@@ -11,7 +11,9 @@ ul,li{list-style: none;padding:0;margin:0}
 .bar {background-color: green; display:block; width:0%; height:20px; border-radius:3px; }
 .percent{position:absolute; height:20px; display:inline-block;top:3px; left:2%; color:#fff }
 /********webupload******/
-.img-view{  float: left; }
+.img-view {
+    /*float: left;*/
+}
 .img-view img{ float: left;  margin-left: 10px; }
 .upload-image-list{width: 125px;height: 125px;  float: left;  margin-left: 15px;  }
 .fileinput-button {position: relative;  overflow: hidden;  height: 100%;  text-align: center;  width: 100%;  background: url("../images/plus.png") no-repeat scroll center center;  padding: 0;  float:left;}

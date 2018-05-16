@@ -98,9 +98,10 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
         $showView = "";
         $showView .= '<div class="img-read" id="img-read">';
         $showView .= '</div><div class="demo"><ul class="img-view">' . $str;
-        $showView .= '</ul></div><script type="text/javascript" src="/ky/upload/img.js"></script>';
-        $showView .= '<script type="text/javascript" src="/ky/layer-v3.1.1/layer.js"></script>';
-        $showView .= '<link href="/ky/css/img-upload.css" rel="stylesheet">';
+        $showView .= '</ul></div>';
+        // $showView .= '<script type="text/javascript" src="/ky/upload/img.js"></script>';
+        // $showView .= '<script type="text/javascript" src="/ky/layer-v3.1.1/layer.js"></script>';
+        // $showView .= '<link href="/ky/css/img-upload.css" rel="stylesheet">';
 
         $showimg = "";
         $showimg .= '<div class="img-read" id="img-read"></div>';
@@ -115,8 +116,8 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
         $showimg .= '</div></div></ul>';
 
         $showimg .= '</div>';
-        $showimg .= '<script type="text/javascript" src="/ky/upload/img.js"></script>';
-        $showimg .= '<link href="/ky/css/img-upload.css" rel="stylesheet">';
+        // $showimg .= '<script type="text/javascript" src="/ky/upload/img.js"></script>';
+        // $showimg .= '<link href="/ky/css/img-upload.css" rel="stylesheet">';
 
         if ($type == '1') {
             return $showView;

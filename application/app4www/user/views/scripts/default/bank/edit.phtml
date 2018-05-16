@@ -5,6 +5,7 @@
 	<title>快移</title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/bank/bank.css" rel="stylesheet">
+    <link href="/ky/css/img-upload.css" rel="stylesheet">
 </head>
 <body>
 
@@ -37,9 +38,6 @@
                         <ul class="nav nav-tabs">
                             <li role="presentation" class="active">
                                 <a href="#info" aria-controls="info" role="tab" data-toggle="tab"><?php echo $this->translate('bankNO'); ?></a>
-                            </li>
-                            <li role="presentation">
-                                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><?php echo $this->translate('UPBank'); ?></a>
                             </li>
                         </ul>
 
@@ -99,9 +97,9 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="remarks" class="col-sm-2 control-label"><?php echo $this->translate('UPBank'); ?></label>
+                                            <label for="" class="col-sm-2 control-label"><?php echo $this->translate('UPBank'); ?></label>
                                             <div class="col-sm-9">
-                                                <?php echo $this-> ShowWebuploader($this->bank['attachmentList'],$this->biz_Setting['BANK_ACCOUNT'],$this->attach_Setting['0000'],"0");?>
+                                                <?php echo $this->ShowWebuploader($this->bank['attachmentList'], $this->biz_Setting['BANK_ACCOUNT'], $this->attach_Setting['0000'], "0"); ?>
                                             </div>
                                         </div>
 
@@ -114,10 +112,6 @@
                                         <?php endif; ?>
                                     </form>
                                 </div>
-                            </div>
-
-                            <div role="tabpanel" class="tab-pane row" id="profile">
-                                profile....
                             </div>
                         </div>
                     </div>
@@ -137,6 +131,8 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script type="text/javascript" src="/ky/upload/img.js"></script>
 
 <script type="text/javascript">
 	$().ready(function() {

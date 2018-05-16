@@ -16,11 +16,11 @@ body {
     background-color: #e36209;
 }
 
-#contact_search_form input {
+#bank_search_form input {
     /*width: 320px;*/
 }
 
-#contactListTable {
+#bankListTable {
     margin-left: 15px;
     width: 97%;
 }
@@ -30,7 +30,7 @@ body {
 }
 
 /* view */
-.bank-view h3, .bank-main-edit div:first-child {
+.bank-view h3, .bank-main-edit div:first-child, #profile {
     margin-top: 15px;
 }
 

@@ -5,6 +5,7 @@
 	<title>快移</title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/bank/bank.css" rel="stylesheet">
+    <link href="/ky/css/img-upload.css" rel="stylesheet">
 </head>
 <body>
 
@@ -81,7 +82,9 @@
                             </div>
 
                             <div role="tabpanel" class="tab-pane row" id="profile">
-                                profile...
+                                <div class="col-md-12">
+                                    <?php echo $this-> ShowWebuploader($this->bank['attachmentList'],$this->biz_Setting['BANK_ACCOUNT'],$this->attach_Setting['000000'],"1", $this->bank['bankAcctID']);?>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -94,6 +97,8 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script type="text/javascript" src="/ky/upload/img.js"></script>
 
 <script type="text/javascript">
 	$().ready(function() {

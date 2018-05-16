@@ -229,12 +229,23 @@ class BankController extends Kyapi_Controller_Action
                 //银行附件不能为空
                 // Shop_Browser::redirect($this->view->translate('tip_edit_fail').$this->view->translate('tip_bank_no'),$this->view->seed_Setting['user_app_server'].'/bank');
             } else {
-                $editBank= $this->json->editBankAccountApi($_requestOb,$_bank);
-                $_resultBank =$this->objectToArray(json_decode($editBank));
-                if ( $_resultBank['status'] != 1) {
+                $editBank = $this->json->editBankAccountApi($_requestOb, $_bank);
+                $_resultBank = $this->objectToArray(json_decode($editBank));
+
+                /*if ( $_resultBank['status'] != 1) {
                     Shop_Browser::redirect($this->view->translate('tip_edit_fail'). $_resultBank['error'],$this->view->seed_Setting['user_app_server'].'/bank');
                 } else {
                     Shop_Browser::redirect($this->view->translate('tip_edit_success'),$this->view->seed_Setting['user_app_server'].'/bank');
+                }*/
+
+                if ($_resultBank['status'] != 1) {
+                    $this->view->errMsg = $_resultBank['error'];
+                } else {
+                    $this->view->errMsg = $this->view->translate('tip_edit_success');
+                    // $this->redirect("/account");
+                    $content = $this->view->render(SEED_WWW_TPL . "/bank/index.phtml");
+                    echo $content;
+                    exit;
                 }
             }
         }
