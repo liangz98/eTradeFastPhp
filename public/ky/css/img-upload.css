@@ -24,7 +24,7 @@ ul,li{list-style: none;padding:0;margin:0}
 .yyzz_box p{width:870px; height: 30px; line-height: 30px;font-size: 14px;margin:0 auto 10px auto; /*border-bottom: 1px solid #CCC;*/}
 .yyzz_box .tc{padding: 0;}
 .yyzz_box ul li{margin-left: 20px;width: 125px;height: 125px;float: left;}
-.del_to { width: 125px;height: 80px;display:none;word-break:break-all;color:#fff;text-align: center;background: #000;float: left;margin-left: 10px;margin-top:-80px;opacity: 0.6;}
+.del_to { width: 125px;height: 80px;display:none;word-break:break-all;color:#fff;text-align: center;background: #000;float: left;margin-left: -125px;margin-top: 40px;opacity: 0.6;}
 .del_to a{ color: #fff;}
 .img-view li:hover span { display:block;}
 

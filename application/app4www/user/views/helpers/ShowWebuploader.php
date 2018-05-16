@@ -59,18 +59,18 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
                     $downloadurl = '/doc/download.action';
                 }
                 if ($ext == "jpeg" || $ext == "png" || $ext == "jpg" || $ext == "gif" || $ext == "GIF" || $ext == "JPG" || $ext == "PNG" || $ext == "JPEG") {
-                    $str .= '<li><img width="125px" height="125px"  layer-src=' . $this->view->seed_Setting['KyUrlex'];
+                    $str .= '<li><img width="125px" height="125px"  layer-src="' . $this->view->seed_Setting['KyUrlex'];
                     $str .= $downloadurl . '?sid=' . session_id();
                     $str .= '&nid=' . $attachID;
                     $str .= '&vid=' . $verifyID;
-                    $str .= ' src=' . $this->view->seed_Setting['KyUrlex'];
+                    $str .= '" src="' . $this->view->seed_Setting['KyUrlex'];
                     $str .= $downloadurl . '?sid=' . session_id();
                     $str .= '&nid=' . $attachID;
                     if ($type == '1') {
                         $str .= '&vid=' . $verifyID;
                     }
-                    $str .= '&size=MIDDLE name=' . $name;
-                    $str .= 'alt=' . $attachType_ . '><span class="del_to">' . $name . '<br><a onclick="view_pic(this)">查看</a>';
+                    $str .= '&size=MIDDLE" name="' . $name. '" ';
+                    $str .= 'alt="' . $attachType_ . '"><span class="del_to">' . $name . '<br><a onclick="view_pic(this)">查看</a>';
                     if ($type != '1') {
                         $str .= '|<a onclick="delete_pic(this)">删除</a></span>';
                     }

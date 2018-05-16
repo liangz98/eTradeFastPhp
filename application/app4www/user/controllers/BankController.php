@@ -225,8 +225,9 @@ class BankController extends Kyapi_Controller_Action
             $_bank->attachmentList = $_attachList;
 
             if (empty($_attachList)) {
+                $this->view->errMsg = $this->view->translate('tip_edit_fail').$this->view->translate('tip_bank_no');
                 //银行附件不能为空
-                Shop_Browser::redirect($this->view->translate('tip_edit_fail').$this->view->translate('tip_bank_no'),$this->view->seed_Setting['user_app_server'].'/bank');
+                // Shop_Browser::redirect($this->view->translate('tip_edit_fail').$this->view->translate('tip_bank_no'),$this->view->seed_Setting['user_app_server'].'/bank');
             } else {
                 $editBank= $this->json->editBankAccountApi($_requestOb,$_bank);
                 $_resultBank =$this->objectToArray(json_decode($editBank));
