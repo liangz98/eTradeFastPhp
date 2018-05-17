@@ -12,10 +12,33 @@
 <div class="container-fluid index-body">
 	<div class="container">
 		<div class="row">
-            <div class="page-header">
-                <h1><?php echo $this->translate('Finance_index'); ?></h1>
+            <div class="col-md-12">
+                <div class="page-header">
+                    <h1>
+                        <?php echo $this->translate('Finance_index'); ?>
+                        <ul class="list-inline pull-right">
+                            <li><button type="button" class="btn btn-warning">CNY</button></li>
+                            <li><button type="button" class="btn btn-default">USD</button></li>
+                        </ul>
+                    </h1>
+                </div>
             </div>
 		</div>
+
+        <div class="row">
+            <div class="col-md-5">
+                本月
+            </div>
+            <div class="col-md-7">
+                额度
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                search...
+            </div>
+        </div>
 	</div>
 </div>
 
