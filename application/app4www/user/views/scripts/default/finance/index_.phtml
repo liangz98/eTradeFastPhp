@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>快移</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link href="/ky/css/base.css" rel="stylesheet">
+    <link href="/ky/css/style.css" rel="stylesheet">
+    <link href="/ky/css/finance.css" rel="stylesheet">
+    <link href="/ky/css/finance-search.css" rel="stylesheet">
+    <link href="/ky/pretty-checkbox/css/jquery-labelauty.css" rel="stylesheet">
+    <script type="text/javascript" src="/ky/js/jquery.js"></script>
+    <script type="text/javascript" src="/ky/js/seed.form.js"></script>
+    <script type="text/javascript" src="/ky/js/jquery.form.js"></script>
+    <script type="text/javascript" src="/ky/js/www.js"></script>
+    <script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
+    <script type="text/javascript" src="/ky/js/echarts.simple.min.js"></script>
+    <script type="text/javascript" src="/ky/layer-v3.1.1/layer.js"></script>
+    <script type="text/javascript" src="/ky/js/finance-search.js"></script>
+    <script type="text/javascript" src="/ky/pretty-checkbox/js/jquery-labelauty.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".ifc_time_line").find('ul').find('li').each(function (i) {
+                $(this).hover(function () {
+//                var time=$(this).find('.time').html();
+//                alert(time);
+//                $.post('/user/finance/datelist',{thisDate:time},function (data) {
+//                    console.log(data);
+//                },'json');
+                    $(".ifc_num").eq(i).css("display", "block");
+                }, function () {
+                    $(".ifc_num").css("display", "none");
+                });
+            });
+        });
+        $(function () {
+            $('input[type="radio"]').labelauty();
+        });
+
+    </script>
+</head>
+<body>
+<?php echo $this->render(SEED_WWW_TPL . '/header.phtml'); ?>
+<div class="o_content_wrap w1200 m0a clearfix">
+    <div class="finance_box clearfix">
+        <div class="ifc_tit mt50 pb20 mb50">
+            <p class="o_tit" style="float: left;width: 20%;">
+                <!--金融中心--><?php echo $this->translate('Finance_index'); ?></p>
+            <ul style="float: right;">
+
+                <a href="/user/finance?code=USD">
+                    <li class=" <?php if ($this->DcrnCode == 'USD') {
+                        echo 'on';
+                    } ?> f16">USD
+                    </li>
+                </a>
+                <a href="/user/finance?code=CNY">
+                    <li class=" <?php if ($this->DcrnCode == 'CNY') {
+                        echo 'on';
+                    } ?> f16">CNY
+                    </li>
+                </a>
+            </ul>
+        </div>
+        <div class="ifc_time_box clearfix">
+
+            <?php if (count($this->DeTime) > 0): ?>
+                <div class="ifc_time_line clearfix mb30">
+                    <span class="ifc-line"></span>
+                    <ul>
+                        <?php foreach ($this->DeTime as $k => $v): ?>
+                            <li>
+                                <p class="time"><?php echo $k; ?></p><span><i></i></span>
+                                <p class="price"><?php echo $this->DcrnCode . '&nbsp;&nbsp;' . $v ?></p>
+                                <table class="ifc_num">
+                                    <thead class="entry-trangle-top"><!--本Div只来实现三角形，无其他作用--></thead>
+                                    <tbody>
+                                    <tr>
+                                        <th><!--订单号--><?php echo $this->translate('orderNO'); ?></th>
+                                        <th><!--还款日期--><?php echo $this->translate('Finance_reDate'); ?></th>
+                                        <th><!--贷款额--><?php echo $this->translate('Finance_Lamount'); ?></th>
+                                    </tr>
+                                    <?php $total = (float)0;
+                                    if (is_array($this->Delist[$k]) && count($this->Delist[$k]) > 0): ?>
+                                        <?php foreach ($this->Delist[$k] as $item => $op): ?>
+                                            <tr>
+                                            <td><?php echo $op['orderNo']; ?></td>
+                                            <td><?php echo $op['loanPeriod']; ?>&nbsp;Days</td>
+                                            <td><?php echo $op['totalAmount']; ?></td>
+                                            </tr><?php $total += $op['totalAmount']; ?>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+
+                                    <tr>
+                                        <td></td>
+                                        <td><!--总金额--><?php echo $this->translate('shopTotal'); ?>：</td>
+                                        <td><?php echo $total; ?></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>          <?php endif; ?>
+            <div class="ifc_usd mb30">
+                <div class="st_foot_fb" style="border:none">
+                    <p class="price"><!--本月应还金额--><?php echo $this->translate('Finance_mouth_amount'); ?>
+                        <span> <?php echo $this->f_crnCode . '&nbsp;&nbsp;' . $this->ShowToPrice($this->MonthTotal); ?></span>
+                    </p>
+                    <p class="price"><!--总应还款金额--><?php echo $this->translate('Finance_re_amount'); ?>
+                        <span> <?php echo $this->f_crnCode . '&nbsp;&nbsp;' . $this->ShowToPrice($this->TotalAmount); ?></span>
+                    </p>
+                </div>
+                <div class="st_foot_fb" style="border:none">
+                    <div class="st_foot_t">
+                        <span class="pricetext f16"><!--金融额度--><?php echo $this->translate('Saltter_ETIFO'); ?></span>
+                        <a href=""><!--查看金融详情--><?php echo $this->translate('Saltter_VIFO'); ?></a>
+                        <p class="xydj mr30 f16">
+	                        <span>
+	                    <!--信用等级--><?php echo $this->translate('Saltter_credit'); ?>
+                                <i class="icon_pro"></i></span>
+                            <em class="ml30"><?php echo $this->paymentData['creditRating']; ?></em>
+                        </p>
+                    </div>
+                    <div class="st_foot_c">
+                        <span style="width:<?php echo $this->jd; ?>%;"></span>
+                    </div>
+                    <div class="st_foot_b">
+                        <span><!--可用额度--> <?php echo $this->translate('Saltter_Available') . $this->paymentData['creditBal'] . '/' . $this->paymentData['creditLimit']; ?></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fin-search jyTable">
+            <div class="clearfix">
+                <ul class="title title1 left">
+                    <li <?php if ($this->status == '01') {
+                        echo ' class="cur"';
+                    } ?>><!--待激活-->
+                        <a href="/user/finance/index-01-1.html">
+                            <?php echo $this->translate('Finance_daijhuo'); ?></a></li>
+                    <li <?php if ($this->status == '11') {
+                        echo ' class="cur"';
+                    } ?>><a href="/user/finance/index-11-1.html">
+                            <!--待放款--><?php echo $this->translate('Finance_daifkuan'); ?></a></li>
+                    <li <?php if ($this->status == '12') {
+                        echo ' class="cur"';
+                    } ?>><a href="/user/finance/index-12-1.html">
+                            <!--待还款--><?php echo $this->translate('Finance_daihkuan'); ?></a></li>
+                    <li <?php if ($this->status == '04') {
+                        echo ' class="cur"';
+                    } ?>><a href="/user/finance/index-04-1.html">
+                            <!--不通过--><?php echo $this->translate('Finance_butongguo'); ?></a></li>
+                    <li <?php if ($this->status == '05') {
+                        echo ' class="cur"';
+                    } ?>><a href="/user/finance/index-05-1.html">
+                            <!--完成--><?php echo $this->translate('Finance_finesh'); ?></a></li>
+                </ul>
+            </div>
+            <div class='zong' style="display: block;" id="panel">
+                <div class="list list1">
+                    <div class="tabCon">
+                        <div id="s1">
+                            <form action="#" method="post">
+                                <dl class="mt10 dowebok w">
+                                    <dt class="fl"></dt>
+                                    <dd class="ml50"><input type="radio" name="type" value=""
+                                                            data-labelauty="<?php echo $this->translate('default'); ?>">
+                                    </dd><!--默认-->
+                                    <dd class="ml20"><input type="radio" name="type" value="creditor"
+                                                            data-labelauty="<?php echo $this->translate('Finance_creditor'); ?>">
+                                    </dd><!--债权-->
+                                    <dd class="ml20"><input type="radio" name="type" value="debtor"
+                                                            data-labelauty="<?php echo $this->translate('Finance_debt'); ?>">
+                                    </dd><!--债务-->
+                                </dl>
+                                <dl class="mt10 fl w">
+                                    <dt class="fl">
+                                        <!--金融项目号--><?php echo $this->translate('finance') . $this->translate('Finance_itermNo'); ?></dt>
+                                    <dd><input class="st_input_f" type="text" name="factoringNo"></dd>
+                                </dl>
+                                <dl class="mt10 fl w">
+                                    <dt class="fl"> <!--还款日期--><?php echo $this->translate('Finance_reDate'); ?></dt>
+                                    <script language="javascript" type="text/javascript"
+                                            src="/ky/My97DatePicker/WdatePicker.js"></script>
+                                    <dd><input class="st_input_f" type="text" name="startDate" tabindex="1"
+                                               onfocus="WdatePicker({minDate: '${minDate}', maxDate: '${maxDate}'})">
+                                        -<input class="st_input_f" type="text" name="endDate" tabindex="1"
+                                                onfocus="WdatePicker({minDate:'#F{$dp.$D(\'stimeParam\')}', maxDate: '${maxDate}' })">
+                                    </dd>
+                                </dl>
+                                <dl class="mt10 fl w">
+                                    <dt class="fl"> <!--订单号--><?php echo $this->translate('orderNO'); ?></dt>
+                                    <dd><input class="st_input_f" type="text" name="orderNo"></dd>
+                                </dl>
+                                <dl class="mt10 fl w">
+                                    <dt class="fl"> <!--金额--><?php echo $this->translate('ordertotal'); ?></dt>
+                                    <dd><input class="st_input_f" type="text" onkeyup="minNumber(this)"
+                                               placeholder="0.00" name="lowerAmount">-
+                                        <input class="st_input_f" type="text" onkeyup="maxNumber(this)"
+                                               placeholder="0.00" name="upperAmount">
+                                    </dd>
+                                </dl>
+
+                                <dl class="mt10 dowebok w">
+                                    <dt class="fl"></dt>
+                                    <dd class="ml50"><input type="radio" name="listcrnCode" value=""
+                                                            data-labelauty="<?php echo $this->translate('default'); ?>">
+                                    </dd>
+                                    <dd class="ml20"><input type="radio" name="listcrnCode" value="USD"
+                                                            data-labelauty="USD"></dd>
+                                    <dd class="ml20"><input type="radio" name="listcrnCode" value="CNY"
+                                                            data-labelauty="CNY"></dd>
+                                </dl>
+                                <dl class="mt10 fl">
+                                    <dd class="fl ml150"><input class="st_btn" style="border-radius:0;" type="submit"
+                                                                value="<?php echo $this->translate('confirm'); ?>"></dd>
+                                    <!--确定-->
+                                    <dd class="fl"><input style="background: #ccc;border-radius:0;" class="st_btn"
+                                                          type="reset" name="reset"
+                                                          value="<?php echo $this->translate('clearing'); ?>"></dd>
+                                    <!--清空-->
+                                </dl>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <p class="slide">
+                <a href="javascript:;" class="btn-slide active"><!--收起--><?php echo $this->translate('shouqi'); ?></a>
+            </p>
+        </div>
+        <div class="ifc_po mt10">
+            <ul>
+                <?php if (is_array($this->listLoan) && count($this->listLoan) > 0): ?>
+                    <?php foreach ($this->listLoan as $k => $v): ?>
+                        <li>
+                            <div class="po_top <?php if ($v['creditorCustomerID'] == $this->accountID) {
+                                echo 'po_top_green';
+                            }
+                            if ($v['debtorCustomerID'] == $this->accountID) {
+                                echo 'po_top_red';
+                            }; ?>">
+                                <p>
+                                    <!--金融项目号--><?php echo $this->translate('factoringNo') . '：' . $v['factoringNo']; ?></p>
+                                <p><!--订单号--><?php echo $this->translate('orderID') . '：' . $v['orderNo']; ?> </p>
+                                <p>
+                                    <!--项目金额--><?php echo $this->translate('Finance_project_number') .'：'  . $v['crnCode'] . '&nbsp;' . $v['accountsReceivable']; ?></p>
+                                <p>
+                                    <!--状态--><?php echo $this->translate('Saltter_Status') . '：'  . $this->ShowFactoringStatus($v['factoringStatus']); ?></p>
+                                <a href="/user/finance/view?id=<?php echo base64_encode($v['factoringID']); ?>"
+                                   target="_blank"
+                                   class="more"><!--详情--><?php echo $this->translate('Saltter_INF'); ?></a>
+                            </div>
+                            <div class="po_bottom">
+                                <p><!--支付期限--><?php echo $this->translate('diffTime'); ?>
+                                    ：<span><?php echo $v['period']; ?>DAYS</span></p>
+                                <p><!--应还金额--><?php echo $this->translate('Finance_repay_amount'); ?>：<span
+                                            class="colorred"><?php echo $v['financingCrnCode'] . '&nbsp;' . $v['actualFinancingAmount']; ?></span>
+                                </p>
+                                <p><!--还款日期--><?php echo $this->translate('expiryDate'); ?>：<span
+                                            class="colorred"><?php echo date('Y-m-d', strtotime($v['expiryDate'])); ?></span>
+                                </p>
+                            </div>
+                        </li>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </ul>
+        </div>
+    </div>
+</div>
+<?php echo $this->render(SEED_WWW_TPL . '/footer.phtml'); ?>
+<script>
+    function minNumber(obj) {
+
+        //得到第一个字符是否为负号
+        var t = obj.value.charAt(0);
+        //先把非数字的都替换掉，除了数字和.
+        obj.value = obj.value.replace(/[^\d\.]/g, '');
+        //必须保证第一个为数字而不是.
+        obj.value = obj.value.replace(/^\./g, '');
+        //保证只有出现一个.而没有多个.
+        obj.value = obj.value.replace(/\.{2,}/g, '.');
+        //保证.只出现一次，而不能出现两次以上
+        obj.value = obj.value.replace('.', '$#$').replace(/\./g, '').replace('$#$', '.');
+
+        obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3');
+        var maxVal = $('#s1').find('input[name="upperAmount"]').val();
+        if (parseFloat(obj.value) > parseFloat(maxVal)) {
+            obj.value = 0;
+        }
+        //如果第一位是负号，则允许添加
+        if (t == '-') {
+
+            return;
+        }
+
+    }
+    function maxNumber(obj) {
+
+        //得到第一个字符是否为负号
+        var t = obj.value.charAt(0);
+        //先把非数字的都替换掉，除了数字和.
+        obj.value = obj.value.replace(/[^\d\.]/g, '');
+        //必须保证第一个为数字而不是.
+        obj.value = obj.value.replace(/^\./g, '');
+        //保证只有出现一个.而没有多个.
+        obj.value = obj.value.replace(/\.{2,}/g, '.');
+        //保证.只出现一次，而不能出现两次以上
+        obj.value = obj.value.replace('.', '$#$').replace(/\./g, '').replace('$#$', '.');
+
+        obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3');
+        var minVal = $('#s1').find('input[name="lowerAmount"]').val();
+        if (parseFloat(obj.value) < parseFloat(minVal)) {
+            obj.value = minVal;
+        }
+        //如果第一位是负号，则允许添加
+        if (t == '-') {
+
+            return;
+        }
+
+    }
+</script>
+</body>
+</html>
