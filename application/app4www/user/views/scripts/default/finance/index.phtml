@@ -4,6 +4,7 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
 	<title>快移</title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <link href="/ky/css/finance/finance.css" rel="stylesheet">
 </head>
 <body>
 
@@ -27,10 +28,43 @@
 
         <div class="row">
             <div class="col-md-5">
-                本月
+                <ul class="list-unstyled">
+                    <li>
+                        <dl class="dl-horizontal">
+                            <dt><?php echo $this->translate('Finance_mouth_amount'); ?></dt>
+                            <dd><?php echo $this->f_crnCode . '&nbsp;&nbsp;' . $this->ShowToPrice($this->MonthTotal); ?></dd>
+                        </dl>
+                    </li>
+                    <li>
+                        <dl class="dl-horizontal">
+                            <dt><?php echo $this->translate('Finance_re_amount'); ?></dt>
+                            <dd><?php echo $this->f_crnCode . '&nbsp;&nbsp;' . $this->ShowToPrice($this->TotalAmount); ?></dd>
+                        </dl>
+                    </li>
+                </ul>
             </div>
             <div class="col-md-7">
-                额度
+                <div class="row">
+                    <div class="col-md-12">
+                        <?php echo $this->translate('Saltter_ETIFO'); ?>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                                <span class="sr-only">60% Complete</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <?php echo $this->translate('Saltter_Available') . $this->paymentData['creditBal'] . '/' . $this->paymentData['creditLimit']; ?>
+                    </div>
+                </div>
             </div>
         </div>
 
