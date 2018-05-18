@@ -140,23 +140,23 @@
                         echo ' class="cur"';
                     } ?>><!--待激活-->
                         <a href="/user/finance/index-01-1.html">
-                            <?php echo $this->translate('Finance_daijhuo'); ?></a></li>
+                            <?php echo $this->translate('forActivate'); ?></a></li>
                     <li <?php if ($this->status == '11') {
                         echo ' class="cur"';
                     } ?>><a href="/user/finance/index-11-1.html">
-                            <!--待放款--><?php echo $this->translate('Finance_daifkuan'); ?></a></li>
+                            <!--待放款--><?php echo $this->translate('forLoan'); ?></a></li>
                     <li <?php if ($this->status == '12') {
                         echo ' class="cur"';
                     } ?>><a href="/user/finance/index-12-1.html">
-                            <!--待还款--><?php echo $this->translate('Finance_daihkuan'); ?></a></li>
+                            <!--待还款--><?php echo $this->translate('waitPay'); ?></a></li>
                     <li <?php if ($this->status == '04') {
                         echo ' class="cur"';
                     } ?>><a href="/user/finance/index-04-1.html">
-                            <!--不通过--><?php echo $this->translate('Finance_butongguo'); ?></a></li>
+                            <!--不通过--><?php echo $this->translate('rejected'); ?></a></li>
                     <li <?php if ($this->status == '05') {
                         echo ' class="cur"';
                     } ?>><a href="/user/finance/index-05-1.html">
-                            <!--完成--><?php echo $this->translate('Finance_finesh'); ?></a></li>
+                            <!--完成--><?php echo $this->translate('done'); ?></a></li>
                 </ul>
             </div>
             <div class='zong' style="display: block;" id="panel">
