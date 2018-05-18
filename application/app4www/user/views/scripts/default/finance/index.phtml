@@ -87,22 +87,66 @@
                                 <a href="#forActivate" aria-controls="info" role="tab" data-toggle="tab"><?php echo $this->translate('forActivate'); ?></a>
                             </li>
                             <li role="presentation">
-                                <a href="#forLoan" aria-controls="profile" role="tab" data-toggle="tab"><?php echo $this->translate('forLoan'); ?></a>
+                                <a href="#forActivate" aria-controls="profile" role="tab" data-toggle="tab"><?php echo $this->translate('forLoan'); ?></a>
                             </li>
                             <li role="presentation">
-                                <a href="#waitPay" aria-controls="profile" role="tab" data-toggle="tab"><?php echo $this->translate('waitPay'); ?></a>
+                                <a href="#forActivate" aria-controls="profile" role="tab" data-toggle="tab"><?php echo $this->translate('waitPay'); ?></a>
                             </li>
                             <li role="presentation">
-                                <a href="#rejected" aria-controls="profile" role="tab" data-toggle="tab"><?php echo $this->translate('rejected'); ?></a>
+                                <a href="#forActivate" aria-controls="profile" role="tab" data-toggle="tab"><?php echo $this->translate('rejected'); ?></a>
                             </li>
                             <li role="presentation">
-                                <a href="#done" aria-controls="profile" role="tab" data-toggle="tab"><?php echo $this->translate('done'); ?></a>
+                                <a href="#forActivate" aria-controls="profile" role="tab" data-toggle="tab"><?php echo $this->translate('done'); ?></a>
                             </li>
                         </ul>
 
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane fade in active" id="forActivate">
-                                forActivate...
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label for="factoringNo" class="col-sm-2 control-label"><?php echo $this->translate('finance') . $this->translate('Finance_itermNo'); ?></label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" name="factoringNo" id="factoringNo" placeholder="Jane Doe">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="startDate" class="col-sm-2 control-label"><?php echo $this->translate('Finance_reDate'); ?></label>
+                                        <div class="col-sm-3">
+                                            <input type="date" class="form-control" name="startDate" id="startDate">
+                                        </div>
+                                        <div class="layui-form-mid">-</div>
+                                        <label for="endDate" class="sr-only">endDate</label>
+                                        <div class="col-sm-3">
+                                            <input type="date" class="form-control" name="endDate" id="endDate">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="orderNo" class="col-sm-2 control-label"><?php echo $this->translate('orderNO'); ?></label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" name="orderNo" id="orderNo">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="lowerAmount" class="col-sm-2 control-label"><?php echo $this->translate('ordertotal'); ?></label>
+                                        <div class="col-sm-3">
+                                            <input type="number" class="form-control" name="lowerAmount" id="lowerAmount">
+                                        </div>
+                                        <div class="layui-form-mid">-</div>
+                                        <label for="upperAmount" class="sr-only">upperAmount</label>
+                                        <div class="col-sm-3">
+                                            <input type="number" class="form-control" name="upperAmount" id="upperAmount">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-4">
+                                            <button type="submit" class="btn btn-default">Send invitation</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
 
                             <div role="tabpanel" class="tab-pane fade" id="forLoan">
