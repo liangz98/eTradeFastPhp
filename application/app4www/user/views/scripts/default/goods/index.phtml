@@ -289,7 +289,7 @@
                                     + 'onclick="doOption(this);" '
                                     + '>'
                                     + '<i class="fas fa-ban"></i>'
-                                    + '</a>';
+                                    + '</a>&nbsp;';
                             }
 
                             if (row.allowDelete === true) {
@@ -299,8 +299,8 @@
                                     + 'data-msg3="<?php echo $this->translate("tip_del_fail");?>" '
                                     + 'onclick="doOption(this);" '
                                     + '>'
-                                    + '<i class="far fa-check-circle"></i>'
-                                    + '</a>';
+                                    + '<i class="far fa-trash-alt"></i>'
+                                    + '</a>&nbsp;';
                             }
 
                             if (row.allowValid === true) {
@@ -311,7 +311,7 @@
                                     + 'onclick="doOption(this);" '
                                     + '>'
                                     + '<i class="far fa-check-circle"></i>'
-                                    + '</a>';
+                                    + '</a>&nbsp;';
                             }
 
                             if (row.allowConfirm === true) {
@@ -322,11 +322,11 @@
                                     + 'onclick="doOption(this);" '
                                     + '>'
                                     + '<i class="far fa-check-circle"></i>'
-                                    + '</a>';
+                                    + '</a>&nbsp;';
                             }
 
                             if (row.allowForReview === true) {
-                                result += '<a href="javascript:void(0)" title="' + submitForReviewTitle + '" id="' + row.productID + '" data-url="/user/goods/forreview" '
+                                result += '<a href="javascript:void(0)" title="' + submitForReviewTitle + '" id="' + row.productID + '" data-url="/user/goods/for-review" '
                                     + 'data-msg1="<?php echo $this->translate("is_forReview");?>" '
                                     + 'data-msg2="<?php echo $this->translate("tip_forReview_success");?>" '
                                     + 'data-msg3="<?php echo $this->translate("tip_forReview_fail");?>" '
