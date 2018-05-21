@@ -4,7 +4,8 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
 	<title>快移</title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
-    <link href="/ky/css/account/account.css" rel="stylesheet">
+    <link href="/ky/css/goods/goods.css" rel="stylesheet">
+    <link href="/ky/css/img-upload.css" rel="stylesheet">
 </head>
 <body>
 
@@ -25,8 +26,16 @@
 
             <div class="col-md-9 goods-view">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><?php echo $this->translate('goodsME'); ?></div>
                     <div class="panel-body">
+                        <ul class="nav nav-tabs">
+                            <li role="presentation" class="active">
+                                <a href="#info" aria-controls="info" role="tab" data-toggle="tab"><?php echo $this->translate('goodsINF'); ?></a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><?php echo $this->translate('goods_4_index').$this->translate('file'); ?></a>
+                            </li>
+                        </ul>
+
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active row" id="info">
                                 <div class="col-md-12">
@@ -64,7 +73,11 @@
                                         </dd>
 
                                         <dt><?php echo $this->translate('HSCODE'); ?></dt>
-                                        <dd><?php echo $this->goods["hscode"] . "(" . $this->goods["productHSCode"]["codeName"] . ")"; ?></dd>
+                                        <dd>
+                                            <?php if (!empty($this->goods["hscode"])):?>
+                                            <?php echo $this->goods["hscode"] . "&nbsp;(" . $this->goods["productHSCode"]["codeName"] . ")"; ?>
+                                            <?php endif; ?>
+                                        </dd>
 
                                         <dt><?php echo $this->translate('legalPricingUnit'); ?></dt>
                                         <dd>
@@ -151,6 +164,8 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script type="text/javascript" src="/ky/upload/img.js"></script>
 
 <script type="text/javascript">
 	$().ready(function() {
