@@ -36,40 +36,77 @@
                         </div>
                         <?php endif; ?>
 
-                        <ul class="nav nav-tabs nav-justified">
-                            <li role="presentation" class="active"><a href="#goods_search_form"><?php echo $this->translate('valid'); ?></a></li>
-                            <li role="presentation"><a href="#goods_search_form"><?php echo $this->translate('forReview'); ?></a></li>
-                            <li role="presentation"><a href="#goods_search_form"><?php echo $this->translate('forConfirm'); ?></a></li>
-                            <li role="presentation"><a href="#goods_search_form"><?php echo $this->translate('rejected'); ?></a></li>
-                            <li role="presentation"><a href="#goods_search_form"><?php echo $this->translate('draft'); ?></a></li>
-                            <li role="presentation"><a href="#goods_search_form"><?php echo $this->translate('disable'); ?></a></li>
+                        <ul id="goodsTabs" class="nav nav-tabs nav-justified">
+                            <li role="presentation" class="active">
+                                <a href="#forActivate" data-productStatus="03" aria-controls="forActivate" role="tab" data-toggle="tab"><?php echo $this->translate('valid'); ?></a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#forActivate" data-productStatus="01" aria-controls="forActivate" role="tab" data-toggle="tab">
+                                    <?php echo $this->translate('forReview'); ?>&nbsp;
+                                    <?php if (!empty($this->countSaleProduct['01'])) {
+                                        echo '<span class="bg-info badge">&nbsp;' . $this->countSaleProduct['01'] . '&nbsp;</span>';
+                                    } ?>
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#forActivate" data-productStatus="02" aria-controls="forActivate" role="tab" data-toggle="tab">
+                                    <?php echo $this->translate('forConfirm'); ?>&nbsp;
+                                    <?php if (!empty($this->countSaleProduct['02'])) {
+                                        echo '<span class="badge">&nbsp;' . $this->countSaleProduct['02'] . '&nbsp;</span>';
+                                    } ?>
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#forActivate" data-productStatus="04" aria-controls="forActivate" role="tab" data-toggle="tab">
+                                    <?php echo $this->translate('rejected'); ?>&nbsp;
+                                    <?php if (!empty($this->countSaleProduct['04'])) {
+                                        echo '<span class="badge">&nbsp;' . $this->countSaleProduct['04'] . '&nbsp;</span>';
+                                    } ?>
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#forActivate" data-productStatus="00" aria-controls="forActivate" role="tab" data-toggle="tab">
+                                    <?php echo $this->translate('draft'); ?>&nbsp;
+                                    <?php if (!empty($this->countSaleProduct['00'])) {
+                                        echo '<span class="badge">&nbsp;' . $this->countSaleProduct['00'] . '&nbsp;</span>';
+                                    } ?>
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#forActivate" data-productStatus="05" aria-controls="forActivate" role="tab" data-toggle="tab"><?php echo $this->translate('disable'); ?></a>
+                            </li>
                         </ul>
 
-                        <form class="form-horizontal" action="javascript:void(0)" onsubmit="goodsSearch()" id="goods_search_form">
-                            <div class="form-group" style="margin-bottom: 0 !important;">
-                                <label for="keyword" class="sr-only">keyword</label>
-                                <div class="col-sm-6">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fas fa-search"></i></span>
-                                        <input type="text" class="form-control" name="keyword" id="keyword" placeholder="<?php echo $this->translate('INPkw_goods');?>">
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="forActivate">
+                                <form class="form-horizontal" action="javascript:void(0)" onsubmit="goodsSearch()" id="goods_search_form">
+                                    <div class="form-group" style="margin-bottom: 0 !important;">
+                                        <label for="keyword" class="sr-only">keyword</label>
+                                        <div class="col-sm-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fas fa-search"></i></span>
+                                                <input type="text" class="form-control" name="keyword" id="keyword" placeholder="<?php echo $this->translate('INPkw_goods');?>">
+                                                <input type="hidden" name="productStatus" id="productStatus" value="03">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <button type="submit" class="btn btn-primary"> Go </button>
+                                        </div>
+                                        <?php if ($this->CompAdmin == true): ?>
+                                        <div class="col-sm-1 col-sm-offset-4">
+                                            <a title="<?php echo $this->translate('add');?>" href="/user/goods/add" class="btn btn-default">
+                                                <i class="fas fa-plus"></i>
+                                            </a>
+                                        </div>
+                                        <?php endif; ?>
                                     </div>
-                                </div>
-                                <div class="col-sm-1">
-                                    <button type="submit" class="btn btn-primary"> Go </button>
-                                </div>
-                                <?php if ($this->CompAdmin == true): ?>
-                                <div class="col-sm-1 col-sm-pull-4">
-                                    <a title="<?php echo $this->translate('add');?>" href="/user/goods/add" class="btn btn-default">
-                                        <i class="fas fa-plus"></i>
-                                    </a>
-                                </div>
-                                <?php endif; ?>
-                            </div>
-                        </form>
-                    </div>
+                                </form>
 
-                    <!-- Table -->
-                    <table id="goodsListTable"></table>
+                                <!-- Table -->
+                                <table id="goodsListTable"></table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 		</div>
@@ -98,6 +135,11 @@
             } else {
                 $(this).removeClass('nav-selected');
             }
+        });
+
+        $("#goodsTabs a").click(function () {
+            $("#productStatus").val($(this).attr("data-productStatus"));
+            goodsSearch();
         });
 
         var dataDictQuery = '/user/account/dict-ajax';
@@ -132,6 +174,28 @@
                         };
                     },
                     columns: [{
+                        field: 'attachmentList',
+                        title: '',
+                        formatter: function (value, row) {
+                            var imgUrl = '<?php echo $this->attachUrl; ?>';
+                            imgUrl += '/doc/download.action?sid=' + '<?php echo session_id(); ?>' ;
+                            var altStr = '';
+                            if (value === undefined || value === '' || value === null) {
+                                imgUrl = '/ky/images/goods_tx.png';
+                            } else {
+                                $.each(value, function (i, item) {
+                                    imgUrl += '&nid=' + item.attachID + '&vid=' + item.verifyID + '&size=MIDDLE';
+                                    altStr = item.name;
+                                });
+                            }
+
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.productID);
+                            var href = "/user/goods/view?"+resultEnCode;
+
+                            return '<a href="' + href + '">' + '<img src="' + imgUrl + '" alt="' + altStr + '" class="img-rounded" style="width: 64px; height: 64px;">' + '</a>';
+                        }
+                    },{
                         field: 'productName',
                         title: '<?php echo $this->translate("productNAME"); ?>',
                         formatter: function (value, row) {
@@ -192,18 +256,34 @@
                         title: '<?php echo $this->translate("madeTT"); ?>',
                         formatter: function (value, row, index) {
                             var editTitle = "<?php echo $this->translate("edit");?>";
+                            var copyTitle = "<?php echo $this->translate("copy");?>";
                             var disableTitle = "<?php echo $this->translate('disable');?>";
                             var validTitle = "<?php echo $this->translate('enable');?>";
+                            var delTitle = "<?php echo $this->translate('delete');?>";
+                            var confirmedTitle = "<?php echo $this->translate('confirmed');?>";
+                            var submitForReviewTitle = "<?php echo $this->translate('submitForReview');?>";
                             var base = new Base64();
                             var resultEnCode = base.encode(row.productID);
-                            var href = "/user/account/edit?"+resultEnCode;
+                            var href = "/user/goods/edit?"+resultEnCode;
+                            var copyHref = "/user/goods/copy?"+resultEnCode;
 
-                            var result = '<a title="' + editTitle+ '" href="' + href + '">'
-                                + '<i class="far fa-edit"></i>'
-                                + '</a>&nbsp;';
-                            <?php if ($this->CompAdmin == true): ?>
-                            if (row.productStatus === '01') {
-                                result += '<a href="javascript:void(0)" title="' + disableTitle + '" id="' + row.productID + '" data-url="/user/account/invalid" data-msg1="<?php echo $this->translate("is_invalid");?>" '
+                            var result = '';
+                            <?php if ($this->CompProductAdmin == true || $this->CompOrderAdmin == true): ?>
+                            if (row.productStatus !== '05') {
+                                result += '<a title="' + editTitle+ '" href="' + href + '">'
+                                    + '<i class="far fa-edit"></i>'
+                                    + '</a>&nbsp;';
+                            }
+
+                            if (row.productStatus === '00' || row.productStatus === '01' || row.productStatus === '03') {
+                                result += '<a title="' + copyTitle+ '" href="' + copyHref + '">'
+                                    + '<i class="far fa-copy"></i>'
+                                    + '</a>&nbsp;';
+                            }
+
+                            if (row.allowInvalid === true) {
+                                result += '<a href="javascript:void(0)" title="' + disableTitle + '" id="' + row.productID + '" data-url="/user/goods/invalid" '
+                                    + 'data-msg1="<?php echo $this->translate("is_invalid");?>" '
                                     + 'data-msg2="<?php echo $this->translate("tip_invalid_success");?>" '
                                     + 'data-msg3="<?php echo $this->translate("tip_invalid_fail");?>" '
                                     + 'onclick="doOption(this);" '
@@ -212,10 +292,44 @@
                                     + '</a>';
                             }
 
-                            if (row.productStatus === '02') {
-                                result += '<a href="javascript:void(0)" title="' + validTitle + '" id="' + row.productID + '" data-url="/user/account/valid" data-msg1="<?php echo $this->translate("is_valid");?>" '
+                            if (row.allowDelete === true) {
+                                result += '<a href="javascript:void(0)" title="' + delTitle + '" id="' + row.productID + '" data-url="/user/goods/del" '
+                                    + 'data-msg1="<?php echo $this->translate("is_delete");?>" '
+                                    + 'data-msg2="<?php echo $this->translate("tip_del_success");?>" '
+                                    + 'data-msg3="<?php echo $this->translate("tip_del_fail");?>" '
+                                    + 'onclick="doOption(this);" '
+                                    + '>'
+                                    + '<i class="far fa-check-circle"></i>'
+                                    + '</a>';
+                            }
+
+                            if (row.allowValid === true) {
+                                result += '<a href="javascript:void(0)" title="' + validTitle + '" id="' + row.productID + '" data-url="/user/goods/valid" '
+                                    + 'data-msg1="<?php echo $this->translate("is_valid");?>" '
                                     + 'data-msg2="<?php echo $this->translate("tip_valid_success");?>" '
                                     + 'data-msg3="<?php echo $this->translate("tip_valid_fail");?>" '
+                                    + 'onclick="doOption(this);" '
+                                    + '>'
+                                    + '<i class="far fa-check-circle"></i>'
+                                    + '</a>';
+                            }
+
+                            if (row.allowConfirm === true) {
+                                result += '<a href="javascript:void(0)" title="' + confirmedTitle + '" id="' + row.productID + '" data-url="/user/goods/confirm" '
+                                    + 'data-msg1="<?php echo $this->translate("is_confirm_goods");?>" '
+                                    + 'data-msg2="<?php echo $this->translate("tip_confirm_success");?>" '
+                                    + 'data-msg3="<?php echo $this->translate("tip_confirm_fail");?>" '
+                                    + 'onclick="doOption(this);" '
+                                    + '>'
+                                    + '<i class="far fa-check-circle"></i>'
+                                    + '</a>';
+                            }
+
+                            if (row.allowForReview === true) {
+                                result += '<a href="javascript:void(0)" title="' + submitForReviewTitle + '" id="' + row.productID + '" data-url="/user/goods/forreview" '
+                                    + 'data-msg1="<?php echo $this->translate("is_forReview");?>" '
+                                    + 'data-msg2="<?php echo $this->translate("tip_forReview_success");?>" '
+                                    + 'data-msg3="<?php echo $this->translate("tip_forReview_fail");?>" '
                                     + 'onclick="doOption(this);" '
                                     + '>'
                                     + '<i class="far fa-check-circle"></i>'
@@ -233,26 +347,14 @@
         $("#searchContactBtn").click(function () {
             goodsSearch();
         });
-
-        $("#shoAllContact").click(function () {
-            var goodsListTable = $('#goodsListTable');
-            var options = {};
-            if ($(this).is(':checked')) {
-                options = {
-                    query:{
-                        contactStatus: "all"
-                    }
-                };
-            }
-            $(goodsListTable).bootstrapTable('refresh', options);
-        });
 	});
 
 	function goodsSearch() {
         var goodsListTable = $('#goodsListTable');
         var options = {
             query:{
-                keyword: $("#keyword").val()
+                keyword: $("#keyword").val(),
+                productStatus: $("#productStatus").val()
             }
         };
         $(goodsListTable).bootstrapTable('refresh', options);

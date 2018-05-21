@@ -45,63 +45,19 @@ class GoodsController extends Kyapi_Controller_Action
         }
     }
 
-    public function indexAction()
-    {
-        try{
-            $f1 = new Seed_Filter_Alnum();
-            $mod = $f1->filter($this->_request->getParam('mod'));
-            if (empty($mod)) {$mod = "index";}
+    public function indexAction() {
+        // 统计所有商品数量
+        $resultObject = $this->json->countSaleProductApi($this->_requestObject);
+        $countSaleProduct = $this->objectToArray(json_decode($resultObject));
+        $this->view->countSaleProduct = $countSaleProduct['result'];
 
-            $_PStatus =strval($this->_request->getParam('status'));
-            if(empty( $_PStatus)){  $_PStatus ='03';}
+        // 设置视图商品状态
+        $this->view->status == '00' ? $linked = 'edit' : $linked = 'view';
+        $this->view->linked = $linked;
 
-            $_querySorts=$this->_request->getParam('querySorts');
-            if(empty($_querySorts)){ $_querySorts =null;}
+        // 附件地址
+        $this->view->attachUrl = $this->view->seed_Setting['KyUrlex'];
 
-            $_keyword=$this->_request->getParam('keyword');
-            if(empty($_keyword)){ $_keyword =null;}
-            $this->view->keyword=$_keyword;
-
-            $page =intval($this->_request->getParam('page'));
-            if($page<1)$page=1;
-            $_limit=5;
-            $_skip=$_limit*($page-1);
-
-            $_queryP = new queryProduct();
-            $_queryP->productStatus = $_PStatus;
-
-            $goodsCount = $this->json->countSaleProductApi($this->_requestObject);
-            //统计所有商品数量
-            $listConut=json_decode($goodsCount);
-            $clConut = $this->objectToArray($listConut);
-            $this->view->clConut=$clConut['result'];
-            //获取商品列表信息
-            $_resultData=$this->json->listSaleProductApi($this->_requestObject,$_queryP, null, $_keyword, $_skip, $_limit);
-            $existData = json_decode($_resultData);
-            $existDatt = $this->objectToArray($existData);
-            $this->view->e = $existDatt['result'];
-
-            //统计正常状态数量、分页
-            $existCount = $existDatt['extData'];
-            $total = $existCount['totalSize'];
-            $page=$existCount['totalPage'];
-
-            //设置视图商品状态
-            $this->view->status= $_PStatus;
-            $this->view->status=='00'?$linked='edit':$linked='view';
-            $this->view->linked=$linked;
-
-            $file = "user/goods/" . $mod . "-" . $_PStatus;
-            $_limit=5;
-            $pageObj = new Seed_Page($this->_request,$total,$_limit);
-            $this->view->page = $pageObj->getPageArray();
-            $this->view->page['pageurl'] = '/' . $file;
-            if ($page > $this->view->page['totalpage'])
-                $page = $this->view->page['totalpage'];
-            if ($page < 1) $page = 1;
-        } catch (Exception $e) {
-            Shop_Browser::redirect($e->getMessage());
-        }
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/goods/index.phtml");
             echo $content;
@@ -495,7 +451,7 @@ class GoodsController extends Kyapi_Controller_Action
         exit;
     }
 
-    public function confrimAction()
+    public function confirmAction()
     {
         //确认
         if ($this->_request->isPost()) {

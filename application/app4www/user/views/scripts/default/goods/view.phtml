@@ -132,7 +132,7 @@
             <div class="tc mt30 mb30">
                 <a class="return_btn" <?php if ($this->goods['allowConfirm']==true){ echo 'style="display:inline-block;"';}else{echo 'style="display:none;"';}?>
                    href="javascript:;" id="<?php echo $this->goods['productID'];?>" data-url="/user/goods/confrim"
-                   data-msg1="<?php echo $this->translate('is_confirm2');?>" data-msg2="<?php echo $this->translate('tip_confirm_success');?>"
+                   data-msg1="<?php echo $this->translate('is_confirm_goods');?>" data-msg2="<?php echo $this->translate('tip_confirm_success');?>"
                    data-msg3="<?php echo $this->translate('tip_confirm_fail');?>" onclick="doOption(this);"><?php echo $this->translate('confirmed');?></a>
                 <a class="return_btn" href="javascript:history.go(-1)"><?php echo $this->translate('return');?></a>
             </div>

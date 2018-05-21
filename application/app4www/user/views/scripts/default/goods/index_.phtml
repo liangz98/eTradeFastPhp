@@ -101,8 +101,8 @@
                                     <?php if ($goods['allowDelete']==true):?>
                                     <!--删除-->   <a title="<?php echo $this->translate('delete');?>" style="display:inline-block;" class="t_edit p_del"
                                                    href="javascript:;" id="<?php echo $goods['productID'];?>" data-url="/user/goods/del"
-                                                   data-msg1="<?php echo $this->translate('is_delete');?>" data-msg2="<?php echo $this->translate('tip_delete_sucess');?>"
-                                                   data-msg3="<?php echo $this->translate('tip_delete_fail');?>" onclick="doOption(this);"></a>
+                                                   data-msg1="<?php echo $this->translate('is_delete');?>" data-msg2="<?php echo $this->translate('tip_del_success');?>"
+                                                   data-msg3="<?php echo $this->translate('tip_del_fail');?>" onclick="doOption(this);"></a>
                                     <?php endif;?>
                                     <?php if ($goods['allowValid']==true):?>
                                     <!--启用-->   <a title="<?php echo $this->translate('valid');?>" style="display:inline-block;"  class="t_edit p_qy"
@@ -112,12 +112,12 @@
                                     <?php endif;?>
                                     <?php if ($goods['allowConfirm']==true):?>
                                     <!--确认-->   <a title="<?php echo $this->translate('confirmed');?>" style="display:inline-block;"  class="t_edit p_qr"
-                                                   href="javascript:;" id="<?php echo $goods['productID'];?>" data-url="/user/goods/confrim"
-                                                   data-msg1="<?php echo $this->translate('is_confirm2');?>" data-msg2="<?php echo $this->translate('tip_confirm_success');?>"
+                                                   href="javascript:;" id="<?php echo $goods['productID'];?>" data-url="/user/goods/confirm"
+                                                   data-msg1="<?php echo $this->translate('is_confirm_goods');?>" data-msg2="<?php echo $this->translate('tip_confirm_success');?>"
                                                    data-msg3="<?php echo $this->translate('tip_confirm_fail');?>" onclick="doOption(this);"></a>
                                     <?php endif;?>
                                     <?php if ($goods['allowForReview']==true):?>
-                                    <!--审核-->   <a title="<?php echo $this->translate('submitCHECK');?>" style="display:inline-block;"  class="t_edit p_sh"
+                                    <!--审核-->   <a title="<?php echo $this->translate('submitForReview');?>" style="display:inline-block;"  class="t_edit p_sh"
                                                    href="javascript:;" id="<?php echo $goods['productID'];?>" data-url="/user/goods/forreview"
                                                    data-msg1="<?php echo $this->translate('is_forReview');?>" data-msg2="<?php echo $this->translate('tip_forReview_success');?>"
                                                    data-msg3="<?php echo $this->translate('tip_forReview_fail');?>" onclick="doOption(this);"></a> <?php endif;?>

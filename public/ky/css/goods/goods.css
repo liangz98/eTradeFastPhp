@@ -12,13 +12,13 @@ body {
     background-color: #e36209;
 }
 
+/* 标签页徽章背景色 */
+#goodsTabs a span {
+    background-color: #01AAED;
+}
+
 /* 模糊查询表单 */
 .panel-body form {
     margin-top: 15px;
 }
 
-/* 列表表格 */
-#goodsListTable {
-    margin-left: 15px;
-    width: 97%;
-}
