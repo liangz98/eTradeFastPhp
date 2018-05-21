@@ -354,7 +354,7 @@ return array(
     'ordertotal'    => '金额',
     'quantity'      => '件数',
 
-    'RFRT'                  => '退税率',
+    'rebateRate'            => '退税率',
     'RFADD'                 => '增值税率',
     'SBYSU'                 => '申报要素',
     'productSize'           => '规格尺寸',

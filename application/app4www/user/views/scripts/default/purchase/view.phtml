@@ -64,7 +64,7 @@
                     <dd><?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PRICING_UNIT'],$this->goods["legalPricingUnit"]);?></dd>
                 </dl>
                 <dl class="fl">
-                    <dt class="fl"><!--退税率--><?php echo $this->translate('RFRT');?></dt><dd><?php echo $this->goods["rebateRate"]*100;?>&nbsp;%</dd>
+                    <dt class="fl"><!--退税率--><?php echo $this->translate('rebateRate');?></dt><dd><?php echo $this->goods["rebateRate"]*100;?>&nbsp;%</dd>
                 </dl>
                 <dl class="fl">
                     <dt class="fl"><!--增值税率--><?php echo $this->translate('RFADD');?></dt><dd><?php echo $this->goods["taxRate"]*100;?>&nbsp;%</dd>

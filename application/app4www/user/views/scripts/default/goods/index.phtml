@@ -36,7 +36,7 @@
                         </div>
                         <?php endif; ?>
 
-                        <ul class="nav nav-pills">
+                        <ul class="nav nav-tabs nav-justified">
                             <li role="presentation" class="active"><a href="#goods_search_form"><?php echo $this->translate('valid'); ?></a></li>
                             <li role="presentation"><a href="#goods_search_form"><?php echo $this->translate('forReview'); ?></a></li>
                             <li role="presentation"><a href="#goods_search_form"><?php echo $this->translate('forConfirm'); ?></a></li>
@@ -113,8 +113,8 @@
             success: function (data) {
                 $.data(dataDict, 'dataDict', data);
 
-                $('#contactListTable').bootstrapTable({
-                    url: '/user/account/contactlistajax',
+                $('#goodsListTable').bootstrapTable({
+                    url: '/user/goods/goods-list-ajax',
                     method: 'post',
                     // showRefresh: true,
                     // search: true,
@@ -132,67 +132,61 @@
                         };
                     },
                     columns: [{
-                        field: 'name',
-                        title: '<?php echo $this->translate("name"); ?>',
+                        field: 'productName',
+                        title: '<?php echo $this->translate("productNAME"); ?>',
                         formatter: function (value, row) {
                             var base = new Base64();
-                            var resultEnCode = base.encode(row.contactID);
-                            var href = "/user/account/view?"+resultEnCode;
+                            var resultEnCode = base.encode(row.productID);
+                            var href = "/user/goods/view?"+resultEnCode;
                             return '<a href="' + href + '">' + value + '</a>';
                         }
                     }, {
-                        field: 'ecommloginname',
-                        title: '<?php echo $this->translate("username"); ?>',
+                        field: 'productBrand',
+                        title: '<?php echo $this->translate("brand"); ?>',
                         formatter: function (value, row) {
                             if (value === undefined || value === '') {
                                 value = "-";
                             }
                             var base = new Base64();
-                            var resultEnCode = base.encode(row.contactID);
-                            var href = "/user/account/view?"+resultEnCode;
+                            var resultEnCode = base.encode(row.productID);
+                            var href = "/user/goods/view?"+resultEnCode;
                             return '<a href="' + href + '">' + value + '</a>';
                         }
                     }, {
-                        field: 'ecommstatus',
-                        title: '<?php echo $this->translate("userP"); ?>',
+                        field: 'productModel',
+                        title: '<?php echo $this->translate("model"); ?>',
                         formatter: function (value) {
-                            var result = "-";
-                            var data = $.data(dataDict, 'dataDict');
-                            $.each(data, function (key, item) {
-                                if (key === 'ECOMM_STATUS') {
-                                    $.each(item, function (i, dict) {
-                                        if (dict.code === value) {
-                                            result = dict.name;
-                                        }
-                                    });
-                                }
-                            });
-                            return result;
-                        }
-                        //}, {
-                        //    field: 'ecommrole',
-                        //    title: '<?php //echo $this->translate("userROLE"); ?>//'
-                    }, {
-                        field: 'contactStatus',
-                        title: '<?php echo $this->translate("userPT"); ?>',
-                        formatter: function (value) {
-                            return (value === '01') ? '<?php echo $this->translate('normal') ?>' : '<?php echo $this->translate('disable'); ?>';
+                            if (value === undefined || value === '') {
+                                value = "-";
+                            }
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.productID);
+                            var href = "/user/goods/view?"+resultEnCode;
+                            return '<a href="' + href + '">' + value + '</a>';
                         }
                     }, {
-                        field: 'isDefaultPublic',
-                        title: '<?php echo $this->translate("accountDF"); ?>',
+                        field: 'hscode',
+                        title: '<?php echo $this->translate("HSCODE"); ?>',
+                        formatter: function (value) {
+                            if (value === undefined || value === '') {
+                                value = "-";
+                            }
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.productID);
+                            var href = "/user/goods/view?"+resultEnCode;
+                            return '<a href="' + href + '">' + value + '</a>';
+                        }
+                    }, {
+                        field: 'rebateRate',
+                        title: '<?php echo $this->translate("rebateRate"); ?>',
                         formatter: function (value, row) {
-                            var result = (value === true) ? '<?php echo $this->translate('yes') ?>' : '<?php echo $this->translate('no'); ?>';
-                            <?php if ($this->CompAdmin == true): ?>
-                            result = '<a href="javascript:void(0)" id="' + row.contactID + '" data-url="/user/account/default" data-msg1="<?php echo $this->translate("is_default");?>" '
-                                + 'data-msg2="<?php echo $this->translate("tip_default_success");?>" '
-                                + 'data-msg3="<?php echo $this->translate("tip_default_fail");?>" '
-                                + 'onclick="doOption(this);" '
-                                + '>'
-                                + result
-                                + '</a>';
-                            <?php endif; ?>
-                            return result;
+                            if (value === undefined || value === '') {
+                                value = "-";
+                            }
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.productID);
+                            var href = "/user/goods/view?"+resultEnCode;
+                            return '<a href="' + href + '">' + value + '</a>';
                         }
                     }, {
                         title: '<?php echo $this->translate("madeTT"); ?>',
@@ -201,15 +195,15 @@
                             var disableTitle = "<?php echo $this->translate('disable');?>";
                             var validTitle = "<?php echo $this->translate('enable');?>";
                             var base = new Base64();
-                            var resultEnCode = base.encode(row.contactID);
+                            var resultEnCode = base.encode(row.productID);
                             var href = "/user/account/edit?"+resultEnCode;
 
                             var result = '<a title="' + editTitle+ '" href="' + href + '">'
                                 + '<i class="far fa-edit"></i>'
                                 + '</a>&nbsp;';
                             <?php if ($this->CompAdmin == true): ?>
-                            if (row.contactStatus === '01') {
-                                result += '<a href="javascript:void(0)" title="' + disableTitle + '" id="' + row.contactID + '" data-url="/user/account/invalid" data-msg1="<?php echo $this->translate("is_invalid");?>" '
+                            if (row.productStatus === '01') {
+                                result += '<a href="javascript:void(0)" title="' + disableTitle + '" id="' + row.productID + '" data-url="/user/account/invalid" data-msg1="<?php echo $this->translate("is_invalid");?>" '
                                     + 'data-msg2="<?php echo $this->translate("tip_invalid_success");?>" '
                                     + 'data-msg3="<?php echo $this->translate("tip_invalid_fail");?>" '
                                     + 'onclick="doOption(this);" '
@@ -218,8 +212,8 @@
                                     + '</a>';
                             }
 
-                            if (row.contactStatus === '02') {
-                                result += '<a href="javascript:void(0)" title="' + validTitle + '" id="' + row.contactID + '" data-url="/user/account/valid" data-msg1="<?php echo $this->translate("is_valid");?>" '
+                            if (row.productStatus === '02') {
+                                result += '<a href="javascript:void(0)" title="' + validTitle + '" id="' + row.productID + '" data-url="/user/account/valid" data-msg1="<?php echo $this->translate("is_valid");?>" '
                                     + 'data-msg2="<?php echo $this->translate("tip_valid_success");?>" '
                                     + 'data-msg3="<?php echo $this->translate("tip_valid_fail");?>" '
                                     + 'onclick="doOption(this);" '

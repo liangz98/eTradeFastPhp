@@ -365,7 +365,7 @@ return array(
     'ordertotal'    => 'Order Total',
     'quantity'      => 'PKGS.',
 
-    'RFRT'                  => 'Refund Rate',
+    'rebateRate'            => 'Refund Rate',
     'RFADD'                 => 'Value Added Tax',
     'SBYSU'                 => 'Declared Units',
     'productSize'           => 'Size Specifications',

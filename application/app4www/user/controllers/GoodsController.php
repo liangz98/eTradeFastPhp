@@ -109,6 +109,51 @@ class GoodsController extends Kyapi_Controller_Action
         }
     }
 
+    public function goodsListAjaxAction() {
+        $msg = array();
+        $requestObject = $this->_requestObject;
+
+        $queryParams = array();
+        $productStatus = strval($this->_request->getParam('productStatus'));
+        if (empty($productStatus)) {
+            $productStatus = '03';
+        }
+        $queryParams['productStatus'] = $productStatus;
+
+        $querySorts = array();
+        $querySorts['createTime'] = "DESC";
+
+        $keyword = $this->_request->getParam('keyword');
+        if (empty($keyword)) {
+            $keyword = null;
+        }
+
+        $limit = $this->_request->getParam('limit');
+        if (empty($limit) || $limit <= 0) {
+            $limit = 10;
+        }
+
+        $skip = $this->_request->getParam('skip');
+        if (empty($limit) || $limit <= 0) {
+            $skip = 0;
+        }
+
+        if (is_array($queryParams)) {
+            $queryParams = $this->arrayToObject($queryParams);
+        }
+
+        if (is_array($querySorts)) {
+            $querySorts = $this->arrayToObject($querySorts);
+        }
+
+        $resultObject = $this->json->listSaleProductApi($requestObject, $queryParams, $querySorts, $keyword, $skip, $limit);
+        $msg["total"] = json_decode($resultObject)->extData->totalSize;
+        $msg["rows"] = json_decode($resultObject)->result;
+
+        echo json_encode($msg);
+        exit;
+    }
+
     public function addAction()
     {
         /**HScode获取**/
