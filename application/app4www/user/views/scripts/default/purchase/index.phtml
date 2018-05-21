@@ -27,7 +27,7 @@
             <div class="col-md-9 company-main">
                 <div class="panel panel-default">
                     <!-- Default panel contents -->
-                    <div class="panel-heading"><?php echo $this->translate('goodsME'); ?></div>
+                    <div class="panel-heading"><?php echo $this->translate('goodsBUY'); ?></div>
                     <div class="panel-body">
                         <?php if (!empty($this->errMsg)): ?>
                         <div class="alert alert-success alert-dismissible fade in" role="alert">
@@ -94,7 +94,7 @@
                                         </div>
                                         <?php if ($this->CompAdmin == true): ?>
                                         <div class="col-sm-1 col-sm-offset-4">
-                                            <a title="<?php echo $this->translate('add');?>" href="/user/goods/add" class="btn btn-default">
+                                            <a title="<?php echo $this->translate('add');?>" href="/user/purchase/add" class="btn btn-default">
                                                 <i class="fas fa-plus"></i>
                                             </a>
                                         </div>
@@ -156,7 +156,7 @@
                 $.data(dataDict, 'dataDict', data);
 
                 $('#goodsListTable').bootstrapTable({
-                    url: '/user/goods/goods-list-ajax',
+                    url: '/user/purchase/pur-list-ajax',
                     method: 'post',
                     // showRefresh: true,
                     // search: true,
@@ -191,7 +191,7 @@
 
                             var base = new Base64();
                             var resultEnCode = base.encode(row.productID);
-                            var href = "/user/goods/view?"+resultEnCode;
+                            var href = "/user/purchase/view?"+resultEnCode;
 
                             return '<a href="' + href + '">' + '<img src="' + imgUrl + '" alt="' + altStr + '" class="img-rounded" style="width: 64px; height: 64px;">' + '</a>';
                         }
@@ -201,7 +201,7 @@
                         formatter: function (value, row) {
                             var base = new Base64();
                             var resultEnCode = base.encode(row.productID);
-                            var href = "/user/goods/view?"+resultEnCode;
+                            var href = "/user/purchase/view?"+resultEnCode;
                             return '<a href="' + href + '">' + value + '</a>';
                         }
                     }, {
@@ -213,7 +213,7 @@
                             }
                             var base = new Base64();
                             var resultEnCode = base.encode(row.productID);
-                            var href = "/user/goods/view?"+resultEnCode;
+                            var href = "/user/purchase/view?"+resultEnCode;
                             return '<a href="' + href + '">' + value + '</a>';
                         }
                     }, {
@@ -225,7 +225,7 @@
                             }
                             var base = new Base64();
                             var resultEnCode = base.encode(row.productID);
-                            var href = "/user/goods/view?"+resultEnCode;
+                            var href = "/user/purchase/view?"+resultEnCode;
                             return '<a href="' + href + '">' + value + '</a>';
                         }
                     }, {
@@ -237,7 +237,7 @@
                             }
                             var base = new Base64();
                             var resultEnCode = base.encode(row.productID);
-                            var href = "/user/goods/view?"+resultEnCode;
+                            var href = "/user/purchase/view?"+resultEnCode;
                             return '<a href="' + href + '">' + value + '</a>';
                         }
                     }, {
@@ -249,7 +249,7 @@
                             }
                             var base = new Base64();
                             var resultEnCode = base.encode(row.productID);
-                            var href = "/user/goods/view?"+resultEnCode;
+                            var href = "/user/purchase/view?"+resultEnCode;
                             return '<a href="' + href + '">' + value + '</a>';
                         }
                     }, {
@@ -264,8 +264,8 @@
                             var submitForReviewTitle = "<?php echo $this->translate('submitForReview');?>";
                             var base = new Base64();
                             var resultEnCode = base.encode(row.productID);
-                            var href = "/user/goods/edit?"+resultEnCode;
-                            var copyHref = "/user/goods/copy?"+resultEnCode;
+                            var href = "/user/purchase/edit?"+resultEnCode;
+                            var copyHref = "/user/purchase/copy?"+resultEnCode;
 
                             var result = '';
                             <?php if ($this->CompProductAdmin == true || $this->CompOrderAdmin == true): ?>
@@ -282,7 +282,7 @@
                             }
 
                             if (row.allowInvalid === true) {
-                                result += '<a href="javascript:void(0)" title="' + disableTitle + '" id="' + row.productID + '" data-url="/user/goods/invalid" '
+                                result += '<a href="javascript:void(0)" title="' + disableTitle + '" id="' + row.productID + '" data-url="/user/purchase/invalid" '
                                     + 'data-msg1="<?php echo $this->translate("is_invalid");?>" '
                                     + 'data-msg2="<?php echo $this->translate("tip_invalid_success");?>" '
                                     + 'data-msg3="<?php echo $this->translate("tip_invalid_fail");?>" '
@@ -293,7 +293,7 @@
                             }
 
                             if (row.allowDelete === true) {
-                                result += '<a href="javascript:void(0)" title="' + delTitle + '" id="' + row.productID + '" data-url="/user/goods/del" '
+                                result += '<a href="javascript:void(0)" title="' + delTitle + '" id="' + row.productID + '" data-url="/user/purchase/del" '
                                     + 'data-msg1="<?php echo $this->translate("is_delete");?>" '
                                     + 'data-msg2="<?php echo $this->translate("tip_del_success");?>" '
                                     + 'data-msg3="<?php echo $this->translate("tip_del_fail");?>" '
@@ -304,7 +304,7 @@
                             }
 
                             if (row.allowValid === true) {
-                                result += '<a href="javascript:void(0)" title="' + validTitle + '" id="' + row.productID + '" data-url="/user/goods/valid" '
+                                result += '<a href="javascript:void(0)" title="' + validTitle + '" id="' + row.productID + '" data-url="/user/purchase/valid" '
                                     + 'data-msg1="<?php echo $this->translate("is_valid");?>" '
                                     + 'data-msg2="<?php echo $this->translate("tip_valid_success");?>" '
                                     + 'data-msg3="<?php echo $this->translate("tip_valid_fail");?>" '
@@ -315,7 +315,7 @@
                             }
 
                             if (row.allowConfirm === true) {
-                                result += '<a href="javascript:void(0)" title="' + confirmedTitle + '" id="' + row.productID + '" data-url="/user/goods/confirm" '
+                                result += '<a href="javascript:void(0)" title="' + confirmedTitle + '" id="' + row.productID + '" data-url="/user/purchase/confirm" '
                                     + 'data-msg1="<?php echo $this->translate("is_confirm_goods");?>" '
                                     + 'data-msg2="<?php echo $this->translate("tip_confirm_success");?>" '
                                     + 'data-msg3="<?php echo $this->translate("tip_confirm_fail");?>" '
@@ -326,7 +326,7 @@
                             }
 
                             if (row.allowForReview === true) {
-                                result += '<a href="javascript:void(0)" title="' + submitForReviewTitle + '" id="' + row.productID + '" data-url="/user/goods/for-review" '
+                                result += '<a href="javascript:void(0)" title="' + submitForReviewTitle + '" id="' + row.productID + '" data-url="/user/purchase/for-review" '
                                     + 'data-msg1="<?php echo $this->translate("is_forReview");?>" '
                                     + 'data-msg2="<?php echo $this->translate("tip_forReview_success");?>" '
                                     + 'data-msg3="<?php echo $this->translate("tip_forReview_fail");?>" '

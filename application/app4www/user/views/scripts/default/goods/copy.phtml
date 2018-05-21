@@ -102,13 +102,13 @@
                     <dd><input style="border: 1px solid #DF7E20;"  class="must"  type="text" name="productModel" required data-msg-required="<?php echo $this->translate('de_null');?>" value="<?php echo $this->goods["productModel"];?>" ></dd>
                 </dl>
                 <dl class="fl">
-                    <dt class="fl"><!--销售价格--><?php echo $this->translate('saleprice');?></dt>
+                    <dt class="fl"><!--销售价格--><?php echo $this->translate('unitPrice');?></dt>
                     <dd><select class="spadd_dj" name="crnCode" required data-msg-required="<?php echo $this->translate('de_null');?>">
                             <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userLangCode,$this->dic_Setting['CURRENCY'],$this->goods["crnCode"]);?>
                         </select><input class="must"  style="border: 1px solid #DF7E20; width:192px;margin-left:8px" id="spadd_ss" type="text" name="unitPrice" min="1" value="<?php echo $this->goods["unitPrice"];?>" ></dd>
                 </dl>
                 <dl class="fl">
-                    <dt class="fl"><!--交易单位--><?php echo $this->translate('unitB');?></dt><dd>
+                    <dt class="fl"><!--交易单位--><?php echo $this->translate('pricingUnit');?></dt><dd>
                         <select class="spadd_dj" name="pricingUnit" required data-msg-required="<?php echo $this->translate('de_null');?>">
                             <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PRICING_UNIT'],$this->goods["pricingUnit"]);?>
                         </select></dd>
@@ -123,7 +123,7 @@
                     <script type="text/javascript" src="/ky/js/select2ajx_supplierID.js"></script>
                     <span id="hscode_span"><?php echo $this->translate('goodsPS01');?></span>    </div>
                 <dl class="fl">
-                    <dt class="fl"><!--法定单位--><?php echo $this->translate('unitF');?></dt><dd>
+                    <dt class="fl"><!--法定单位--><?php echo $this->translate('legalPricingUnit');?></dt><dd>
                         <em class="fl" id="pricingUnit-name"><?php echo $this->ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PRICING_UNIT'],$this->goods["legalPricingUnit"]);?></em>
                         <input type="hidden" name="legalPricingUnit" id="legalPricingUnit"   value="<?php echo $this->goods["legalPricingUnit"];?>">
                     <input type="hidden" name="legalPricingUnit2" id="legalPricingUnit2" value="<?php echo $this->goods["legalPricingUnit2"];?>"></dd>
@@ -134,12 +134,12 @@
                      <input type="hidden" name="rebateRate" id="rebateRate"   value="<?php echo $this->goods["rebateRate"];?>"></dd>
                 </dl>
                 <dl class="fl">
-                    <dt class="fl"><!--增值税率--><?php echo $this->translate('RFADD');?></dt>
+                    <dt class="fl"><!--增值税率--><?php echo $this->translate('taxRate');?></dt>
                     <dd><em class="fl" id="taxRate2"><?php echo $this->goods["taxRate"]*100;?></em>%
                         <input type="hidden" name="taxRate" id="taxRate"  value="<?php echo $this->goods["taxRate"];?>"></dd>
                 </dl>
                 <dl style="width:100%;">
-                    <dt class="fl"><!--申报要素--><?php echo $this->translate('SBYSU');?></dt><textarea class="spl_full" name="declareElements" cols="200" rows="5"><?php echo $this->goods["declareElements"];?></textarea>
+                    <dt class="fl"><!--申报要素--><?php echo $this->translate('declareElements');?></dt><textarea class="spl_full" name="declareElements" cols="200" rows="5"><?php echo $this->goods["declareElements"];?></textarea>
                 </dl>
                 <dl class="fl">
                     <dt class="fl"><!--规格尺寸--><?php echo $this->translate('productSize');?></dt><dd><input type="text" name="productSize"  value="<?php echo $this->goods["productSize"];?>"></dd>
@@ -168,7 +168,7 @@
                     </dd>
                 </dl>
                 <dl class="fl">
-                    <dt class="fl"><!--采购单价--><?php echo $this->translate('purprice');?></dt>
+                    <dt class="fl"><!--采购单价--><?php echo $this->translate('purchaseUnitPrice');?></dt>
                     <dd><select  name="purchaseCrnCode" class="spadd_dj" required data-msg-required="<?php echo $this->translate('de_null');?>">
                         <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userLangCode,$this->dic_Setting['CURRENCY'],$this->goods["purchaseCrnCode"]);?>
                         </select>
@@ -182,20 +182,20 @@
                         </select></dd>
                 </dl>
                 <dl class="fl">
-                    <dt class="fl"><!--包装体积--><?php echo $this->translate('packingMD');?></dt><dd><input id="spadd_tj" type="text" onchange="if(!/^\d+\.?\d{0,4}$/.test(this.value)){value='0';alert('输入的格式不正确！');}" name="packingVolume" value="<?php echo $this->goods["packingVolume"];?>" >
+                    <dt class="fl"><!--包装体积--><?php echo $this->translate('packingVolume');?></dt><dd><input id="spadd_tj" type="text" onchange="if(!/^\d+\.?\d{0,4}$/.test(this.value)){value='0';alert('输入的格式不正确！');}" name="packingVolume" value="<?php echo $this->goods["packingVolume"];?>" >
                         <em class="ml10">CBM</em></dd>
                 </dl>
                 <dl class="fl">
-                    <dt class="fl"><!--毛重--><?php echo $this->translate('grossWET');?></dt><dd><input id="spadd_mz" type="text" onchange="if(!/^\d+\.?\d{0,4}$/.test(this.value)){value='0';alert('输入的格式不正确！');}" name="grossWeight" value="<?php echo $this->goods["grossWeight"];?>" >
+                    <dt class="fl"><!--毛重--><?php echo $this->translate('grossWeight');?></dt><dd><input id="spadd_mz" type="text" onchange="if(!/^\d+\.?\d{0,4}$/.test(this.value)){value='0';alert('输入的格式不正确！');}" name="grossWeight" value="<?php echo $this->goods["grossWeight"];?>" >
                         <em class="ml10">KGS</em></dd>
                 </dl>
                 <dl class="fl">
-                    <dt class="fl"><!--净重--><?php echo $this->translate('netWET');?></dt><dd><input id="spadd_jz" type="text" onchange="if(!/^\d+\.?\d{0,4}$/.test(this.value)){value='0';alert('输入的格式不正确！');}" name="netWeight" value="<?php echo $this->goods["netWeight"];?>" >
+                    <dt class="fl"><!--净重--><?php echo $this->translate('netWeight');?></dt><dd><input id="spadd_jz" type="text" onchange="if(!/^\d+\.?\d{0,4}$/.test(this.value)){value='0';alert('输入的格式不正确！');}" name="netWeight" value="<?php echo $this->goods["netWeight"];?>" >
                         <em class="ml10">KGS</em></dd>
                 </dl>
 
                 <dl class="fl">
-                    <dt class="fl"><!--是否需要商检--><?php echo $this->translate('isSNN');?></dt><dd>
+                    <dt class="fl"><!--是否需要商检--><?php echo $this->translate('needInspection');?></dt><dd>
                         <label class="choose_lab"><input name="needInspection" <?php if( $this->goods["needInspection"]==true)echo 'checked="checked"';?> type="radio" value="1"><?php echo $this->translate('yes');?></label>
                         <label class="choose_lab"><input name="needInspection" <?php if( $this->goods["needInspection"]==false)echo 'checked="checked"';?> type="radio" value="0"><?php echo $this->translate('no');?></label></dd>
                 </dl>

@@ -221,14 +221,14 @@
                                             <?php else:?>
                                                 <!--采购价格 采购金额-->
                                                 <?php if($goods['productionMode']=='02'):?>
-                                                    <th class="poje"><?php echo $this->translate('purprice');?></th>
+                                                    <th class="poje"><?php echo $this->translate('purchaseUnitPrice');?></th>
                                                     <th class="poje"><?php echo $this->translate('purtotal');?></th>
                                                 <?php endif;?>
                                             <?php endif;?>
 
                                             <th><!--件数--><?php echo $this->translate('quantity');?></th>
-                                            <th><!--净重--><?php echo $this->translate('netWET');?></th>
-                                            <th><!--毛重--><?php echo $this->translate('grossWET');?></th>
+                                            <th><!--净重--><?php echo $this->translate('netWeight');?></th>
+                                            <th><!--毛重--><?php echo $this->translate('grossWeight');?></th>
                                         </tr>
                                         <tr>
                                             <td><span class="w30b "><?php echo $this->orders['buyerCrnCode'];?></span>

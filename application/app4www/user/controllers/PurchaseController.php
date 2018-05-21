@@ -45,72 +45,70 @@ class PurchaseController extends Kyapi_Controller_Action
 		}
 	}
 
-	public function indexAction()
-	{
-		//设置控制器视图的访问权限
+    public function indexAction() {
+        // 统计所有商品数量
+        $resultObject = $this->json->countPurProductApi($this->_requestObject);
+        $countSaleProduct = $this->objectToArray(json_decode($resultObject));
+        $this->view->countSaleProduct = $countSaleProduct['result'];
 
-		try{
-			$f1 = new Seed_Filter_Alnum();
-			$mod = $f1->filter($this->_request->getParam('mod'));
-			if (empty($mod)) {$mod = "index";}
+        // 设置视图商品状态
+        $this->view->status == '00' ? $linked = 'edit' : $linked = 'view';
+        $this->view->linked = $linked;
 
-			$_PStatus =strval($this->_request->getParam('status'));
-			if(empty( $_PStatus)){  $_PStatus ='03';}
+        // 附件地址
+        $this->view->attachUrl = $this->view->seed_Setting['KyUrlex'];
 
-			$_querySorts=$this->_request->getParam('querySorts');
-			if(empty($_querySorts)){ $_querySorts =null;}
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/purchase/index.phtml");
+            echo $content;
+            exit;
+        }
+    }
 
-            $_keyword=$this->_request->getParam('keyword');
-            if(empty($_keyword)){ $_keyword =null;}
-            $this->view->keyword=$_keyword;
+    public function pruListAjaxAction() {
+        $msg = array();
+        $requestObject = $this->_requestObject;
 
-			$page =intval($this->_request->getParam('page'));
-			if($page<1)$page=1;
-			$_limit=5;
-			$_skip=$_limit*($page-1);
+        $queryParams = array();
+        $productStatus = strval($this->_request->getParam('productStatus'));
+        if (empty($productStatus)) {
+            $productStatus = '03';
+        }
+        $queryParams['productStatus'] = $productStatus;
 
-            $_queryP = new queryProduct();
-            $_queryP->productStatus = $_PStatus;
+        $querySorts = array();
+        // $querySorts['createTime'] = "DESC";
 
-			$goodsCount = $this->json->countPurProductApi($this->_requestObject);
-			//统计所有商品数量
-			$listConut=json_decode($goodsCount);
-			$clConut = $this->objectToArray($listConut);
-			$this->view->clConut=$clConut['result'];
-			//获取商品列表信息
-			$_resultData=$this->json->listPurProductApi($this->_requestObject,$_queryP, null, $_keyword, $_skip, $_limit);
-			$existData = json_decode($_resultData);
-			$existDatt = $this->objectToArray($existData);
-			$this->view->e = $existDatt['result'];
-			$this->view->ex = $existDatt;
+        $keyword = $this->_request->getParam('keyword');
+        if (empty($keyword)) {
+            $keyword = null;
+        }
 
-			//统计正常状态数量、分页
-			$existCount = $existDatt['extData'];
-			$total = $existCount['totalSize'];
-			$page=$existCount['totalPage'];
+        $limit = $this->_request->getParam('limit');
+        if (empty($limit) || $limit <= 0) {
+            $limit = 10;
+        }
 
-			//设置视图商品状态
-			$this->view->status= $_PStatus;
-			$this->view->status=='00'?$linked='edit':$linked='view';
-			$this->view->linked=$linked;
+        $skip = $this->_request->getParam('skip');
+        if (empty($limit) || $limit <= 0) {
+            $skip = 0;
+        }
 
-			$file = "user/purchase/" . $mod . "-" . $_PStatus;
-			$_limit=5;
-			$pageObj = new Seed_Page($this->_request,$total,$_limit);
-			$this->view->page = $pageObj->getPageArray();
-			$this->view->page['pageurl'] = '/' . $file;
-			if ($page > $this->view->page['totalpage'])
-				$page = $this->view->page['totalpage'];
-			if ($page < 1) $page = 1;
-		} catch (Exception $e) {
-			Shop_Browser::redirect($e->getMessage());
-		}
-		if (defined('SEED_WWW_TPL')) {
-			$content = $this->view->render(SEED_WWW_TPL . "/purchase/index.phtml");
-			echo $content;
-			exit;
-		}
-	}
+        if (is_array($queryParams)) {
+            $queryParams = $this->arrayToObject($queryParams);
+        }
+
+        if (is_array($querySorts)) {
+            $querySorts = $this->arrayToObject($querySorts);
+        }
+
+        $resultObject = $this->json->listPurProductApi($requestObject, $queryParams, $querySorts, $keyword, $skip, $limit);
+        $msg["total"] = json_decode($resultObject)->extData->totalSize;
+        $msg["rows"] = json_decode($resultObject)->result;
+
+        echo json_encode($msg);
+        exit;
+    }
 
 	public function addAction()
 	{

@@ -23,7 +23,7 @@
             <div class="info_tit">
                 <h4><!--查看产品详情--><?php echo $this->translate('view').$this->translate('goodsINF');?></h4>
                 <?php if($this->CompProductAdmin==true||$this->CompOrderAdmin==true||$this->goods['productStatus']!=05):?>
-                    <a class="p_ed fr mt10" href="<?php echo '/user/purchase/edit?'.base64_encode($this->goods['productID']);?>"></a>
+                <a class="p_ed fr mt10" href="<?php echo '/user/goods/edit?'.base64_encode($this->goods['productID']);?>"></a>
                 <?php endif;?>
             </div>
             <div class="info_cont info_cont1 company_info clearfix">
@@ -44,15 +44,15 @@
                     <dd><?php echo $this->goods["productModel"];?></dd>
                 </dl>
                 <dl class="fl">
-                    <dt class="fl"><!--采购价格--><?php echo $this->translate('purchaseUnitPrice');?></dt><dd>
-                        <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['CURRENCY'],$this->goods["purchaseCrnCode"]);?>
-                        <?php echo $this->goods["purchaseUnitPrice"];?>
-                    </dd>
+                    <dt class="fl"><!--销售价格--><?php echo $this->translate('unitPrice');?></dt><dd>
+                        <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['CURRENCY'],$this->goods["crnCode"]);?>
+                        <?php echo $this->goods["unitPrice"];?>
+                     </dd>
                 </dl>
                 <dl class="fl">
-                    <dt class="fl"><!--交易单位--><?php echo $this->translate('pricingUnit');?></dt>
-                    <dd> <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PRICING_UNIT'],$this->goods["pricingUnit"]);?>
-                    </dd>
+                    <dt class="fl"><!--交易单位--><?php echo $this->translate('pricingUnit');?></dt><dd>
+                        <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PRICING_UNIT'],$this->goods["pricingUnit"]);?>
+                       </dd>
                 </dl>
                 <dl class="fl">
                     <dt class="fl"><!--HSCode--><?php echo $this->translate('HSCODE');?></dt>
@@ -93,21 +93,29 @@
                 <dl class="fl">
                     <dt class="fl"><!--供应商--><?php echo $this->translate('supplierName');?></dt><dd><?php echo $this->goods["supplierName"];?></dd>
                 </dl>
-                </div>
+                <dl class="fl">
+                    <dt class="fl"><!--采购单价--><?php echo $this->translate('purchaseUnitPrice');?></dt><dd>
+                        <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['CURRENCY'],$this->goods["purchaseCrnCode"]);?>
+                        &nbsp;<?php echo $this->goods["purchaseUnitPrice"];?></dd>
+                </dl></div>
             <div class="info_cont info_cont1 company_info clearfix">
                 <dl class="fl">
-                    <dt class="fl"><!--包装类型--><?php echo $this->translate('packageTYPE');?></dt>
-                    <dd><?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PACKING_TYPE'],$this->goods["packingType"]);?></dd>
+                    <dt class="fl"><!--包装类型--><?php echo $this->translate('packageTYPE');?></dt><dd>
+                        <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PACKING_TYPE'],$this->goods["packingType"]);?>
+                    </dd>
                 </dl>
                 <div></div>
                 <dl class="fl">
-                    <dt class="fl"><!--包装体积--><?php echo $this->translate('packingVolume');?></dt><dd><?php echo $this->goods["packingVolume"];?><em class="ml10">CBM</em></dd>
+                    <dt class="fl"><!--包装体积--><?php echo $this->translate('packingVolume');?></dt><dd><?php echo $this->goods["packingVolume"];?>
+                        <em class="ml10">CBM</em></dd>
                 </dl>
                 <dl class="fl">
-                    <dt class="fl"><!--毛重--><?php echo $this->translate('grossWeight');?></dt><dd><?php echo $this->goods["grossWeight"];?><em class="ml10">KGS</em></dd>
+                    <dt class="fl"><!--毛重--><?php echo $this->translate('grossWeight');?></dt><dd><?php echo $this->goods["grossWeight"];?>
+                        <em class="ml10">KGS</em></dd>
                 </dl>
                 <dl class="fl">
-                    <dt class="fl"><!--净重--><?php echo $this->translate('netWeight');?></dt><dd><?php echo $this->goods["netWeight"];?><em class="ml10">KGS</em></dd>
+                    <dt class="fl"><!--净重--><?php echo $this->translate('netWeight');?></dt><dd><?php echo $this->goods["netWeight"];?>
+                        <em class="ml10">KGS</em></dd>
                 </dl>
 
                 <dl class="fl">
@@ -118,8 +126,8 @@
             </div>
             <!-- 附件上传 -->
             <div class="yyzz_box info_cont">
-                <div class="zzname  n_o_c_tit"><h4><!-- GOODS资料档案 --><?php echo $this->translate('GOODSLS');?></h4><span><?php echo $this->translate('UPGOODSLS');?></span></div>
-                <?php echo $this-> ShowWebuploader($this->goods['attachmentList'],$this->biz_Setting['PRODUCT'],$this->attach_Setting['PDPD'],"1",$this->goods["productID"]);?>
+                <div class="zzname  n_o_c_tit"><h4><!-- 资料档案 --><?php echo $this->translate('GOODSLS');?></h4><span><?php echo $this->translate('UPGOODSLS');?></span></div>
+                <?php echo $this-> ShowWebuploader($this->goods['attachmentList'],$this->biz_Setting['PRODUCT'],$this->attach_Setting['PDPD'],"1",$this->goods['productID']);?>
             </div>
             <div class="tc mt30 mb30">
                 <a class="return_btn" <?php if ($this->goods['allowConfirm']==true){ echo 'style="display:inline-block;"';}else{echo 'style="display:none;"';}?>

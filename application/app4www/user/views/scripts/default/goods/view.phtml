@@ -1,144 +1,171 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>快移</title>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-    <link href="/ky/css/base.css" rel="stylesheet">
-    <link href="/ky/css/style.css" rel="stylesheet">
-    <link href="/ky/css/img-upload.css" rel="stylesheet">
-    <script type="text/javascript" src="/ky/js/jquery.js"></script>
-    <script type="text/javascript" src="/ky/js/jquery.wallform.js"></script>
-    <script type="text/javascript" src="/ky/js/www.js"></script>
-    <script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+	<title>快移</title>
+    <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <link href="/ky/css/account/account.css" rel="stylesheet">
 </head>
 <body>
-<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
-<div class="o_content_wrap w1200 m0a clearfix">
-    <?php echo $this->render(SEED_WWW_TPL.'/left_menu.phtml');?>
-    <div class="o_content fr w940 border-top">
-        <form action="#" method="post">
-            <div class="info_tit">
-                <h4><!--查看产品详情--><?php echo $this->translate('view').$this->translate('goodsINF');?></h4>
-                <?php if($this->CompProductAdmin==true||$this->CompOrderAdmin==true||$this->goods['productStatus']!=05):?>
-                <a class="p_ed fr mt10" href="<?php echo '/user/goods/edit?'.base64_encode($this->goods['productID']);?>"></a>
-                <?php endif;?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
+
+<div class="container-fluid index-body">
+	<div class="container">
+		<div class="row">
+            <div class="col-md-3 company-navigation hidden-xs">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><?php echo $this->translate('goods'); ?></div>
+                    <div class="list-group">
+                        <a href="/user/goods" class="list-group-item"><?php echo $this->translate('goodsME'); ?></a>
+                        <a href="/user/purchase" class="list-group-item"><?php echo $this->translate('goodsBUY'); ?></a>
+                    </div>
+                </div>
             </div>
-            <div class="info_cont info_cont1 company_info clearfix">
-                <dl class="fl">
-                    <dt class="fl"><!--商品名称--><?php echo $this->translate('productNAME');?></dt><dd><?php echo $this->goods["productName"];?> </dd>
 
-                </dl>
-                <dl class="fl">
-                    <dt class="fl"><!--英文名称--><?php echo $this->translate('productENNAME');?></dt><dd><?php echo $this->goods["productEnName"];?></dd>
+            <div class="col-md-9 goods-view">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><?php echo $this->translate('goodsME'); ?></div>
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active row" id="info">
+                                <div class="col-md-12">
+                                    <h3>
+                                        <?php if (($this->CompProductAdmin == true || $this->CompOrderAdmin == true) && $this->goods['productStatus'] != 05): ?>
+                                            <a class="profile-heading-edit pull-right btn btn-xs" data-type="base" href="<?php echo '/user/goods/edit?' . base64_encode($this->goods['productID']); ?>">
+                                                <i class="fas fa-pencil-alt" aria-hidden="true"></i><?php echo $this->translate('edit'); ?>
+                                            </a>
+                                        <?php endif; ?>
+                                        <?php echo $this->goods['productName']; ?>
+                                    </h3>
 
-                </dl>
-                <dl class="fl">
-                    <dt class="fl"><!--品牌--><?php echo $this->translate('brand');?></dt><dd><?php echo $this->goods["productBrand"];?></dd>
+                                    <dl class="dl-horizontal">
+                                        <dt><?php echo $this->translate('productNAME'); ?></dt>
+                                        <dd><?php echo $this->goods['productName']; ?></dd>
 
-                </dl>
-                <dl class="fl">
-                    <dt class="fl"><!--型号--><?php echo $this->translate('model');?></dt>
-                    <dd><?php echo $this->goods["productModel"];?></dd>
-                </dl>
-                <dl class="fl">
-                    <dt class="fl"><!--销售价格--><?php echo $this->translate('saleprice');?></dt><dd>
-                        <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['CURRENCY'],$this->goods["crnCode"]);?>
-                        <?php echo $this->goods["unitPrice"];?>
-                     </dd>
-                </dl>
-                <dl class="fl">
-                    <dt class="fl"><!--交易单位--><?php echo $this->translate('unitB');?></dt><dd>
-                        <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PRICING_UNIT'],$this->goods["pricingUnit"]);?>
-                       </dd>
-                </dl>
-                <dl class="fl">
-                    <dt class="fl"><!--HSCode--><?php echo $this->translate('HSCODE');?></dt>
-                    <dd><?php echo $this->goods["hscode"] . "(" . $this->goods["productHSCode"]["codeName"] . ")";?></dd>
+                                        <dt><?php echo $this->translate('productENNAME'); ?></dt>
+                                        <dd><?php echo $this->goods['productEnName']; ?></dd>
 
-                </dl>
-                <dl class="fl">
-                    <dt class="fl"><!--法定单位--><?php echo $this->translate('unitF');?></dt>
-                    <dd><?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PRICING_UNIT'],$this->goods["legalPricingUnit"]);?></dd>
-                </dl>
-                <dl class="fl">
-                    <dt class="fl"><!--退税率--><?php echo $this->translate('rebateRate');?></dt><dd><?php echo $this->goods["rebateRate"]*100;?>&nbsp;%</dd>
-                </dl>
-                <dl class="fl">
-                    <dt class="fl"><!--增值税率--><?php echo $this->translate('RFADD');?></dt><dd><?php echo $this->goods["taxRate"]*100;?>&nbsp;%</dd>
-                </dl>
-                <dl style="width:100%;float: left;">
-                    <dt class="fl"><!--申报要素--><?php echo $this->translate('SBYSU');?></dt><dd style="width: 80%;overflow: hidden;word-wrap:break-word;"><?php echo $this->goods["declareElements"];?></dd>
-                </dl>
-                <dl class="fl">
-                    <dt class="fl"><!--规格尺寸--><?php echo $this->translate('productSize');?></dt><dd><?php echo $this->goods["productSize"];?></dd>
-                </dl>
-                <dl class="fl">
-                    <dt class="fl"><!--功能用途--><?php echo $this->translate('functionUsage');?></dt><dd><?php echo $this->goods["functionUsage"];?></dd>
+                                        <dt><?php echo $this->translate('brand'); ?></dt>
+                                        <dd><?php echo $this->goods['productBrand']; ?></dd>
 
-                </dl>
-                <dl class="fl">
-                    <dt class="fl"><!--材质--><?php echo $this->translate('productMaterial');?></dt><dd><?php echo $this->goods["productMaterial"];?></dd>
+                                        <dt><?php echo $this->translate('model'); ?></dt>
+                                        <dd><?php echo $this->goods['productModel']; ?></dd>
 
-                </dl>
-                <dl class="fl">
-                    <dt class="fl"><!--生产方式--><?php echo $this->translate('productionMode');?></dt>
-                    <dd><?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PRODUCTION_MODE'],$this->goods["productionMode"]);?></dd>
-                </dl>
+                                        <dt><?php echo $this->translate('unitPrice'); ?></dt>
+                                        <dd>
+                                            <?php echo $this->ShowDictionaryTo($this->dic_Setting['CURRENCY'], $this->userLangCode, $this->dic_Setting['CURRENCY'], $this->goods['crnCode']); ?>&nbsp;
+                                            <?php echo $this->goods["unitPrice"];?>
+                                        </dd>
+
+                                        <dt><?php echo $this->translate('pricingUnit'); ?></dt>
+                                        <dd>
+                                            <?php echo $this->ShowDictionaryTo($this->dic_Setting['PRODUCT_PRICING_UNIT'], $this->userLangCode, $this->dic_Setting['PRODUCT_PRICING_UNIT'], $this->goods['pricingUnit']); ?>
+                                        </dd>
+
+                                        <dt><?php echo $this->translate('HSCODE'); ?></dt>
+                                        <dd><?php echo $this->goods["hscode"] . "(" . $this->goods["productHSCode"]["codeName"] . ")"; ?></dd>
+
+                                        <dt><?php echo $this->translate('legalPricingUnit'); ?></dt>
+                                        <dd>
+                                            <?php echo $this->ShowDictionaryTo($this->dic_Setting['PRODUCT_PRICING_UNIT'], $this->userLangCode, $this->dic_Setting['PRODUCT_PRICING_UNIT'], $this->goods['legalPricingUnit']); ?>
+                                        </dd>
+
+                                        <dt><?php echo $this->translate('rebateRate'); ?></dt>
+                                        <dd>
+                                            <?php echo $this->goods["rebateRate"] * 100; ?>&nbsp;%
+                                        </dd>
+
+                                        <dt><?php echo $this->translate('taxRate'); ?></dt>
+                                        <dd>
+                                            <?php echo $this->goods["taxRate"] * 100; ?>&nbsp;%
+                                        </dd>
+
+                                        <dt><?php echo $this->translate('declareElements'); ?></dt>
+                                        <dd><?php echo $this->goods['declareElements']; ?></dd>
+
+                                        <dt><?php echo $this->translate('productSize'); ?></dt>
+                                        <dd><?php echo $this->goods['productSize']; ?></dd>
+
+                                        <dt><?php echo $this->translate('functionUsage'); ?></dt>
+                                        <dd><?php echo $this->goods["functionUsage"]; ?></dd>
+
+                                        <dt><?php echo $this->translate('productMaterial'); ?></dt>
+                                        <dd><?php echo $this->goods["productMaterial"]; ?></dd>
+
+                                        <dt><?php echo $this->translate('productionMode'); ?></dt>
+                                        <dd>
+                                            <?php echo $this->ShowDictionaryTo($this->dic_Setting['PRODUCT_PRODUCTION_MODE'], $this->userLangCode, $this->dic_Setting['PRODUCT_PRODUCTION_MODE'], $this->goods['productionMode']); ?>
+                                        </dd>
+
+                                        <?php if ($this->goods["productionMode"] != 02): ?>
+                                        <dt><?php echo $this->translate('supplierName'); ?></dt>
+                                        <dd><?php echo $this->goods["supplierName"]; ?></dd>
+
+                                        <dt><?php echo $this->translate('supplierName'); ?></dt>
+                                        <dd>
+                                            <?php echo $this->ShowDictionaryTo($this->dic_Setting['CURRENCY'], $this->userLangCode, $this->dic_Setting['CURRENCY'], $this->goods["purchaseCrnCode"]); ?>&nbsp;
+                                            <?php echo $this->goods["purchaseUnitPrice"]; ?>
+                                        </dd>
+                                        <?php endif; ?>
+
+                                        <dt><?php echo $this->translate('packageTYPE'); ?></dt>
+                                        <dd>
+                                            <?php echo $this->ShowDictionaryTo($this->dic_Setting['PRODUCT_PACKING_TYPE'], $this->userLangCode, $this->dic_Setting['PRODUCT_PACKING_TYPE'], $this->goods["packingType"]); ?>
+                                        </dd>
+
+                                        <dt><?php echo $this->translate('packingVolume'); ?></dt>
+                                        <dd><?php echo $this->goods["packingVolume"]; ?>&nbsp;CBM</dd>
+
+                                        <dt><?php echo $this->translate('grossWeight'); ?></dt>
+                                        <dd><?php echo $this->goods["grossWeight"]; ?>&nbsp;KGS</dd>
+
+                                        <dt><?php echo $this->translate('netWeight'); ?></dt>
+                                        <dd><?php echo $this->goods["netWeight"]; ?>&nbsp;KGS</dd>
+
+                                        <dt><?php echo $this->translate('needInspection'); ?></dt>
+                                        <dd>
+                                            <?php if ($this->goods["needInspection"]) {
+                                                echo $this->translate('yes');
+                                            } else {
+                                                echo $this->translate('no');
+                                            } ?>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane row" id="profile">
+                                <div class="col-md-12">
+                                    <?php echo $this-> ShowWebuploader($this->goods['attachmentList'],$this->biz_Setting['PRODUCT'],$this->attach_Setting['PDPD'],"1", $this->goods['bankAcctID']);?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="info_cont info_cont1 company_info clearfix <?php if($this->goods["productionMode"]!=02):?>table2<?php endif;?>">
-
-                <dl class="fl">
-                    <dt class="fl"><!--供应商--><?php echo $this->translate('supplierName');?></dt><dd><?php echo $this->goods["supplierName"];?></dd>
-                </dl>
-                <dl class="fl">
-                    <dt class="fl"><!--采购单价--><?php echo $this->translate('purprice');?></dt><dd>
-                        <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['CURRENCY'],$this->goods["purchaseCrnCode"]);?>
-                        &nbsp;<?php echo $this->goods["purchaseUnitPrice"];?></dd>
-                </dl></div>
-            <div class="info_cont info_cont1 company_info clearfix">
-                <dl class="fl">
-                    <dt class="fl"><!--包装类型--><?php echo $this->translate('packageTYPE');?></dt><dd>
-                        <?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PACKING_TYPE'],$this->goods["packingType"]);?>
-                    </dd>
-                </dl>
-                <div></div>
-                <dl class="fl">
-                    <dt class="fl"><!--包装体积--><?php echo $this->translate('packingMD');?></dt><dd><?php echo $this->goods["packingVolume"];?>
-                        <em class="ml10">CBM</em></dd>
-                </dl>
-                <dl class="fl">
-                    <dt class="fl"><!--毛重--><?php echo $this->translate('grossWET');?></dt><dd><?php echo $this->goods["grossWeight"];?>
-                        <em class="ml10">KGS</em></dd>
-                </dl>
-                <dl class="fl">
-                    <dt class="fl"><!--净重--><?php echo $this->translate('netWET');?></dt><dd><?php echo $this->goods["netWeight"];?>
-                        <em class="ml10">KGS</em></dd>
-                </dl>
-
-                <dl class="fl">
-                    <dt class="fl"><!--是否需要商检--><?php echo $this->translate('isSNN');?></dt><dd>
-                        <label class="choose_lab"><!--是-->
-                            <?php if($this->goods["needInspection"]){ echo $this->translate('yes');}else{echo $this->translate('no');}?></label></dd>
-                </dl>
-            </div>
-            <!-- 附件上传 -->
-            <div class="yyzz_box info_cont">
-                <div class="zzname  n_o_c_tit"><h4><!-- 资料档案 --><?php echo $this->translate('GOODSLS');?></h4><span><?php echo $this->translate('UPGOODSLS');?></span></div>
-                <?php echo $this-> ShowWebuploader($this->goods['attachmentList'],$this->biz_Setting['PRODUCT'],$this->attach_Setting['PDPD'],"1",$this->goods['productID']);?>
-            </div>
-            <div class="tc mt30 mb30">
-                <a class="return_btn" <?php if ($this->goods['allowConfirm']==true){ echo 'style="display:inline-block;"';}else{echo 'style="display:none;"';}?>
-                   href="javascript:;" id="<?php echo $this->goods['productID'];?>" data-url="/user/goods/confrim"
-                   data-msg1="<?php echo $this->translate('is_confirm_goods');?>" data-msg2="<?php echo $this->translate('tip_confirm_success');?>"
-                   data-msg3="<?php echo $this->translate('tip_confirm_fail');?>" onclick="doOption(this);"><?php echo $this->translate('confirmed');?></a>
-                <a class="return_btn" href="javascript:history.go(-1)"><?php echo $this->translate('return');?></a>
-            </div>
-        </form>
-    </div>
+		</div>
+	</div>
 </div>
-<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script type="text/javascript">
+	$().ready(function() {
+
+	});
+
+	$(function () {
+        $('.company-navigation').find('a').each(function () {
+            if (this.href === document.location.href || document.location.href.search(this.href) >= 0) {
+                $(this).addClass('nav-selected');
+            } else {
+                $(this).removeClass('nav-selected');
+            }
+        });
+	});
+</script>
 </body>
 </html>
