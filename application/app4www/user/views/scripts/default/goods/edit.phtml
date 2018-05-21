@@ -43,7 +43,7 @@
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active row" id="info">
                                 <div class="col-md-12">
-                                    <form class="form-horizontal layui-form goods-main-edit" action="#" method="post" id="goods_edit_form" name="goods_edit_form">
+                                    <form class="form-horizontal goods-main-edit" action="#" method="post" id="goods_edit_form" name="goods_edit_form">
                                         <div class="form-group">
                                             <label for="productName" class="col-sm-2 control-label"><?php echo $this->translate('productNAME'); ?></label>
                                             <div class="col-sm-9">
@@ -96,7 +96,7 @@
                                         <div class="form-group">
                                             <label for="hscode" class="col-sm-2 control-label"><?php echo $this->translate('HSCODE'); ?></label>
                                             <div class="col-sm-9">
-                                                <select name="hscode" id="hscode" lay-verify="required" lay-search="" lay-filter="hscode">
+                                                <select name="hscode" id="hscode">
                                                     <option value=""><?php echo $this->translate('et_select'); ?></option>
                                                 </select>
                                             </div>
@@ -139,37 +139,7 @@
                 $(this).removeClass('nav-selected');
             }
         });
-
-        // $(".layui-input").change(function () {
-        //     console.log($(this).val());
-        // });
-        var hscodeQuery = '/user/common/hscode-ajax';
-        $.ajax({
-            type: "POST",
-            url: hscodeQuery,
-            data: {
-                keyword: ''
-            },
-            dataType: "json",
-            success: function (data) {
-                var optionString = "";
-                $.each(data, function (i, item) {
-                    console.log(item);
-                    optionString += "<option value=\"" + item.valueCode + "\" >" + item.valueCode + "</option>";
-                });
-                var str = '<?php echo $this->translate("et_select"); ?>';
-                $("#hscode").html('<option value="">' + str + '</option>' + optionString);
-                form.render('select'); //这个很重要
-            }
-        });
 	});
-
-    layui.use('form', function(){
-        var form = layui.form;
-
-        form.render();
-        form.render('select');
-    });
 </script>
 </body>
 </html>
