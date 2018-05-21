@@ -208,7 +208,7 @@ return array(
     'INPkw_par_buyer'          => '可输入买家名称',
     'INPkw_par_vendor'         => '可输入卖家名称',
     'INPfd_par'                => '可通过公司快移码、邓白氏搜索新合作伙伴',
-    'INPkw_goodes'             => '可输入名称、HSCode、型号、品牌等关键字',
+    'INPkw_goods'             => '可输入名称、HSCode、型号、品牌等关键字',
     'INPkw_order_xs'           => '可输入订单号、买家名称',
     'INPkw_order_cg'           => '可输入订单号、卖家名称',
 
@@ -325,15 +325,13 @@ return array(
     'verify'        => '验证',
     'enable'        => '启用',
     // 产品&订单中心状态
-    'valid'         => '有效',
-    'checkP'        => '审核中',
-    'checkIN'       => '审核中',
-    'checkNO'       => '审核未通过',
-    'checkR'        => '待确认',
-    'nopass'        => '不通过',
-    'history'       => '历史',
-    'draft'         => '草稿',
-    'void'          => '无效',
+    'valid'      => '有效',
+    'forReview'  => '审核中',
+    'rejected'   => '未通过',
+    'forConfirm' => '待确认',
+    'history'    => '历史',
+    'draft'      => '草稿',
+    'invalid'    => '无效',
 
     // 产品页面
     'productNAME'   => '商品名称',

@@ -35,9 +35,9 @@
         <div style="border-bottom:5px solid #EF8200;">
             <ul class="order_state2 clearfix">
                 <li <?php if ($this->status==03):?>class="on"<?php endif;?> ><a href= "<?php echo WWW;?>user/purchase/index-03-1.html"><!--有效--><?php echo $this->translate('valid');?></a></li>
-                <li <?php if ($this->status==01):?>class="on"<?php endif;?> ><a href= "<?php echo WWW;?>user/purchase/index-01-1.html"><!--待审核--><?php echo $this->translate('checkP');?>（<span class="wh_num"><?php if(!empty($this->clConut['01'])){ echo $this->clConut['01'];}else{echo '0';}?></span>）</a></li>
-                <li <?php if ($this->status==02):?>class="on"<?php endif;?> ><a href= "<?php echo WWW;?>user/purchase/index-02-1.html"><!--待确认--><?php echo $this->translate('checkR');?>（<span class="ws_num"><?php if(!empty($this->clConut['02'])){ echo $this->clConut['02'];}else{echo '0';}?></span>）</a></li>
-                <li <?php if ($this->status==04):?>class="on"<?php endif;?> ><a href="<?php echo WWW;?>user/purchase/index-04-1.html"><!--不通过--><?php echo $this->translate('nopass');?>（<span class="cg_num"><?php if(!empty($this->clConut['04'])){ echo $this->clConut['04'];}else{echo '0';}?></span>）</a></li>
+                <li <?php if ($this->status==01):?>class="on"<?php endif;?> ><a href= "<?php echo WWW;?>user/purchase/index-01-1.html"><!--待审核--><?php echo $this->translate('forReview');?>（<span class="wh_num"><?php if(!empty($this->clConut['01'])){ echo $this->clConut['01'];}else{echo '0';}?></span>）</a></li>
+                <li <?php if ($this->status==02):?>class="on"<?php endif;?> ><a href= "<?php echo WWW;?>user/purchase/index-02-1.html"><!--待确认--><?php echo $this->translate('forConfirm');?>（<span class="ws_num"><?php if(!empty($this->clConut['02'])){ echo $this->clConut['02'];}else{echo '0';}?></span>）</a></li>
+                <li <?php if ($this->status==04):?>class="on"<?php endif;?> ><a href="<?php echo WWW;?>user/purchase/index-04-1.html"><!--不通过--><?php echo $this->translate('rejected');?>（<span class="cg_num"><?php if(!empty($this->clConut['04'])){ echo $this->clConut['04'];}else{echo '0';}?></span>）</a></li>
                 <li <?php if ($this->status==00):?>class="on"<?php endif;?> ><a href= "<?php echo WWW;?>user/purchase/index-00-1.html"><!--草稿--><?php echo $this->translate('draft');?>（<span class="ha_num"><?php if(!empty($this->clConut['00'])){ echo $this->clConut['00'];}else{echo '0';}?></span>）</a></li>
                 <li <?php if ($this->status==05):?>class="on"<?php endif;?> ><a href="<?php echo WWW;?>user/purchase/index-05-1.html"><!--禁用--><?php echo $this->translate('disable');?></a></li>
             </ul>
@@ -45,7 +45,7 @@
         <div class="qysearch_box">
             <form action="#" method="post">
                 <p>
-                    <input class="search_inp"  name="keyword"  <?php if(!empty($this->keyword)){echo "value=".$this->keyword;}?> placeholder="<?php echo $this->translate('INPkw_goodes');?>" type="text">
+                    <input class="search_inp"  name="keyword"  <?php if(!empty($this->keyword)){echo "value=".$this->keyword;}?> placeholder="<?php echo $this->translate('INPkw_goods');?>" type="text">
                     <input class="ss_btn" type="submit" value="">
                     <?php if($this->CompProductAdmin==true||$this->CompOrderAdmin==true):?>
                         <?php if(count($this->purchase_isAllowAdd)>0):?>

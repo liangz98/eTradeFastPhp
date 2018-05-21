@@ -299,40 +299,6 @@
             layer.closeAll();
         });
     }
-
-    /*function getDataDict(dictCode, value) {
-	    var dictName = "";
-
-        if (jQuery.hasData(dataDict) && $.data(dataDict, dictCode)) {
-            var data = $.data(dataDict, dictCode);
-            $.each(data, function (i, item) {
-                if (item.code === value) {
-                    dictName = item.name;
-                }
-            });
-        } else {
-            var fuzzyQuery = '/user/account/dict-ajax';
-            $.ajax({
-                type: "POST",
-                url: fuzzyQuery,
-                data: {
-                    dictCode: dictCode,
-                    langCode: langCode
-                },
-                async: false,
-                dataType: "json",
-                success: function (data) {
-                    $.data(dataDict, dictCode, data);
-                    $.each(data, function (i, item) {
-                        if (item.code === value) {
-                            dictName = item.name;
-                        }
-                    });
-                }
-            });
-        }
-        return dictName;
-    }*/
 </script>
 </body>
 </html>

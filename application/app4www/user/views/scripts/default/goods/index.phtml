@@ -1,175 +1,305 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>快移</title>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-    <link href="/ky/css/base.css" rel="stylesheet">
-    <link href="/ky/css/style.css" rel="stylesheet">
-    <script type="text/javascript" src="/ky/js/jquery.js"></script>
-    <script type="text/javascript" src="/ky/js/seed.form.js"></script>
-    <script type="text/javascript" src="/ky/js/jquery.form.js"></script>
-    <script type="text/javascript" src="/ky/js/www.js"></script>
-    <script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
-    <script type="text/javascript" src="/ky/layer-v3.1.1/layer.js"></script>
-    <style type="text/css">
-        .order_state2 li{width:150px;}
-    </style>
-
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+	<title>快移</title>
+    <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <link href="/ky/css/goods/goods.css" rel="stylesheet">
+    <link href="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.css" rel="stylesheet">
 </head>
 <body>
-<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
-<div class="o_content_wrap w1200 m0a clearfix">
-    <?php echo $this->render(SEED_WWW_TPL.'/left_menu.phtml');?>
-    <div class="o_content fr w940">
-        <div style="border-bottom:5px solid #EF8200;">
-            <ul class="order_state2 clearfix">
-                <li <?php if ($this->status==03):?>class="on"<?php endif;?> ><a href= "<?php echo WWW;?>user/goods/index-03-1.html"><!--有效--><?php echo $this->translate('valid');?></a></li>
-                <li <?php if ($this->status==01):?>class="on"<?php endif;?> ><a href= "<?php echo WWW;?>user/goods/index-01-1.html"><!--待审核--><?php echo $this->translate('checkP');?>（<span class="wh_num"><?php if(!empty($this->clConut['01'])){ echo $this->clConut['01'];}else{echo '0';}?></span>）</a></li>
-                <li <?php if ($this->status==02):?>class="on"<?php endif;?> ><a href= "<?php echo WWW;?>user/goods/index-02-1.html"><!--待确认--><?php echo $this->translate('checkR');?>（<span class="ws_num"><?php if(!empty($this->clConut['02'])){ echo $this->clConut['02'];}else{echo '0';}?></span>）</a></li>
-                <li <?php if ($this->status==04):?>class="on"<?php endif;?> ><a href="<?php echo WWW;?>user/goods/index-04-1.html"><!--不通过--><?php echo $this->translate('nopass');?>（<span class="cg_num"><?php if(!empty($this->clConut['04'])){ echo $this->clConut['04'];}else{echo '0';}?></span>）</a></li>
-                <li <?php if ($this->status==00):?>class="on"<?php endif;?> ><a href= "<?php echo WWW;?>user/goods/index-00-1.html"><!--草稿--><?php echo $this->translate('draft');?>（<span class="ha_num"><?php if(!empty($this->clConut['00'])){ echo $this->clConut['00'];}else{echo '0';}?></span>）</a></li>
-                <li <?php if ($this->status==05):?>class="on"<?php endif;?> ><a href="<?php echo WWW;?>user/goods/index-05-1.html"><!--禁用--><?php echo $this->translate('disable');?></a></li>
-            </ul>
-        </div>
-        <div class="qysearch_box">
-            <form action="#" method="post">
-                <p>
-                    <input class="search_inp" name="keyword" <?php if(!empty($this->keyword)){echo "value=".$this->keyword;}?>  placeholder="<?php echo $this->translate('INPkw_goodes');?>" type="text"><!--可输入名称、HSCode、型号、品牌等关键字-->
-                    <input class="ss_btn"  type="submit" value="">
-                    <?php if($this->CompProductAdmin==true||$this->CompOrderAdmin==true):?>
-                        <?php if(count($this->goods_isAllowAdd)>0):?>
-                    <a  href=<?php echo '/user/goods/add';?> class="addb_box fr"></a>
-                    <?php endif;?>
-                    <?php endif;?>
-                </p>
-            </form>
-        </div>
-        <table class="qy_table qy_table1">
-            <thead>
-            <tr>
-                <th style="width:90px;"></th>
-                <th><!--商品名称--><?php echo $this->translate('productNAME');?></th>
-                <th><!--品牌--><?php echo $this->translate('brand');?></th>
-                <th><!--型号--><?php echo $this->translate('model');?></th>
-                <th><!--HSCODE--><?php echo $this->translate('HSCODE');?></th>
-                <th><!--退税率--><?php echo $this->translate('RFRT');?></th>
-                <?php if($this->CompProductAdmin==true||$this->CompOrderAdmin==true):?>
-                <th><!--操作--><?php echo $this->translate('madeTT');?></th>
-                <?php endif;?>
-            </tr>
-            </thead>
-            <tbody>
-            <form id="delete_form" name="delete_form" method="post" action="">
-                <?php if(is_array($this->e) && count($this->e)>0):?>
-                    <?php foreach ($this->e as $k=>$goods):?>
-                        <tr>
-                            <td><a href="<?php if(!empty($this->goods_isAllowView)){echo '/user/goods/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
-                                    <?php echo $this->ShowUPimg($goods['attachmentList']);?>
-                                </a></td>
-                            <td><a href="<?php if(!empty($this->goods_isAllowView)){echo '/user/goods/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
-                                <?php echo $goods['productName'];?></a></td>
-                            <td><a href="<?php if(!empty($this->goods_isAllowView)){echo '/user/goods/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
-                                 <?php echo $goods['productBrand'];?></a></td>
-                            <td><a href="<?php if(!empty($this->goods_isAllowView)){echo '/user/goods/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
-                                <?php echo $goods['productModel'];?></a></td>
-                            <td><a href="<?php if(!empty($this->goods_isAllowView)){echo '/user/goods/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
-                                <?php echo $goods['hscode'];?></a></td>
-                            <td><a href="<?php if(!empty($this->goods_isAllowView)){echo '/user/goods/'.$this->linked.'?'.base64_encode($goods['productID']);}?>">
-                                <?php echo $goods['rebateRate'];?></a></td>
-                        <?php if($this->CompProductAdmin==true||$this->CompOrderAdmin==true):?>
-                            <td>
-                                <div class="cc_box">
-                                    <?php if ($goods['productStatus']!=05):?>
-                                    <!--编辑-->
-                                        <a title="<?php echo $this->translate('edit');?>" style="display:inline-block;" class="t_edit p_ed"
-                                                   href=<?php echo '/user/goods/edit?'.base64_encode($goods['productID']);?>></a>
-                                    <?php endif;?>
-                                    <?php if ($goods['productStatus']==00||$goods['productStatus']==01||$goods['productStatus']==03):?>
-                                    <!--复制-->
-                                        <a title="<?php echo $this->translate('copy');?>" style="display:inline-block;"  class="t_edit p_copy"
-                                                    href=<?php echo '/user/goods/copy?'.base64_encode($goods['productID']);?>></a>
-                                    <?php endif;?>
-                                    <?php if ($goods['allowInvalid']==true):?>
-                                    <!--禁用-->   <a title="<?php echo $this->translate('disable');?>" style="display:inline-block;"  class="t_edit p_jy"
-                                                   href="javascript:;" id="<?php echo $goods['productID'];?>" data-url="/user/goods/invalid"
-                                                   data-msg1="<?php echo $this->translate('is_invalid');?>" data-msg2="<?php echo $this->translate('tip_invalid_success');?>"
-                                                   data-msg3="<?php echo $this->translate('tip_invalid_fail');?>" onclick="doOption(this);"></a>
-                                    <?php endif;?>
-                                    <?php if ($goods['allowDelete']==true):?>
-                                    <!--删除-->   <a title="<?php echo $this->translate('delete');?>" style="display:inline-block;" class="t_edit p_del"
-                                                   href="javascript:;" id="<?php echo $goods['productID'];?>" data-url="/user/goods/del"
-                                                   data-msg1="<?php echo $this->translate('is_delete');?>" data-msg2="<?php echo $this->translate('tip_delete_sucess');?>"
-                                                   data-msg3="<?php echo $this->translate('tip_delete_fail');?>" onclick="doOption(this);"></a>
-                                    <?php endif;?>
-                                    <?php if ($goods['allowValid']==true):?>
-                                    <!--启用-->   <a title="<?php echo $this->translate('valid');?>" style="display:inline-block;"  class="t_edit p_qy"
-                                                   href="javascript:;" id="<?php echo $goods['productID'];?>" data-url="/user/goods/valid"
-                                                   data-msg1="<?php echo $this->translate('is_valid');?>" data-msg2="<?php echo $this->translate('tip_valid_success');?>"
-                                                   data-msg3="<?php echo $this->translate('tip_valid_fail');?>" onclick="doOption(this);"></a>
-                                    <?php endif;?>
-                                    <?php if ($goods['allowConfirm']==true):?>
-                                    <!--确认-->   <a title="<?php echo $this->translate('confirmed');?>" style="display:inline-block;"  class="t_edit p_qr"
-                                                   href="javascript:;" id="<?php echo $goods['productID'];?>" data-url="/user/goods/confrim"
-                                                   data-msg1="<?php echo $this->translate('is_confirm2');?>" data-msg2="<?php echo $this->translate('tip_confirm_success');?>"
-                                                   data-msg3="<?php echo $this->translate('tip_confirm_fail');?>" onclick="doOption(this);"></a>
-                                    <?php endif;?>
-                                    <?php if ($goods['allowForReview']==true):?>
-                                    <!--审核-->   <a title="<?php echo $this->translate('submitCHECK');?>" style="display:inline-block;"  class="t_edit p_sh"
-                                                   href="javascript:;" id="<?php echo $goods['productID'];?>" data-url="/user/goods/forreview"
-                                                   data-msg1="<?php echo $this->translate('is_forReview');?>" data-msg2="<?php echo $this->translate('tip_forReview_success');?>"
-                                                   data-msg3="<?php echo $this->translate('tip_forReview_fail');?>" onclick="doOption(this);"></a> <?php endif;?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
+
+<div class="container-fluid index-body">
+	<div class="container">
+		<div class="row">
+            <div class="col-md-3 company-navigation">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><?php echo $this->translate('goods'); ?></div>
+                    <div class="list-group">
+                        <a href="/user/goods" class="list-group-item"><?php echo $this->translate('goodsME'); ?></a>
+                        <a href="/user/purchase" class="list-group-item"><?php echo $this->translate('goodsBUY'); ?></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9 company-main">
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading"><?php echo $this->translate('goodsME'); ?></div>
+                    <div class="panel-body">
+                        <?php if (!empty($this->errMsg)): ?>
+                        <div class="alert alert-success alert-dismissible fade in" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <p><?php echo $this->errMsg; ?>!</p>
+                        </div>
+                        <?php endif; ?>
+
+                        <ul class="nav nav-pills">
+                            <li role="presentation" class="active"><a href="#goods_search_form"><?php echo $this->translate('valid'); ?></a></li>
+                            <li role="presentation"><a href="#goods_search_form"><?php echo $this->translate('forReview'); ?></a></li>
+                            <li role="presentation"><a href="#goods_search_form"><?php echo $this->translate('forConfirm'); ?></a></li>
+                            <li role="presentation"><a href="#goods_search_form"><?php echo $this->translate('rejected'); ?></a></li>
+                            <li role="presentation"><a href="#goods_search_form"><?php echo $this->translate('draft'); ?></a></li>
+                            <li role="presentation"><a href="#goods_search_form"><?php echo $this->translate('disable'); ?></a></li>
+                        </ul>
+
+                        <form class="form-horizontal" action="javascript:void(0)" onsubmit="contactSearch()" id="goods_search_form">
+                            <div class="form-group" style="margin-bottom: 0 !important;">
+                                <label for="keyword" class="sr-only">keyword</label>
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fas fa-search"></i></span>
+                                        <input type="text" class="form-control" name="keyword" id="keyword" placeholder="<?php echo $this->translate('INPkw_goods');?>">
+                                    </div>
                                 </div>
-                            </td>
-                        <?php endif;?>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else:?>
-                    <tr><td colspan="7"> <?php echo $this->translate('noData');?></td></tr>
-                <?php endif;?>
-            </form>
-            </tbody>
-        </table>
-        <div class="page"> <?php echo $this->showProductPage($this->page);?> </div>
-        </div>
+                                <div class="col-sm-1">
+                                    <button type="submit" class="btn btn-primary"> Go </button>
+                                </div>
+                                <?php if ($this->CompAdmin == true): ?>
+                                <div class="col-sm-1 col-sm-pull-4">
+                                    <a title="<?php echo $this->translate('add');?>" href="/user/goods/add" class="btn btn-default">
+                                        <i class="fas fa-plus"></i>
+                                    </a>
+                                </div>
+                                <?php endif; ?>
+                            </div>
+                        </form>
+                    </div>
 
-    </div>
+                    <!-- Table -->
+                    <table id="goodsListTable"></table>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
 
-<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
-<script>
-    function doOption(obj){
-        var url=$(obj).attr('data-url');
-        var id=$(obj).attr('id');
-        var msg1=$(obj).attr('data-msg1');
-        var msg2=$(obj).attr('data-msg2');
-        var msg3=$(obj).attr('data-msg3');
-        //询问框
-        layer.confirm(msg1, {
-            title:false,
-            closeBtn: 0,
-            btn: ['<?php echo $this->translate('yes');?>','<?php echo $this->translate('no');?>'] //按钮
-        }, function(){
-            $.post( url,
-                {'delID':id},
-                function(data){
-                    if( data.status == 1){
-                        layer.msg('<span style="color: #EF8200;font-size: 16px;">'+msg2+'</span>', {skin:'del-class',icon: 1});
-                        parent.window.location.reload();
-                    }
-                    else{
-                        layer.msg('<span style="color: #EF8200;font-size: 16px;">'+msg3+'</span><br>'+data.error, {skin:'del-class',icon: 0});
-                        parent.window.location.reload();
-                    }
-                },"json");
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
 
-        }, function(){
-            layer.closeAll();
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script src="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.js"></script>
+<script src="/ky/bootstrap-table-1.12.1-dist/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="/ky/js/base64.js"></script>
+
+<script type="text/javascript">
+    var dataDict = {};
+
+    $().ready(function() {
+
+	});
+
+	$(function () {
+        $('.company-navigation').find('a').each(function () {
+            if (this.href === document.location.href || document.location.href.search(this.href) >= 0) {
+                $(this).addClass('nav-selected');
+            } else {
+                $(this).removeClass('nav-selected');
+            }
         });
 
+        var dataDictQuery = '/user/account/dict-ajax';
+        var dictCode = new Array("ECOMM_STATUS");
+        $.ajax({
+            type: "POST",
+            url: dataDictQuery,
+            data: {
+                dictCode: dictCode,
+                langCode: '<?php echo $this->userLangCode; ?>'
+            },
+            dataType: "json",
+            success: function (data) {
+                $.data(dataDict, 'dataDict', data);
+
+                $('#contactListTable').bootstrapTable({
+                    url: '/user/account/contactlistajax',
+                    method: 'post',
+                    // showRefresh: true,
+                    // search: true,
+                    pagination: true,
+                    classes: 'table table-no-bordered',
+                    sidePagination: 'server',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    pageNumber: 1,
+                    pageSize: 10,
+                    queryParams: function(params) {
+                        return {
+                            limit: params.limit,
+                            skip: params.offset,
+                            keyword: params.search
+                        };
+                    },
+                    columns: [{
+                        field: 'name',
+                        title: '<?php echo $this->translate("name"); ?>',
+                        formatter: function (value, row) {
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.contactID);
+                            var href = "/user/account/view?"+resultEnCode;
+                            return '<a href="' + href + '">' + value + '</a>';
+                        }
+                    }, {
+                        field: 'ecommloginname',
+                        title: '<?php echo $this->translate("username"); ?>',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '') {
+                                value = "-";
+                            }
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.contactID);
+                            var href = "/user/account/view?"+resultEnCode;
+                            return '<a href="' + href + '">' + value + '</a>';
+                        }
+                    }, {
+                        field: 'ecommstatus',
+                        title: '<?php echo $this->translate("userP"); ?>',
+                        formatter: function (value) {
+                            var result = "-";
+                            var data = $.data(dataDict, 'dataDict');
+                            $.each(data, function (key, item) {
+                                if (key === 'ECOMM_STATUS') {
+                                    $.each(item, function (i, dict) {
+                                        if (dict.code === value) {
+                                            result = dict.name;
+                                        }
+                                    });
+                                }
+                            });
+                            return result;
+                        }
+                        //}, {
+                        //    field: 'ecommrole',
+                        //    title: '<?php //echo $this->translate("userROLE"); ?>//'
+                    }, {
+                        field: 'contactStatus',
+                        title: '<?php echo $this->translate("userPT"); ?>',
+                        formatter: function (value) {
+                            return (value === '01') ? '<?php echo $this->translate('normal') ?>' : '<?php echo $this->translate('disable'); ?>';
+                        }
+                    }, {
+                        field: 'isDefaultPublic',
+                        title: '<?php echo $this->translate("accountDF"); ?>',
+                        formatter: function (value, row) {
+                            var result = (value === true) ? '<?php echo $this->translate('yes') ?>' : '<?php echo $this->translate('no'); ?>';
+                            <?php if ($this->CompAdmin == true): ?>
+                            result = '<a href="javascript:void(0)" id="' + row.contactID + '" data-url="/user/account/default" data-msg1="<?php echo $this->translate("is_default");?>" '
+                                + 'data-msg2="<?php echo $this->translate("tip_default_success");?>" '
+                                + 'data-msg3="<?php echo $this->translate("tip_default_fail");?>" '
+                                + 'onclick="doOption(this);" '
+                                + '>'
+                                + result
+                                + '</a>';
+                            <?php endif; ?>
+                            return result;
+                        }
+                    }, {
+                        title: '<?php echo $this->translate("madeTT"); ?>',
+                        formatter: function (value, row, index) {
+                            var editTitle = "<?php echo $this->translate("edit");?>";
+                            var disableTitle = "<?php echo $this->translate('disable');?>";
+                            var validTitle = "<?php echo $this->translate('enable');?>";
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.contactID);
+                            var href = "/user/account/edit?"+resultEnCode;
+
+                            var result = '<a title="' + editTitle+ '" href="' + href + '">'
+                                + '<i class="far fa-edit"></i>'
+                                + '</a>&nbsp;';
+                            <?php if ($this->CompAdmin == true): ?>
+                            if (row.contactStatus === '01') {
+                                result += '<a href="javascript:void(0)" title="' + disableTitle + '" id="' + row.contactID + '" data-url="/user/account/invalid" data-msg1="<?php echo $this->translate("is_invalid");?>" '
+                                    + 'data-msg2="<?php echo $this->translate("tip_invalid_success");?>" '
+                                    + 'data-msg3="<?php echo $this->translate("tip_invalid_fail");?>" '
+                                    + 'onclick="doOption(this);" '
+                                    + '>'
+                                    + '<i class="fas fa-ban"></i>'
+                                    + '</a>';
+                            }
+
+                            if (row.contactStatus === '02') {
+                                result += '<a href="javascript:void(0)" title="' + validTitle + '" id="' + row.contactID + '" data-url="/user/account/valid" data-msg1="<?php echo $this->translate("is_valid");?>" '
+                                    + 'data-msg2="<?php echo $this->translate("tip_valid_success");?>" '
+                                    + 'data-msg3="<?php echo $this->translate("tip_valid_fail");?>" '
+                                    + 'onclick="doOption(this);" '
+                                    + '>'
+                                    + '<i class="far fa-check-circle"></i>'
+                                    + '</a>';
+                            }
+                            <?php endif; ?>
+
+                            return result;
+                        }
+                    }]
+                });
+            }
+        });
+
+        $("#searchContactBtn").click(function () {
+            goodsSearch();
+        });
+
+        $("#shoAllContact").click(function () {
+            var goodsListTable = $('#goodsListTable');
+            var options = {};
+            if ($(this).is(':checked')) {
+                options = {
+                    query:{
+                        contactStatus: "all"
+                    }
+                };
+            }
+            $(goodsListTable).bootstrapTable('refresh', options);
+        });
+	});
+
+	function goodsSearch() {
+        var goodsListTable = $('#goodsListTable');
+        var options = {
+            query:{
+                keyword: $("#keyword").val()
+            }
+        };
+        $(goodsListTable).bootstrapTable('refresh', options);
     }
 
+    function doOption(obj) {
+        var url = $(obj).attr('data-url');
+        var id = $(obj).attr('id');
+        var msg1 = $(obj).attr('data-msg1');
+        var msg2 = $(obj).attr('data-msg2');
+        var msg3 = $(obj).attr('data-msg3');
+        //询问框
+        layer.confirm(msg1, {
+            title: false,
+            closeBtn: 0,
+            btn: ['<?php echo $this->translate('yes');?>', '<?php echo $this->translate('no');?>'] //按钮
+        }, function () {
+            $.post(url,
+                {'delID': id},
+                function (data) {
+                    var contactListTable = $('#contactListTable');
+
+                    if (data.status === 1) {
+                        layer.msg('<span style="color: #EF8200;font-size: 16px;">' + msg2 + '</span>', {
+                            skin: 'del-class',
+                            icon: 1
+                        });
+                        $(contactListTable).bootstrapTable('refresh');
+                    } else {
+                        layer.msg('<span style="color: #EF8200;font-size: 16px;">' + msg3 + '</span><br>' + data.error, {
+                            skin: 'del-class',
+                            icon: 0
+                        });
+                        $(contactListTable).bootstrapTable('refresh');
+                    }
+                }, "json");
+
+        }, function () {
+            layer.closeAll();
+        });
+    }
 </script>
 </body>
 </html>

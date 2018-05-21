@@ -219,7 +219,7 @@ return array(
     'INPkw_par_buyer'          => 'Enter keywords such as buyer',
     'INPkw_par_vendor'         => 'Enter keywords such as vendor',
     'INPfd_par'                => 'Enter keywords such as eTradeFast codes',
-    'INPkw_goodes'             => 'Enter keywords such as name, HS Code, model or brand',
+    'INPkw_goods'             => 'Enter keywords such as name, HS Code, model or brand',
     'INPkw_order_xs'           => 'Enter keywords such as oder number, buyer',
     'INPkw_order_cg'           => 'Enter keywords such as oder number, vendor',
 
@@ -336,15 +336,13 @@ return array(
     'verify'        => 'Verify',
     'enable'        => 'Enable',
     //产品&订单中心状态
-    'valid'         => 'Valid',
-    'checkP'        => 'Audit',
-    'checkIN'       => 'Audit',
-    'checkNO'       => 'Refuse',
-    'checkR'        => 'Pending',
-    'nopass'        => 'Rejected',
-    'history'       => 'History',
-    'draft'         => 'Draft',
-    'void'          => 'Void',
+    'valid'      => 'Valid',
+    'forReview'  => 'For Review',
+    'rejected'   => 'Rejected',
+    'forConfirm' => 'For Confirm',
+    'history'    => 'History',
+    'draft'      => 'Draft',
+    'invalid'       => 'Invalid',
 
     //产品页面
     'productNAME'   => 'Product Name',
