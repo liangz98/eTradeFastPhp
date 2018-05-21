@@ -45,7 +45,7 @@
                             <li role="presentation"><a href="#goods_search_form"><?php echo $this->translate('disable'); ?></a></li>
                         </ul>
 
-                        <form class="form-horizontal" action="javascript:void(0)" onsubmit="contactSearch()" id="goods_search_form">
+                        <form class="form-horizontal" action="javascript:void(0)" onsubmit="goodsSearch()" id="goods_search_form">
                             <div class="form-group" style="margin-bottom: 0 !important;">
                                 <label for="keyword" class="sr-only">keyword</label>
                                 <div class="col-sm-6">
@@ -144,7 +144,7 @@
                         field: 'productBrand',
                         title: '<?php echo $this->translate("brand"); ?>',
                         formatter: function (value, row) {
-                            if (value === undefined || value === '') {
+                            if (value === undefined || value === '' || value === null) {
                                 value = "-";
                             }
                             var base = new Base64();
@@ -155,8 +155,8 @@
                     }, {
                         field: 'productModel',
                         title: '<?php echo $this->translate("model"); ?>',
-                        formatter: function (value) {
-                            if (value === undefined || value === '') {
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
                                 value = "-";
                             }
                             var base = new Base64();
@@ -167,8 +167,8 @@
                     }, {
                         field: 'hscode',
                         title: '<?php echo $this->translate("HSCODE"); ?>',
-                        formatter: function (value) {
-                            if (value === undefined || value === '') {
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
                                 value = "-";
                             }
                             var base = new Base64();
@@ -180,7 +180,7 @@
                         field: 'rebateRate',
                         title: '<?php echo $this->translate("rebateRate"); ?>',
                         formatter: function (value, row) {
-                            if (value === undefined || value === '') {
+                            if (value === undefined || value === '' || value === null) {
                                 value = "-";
                             }
                             var base = new Base64();

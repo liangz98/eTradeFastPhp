@@ -134,7 +134,7 @@
                         field: 'bankAcctName',
                         title: '<?php echo $this->translate("bankAcctName"); ?>',
                         formatter: function (value, row) {
-                            if (value === undefined || value === '') {
+                            if (value === undefined || value === '' || value === null) {
                                 value = "-";
                             }
                             var base = new Base64();

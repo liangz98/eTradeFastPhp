@@ -143,7 +143,7 @@
                         field: 'ecommloginname',
                         title: '<?php echo $this->translate("username"); ?>',
                         formatter: function (value, row) {
-                            if (value === undefined || value === '') {
+                            if (value === undefined || value === '' || value === null) {
                                 value = "-";
                             }
                             var base = new Base64();

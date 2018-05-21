@@ -16,3 +16,9 @@ body {
 .panel-body form {
     margin-top: 15px;
 }
+
+/* 列表表格 */
+#goodsListTable {
+    margin-left: 15px;
+    width: 97%;
+}

@@ -121,7 +121,7 @@ class GoodsController extends Kyapi_Controller_Action
         $queryParams['productStatus'] = $productStatus;
 
         $querySorts = array();
-        $querySorts['createTime'] = "DESC";
+        // $querySorts['createTime'] = "DESC";
 
         $keyword = $this->_request->getParam('keyword');
         if (empty($keyword)) {
