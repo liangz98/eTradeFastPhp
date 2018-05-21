@@ -4,7 +4,7 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
 	<title>快移</title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
-    <link href="/ky/css/bank/bank.css" rel="stylesheet">
+    <link href="/ky/css/goods/goods.css" rel="stylesheet">
     <link href="/ky/css/img-upload.css" rel="stylesheet">
 </head>
 <body>
@@ -16,16 +16,15 @@
 		<div class="row">
             <div class="col-md-3 company-navigation hidden-xs">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><?php echo $this->translate('companyMNG'); ?></div>
+                    <div class="panel-heading"><?php echo $this->translate('goods'); ?></div>
                     <div class="list-group">
-                        <a href="/user/company" class="list-group-item"><?php echo $this->translate('company_info'); ?></a>
-                        <a href="/user/account" class="list-group-item"><?php echo $this->translate('personNO'); ?></a>
-                        <a href="/user/bank" class="list-group-item"><?php echo $this->translate('bankNO'); ?></a>
+                        <a href="/user/goods" class="list-group-item"><?php echo $this->translate('goodsME'); ?></a>
+                        <a href="/user/purchase" class="list-group-item"><?php echo $this->translate('goodsBUY'); ?></a>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-9 bank-main">
+            <div class="col-md-9 goods-main">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <?php if (!empty($this->errMsg)): ?>
@@ -37,79 +36,71 @@
 
                         <ul class="nav nav-tabs">
                             <li role="presentation" class="active">
-                                <a href="#info" aria-controls="info" role="tab" data-toggle="tab"><?php echo $this->translate('bankNO'); ?></a>
+                                <a href="#info" aria-controls="info" role="tab" data-toggle="tab"><?php echo $this->translate('edit').$this->translate('goodsME');?></a>
                             </li>
                         </ul>
 
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active row" id="info">
                                 <div class="col-md-12">
-                                    <form class="form-horizontal bank-main-edit" action="#" method="post" id="bank_edit_form" name="bank_edit_form">
+                                    <form class="form-horizontal layui-form goods-main-edit" action="#" method="post" id="goods_edit_form" name="goods_edit_form">
                                         <div class="form-group">
-                                            <label for="bankAcctName" class="col-sm-2 control-label"><?php echo $this->translate('bankAcctName'); ?></label>
+                                            <label for="productName" class="col-sm-2 control-label"><?php echo $this->translate('productNAME'); ?></label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control" name="bankAcctName" id="bankAcctName" placeholder="" value="<?php echo $this->bank['bankAcctName']; ?>"  required >
+                                                <input type="text" class="form-control" name="productName" id="productName" placeholder="" value="<?php echo $this->goods['productName']; ?>"  required >
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="bankAcctNo" class="col-sm-2 control-label"><?php echo $this->translate('bankAcctNo'); ?></label>
+                                            <label for="productEnName" class="col-sm-2 control-label"><?php echo $this->translate('productENNAME'); ?></label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control" name="bankAcctNo" id="bankAcctNo" placeholder="" value="<?php echo $this->bank['bankAcctNo']; ?>" required >
+                                                <input type="text" class="form-control" name="productEnName" id="productEnName" placeholder="" value="<?php echo $this->goods['productEnName']; ?>" >
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="bankAcctType" class="col-sm-2 control-label"><?php echo $this->translate('bankAcctType'); ?></label>
+                                            <label for="productBrand" class="col-sm-2 control-label"><?php echo $this->translate('brand'); ?></label>
                                             <div class="col-sm-9">
-                                                <select class="form-control" name="bankAcctType" id="bankAcctType">
-                                                    <?php echo $this->ShowDictionaryList($this->dic_Setting['BANK_ACCOUNT_TYPE'], $this->userLangCode, $this->dic_Setting['BANK_ACCOUNT_TYPE'], $this->bank['bankAcctType']); ?>
+                                                <input type="text" class="form-control" name="productBrand" id="productBrand" placeholder="" value="<?php echo $this->goods['productBrand']; ?>" >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="productModel" class="col-sm-2 control-label"><?php echo $this->translate('model'); ?></label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="productModel" id="productModel" placeholder="" value="<?php echo $this->goods['productModel']; ?>" required >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="crnCode" class="col-sm-2 control-label"><?php echo $this->translate('unitPrice'); ?></label>
+                                            <div class="col-sm-2">
+                                                <select class="form-control" name="crnCode" id="crnCode">
+                                                    <?php echo $this->ShowDictionaryList($this->dic_Setting['CURRENCY'], $this->userLangCode, $this->dic_Setting['CURRENCY'], $this->goods['crnCode']); ?>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <input type="text" class="form-control" name="unitPrice" id="unitPrice" placeholder="" value="<?php echo $this->goods['unitPrice']; ?>" >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="pricingUnit" class="col-sm-2 control-label"><?php echo $this->translate('pricingUnit'); ?></label>
+                                            <div class="col-sm-2">
+                                                <select class="form-control" name="pricingUnit" id="pricingUnit">
+                                                    <?php echo $this->ShowDictionaryList($this->dic_Setting['PRODUCT_PRICING_UNIT'], $this->userLangCode, $this->dic_Setting['PRODUCT_PRICING_UNIT'], $this->goods['pricingUnit']); ?>
                                                 </select>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="bankName" class="col-sm-2 control-label"><?php echo $this->translate('accountBKname'); ?></label>
+                                            <label for="hscode" class="col-sm-2 control-label"><?php echo $this->translate('HSCODE'); ?></label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control" name="bankName" id="bankName" placeholder="" value="<?php echo $this->bank['bankName']; ?>" required >
+                                                <select name="hscode" id="hscode" lay-verify="required" lay-search="" lay-filter="hscode">
+                                                    <option value=""><?php echo $this->translate('et_select'); ?></option>
+                                                </select>
                                             </div>
                                         </div>
-
-                                        <div class="form-group">
-                                            <label for="swiftcode" class="col-sm-2 control-label"><?php echo $this->translate('SWIFTCode'); ?></label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" name="swiftcode" id="swiftcode" placeholder="" value="<?php echo $this->bank['swiftcode']; ?>" >
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="bankAddress" class="col-sm-2 control-label"><?php echo $this->translate('accountADR'); ?></label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" name="bankAddress" id="bankAddress" placeholder="" value="<?php echo $this->bank['bankAddress']; ?>" >
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="remarks" class="col-sm-2 control-label"><?php echo $this->translate('remarks'); ?></label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" name="remarks" id="remarks" placeholder="" value="<?php echo $this->bank['remarks']; ?>" >
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="" class="col-sm-2 control-label"><?php echo $this->translate('UPBank'); ?></label>
-                                            <div class="col-sm-9">
-                                                <?php echo $this->ShowWebuploader($this->bank['attachmentList'], $this->biz_Setting['BANK_ACCOUNT'], $this->attach_Setting['0000'], "0"); ?>
-                                            </div>
-                                        </div>
-
-                                        <?php if ($this->CompAdmin == true): ?>
-                                        <div class="form-group">
-                                            <div class="col-sm-offset-2 col-sm-9">
-                                                <button type="submit" class="btn btn-warning"><?php echo $this->translate('save'); ?></button>
-                                            </div>
-                                        </div>
-                                        <?php endif; ?>
                                     </form>
                                 </div>
                             </div>
@@ -148,7 +139,37 @@
                 $(this).removeClass('nav-selected');
             }
         });
+
+        // $(".layui-input").change(function () {
+        //     console.log($(this).val());
+        // });
+        var hscodeQuery = '/user/common/hscode-ajax';
+        $.ajax({
+            type: "POST",
+            url: hscodeQuery,
+            data: {
+                keyword: ''
+            },
+            dataType: "json",
+            success: function (data) {
+                var optionString = "";
+                $.each(data, function (i, item) {
+                    console.log(item);
+                    optionString += "<option value=\"" + item.valueCode + "\" >" + item.valueCode + "</option>";
+                });
+                var str = '<?php echo $this->translate("et_select"); ?>';
+                $("#hscode").html('<option value="">' + str + '</option>' + optionString);
+                form.render('select'); //这个很重要
+            }
+        });
 	});
+
+    layui.use('form', function(){
+        var form = layui.form;
+
+        form.render();
+        form.render('select');
+    });
 </script>
 </body>
 </html>
