@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+	<title>快移</title>
+    <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <link href="/ky/css/goods/goods.css" rel="stylesheet">
+    <link href="/ky/css/img-upload.css" rel="stylesheet">
+    <link href="/ky/bootstrap-select-1.12.4-dist/css/bootstrap-select.min.css" rel="stylesheet">
+</head>
+<body>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
+
+<div class="container-fluid index-body">
+	<div class="container">
+		<div class="row">
+            <div class="col-md-3 company-navigation hidden-xs">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><?php echo $this->translate('goods'); ?></div>
+                    <div class="list-group">
+                        <a href="/user/goods" class="list-group-item"><?php echo $this->translate('goodsME'); ?></a>
+                        <a href="/user/purchase" class="list-group-item"><?php echo $this->translate('goodsBUY'); ?></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9 goods-main">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <?php if (!empty($this->errMsg)): ?>
+                        <div class="alert alert-danger alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Warning!</strong> <?php echo $this->errMsg; ?>
+                        </div>
+                        <?php endif; ?>
+
+                        <ul class="nav nav-tabs">
+                            <li role="presentation" class="active">
+                                <a href="#info" aria-controls="info" role="tab" data-toggle="tab"><?php echo $this->translate('add').$this->translate('goodsME');?></a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active row" id="info">
+                                <div class="col-md-12">
+                                    <form class="form-horizontal goods-main-edit" action="#" method="post" id="goods_edit_form" name="goods_edit_form">
+                                        <div class="form-group">
+                                            <label for="productName" class="col-sm-3 control-label"><?php echo $this->translate('productNAME'); ?></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" name="productName" id="productName" placeholder="" value="<?php echo $this->goods['productName']; ?>"  required >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="productEnName" class="col-sm-3 control-label"><?php echo $this->translate('productENNAME'); ?></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" name="productEnName" id="productEnName" placeholder="" value="<?php echo $this->goods['productEnName']; ?>" >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="productBrand" class="col-sm-3 control-label"><?php echo $this->translate('brand'); ?></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" name="productBrand" id="productBrand" placeholder="" value="<?php echo $this->goods['productBrand']; ?>" required >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="productModel" class="col-sm-3 control-label"><?php echo $this->translate('model'); ?></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" name="productModel" id="productModel" placeholder="" value="<?php echo $this->goods['productModel']; ?>" required >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="crnCode" class="col-sm-3 control-label"><?php echo $this->translate('unitPrice'); ?></label>
+                                            <div class="col-sm-2">
+                                                <select class="selectpicker form-control" name="crnCode" id="crnCode">
+                                                    <?php echo $this->ShowDictionaryList($this->dic_Setting['CURRENCY'], $this->userLangCode, $this->dic_Setting['CURRENCY'], $this->goods['crnCode']); ?>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <input type="text" class="form-control" name="unitPrice" id="unitPrice" placeholder="" value="<?php echo $this->goods['unitPrice']; ?>" required >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="pricingUnit" class="col-sm-3 control-label"><?php echo $this->translate('pricingUnit'); ?></label>
+                                            <div class="col-sm-2">
+                                                <select class="selectpicker form-control" name="pricingUnit" id="pricingUnit" data-live-search="true">
+                                                    <?php echo $this->ShowDictionaryList($this->dic_Setting['PRODUCT_PRICING_UNIT'], $this->userLangCode, $this->dic_Setting['PRODUCT_PRICING_UNIT'], $this->goods['pricingUnit']); ?>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="hscode" class="col-sm-3 control-label"><?php echo $this->translate('HSCODE'); ?></label>
+                                            <div class="col-sm-8">
+                                                <select class="selectpicker form-control" name="hscode" id="hscode" data-live-search="true">
+                                                    <?php if (empty($this->goods['productHSCode'])): ?>
+                                                    <option value=""><?php echo $this->translate('et_select'); ?></option>
+                                                    <?php else: ?>
+                                                    <option value="<?php echo $this->goods['productHSCode']['hscode']; ?>" data-pricingUnit="<?php echo $this->goods['productHSCode']['pricingUnit']; ?>" data-rebateRate="<?php echo $this->goods['productHSCode']['rebateRate']; ?>" data-taxRate="<?php echo $this->goods['productHSCode']['taxRate']; ?>">
+                                                        <?php echo $this->goods['productHSCode']['codeName']; ?>
+                                                    </option>
+                                                    <?php endif; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label"><?php echo $this->translate('legalPricingUnit');?></label>
+                                            <div class="col-sm-8">
+                                                <p class="form-control-static legalPricingUnitSpan">
+                                                    <?php echo $this->ShowDictionaryTo($this->dic_Setting['PRODUCT_PRICING_UNIT'], $this->userLangCode, $this->dic_Setting['PRODUCT_PRICING_UNIT'], $this->goods["legalPricingUnit"]); ?>
+                                                </p>
+                                                <input type="hidden" name="legalPricingUnit" id="legalPricingUnit" value="<?php echo $this->goods["legalPricingUnit"]; ?>">
+                                                <input type="hidden" name="legalPricingUnit2" id="legalPricingUnit2" value="<?php echo $this->goods["legalPricingUnit2"]; ?>">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label"><?php echo $this->translate('rebateRate');?></label>
+                                            <div class="col-sm-8">
+                                                <p class="form-control-static rebateRateSpan">
+                                                    <?php echo $this->goods["rebateRate"] * 100 ?> %
+                                                </p>
+                                                <input type="hidden" name="rebateRate" id="rebateRate" value="<?php echo $this->goods["rebateRate"]; ?>">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label"><?php echo $this->translate('taxRate');?></label>
+                                            <div class="col-sm-8">
+                                                <p class="form-control-static taxRateSpan">
+                                                    <?php echo $this->goods["taxRate"] * 100 ?> %
+                                                </p>
+                                                <input type="hidden" name="taxRate" id="taxRate" value="<?php echo $this->goods["taxRate"]; ?>">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="declareElements" class="col-sm-3 control-label"><?php echo $this->translate('declareElements'); ?></label>
+                                            <div class="col-sm-8">
+                                                <textarea class="form-control" name="declareElements" id="declareElements" rows="3"><?php echo $this->goods["declareElements"];?></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="productSize" class="col-sm-3 control-label"><?php echo $this->translate('productSize'); ?></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" name="productSize" id="productSize" placeholder="" value="<?php echo $this->goods['productSize']; ?>" >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="functionUsage" class="col-sm-3 control-label"><?php echo $this->translate('functionUsage'); ?></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" name="functionUsage" id="functionUsage" placeholder="" value="<?php echo $this->goods['functionUsage']; ?>" >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="productMaterial" class="col-sm-3 control-label"><?php echo $this->translate('productMaterial'); ?></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" name="productMaterial" id="productMaterial" placeholder="" value="<?php echo $this->goods['productMaterial']; ?>" >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="productionMode" class="col-sm-3 control-label"><?php echo $this->translate('productionMode'); ?></label>
+                                            <div class="col-sm-2">
+                                                <select class="selectpicker form-control" name="productionMode" id="productionMode">
+                                                    <?php echo $this->ShowDictionaryList($this->dic_Setting['PRODUCT_PRODUCTION_MODE'], $this->userLangCode, $this->dic_Setting['PRODUCT_PRODUCTION_MODE'], $this->goods['productionMode']); ?>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group supplierMode">
+                                            <label for="supplierID" class="control-label col-sm-3"><?php echo $this->translate('supplierName'); ?></label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group">
+                                                    <select class="selectpicker form-control" name="supplierID" id="supplierID" data-live-search="true">
+                                                        <?php echo $this->SetOptions($this->vendorList, $this->goods['supplierID']); ?>
+                                                    </select>
+                                                    <div class="input-group-addon"><i class="fas fa-plus"></i></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group supplierMode">
+                                            <label for="purchaseCrnCode" class="col-sm-3 control-label"><?php echo $this->translate('purchaseUnitPrice'); ?></label>
+                                            <div class="col-sm-2">
+                                                <select class="selectpicker form-control" name="purchaseCrnCode" id="purchaseCrnCode">
+                                                    <?php echo $this->ShowDictionaryList($this->dic_Setting['CURRENCY'], $this->userLangCode, $this->dic_Setting['CURRENCY'], $this->goods['purchaseCrnCode']); ?>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <input type="text" class="form-control" name="purchaseUnitPrice" id="purchaseUnitPrice" placeholder="" value="<?php echo $this->goods['purchaseUnitPrice']; ?>" >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="packingType" class="col-sm-3 control-label"><?php echo $this->translate('packageTYPE'); ?></label>
+                                            <div class="col-sm-2">
+                                                <select class="selectpicker form-control" name="packingType" id="packingType" data-live-search="true">
+                                                    <?php echo $this->ShowDictionaryList($this->dic_Setting['PRODUCT_PACKING_TYPE'], $this->userLangCode, $this->dic_Setting['PRODUCT_PACKING_TYPE'], $this->goods['packingType']); ?>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="packingVolume" class="col-sm-3 control-label"><?php echo $this->translate('packingVolume'); ?></label>
+                                            <div class="col-sm-2">
+                                                <input type="text" class="form-control" name="packingVolume" id="packingVolume" placeholder="" value="<?php echo $this->goods['packingVolume']; ?>" >
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <p class="form-control-static">CBM</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="grossWeight" class="col-sm-3 control-label"><?php echo $this->translate('grossWeight'); ?></label>
+                                            <div class="col-sm-2">
+                                                <input type="text" class="form-control" name="grossWeight" id="grossWeight" placeholder="" value="<?php echo $this->goods['grossWeight']; ?>" >
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <p class="form-control-static">KGS</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="netWeight" class="col-sm-3 control-label"><?php echo $this->translate('netWeight'); ?></label>
+                                            <div class="col-sm-2">
+                                                <input type="text" class="form-control" name="netWeight" id="netWeight" placeholder="" value="<?php echo $this->goods['netWeight']; ?>" >
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <p class="form-control-static">KGS</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-3 control-label"><?php echo $this->translate('needInspection'); ?></label>
+                                            <div class="col-sm-8">
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="needInspection" value="1" <?php if ($this->goods["needInspection"] == true) echo 'checked'; ?> > <?php echo $this->translate('yes'); ?>
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="needInspection" value="0" <?php if ($this->goods["needInspection"] == false) echo 'checked'; ?> > <?php echo $this->translate('no'); ?>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-3 control-label"><?php echo $this->translate('goodsAttachment'); ?></label>
+                                            <div class="col-sm-8">
+                                                <?php echo $this->ShowWebuploader($this->goods['attachmentList'], $this->biz_Setting['PRODUCT'], $this->attach_Setting['PDPD'], $this->goods['productID']); ?>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-3 col-sm-8">
+                                                <button type="submit" class="btn btn-warning"><?php echo $this->translate('save'); ?></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content"></div>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script type="text/javascript" src="/ky/upload/img.js"></script>
+<script type="text/javascript" src="/ky/bootstrap-select-1.12.4-dist/js/bootstrap-select.min.js"></script>
+
+<script type="text/javascript">
+    var dataDict = {};
+
+	$().ready(function() {
+
+	});
+
+	$(function () {
+        $('.company-navigation').find('a').each(function () {
+            if (this.href === document.location.href || document.location.href.search(this.href) >= 0) {
+            // if (this.href === document.location.href) {
+                $(this).addClass('nav-selected');
+            } else {
+                $(this).removeClass('nav-selected');
+            }
+        });
+
+        $("#goods_edit_form").validate({
+            rules: {
+                unitPrice: {
+                    number: true
+                },
+                purchaseUnitPrice: {
+                    number: true
+                },
+                packingVolume: {
+                    number: true
+                },
+                grossWeight: {
+                    number: true
+                },
+                netWeight: {
+                    number: true
+                }
+            },
+            messages: {
+
+            },
+            errorPlacement: function(error, element) {
+                // Append error within linked label
+                $(element)
+                    .closest( "form" )
+                    .find( "label[for='" + element.attr( "id" ) + "']" )
+                    .parent().addClass("has-error").removeClass("has-success")
+                    .append( error );
+                $(error).addClass("col-md-offset-3");
+            },
+            success: function(label) {
+                var forName = $(label).attr("for");
+                $("label[for='" + forName + "']").parent().addClass("has-success").removeClass("has-error");
+                $(label).remove();
+            },
+            highlight: function (element) {
+                $("label[for='" + element.id + "']").parent().addClass("has-error").removeClass("has-success");
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+
+        var hscodeSelect = $("#hscode");
+        $(hscodeSelect).on('shown.bs.select', function (e) {
+            $(hscodeSelect).prev().find("input").keyup(function (event) {
+                var e = event || window.event || arguments.callee.caller.arguments[0];
+                if (e && e.keyCode !== 38 && e.keyCode !== 40) { // 按 Up Down
+                    $(hscodeSelect).prev().find("input").attr('id', "hscodeInput"); //为input增加id属性
+                    var hscodeInput = $("#hscodeInput");
+                    var keyword = $(hscodeInput).val();
+                    var hscodeQuery = '/user/common/hscode-ajax';
+                    $.ajax({
+                        type: "POST",
+                        url: hscodeQuery,
+                        data: {
+                            keyword: keyword
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            var optionString = "";
+                            $.each(data, function (i, item) {
+                                // console.log(item);
+                                optionString += "<option value='" + item.hscode + "' data-pricingUnit='"+item.pricingUnit+"' data-rebateRate='"+item.rebateRate+"' data-taxRate='"+item.taxRate+"'>" + item.hscode + " (" + item.codeName + ")</option>";
+                            });
+
+                            $(hscodeSelect).html("");
+                            $(hscodeSelect).append(optionString);
+                            $(hscodeSelect).selectpicker('refresh');
+                        }
+                    });
+                }
+            })
+        });
+
+        var dataDictQuery = '/user/common/dict-ajax';
+        var dictCode = new Array("PRODUCT_PRICING_UNIT");
+        $.ajax({
+            type: "POST",
+            url: dataDictQuery,
+            data: {
+                dictCode: dictCode,
+                langCode: '<?php echo $this->userLangCode; ?>'
+            },
+            dataType: "json",
+            success: function (data) {
+                $.data(dataDict, 'dataDict', data);
+
+                $(hscodeSelect).on('hide.bs.select', function (e) {
+                    if ($(hscodeSelect).selectpicker('val') !== undefined && $(hscodeSelect).selectpicker('val') !== '') {
+                        var selectObject = $(hscodeSelect).find("option:selected");
+                        var pricingUnit = $(selectObject).attr("data-pricingUnit");
+                        var rebateRate = $(selectObject).attr("data-rebateRate");
+                        var taxRate = $(selectObject).attr("data-taxRate");
+
+                        var result = "-";
+                        var data = $.data(dataDict, 'dataDict');
+                        $.each(data, function (key, item) {
+                            if (key === 'PRODUCT_PRICING_UNIT') {
+                                $.each(item, function (i, dict) {
+                                    if (dict.code === pricingUnit) {
+                                        result = dict.name;
+                                    }
+                                });
+                            }
+                        });
+
+                        $(".legalPricingUnitSpan").html(result);
+                        $("#legalPricingUnit").val(pricingUnit);
+
+                        $(".rebateRateSpan").html(rebateRate * 100 + " %");
+                        $("#rebateRate").val(rebateRate);
+
+                        $(".taxRateSpan").html(taxRate * 100 + " %");
+                        $("#taxRate").val(taxRate);
+                    }
+                });
+            }
+        });
+
+        var productionMode = $('#productionMode');
+        setSupplierMode($(productionMode).val());
+        $(productionMode).change(function () {
+            var mode = $(this).val();
+            setSupplierMode(mode);
+        });
+    });
+
+	function setSupplierMode(mode) {
+        var supplierMode = $(".supplierMode");
+        if (mode === '02') {
+            $(supplierMode).show();
+        } else {
+            $(supplierMode).hide();
+        }
+    }
+</script>
+</body>
+</html>
