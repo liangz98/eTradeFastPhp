@@ -363,7 +363,7 @@
                             var optionString = "";
                             $.each(data, function (i, item) {
                                 // console.log(item);
-                                optionString += "<option value='" + item.hscode + "' pricingUnit='"+item.pricingUnit+"' rebateRate='"+item.rebateRate+"' taxRate='"+item.taxRate+"'>" + item.hscode + " (" + item.codeName + ")</option>";
+                                optionString += "<option value='" + item.hscode + "' data-pricingUnit='"+item.pricingUnit+"' data-rebateRate='"+item.rebateRate+"' data-taxRate='"+item.taxRate+"'>" + item.hscode + " (" + item.codeName + ")</option>";
                             });
 
                             $(hscodeSelect).html("");
@@ -391,9 +391,9 @@
                 $(hscodeSelect).on('hide.bs.select', function (e) {
                     if ($(hscodeSelect).selectpicker('val') !== undefined && $(hscodeSelect).selectpicker('val') !== '') {
                         var selectObject = $(hscodeSelect).find("option:selected");
-                        var pricingUnit = $(selectObject).attr("pricingUnit");
-                        var rebateRate = $(selectObject).attr("rebateRate");
-                        var taxRate = $(selectObject).attr("taxRate");
+                        var pricingUnit = $(selectObject).attr("data-pricingUnit");
+                        var rebateRate = $(selectObject).attr("data-rebateRate");
+                        var taxRate = $(selectObject).attr("data-taxRate");
 
                         var result = "-";
                         var data = $.data(dataDict, 'dataDict');
