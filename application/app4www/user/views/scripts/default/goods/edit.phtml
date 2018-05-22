@@ -69,14 +69,14 @@
                                         <div class="form-group">
                                             <label for="productModel" class="col-sm-2 control-label"><?php echo $this->translate('model'); ?></label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control" name="productModel" id="productModel" placeholder="" value="<?php echo $this->goods['productModel']; ?>" required >
+                                                <input type="text" class="form-control" name="productModel" id="productModel" placeholder="" value="<?php echo $this->goods['productModel']; ?>" >
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="crnCode" class="col-sm-2 control-label"><?php echo $this->translate('unitPrice'); ?></label>
                                             <div class="col-sm-2">
-                                                <select class="form-control" name="crnCode" id="crnCode">
+                                                <select class="selectpicker form-control" name="crnCode" id="crnCode">
                                                     <?php echo $this->ShowDictionaryList($this->dic_Setting['CURRENCY'], $this->userLangCode, $this->dic_Setting['CURRENCY'], $this->goods['crnCode']); ?>
                                                 </select>
                                             </div>
@@ -88,7 +88,7 @@
                                         <div class="form-group">
                                             <label for="pricingUnit" class="col-sm-2 control-label"><?php echo $this->translate('pricingUnit'); ?></label>
                                             <div class="col-sm-2">
-                                                <select class="form-control" name="pricingUnit" id="pricingUnit">
+                                                <select class="selectpicker form-control" name="pricingUnit" id="pricingUnit" data-live-search="true">
                                                     <?php echo $this->ShowDictionaryList($this->dic_Setting['PRODUCT_PRICING_UNIT'], $this->userLangCode, $this->dic_Setting['PRODUCT_PRICING_UNIT'], $this->goods['pricingUnit']); ?>
                                                 </select>
                                             </div>
@@ -97,9 +97,161 @@
                                         <div class="form-group">
                                             <label for="hscode" class="col-sm-2 control-label"><?php echo $this->translate('HSCODE'); ?></label>
                                             <div class="col-sm-9">
-                                                <select name="hscode" id="hscode" class="selectpicker form-control" data-live-search="true">
+                                                <select class="selectpicker form-control" name="hscode" id="hscode" data-live-search="true">
                                                     <option value=""><?php echo $this->translate('et_select'); ?></option>
                                                 </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label"><?php echo $this->translate('legalPricingUnit');?></label>
+                                            <div class="col-sm-10">
+                                                <p class="form-control-static">
+                                                    <?php echo $this->ShowDictionaryTo($this->dic_Setting['PRODUCT_PRICING_UNIT'], $this->userLangCode, $this->dic_Setting['PRODUCT_PRICING_UNIT'], $this->goods["legalPricingUnit"]); ?>
+                                                </p>
+                                                <input type="hidden" name="legalPricingUnit" id="legalPricingUnit" value="<?php echo $this->goods["legalPricingUnit"]; ?>">
+                                                <input type="hidden" name="legalPricingUnit2" id="legalPricingUnit2" value="<?php echo $this->goods["legalPricingUnit2"]; ?>">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label"><?php echo $this->translate('rebateRate');?></label>
+                                            <div class="col-sm-10">
+                                                <p class="form-control-static">
+                                                    <?php echo $this->goods["rebateRate"] * 100 ?> %
+                                                </p>
+                                                <input type="hidden" name="rebateRate" id="rebateRate" value="<?php echo $this->goods["rebateRate"]; ?>">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label"><?php echo $this->translate('taxRate');?></label>
+                                            <div class="col-sm-10">
+                                                <p class="form-control-static">
+                                                    <?php echo $this->goods["taxRate"] * 100 ?> %
+                                                </p>
+                                                <input type="hidden" name="taxRate" id="taxRate" value="<?php echo $this->goods["taxRate"]; ?>">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="declareElements" class="col-sm-2 control-label"><?php echo $this->translate('declareElements'); ?></label>
+                                            <div class="col-sm-9">
+                                                <textarea class="form-control" name="declareElements" id="declareElements" rows="3"><?php echo $this->goods["declareElements"];?></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="productSize" class="col-sm-2 control-label"><?php echo $this->translate('productSize'); ?></label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="productSize" id="productSize" placeholder="" value="<?php echo $this->goods['productSize']; ?>" >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="functionUsage" class="col-sm-2 control-label"><?php echo $this->translate('functionUsage'); ?></label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="functionUsage" id="functionUsage" placeholder="" value="<?php echo $this->goods['functionUsage']; ?>" >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="productMaterial" class="col-sm-2 control-label"><?php echo $this->translate('productMaterial'); ?></label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="productMaterial" id="productMaterial" placeholder="" value="<?php echo $this->goods['productMaterial']; ?>" >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="productionMode" class="col-sm-2 control-label"><?php echo $this->translate('productionMode'); ?></label>
+                                            <div class="col-sm-2">
+                                                <select class="selectpicker form-control" name="productionMode" id="productionMode">
+                                                    <?php echo $this->ShowDictionaryList($this->dic_Setting['PRODUCT_PRODUCTION_MODE'], $this->userLangCode, $this->dic_Setting['PRODUCT_PRODUCTION_MODE'], $this->goods['productionMode']); ?>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="supplierName" class="col-sm-2 control-label"><?php echo $this->translate('supplierName'); ?></label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="supplierName" id="supplierName" placeholder="" value="<?php echo $this->goods['supplierName']; ?>" >
+                                                <input type="hidden" name="supplierID" id="supplierID" value="<?php echo $this->goods["supplierID"]; ?>">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="purchaseCrnCode" class="col-sm-2 control-label"><?php echo $this->translate('purchaseUnitPrice'); ?></label>
+                                            <div class="col-sm-2">
+                                                <select class="selectpicker form-control" name="purchaseCrnCode" id="purchaseCrnCode">
+                                                    <?php echo $this->ShowDictionaryList($this->dic_Setting['CURRENCY'], $this->userLangCode, $this->dic_Setting['CURRENCY'], $this->goods['purchaseCrnCode']); ?>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <input type="text" class="form-control" name="purchaseUnitPrice" id="purchaseUnitPrice" placeholder="" value="<?php echo $this->goods['purchaseUnitPrice']; ?>" >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="packingType" class="col-sm-2 control-label"><?php echo $this->translate('packageTYPE'); ?></label>
+                                            <div class="col-sm-2">
+                                                <select class="selectpicker form-control" name="packingType" id="packingType" data-live-search="true">
+                                                    <?php echo $this->ShowDictionaryList($this->dic_Setting['PRODUCT_PACKING_TYPE'], $this->userLangCode, $this->dic_Setting['PRODUCT_PACKING_TYPE'], $this->goods['packingType']); ?>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="packingVolume" class="col-sm-2 control-label"><?php echo $this->translate('packingVolume'); ?></label>
+                                            <div class="col-sm-2">
+                                                <input type="text" class="form-control" name="packingVolume" id="packingVolume" placeholder="" value="<?php echo $this->goods['packingVolume']; ?>" >
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <p class="form-control-static">CBM</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="grossWeight" class="col-sm-2 control-label"><?php echo $this->translate('grossWeight'); ?></label>
+                                            <div class="col-sm-2">
+                                                <input type="text" class="form-control" name="grossWeight" id="grossWeight" placeholder="" value="<?php echo $this->goods['grossWeight']; ?>" >
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <p class="form-control-static">KGS</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="netWeight" class="col-sm-2 control-label"><?php echo $this->translate('netWeight'); ?></label>
+                                            <div class="col-sm-2">
+                                                <input type="text" class="form-control" name="netWeight" id="netWeight" placeholder="" value="<?php echo $this->goods['netWeight']; ?>" >
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <p class="form-control-static">KGS</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-2 control-label"><?php echo $this->translate('needInspection'); ?></label>
+                                            <div class="col-sm-9">
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="needInspection" value="1" <?php if ($this->goods["needInspection"] == true) echo 'checked'; ?> > <?php echo $this->translate('yes'); ?>
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="needInspection" value="0" <?php if ($this->goods["needInspection"] == false) echo 'checked'; ?> > <?php echo $this->translate('no'); ?>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-2 control-label"><?php echo $this->translate('goodsAttachment'); ?></label>
+                                            <div class="col-sm-9">
+                                                <?php echo $this->ShowWebuploader($this->bank['attachmentList'], $this->biz_Setting['PRODUCT'], $this->attach_Setting['PDPD'], $this->goods['productID']); ?>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-2 col-sm-9">
+                                                <button type="submit" class="btn btn-warning"><?php echo $this->translate('save'); ?></button>
                                             </div>
                                         </div>
                                     </form>

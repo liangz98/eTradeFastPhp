@@ -328,7 +328,7 @@ return array(
     'UPICBNO'                    => 'Please scan and upload your tax registration certificate',
     'UPCOMFJ'                    => 'Please scan and upload your production licenses and trademarks',
 
-    'GOODSLS'       => 'Product photos',
+    'goodsAttachment'       => 'Product photos',
     'UPGOODSLS'     => 'Please scan and upload product packaging and materials',
     'UPBank'        => 'Relevant banking information.',
     //个人信息人员与账号模块（有些字段已经存在 下面模块不再进行说明）
