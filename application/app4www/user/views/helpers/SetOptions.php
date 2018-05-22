@@ -8,22 +8,22 @@ class Zend_View_Helper_SetOptions extends Shop_View_Helper {
      * @param $selectID
      * @return string
      */
-    function ShowDictionaryList($arrayObject, $selectID) {
+    function SetOptions($arrayObject, $selectID) {
         $optionString = "";
         if ($arrayObject != null && !empty($arrayObject)) {
             if (is_object($arrayObject)) {
                 $arrayObject = $this->objectToArray($arrayObject);
+            }
 
-                foreach ($arrayObject as $key => $item) {
-                    if (!empty($selectID)) {
-                        if ($selectID == $item['id']) {
-                            $optionString .= '<option selected="selected" value=' . $item['id'] . '>' . $item['name'] . '</option>';
-                        } else {
-                            $optionString .= '<option value=' . $item['id'] . '>' . $item['name'] . '</option>';
-                        }
+            foreach ($arrayObject as $key => $item) {
+                if (!empty($selectID)) {
+                    if ($selectID == $item['id']) {
+                        $optionString .= '<option selected="selected" value=' . $item['id'] . '>' . $item['name'] . '</option>';
                     } else {
                         $optionString .= '<option value=' . $item['id'] . '>' . $item['name'] . '</option>';
                     }
+                } else {
+                    $optionString .= '<option value=' . $item['id'] . '>' . $item['name'] . '</option>';
                 }
             }
         }

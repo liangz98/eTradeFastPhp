@@ -65,7 +65,7 @@ class PurchaseController extends Kyapi_Controller_Action
         }
     }
 
-    public function pruListAjaxAction() {
+    public function purListAjaxAction() {
         $msg = array();
         $requestObject = $this->_requestObject;
 

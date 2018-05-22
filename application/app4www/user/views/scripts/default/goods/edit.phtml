@@ -62,14 +62,14 @@
                                         <div class="form-group">
                                             <label for="productBrand" class="col-sm-3 control-label"><?php echo $this->translate('brand'); ?></label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" name="productBrand" id="productBrand" placeholder="" value="<?php echo $this->goods['productBrand']; ?>" >
+                                                <input type="text" class="form-control" name="productBrand" id="productBrand" placeholder="" value="<?php echo $this->goods['productBrand']; ?>" required >
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="productModel" class="col-sm-3 control-label"><?php echo $this->translate('model'); ?></label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" name="productModel" id="productModel" placeholder="" value="<?php echo $this->goods['productModel']; ?>" >
+                                                <input type="text" class="form-control" name="productModel" id="productModel" placeholder="" value="<?php echo $this->goods['productModel']; ?>" required >
                                             </div>
                                         </div>
 
@@ -81,7 +81,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-sm-3">
-                                                <input type="text" class="form-control" name="unitPrice" id="unitPrice" placeholder="" value="<?php echo $this->goods['unitPrice']; ?>" >
+                                                <input type="text" class="form-control" name="unitPrice" id="unitPrice" placeholder="" value="<?php echo $this->goods['unitPrice']; ?>" required >
                                             </div>
                                         </div>
 
@@ -171,22 +171,17 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
+                                        <div class="form-group supplierMode">
                                             <label for="supplierID" class="control-label col-sm-3"><?php echo $this->translate('supplierName'); ?></label>
                                             <div class="col-sm-8">
                                                 <div class="input-group">
-                                                    <select class="selectpicker form-control" name="supplierID" id="supplierID" data-live-search="true"></select>
+                                                    <select class="selectpicker form-control" name="supplierID" id="supplierID" data-live-search="true">
+                                                        <?php echo $this->SetOptions($this->vendorList, $this->goods['supplierID']); ?>
+                                                    </select>
                                                     <div class="input-group-addon"><i class="fas fa-plus"></i></div>
                                                 </div>
                                             </div>
                                         </div>
-
-<!--                                        <div class="form-group supplierMode">-->
-<!--                                            <label for="supplierID" class="col-sm-3 control-label">--><?php //echo $this->translate('supplierName'); ?><!--</label>-->
-<!--                                            <div class="col-sm-8">-->
-<!--                                                <input type="text" class="form-control" name="supplierID" id="supplierID" placeholder="" value="--><?php //echo $this->goods['supplierID']; ?><!--" >-->
-<!--                                            </div>-->
-<!--                                        </div>-->
 
                                         <div class="form-group supplierMode">
                                             <label for="purchaseCrnCode" class="col-sm-3 control-label"><?php echo $this->translate('purchaseUnitPrice'); ?></label>
@@ -300,6 +295,49 @@
                 $(this).addClass('nav-selected');
             } else {
                 $(this).removeClass('nav-selected');
+            }
+        });
+
+        $("#goods_edit_form").validate({
+            rules: {
+                unitPrice: {
+                    number: true
+                },
+                purchaseUnitPrice: {
+                    number: true
+                },
+                packingVolume: {
+                    number: true
+                },
+                grossWeight: {
+                    number: true
+                },
+                netWeight: {
+                    number: true
+                }
+            },
+            messages: {
+
+            },
+            errorPlacement: function(error, element) {
+                // Append error within linked label
+                $(element)
+                    .closest( "form" )
+                    .find( "label[for='" + element.attr( "id" ) + "']" )
+                    .parent().addClass("has-error").removeClass("has-success")
+                    .append( error );
+                $(error).addClass("col-md-offset-3");
+            },
+            success: function(label) {
+                var forName = $(label).attr("for");
+                $("label[for='" + forName + "']").parent().addClass("has-success").removeClass("has-error");
+                $(label).remove();
+            },
+            highlight: function (element) {
+                $("label[for='" + element.id + "']").parent().addClass("has-error").removeClass("has-success");
+            },
+            submitHandler: function (form) {
+                form.submit();
             }
         });
 
