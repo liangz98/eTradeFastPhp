@@ -111,6 +111,8 @@ class GoodsController extends Kyapi_Controller_Action
     }
 
     public function addAction() {
+        $requestObject = $this->_requestObject;
+
         // 封装供应商
         $queryParams = array();
         $querySorts = array();
@@ -199,7 +201,7 @@ class GoodsController extends Kyapi_Controller_Action
             $_goods->needInspection = $needInSP;//是否商检
             $_goods->attachmentList = $_attachList;//商品附件
 
-            $_resultData = $this->json->addSaleProductApi($this->_requestObject, $_goods);
+            $_resultData = $this->json->addSaleProductApi($requestObject, $_goods);
             $existData = json_decode($_resultData);
 
             // 统计所有商品数量
@@ -351,9 +353,11 @@ class GoodsController extends Kyapi_Controller_Action
     }
 
     public function copyAction() {
+        $requestObject = $this->_requestObject;
+
         $productID = $_SERVER['QUERY_STRING'];
         $_productID = base64_decode($productID);
-        $_resultData = $this->json->getProductApi($this->_requestObject, $_productID);
+        $_resultData = $this->json->getProductApi($requestObject, $_productID);
         $existData = json_decode($_resultData);
         $existArr = $this->objectToArray($existData);
         $this->view->goods = $existArr['result'];
@@ -447,7 +451,7 @@ class GoodsController extends Kyapi_Controller_Action
             $_goods->needInspection = $needInSP;//是否商检
             $_goods->attachmentList = $_attachList;//商品附件
 
-            $_resultData = $this->json->addSaleProductApi($this->_requestObject, $_goods);
+            $_resultData = $this->json->addSaleProductApi($requestObject, $_goods);
             $existData = json_decode($_resultData);
 
             // 统计所有商品数量
@@ -474,85 +478,79 @@ class GoodsController extends Kyapi_Controller_Action
         }
     }
 
-    public function viewAction()
-    {
-        $productID=$_SERVER['QUERY_STRING'];
-        $_productID =base64_decode($productID);
-        $_resultData=$this->json->getProductApi($this->_requestObject,$_productID);
-        $existData=json_decode($_resultData);
-        $existArr=$this->objectToArray($existData);
+    public function viewAction() {
+        $requestObject = $this->_requestObject;
 
-        $this->view->goods=$existArr['result'];
+        $productID = $_SERVER['QUERY_STRING'];
+        $_productID = base64_decode($productID);
+        $_resultData = $this->json->getProductApi($requestObject, $_productID);
+        $existData = json_decode($_resultData);
+        $existArr = $this->objectToArray($existData);
 
-        if(defined('SEED_WWW_TPL')){
-            $content = $this->view->render(SEED_WWW_TPL."/goods/view.phtml");
+        $this->view->goods = $existArr['result'];
+
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/goods/view.phtml");
             echo $content;
             exit;
         }
     }
 
-    public function forReviewAction()
-    {
+    public function forReviewAction() {
         //提示：提交审核
         if ($this->_request->isPost()) {
             // 请求Hessian服务端方法bankAcctID
             $_objID = $this->_request->getPost('delID');
-            $_requestOb=$this->_requestObject;
-            $opData= $this->json->forReviewProductApi($_requestOb,$_objID);
+            $_requestOb = $this->_requestObject;
+            $opData = $this->json->forReviewProductApi($_requestOb, $_objID);
             echo $opData;
         }
         exit;
-
     }
 
-    public function invalidAction()
-    {
+    public function invalidAction() {
         //禁用
         if ($this->_request->isPost()) {
             // 请求Hessian服务端方法bankAcctID
             $_objID = $this->_request->getPost('delID');
-            $_requestOb=$this->_requestObject;
-            $opData= $this->json->invalidProductApi($_requestOb,$_objID);
+            $_requestOb = $this->_requestObject;
+            $opData = $this->json->invalidProductApi($_requestOb, $_objID);
             echo $opData;
         }
         exit;
-
     }
 
-    public function validAction()
-    {
+    public function validAction() {
         //启用
         if ($this->_request->isPost()) {
             // 请求Hessian服务端方法bankAcctID
             $_objID = $this->_request->getPost('delID');
-            $_requestOb=$this->_requestObject;
-            $opData= $this->json->validProductApi($_requestOb,$_objID);
+            $_requestOb = $this->_requestObject;
+            $opData = $this->json->validProductApi($_requestOb, $_objID);
             echo $opData;
         }
         exit;
     }
 
-    public function confirmAction()
-    {
+    public function confirmAction() {
         //确认
         if ($this->_request->isPost()) {
             // 请求Hessian服务端方法bankAcctID
             $_objID = $this->_request->getPost('delID');
-            $_requestOb=$this->_requestObject;
-            $opData= $this->json->confirmProductApi($_requestOb,$_objID);
+            $_requestOb = $this->_requestObject;
+            $opData = $this->json->confirmProductApi($_requestOb, $_objID);
             echo $opData;
         }
         exit;
     }
 
-    public function delAction()
-    {
+    public function delAction() {
         //删除
         if ($this->_request->isPost()) {
             // 请求Hessian服务端方法bankAcctID
             $_objID = $this->_request->getPost('delID');
-            $_requestOb=$this->_requestObject;
-            $opData= $this->json->delProductApi($_requestOb,$_objID);
+            $_requestOb = $this->_requestObject;
+            $opData = $this->json->delProductApi($_requestOb, $_objID);
             echo $opData;
         }
         exit;
