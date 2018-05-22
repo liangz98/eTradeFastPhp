@@ -6,6 +6,7 @@
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/goods/goods.css" rel="stylesheet">
     <link href="/ky/css/img-upload.css" rel="stylesheet">
+    <link href="/ky/bootstrap-select-1.12.4-dist/css/bootstrap-select.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -96,7 +97,7 @@
                                         <div class="form-group">
                                             <label for="hscode" class="col-sm-2 control-label"><?php echo $this->translate('HSCODE'); ?></label>
                                             <div class="col-sm-9">
-                                                <select name="hscode" id="hscode">
+                                                <select name="hscode" id="hscode" class="selectpicker form-control" data-live-search="true">
                                                     <option value=""><?php echo $this->translate('et_select'); ?></option>
                                                 </select>
                                             </div>
@@ -124,6 +125,7 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
 <script type="text/javascript" src="/ky/upload/img.js"></script>
+<script type="text/javascript" src="/ky/bootstrap-select-1.12.4-dist/js/bootstrap-select.min.js"></script>
 
 <script type="text/javascript">
 	$().ready(function() {
@@ -139,7 +141,36 @@
                 $(this).removeClass('nav-selected');
             }
         });
-	});
+
+        var hscodeSelect = $("#hscode");
+        $(hscodeSelect).on('shown.bs.select', function (e) {
+            $(hscodeSelect).prev().find("input").keyup(function () {
+                $(hscodeSelect).prev().find("input").attr('id', "hscodeInput"); //为input增加id属性
+                var hscodeInput = $("#hscodeInput");
+                var keyword = $(hscodeInput).val();
+                var hscodeQuery = '/user/common/hscode-ajax';
+                $.ajax({
+                    type: "POST",
+                    url: hscodeQuery,
+                    data: {
+                        keyword: keyword
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        var optionString = "";
+                        $.each(data, function (i, item) {
+                            // console.log(item);
+                            optionString += "<option value='" + item.hscode + "'>" + item.hscode + " (" + item.codeName + ")</option>";
+                        });
+
+                        $(hscodeSelect).html("");
+                        $(hscodeSelect).append(optionString);
+                        $(hscodeSelect).selectpicker('refresh');
+                    }
+                });
+            })
+        });
+    });
 </script>
 </body>
 </html>
