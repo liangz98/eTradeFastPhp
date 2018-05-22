@@ -106,7 +106,7 @@
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label"><?php echo $this->translate('legalPricingUnit');?></label>
                                             <div class="col-sm-8">
-                                                <p class="form-control-static">
+                                                <p class="form-control-static legalPricingUnitSpan">
                                                     <?php echo $this->ShowDictionaryTo($this->dic_Setting['PRODUCT_PRICING_UNIT'], $this->userLangCode, $this->dic_Setting['PRODUCT_PRICING_UNIT'], $this->goods["legalPricingUnit"]); ?>
                                                 </p>
                                                 <input type="hidden" name="legalPricingUnit" id="legalPricingUnit" value="<?php echo $this->goods["legalPricingUnit"]; ?>">
@@ -117,7 +117,7 @@
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label"><?php echo $this->translate('rebateRate');?></label>
                                             <div class="col-sm-8">
-                                                <p class="form-control-static">
+                                                <p class="form-control-static rebateRateSpan">
                                                     <?php echo $this->goods["rebateRate"] * 100 ?> %
                                                 </p>
                                                 <input type="hidden" name="rebateRate" id="rebateRate" value="<?php echo $this->goods["rebateRate"]; ?>">
@@ -127,7 +127,7 @@
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label"><?php echo $this->translate('taxRate');?></label>
                                             <div class="col-sm-8">
-                                                <p class="form-control-static">
+                                                <p class="form-control-static taxRateSpan">
                                                     <?php echo $this->goods["taxRate"] * 100 ?> %
                                                 </p>
                                                 <input type="hidden" name="taxRate" id="taxRate" value="<?php echo $this->goods["taxRate"]; ?>">
@@ -284,6 +284,8 @@
 <script type="text/javascript" src="/ky/bootstrap-select-1.12.4-dist/js/bootstrap-select.min.js"></script>
 
 <script type="text/javascript">
+    var dataDict = {};
+
 	$().ready(function() {
 
 	});
@@ -361,7 +363,7 @@
                             var optionString = "";
                             $.each(data, function (i, item) {
                                 // console.log(item);
-                                optionString += "<option value='" + item.hscode + "'>" + item.hscode + " (" + item.codeName + ")</option>";
+                                optionString += "<option value='" + item.hscode + "' pricingUnit='"+item.pricingUnit+"' rebateRate='"+item.rebateRate+"' taxRate='"+item.taxRate+"'>" + item.hscode + " (" + item.codeName + ")</option>";
                             });
 
                             $(hscodeSelect).html("");
@@ -371,6 +373,51 @@
                     });
                 }
             })
+        });
+
+        var dataDictQuery = '/user/common/dict-ajax';
+        var dictCode = new Array("PRODUCT_PRICING_UNIT");
+        $.ajax({
+            type: "POST",
+            url: dataDictQuery,
+            data: {
+                dictCode: dictCode,
+                langCode: '<?php echo $this->userLangCode; ?>'
+            },
+            dataType: "json",
+            success: function (data) {
+                $.data(dataDict, 'dataDict', data);
+
+                $(hscodeSelect).on('hide.bs.select', function (e) {
+                    if ($(hscodeSelect).selectpicker('val') !== undefined && $(hscodeSelect).selectpicker('val') !== '') {
+                        var selectObject = $(hscodeSelect).find("option:selected");
+                        var pricingUnit = $(selectObject).attr("pricingUnit");
+                        var rebateRate = $(selectObject).attr("rebateRate");
+                        var taxRate = $(selectObject).attr("taxRate");
+
+                        var result = "-";
+                        var data = $.data(dataDict, 'dataDict');
+                        $.each(data, function (key, item) {
+                            if (key === 'PRODUCT_PRICING_UNIT') {
+                                $.each(item, function (i, dict) {
+                                    if (dict.code === pricingUnit) {
+                                        result = dict.name;
+                                    }
+                                });
+                            }
+                        });
+
+                        $(".legalPricingUnitSpan").html(result);
+                        $("#legalPricingUnit").val(pricingUnit);
+
+                        $(".rebateRateSpan").html(rebateRate * 100 + " %");
+                        $("#rebateRate").val(rebateRate);
+
+                        $(".taxRateSpan").html(taxRate * 100 + " %");
+                        $("#taxRate").val(taxRate);
+                    }
+                });
+            }
         });
 
         var productionMode = $('#productionMode');

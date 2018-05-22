@@ -375,20 +375,20 @@
             $.post(url,
                 {'delID': id},
                 function (data) {
-                    var contactListTable = $('#contactListTable');
+                    var listTable = $('#goodsListTable');
 
                     if (data.status === 1) {
                         layer.msg('<span style="color: #EF8200;font-size: 16px;">' + msg2 + '</span>', {
                             skin: 'del-class',
                             icon: 1
                         });
-                        $(contactListTable).bootstrapTable('refresh');
+                        $(listTable).bootstrapTable('refresh');
                     } else {
                         layer.msg('<span style="color: #EF8200;font-size: 16px;">' + msg3 + '</span><br>' + data.error, {
                             skin: 'del-class',
                             icon: 0
                         });
-                        $(contactListTable).bootstrapTable('refresh');
+                        $(listTable).bootstrapTable('refresh');
                     }
                 }, "json");
 
