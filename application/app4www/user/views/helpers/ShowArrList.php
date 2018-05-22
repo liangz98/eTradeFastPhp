@@ -39,7 +39,6 @@
             }
         }
         $arroption="";
-        $arroption=.'';
         if($t){
         $arroption.= '<select class="js-example-data-array-selected">';
         foreach($str as $k=>$v) {

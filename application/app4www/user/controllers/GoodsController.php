@@ -118,14 +118,14 @@ class GoodsController extends Kyapi_Controller_Action
 //        $hscodeDatt = $this->objectToArray($hscodeData);
 //        $hscodeList = $hscodeDatt['result'];
         if ($this->_request->isPost()) {
-            $Atachlist=array();
-            $Atachlist["attachID"] =  $this->_request->getParam('attachNid');
-            $Atachlist["attachType"] =  $this->_request->getParam('attachType');
-//                $Atachlist["bizType"] = $this->_request->getParam("bizType");
-            $Atachlist["attachName"] = $this->_request->getParam("attachName");
-            $Atachlist["attachSize"] = $this->_request->getParam("attachSize");
+            $attachList=array();
+            $attachList["attachID"] =  $this->_request->getParam('attachNid');
+            $attachList["attachType"] =  $this->_request->getParam('attachType');
+//                $attachList["bizType"] = $this->_request->getParam("bizType");
+            $attachList["attachName"] = $this->_request->getParam("attachName");
+            $attachList["attachSize"] = $this->_request->getParam("attachSize");
             $_attach2=array();
-            foreach($Atachlist as $k =>$v){
+            foreach($attachList as $k =>$v){
                 foreach($v as $k1=>$v1){
                     $_attach2[$k1][$k]=$v1;
                 }
@@ -200,93 +200,121 @@ class GoodsController extends Kyapi_Controller_Action
             exit;
         }
     }
-    public function editAction()
-    {
-        $productID=$_SERVER['QUERY_STRING'];
-        $_productID =base64_decode($productID);
-        $_resultData=$this->json->getProductApi($this->_requestObject,$_productID);
-        $existData=json_decode($_resultData);
-        $existArr=$this->objectToArray($existData);
-        $this->view->goods=$existArr['result'];
+
+    public function editAction() {
+        $requestObject = $this->_requestObject;
+
+        $productID = $_SERVER['QUERY_STRING'];
+        $_productID = base64_decode($productID);
+        $_resultData = $this->json->getProductApi($requestObject, $_productID);
+        $existData = json_decode($_resultData);
+        $existArr = $this->objectToArray($existData);
+        $this->view->goods = $existArr['result'];
+
+        // 封装供应商
+        $queryParams = array();
+        $querySorts = array();
+        $querySorts['createTime'] = "DESC";
+        $keyword = null;
+        $limit = 10;
+        $skip = 0;
+        if (is_array($queryParams)) {
+            $queryParams = $this->arrayToObject($queryParams);
+        }
+        if (is_array($querySorts)) {
+            $querySorts = $this->arrayToObject($querySorts);
+        }
+        $vendorResultObject = $this->json->listVendorPartnerApi($requestObject, $queryParams, $querySorts, $keyword, $skip, $limit);
+        $vendorResult = json_decode($vendorResultObject)->result;
+        $vendorList = array();
+        foreach ($vendorResult as $key => $item) {
+            $vendor = array();
+            $vendor["id"] = $item->toID;
+            $vendor["name"] = $item->toName;
+
+            $vendorList[$key] = $vendor;
+        }
+        $this->view->vendorList = $vendorList;
 
         if ($this->_request->isPost()) {
-            try {
-                //获取附件ID
-                $Atachlist=array();
-                $Atachlist["attachID"] =  $this->_request->getParam('attachNid');
-//                $Atachlist["attachType"] =  $this->_request->getParam('attachType');//
-//                $Atachlist["bizType"] = $this->_request->getParam("bizType");
-                $Atachlist["attachName"] = $this->_request->getParam("attachName");
-                $Atachlist["attachSize"] = $this->_request->getParam("attachSize");
+            //获取附件ID
+            $attachList = array();
+            $attachList["attachID"] = $this->_request->getParam('attachNid');
+            $attachList["attachName"] = $this->_request->getParam("attachName");
+            $attachList["attachSize"] = $this->_request->getParam("attachSize");
 
-                $_attach2=array();
-                foreach($Atachlist as $k =>$v){
-                    foreach($v as $k1=>$v1){
-                        $_attach2[$k1][$k]=$v1;
-                    }
+            $_attach2 = array();
+            foreach ($attachList as $k => $v) {
+                foreach ($v as $k1 => $v1) {
+                    $_attach2[$k1][$k] = $v1;
                 }
-                $_attachList=array();
-                foreach($_attach2 as $k=>$v){
-                    foreach($v as $k1 =>$v1){
-                        $_attachList[$k]=new Kyapi_Model_Attachment();
-                        $_attachList[$k]->attachID=$_attach2[$k]['attachID'];
-                        $_attachList[$k]->attachType="PDPD";
-                        $_attachList[$k]->bizType="PD";
-                        $_attachList[$k]->name=$_attach2[$k]['attachName'];
-                        $_attachList[$k]->size=(int)$_attach2[$k]['attachSize'];
-
-                    }
+            }
+            $_attachList = array();
+            foreach ($_attach2 as $k => $v) {
+                foreach ($v as $k1 => $v1) {
+                    $_attachList[$k] = new Kyapi_Model_Attachment();
+                    $_attachList[$k]->attachID = $_attach2[$k]['attachID'];
+                    $_attachList[$k]->attachType = "PDPD";
+                    $_attachList[$k]->bizType = "PD";
+                    $_attachList[$k]->name = $_attach2[$k]['attachName'];
+                    $_attachList[$k]->size = (int)$_attach2[$k]['attachSize'];
                 }
+            }
 
+            if ($this->_request->getParam('needInspection') == 1) {
+                $needInSP = true;
+            } else {
+                $needInSP = false;
+            }
 
-                if($this->_request->getParam('needInspection')==1){
-                    $needInSP=true;
-                }else{
-                    $needInSP=false;
-                }
+            /*实例化商品类*/
+            $_goods = new Kyapi_Model_product();
+            /*编辑商品信息*/
+            $_goods->productID = $_productID;//商品ID
+            $_goods->productName = $this->_request->getParam('productName');//商品名
+            $_goods->productEnName = $this->_request->getParam('productEnName');//EN商品名
+            $_goods->productBrand = $this->_request->getParam('productBrand');//商品品牌
+            $_goods->productModel = $this->_request->getParam('productModel');//商品型号
+            $_goods->unitPrice = (double)$this->_request->getParam('unitPrice');//销售单价
+            $_goods->crnCode = $this->_request->getParam('crnCode');//货币代码
+            $_goods->purchaseUnitPrice = (double)$this->_request->getParam('purchaseUnitPrice');//采购单价
+            $_goods->purchaseCrnCode = $this->_request->getParam('purchaseCrnCode');//采购货币
+            $_goods->pricingUnit = $this->_request->getParam('pricingUnit');//交易单位
+            $_goods->legalPricingUnit = $this->_request->getParam('legalPricingUnit');//法定计价单位
+            $_goods->legalPricingUnit2 = $this->_request->getParam('legalPricingUnit2');//法定计价单位2(HScode查询决定是否需要)
+            $_goods->hscode = $this->_request->getParam('hscode');//
+            $_goods->taxRate = (double)$this->_request->getParam('taxRate');//增值税率
+            $_goods->rebateRate = (double)$this->_request->getParam('rebateRate');//退税率
+            $_goods->declareElements = $this->_request->getParam('declareElements');//申报要素
+            $_goods->functionUsage = $this->_request->getParam('functionUsage');//功能用途
+            $_goods->productSize = $this->_request->getParam('productSize');//尺寸规格
+            $_goods->productMaterial = $this->_request->getParam('productMaterial');//商品材质
+            $_goods->productionMode = $this->_request->getParam('productionMode');//生产方式
+            $_goods->supplierID = $this->_request->getParam('supplierID');//供应商ID
+            $_goods->packingVolume = (double)$this->_request->getParam('packingVolume');//包装体积
+            $_goods->packingType = $this->_request->getParam('packingType');//包装类型
+            $_goods->netWeight = (double)$this->_request->getParam('netWeight');//净重
+            $_goods->grossWeight = (double)$this->_request->getParam('grossWeight');//毛重
+            $_goods->needInspection = $needInSP;//是否商检
+            $_goods->attachmentList = $_attachList;//商品附件
 
-//                /*实例化商品类*/
-                $_goods=new Kyapi_Model_product();
-                /*编辑商品信息*/
-                $_goods->productID= $_productID;//商品ID
-                $_goods->productName= $this->_request->getParam('productName');//商品名
-                $_goods->productEnName= $this->_request->getParam('productEnName');//EN商品名
-                $_goods->productBrand= $this->_request->getParam('productBrand');//商品品牌
-                $_goods->productModel= $this->_request->getParam('productModel');//商品型号
-                $_goods->unitPrice= (double)$this->_request->getParam('unitPrice');//销售单价
-                $_goods->crnCode= $this->_request->getParam('crnCode');//货币代码
-                $_goods->purchaseUnitPrice=(double)$this->_request->getParam('purchaseUnitPrice');//采购单价
-                $_goods->purchaseCrnCode= $this->_request->getParam('purchaseCrnCode');//采购货币
-                $_goods->pricingUnit= $this->_request->getParam('pricingUnit');//交易单位
-                $_goods->legalPricingUnit= $this->_request->getParam('legalPricingUnit');//法定计价单位
-                $_goods->legalPricingUnit2= $this->_request->getParam('legalPricingUnit2');//法定计价单位2(HScode查询决定是否需要)
-                $_goods->hscode= $this->_request->getParam('hscode');//
-                $_goods->taxRate= (double)$this->_request->getParam('taxRate');//增值税率
-                $_goods->rebateRate= (double)$this->_request->getParam('rebateRate');//退税率
-                $_goods->declareElements= $this->_request->getParam('declareElements');//申报要素
-                $_goods->functionUsage= $this->_request->getParam('functionUsage');//功能用途
-                $_goods->productSize= $this->_request->getParam('productSize');//尺寸规格
-                $_goods->productMaterial= $this->_request->getParam('productMaterial');//商品材质
-                $_goods->productionMode= $this->_request->getParam('productionMode');//生产方式
-                $_goods->supplierID= $this->_request->getParam('supplierID');//供应商ID
-                $_goods->packingVolume= (double)$this->_request->getParam('packingVolume');//包装体积
-                $_goods->packingType= $this->_request->getParam('packingType');//包装类型
-                $_goods->netWeight= (double)$this->_request->getParam('netWeight');//净重
-                $_goods->grossWeight= (double)$this->_request->getParam('grossWeight');//毛重
-                $_goods->needInspection= $needInSP;//是否商检
-                $_goods->attachmentList= $_attachList;//商品附件
+            $_resultData = $this->json->editSaleProductApi($requestObject, $_goods);
+            $existData = json_decode($_resultData);
 
-                $_resultData=$this->json->editSaleProductApi($this->_requestObject,$_goods);
-                $existData = json_decode($_resultData);
-                if ($existData->status != 1) {
-                    //编辑失败
-                    Shop_Browser::redirect($this->view->translate('tip_edit_fail').$existData->error,$this->view->seed_BaseUrl ."/goods");
-                } else {
-                    Shop_Browser::redirect($this->view->translate('tip_edit_success'),$this->view->seed_BaseUrl ."/goods");
-                }
-            } catch (HttpError $ex) {
-                echo $ex->getMessage();
-                Shop_Browser::redirect($ex->getMessage(),$this->view->seed_BaseUrl ."/goods");
+            // 统计所有商品数量
+            $countResultObject = $this->json->countSaleProductApi($requestObject);
+            $countSaleProduct = $this->objectToArray(json_decode($countResultObject));
+            $this->view->countSaleProduct = $countSaleProduct['result'];
+            // 附件地址
+            $this->view->attachUrl = $this->view->seed_Setting['KyUrlex'];
+            if ($existData->status != 1) {
+                $this->view->goods = $this->objectToArray($_goods);
+                $this->view->errMsg = $this->view->translate('tip_edit_fail') . $existData->error;
+            } else {
+                $this->view->errMsg = $this->view->translate('tip_edit_success');
+                $content = $this->view->render(SEED_WWW_TPL . "/goods/index.phtml");
+                echo $content;
+                exit;
             }
         }
 
@@ -309,14 +337,14 @@ class GoodsController extends Kyapi_Controller_Action
         if ($this->_request->isPost()) {
             try {
                 //获取附件ID
-                $Atachlist=array();
-                $Atachlist["attachID"] =  $this->_request->getParam('attachNid');
-                $Atachlist["attachType"] =  $this->_request->getParam('attachType');
-//                $Atachlist["bizType"] = $this->_request->getParam("bizType");
-                $Atachlist["attachName"] = $this->_request->getParam("attachName");
-                $Atachlist["attachSize"] = $this->_request->getParam("attachSize");
+                $attachList=array();
+                $attachList["attachID"] =  $this->_request->getParam('attachNid');
+                $attachList["attachType"] =  $this->_request->getParam('attachType');
+//                $attachList["bizType"] = $this->_request->getParam("bizType");
+                $attachList["attachName"] = $this->_request->getParam("attachName");
+                $attachList["attachSize"] = $this->_request->getParam("attachSize");
                 $_attach2=array();
-                foreach($Atachlist as $k =>$v){
+                foreach($attachList as $k =>$v){
                     foreach($v as $k1=>$v1){
                         $_attach2[$k1][$k]=$v1;
                     }

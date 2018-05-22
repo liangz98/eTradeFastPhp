@@ -171,13 +171,22 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group supplierMode">
-                                            <label for="supplierName" class="col-sm-3 control-label"><?php echo $this->translate('supplierName'); ?></label>
+                                        <div class="form-group">
+                                            <label for="supplierID" class="control-label col-sm-3"><?php echo $this->translate('supplierName'); ?></label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" name="supplierName" id="supplierName" placeholder="" value="<?php echo $this->goods['supplierName']; ?>" >
-                                                <input type="hidden" name="supplierID" id="supplierID" value="<?php echo $this->goods["supplierID"]; ?>">
+                                                <div class="input-group">
+                                                    <select class="selectpicker form-control" name="supplierID" id="supplierID" data-live-search="true"></select>
+                                                    <div class="input-group-addon"><i class="fas fa-plus"></i></div>
+                                                </div>
                                             </div>
                                         </div>
+
+<!--                                        <div class="form-group supplierMode">-->
+<!--                                            <label for="supplierID" class="col-sm-3 control-label">--><?php //echo $this->translate('supplierName'); ?><!--</label>-->
+<!--                                            <div class="col-sm-8">-->
+<!--                                                <input type="text" class="form-control" name="supplierID" id="supplierID" placeholder="" value="--><?php //echo $this->goods['supplierID']; ?><!--" >-->
+<!--                                            </div>-->
+<!--                                        </div>-->
 
                                         <div class="form-group supplierMode">
                                             <label for="purchaseCrnCode" class="col-sm-3 control-label"><?php echo $this->translate('purchaseUnitPrice'); ?></label>
@@ -245,7 +254,7 @@
                                         <div class="form-group">
                                             <label for="" class="col-sm-3 control-label"><?php echo $this->translate('goodsAttachment'); ?></label>
                                             <div class="col-sm-8">
-                                                <?php echo $this->ShowWebuploader($this->bank['attachmentList'], $this->biz_Setting['PRODUCT'], $this->attach_Setting['PDPD'], $this->goods['productID']); ?>
+                                                <?php echo $this->ShowWebuploader($this->goods['attachmentList'], $this->biz_Setting['PRODUCT'], $this->attach_Setting['PDPD'], $this->goods['productID']); ?>
                                             </div>
                                         </div>
 

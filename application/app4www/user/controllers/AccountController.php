@@ -98,43 +98,6 @@ class AccountController extends Kyapi_Controller_Action
         exit;
     }
 
-    public function dictAjaxAction() {
-        $dictCode = $this->_request->getParam('dictCode');
-        $langCode = $this->_request->getParam('langCode');
-        $cacheM = new Seed_Model_Cache2File();
-
-        $result = array();
-        foreach ($dictCode as $code) {
-            $dic = $cacheM->get('abc_'. $code);
-
-            $str = array();
-            foreach ($dic as $key => $value) {
-                if ($value['baseLangList']) {
-                    $setArr = $value['baseLangList'];
-                    foreach ($setArr as $k1 => $v1) {
-                        if ($v1['langCode'] == $langCode) {
-                            //输出当前语言的name
-                            $str[$key]['code'] = $value['code'];
-                            $str[$key]['name'] = $v1['nameText'];
-                            //设置缺省
-                            if (empty($str[$key]['name'])) {
-                                if ($v1['langCode'] == "zh_CN") {
-                                    $str[$key]['name'] = $v1['nameText'];
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    $str = $dic;
-                }
-            }
-            $result[$code] = $str;
-        }
-
-        echo json_encode($result);
-        exit;
-    }
-
     public function orderlistAction()
     {
         // 设置请求数据
