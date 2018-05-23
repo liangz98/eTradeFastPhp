@@ -263,7 +263,7 @@ return array(
     'goods_4_index' => 'Products',
     'goodsME'       => 'Our Products',
     'goodsINF'      => 'Product Info.',
-    'goodsBUY'      => 'Product Procurement',
+    'purProduct'    => 'Product Procurement',
 
 
     'contract'     => 'Contract',

@@ -50,8 +50,8 @@ class PurchaseController extends Kyapi_Controller_Action
 
         // 统计所有商品数量
         $resultObject = $this->json->countPurProductApi($this->_requestObject);
-        $countSaleProduct = $this->objectToArray(json_decode($resultObject));
-        $this->view->countSaleProduct = $countSaleProduct['result'];
+        $countPurProduct = $this->objectToArray(json_decode($resultObject));
+        $this->view->countPurProduct = $countPurProduct['result'];
 
         // 设置视图商品状态
         $this->view->status == '00' ? $linked = 'edit' : $linked = 'view';

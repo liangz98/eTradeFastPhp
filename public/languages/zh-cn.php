@@ -252,7 +252,7 @@ return array(
     'goods_4_index' => '商品',
     'goodsME'       => '我的商品',
     'goodsINF'      => '商品详情',
-    'goodsBUY'      => '采购的商品',
+    'purProduct'    => '采购的商品',
 
 
     'contract'     => '合同',
