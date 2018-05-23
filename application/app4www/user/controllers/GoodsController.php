@@ -46,6 +46,8 @@ class GoodsController extends Kyapi_Controller_Action
     }
 
     public function indexAction() {
+        $this->view->resultMsg = $this->_request->getParam('resultMsg');
+
         // 统计所有商品数量
         $resultObject = $this->json->countSaleProductApi($this->_requestObject);
         $countSaleProduct = $this->objectToArray(json_decode($resultObject));
@@ -56,7 +58,11 @@ class GoodsController extends Kyapi_Controller_Action
         $this->view->linked = $linked;
 
         // bootstrap-table查询状态
-        $this->view->productStatus = '03';
+        if (empty($this->_request->getParam('productStatus'))) {
+            $this->view->productStatus = '03';
+        } else {
+            $this->view->productStatus = $this->_request->getParam('productStatus');
+        }
 
         // 附件地址
         $this->view->attachUrl = $this->view->seed_Setting['KyUrlex'];
@@ -218,23 +224,22 @@ class GoodsController extends Kyapi_Controller_Action
             $_resultData = $this->json->addSaleProductApi($requestObject, $_goods);
             $existData = json_decode($_resultData);
 
-            // 统计所有商品数量
-            $countResultObject = $this->json->countSaleProductApi($requestObject);
-            $countSaleProduct = $this->objectToArray(json_decode($countResultObject));
-            $this->view->countSaleProduct = $countSaleProduct['result'];
-            // 附件地址
-            $this->view->attachUrl = $this->view->seed_Setting['KyUrlex'];
-            // bootstrap-table查询状态
-            $this->view->productStatus = '00';
             // 页面跳转
             if ($existData->status != 1) {
+                // 统计所有商品数量
+                $countResultObject = $this->json->countSaleProductApi($requestObject);
+                $countSaleProduct = $this->objectToArray(json_decode($countResultObject));
+                $this->view->countSaleProduct = $countSaleProduct['result'];
+                // 附件地址
+                $this->view->attachUrl = $this->view->seed_Setting['KyUrlex'];
+                // bootstrap-table查询状态
+                $this->view->productStatus = '00';
+
                 $this->view->goods = $this->objectToArray($_goods);
                 $this->view->errMsg = $this->view->translate('tip_add_fail') . $existData->error;
             } else {
-                $this->view->errMsg = $this->view->translate('tip_add_success');
-                $content = $this->view->render(SEED_WWW_TPL . "/goods/index.phtml");
-                echo $content;
-                exit;
+                $resultMsg = base64_encode($this->view->translate('tip_add_success'));
+                $this->redirect("/goods/index?resultMsg=".$resultMsg."&productStatus=00");
             }
         }
         if (defined('SEED_WWW_TPL')) {
@@ -344,21 +349,21 @@ class GoodsController extends Kyapi_Controller_Action
             $_resultData = $this->json->editSaleProductApi($requestObject, $_goods);
             $existData = json_decode($_resultData);
 
-            // 统计所有商品数量
-            $countResultObject = $this->json->countSaleProductApi($requestObject);
-            $countSaleProduct = $this->objectToArray(json_decode($countResultObject));
-            $this->view->countSaleProduct = $countSaleProduct['result'];
-            // 附件地址
-            $this->view->attachUrl = $this->view->seed_Setting['KyUrlex'];
-
             if ($existData->status != 1) {
+                // 统计所有商品数量
+                $countResultObject = $this->json->countSaleProductApi($requestObject);
+                $countSaleProduct = $this->objectToArray(json_decode($countResultObject));
+                $this->view->countSaleProduct = $countSaleProduct['result'];
+                // 附件地址
+                $this->view->attachUrl = $this->view->seed_Setting['KyUrlex'];
+
                 $this->view->goods = $this->objectToArray($_goods);
                 $this->view->errMsg = $this->view->translate('tip_edit_fail') . $existData->error;
             } else {
-                $this->view->errMsg = $this->view->translate('tip_edit_success');
-                $content = $this->view->render(SEED_WWW_TPL . "/goods/index.phtml");
-                echo $content;
-                exit;
+                $goodsResultObject = $this->json->getProductApi($requestObject, $_goods->productID);
+                $goodsResultObject = json_decode($goodsResultObject);
+                $resultMsg = base64_encode($this->view->translate('tip_edit_success'));
+                $this->redirect("/goods/index?resultMsg=".$resultMsg."&productStatus=".$goodsResultObject->result->productStatus);
             }
         }
 
@@ -471,22 +476,21 @@ class GoodsController extends Kyapi_Controller_Action
             $_resultData = $this->json->addSaleProductApi($requestObject, $_goods);
             $existData = json_decode($_resultData);
 
-            // 统计所有商品数量
-            $countResultObject = $this->json->countSaleProductApi($requestObject);
-            $countSaleProduct = $this->objectToArray(json_decode($countResultObject));
-            $this->view->countSaleProduct = $countSaleProduct['result'];
-            // 附件地址
-            $this->view->attachUrl = $this->view->seed_Setting['KyUrlex'];
-            // bootstrap-table查询状态
-            $this->view->productStatus = '00';
             if ($existData->status != 1) {
+                // 统计所有商品数量
+                $countResultObject = $this->json->countSaleProductApi($requestObject);
+                $countSaleProduct = $this->objectToArray(json_decode($countResultObject));
+                $this->view->countSaleProduct = $countSaleProduct['result'];
+                // 附件地址
+                $this->view->attachUrl = $this->view->seed_Setting['KyUrlex'];
+                // bootstrap-table查询状态
+                $this->view->productStatus = '00';
+
                 $this->view->goods = $this->objectToArray($_goods);
                 $this->view->errMsg = $this->view->translate('tip_add_fail') . $existData->error;
             } else {
-                $this->view->errMsg = $this->view->translate('tip_add_success');
-                $content = $this->view->render(SEED_WWW_TPL . "/goods/index.phtml");
-                echo $content;
-                exit;
+                $resultMsg = base64_encode($this->view->translate('tip_add_success'));
+                $this->redirect("/goods/index?resultMsg=".$resultMsg."&productStatus=00");
             }
         }
 

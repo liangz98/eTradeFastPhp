@@ -29,10 +29,10 @@
                     <!-- Default panel contents -->
                     <div class="panel-heading"><?php echo $this->translate('goodsME'); ?></div>
                     <div class="panel-body">
-                        <?php if (!empty($this->errMsg)): ?>
+                        <?php if (!empty($this->resultMsg)): ?>
                         <div class="alert alert-success alert-dismissible fade in" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <p><?php echo $this->errMsg; ?>!</p>
+                            <p><?php echo base64_decode($this->resultMsg); ?>!</p>
                         </div>
                         <?php endif; ?>
 
@@ -42,34 +42,22 @@
                             </li>
                             <li role="presentation">
                                 <a href="#forActivate" data-productStatus="01" aria-controls="forActivate" role="tab" data-toggle="tab">
-                                    <?php echo $this->translate('forReview'); ?>&nbsp;
-                                    <?php if (!empty($this->countSaleProduct['01'])) {
-                                        echo '<span class="bg-info badge">&nbsp;' . $this->countSaleProduct['01'] . '&nbsp;</span>';
-                                    } ?>
+                                    <?php echo $this->translate('forReview'); ?>&nbsp;<span class="badge" data-productStatus="01"><?php echo $this->countSaleProduct['01']; ?></span>
                                 </a>
                             </li>
                             <li role="presentation">
                                 <a href="#forActivate" data-productStatus="02" aria-controls="forActivate" role="tab" data-toggle="tab">
-                                    <?php echo $this->translate('forConfirm'); ?>&nbsp;
-                                    <?php if (!empty($this->countSaleProduct['02'])) {
-                                        echo '<span class="badge">&nbsp;' . $this->countSaleProduct['02'] . '&nbsp;</span>';
-                                    } ?>
+                                    <?php echo $this->translate('forConfirm'); ?>&nbsp;<span class="badge" data-productStatus="02"><?php echo $this->countSaleProduct['02']; ?></span>
                                 </a>
                             </li>
                             <li role="presentation">
                                 <a href="#forActivate" data-productStatus="04" aria-controls="forActivate" role="tab" data-toggle="tab">
-                                    <?php echo $this->translate('rejected'); ?>&nbsp;
-                                    <?php if (!empty($this->countSaleProduct['04'])) {
-                                        echo '<span class="badge">&nbsp;' . $this->countSaleProduct['04'] . '&nbsp;</span>';
-                                    } ?>
+                                    <?php echo $this->translate('rejected'); ?>&nbsp;<span class="badge" data-productStatus="04"><?php echo $this->countSaleProduct['04']; ?></span>
                                 </a>
                             </li>
                             <li role="presentation">
                                 <a href="#forActivate" data-productStatus="00" aria-controls="forActivate" role="tab" data-toggle="tab">
-                                    <?php echo $this->translate('draft'); ?>&nbsp;
-                                    <?php if (!empty($this->countSaleProduct['00'])) {
-                                        echo '<span class="badge">&nbsp;' . $this->countSaleProduct['00'] . '&nbsp;</span>';
-                                    } ?>
+                                    <?php echo $this->translate('draft'); ?>&nbsp;<span class="badge" data-productStatus="00"><?php echo $this->countSaleProduct['00']; ?></span>
                                 </a>
                             </li>
                             <li role="presentation">
@@ -407,7 +395,23 @@
             url: countSaleProductQuery,
             dataType: "json",
             success: function (data) {
-                console.log(data);
+                var forReview = "", forConfirm = "", rejected = "", draft = "";
+                $.each(data, function (i, item) {
+                    if (i === '01') {
+                        forReview = item;
+                    } else if (i === '02') {
+                        forConfirm = item;
+                    } else if (i === '04') {
+                        rejected = item;
+                    } else if (i === '00') {
+                        draft = item;
+                    }
+                });
+
+                $('.badge[data-productStatus="01"]').html(forReview);
+                $('.badge[data-productStatus="02"]').html(forConfirm);
+                $('.badge[data-productStatus="04"]').html(rejected);
+                $('.badge[data-productStatus="00"]').html(draft);
             }
         });
     }

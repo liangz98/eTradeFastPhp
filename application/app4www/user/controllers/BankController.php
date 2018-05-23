@@ -43,6 +43,7 @@ class BankController extends Kyapi_Controller_Action
     }
 
     public function indexAction() {
+        $this->view->resultMsg = $this->_request->getParam('resultMsg');
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/bank/index.phtml");
             echo $content;
@@ -92,89 +93,72 @@ class BankController extends Kyapi_Controller_Action
 
     public function addAction() {
         if ($this->_request->isPost()) {
-            try {
-                //获取附件ID
-                $Atachlist = array();
-                $Atachlist["attachID"] = $this->_request->getParam('attachNid');
-                $Atachlist["attachType"] = $this->_request->getParam('attachType');
-                $Atachlist["bizType"] = $this->_request->getParam("bizType");
-                $Atachlist["attachName"] = $this->_request->getParam("attachName");
-                $Atachlist["attachSize"] = $this->_request->getParam("attachSize");
-                $_attach2 = array();
-                foreach ($Atachlist as $k => $v) {
-                    foreach ($v as $k1 => $v1) {
-                        $_attach2[$k1][$k] = $v1;
-                    }
+            //获取附件ID
+            $Atachlist = array();
+            $Atachlist["attachID"] = $this->_request->getParam('attachNid');
+            $Atachlist["attachType"] = $this->_request->getParam('attachType');
+            $Atachlist["bizType"] = $this->_request->getParam("bizType");
+            $Atachlist["attachName"] = $this->_request->getParam("attachName");
+            $Atachlist["attachSize"] = $this->_request->getParam("attachSize");
+            $_attach2 = array();
+            foreach ($Atachlist as $k => $v) {
+                foreach ($v as $k1 => $v1) {
+                    $_attach2[$k1][$k] = $v1;
                 }
-                $_attachList = array();
-                foreach ($_attach2 as $k => $v) {
-                    foreach ($v as $k1 => $v1) {
-                        $_attachList[$k] = new Kyapi_Model_Attachment();
-                        $_attachList[$k]->attachID = $_attach2[$k]['attachID'];
-                        $_attachList[$k]->attachType = '0000';
-                        $_attachList[$k]->bizType = 'BA';
-                        $_attachList[$k]->name = $_attach2[$k]['attachName'];
-                        $_attachList[$k]->size = (int)$_attach2[$k]['attachSize'];
+            }
+            $_attachList = array();
+            foreach ($_attach2 as $k => $v) {
+                foreach ($v as $k1 => $v1) {
+                    $_attachList[$k] = new Kyapi_Model_Attachment();
+                    $_attachList[$k]->attachID = $_attach2[$k]['attachID'];
+                    $_attachList[$k]->attachType = '0000';
+                    $_attachList[$k]->bizType = 'BA';
+                    $_attachList[$k]->name = $_attach2[$k]['attachName'];
+                    $_attachList[$k]->size = (int)$_attach2[$k]['attachSize'];
 
-                    }
                 }
-                //附件end
+            }
+            //附件end
 
-                // 设置请求数据
-                $_requestOb = $this->_requestObject;
-                //判断是否为默认账户
-                if ($this->_request->getParam('isDefault') == '1') {
-                    $_isdd = true;
-                } else {
-                    $_isdd = false;
-                }
+            // 设置请求数据
+            $_requestOb = $this->_requestObject;
+            //判断是否为默认账户
+            if ($this->_request->getParam('isDefault') == '1') {
+                $_isdd = true;
+            } else {
+                $_isdd = false;
+            }
 
-                /*添加银行账户信息*/
-                $_bank = new Kyapi_Model_bank();
-                $_bank->accountID = $this->view->accountID;
-                $_bank->bankAcctType = $this->_request->getParam('bankAcctType');
-                $_bank->bankAcctName = $this->_request->getParam('bankAcctName');
-                $_bank->bankAcctNo = $this->_request->getParam('bankAcctNo');
-                $_bank->bankName = $this->_request->getParam('bankName');
-                $_bank->bankAddress = $this->_request->getParam('bankAddress');
-                $_bank->swiftcode = $this->_request->getParam('swiftcode');
-                //$_bank->isDefault = $_isdd;
-                $_bank->remarks = $this->_request->getParam('remarks');
-                $_bank->attachmentList = $_attachList;
+            /*添加银行账户信息*/
+            $_bank = new Kyapi_Model_bank();
+            $_bank->accountID = $this->view->accountID;
+            $_bank->bankAcctType = $this->_request->getParam('bankAcctType');
+            $_bank->bankAcctName = $this->_request->getParam('bankAcctName');
+            $_bank->bankAcctNo = $this->_request->getParam('bankAcctNo');
+            $_bank->bankName = $this->_request->getParam('bankName');
+            $_bank->bankAddress = $this->_request->getParam('bankAddress');
+            $_bank->swiftcode = $this->_request->getParam('swiftcode');
+            //$_bank->isDefault = $_isdd;
+            $_bank->remarks = $this->_request->getParam('remarks');
+            $_bank->attachmentList = $_attachList;
 
-                if (empty($_attachList)) {
+            if (empty($_attachList)) {
+                $this->view->bank = $this->objectToArray($_bank);
+                $this->view->errMsg = $this->view->translate('tip_add_fail') . $this->view->translate('tip_bank_no');
+                //银行附件不能为空
+                // Shop_Browser::redirect($this->view->translate('tip_add_fail') . $this->view->translate('tip_bank_no'), $this->view->seed_Setting['user_app_server'] . '/bank');
+            } else {
+                $addBank = $this->json->addBankAccountApi($_requestOb, $_bank);
+                $resultBank = $this->objectToArray(json_decode($addBank));
+                $this->view->e = $resultBank['result'];
+
+                if ($resultBank['status'] != 1) {
                     $this->view->bank = $this->objectToArray($_bank);
-                    $this->view->errMsg = $this->view->translate('tip_add_fail') . $this->view->translate('tip_bank_no');
-                    //银行附件不能为空
-                    // Shop_Browser::redirect($this->view->translate('tip_add_fail') . $this->view->translate('tip_bank_no'), $this->view->seed_Setting['user_app_server'] . '/bank');
+                    $this->view->errMsg = $this->view->translate('tip_add_fail') . $resultBank['error'];
                 } else {
-                    $addBank = $this->json->addBankAccountApi($_requestOb, $_bank);
-                    $resultBank = $this->objectToArray(json_decode($addBank));
-                    $this->view->e = $resultBank['result'];
-
-                    /*if ($resultBank['status'] != 1) {
-                        Shop_Browser::redirect($this->view->translate('tip_add_fail') . $resultBank['error'], $this->view->seed_Setting['user_app_server'] . '/bank');
-                    } else {
-                        Shop_Browser::redirect($this->view->translate('tip_add_success'), $this->view->seed_Setting['user_app_server'] . '/bank');
-                    }*/
-
-                    if ($resultBank['status'] != 1) {
-                        $this->view->bank = $this->objectToArray($_bank);
-                        $this->view->errMsg = $this->view->translate('tip_add_fail') . $resultBank['error'];
-                    } else {
-                        $this->view->errMsg = $this->view->translate('tip_add_success');
-                        $content = $this->view->render(SEED_WWW_TPL . "/bank/index.phtml");
-                        echo $content;
-                        exit;
-                    }
+                    $resultMsg = base64_encode($this->view->translate('tip_add_success'));
+                    $this->redirect("/bank/index?resultMsg=".$resultMsg);
                 }
-            } catch (HttpError $ex) {
-                // Shop_Browser::redirect($ex->getMessage(), $this->view->seed_Setting['user_app_server'] . '/bank');
-
-                $this->view->errMsg = $ex->getMessage();
-                $content = $this->view->render(SEED_WWW_TPL . "/bank/index.phtml");
-                echo $content;
-                exit;
             }
         }
         if (defined('SEED_WWW_TPL')) {
@@ -256,21 +240,12 @@ class BankController extends Kyapi_Controller_Action
                 $editBank = $this->json->editBankAccountApi($_requestOb, $_bank);
                 $resultBank = $this->objectToArray(json_decode($editBank));
 
-                /*if ( $_resultBank['status'] != 1) {
-                    Shop_Browser::redirect($this->view->translate('tip_edit_fail'). $_resultBank['error'],$this->view->seed_Setting['user_app_server'].'/bank');
-                } else {
-                    Shop_Browser::redirect($this->view->translate('tip_edit_success'),$this->view->seed_Setting['user_app_server'].'/bank');
-                }*/
-
                 if ($resultBank['status'] != 1) {
                     $this->view->bank = $this->objectToArray($_bank);
                     $this->view->errMsg = $this->view->translate('tip_edit_fail'). $resultBank['error'];
                 } else {
-                    $this->view->errMsg = $this->view->translate('tip_edit_success');
-                    // $this->redirect("/account");
-                    $content = $this->view->render(SEED_WWW_TPL . "/bank/index.phtml");
-                    echo $content;
-                    exit;
+                    $resultMsg = base64_encode($this->view->translate('tip_edit_success'));
+                    $this->redirect("/bank/index?resultMsg=".$resultMsg);
                 }
             }
         }

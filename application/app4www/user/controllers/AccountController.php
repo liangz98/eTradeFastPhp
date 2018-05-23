@@ -47,6 +47,8 @@ class AccountController extends Kyapi_Controller_Action
     }
 
     public function indexAction() {
+        $this->view->resultMsg = $this->_request->getParam('resultMsg');
+
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/account/index.phtml");
             echo $content;
@@ -201,11 +203,8 @@ class AccountController extends Kyapi_Controller_Action
                 $this->view->e = $this->objectToArray($_account);
                 $this->view->errMsg = $userEdit['error'];
             } else {
-                $this->view->errMsg = $this->view->translate('tip_add_success');
-                // $this->redirect("/account");
-                $content = $this->view->render(SEED_WWW_TPL . "/account/index.phtml");
-                echo $content;
-                exit;
+                $resultMsg = base64_encode($this->view->translate('tip_add_success'));
+                $this->redirect("/account/index?resultMsg=".$resultMsg);
             }
         } else {
             $accountID = $this->view->accountID;
@@ -296,11 +295,8 @@ class AccountController extends Kyapi_Controller_Action
                 $this->view->e = $this->objectToArray($_account);
                 $this->view->errMsg = $userEdit['error'];
             } else {
-                $this->view->errMsg = $this->view->translate('tip_edit_success');
-                // $this->redirect("/account");
-                $content = $this->view->render(SEED_WWW_TPL . "/account/index.phtml");
-                echo $content;
-                exit;
+                $resultMsg = base64_encode($this->view->translate('tip_edit_success'));
+                $this->redirect("/account/index?resultMsg=".$resultMsg);
             }
         }
         if (defined('SEED_WWW_TPL')) {
