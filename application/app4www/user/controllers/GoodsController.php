@@ -55,6 +55,9 @@ class GoodsController extends Kyapi_Controller_Action
         $this->view->status == '00' ? $linked = 'edit' : $linked = 'view';
         $this->view->linked = $linked;
 
+        // bootstrap-table查询状态
+        $this->view->productStatus = '03';
+
         // 附件地址
         $this->view->attachUrl = $this->view->seed_Setting['KyUrlex'];
 
@@ -105,6 +108,17 @@ class GoodsController extends Kyapi_Controller_Action
         $resultObject = $this->json->listSaleProductApi($requestObject, $queryParams, $querySorts, $keyword, $skip, $limit);
         $msg["total"] = json_decode($resultObject)->extData->totalSize;
         $msg["rows"] = json_decode($resultObject)->result;
+
+        echo json_encode($msg);
+        exit;
+    }
+
+    public function countSaleProductAjaxAction() {
+        $msg = array();
+        $requestObject = $this->_requestObject;
+
+        $resultObject = $this->json->countSaleProductApi($requestObject);
+        $msg = json_decode($resultObject)->result;
 
         echo json_encode($msg);
         exit;
@@ -210,6 +224,8 @@ class GoodsController extends Kyapi_Controller_Action
             $this->view->countSaleProduct = $countSaleProduct['result'];
             // 附件地址
             $this->view->attachUrl = $this->view->seed_Setting['KyUrlex'];
+            // bootstrap-table查询状态
+            $this->view->productStatus = '00';
             // 页面跳转
             if ($existData->status != 1) {
                 $this->view->goods = $this->objectToArray($_goods);
@@ -334,6 +350,7 @@ class GoodsController extends Kyapi_Controller_Action
             $this->view->countSaleProduct = $countSaleProduct['result'];
             // 附件地址
             $this->view->attachUrl = $this->view->seed_Setting['KyUrlex'];
+
             if ($existData->status != 1) {
                 $this->view->goods = $this->objectToArray($_goods);
                 $this->view->errMsg = $this->view->translate('tip_edit_fail') . $existData->error;
@@ -460,6 +477,8 @@ class GoodsController extends Kyapi_Controller_Action
             $this->view->countSaleProduct = $countSaleProduct['result'];
             // 附件地址
             $this->view->attachUrl = $this->view->seed_Setting['KyUrlex'];
+            // bootstrap-table查询状态
+            $this->view->productStatus = '00';
             if ($existData->status != 1) {
                 $this->view->goods = $this->objectToArray($_goods);
                 $this->view->errMsg = $this->view->translate('tip_add_fail') . $existData->error;

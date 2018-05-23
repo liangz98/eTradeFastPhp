@@ -86,7 +86,7 @@
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fas fa-search"></i></span>
                                                 <input type="text" class="form-control" name="keyword" id="keyword" placeholder="<?php echo $this->translate('INPkw_goods');?>">
-                                                <input type="hidden" name="productStatus" id="productStatus" value="03">
+                                                <input type="hidden" name="productStatus" id="productStatus" value="<?php echo $this->productStatus?>">
                                             </div>
                                         </div>
                                         <div class="col-sm-1">
@@ -142,6 +142,8 @@
             goodsSearch();
         });
 
+        $('#goodsTabs a[data-productStatus="<?php echo $this->productStatus; ?>"]').tab('show');
+
         var dataDictQuery = '/user/common/dict-ajax';
         var dictCode = new Array("ECOMM_STATUS");
         $.ajax({
@@ -170,7 +172,8 @@
                         return {
                             limit: params.limit,
                             skip: params.offset,
-                            keyword: params.search
+                            keyword: params.search,
+                            productStatus: $("#productStatus").val()
                         };
                     },
                     columns: [{
@@ -382,18 +385,30 @@
                             skin: 'del-class',
                             icon: 1
                         });
-                        $(listTable).bootstrapTable('refresh');
+                        goodsSearch();
+                        refreshBadge();
                     } else {
                         layer.msg('<span style="color: #EF8200;font-size: 16px;">' + msg3 + '</span><br>' + data.error, {
                             skin: 'del-class',
                             icon: 0
                         });
-                        $(listTable).bootstrapTable('refresh');
+                        goodsSearch();
                     }
                 }, "json");
-
         }, function () {
             layer.closeAll();
+        });
+    }
+
+    function refreshBadge() {
+        var countSaleProductQuery = '/user/goods/count-sale-product-ajax';
+        $.ajax({
+            type: "POST",
+            url: countSaleProductQuery,
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+            }
         });
     }
 </script>
