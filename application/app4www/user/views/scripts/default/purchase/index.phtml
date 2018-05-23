@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
-	<title>快移</title>
+    <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+    <title>快移</title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/goods/goods.css" rel="stylesheet">
     <link href="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.css" rel="stylesheet">
@@ -12,8 +12,8 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
 
 <div class="container-fluid index-body">
-	<div class="container">
-		<div class="row">
+    <div class="container">
+        <div class="row">
             <div class="col-md-3 company-navigation">
                 <div class="panel panel-default">
                     <div class="panel-heading"><?php echo $this->translate('goods'); ?></div>
@@ -29,11 +29,11 @@
                     <!-- Default panel contents -->
                     <div class="panel-heading"><?php echo $this->translate('goodsBUY'); ?></div>
                     <div class="panel-body">
-                        <?php if (!empty($this->errMsg)): ?>
-                        <div class="alert alert-success alert-dismissible fade in" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <p><?php echo $this->errMsg; ?>!</p>
-                        </div>
+                        <?php if (!empty($this->resultMsg)): ?>
+                            <div class="alert alert-success alert-dismissible fade in" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <p><?php echo base64_decode($this->resultMsg); ?>!</p>
+                            </div>
                         <?php endif; ?>
 
                         <ul id="goodsTabs" class="nav nav-tabs nav-justified">
@@ -42,34 +42,22 @@
                             </li>
                             <li role="presentation">
                                 <a href="#forActivate" data-productStatus="01" aria-controls="forActivate" role="tab" data-toggle="tab">
-                                    <?php echo $this->translate('forReview'); ?>&nbsp;
-                                    <?php if (!empty($this->countSaleProduct['01'])) {
-                                        echo '<span class="bg-info badge">&nbsp;' . $this->countSaleProduct['01'] . '&nbsp;</span>';
-                                    } ?>
+                                    <?php echo $this->translate('forReview'); ?>&nbsp;<span class="badge" data-productStatus="01"><?php echo $this->countPurProduct['01']; ?></span>
                                 </a>
                             </li>
                             <li role="presentation">
                                 <a href="#forActivate" data-productStatus="02" aria-controls="forActivate" role="tab" data-toggle="tab">
-                                    <?php echo $this->translate('forConfirm'); ?>&nbsp;
-                                    <?php if (!empty($this->countSaleProduct['02'])) {
-                                        echo '<span class="badge">&nbsp;' . $this->countSaleProduct['02'] . '&nbsp;</span>';
-                                    } ?>
+                                    <?php echo $this->translate('forConfirm'); ?>&nbsp;<span class="badge" data-productStatus="02"><?php echo $this->countPurProduct['02']; ?></span>
                                 </a>
                             </li>
                             <li role="presentation">
                                 <a href="#forActivate" data-productStatus="04" aria-controls="forActivate" role="tab" data-toggle="tab">
-                                    <?php echo $this->translate('rejected'); ?>&nbsp;
-                                    <?php if (!empty($this->countSaleProduct['04'])) {
-                                        echo '<span class="badge">&nbsp;' . $this->countSaleProduct['04'] . '&nbsp;</span>';
-                                    } ?>
+                                    <?php echo $this->translate('rejected'); ?>&nbsp;<span class="badge" data-productStatus="04"><?php echo $this->countPurProduct['04']; ?></span>
                                 </a>
                             </li>
                             <li role="presentation">
                                 <a href="#forActivate" data-productStatus="00" aria-controls="forActivate" role="tab" data-toggle="tab">
-                                    <?php echo $this->translate('draft'); ?>&nbsp;
-                                    <?php if (!empty($this->countSaleProduct['00'])) {
-                                        echo '<span class="badge">&nbsp;' . $this->countSaleProduct['00'] . '&nbsp;</span>';
-                                    } ?>
+                                    <?php echo $this->translate('draft'); ?>&nbsp;<span class="badge" data-productStatus="00"><?php echo $this->countPurProduct['00']; ?></span>
                                 </a>
                             </li>
                             <li role="presentation">
@@ -86,18 +74,18 @@
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fas fa-search"></i></span>
                                                 <input type="text" class="form-control" name="keyword" id="keyword" placeholder="<?php echo $this->translate('INPkw_goods');?>">
-                                                <input type="hidden" name="productStatus" id="productStatus" value="03">
+                                                <input type="hidden" name="productStatus" id="productStatus" value="<?php echo $this->productStatus?>">
                                             </div>
                                         </div>
                                         <div class="col-sm-1">
                                             <button type="submit" class="btn btn-primary"> Go </button>
                                         </div>
                                         <?php if ($this->CompAdmin == true): ?>
-                                        <div class="col-sm-1 col-sm-offset-4">
-                                            <a title="<?php echo $this->translate('add');?>" href="/user/purchase/add" class="btn btn-default">
-                                                <i class="fas fa-plus"></i>
-                                            </a>
-                                        </div>
+                                            <div class="col-sm-1 col-sm-offset-4">
+                                                <a title="<?php echo $this->translate('add');?>" href="/user/purchase/add" class="btn btn-default">
+                                                    <i class="fas fa-plus"></i>
+                                                </a>
+                                            </div>
                                         <?php endif; ?>
                                     </div>
                                 </form>
@@ -109,8 +97,8 @@
                     </div>
                 </div>
             </div>
-		</div>
-	</div>
+        </div>
+    </div>
 </div>
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
@@ -126,9 +114,9 @@
 
     $().ready(function() {
 
-	});
+    });
 
-	$(function () {
+    $(function () {
         $('.company-navigation').find('a').each(function () {
             if (this.href === document.location.href || document.location.href.search(this.href) >= 0) {
                 $(this).addClass('nav-selected');
@@ -141,6 +129,8 @@
             $("#productStatus").val($(this).attr("data-productStatus"));
             goodsSearch();
         });
+
+        $('#goodsTabs a[data-productStatus="<?php echo $this->productStatus; ?>"]').tab('show');
 
         var dataDictQuery = '/user/common/dict-ajax';
         var dictCode = new Array("ECOMM_STATUS");
@@ -170,7 +160,8 @@
                         return {
                             limit: params.limit,
                             skip: params.offset,
-                            keyword: params.search
+                            keyword: params.search,
+                            productStatus: $("#productStatus").val()
                         };
                     },
                     columns: [{
@@ -347,9 +338,9 @@
         $("#searchContactBtn").click(function () {
             goodsSearch();
         });
-	});
+    });
 
-	function goodsSearch() {
+    function goodsSearch() {
         var goodsListTable = $('#goodsListTable');
         var options = {
             query:{
@@ -375,25 +366,53 @@
             $.post(url,
                 {'delID': id},
                 function (data) {
-                    var contactListTable = $('#contactListTable');
+                    var listTable = $('#goodsListTable');
 
                     if (data.status === 1) {
                         layer.msg('<span style="color: #EF8200;font-size: 16px;">' + msg2 + '</span>', {
                             skin: 'del-class',
                             icon: 1
                         });
-                        $(contactListTable).bootstrapTable('refresh');
+                        goodsSearch();
+                        refreshBadge();
                     } else {
                         layer.msg('<span style="color: #EF8200;font-size: 16px;">' + msg3 + '</span><br>' + data.error, {
                             skin: 'del-class',
                             icon: 0
                         });
-                        $(contactListTable).bootstrapTable('refresh');
+                        goodsSearch();
                     }
                 }, "json");
-
         }, function () {
             layer.closeAll();
+        });
+    }
+
+    function refreshBadge() {
+        var countPurProductQuery = '/user/goods/count-pur-product-ajax';
+        $.ajax({
+            type: "POST",
+            url: countPurProductQuery,
+            dataType: "json",
+            success: function (data) {
+                var forReview = "", forConfirm = "", rejected = "", draft = "";
+                $.each(data, function (i, item) {
+                    if (i === '01') {
+                        forReview = item;
+                    } else if (i === '02') {
+                        forConfirm = item;
+                    } else if (i === '04') {
+                        rejected = item;
+                    } else if (i === '00') {
+                        draft = item;
+                    }
+                });
+
+                $('.badge[data-productStatus="01"]').html(forReview);
+                $('.badge[data-productStatus="02"]').html(forConfirm);
+                $('.badge[data-productStatus="04"]').html(rejected);
+                $('.badge[data-productStatus="00"]').html(draft);
+            }
         });
     }
 </script>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>快移</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="/ky/css/base.css" rel="stylesheet">
+<link href="/ky/css/style.css" rel="stylesheet">
+<link href="/ky/css/select2.min.css" rel="stylesheet">
+<link href="/ky/css/img-upload.css" rel="stylesheet">
+<script type="text/javascript" src="/ky/js/jquery.js"></script>
+<script type="text/javascript" src="/ky/js/www.js"></script>
+<script type="text/javascript" src="/ky/js/select2.min.js"></script>
+<script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
+<script type="text/javascript" src="/ky/layer-v3.1.1/layer.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        //回车不提交
+        document.getElementsByTagName('form')[0].onkeydown = function(e){
+            var e = e || event;
+            var keyNum = e.which || e.keyCode;
+            return keyNum==13 ? false : true;
+        };
+
+        $('#productionMode').change(function() {
+            var mode=$('#productionMode').val();
+            if(mode=='02'){
+                $('#table2').show();
+            }else {
+                $('#table2').hide();
+            }
+        });
+//            $('#hscode').change(function() {
+//                var taxRate=$('#hscode').attr('taxRate');
+//            });
+
+        //获取供应商账号
+        $("#ddsupplier").click(function(){
+            layer.open({
+                type: 2,
+                title: false,
+                shadeClose: true,
+                shade: 0.8,
+                area: ['640px', '450px'],
+                content: '/user/vendor/superlist' //iframe的url
+            });
+        });
+
+        //检查表单值是否存在
+        checkVAL_brand();
+        checkVAL_model();
+    });
+    $("input[name='productBrand']").change(function () {
+        checkVAL_brand();
+    });
+    $("input[name='productModel']").change(function () {
+        checkVAL_model();
+    });
+    function checkVAL_brand() {
+        var VAL_brand=$("input[name='productBrand']").val();
+        if(VAL_brand==null&&VAL_brand==""){
+            $("input[name='productBrand']").css("border","1px solid #DF7E20");
+        }
+    }
+    function checkVAL_model() {
+        var VAL_model=$("input[name='productModel']").val();
+        if(VAL_model==null&&VAL_model==""){
+            $("input[name='productModel']").css("border","1px solid #DF7E20");
+        }
+    }
+</script>
+</head>
+<body>
+<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
+<div class="o_content_wrap w1200 m0a clearfix">
+    <?php echo $this->render(SEED_WWW_TPL.'/left_menu.phtml');?>
+    <div class="o_content fr w940 bt5">
+        <form action="#" method="post" id="purchase_edit_form">
+            <div class="info_tit">
+                <h4><!--编辑产品详情--><?php echo $this->translate('edit').$this->translate('goodsME');?></h4>
+            </div>
+            <div class="info_cont info_cont1 company_info clearfix">
+                <dl class="fl">
+                    <dt class="fl"><!--商品名称--><?php echo $this->translate('productNAME');?></dt>
+                    <dd><input style="border: 1px solid #DF7E20;"  class="must" type="text" name="productName" required data-msg-required="<?php echo $this->translate('de_null');?>" value="<?php echo $this->goods["productName"];?>" ></dd>
+                    <span><?php echo $this->translate('goodsPS01');?></span>
+                </dl>
+                <dl class="fl">
+                    <dt class="fl"><!--英文名称--><?php echo $this->translate('productENNAME');?></dt><dd><input type="text" name="productEnName" value="<?php echo $this->goods["productEnName"];?>" ></dd>
+                    <span><?php echo $this->translate('goodsPS02');?></span>
+                </dl>
+                <dl class="fl">
+                    <dt class="fl"><!--品牌--><?php echo $this->translate('brand');?></dt>
+                    <dd><input style="border: 1px solid #DF7E20;"  class="must" type="text" name="productBrand" required data-msg-required="<?php echo $this->translate('de_null');?>" value="<?php echo $this->goods["productBrand"];?>" ></dd>
+                    <span><?php echo $this->translate('goodsPS01');?></span>
+                </dl>
+                <dl class="fl">
+                    <dt class="fl"><!--型号--><?php echo $this->translate('model');?></dt>
+                    <dd><input style="border: 1px solid #DF7E20;"   class="must"  type="text" name="productModel" required data-msg-required="<?php echo $this->translate('de_null');?>" value="<?php echo $this->goods["productModel"];?>" ></dd>
+                </dl>
+                <dl class="fl">
+                    <dt class="fl"><!--采购单价--><?php echo $this->translate('purchaseUnitPrice');?></dt>
+                    <dd><select  class="spadd_dj"  required data-msg-required="<?php echo $this->translate('de_null');?>" name="purchaseCrnCode" >
+                            <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userLangCode,$this->dic_Setting['CURRENCY'],$this->goods["purchaseCrnCode"]);?>
+                        </select>
+                        <input  class="must"  style="border: 1px solid #DF7E20; width:192px;margin-left:8px" id="spadd_cg" type="text" name="purchaseUnitPrice" min="1"  value="<?php echo $this->goods["purchaseUnitPrice"];?>"></dd>
+                </dl>
+                <dl class="fl">
+                    <dt class="fl"><!--交易单位--><?php echo $this->translate('pricingUnit');?></dt><dd>
+                        <select class="spadd_dj" name="pricingUnit" required data-msg-required="<?php echo $this->translate('de_null');?>">
+                            <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PRICING_UNIT'],$this->goods["pricingUnit"]);?>
+                        </select></dd>
+                </dl>
+                <div id="hscode_p" class="fl">
+                    <div id="hscode_title"  class="fl"><!--HSCode--><?php echo $this->translate('HSCODE');?></div>
+                    <div id="hscode_st" >
+                        <input type="hidden" id="hscode" name="hscode" value="<?php echo $this->goods["hscode"];?>">
+                        <select class="public_sel js-data-example-ajax" name="hscodename" id="hscodename">
+                            <option value="<?php echo $this->goods["hscode"];?>" title="<?php echo $this->goods["productHSCode"]["codeName"] . "(" . $this->goods["hscode"] . ")";?>" selected><?php echo $this->goods["productHSCode"]["codeName"] . "(" . $this->goods["hscode"] . ")";?></option>
+                        </select></div>
+                    <script type="text/javascript" src="/ky/js/select2ajx_supplierID.js"></script>
+                    <span id="hscode_span"><?php echo $this->translate('goodsPS01');?></span>    </div>
+                <dl class="fl">
+                    <dt class="fl"><!--法定单位--><?php echo $this->translate('legalPricingUnit');?></dt><dd>
+                        <em class="fl" id="pricingUnit-name"><?php echo $this->ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PRICING_UNIT'],$this->goods["legalPricingUnit"]);?></em>
+                        <input type="hidden" name="legalPricingUnit" id="legalPricingUnit"   value="<?php echo $this->goods["legalPricingUnit"];?>">
+                    <input type="hidden" name="legalPricingUnit2" id="legalPricingUnit2" value="<?php echo $this->goods["legalPricingUnit2"];?>"></dd>
+                </dl>
+                <dl class="fl">
+                    <dt class="fl"><!--退税率--><?php echo $this->translate('rebateRate');?></dt>
+                    <dd> <em class="fl" id="rebateRate2"><?php echo $this->goods["rebateRate"]*100?></em>%
+                     <input type="hidden" name="rebateRate" id="rebateRate"   value="<?php echo $this->goods["rebateRate"];?>"></dd>
+                </dl>
+                <dl class="fl">
+                    <dt class="fl"><!--增值税率--><?php echo $this->translate('taxRate');?></dt>
+                    <dd><em class="fl" id="taxRate2"><?php echo $this->goods["taxRate"]*100;?></em>%
+                        <input type="hidden" name="taxRate" id="taxRate"  value="<?php echo $this->goods["taxRate"];?>"></dd>
+                </dl>
+                <dl style="width:100%;">
+                    <dt class="fl"><!--申报要素--><?php echo $this->translate('declareElements');?></dt><textarea class="spl_full" name="declareElements" cols="200" rows="5"><?php echo $this->goods["declareElements"];?></textarea>
+                </dl>
+                <dl class="fl">
+                    <dt class="fl"><!--规格尺寸--><?php echo $this->translate('productSize');?></dt><dd><input type="text" name="productSize"  value="<?php echo $this->goods["productSize"];?>"></dd>
+                </dl>
+                <dl class="fl">
+                    <dt class="fl"><!--功能用途--><?php echo $this->translate('functionUsage');?></dt><dd><input type="text" name="functionUsage"  value="<?php echo $this->goods["functionUsage"];?>"></dd>
+                    <span><?php echo $this->translate('goodsPS01');?></span>
+                </dl>
+                <dl class="fl">
+                    <dt class="fl"><!--材质--><?php echo $this->translate('productMaterial');?></dt><dd><input type="text" name="productMaterial"  value="<?php echo $this->goods["productMaterial"];?>"></dd>
+                    <span><?php echo $this->translate('goodsPS01');?></span>
+                </dl>
+                <!--采购商品新增 编辑没有生成方式选择-->
+                <dl class="fl">
+                    <dt class="fl"><!--供应商--><?php echo $this->translate('supplierName');?></dt>
+                    <dd>
+                        <input class="must" style="border: 1px solid #DF7E20;" type="text" name="supplierName" readonly="true" id="supplierName" required data-msg-required="<?php echo $this->translate('de_null');?>" value="<?php echo $this->goods["supplierName"];?>"> <a href="#" id="ddsupplier" class="ml025 addb_box big-link"></a>
+                        <input name="supplierID"  type="hidden" id="supplierID"  value="<?php echo $this->goods["supplierID"];?>">
+                    </dd>
+                </dl>
+            </div>
+            <div class="info_cont info_cont1 company_info clearfix">
+                <dl class="fl">
+                    <dt class="fl"><!--包装类型--><?php echo $this->translate('packageTYPE');?></dt><dd>
+                        <select class="spadd_sel"  required data-msg-required="<?php echo $this->translate('de_null');?>" name="packingType" >
+                            <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PACKING_TYPE'],$this->goods['packingType']);?>
+                        </select></dd>
+                </dl>
+                <div></div>
+                <dl class="fl">
+                    <dt class="fl"><!--包装体积--><?php echo $this->translate('packingVolume');?></dt><dd><input id="spadd_tj" type="text" onchange="if(!/^\d+\.?\d{0,4}$/.test(this.value)){value='0';alert('输入的格式不正确！');}" name="packingVolume" value="<?php echo $this->goods["packingVolume"];?>" >
+                        <em class="ml10">CBM</em></dd>
+                </dl>
+                <dl class="fl">
+                    <dt class="fl"><!--毛重--><?php echo $this->translate('grossWeight');?></dt><dd><input id="spadd_mz" type="text" onchange="if(!/^\d+\.?\d{0,4}$/.test(this.value)){value='0';alert('输入的格式不正确！');}" name="grossWeight" value="<?php echo $this->goods["grossWeight"];?>" >
+                        <em class="ml10">KGS</em></dd>
+                </dl>
+                <dl class="fl">
+                    <dt class="fl"><!--净重--><?php echo $this->translate('netWeight');?></dt><dd><input id="spadd_jz" type="text" onchange="if(!/^\d+\.?\d{0,4}$/.test(this.value)){value='0';alert('输入的格式不正确！');}" name="netWeight" value="<?php echo $this->goods["netWeight"];?>" >
+                        <em class="ml10">KGS</em></dd>
+                </dl>
+                <dl class="fl">
+                    <dt class="fl"><!--是否需要商检--><?php echo $this->translate('needInspection');?></dt><dd>
+                        <label class="choose_lab"><input name="needInspection" <?php if( $this->goods["needInspection"]==true)echo 'checked="checked"';?> type="radio" value="1"><?php echo $this->translate('yes');?></label>
+                        <label class="choose_lab"><input name="needInspection" <?php if( $this->goods["needInspection"]==false)echo 'checked="checked"';?> type="radio" value="0"><?php echo $this->translate('no');?></label></dd>
+                </dl>
+            </div>
+            <!-- 附件上传 -->
+            <div class="yyzz_box info_cont">
+                <div class="zzname  n_o_c_tit"><h4><!-- GOODS资料档案 --><?php echo $this->translate('goodsAttachment');?></h4><span><?php echo $this->translate('UPGOODSLS');?></span></div>
+                <?php echo $this-> ShowWebuploader(null,$this->biz_Setting['PRODUCT'],$this->attach_Setting['PDPD'],"0",$this->goods['productID']);?>
+            </div>
+            <?php echo $this->render(SEED_WWW_TPL.'/btn_confirm.phtml');?>
+        </form>
+    </div>
+</div>
+<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
+<script src="/ky/js/jquery.validate.js"></script>
+<script>
+    $(function(){
+        $("#purchase_edit_form").validate({
+            submitHandler: function() {
+                form.submit();
+            }
+        })
+    });
+</script>
+</body>
+</html>

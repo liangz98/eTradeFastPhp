@@ -120,7 +120,6 @@ class GoodsController extends Kyapi_Controller_Action
     }
 
     public function countSaleProductAjaxAction() {
-        $msg = array();
         $requestObject = $this->_requestObject;
 
         $resultObject = $this->json->countSaleProductApi($requestObject);
