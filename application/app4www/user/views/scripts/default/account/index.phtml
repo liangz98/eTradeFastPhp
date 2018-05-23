@@ -53,7 +53,7 @@
                                 <div class="col-sm-4">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" id="shoAllContact"> <?php echo $this->translate('CHK_account');?>
+                                            <input type="checkbox" id="showAllContact"> <?php echo $this->translate('CHK_account');?>
                                         </label>
                                     </div>
                                 </div>
@@ -239,7 +239,7 @@
             contactSearch();
         });
 
-        $("#shoAllContact").click(function () {
+        $("#showAllContact").click(function () {
             var contactListTable = $('#contactListTable');
             var options = {};
             if ($(this).is(':checked')) {

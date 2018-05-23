@@ -61,7 +61,7 @@
                 <div class="o_c_content">
                     <?php if ($this->e['regdCountryCode'] == 'CN'): ?>
                         <dl class="fl">
-                            <dt class="fl"><!-- 公司名称 --><?php echo $this->translate('comNAME'); ?></dt>
+                            <dt class="fl"><!-- 公司名称 --><?php echo $this->translate('companyName'); ?></dt>
                             <dd class="company"><?php echo $this->e['accountName']; ?>
                                 <a href="#">
                                     <?php if ($this->e['entRealAuthStatus'] == 0 || $this->e['entRealAuthStatus'] == -1): ?>
@@ -93,7 +93,7 @@
                             </dl><?php endif; ?>
                     <?php else: ?>
                         <dl class="fl" style="width:100%">
-                            <dt class="fl"><!-- 公司名称 --><?php echo $this->translate('comNAME'); ?></dt>
+                            <dt class="fl"><!-- 公司名称 --><?php echo $this->translate('companyName'); ?></dt>
                             <dd class="company"><?php echo $this->e['accountName']; ?></dd>
                         </dl>
                         <dl class="fl" style="width:100%">

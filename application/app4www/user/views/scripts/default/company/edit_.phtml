@@ -44,7 +44,7 @@
                 <div class="o_c_content">
                     <?php if($this->userrgCode):?>
                     <dl class="fl">
-                        <dt class="fl"><!-- 公司名称 --><?php echo $this->translate('comNAME');?></dt>
+                        <dt class="fl"><!-- 公司名称 --><?php echo $this->translate('companyName');?></dt>
                         <dd class="company"><input type="text" value="<?php echo $this->e['accountName'];?>" name="accountName" <?php if($this->e['accountStatus']==01){echo 'readonly="ture" style="background: #F5F5F5;border: none;"';} ?> /></dd>
                     </dl>
                     <dl class="fl">
@@ -72,7 +72,7 @@
                         </dl>
                     <?php else:?>
                         <dl class="fl" style="width:100%">
-                            <dt class="fl"><!-- 公司名称 --><?php echo $this->translate('comNAME');?></dt>
+                            <dt class="fl"><!-- 公司名称 --><?php echo $this->translate('companyName');?></dt>
                             <dd class="company"><input type="text" value="<?php echo $this->e['accountName'];?>" name="accountName" <?php if($this->e['accountStatus']==01){echo 'readonly="ture" style="background: #F5F5F5;border: none;"';} ?> /></dd>
                         </dl>
                         <dl class="fl" style="width:100%">

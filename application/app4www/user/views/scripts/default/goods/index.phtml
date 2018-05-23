@@ -366,8 +366,6 @@
             $.post(url,
                 {'delID': id},
                 function (data) {
-                    var listTable = $('#goodsListTable');
-
                     if (data.status === 1) {
                         layer.msg('<span style="color: #EF8200;font-size: 16px;">' + msg2 + '</span>', {
                             skin: 'del-class',

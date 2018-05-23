@@ -52,67 +52,76 @@ class BuyerController extends Kyapi_Controller_Action
 		}
 	}
 
-	/**合作伙伴列表**/
-	public function indexAction()
-	{
-		try{
-			$f1 = new Seed_Filter_Alnum();
-			$mod = $f1->filter($this->_request->getParam('mod'));
-			if (empty($mod)) {$mod = "index";}
+    public function indexAction() {
+        $this->view->resultMsg = $this->_request->getParam('resultMsg');
 
-			$_PStatus =strval($this->_request->getParam('status'));
-			if(empty( $_PStatus)){  $_PStatus ='01';}
+        //合作伙伴状态 数量统计
+        $resultObject = $this->json->countBuyerPartnerApi($this->_requestObject);
+        $countBuyerPartner = $this->objectToArray(json_decode($resultObject));
+        $this->view->countBuyerPartner = $countBuyerPartner['result'];
 
-			$_querySorts=$this->_request->getParam('querySorts');
-			if(empty($_querySorts)){ $_querySorts =null;}
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/buyer/index.phtml");
+            echo $content;
+            exit;
+        }
+    }
 
-			$_keyword=$this->_request->getParam('keyword');
-			if(empty($_keyword)){ $_keyword =null;}
-			$this->view->keyword=$_keyword;
+    public function buyerListAjaxAction() {
+        $msg = array();
+        $requestObject = $this->_requestObject;
 
-			$page =intval($this->_request->getParam('page'));
-			if($page<1)$page=1;
-			$_limit=8;
-			$_skip=$_limit*($page-1);
-			//申明查询条件
-			$_queryP = new queryPartner();
-			$_queryP->partnerStatus= $_PStatus;
-			//列表接口 统计接口
-			$userKY= $this->json->listBuyerPartnerApi($this->_requestObject,$_queryP, null, $_keyword, $_skip, $_limit);
+        $queryParams = array();
+        $partnerStatus = strval($this->_request->getParam('partnerStatus'));
+        if (empty($partnerStatus)) {
+            $partnerStatus = '01';
+        }
+        $queryParams['partnerStatus'] = $partnerStatus;
 
-			//合作伙伴状态 数量统计
-            $userNum= $this->json->countBuyerPartnerApi($this->_requestObject);
-			$existNum =$this->objectToArray(json_decode($userNum));
-			$this->view->clConut=$existNum['result'];
+        $querySorts = array();
+        // $querySorts['createTime'] = "DESC";
 
-			//显示 合伙伙伴列表，
-			$existDatt =$this->objectToArray(json_decode($userKY));
-			//统计正常状态数量、分页
-			$existCount = $existDatt['extData'];
-			$total = $existCount['totalSize'];
-			$page=$existCount['totalPage'];
+        $keyword = $this->_request->getParam('keyword');
+        if (empty($keyword)) {
+            $keyword = null;
+        }
 
-			$this->view->e=$existDatt['result'];
-			$this->view->status= $_PStatus;
+        $limit = $this->_request->getParam('limit');
+        if (empty($limit) || $limit <= 0) {
+            $limit = 10;
+        }
 
+        $skip = $this->_request->getParam('skip');
+        if (empty($limit) || $limit <= 0) {
+            $skip = 0;
+        }
 
-			$file = "user/buyer/" . $mod . "-" . $_PStatus;
-			$_limit=8;
-			$pageObj = new Seed_Page($this->_request,$total,$_limit);
-			$this->view->page = $pageObj->getPageArray();
-			$this->view->page['pageurl'] = '/' . $file;
-			if ($page > $this->view->page['totalpage'])
-				$page = $this->view->page['totalpage'];
-			if ($page < 1) $page = 1;
-		} catch (Exception $e) {
-			Shop_Browser::redirect($e->getMessage());
-		}
-		if(defined('SEED_WWW_TPL')){
-			$content = $this->view->render(SEED_WWW_TPL."/buyer/index.phtml");
-			echo $content;
-			exit;
-		}
-	}
+        if (is_array($queryParams)) {
+            $queryParams = $this->arrayToObject($queryParams);
+        }
+
+        if (is_array($querySorts)) {
+            $querySorts = $this->arrayToObject($querySorts);
+        }
+
+        $resultObject = $this->json->listBuyerPartnerApi($requestObject, $queryParams, $querySorts, $keyword, $skip, $limit);
+        $msg["total"] = json_decode($resultObject)->extData->totalSize;
+        $msg["rows"] = json_decode($resultObject)->result;
+
+        echo json_encode($msg);
+        exit;
+    }
+
+    public function countBuyerPartnerAjaxAction() {
+        $requestObject = $this->_requestObject;
+
+        $resultObject = $this->json->countBuyerPartnerApi($requestObject);
+        $msg = json_decode($resultObject)->result;
+
+        echo json_encode($msg);
+        exit;
+    }
+
 	//添加订单买家
 	public function orderlistAction()
 	{

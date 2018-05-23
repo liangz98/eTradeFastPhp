@@ -11,11 +11,11 @@ function doDelete(AcctID,name){
             {'AcctID':AcctID},
             function(data){
                 if( data == true){
-                    layer.msg('<?php echo $this->translate('delete_y');?>', {icon: 2});
+                    layer.msg('<?php echo $this->translate('tip_del_success');?>', {icon: 2});
                     location.href = '<?php echo $this->BaseUrl();?>/'+name+'/';
                 }
                 else{
-                    layer.msg('<?php echo $this->translate('delete_n');?>', {icon: 2});
+                    layer.msg('<?php echo $this->translate('tip_del_fail');?>', {icon: 2});
                     location.href = '<?php echo $this->BaseUrl();?>/'+name+'/';
                 }
             },"json");

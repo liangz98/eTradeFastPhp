@@ -24,10 +24,10 @@
         <div class="order_table order_tableh">
             <ul class="order_state2 order_state3 clearfix">
                 <li <?php if ($this->status == 01): ?><?php echo "class='on'"; ?><?php endif; ?> ><a
-                            href="/user/vendor/index-01-1.html">
+                            href="/user/buyer/index-01-1.html">
                         <!--有效--><?php echo $this->translate('valid'); ?></a></li>
                 <li <?php if ($this->status == 02): ?><?php echo "class='on'"; ?><?php endif; ?> ><a
-                            href="/user/vendor/index-02-1.html">
+                            href="/user/buyer/index-02-1.html">
                         <!--待处理--><?php echo $this->translate('waiting'); ?>（<span
                                 class="wh_num"><?php if (!empty($this->clConut['02'])) {
                                 echo $this->clConut['02'];
@@ -35,7 +35,7 @@
                                 echo '0';
                             } ?></span>）</a></li>
                 <li <?php if ($this->status == 00): ?><?php echo "class='on'"; ?><?php endif; ?> ><a
-                            href="/user/vendor/index-00-1.html">
+                            href="/user/buyer/index-00-1.html">
                         <!--审核中--><?php echo $this->translate('forReview'); ?>（<span
                                 class="wh_num"><?php if (!empty($this->clConut['00'])) {
                                 echo $this->clConut['00'];
@@ -46,14 +46,14 @@
         </div>
         <div class="qysearch_box">
             <form action="#" method="post">
-                <input name="keyword" class="search_inp" <?php if (!empty($this->keyword)) {
+                <input class="search_inp" name="keyword" <?php if (!empty($this->keyword)) {
                     echo "value=" . $this->keyword;
-                } ?> placeholder="<?php echo $this->translate('INPkw_par_vendor'); ?>" type="text"><!--可输入卖家名称-->
+                } ?> placeholder="<?php echo $this->translate('INPkw_par_buyer'); ?>" type="text"><!--可输入买家名称-->
                 <input class="ss_btn" type="submit" value="">
                 <?php if ($this->CompPartnerAdmin == true || $this->CompOrderAdmin == true): ?>
-                    <?php if (count($this->vendor_isAllowAdd) > 0): ?>
-                        <a href="/user/vendor/add" class="addb_box fr"></a>
-                        <a href="/user/vendor/adds" class="p_n_sh fr"></a>
+                    <?php if (count($this->buyer_isAllowAdd) > 0): ?>
+                        <a href="/user/buyer/add" class="addb_box fr"></a>
+                        <a href="/user/buyer/adds" class="p_n_sh fr"></a>
                     <?php endif; ?>
                 <?php endif; ?>
             </form>
@@ -72,11 +72,12 @@
             </thead>
             <tbody>
             <form id="delete_form" name="delete_form" method="post" action="">
+
                 <?php if (is_array($this->e) && count($this->e) > 0): ?>
                     <?php foreach ($this->e as $k => $v): ?>
                         <tr style="height: 65px">
-                            <td><a href="<?php if (!empty($this->vendor_isAllowView)) {
-                                    echo WWW . 'user/vendor/view?' . base64_encode($v['toID']);
+                            <td><a href="<?php if (!empty($this->buyer_isAllowView)) {
+                                    echo WWW . 'user/buyer/view?' . base64_encode($v['toID']);
                                 } ?>">
                                     <?php if ($this->userrgCode == 'CN') {
                                         echo $v['toName'];
@@ -85,18 +86,18 @@
                                     } else {
                                         echo $v['toName'];
                                     } ?></a></td>
-                            <td><a href="<?php if (!empty($this->vendor_isAllowView)) {
-                                    echo WWW . 'user/vendor/view?' . base64_encode($v['toID']);
+                            <td><a href="<?php if (!empty($this->buyer_isAllowView)) {
+                                    echo WWW . 'user/buyer/view?' . base64_encode($v['toID']);
                                 } ?>">
                                     <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ISIC_INDUSTRY_TYPE'], $v['industryCode']); ?> </a>
                             </td>
-                            <td><a href="<?php if (!empty($this->vendor_isAllowView)) {
-                                    echo WWW . 'user/vendor/view?' . base64_encode($v['toID']);
+                            <td><a href="<?php if (!empty($this->buyer_isAllowView)) {
+                                    echo WWW . 'user/buyer/view?' . base64_encode($v['toID']);
                                 } ?>">
                                     <?php echo $this->ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'], $this->userLangCode, $this->dic_Setting['COUNTRY_ISO_CODE'], $v['regdCountryCode']); ?></a>
                             </td>
-                            <td><a href="<?php if (!empty($this->vendor_isAllowView)) {
-                                    echo WWW . 'user/vendor/view?' . base64_encode($v['toID']);
+                            <td><a href="<?php if (!empty($this->buyer_isAllowView)) {
+                                    echo WWW . 'user/buyer/view?' . base64_encode($v['toID']);
                                 } ?>">待补充</a></td>
                             <?php if ($this->CompPartnerAdmin == true || $this->CompOrderAdmin == true): ?>
                                 <td>
@@ -105,14 +106,14 @@
                                             <?php if ($v['partnerStatus'] == 00) {
                                                 echo 'style="display:inline-block;"';
                                             } ?> class="t_edit p_ed"
-                                                     href="<?php echo WWW . 'user/vendor/edit?' . base64_encode($v['toID']); ?>"></a>
+                                                     href="<?php echo WWW . 'user/buyer/edit?' . base64_encode($v['toID']); ?>"></a>
 
                                         <!--删除--><a title="<?php echo $this->translate('delete'); ?>"
                                             <?php if ($v['partnerStatus'] == 00 || $v['partnerStatus'] == 01) {
                                                 echo 'style="display:inline-block;"';
                                             } ?> class="t_edit p_del"
                                                     href="javascript:;" id="<?php echo $v['toID']; ?>"
-                                                    data-url="/user/vendor/delete"
+                                                    data-url="/user/buyer/delete"
                                                     data-msg1="<?php echo $this->translate('is_delete'); ?>"
                                                     data-msg2="<?php echo $this->translate('tip_del_success'); ?>"
                                                     data-msg3="<?php echo $this->translate('tip_del_fail'); ?>"
@@ -123,7 +124,7 @@
                                                 echo 'style="display:inline-block;"';
                                             } ?> class="t_edit p_qr"
                                                       href="javascript:;" id="<?php echo $v['toID']; ?>"
-                                                      data-url="/user/vendor/accept"
+                                                      data-url="/user/buyer/accept"
                                                       data-msg1="<?php echo $this->translate('is_accept'); ?>"
                                                       data-msg2="<?php echo $this->translate('tip_accept_success'); ?>"
                                                       data-msg3="<?php echo $this->translate('tip_accept_fail'); ?>"
@@ -134,11 +135,11 @@
                                                 echo 'style="display:inline-block;"';
                                             } ?> class="t_edit p_del"
                                                       href="javascript:;" id="<?php echo $v['toID']; ?>"
-                                                      data-url="/user/vendor/reject"
+                                                      data-url="/user/buyer/reject"
                                                       data-msg1="<?php echo $this->translate('is_reject'); ?>"
                                                       data-msg2="<?php echo $this->translate('tip_reject_success'); ?>"
                                                       data-msg3="<?php echo $this->translate('tip_reject_fail'); ?>"
-                                                      onclick="doOption(this);"> </a>
+                                                      onclick="doOption(this);"></a>
                                     </div>
                                 </td>
                             <?php endif; ?>

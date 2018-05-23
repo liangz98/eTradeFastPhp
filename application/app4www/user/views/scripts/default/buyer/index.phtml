@@ -1,163 +1,293 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>快移</title>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-    <link href="/ky/css/base.css" rel="stylesheet">
-    <link href="/ky/css/style.css" rel="stylesheet">
-    <script type="text/javascript" src="/ky/js/jquery.js"></script>
-    <script type="text/javascript" src="/ky/js/seed.form.js"></script>
-    <script type="text/javascript" src="/ky/js/jquery.form.js"></script>
-    <script type="text/javascript" src="/ky/js/www.js"></script>
-    <script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
-    <script type="text/javascript" src="/ky/layer-v3.1.1/layer.js"></script>
-
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+	<title>快移</title>
+    <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <link href="/ky/css/partner/partner.css" rel="stylesheet">
+    <link href="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.css" rel="stylesheet">
 </head>
 <body>
-<?php echo $this->render(SEED_WWW_TPL . '/header.phtml'); ?>
-<div class="o_content_wrap w1200 m0a clearfix">
-    <?php echo $this->render(SEED_WWW_TPL . '/left_menu.phtml'); ?>
-    <div class="o_content fr w940">
-        <div class="order_table order_tableh">
-            <ul class="order_state2 order_state3 clearfix">
-                <li <?php if ($this->status == 01): ?><?php echo "class='on'"; ?><?php endif; ?> ><a
-                            href="/user/buyer/index-01-1.html">
-                        <!--有效--><?php echo $this->translate('valid'); ?></a></li>
-                <li <?php if ($this->status == 02): ?><?php echo "class='on'"; ?><?php endif; ?> ><a
-                            href="/user/buyer/index-02-1.html">
-                        <!--待处理--><?php echo $this->translate('waiting'); ?>（<span
-                                class="wh_num"><?php if (!empty($this->clConut['02'])) {
-                                echo $this->clConut['02'];
-                            } else {
-                                echo '0';
-                            } ?></span>）</a></li>
-                <li <?php if ($this->status == 00): ?><?php echo "class='on'"; ?><?php endif; ?> ><a
-                            href="/user/buyer/index-00-1.html">
-                        <!--审核中--><?php echo $this->translate('audit'); ?>（<span
-                                class="wh_num"><?php if (!empty($this->clConut['00'])) {
-                                echo $this->clConut['00'];
-                            } else {
-                                echo '0';
-                            } ?></span>）</a></li>
-            </ul>
-        </div>
-        <div class="qysearch_box">
-            <form action="#" method="post">
-                <input class="search_inp" name="keyword" <?php if (!empty($this->keyword)) {
-                    echo "value=" . $this->keyword;
-                } ?> placeholder="<?php echo $this->translate('INPkw_par_buyer'); ?>" type="text"><!--可输入买家名称-->
-                <input class="ss_btn" type="submit" value="">
-                <?php if ($this->CompPartnerAdmin == true || $this->CompOrderAdmin == true): ?>
-                    <?php if (count($this->buyer_isAllowAdd) > 0): ?>
-                        <a href="/user/buyer/add" class="addb_box fr"></a>
-                        <a href="/user/buyer/adds" class="p_n_sh fr"></a>
-                    <?php endif; ?>
-                <?php endif; ?>
-            </form>
-        </div>
-        <table class="qy_table">
-            <thead>
-            <tr>
-                <th><!--公司名称--><?php echo $this->translate('comNAME'); ?></th>
-                <th><!--行业--><?php echo $this->translate('industry'); ?></th>
-                <th><!--所在国家--><?php echo $this->translate('ONcountry'); ?></th>
-                <th><!--合作额度--><?php echo $this->translate('ONlimit'); ?></th>
-                <?php if ($this->CompPartnerAdmin == true || $this->CompOrderAdmin == true): ?>
-                    <th><!--操作--><?php echo $this->translate('madeTT'); ?></th>
-                <?php endif; ?>
-            </tr>
-            </thead>
-            <tbody>
-            <form id="delete_form" name="delete_form" method="post" action="">
 
-                <?php if (is_array($this->e) && count($this->e) > 0): ?>
-                    <?php foreach ($this->e as $k => $v): ?>
-                        <tr style="height: 65px">
-                            <td><a href="<?php if (!empty($this->buyer_isAllowView)) {
-                                    echo WWW . 'user/buyer/view?' . base64_encode($v['toID']);
-                                } ?>">
-                                    <?php if ($this->userrgCode == 'CN') {
-                                        echo $v['toName'];
-                                    } elseif (!empty($v['toEnName'])) {
-                                        echo $v['toEnName'];
-                                    } else {
-                                        echo $v['toName'];
-                                    } ?></a></td>
-                            <td><a href="<?php if (!empty($this->buyer_isAllowView)) {
-                                    echo WWW . 'user/buyer/view?' . base64_encode($v['toID']);
-                                } ?>">
-                                    <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ISIC_INDUSTRY_TYPE'], $v['industryCode']); ?> </a>
-                            </td>
-                            <td><a href="<?php if (!empty($this->buyer_isAllowView)) {
-                                    echo WWW . 'user/buyer/view?' . base64_encode($v['toID']);
-                                } ?>">
-                                    <?php echo $this->ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'], $this->userLangCode, $this->dic_Setting['COUNTRY_ISO_CODE'], $v['regdCountryCode']); ?></a>
-                            </td>
-                            <td><a href="<?php if (!empty($this->buyer_isAllowView)) {
-                                    echo WWW . 'user/buyer/view?' . base64_encode($v['toID']);
-                                } ?>">待补充</a></td>
-                            <?php if ($this->CompPartnerAdmin == true || $this->CompOrderAdmin == true): ?>
-                                <td>
-                                    <div class="cc_box">
-                                        <!--编辑--> <a title="<?php echo $this->translate('edit'); ?>"
-                                            <?php if ($v['partnerStatus'] == 00) {
-                                                echo 'style="display:inline-block;"';
-                                            } ?> class="t_edit p_ed"
-                                                     href="<?php echo WWW . 'user/buyer/edit?' . base64_encode($v['toID']); ?>"></a>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
 
-                                        <!--删除--><a title="<?php echo $this->translate('delete'); ?>"
-                                            <?php if ($v['partnerStatus'] == 00 || $v['partnerStatus'] == 01) {
-                                                echo 'style="display:inline-block;"';
-                                            } ?> class="t_edit p_del"
-                                                    href="javascript:;" id="<?php echo $v['toID']; ?>"
-                                                    data-url="/user/buyer/delete"
-                                                    data-msg1="<?php echo $this->translate('is_delete'); ?>"
-                                                    data-msg2="<?php echo $this->translate('delete_y'); ?>"
-                                                    data-msg3="<?php echo $this->translate('delete_n'); ?>"
-                                                    onclick="doOption(this);"></a>
+<div class="container-fluid index-body">
+	<div class="container">
+		<div class="row">
+            <div class="col-md-3 company-navigation">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><?php echo $this->translate('partners'); ?></div>
+                    <div class="list-group">
+                        <a href="/user/buyer" class="list-group-item"><?php echo $this->translate('partners_buyers'); ?></a>
+                        <a href="/user/vendor" class="list-group-item"><?php echo $this->translate('partners_vendors'); ?></a>
+                    </div>
+                </div>
+            </div>
 
-                                        <!--接受邀请--><a title="<?php echo $this->translate('accept'); ?>"
-                                            <?php if ($v['partnerStatus'] == 02) {
-                                                echo 'style="display:inline-block;"';
-                                            } ?> class="t_edit p_qr"
-                                                      href="javascript:;" id="<?php echo $v['toID']; ?>"
-                                                      data-url="/user/buyer/accept"
-                                                      data-msg1="<?php echo $this->translate('is_accept'); ?>"
-                                                      data-msg2="<?php echo $this->translate('tip_accept_success'); ?>"
-                                                      data-msg3="<?php echo $this->translate('tip_accept_fail'); ?>"
-                                                      onclick="doOption(this);"></a>
+            <div class="col-md-9 company-main">
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading"><?php echo $this->translate('partners_buyers'); ?></div>
+                    <div class="panel-body">
+                        <?php if (!empty($this->resultMsg)): ?>
+                        <div class="alert alert-success alert-dismissible fade in" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <p><?php echo base64_decode($this->resultMsg); ?>!</p>
+                        </div>
+                        <?php endif; ?>
 
-                                        <!--拒绝邀请--><a title="<?php echo $this->translate('reject'); ?>"
-                                            <?php if ($v['partnerStatus'] == 02) {
-                                                echo 'style="display:inline-block;"';
-                                            } ?> class="t_edit p_del"
-                                                      href="javascript:;" id="<?php echo $v['toID']; ?>"
-                                                      data-url="/user/buyer/reject"
-                                                      data-msg1="<?php echo $this->translate('is_reject'); ?>"
-                                                      data-msg2="<?php echo $this->translate('tip_reject_success'); ?>"
-                                                      data-msg3="<?php echo $this->translate('tip_reject_fail'); ?>"
-                                                      onclick="doOption(this);"></a>
+                        <ul id="partnerTabs" class="nav nav-tabs nav-justified">
+                            <li role="presentation" class="active">
+                                <a href="#forActivate" data-partnerStatus="01" aria-controls="forActivate" role="tab" data-toggle="tab"><?php echo $this->translate('valid'); ?></a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#forActivate" data-partnerStatus="02" aria-controls="forActivate" role="tab" data-toggle="tab">
+                                    <?php echo $this->translate('waiting'); ?>&nbsp;<span class="badge" data-partnerStatus="02"><?php echo $this->countBuyerPartner['02']; ?></span>
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#forActivate" data-partnerStatus="00" aria-controls="forActivate" role="tab" data-toggle="tab">
+                                    <?php echo $this->translate('forReview'); ?>&nbsp;<span class="badge" data-partnerStatus="00"><?php echo $this->countBuyerPartner['00']; ?></span>
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="forActivate">
+                                <form class="form-horizontal" action="javascript:void(0)" onsubmit="partnerSearch()" id="partner_search_form">
+                                    <div class="form-group" style="margin-bottom: 0 !important;">
+                                        <label for="keyword" class="sr-only">keyword</label>
+                                        <div class="col-sm-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fas fa-search"></i></span>
+                                                <input type="text" class="form-control" name="keyword" id="keyword" placeholder="<?php echo $this->translate('INPkw_par_buyer');?>">
+                                                <input type="hidden" name="partnerStatus" id="partnerStatus" value="<?php echo $this->partnerStatus; ?>" >
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <button type="submit" class="btn btn-primary"> Go </button>
+                                        </div>
+                                        <?php if ($this->CompPartnerAdmin == true): ?>
+                                        <div class="col-sm-1 col-sm-offset-4">
+                                            <a title="<?php echo $this->translate('add');?>" href="/user/buyer/add" class="btn btn-default">
+                                                <i class="fas fa-plus"></i>
+                                            </a>
+                                        </div>
+                                        <?php endif; ?>
                                     </div>
-                                </td>
-                            <?php endif; ?>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="5"> <?php echo $this->translate('noData'); ?></td>
-                    </tr>
-                <?php endif; ?>
-            </form>
-            </tbody>
-        </table>
-        <div class="page"> <?php echo $this->showProductPage($this->page); ?> </div>
-    </div>
+                                </form>
+
+                                <!-- Table -->
+                                <table id="partnerListTable"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
 </div>
-<?php echo $this->render(SEED_WWW_TPL . '/footer.phtml'); ?>
-<script>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script src="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.js"></script>
+<script src="/ky/bootstrap-table-1.12.1-dist/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="/ky/js/base64.js"></script>
+
+<script type="text/javascript">
+    var dataDict = {};
+
+    $().ready(function() {
+
+	});
+
+	$(function () {
+        $('.company-navigation').find('a').each(function () {
+            if (this.href === document.location.href || document.location.href.search(this.href) >= 0) {
+                $(this).addClass('nav-selected');
+            } else {
+                $(this).removeClass('nav-selected');
+            }
+        });
+
+        $("#partnerTabs a").click(function () {
+            $("#partnerStatus").val($(this).attr("data-partnerStatus"));
+            partnerSearch();
+        });
+
+        $('#partnerTabs a[data-partnerStatus="<?php echo $this->partnerStatus; ?>"]').tab('show');
+
+        var dataDictQuery = '/user/common/dict-ajax';
+        var dictCode = ["ISIC_INDUSTRY_TYPE", "COUNTRY_ISO_CODE"];
+        $.ajax({
+            type: "POST",
+            url: dataDictQuery,
+            data: {
+                dictCode: dictCode,
+                langCode: '<?php echo $this->userLangCode; ?>'
+            },
+            dataType: "json",
+            success: function (data) {
+                $.data(dataDict, 'dataDict', data);
+
+                $('#partnerListTable').bootstrapTable({
+                    url: '/user/buyer/buyer-list-ajax',
+                    method: 'post',
+                    // showRefresh: true,
+                    // search: true,
+                    pagination: true,
+                    classes: 'table table-no-bordered',
+                    sidePagination: 'server',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    pageNumber: 1,
+                    pageSize: 10,
+                    queryParams: function(params) {
+                        return {
+                            limit: params.limit,
+                            skip: params.offset,
+                            keyword: params.search,
+                            partnerStatus: $("#partnerStatus").val()
+                        };
+                    },
+                    columns: [{
+                        field: 'toName',
+                        title: '<?php echo $this->translate("companyName"); ?>',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "-";
+                            }
+
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.toID);
+                            var href = "/user/buyer/view?"+resultEnCode;
+
+                            <?php if ($this->userrgCode == 'CN'): ?>
+
+                            <?php else: ?>
+                            if (row.toEnName !== null && row.toEnName !== '') {
+                                value = row.toEnName;
+                            }
+                            <?php endif; ?>
+                            return '<a href="' + href + '">' + value + '</a>';
+                        }
+                    }, {
+                        field: 'industryCode',
+                        title: '<?php echo $this->translate("industry"); ?>',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "-";
+                            }
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.toID);
+                            var href = "/user/buyer/view?"+resultEnCode;
+
+                            var result = value;
+                            var data = $.data(dataDict, 'dataDict');
+                            $.each(data, function (key, item) {
+                                if (key === 'ISIC_INDUSTRY_TYPE') {
+                                    $.each(item, function (i, dict) {
+                                        if (dict.code === value) {
+                                            result = dict.name;
+                                        }
+                                    });
+                                }
+                            });
+                            return '<a href="' + href + '">' + result + '</a>';
+                        }
+                    }, {
+                        field: 'regdCountryCode',
+                        title: '<?php echo $this->translate("regdCountry"); ?>',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "-";
+                            }
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.toID);
+                            var href = "/user/buyer/view?"+resultEnCode;
+
+                            var result = value;
+                            var data = $.data(dataDict, 'dataDict');
+                            $.each(data, function (key, item) {
+                                if (key === 'COUNTRY_ISO_CODE') {
+                                    $.each(item, function (i, dict) {
+                                        if (dict.code === value) {
+                                            result = dict.name;
+                                        }
+                                    });
+                                }
+                            });
+                            return '<a href="' + href + '">' + result + '</a>';
+                        }
+                    }, {
+                        title: '<?php echo $this->translate("madeTT"); ?>',
+                        formatter: function (value, row, index) {
+                            var editTitle = "<?php echo $this->translate("edit");?>";
+                            var rejectTitle = "<?php echo $this->translate('reject');?>";
+                            var acceptTitle = "<?php echo $this->translate('accept');?>";
+                            var delTitle = "<?php echo $this->translate('delete');?>";
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.toID);
+                            var href = "/user/buyer/edit?"+resultEnCode;
+
+                            var result = '';
+                            <?php if ($this->CompPartnerAdmin == true || $this->CompOrderAdmin == true): ?>
+                            if (row.partnerStatus === '00') {
+                                result += '<a title="' + editTitle+ '" href="' + href + '">'
+                                    + '<i class="far fa-edit"></i>'
+                                    + '</a>&nbsp;';
+
+                                result += '<a href="javascript:void(0)" title="' + delTitle + '" id="' + row.toID + '" data-url="/user/buyer/delete" '
+                                    + 'data-msg1="<?php echo $this->translate("is_delete");?>" '
+                                    + 'data-msg2="<?php echo $this->translate("tip_del_success");?>" '
+                                    + 'data-msg3="<?php echo $this->translate("tip_del_fail");?>" '
+                                    + 'onclick="doOption(this);" '
+                                    + '>'
+                                    + '<i class="far fa-trash-alt"></i>'
+                                    + '</a>&nbsp;';
+                            }
+
+                            if (row.partnerStatus === '02') {
+                                result += '<a href="javascript:void(0)" title="' + acceptTitle + '" id="' + row.toID + '" data-url="/user/buyer/accept" '
+                                    + 'data-msg1="<?php echo $this->translate("is_accept");?>" '
+                                    + 'data-msg2="<?php echo $this->translate("tip_accept_success");?>" '
+                                    + 'data-msg3="<?php echo $this->translate("tip_accept_fail");?>" '
+                                    + 'onclick="doOption(this);" '
+                                    + '>'
+                                    + '<i class="far fa-check-circle"></i>'
+                                    + '</a>&nbsp;';
+
+                                result += '<a href="javascript:void(0)" title="' + rejectTitle + '" id="' + row.toID + '" data-url="/user/buyer/reject" '
+                                    + 'data-msg1="<?php echo $this->translate("is_reject");?>" '
+                                    + 'data-msg2="<?php echo $this->translate("tip_reject_success");?>" '
+                                    + 'data-msg3="<?php echo $this->translate("tip_reject_fail");?>" '
+                                    + 'onclick="doOption(this);" '
+                                    + '>'
+                                    + '<i class="fas fa-ban"></i>'
+                                    + '</a>&nbsp;';
+                            }
+                            <?php endif; ?>
+
+                            return result;
+                        }
+                    }]
+                });
+            }
+        });
+	});
+
+	function partnerSearch() {
+        var listTable = $('#partnerListTable');
+        var options = {
+            query:{
+                keyword: $("#keyword").val(),
+                partnerStatus: $("#partnerStatus").val()
+            }
+        };
+        $(listTable).bootstrapTable('refresh', options);
+    }
+
     function doOption(obj) {
         var url = $(obj).attr('data-url');
         var id = $(obj).attr('id');
@@ -173,27 +303,47 @@
             $.post(url,
                 {'delID': id},
                 function (data) {
-                    if (data.status == 1) {
+                    if (data.status === 1) {
                         layer.msg('<span style="color: #EF8200;font-size: 16px;">' + msg2 + '</span>', {
                             skin: 'del-class',
                             icon: 1
                         });
-                        parent.window.location.reload();
-                    }
-                    else {
+                        partnerSearch();
+                        refreshBadge();
+                    } else {
                         layer.msg('<span style="color: #EF8200;font-size: 16px;">' + msg3 + '</span><br>' + data.error, {
                             skin: 'del-class',
                             icon: 0
                         });
-                        parent.window.location.reload();
+                        partnerSearch();
                     }
                 }, "json");
-
         }, function () {
             layer.closeAll();
         });
     }
 
+    function refreshBadge() {
+        var countQuery = '/user/goods/count-buyer-partner-ajax';
+        $.ajax({
+            type: "POST",
+            url: countQuery,
+            dataType: "json",
+            success: function (data) {
+                var waiting = "", forReview = "";
+                $.each(data, function (i, item) {
+                    if (i === '02') {
+                        waiting = item;
+                    } else if (i === '00') {
+                        forReview = item;
+                    }
+                });
+
+                $('.badge[data-partnerStatus="02"]').html(waiting);
+                $('.badge[data-partnerStatus="00"]').html(forReview);
+            }
+        });
+    }
 </script>
 </body>
 </html>
