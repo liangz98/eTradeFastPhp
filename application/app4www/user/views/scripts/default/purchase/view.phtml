@@ -41,7 +41,7 @@
                                 <div class="col-md-12">
                                     <h3>
                                         <?php if (($this->CompProductAdmin == true || $this->CompOrderAdmin == true) && $this->goods['productStatus'] != 05): ?>
-                                            <a class="profile-heading-edit pull-right btn btn-xs" data-type="base" href="<?php echo '/user/goods/edit?' . base64_encode($this->goods['productID']); ?>">
+                                            <a class="profile-heading-edit pull-right btn btn-xs" data-type="base" href="<?php echo '/user/purchase/edit?' . base64_encode($this->goods['productID']); ?>">
                                                 <i class="fas fa-pencil-alt" aria-hidden="true"></i><?php echo $this->translate('edit'); ?>
                                             </a>
                                         <?php endif; ?>
