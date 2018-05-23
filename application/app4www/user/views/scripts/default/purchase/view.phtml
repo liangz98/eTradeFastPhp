@@ -61,10 +61,10 @@
                                         <dt><?php echo $this->translate('model'); ?></dt>
                                         <dd><?php echo $this->goods['productModel']; ?></dd>
 
-                                        <dt><?php echo $this->translate('unitPrice'); ?></dt>
+                                        <dt><?php echo $this->translate('purchaseUnitPrice'); ?></dt>
                                         <dd>
-                                            <?php echo $this->ShowDictionaryTo($this->dic_Setting['CURRENCY'], $this->userLangCode, $this->dic_Setting['CURRENCY'], $this->goods['crnCode']); ?>&nbsp;
-                                            <?php echo $this->goods["unitPrice"];?>
+                                            <?php echo $this->ShowDictionaryTo($this->dic_Setting['CURRENCY'], $this->userLangCode, $this->dic_Setting['CURRENCY'], $this->goods["purchaseCrnCode"]); ?>&nbsp;
+                                            <?php echo $this->goods["purchaseUnitPrice"]; ?>
                                         </dd>
 
                                         <dt><?php echo $this->translate('pricingUnit'); ?></dt>
@@ -111,16 +111,8 @@
                                             <?php echo $this->ShowDictionaryTo($this->dic_Setting['PRODUCT_PRODUCTION_MODE'], $this->userLangCode, $this->dic_Setting['PRODUCT_PRODUCTION_MODE'], $this->goods['productionMode']); ?>
                                         </dd>
 
-                                        <?php if ($this->goods["productionMode"] == 02): ?>
                                         <dt><?php echo $this->translate('supplierName'); ?></dt>
                                         <dd><?php echo $this->goods["supplierName"]; ?></dd>
-
-                                        <dt><?php echo $this->translate('supplierName'); ?></dt>
-                                        <dd>
-                                            <?php echo $this->ShowDictionaryTo($this->dic_Setting['CURRENCY'], $this->userLangCode, $this->dic_Setting['CURRENCY'], $this->goods["purchaseCrnCode"]); ?>&nbsp;
-                                            <?php echo $this->goods["purchaseUnitPrice"]; ?>
-                                        </dd>
-                                        <?php endif; ?>
 
                                         <dt><?php echo $this->translate('packageTYPE'); ?></dt>
                                         <dd>

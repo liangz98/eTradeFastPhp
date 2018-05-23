@@ -37,7 +37,7 @@
 
                         <ul class="nav nav-tabs">
                             <li role="presentation" class="active">
-                                <a href="#info" aria-controls="info" role="tab" data-toggle="tab"><?php echo $this->translate('add').$this->translate('goodsME');?></a>
+                                <a href="#info" aria-controls="info" role="tab" data-toggle="tab"><?php echo $this->translate('add').$this->translate('purProduct');?></a>
                             </li>
                         </ul>
 
@@ -74,14 +74,15 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="crnCode" class="col-sm-3 control-label"><?php echo $this->translate('unitPrice'); ?></label>
+                                            <label for="purchaseCrnCode" class="col-sm-3 control-label"><?php echo $this->translate('purchaseUnitPrice'); ?></label>
                                             <div class="col-sm-2">
-                                                <select class="selectpicker form-control" name="crnCode" id="crnCode">
-                                                    <?php echo $this->ShowDictionaryList($this->dic_Setting['CURRENCY'], $this->userLangCode, $this->dic_Setting['CURRENCY'], $this->goods['crnCode']); ?>
+                                                <select class="selectpicker form-control" name="purchaseCrnCode" id="purchaseCrnCode">
+                                                    <?php echo $this->ShowDictionaryList($this->dic_Setting['CURRENCY'], $this->userLangCode, $this->dic_Setting['CURRENCY'], $this->goods['purchaseCrnCode']); ?>
                                                 </select>
                                             </div>
                                             <div class="col-sm-3">
-                                                <input type="text" class="form-control" name="unitPrice" id="unitPrice" placeholder="" value="<?php echo $this->goods['unitPrice']; ?>" required >
+                                                <input type="text" class="form-control" name="purchaseUnitPrice" id="purchaseUnitPrice" placeholder="" value="<?php echo $this->goods['purchaseUnitPrice']; ?>" required >
+                                                <input type="hidden" name="unitPrice" value="<?php echo $this->goods["unitPrice"];?>">
                                             </div>
                                         </div>
 
@@ -169,15 +170,6 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="productionMode" class="col-sm-3 control-label"><?php echo $this->translate('productionMode'); ?></label>
-                                            <div class="col-sm-2">
-                                                <select class="selectpicker form-control" name="productionMode" id="productionMode">
-                                                    <?php echo $this->ShowDictionaryList($this->dic_Setting['PRODUCT_PRODUCTION_MODE'], $this->userLangCode, $this->dic_Setting['PRODUCT_PRODUCTION_MODE'], $this->goods['productionMode']); ?>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group supplierMode">
                                             <label for="supplierID" class="control-label col-sm-3"><?php echo $this->translate('supplierName'); ?></label>
                                             <div class="col-sm-8">
                                                 <div class="input-group">
@@ -186,18 +178,6 @@
                                                     </select>
                                                     <div class="input-group-addon"><i class="fas fa-plus"></i></div>
                                                 </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group supplierMode">
-                                            <label for="purchaseCrnCode" class="col-sm-3 control-label"><?php echo $this->translate('purchaseUnitPrice'); ?></label>
-                                            <div class="col-sm-2">
-                                                <select class="selectpicker form-control" name="purchaseCrnCode" id="purchaseCrnCode">
-                                                    <?php echo $this->ShowDictionaryList($this->dic_Setting['CURRENCY'], $this->userLangCode, $this->dic_Setting['CURRENCY'], $this->goods['purchaseCrnCode']); ?>
-                                                </select>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <input type="text" class="form-control" name="purchaseUnitPrice" id="purchaseUnitPrice" placeholder="" value="<?php echo $this->goods['purchaseUnitPrice']; ?>" >
                                             </div>
                                         </div>
 
@@ -368,7 +348,6 @@
                         success: function (data) {
                             var optionString = "";
                             $.each(data, function (i, item) {
-                                // console.log(item);
                                 optionString += "<option value='" + item.hscode + "' data-pricingUnit='"+item.pricingUnit+"' data-rebateRate='"+item.rebateRate+"' data-taxRate='"+item.taxRate+"'>" + item.hscode + " (" + item.codeName + ")</option>";
                             });
 
@@ -425,23 +404,7 @@
                 });
             }
         });
-
-        var productionMode = $('#productionMode');
-        setSupplierMode($(productionMode).val());
-        $(productionMode).change(function () {
-            var mode = $(this).val();
-            setSupplierMode(mode);
-        });
     });
-
-	function setSupplierMode(mode) {
-        var supplierMode = $(".supplierMode");
-        if (mode === '02') {
-            $(supplierMode).show();
-        } else {
-            $(supplierMode).hide();
-        }
-    }
 </script>
 </body>
 </html>
