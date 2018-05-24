@@ -23,7 +23,7 @@
     <div class="o_content fr w940">
         <div class="o_tab">
             <ul>
-                <li><a href="<?php echo '/user/buyer/view?'.base64_encode( $this->toID);?>"><!-- 合作伙伴信息 --><?php echo $this->translate('partnerINF');?></a></li>
+                <li><a href="<?php echo '/user/buyer/view?'.base64_encode( $this->toID);?>"><!-- 合作伙伴信息 --><?php echo $this->translate('partnerInfo');?></a></li>
                 <li class="cur"><a href="<?php echo '/user/buyer/account?'.base64_encode( $this->toID);?>"><!-- 联系人 --><?php echo $this->translate('contacts');?></a></li>
             </ul>
         </div>
@@ -39,9 +39,9 @@
             <thead>
             <tr>
                 <th ><!--姓名--><?php echo $this->translate('name');?></th>
-                <th><!--个人电话--><?php echo $this->translate('myphone');?></th>
+                <th><!--个人电话--><?php echo $this->translate('personPhone');?></th>
                 <th><!--电子邮箱--><?php echo $this->translate('email');?></th>
-                <th><!--职务--><?php echo $this->translate('myjob');?></th>
+                <th><!--职务--><?php echo $this->translate('position');?></th>
             </tr>
             </thead>
             <tbody>

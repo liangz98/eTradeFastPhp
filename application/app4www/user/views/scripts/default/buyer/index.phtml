@@ -24,7 +24,7 @@
                 </div>
             </div>
 
-            <div class="col-md-9 company-main">
+            <div class="col-md-9 partner-main">
                 <div class="panel panel-default">
                     <!-- Default panel contents -->
                     <div class="panel-heading"><?php echo $this->translate('partners_buyers'); ?></div>
@@ -327,7 +327,7 @@
     }
 
     function refreshBadge() {
-        var countQuery = '/user/goods/count-buyer-partner-ajax';
+        var countQuery = '/user/buyer/count-buyer-partner-ajax';
         $.ajax({
             type: "POST",
             url: countQuery,

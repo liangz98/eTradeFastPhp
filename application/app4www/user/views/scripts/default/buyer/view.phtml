@@ -1,113 +1,219 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>快移</title>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-    <link href="/ky/css/base.css" rel="stylesheet">
-    <link href="/ky/css/style.css" rel="stylesheet">
-    <script type="text/javascript" src="/ky/js/jquery.js"></script>
-    <script type="text/javascript" src="/ky/js/jquery.wallform.js"></script>
-    <script type="text/javascript" src="/ky/js/www.js"></script>
-    <script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
-    <script>
-        function doStatus(status) {
-            window.location.href = '<?php echo $this->BaseUrl();?>/goods/buyer/addv/' + status;
-            alert('status');
-        }
-        function nextPage() {
-        }
-    </script>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+	<title>快移</title>
+    <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <link href="/ky/css/partner/partner.css" rel="stylesheet">
+    <link href="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.css" rel="stylesheet">
 </head>
 <body>
-<?php echo $this->render(SEED_WWW_TPL . '/header.phtml'); ?>
-<div class="o_content_wrap w1200 m0a clearfix">
-    <?php echo $this->render(SEED_WWW_TPL . '/left_menu.phtml'); ?>
 
-    <div class="o_content fr w940">
-        <div class="o_tab">
-            <ul>
-                <li class="cur"><a href="<?php echo WWW . 'user/buyer/view?' . base64_encode($this->toID); ?>">
-                        <!-- 合作伙伴信息 --><?php echo $this->translate('partnerINF'); ?></a></li>
-                <li><a href="<?php echo WWW . 'user/buyer/contact?' . base64_encode($this->toID); ?>">
-                        <!-- 联系人 --><?php echo $this->translate('contacts'); ?></a></li>
-            </ul>
-        </div>
-        <div class="info_tit clearfix">
-            <h4><?php echo $this->translate('basicInfo'); ?><!--查看基本信息--></h4>
-            <?php if (($this->CompPartnerAdmin == true || $this->CompOrderAdmin == true) && $this->e['accountStatus'] != '01'): ?>
-                <a href=<?php echo WWW . 'user/buyer/edit?' . base64_encode($this->toID); ?> class="edit fr m10"></a>
-            <?php endif; ?>
-        </div>
-        <div class="pa_form_box">
-            <form action="#" method="post">
-                <div class="info_cont clearfix">
-                    <dl class="fl">
-                        <dt class="fl"><?php echo $this->translate('companyName'); ?><!--公司名称--></dt>
-                        <dd class="buyer_contacts"> <?php if ($this->userrgCode == 'CN') {
-                                echo $this->e['accountName'];
-                            } elseif (!empty($this->e['accountEnName'])) {
-                                echo $this->e['accountEnName'];
-                            } else {
-                                echo $this->e['accountName'];
-                            } ?></dd>
-                    </dl>
-                    <dl class="fl">
-                        <dt class="fl"><?php echo $this->translate('contacts'); ?><!--联系人--></dt>
-                        <dd class="fl price_rules"><?php echo $this->e['contact']['name'] ?></dd>
-                    </dl>
-                    <dl class="fl">
-                        <dt class="fl"><?php echo $this->translate('langCode'); ?><!--语言--></dt>
-                        <dd class="buyer_contacts">
-                            <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['SYS_LANG'], $this->e['langCode']); ?></dd>
-                    </dl>
-                    <dl class="fl">
-                        <dt class="fl"><?php echo $this->translate('currency'); ?><!--货币--></dt>
-                        <dd class="fl price_rules">
-                            <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['CURRENCY'], $this->e['crnCode']); ?></dd>
-                    </dl>
-                    <dl class="fl">
-                        <dt class="fl"><?php echo $this->translate('legalForm'); ?><!--形式--></dt>
-                        <dd class="buyer_contacts">  <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ACCOUNT_LEGALFORM'], $this->e['legalForm']); ?></dd>
-                    </dl>
-                    <dl class="fl">
-                        <dt class="fl"><?php echo $this->translate('industry'); ?><!--行业--></dt>
-                        <dd class="fl price_rules">
-                            <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ISIC_INDUSTRY_TYPE'], $this->e['industryCode']); ?> </dd>
-                    </dl>
-                    <dl class="fl">
-                        <dt class="fl"><?php echo $this->translate('comTEL'); ?><!--联系电话--></dt>
-                        <dd class="buyer_contacts"><?php echo $this->e['phone'] ?></dd>
-                    </dl>
-                    <dl class="fl">
-                        <dt class="fl"><?php echo $this->translate('comFOX'); ?><!--传真--></dt>
-                        <dd class="fl price_rules"><?php echo $this->e['fax'] ?></dd>
-                    </dl>
-                    <dl class="fl">
-                        <dt class="fl"><?php echo $this->translate('company_email'); ?><!--邮箱--></dt>
-                        <dd class="buyer_contacts"><?php echo $this->e['email'] ?></dd>
-                    </dl>
-                    <dl class="fl">
-                        <dt class="fl"><?php echo $this->translate('company_website'); ?><!--网站--></dt>
-                        <dd class="fl price_rules"><?php echo $this->e['website'] ?></dd>
-                    </dl>
-                    <dl class="fl" style="width: 100%;height: 120px;">
-                        <dt class="fl"><?php echo $this->translate('address'); ?><!--地址--></dt>
-                        <dd class="buyer_contacts">
-                            <?php echo $this->ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'], $this->userLangCode, $this->dic_Setting['COUNTRY_ISO_CODE'], $this->e['regdCountryCode']) . "&nbsp;&nbsp;" . $this->e['regdAddress'] ?></dd>
-                    </dl>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
+
+<div class="container-fluid index-body">
+	<div class="container">
+		<div class="row">
+            <div class="col-md-3 company-navigation hidden-xs">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><?php echo $this->translate('partners'); ?></div>
+                    <div class="list-group">
+                        <a href="/user/buyer" class="list-group-item"><?php echo $this->translate('partners_buyers'); ?></a>
+                        <a href="/user/vendor" class="list-group-item"><?php echo $this->translate('partners_vendors'); ?></a>
+                    </div>
                 </div>
+            </div>
 
-        </div>
-        <div>
-            <input class="return_btn" type="button" value="<?php echo $this->translate('return'); ?>"
-                   onclick="javascript:history.go(-1);"><!--返回-->
-        </div>
-        </form>
-    </div>
+            <div class="col-md-9 partner-view">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <ul class="nav nav-tabs">
+                            <li role="presentation" class="active">
+                                <a href="#info" aria-controls="info" role="tab" data-toggle="tab"><?php echo $this->translate('partnerInfo'); ?></a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><?php echo $this->translate('contacts'); ?></a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active row" id="info">
+                                <div class="col-md-12">
+                                    <h3>
+                                        <?php if (($this->CompPartnerAdmin == true || $this->CompOrderAdmin == true) && $this->partner['accountStatus'] != 01): ?>
+                                            <a class="profile-heading-edit pull-right btn btn-xs" data-type="base" href="<?php echo '/user/buyer/edit?' . base64_encode($this->toID); ?>">
+                                                <i class="fas fa-pencil-alt" aria-hidden="true"></i><?php echo $this->translate('edit'); ?>
+                                            </a>
+                                        <?php endif; ?>
+                                        <?php if ($this->userrgCode == 'CN') {
+                                            echo $this->partner['accountName'];
+                                        } else if (!empty($this->partner['accountEnName'])) {
+                                            echo $this->partner['accountEnName'];
+                                        } else {
+                                            echo $this->partner['accountName'];
+                                        } ?>
+                                    </h3>
+
+                                    <dl class="dl-horizontal">
+                                        <dt><?php echo $this->translate('contacts'); ?></dt>
+                                        <dd><?php echo $this->partner['contact']['name']; ?></dd>
+
+                                        <dt><?php echo $this->translate('langCode'); ?></dt>
+                                        <dd>
+                                            <?php echo $this->ShowDictionaryTo($this->dic_Setting['SYS_LANG'], $this->userLangCode, $this->dic_Setting['SYS_LANG'], $this->partner['langCode']); ?>
+                                        </dd>
+
+                                        <dt><?php echo $this->translate('currency'); ?></dt>
+                                        <dd>
+                                            <?php echo $this->ShowDictionaryTo($this->dic_Setting['CURRENCY'], $this->userLangCode, $this->dic_Setting['CURRENCY'], $this->partner['crnCode']); ?>
+                                        </dd>
+
+                                        <dt><?php echo $this->translate('legalForm'); ?></dt>
+                                        <dd>
+                                            <?php echo $this->ShowDictionaryTo($this->dic_Setting['ACCOUNT_LEGALFORM'], $this->userLangCode, $this->dic_Setting['ACCOUNT_LEGALFORM'], $this->partner['legalForm']); ?>
+                                        </dd>
+
+                                        <dt><?php echo $this->translate('industry'); ?></dt>
+                                        <dd>
+                                            <?php echo $this->ShowDictionaryTo($this->dic_Setting['ISIC_INDUSTRY_TYPE'], $this->userLangCode, $this->dic_Setting['ISIC_INDUSTRY_TYPE'], $this->partner['industryCode']); ?>
+                                        </dd>
+
+                                        <dt><?php echo $this->translate('phone'); ?></dt>
+                                        <dd><?php echo $this->partner['phone']; ?></dd>
+
+                                        <dt><?php echo $this->translate('fax'); ?></dt>
+                                        <dd><?php echo $this->partner['fax']; ?></dd>
+
+                                        <dt><?php echo $this->translate('company_email'); ?></dt>
+                                        <dd><?php echo $this->partner['email']; ?></dd>
+
+                                        <dt><?php echo $this->translate('company_website'); ?></dt>
+                                        <dd><?php echo $this->partner['website']; ?></dd>
+
+                                        <dt><?php echo $this->translate('address'); ?></dt>
+                                        <dd>
+                                            <?php echo $this->ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'], $this->userLangCode, $this->dic_Setting['COUNTRY_ISO_CODE'], $this->partner['regdCountryCode']) . "&nbsp;&nbsp;" . $this->partner['regdAddress'] ?>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane row" id="profile">
+                                <form class="form-horizontal" action="javascript:void(0)" onsubmit="contactSearch()" id="contact_search_form">
+                                    <div class="form-group" style="margin-bottom: 0 !important;">
+                                        <label for="keyword" class="sr-only">keyword</label>
+                                        <div class="col-sm-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fas fa-search"></i></span>
+                                                <input type="text" class="form-control" name="keyword" id="keyword" placeholder="<?php echo $this->translate('INPkw_par_buyer');?>">
+                                                <input type="hidden" name="toID" id="toID" value="<?php echo $this->toID; ?>" >
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <button type="submit" class="btn btn-primary"> Go </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <!-- Table -->
+                                <table id="resultListTable"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
 </div>
-<?php echo $this->render(SEED_WWW_TPL . '/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script src="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.js"></script>
+<script src="/ky/bootstrap-table-1.12.1-dist/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="/ky/js/base64.js"></script>
+
+<script type="text/javascript">
+	$().ready(function() {
+
+	});
+
+	$(function () {
+        $('.company-navigation').find('a').each(function () {
+            if (this.href === document.location.href || document.location.href.search(this.href) >= 0) {
+                $(this).addClass('nav-selected');
+            } else {
+                $(this).removeClass('nav-selected');
+            }
+        });
+
+        $('#contactListTable').bootstrapTable({
+            url: '/user/buyer/contact-list-ajax',
+            method: 'post',
+            // showRefresh: true,
+            // search: true,
+            pagination: true,
+            classes: 'table table-no-bordered',
+            sidePagination: 'server',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            pageNumber: 1,
+            pageSize: 10,
+            queryParams: function(params) {
+                return {
+                    limit: params.limit,
+                    skip: params.offset,
+                    keyword: params.search,
+                    toID: $("#toID").val()
+                };
+            },
+            columns: [{
+                field: 'name',
+                title: '<?php echo $this->translate("name"); ?>',
+                formatter: function (value, row) {
+                    if (value === undefined || value === '' || value === null) {
+                        value = "-";
+                    }
+                    return value;
+                }
+            }, {
+                field: 'phone',
+                title: '<?php echo $this->translate("personPhone"); ?>',
+                formatter: function (value, row) {
+                    if (value === undefined || value === '' || value === null) {
+                        value = row.mobilePhone;
+                    }
+                    return value;
+                }
+            }, {
+                field: 'email',
+                title: '<?php echo $this->translate("email"); ?>',
+                formatter: function (value, row) {
+                    if (value === undefined || value === '' || value === null) {
+                        value = "-";
+                    }
+                    return value;
+                }
+            }, {
+                field: 'title',
+                title: '<?php echo $this->translate("position"); ?>',
+                formatter: function (value, row, index) {
+                    return value;
+                }
+            }]
+        });
+	});
+
+    function contactSearch() {
+        var listTable = $('#resultListTable');
+        var options = {
+            query:{
+                keyword: $("#keyword").val(),
+                toID: $("#toID").val()
+            }
+        };
+        $(listTable).bootstrapTable('refresh', options);
+    }
+</script>
 </body>
 </html>

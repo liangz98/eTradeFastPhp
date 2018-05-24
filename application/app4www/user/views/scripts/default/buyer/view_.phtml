@@ -14,7 +14,7 @@
     <script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
     <script>
         function doStatus(status) {
-            window.location.href = '<?php echo $this->BaseUrl();?>/goods/vendor/addv/' + status;
+            window.location.href = '<?php echo $this->BaseUrl();?>/goods/buyer/addv/' + status;
             alert('status');
         }
         function nextPage() {
@@ -25,19 +25,20 @@
 <?php echo $this->render(SEED_WWW_TPL . '/header.phtml'); ?>
 <div class="o_content_wrap w1200 m0a clearfix">
     <?php echo $this->render(SEED_WWW_TPL . '/left_menu.phtml'); ?>
+
     <div class="o_content fr w940">
         <div class="o_tab">
             <ul>
-                <li class="cur"><a href="<?php echo WWW . 'user/vendor/view?' . base64_encode($this->toID); ?>">
+                <li class="cur"><a href="<?php echo WWW . 'user/buyer/view?' . base64_encode($this->toID); ?>">
                         <!-- 合作伙伴信息 --><?php echo $this->translate('partnerInfo'); ?></a></li>
-                <li><a href="<?php echo WWW . 'user/vendor/contact?' . base64_encode($this->toID); ?>">
+                <li><a href="<?php echo WWW . 'user/buyer/contact?' . base64_encode($this->toID); ?>">
                         <!-- 联系人 --><?php echo $this->translate('contacts'); ?></a></li>
             </ul>
         </div>
         <div class="info_tit clearfix">
-            <h4><?php echo $this->translate('basicInfo'); ?><!--基本资料--></h4>
+            <h4><?php echo $this->translate('basicInfo'); ?><!--查看基本信息--></h4>
             <?php if (($this->CompPartnerAdmin == true || $this->CompOrderAdmin == true) && $this->e['accountStatus'] != '01'): ?>
-                <a href=<?php echo WWW . 'user/vendor/edit?' . base64_encode($this->toID); ?> class="edit fr m10"></a>
+                <a href=<?php echo WWW . 'user/buyer/edit?' . base64_encode($this->toID); ?> class="edit fr m10"></a>
             <?php endif; ?>
         </div>
         <div class="pa_form_box">

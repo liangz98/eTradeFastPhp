@@ -446,7 +446,7 @@ class BuyerController extends Kyapi_Controller_Action
         exit;
 	}
 
-	//合作伙伴查看.联系人列表.获取方法
+	//合作伙伴查看.联系人列表.获取方法 - 作废
 	public function contactAction()
 	{
 		$f1 = new Seed_Filter_Alnum();
@@ -490,6 +490,48 @@ class BuyerController extends Kyapi_Controller_Action
 		}
 
 	}
+
+    public function contactListAjaxAction() {
+        $msg = array();
+        $requestObject = $this->_requestObject;
+
+        $queryParams = array();
+        $toID = strval($this->_request->getParam('toID'));
+
+        $querySorts = array();
+        // $querySorts['createTime'] = "DESC";
+
+        $keyword = $this->_request->getParam('keyword');
+        if (empty($keyword)) {
+            $keyword = null;
+        }
+
+        $limit = $this->_request->getParam('limit');
+        if (empty($limit) || $limit <= 0) {
+            $limit = 10;
+        }
+
+        $skip = $this->_request->getParam('skip');
+        if (empty($limit) || $limit <= 0) {
+            $skip = 0;
+        }
+
+        if (is_array($queryParams)) {
+            $queryParams = $this->arrayToObject($queryParams);
+        }
+
+        if (is_array($querySorts)) {
+            $querySorts = $this->arrayToObject($querySorts);
+        }
+
+        $resultObject = $this->json->listAccountPublicContactApi($requestObject, $toID, $queryParams, $querySorts, $keyword, $skip, $limit);
+        $msg["total"] = json_decode($resultObject)->extData->totalSize;
+        $msg["rows"] = json_decode($resultObject)->result;
+
+        echo json_encode($msg);
+        exit;
+    }
+
 	/**合作伙伴.订单新增卖家联系人列表**/
 	public function aclistAction()
 	{
