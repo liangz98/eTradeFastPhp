@@ -966,7 +966,6 @@ return array(
     'financingAmount'             => '投资金额',
     'period'                      => '周期',
     'inputProportion'             => '投入比例',
-    'companyName'                 => '受理公司',
     'yq'                          => '预期收益',
     'yqr'                         => '预期收益日',
     'yjsyr'                       => '预计收益日',
