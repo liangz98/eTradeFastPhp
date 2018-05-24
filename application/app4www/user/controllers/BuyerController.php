@@ -53,12 +53,20 @@ class BuyerController extends Kyapi_Controller_Action
 	}
 
     public function indexAction() {
+        $requestObject = $this->_requestObject;
         $this->view->resultMsg = $this->_request->getParam('resultMsg');
 
         //合作伙伴状态 数量统计
-        $resultObject = $this->json->countBuyerPartnerApi($this->_requestObject);
+        $resultObject = $this->json->countBuyerPartnerApi($requestObject);
         $countBuyerPartner = $this->objectToArray(json_decode($resultObject));
         $this->view->countBuyerPartner = $countBuyerPartner['result'];
+
+        // bootstrap-table查询状态
+        if (empty($this->_request->getParam('partnerStatus'))) {
+            $this->view->partnerStatus = '01';
+        } else {
+            $this->view->partnerStatus = $this->_request->getParam('partnerStatus');
+        }
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/buyer/index.phtml");
@@ -302,7 +310,7 @@ class BuyerController extends Kyapi_Controller_Action
                 $this->view->errMsg = $this->view->translate('tip_add_fail') . $existData->error;
             } else {
                 $resultMsg = base64_encode($this->view->translate('tip_add_success'));
-                $this->redirect("/buyer/index?resultMsg=".$resultMsg."&productStatus=00");
+                $this->redirect("/buyer/index?resultMsg=".$resultMsg."&partnerStatus=00");
             }
         }
         if (defined('SEED_WWW_TPL')) {
@@ -337,52 +345,62 @@ class BuyerController extends Kyapi_Controller_Action
 		}
 	}
 
-	/**编辑合作伙伴信息**/
-	public function editAction()
-	{
-		// 请求Hessian服务端方法
-		$toID=$_SERVER['QUERY_STRING'];
-		$_toID =base64_decode($toID);
+    // 编辑合作伙伴信息
+    public function editAction() {
+        // 请求Hessian服务端方法
+        $toID = $_SERVER['QUERY_STRING'];
+        $_toID = base64_decode($toID);
 
-		$_requestOb=$this->_requestObject;
-		$userKY= $this->json->getPartnerApi($_requestOb,$_toID);
-		$existData =$this->objectToArray(json_decode($userKY));
-		$existDatt =$existData['result'];
-		$this->view->e=$existDatt;
-		//判断是否为默认账户
-		if($this->_request->getParam('isDefault')=='1'){
-			$_isdd=true;} else {$_isdd=false;}
+        $requestObject = $this->_requestObject;
+        $userKY = $this->json->getPartnerApi($requestObject, $_toID);
+        $existData = $this->objectToArray(json_decode($userKY));
+        $existDatt = $existData['result'];
+        $this->view->partner = $existDatt;
+        //判断是否为默认账户
+        if ($this->_request->getParam('isDefault') == '1') {
+            $_isdd = true;
+        } else {
+            $_isdd = false;
+        }
 
-		if ($this->_request->isPost()) {
+        if ($this->_request->isPost()) {
 
-			/*编辑银行账户信息*/
-			$_account = new Kyapi_Model_account();
-			$_contact = new Kyapi_Model_contact();
-			$_account->accountID = $_toID;//编辑合作伙伴需要accountID
-			$_account->accountName = $this->_request->getParam('accountName');
-			$_account->roleCode = 'Buyer';
-			$_account->regdCountryCode = $this->_request->getParam('regdCountryCode');
-			$_account->regdAddress = $this->_request->getParam('regdAddress');
-			$_contact->name= $this->_request->getParam('name');
-			$_contact->mobilePhone = $this->_request->getParam('mobilePhone');
-			$_contact->email= $this->_request->getParam('email');
-			$_account->contact= $_contact;
-			$editData= $this->json->editPartnerApi($_requestOb,$_account);
-			$existData =json_decode($editData);
+            /*编辑银行账户信息*/
+            $_account = new Kyapi_Model_account();
+            $_contact = new Kyapi_Model_contact();
+            $_account->accountID = $_toID;//编辑合作伙伴需要accountID
+            $_account->accountName = $this->_request->getParam('accountName');
+            $_account->roleCode = 'Buyer';
+            $_account->regdCountryCode = $this->_request->getParam('regdCountryCode');
+            $_account->regdAddress = $this->_request->getParam('regdAddress');
+            $_contact->name = $this->_request->getParam('name');
+            $_contact->mobilePhone = $this->_request->getParam('mobilePhone');
+            $_contact->email = $this->_request->getParam('email');
+            $_account->contact = $_contact;
+            $editData = $this->json->editPartnerApi($requestObject, $_account);
+            $existData = json_decode($editData);
 
-			if ($existData->status != 1) {
-			    //编辑失败
-				Shop_Browser::redirect($this->view->translate('tip_edit_fail').$existData->error,'/user/buyer');
-			} else {
-				Shop_Browser::redirect($this->view->translate('tip_edit_success'),'/user/buyer');
-			}
-		}
-		if(defined('SEED_WWW_TPL')){
-			$content = $this->view->render(SEED_WWW_TPL."/buyer/edit.phtml");
-			echo $content;
-			exit;
-		}
-	}
+            if ($existData->status != 1) {
+                //合作伙伴状态 数量统计
+                $resultObject = $this->json->countBuyerPartnerApi($requestObject);
+                $countBuyerPartner = $this->objectToArray(json_decode($resultObject));
+                $this->view->countBuyerPartner = $countBuyerPartner['result'];
+
+                $this->view->partner = $this->objectToArray($_account);
+                $this->view->errMsg = $this->view->translate('tip_edit_fail') . $existData->error;
+            } else {
+                $partnerResultObject = $this->json->getPartnerApi($requestObject, $_toID);
+                $partnerResultObject = json_decode($partnerResultObject);
+                $resultMsg = base64_encode($this->view->translate('tip_edit_success'));
+                $this->redirect("/goods/buyer?resultMsg=".$resultMsg."&partnerStatus=".$partnerResultObject->result->partnerStatus);
+            }
+        }
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/buyer/edit.phtml");
+            echo $content;
+            exit;
+        }
+    }
 
 	/**删除合作伙伴信息**/
 	public function deleteAction()
