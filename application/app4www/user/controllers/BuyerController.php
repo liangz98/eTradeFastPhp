@@ -275,52 +275,46 @@ class BuyerController extends Kyapi_Controller_Action
 	}
 
 	/**新增（全新）的合作伙伴**/
-	public function addAction()
-	{
-		$windows=$_SERVER['QUERY_STRING'];
-		if ($this->_request->isPost()) {
-			try {
+    public function addAction() {
+        $windows = $_SERVER['QUERY_STRING'];
+        if ($this->_request->isPost()) {
+            // 设置请求数据
+            $requestObject = $this->_requestObject;
 
-				// 设置请求数据
-				$_requestOb=$this->_requestObject;
+            /*添加合作伙伴信息*/
+            $_account = new Kyapi_Model_account();
+            $_contact = new Kyapi_Model_contact();
+            $_account->accountName = $this->_request->getParam('accountName');
+            $_account->roleCode = 'Buyer';
+            $_account->regdCountryCode = $this->_request->getParam('regdCountryCode');
+            $_account->regdAddress = $this->_request->getParam('regdAddress');
+            $_contact->name = $this->_request->getParam('name');
+            $_contact->mobilePhone = $this->_request->getParam('mobilePhone');
+            $_contact->email = $this->_request->getParam('email');
+            $_account->contact = $_contact;
 
-				/*添加合作伙伴信息*/
-				$_account = new Kyapi_Model_account();
-				$_contact = new Kyapi_Model_contact();
-				$_account->accountName = $this->_request->getParam('accountName');
-				$_account->roleCode = 'Buyer';
-				$_account->regdCountryCode = $this->_request->getParam('regdCountryCode');
-				$_account->regdAddress = $this->_request->getParam('regdAddress');
-				$_contact->name= $this->_request->getParam('name');
-				$_contact->mobilePhone = $this->_request->getParam('mobilePhone');
-				$_contact->email= $this->_request->getParam('email');
-				$_account->contact= $_contact;
+            $_resultData = $this->json->addPartnerApi($requestObject, $_account);
+            $existData = json_decode($_resultData);
 
-				$userKY= $this->json->addPartnerApi($_requestOb,$_account);
-				$existData =json_decode($userKY);
-
-				if ($existData->status != 1) {
-				    //添加失败
-					Shop_Browser::redirect($this->view->translate('tip_add_fail').$existData->error,'/user/buyer');
-				} else {
-					Shop_Browser::redirect($this->view->translate('tip_add_success'),'/user/buyer');
-				}
-
-			} catch (HttpError $ex) {
-				echo $ex->getMessage();
-				Shop_Browser::redirect($ex->getMessage());
-			}
-		}
-		if(defined('SEED_WWW_TPL')){
-			if($windows){
-				$content = $this->view->render(SEED_WWW_TPL."/buyer/add_windows.phtml");
-			}else{
-			$content = $this->view->render(SEED_WWW_TPL."/buyer/add.phtml");
-			}
-			echo $content;
-			exit;
-		}
-	}
+            // 页面跳转
+            if ($existData->status != 1) {
+                $this->view->partner = $this->objectToArray($_account);
+                $this->view->errMsg = $this->view->translate('tip_add_fail') . $existData->error;
+            } else {
+                $resultMsg = base64_encode($this->view->translate('tip_add_success'));
+                $this->redirect("/buyer/index?resultMsg=".$resultMsg."&productStatus=00");
+            }
+        }
+        if (defined('SEED_WWW_TPL')) {
+            if ($windows) {
+                $content = $this->view->render(SEED_WWW_TPL . "/buyer/add_windows.phtml");
+            } else {
+                $content = $this->view->render(SEED_WWW_TPL . "/buyer/add.phtml");
+            }
+            echo $content;
+            exit;
+        }
+    }
 
 	/**查看合作伙伴信息**/
 	public function viewAction()

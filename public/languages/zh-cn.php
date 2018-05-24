@@ -194,7 +194,6 @@ return array(
     'street'                   => '街道',
     'postcode'                 => '邮政编码',
     'telephone'                => '固定电话',
-    'call'                     => '联系电话',
     'mobile'                   => '移动电话',
     'mobile_phone'             => '手机',
     'phone'                    => '联系电话',
@@ -239,9 +238,6 @@ return array(
     'partners_buyers'  => '我的买家',
     'partners_vendors' => '我的卖家',
 
-    'cooperationPTE'  => '合作伙伴',
-    'cooperationC'    => '我的买家',
-    'cooperationB'    => '我的卖家',
     'cooperationS'    => '服务提供商',
     'cooperationCALL' => '通讯录',
 

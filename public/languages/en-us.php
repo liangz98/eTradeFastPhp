@@ -205,7 +205,6 @@ return array(
     'street'                   => 'Street',
     'postcode'                 => 'Postcode',
     'telephone'                => 'Landline',
-    'call'                     => 'Contact No.',
     'mobile'                   => 'Mobile',
     'mobile_phone'             => 'Mobile phone',
     'phone'                    => 'Phone',
@@ -250,9 +249,6 @@ return array(
     'partners_buyer'  => 'Buyers',
     'partners_vendor' => 'Vendors',
 
-    'cooperationPTE'  => 'Cooperation Partners',
-    'cooperationC'    => 'Buyers',
-    'cooperationB'    => 'Vendors',
     'cooperationS'    => 'Service Providers',
     'cooperationCALL' => 'Address book',
 

@@ -238,6 +238,9 @@
                                     + '<i class="far fa-edit"></i>'
                                     + '</a>&nbsp;';
 
+                            }
+
+                            if (row.partnerStatus === '00' || row.partnerStatus === '01') {
                                 result += '<a href="javascript:void(0)" title="' + delTitle + '" id="' + row.toID + '" data-url="/user/buyer/delete" '
                                     + 'data-msg1="<?php echo $this->translate("is_delete");?>" '
                                     + 'data-msg2="<?php echo $this->translate("tip_del_success");?>" '

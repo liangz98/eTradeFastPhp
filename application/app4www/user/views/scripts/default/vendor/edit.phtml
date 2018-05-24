@@ -31,7 +31,7 @@
     <?php echo $this->render(SEED_WWW_TPL.'/left_menu.phtml');?>
     <div class="o_content fr w940 bt5">
         <div class="info_tit clearfix">
-            <h4 ><!--编辑我的卖家--><?php echo $this->translate('edit').$this->translate('cooperationB');?></h4>
+            <h4 ><!--编辑我的卖家--><?php echo $this->translate('edit').$this->translate('partners_vendors');?></h4>
         </div>
         <div class="acc_add_box">
             <form action="#" id="vendor_edit_form" name="buyer_form" method="post">
@@ -44,7 +44,7 @@
                     <input class="must" style="border: 1px solid #DF7E20;" type="text" name="name" id="name" value="<?php echo $this->e['contact']['name'];?>" tabindex="1" required data-msg-required="<?php echo $this->translate('de_null');?>" />
                 </div>
                 <div class="bank_box">
-                    <label class="cont_tel"><!--联系电话--><?php echo $this->translate('call');?></label>
+                    <label class="cont_tel"><!--联系电话--><?php echo $this->translate('phone');?></label>
                     <input class="must" style="border: 1px solid #DF7E20;" type="text" name="mobilePhone" id="mobilePhone" value="<?php echo $this->e['contact']['mobilePhone'];?>" tabindex="1"  required data-rule-mobile="true" data-msg-required="<?php echo $this->translate('de_null');?>" />
                 </div>
                 <div class="bank_box">
