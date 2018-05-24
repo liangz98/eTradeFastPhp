@@ -282,7 +282,7 @@ class BuyerController extends Kyapi_Controller_Action
         exit;
 	}
 
-	/**新增（全新）的合作伙伴**/
+	// 新增（全新）的合作伙伴
     public function addAction() {
         $windows = $_SERVER['QUERY_STRING'];
         if ($this->_request->isPost()) {
@@ -353,16 +353,8 @@ class BuyerController extends Kyapi_Controller_Action
         $existData = $this->objectToArray(json_decode($userKY));
         $existDatt = $existData['result'];
         $this->view->partner = $existDatt;
-        //判断是否为默认账户
-        if ($this->_request->getParam('isDefault') == '1') {
-            $_isdd = true;
-        } else {
-            $_isdd = false;
-        }
 
         if ($this->_request->isPost()) {
-
-            /*编辑银行账户信息*/
             $_account = new Kyapi_Model_account();
             $_contact = new Kyapi_Model_contact();
             $_account->accountID = $_toID;//编辑合作伙伴需要accountID
@@ -387,9 +379,10 @@ class BuyerController extends Kyapi_Controller_Action
                 $this->view->errMsg = $this->view->translate('tip_edit_fail') . $existData->error;
             } else {
                 $partnerResultObject = $this->json->getPartnerApi($requestObject, $_toID);
-                $partnerResultObject = json_decode($partnerResultObject);
+                $partnerList = json_decode($partnerResultObject)->result->partnerList;
+                $partnerList = $this->objectToArray($partnerList);
                 $resultMsg = base64_encode($this->view->translate('tip_edit_success'));
-                $this->redirect("/goods/buyer?resultMsg=".$resultMsg."&partnerStatus=".$partnerResultObject->result->partnerStatus);
+                $this->redirect("/buyer/index?resultMsg=".$resultMsg."&partnerStatus=".$partnerList[0]['partnerStatus']);
             }
         }
         if (defined('SEED_WWW_TPL')) {
@@ -399,20 +392,19 @@ class BuyerController extends Kyapi_Controller_Action
         }
     }
 
-	/**删除合作伙伴信息**/
-	public function deleteAction()
-	{
+    // 删除合作伙伴
+    public function deleteAction() {
         if ($this->_request->isPost()) {
             //设为默认
             // 请求Hessian服务端方法
-            $_roleCode='Buyer';
+            $_roleCode = 'Buyer';
             $_objID = $this->_request->getPost('delID');
-            $_requestOb=$this->_requestObject;
-            $opData= $this->json->delPartnerApi($_requestOb,$_objID,$_roleCode);
+            $_requestOb = $this->_requestObject;
+            $opData = $this->json->delPartnerApi($_requestOb, $_objID, $_roleCode);
             echo $opData;
         }
         exit;
-	}
+    }
 
 	/**接受合作伙伴信息**/
 	public function acceptAction()
@@ -441,51 +433,6 @@ class BuyerController extends Kyapi_Controller_Action
             echo $opData;
         }
         exit;
-	}
-
-	//合作伙伴查看.联系人列表.获取方法 - 作废
-	public function contactAction()
-	{
-		$f1 = new Seed_Filter_Alnum();
-		$mod = $f1->filter($this->_request->getParam('mod'));
-		if (empty($mod)) {$mod = "contact";}
-
-		$_PStatus =strval($this->_request->getParam('status'));
-		if(empty( $_PStatus)){  $_PStatus =null;}
-
-		$_querySorts=$this->_request->getParam('querySorts');
-		if(empty($_querySorts)){ $_querySorts =null;}
-
-		$_keyword=$this->_request->getParam('keyword');
-		if(empty($_keyword)){ $_keyword =null;}
-
-		$page =intval($this->_request->getParam('page'));
-		if($page<1)$page=1;
-		$_limit=5;
-		$_skip=$_limit*($page-1);
-
-		// 设置请求数据
-		$_requestOb=$this->_requestObject;
-
-		// 请求Hessian服务端方法AcctID 获取合作伙伴ID
-		$toID=$_SERVER['QUERY_STRING'];
-		$_toID =base64_decode($toID);
-		//QU  查询排序条件
-		$_querySorts = new querySorts();
-		$_querySorts->createTime= "DESC";
-
-		$userKY= $this->json->listAccountPublicContactApi($_requestOb,$_toID, $_PStatus, $_querySorts , $_keyword, $_skip, $_limit);
-		$existData =$this->objectToArray(json_decode($userKY));
-		$accountList=$existData['result'];
-		$this->view->e=$accountList;
-		$this->view->toID=$_toID;
-
-		if(defined('SEED_WWW_TPL')){
-			$content = $this->view->render(SEED_WWW_TPL."/buyer/contact.phtml");
-			echo $content;
-			exit;
-		}
-
 	}
 
     public function contactListAjaxAction() {

@@ -1,87 +1,164 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<title>快移</title>
-<meta name="description" content="">
-<meta name="keywords" content="">
-<link href="/ky/css/style.css" rel="stylesheet">
-<link href="/ky/css/base.css" rel="stylesheet">
-<script type="text/javascript" src="/ky/js/jquery.js"></script>
-<script type="text/javascript" src="/ky/js/www.js"></script>
-<script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
-<script type="text/javascript" src="/ky/js/prompt.js"></script>
-<script type="text/javascript">
-    function doEdit(){
-        SeedMsgBox('正在保存中，请稍候...');
-        var options = {
-            target:     '#SeedMsgTxt',
-            url:        '<?php echo $this->baseUrl();?>/vendor/edit',
-            success: function() {
-            }
-        };
-        $('#vendor_edit_form').ajaxSubmit(options);
-    }
-</script>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+	<title>快移</title>
+    <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <link href="/ky/css/goods/goods.css" rel="stylesheet">
+    <link href="/ky/css/img-upload.css" rel="stylesheet">
+    <link href="/ky/bootstrap-select-1.12.4-dist/css/bootstrap-select.min.css" rel="stylesheet">
 </head>
 <body>
-<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
-<div class="o_content_wrap w1200 m0a clearfix">
-    <?php echo $this->render(SEED_WWW_TPL.'/left_menu.phtml');?>
-    <div class="o_content fr w940 bt5">
-        <div class="info_tit clearfix">
-            <h4 ><!--编辑我的卖家--><?php echo $this->translate('edit').$this->translate('partners_vendors');?></h4>
-        </div>
-        <div class="acc_add_box">
-            <form action="#" id="vendor_edit_form" name="buyer_form" method="post">
-                <div class="bank_box">
-                    <label class="compay_name"><!--公司全称--><?php echo $this->translate('companyName');?></label>
-                    <input class="must" style="border: 1px solid #DF7E20;" type="text" name="accountName" id="accountName" value="<?php echo $this->e['accountName'];?>" tabindex="1" required data-msg-required="<?php echo $this->translate('de_null');?>" />
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
+
+<div class="container-fluid index-body">
+	<div class="container">
+		<div class="row">
+            <div class="col-md-3 company-navigation hidden-xs">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><?php echo $this->translate('partners'); ?></div>
+                    <div class="list-group">
+                        <a href="/user/buyer" class="list-group-item"><?php echo $this->translate('partners_buyers'); ?></a>
+                        <a href="/user/vendor" class="list-group-item"><?php echo $this->translate('partners_vendors'); ?></a>
+                    </div>
                 </div>
-                <div class="bank_box">
-                    <label class="cont_people"><!--联系人--><?php echo $this->translate('contacts');?></label>
-                    <input class="must" style="border: 1px solid #DF7E20;" type="text" name="name" id="name" value="<?php echo $this->e['contact']['name'];?>" tabindex="1" required data-msg-required="<?php echo $this->translate('de_null');?>" />
+            </div>
+
+            <div class="col-md-9 partner-main">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <?php if (!empty($this->errMsg)): ?>
+                        <div class="alert alert-danger alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Warning!</strong> <?php echo $this->errMsg; ?>
+                        </div>
+                        <?php endif; ?>
+
+                        <ul class="nav nav-tabs">
+                            <li role="presentation" class="active">
+                                <a href="#info" aria-controls="info" role="tab" data-toggle="tab"><?php echo $this->translate('edit').$this->translate('partners_vendors');?></a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active row" id="info">
+                                <div class="col-md-12">
+                                    <form class="form-horizontal partner-main-edit" action="#" method="post" id="partner_edit_form" name="partner_edit_form">
+                                        <div class="form-group">
+                                            <label for="companyName" class="col-sm-3 control-label"><?php echo $this->translate('companyName'); ?></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" name="accountName" id="accountName" placeholder="" value="<?php echo $this->partner['accountName']; ?>" required >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="name" class="col-sm-3 control-label"><?php echo $this->translate('contacts'); ?></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" name="name" id="name" placeholder="" value="<?php echo $this->partner['contact']['name']; ?>" required >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="mobilePhone" class="col-sm-3 control-label"><?php echo $this->translate('phone'); ?></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" name="mobilePhone" id="mobilePhone" placeholder="" value="<?php echo $this->partner['contact']['mobilePhone']; ?>" required >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="email" class="col-sm-3 control-label"><?php echo $this->translate('email'); ?></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" name="email" id="email" placeholder="" value="<?php echo $this->partner['contact']['email']; ?>" required >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="regdCountryCode" class="col-sm-3 control-label"><?php echo $this->translate('address'); ?></label>
+                                            <div class="col-sm-2">
+                                                <select class="selectpicker form-control" name="regdCountryCode" id="regdCountryCode" data-live-search="true">
+                                                    <?php echo $this->ShowDictionaryList($this->dic_Setting['COUNTRY_ISO_CODE'], $this->userLangCode, $this->dic_Setting['COUNTRY_ISO_CODE'], $this->partner['regdCountryCode']); ?>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" name="regdAddress" id="regdAddress" placeholder="" value="<?php echo $this->partner['regdAddress']; ?>" required >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-3 col-sm-8">
+                                                <button type="submit" class="btn btn-warning"><?php echo $this->translate('save'); ?></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="bank_box">
-                    <label class="cont_tel"><!--联系电话--><?php echo $this->translate('phone');?></label>
-                    <input class="must" style="border: 1px solid #DF7E20;" type="text" name="mobilePhone" id="mobilePhone" value="<?php echo $this->e['contact']['mobilePhone'];?>" tabindex="1"  required data-rule-mobile="true" data-msg-required="<?php echo $this->translate('de_null');?>" />
+
+                <!-- Modal -->
+                <div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content"></div>
+                    </div>
                 </div>
-                <div class="bank_box">
-                    <label class="e_mail"><!--E-Mail--><?php echo $this->translate('email');?></label>
-                    <input class="must" style="border: 1px solid #DF7E20;" type="text" name="email" id="email" value="<?php echo $this->e['contact']['email'];?>" tabindex="1" data-rule-mail="true" required data-msg-required="<?php echo $this->translate('de_null');?>" />
-                </div>
-                <div class="bank_box" style="width:100%;">
-                    <label class="company_address"><!--地址--><?php echo $this->translate('address');?></label>
-                    <select class="spadd_sel w100" name="regdCountryCode" id="regdCountryCode">
-                        <?php echo $this-> ShowDictionaryList($this->dic_Setting['COUNTRY_ISO_CODE'],$this->userLangCode,$this->dic_Setting['COUNTRY_ISO_CODE'], $this->e['regdCountryCode']);?>
-                    </select>
-                    <input style="border: 1px solid #DF7E20;width: 580px;" type="text" name="regdAddress" id="regdaddress" value="<?php echo $this->e['regdAddress'];?>" tabindex="1" required data-msg-required="<?php echo $this->translate('de_null');?>" />
-                </div>
-        </div>
-        <?php echo $this->render(SEED_WWW_TPL.'/btn_confirm.phtml');?>
-    </div>
-    </form>
-    </div>
+            </div>
+		</div>
+	</div>
 </div>
-<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
-<script src="/ky/js/jquery.validate.js"></script>
-<script>
-$(function(){
-    $("#vendor_edit_form").validate({
-        submitHandler: function() {
-            form.submit();
-        }
-    })
-});
-jQuery.validator.addMethod("mail", function (value, element) {
-    var mail = /^[A-Za-z0-9._%-]+@([A-Za-z0-9-]+\.)+[A-Za-z]{2,4}$/;
-    return this.optional(element) || (mail.test(value));
-}, "<?php echo $this->translate('email').$this->translate('de_format').",PS:zhansan@etrad.com";?>");
-jQuery.validator.addMethod("mobile", function (value, element) {
-    var mobile = /^[\d|\-|\+|\s]+$/;
-    return this.optional(element) || (mobile.test(value));
-}, "<?php echo $this->translate('mobile_phone').$this->translate('de_format').",PS:13700001122";?>");
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script type="text/javascript" src="/ky/upload/img.js"></script>
+<script type="text/javascript" src="/ky/bootstrap-select-1.12.4-dist/js/bootstrap-select.min.js"></script>
+
+<script type="text/javascript">
+	$().ready(function() {
+
+	});
+
+	$(function () {
+        $('.company-navigation').find('a').each(function () {
+            if (this.href === document.location.href || document.location.href.search(this.href) >= 0) {
+            // if (this.href === document.location.href) {
+                $(this).addClass('nav-selected');
+            } else {
+                $(this).removeClass('nav-selected');
+            }
+        });
+
+        $("#partner_edit_form").validate({
+            rules: {
+
+            },
+            messages: {
+
+            },
+            errorPlacement: function(error, element) {
+                // Append error within linked label
+                $(element)
+                    .closest( "form" )
+                    .find( "label[for='" + element.attr( "id" ) + "']" )
+                    .parent().addClass("has-error").removeClass("has-success")
+                    .append( error );
+                $(error).addClass("col-md-offset-3");
+            },
+            success: function(label) {
+                var forName = $(label).attr("for");
+                $("label[for='" + forName + "']").parent().addClass("has-success").removeClass("has-error");
+                $(label).remove();
+            },
+            highlight: function (element) {
+                $("label[for='" + element.id + "']").parent().addClass("has-error").removeClass("has-success");
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
 </script>
 </body>
 </html>

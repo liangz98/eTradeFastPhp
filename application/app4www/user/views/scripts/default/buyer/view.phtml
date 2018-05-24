@@ -37,7 +37,7 @@
                         </ul>
 
                         <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane active row" id="info">
+                            <div role="tabpanel" class="tab-pane fade in active" id="info">
                                 <div class="col-md-12">
                                     <h3>
                                         <?php if (($this->CompPartnerAdmin == true || $this->CompOrderAdmin == true) && $this->partner['accountStatus'] != 01): ?>
@@ -98,14 +98,14 @@
                                 </div>
                             </div>
 
-                            <div role="tabpanel" class="tab-pane row" id="profile">
+                            <div role="tabpanel" class="tab-pane fade" id="profile">
                                 <form class="form-horizontal" action="javascript:void(0)" onsubmit="contactSearch()" id="contact_search_form">
                                     <div class="form-group" style="margin-bottom: 0 !important;">
                                         <label for="keyword" class="sr-only">keyword</label>
                                         <div class="col-sm-6">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fas fa-search"></i></span>
-                                                <input type="text" class="form-control" name="keyword" id="keyword" placeholder="<?php echo $this->translate('INPkw_par_buyer');?>">
+                                                <input type="text" class="form-control" name="keyword" id="keyword" placeholder="<?php echo $this->translate('INPkw_ac');?>">
                                                 <input type="hidden" name="toID" id="toID" value="<?php echo $this->toID; ?>" >
                                             </div>
                                         </div>

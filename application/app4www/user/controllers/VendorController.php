@@ -50,64 +50,75 @@ class VendorController extends Kyapi_Controller_Action
 		}
 	}
 
-	/**合作伙伴列表**/
-	public function indexAction()
-	{
+	// 合作伙伴列表
+	public function indexAction() {
+        $requestObject = $this->_requestObject;
+        $this->view->resultMsg = $this->_request->getParam('resultMsg');
 
-		try{
-			$f1 = new Seed_Filter_Alnum();
-			$mod = $f1->filter($this->_request->getParam('mod'));
-			if (empty($mod)) {$mod = "index";}
+        //合作伙伴状态 数量统计
+        $resultObject = $this->json->countVendorPartnerApi($requestObject);
+        $countVendorPartner = $this->objectToArray(json_decode($resultObject));
+        $this->view->countResult = $countVendorPartner['result'];
 
-			$_PStatus =strval($this->_request->getParam('status'));
-			if(empty( $_PStatus)){  $_PStatus ='01';}
+        // bootstrap-table查询状态
+        if (empty($this->_request->getParam('partnerStatus'))) {
+            $this->view->partnerStatus = '01';
+        } else {
+            $this->view->partnerStatus = $this->_request->getParam('partnerStatus');
+        }
 
-			$_querySorts=new Kyapi_Model_querySorts();
-			$_querySorts->createTime= "DESC";
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/vendor/index.phtml");
+            echo $content;
+            exit;
+        }
+    }
 
-			$_keyword=$this->_request->getParam('keyword');
-			if(empty($_keyword)){ $_keyword =null;}
-			$this->view->keyword=$_keyword;
+    public function vendorListAjaxAction() {
+        $msg = array();
+        $requestObject = $this->_requestObject;
 
-			$page =intval($this->_request->getParam('page'));
-			if($page<1)$page=1;
-			$_limit=8;
-			$_skip=$_limit*($page-1);
+        $queryParams = array();
+        $partnerStatus = strval($this->_request->getParam('partnerStatus'));
+        if (empty($partnerStatus)) {
+            $partnerStatus = '01';
+        }
+        $queryParams['partnerStatus'] = $partnerStatus;
 
-			$_queryP = new queryPartner();
-			$_queryP->partnerStatus= $_PStatus;
+        $querySorts = array();
+        // $querySorts['createTime'] = "DESC";
 
-			$userKY= $this->json->listVendorPartnerApi($this->_requestObject,$_queryP,$_querySorts, $_keyword, $_skip, $_limit);
-			$userNum= $this->json->countVendorPartnerApi($this->_requestObject);
-			$existNum =$this->objectToArray(json_decode($userNum));
-			$this->view->clConut=$existNum['result'];
-			//显示 合伙伙伴列表，
-			$existDatt =$this->objectToArray(json_decode($userKY));
-			//统计正常状态数量、分页
-			$existCount = $existDatt['extData'];
-			$total = $existCount['totalSize'];
-			$page=$existCount['totalPage'];
+        $keyword = $this->_request->getParam('keyword');
+        if (empty($keyword)) {
+            $keyword = null;
+        }
 
-			$this->view->e=$existDatt['result'];
-			$this->view->status= $_PStatus;
+        $limit = $this->_request->getParam('limit');
+        if (empty($limit) || $limit <= 0) {
+            $limit = 10;
+        }
 
-			$file = "user/vendor/" . $mod . "-" . $_PStatus;
-			$_limit=8;
-			$pageObj = new Seed_Page($this->_request,$total,$_limit);
-			$this->view->page = $pageObj->getPageArray();
-			$this->view->page['pageurl'] = '/' . $file;
-			if ($page > $this->view->page['totalpage'])
-				$page = $this->view->page['totalpage'];
-			if ($page < 1) $page = 1;
-		} catch (Exception $e) {
-			Shop_Browser::redirect($e->getMessage());
-		}
-		if(defined('SEED_WWW_TPL')){
-			$content = $this->view->render(SEED_WWW_TPL."/vendor/index.phtml");
-			echo $content;
-			exit;
-		}
-	}
+        $skip = $this->_request->getParam('skip');
+        if (empty($limit) || $limit <= 0) {
+            $skip = 0;
+        }
+
+        if (is_array($queryParams)) {
+            $queryParams = $this->arrayToObject($queryParams);
+        }
+
+        if (is_array($querySorts)) {
+            $querySorts = $this->arrayToObject($querySorts);
+        }
+
+        $resultObject = $this->json->listVendorPartnerApi($requestObject, $queryParams, $querySorts, $keyword, $skip, $limit);
+        $msg["total"] = json_decode($resultObject)->extData->totalSize;
+        $msg["rows"] = json_decode($resultObject)->result;
+
+        echo json_encode($msg);
+        exit;
+    }
+
 	//添加订单卖家
 	public function orderlistAction()
 	{
@@ -308,137 +319,132 @@ class VendorController extends Kyapi_Controller_Action
         exit;
 	}
 
-	/**新增（全新）的合作伙伴**/
-	public function addAction()
-	{
-		$windows=$_SERVER['QUERY_STRING'];
-		if ($this->_request->isPost()) {
-			try {
+	// 新增（全新）的合作伙伴
+    public function addAction() {
+        $windows = $_SERVER['QUERY_STRING'];
+        if ($this->_request->isPost()) {
 
-				// 设置请求数据
-				$_requestOb=$this->_requestObject;
+            // 设置请求数据
+            $requestObject = $this->_requestObject;
 
-				/*添加合作伙伴信息*/
-				$_account = new Kyapi_Model_account();
-				$_contact = new Kyapi_Model_contact();
-				$_account->accountName = $this->_request->getParam('accountName');
-				$_account->roleCode = 'Vendor';
-				$_account->regdCountryCode = $this->_request->getParam('regdCountryCode');
-				$_account->regdAddress = $this->_request->getParam('regdAddress');
-				$_contact->name= $this->_request->getParam('name');
-				$_contact->mobilePhone = $this->_request->getParam('mobilePhone');
-				$_contact->email= $this->_request->getParam('email');
-				$_account->contact= $_contact;
+            /*添加合作伙伴信息*/
+            $_account = new Kyapi_Model_account();
+            $_contact = new Kyapi_Model_contact();
+            $_account->accountName = $this->_request->getParam('accountName');
+            $_account->roleCode = 'Vendor';
+            $_account->regdCountryCode = $this->_request->getParam('regdCountryCode');
+            $_account->regdAddress = $this->_request->getParam('regdAddress');
+            $_contact->name = $this->_request->getParam('name');
+            $_contact->mobilePhone = $this->_request->getParam('mobilePhone');
+            $_contact->email = $this->_request->getParam('email');
+            $_account->contact = $_contact;
 
-				$userKY= $this->json->addPartnerApi($_requestOb,$_account);
-				$existData =json_decode($userKY);
+            $userKY = $this->json->addPartnerApi($requestObject, $_account);
+            $existData = json_decode($userKY);
 
-				if ($existData->status != 1) {
-                    //添加失败
-					Shop_Browser::redirect($this->view->translate('tip_add_fail').$existData->error,'/user/vendor');
-				} else {
-                    //添加成功
-					Shop_Browser::redirect($this->view->translate('tip_add_success'),'/user/vendor');
-				}
+            // 页面跳转
+            if ($existData->status != 1) {
+                $this->view->partner = $this->objectToArray($_account);
+                $this->view->errMsg = $this->view->translate('tip_add_fail') . $existData->error;
+            } else {
+                $resultMsg = base64_encode($this->view->translate('tip_add_success'));
+                $this->redirect("/vendor/index?resultMsg=".$resultMsg."&partnerStatus=00");
+            }
+        }
+        if (defined('SEED_WWW_TPL')) {
+            if ($windows) {
+                $content = $this->view->render(SEED_WWW_TPL . "/vendor/add_windows.phtml");
+            } else {
+                $content = $this->view->render(SEED_WWW_TPL . "/vendor/add.phtml");
+            }
+            echo $content;
+            exit;
+        }
+    }
 
-			} catch (HttpError $ex) {
-				echo $ex->getMessage();
-				//Shop_Browser::redirect($ex->getMessage());
-			}
-		}
-		if(defined('SEED_WWW_TPL')){
-			if($windows){
-				$content = $this->view->render(SEED_WWW_TPL."/vendor/add_windows.phtml");
-			}else{
-			$content = $this->view->render(SEED_WWW_TPL."/vendor/add.phtml");
-			}
-			echo $content;
-			exit;
-		}
-	}
+    // 查看合作伙伴信息
+    public function viewAction() {
+        // 请求Hessian服务端方法
+        $toID = $_SERVER['QUERY_STRING'];
+        $_toID = base64_decode($toID);
 
-	/**查看合作伙伴信息**/
-	public function viewAction()
-	{
-		// 请求Hessian服务端方法
-		$toID=$_SERVER['QUERY_STRING'];
-		$_toID =base64_decode($toID);
+        $_requestOb = $this->_requestObject;
+        $userKY = $this->json->getPartnerApi($_requestOb, $_toID);
+        $existData = $this->objectToArray(json_decode($userKY));
+        $existDatt = $existData['result'];
+        $this->view->partner = $existDatt;
+        $this->view->toID = $_toID;
 
-		$_requestOb=$this->_requestObject;
-		$userKY= $this->json->getPartnerApi($_requestOb,$_toID);
-		$existData =$this->objectToArray(json_decode($userKY));
-		$existDatt =$existData['result'];
-		$this->view->e=$existDatt;
-		$this->view->toID=$_toID;
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/vendor/view.phtml");
+            echo $content;
+            exit;
+        }
+    }
 
-		if(defined('SEED_WWW_TPL')){
-			$content = $this->view->render(SEED_WWW_TPL."/vendor/view.phtml");
-			echo $content;
-			exit;
-		}
-	}
+    // 编辑合作伙伴信息
+    public function editAction() {
+        // 请求Hessian服务端方法
+        $toID = $_SERVER['QUERY_STRING'];
+        $_toID = base64_decode($toID);
 
-	/**编辑合作伙伴信息**/
-	public function editAction()
-	{
-		// 请求Hessian服务端方法
-		$toID=$_SERVER['QUERY_STRING'];
-		$_toID =base64_decode($toID);
+        $requestObject = $this->_requestObject;
+        $userKY = $this->json->getPartnerApi($requestObject, $_toID);
+        $existData = $this->objectToArray(json_decode($userKY));
+        $existDatt = $existData['result'];
+        $this->view->partner = $existDatt;
 
-		$_requestOb=$this->_requestObject;
-		$userKY= $this->json->getPartnerApi($_requestOb,$_toID);
-		$existData =$this->objectToArray(json_decode($userKY));
-		$existDatt =$existData['result'];
-		$this->view->e=$existDatt;
-		//判断是否为默认账户
-		if($this->_request->getParam('isDefault')=='1'){
-			$_isdd=true;} else {$_isdd=false;}
+        if ($this->_request->isPost()) {
+            $_account = new Kyapi_Model_account();
+            $_contact = new Kyapi_Model_contact();
+            $_account->accountID = $_toID;//编辑合作伙伴需要accountID
+            $_account->accountName = $this->_request->getParam('accountName');
+            $_account->roleCode = 'Vendor';
+            $_account->regdCountryCode = $this->_request->getParam('regdCountryCode');
+            $_account->regdAddress = $this->_request->getParam('regdAddress');
+            $_contact->name = $this->_request->getParam('name');
+            $_contact->mobilePhone = $this->_request->getParam('mobilePhone');
+            $_contact->email = $this->_request->getParam('email');
+            $_account->contact = $_contact;
+            $editData = $this->json->editPartnerApi($requestObject, $_account);
+            $existData = json_decode($editData);
 
-		if ($this->_request->isPost()) {
+            if ($existData->status != 1) {
+                //合作伙伴状态 数量统计
+                $resultObject = $this->json->countVendorPartnerApi($requestObject);
+                $countVendorPartner = $this->objectToArray(json_decode($resultObject));
+                $this->view->countResult = $countVendorPartner['result'];
 
-			/*编辑银行账户信息*/
-			$_account = new Kyapi_Model_account();
-			$_contact = new Kyapi_Model_contact();
-			$_account->accountID = $_toID;//编辑合作伙伴需要accountID
-			$_account->accountName = $this->_request->getParam('accountName');
-			$_account->roleCode = 'Vendor';
-			$_account->regdCountryCode = $this->_request->getParam('regdCountryCode');
-			$_account->regdAddress = $this->_request->getParam('regdAddress');
-			$_contact->name= $this->_request->getParam('name');
-			$_contact->mobilePhone = $this->_request->getParam('mobilePhone');
-			$_contact->email= $this->_request->getParam('email');
-			$_account->contact= $_contact;
-			$editData= $this->json->editPartnerApi($_requestOb,$_account);
-			$existData =json_decode($editData);
+                $this->view->partner = $this->objectToArray($_account);
+                $this->view->errMsg = $this->view->translate('tip_edit_fail') . $existData->error;
+            } else {
+                $partnerResultObject = $this->json->getPartnerApi($requestObject, $_toID);
+                $partnerList = json_decode($partnerResultObject)->result->partnerList;
+                $partnerList = $this->objectToArray($partnerList);
+                $resultMsg = base64_encode($this->view->translate('tip_edit_success'));
+                $this->redirect("/vendor/index?resultMsg=".$resultMsg."&partnerStatus=".$partnerList[0]['partnerStatus']);
+            }
+        }
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/vendor/edit.phtml");
+            echo $content;
+            exit;
+        }
+    }
 
-			if ($existData->status != 1) {
-                //编辑失败
-				Shop_Browser::redirect($this->view->translate('tip_edit_fail').$existData->error,'/user/vendor');
-			} else {
-				Shop_Browser::redirect($this->view->translate('tip_edit_success'),'/user/vendor');
-			}
-		}
-		if(defined('SEED_WWW_TPL')){
-			$content = $this->view->render(SEED_WWW_TPL."/vendor/edit.phtml");
-			echo $content;
-			exit;
-		}
-	}
-
-	/**删除合作伙伴信息**/
-	public function deleteAction()
-	{
+    // 删除合作伙伴
+    public function deleteAction() {
         if ($this->_request->isPost()) {
             //设为默认
             // 请求Hessian服务端方法
-            $_roleCode='Vendor';
+            $_roleCode = 'Vendor';
             $_objID = $this->_request->getPost('delID');
-            $_requestOb=$this->_requestObject;
-            $opData= $this->json->delPartnerApi($_requestOb,$_objID,$_roleCode);
+            $_requestOb = $this->_requestObject;
+            $opData = $this->json->delPartnerApi($_requestOb, $_objID, $_roleCode);
             echo $opData;
         }
         exit;
-	}
+    }
 
 	/**接受合作伙伴信息**/
 	public function acceptAction()
@@ -469,50 +475,47 @@ class VendorController extends Kyapi_Controller_Action
         exit;
 	}
 
-	//合作伙伴查看.联系人列表.获取方法
-	public function contactAction()
-	{
-		$f1 = new Seed_Filter_Alnum();
-		$mod = $f1->filter($this->_request->getParam('mod'));
-		if (empty($mod)) {$mod = "contact";}
+    public function contactListAjaxAction() {
+        $msg = array();
+        $requestObject = $this->_requestObject;
 
-		$_PStatus =strval($this->_request->getParam('status'));
-		if(empty( $_PStatus)){  $_PStatus =null;}
+        $queryParams = array();
+        $toID = strval($this->_request->getParam('toID'));
 
-		$_querySorts=new Kyapi_Model_querySorts();
-		$_querySorts->createTime= "DESC";
+        $querySorts = array();
+        $querySorts['createTime'] = "DESC";
 
-		$_keyword=$this->_request->getParam('keyword');
-		if(empty($_keyword)){ $_keyword =null;}
+        $keyword = $this->_request->getParam('keyword');
+        if (empty($keyword)) {
+            $keyword = null;
+        }
 
-		$page =intval($this->_request->getParam('page'));
-		if($page<1)$page=1;
-		$_limit=5;
-		$_skip=$_limit*($page-1);
+        $limit = $this->_request->getParam('limit');
+        if (empty($limit) || $limit <= 0) {
+            $limit = 10;
+        }
 
-		// 设置请求数据
-		$_requestOb=$this->_requestObject;
+        $skip = $this->_request->getParam('skip');
+        if (empty($limit) || $limit <= 0) {
+            $skip = 0;
+        }
 
-		// 请求Hessian服务端方法AcctID 获取合作伙伴ID
-		$toID=$_SERVER['QUERY_STRING'];
-		$_toID =base64_decode($toID);
-		//QU  查询排序条件
-		$_querySorts = new querySorts();
-		$_querySorts->createTime= "DESC";
+        if (is_array($queryParams)) {
+            $queryParams = $this->arrayToObject($queryParams);
+        }
 
-		$userKY= $this->json->listAccountPublicContactApi($_requestOb,$_toID, $_PStatus, $_querySorts , $_keyword, $_skip, $_limit);
-		$existData =$this->objectToArray(json_decode($userKY));
-		$accountList=$existData['result'];
-		$this->view->e=$accountList;
-		$this->view->toID=$_toID;
+        if (is_array($querySorts)) {
+            $querySorts = $this->arrayToObject($querySorts);
+        }
 
-		if(defined('SEED_WWW_TPL')){
-			$content = $this->view->render(SEED_WWW_TPL."/vendor/contact.phtml");
-			echo $content;
-			exit;
-		}
+        $resultObject = $this->json->listAccountPublicContactApi($requestObject, $toID, $queryParams, $querySorts, $keyword, $skip, $limit);
+        $msg["total"] = json_decode($resultObject)->extData->totalSize;
+        $msg["rows"] = json_decode($resultObject)->result;
 
-	}
+        echo json_encode($msg);
+        exit;
+    }
+
 	/**合作伙伴.订单新增卖家联系人列表**/
 	public function aclistAction()
 	{
