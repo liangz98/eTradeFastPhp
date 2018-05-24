@@ -324,30 +324,27 @@ class BuyerController extends Kyapi_Controller_Action
         }
     }
 
-	/**查看合作伙伴信息**/
-	public function viewAction()
-	{
-		// 请求Hessian服务端方法
-		$toID=$_SERVER['QUERY_STRING'];
-		$_toID =base64_decode($toID);
+    // 查看合作伙伴信息
+    public function viewAction() {
+        $toID = $_SERVER['QUERY_STRING'];
+        $_toID = base64_decode($toID);
 
-		$_requestOb=$this->_requestObject;
-		$userKY= $this->json->getPartnerApi($_requestOb,$_toID);
-		$existData =$this->objectToArray(json_decode($userKY));
-		$existDatt =$existData['result'];
-		$this->view->e=$existDatt;
-		$this->view->toID=$_toID;
+        $_requestOb = $this->_requestObject;
+        $userKY = $this->json->getPartnerApi($_requestOb, $_toID);
+        $existData = $this->objectToArray(json_decode($userKY));
+        $existDatt = $existData['result'];
+        $this->view->partner = $existDatt;
+        $this->view->toID = $_toID;
 
-		if(defined('SEED_WWW_TPL')){
-			$content = $this->view->render(SEED_WWW_TPL."/buyer/view.phtml");
-			echo $content;
-			exit;
-		}
-	}
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/buyer/view.phtml");
+            echo $content;
+            exit;
+        }
+    }
 
     // 编辑合作伙伴信息
     public function editAction() {
-        // 请求Hessian服务端方法
         $toID = $_SERVER['QUERY_STRING'];
         $_toID = base64_decode($toID);
 
@@ -499,7 +496,7 @@ class BuyerController extends Kyapi_Controller_Action
         $toID = strval($this->_request->getParam('toID'));
 
         $querySorts = array();
-        // $querySorts['createTime'] = "DESC";
+        $querySorts['createTime'] = "DESC";
 
         $keyword = $this->_request->getParam('keyword');
         if (empty($keyword)) {

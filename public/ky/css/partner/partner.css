@@ -23,7 +23,7 @@ body {
 }
 
 /* view */
-.goods-view h3, .goods-main-edit .form-group:first-child, .goods-main-add .form-group:first-child, #profile {
+.partner-view h3, .partner-main-edit .form-group:first-child, .partner-main-add .form-group:first-child, #profile {
     margin-top: 15px;
 }
 
