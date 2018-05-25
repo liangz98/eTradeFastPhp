@@ -4,7 +4,7 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
 	<title>快移</title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
-    <link href="/ky/css/partner/partner.css" rel="stylesheet">
+    <link href="/ky/css/order/order.css" rel="stylesheet">
     <link href="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.css" rel="stylesheet">
 </head>
 <body>
@@ -18,32 +18,67 @@
                 <div class="panel panel-default">
                     <div class="panel-heading"><?php echo $this->translate('partners'); ?></div>
                     <div class="list-group">
-                        <a href="/user/orderxs" class="list-group-item"><?php echo $this->translate('orderSALLE'); ?></a>
-                        <a href="/user/ordercg" class="list-group-item"><?php echo $this->translate('orderBUY'); ?></a>
+                        <a href="/user/sale" class="list-group-item"><?php echo $this->translate('orderSALLE'); ?></a>
+                        <a href="/user/pur" class="list-group-item"><?php echo $this->translate('orderBUY'); ?></a>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-9 order-main">
-                <div class="row responsive-utilities-test hidden-on">
-                    <div class="col-xs-6 col-sm-3">
-                        <span class="hidden-xs">超小屏幕</span>
-                        <span class="visible-xs-block">✔ 在超小屏幕上隐藏</span>
-                    </div>
-                    <div class="col-xs-6 col-sm-3">
-                        <span class="hidden-sm">小屏幕</span>
-                        <span class="visible-sm-block">✔ 在小屏幕上隐藏</span>
-                    </div>
-                    <div class="clearfix visible-xs-block"></div>
-                    <div class="col-xs-6 col-sm-3">
-                        <span class="hidden-md">中等屏幕</span>
-                        <span class="visible-md-block">✔ 在中等屏幕上隐藏</span>
-                    </div>
-                    <div class="col-xs-6 col-sm-3">
-                        <span class="hidden-lg">大屏幕</span>
-                        <span class="visible-lg-block">✔ 在大屏幕上隐藏</span>
+                <div class="panel panel-default">
+                    <div class="panel-body order-news">
+                        <div class="row responsive-utilities-test hidden-on">
+                            <div class="col-xs-6 col-sm-3">
+                                <span class="<?php if ($this->vestut == 0) { echo 'order-activated'; } elseif ($this->vestut > 0) { echo 'order-finished'; } ?>"><?php echo $this->translate('confirming'); ?></span>
+                            </div>
+                            <div class="col-xs-6 col-sm-3">
+                                <span class="<?php if ($this->vestut == 1 || $this->vestut == 3) { echo 'order-activated'; } elseif ($this->vestut > 1) { echo 'order-finished'; } else { echo 'order-no-start';} ?>"><?php echo $this->translate('sign'); ?></span>
+                            </div>
+                            <div class="clearfix visible-xs-block"></div>
+                            <div class="col-xs-6 col-sm-3">
+                                <span class="<?php if ($this->vestut > 3) { echo 'order-activated'; } elseif ($this->vestut > 7) { echo 'order-finished'; } else { echo 'order-no-start';} ?>"><?php echo $this->translate('delivery'); ?></span>
+                            </div>
+                            <div class="col-xs-6 col-sm-3">
+                                <span class="<?php if ($this->vestut > 3) { echo 'order-activated'; } elseif ($this->vestut > 7) { echo 'order-finished'; } else { echo 'order-no-start';} ?>"><?php echo $this->translate('calculate'); ?></span>
+                            </div>
+                        </div>
+
+                        <div class="tab-content ">
+                            <div role="tabpanel" class="tab-pane fade in active" id="confirming">
+                                <div class="row">
+                                    <div class="col-xs-2">
+                                        <p class="text-right news-title"><?php echo $this->translate('orderNo');?></p>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <p><?php echo $this->newE["orderNo"];?></p>
+                                    </div>
+                                    <div class="col-xs-2 news-title"><?php echo $this->translate('Prities');?></div>
+                                    <div class="col-xs-4"></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-2 news-title">
+                                        <p class="text-right"><?php echo $this->translate('progressING');?></p>
+                                    </div>
+                                    <div class="col-xs-8">
+                                        <p><?php echo $this->plan['plan'];?></p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-2 news-title">
+                                        <p class="text-right"><?php echo $this->translate('stateING');?></p>
+                                    </div>
+                                    <div class="col-xs-8">
+                                        <p><?php echo $this->ShowDictionaryTo($this->dic_Setting['ORDER_STATUS'], $this->userLangCode, $this->dic_Setting['ORDER_STATUS'], $this->newE["orderStatus"]); ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+
 
                 <div class="panel panel-default">
                     <!-- Default panel contents -->
@@ -56,32 +91,42 @@
                         </div>
                         <?php endif; ?>
 
-                        <ul id="partnerTabs" class="nav nav-tabs nav-justified">
+                        <ul id="optionTabs" class="nav nav-tabs nav-justified">
                             <li role="presentation" class="active">
-                                <a href="#forActivate" data-partnerStatus="01" aria-controls="forActivate" role="tab" data-toggle="tab"><?php echo $this->translate('valid'); ?></a>
+                                <a href="#forActivate" data-orderStatus="04" aria-controls="forActivate" role="tab" data-toggle="tab"><?php echo $this->translate('valid'); ?></a>
                             </li>
                             <li role="presentation">
-                                <a href="#forActivate" data-partnerStatus="02" aria-controls="forActivate" role="tab" data-toggle="tab">
-                                    <?php echo $this->translate('waiting'); ?>&nbsp;<span class="badge" data-partnerStatus="02"><?php echo $this->countBuyerPartner['02']; ?></span>
+                                <a href="#forActivate" data-orderStatus="01" aria-controls="forActivate" role="tab" data-toggle="tab">
+                                    <?php echo $this->translate('forReview'); ?>&nbsp;<span class="badge" data-orderStatus="01"><?php echo $this->countOrder['01']; ?></span>
                                 </a>
                             </li>
                             <li role="presentation">
-                                <a href="#forActivate" data-partnerStatus="00" aria-controls="forActivate" role="tab" data-toggle="tab">
-                                    <?php echo $this->translate('forReview'); ?>&nbsp;<span class="badge" data-partnerStatus="00"><?php echo $this->countBuyerPartner['00']; ?></span>
+                                <a href="#forActivate" data-orderStatus="02" aria-controls="forActivate" role="tab" data-toggle="tab">
+                                    <?php echo $this->translate('forConfirm'); ?>&nbsp;<span class="badge" data-orderStatus="02"><?php echo $this->countOrder['02']; ?></span>
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#forActivate" data-orderStatus="00" aria-controls="forActivate" role="tab" data-toggle="tab">
+                                    <?php echo $this->translate('draft'); ?>&nbsp;<span class="badge" data-orderStatus="00"><?php echo $this->countOrder['00']; ?></span>
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#forActivate" data-orderStatus="10" aria-controls="forActivate" role="tab" data-toggle="tab">
+                                    <?php echo $this->translate('history'); ?>&nbsp;<span class="badge" data-orderStatus="10"><?php echo $this->countOrder['10']; ?></span>
                                 </a>
                             </li>
                         </ul>
 
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane fade in active" id="forActivate">
-                                <form class="form-horizontal" action="javascript:void(0)" onsubmit="partnerSearch()" id="partner_search_form">
+                                <form class="form-horizontal" action="javascript:void(0)" onsubmit="search()" id="search_form">
                                     <div class="form-group" style="margin-bottom: 0 !important;">
                                         <label for="keyword" class="sr-only">keyword</label>
                                         <div class="col-sm-6">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fas fa-search"></i></span>
-                                                <input type="text" class="form-control" name="keyword" id="keyword" placeholder="<?php echo $this->translate('INPkw_par_buyer');?>">
-                                                <input type="hidden" name="partnerStatus" id="partnerStatus" value="<?php echo $this->partnerStatus; ?>" >
+                                                <input type="text" class="form-control" name="keyword" id="keyword" placeholder="<?php echo $this->translate('INPkw_order_xs');?>">
+                                                <input type="hidden" name="orderStatus" id="orderStatus" value="<?php echo $this->orderStatus; ?>" >
                                             </div>
                                         </div>
                                         <div class="col-sm-1">
@@ -89,7 +134,7 @@
                                         </div>
                                         <?php if ($this->CompPartnerAdmin == true): ?>
                                         <div class="col-sm-1 col-sm-offset-4">
-                                            <a title="<?php echo $this->translate('add');?>" href="/user/buyer/add" class="btn btn-default">
+                                            <a title="<?php echo $this->translate('add');?>" href="/user/sale/add" class="btn btn-default">
                                                 <i class="fas fa-plus"></i>
                                             </a>
                                         </div>
@@ -98,7 +143,7 @@
                                 </form>
 
                                 <!-- Table -->
-                                <table id="partnerListTable"></table>
+                                <table id="resultListTable"></table>
                             </div>
                         </div>
                     </div>
@@ -132,12 +177,12 @@
             }
         });
 
-        $("#partnerTabs a").click(function () {
-            $("#partnerStatus").val($(this).attr("data-partnerStatus"));
-            partnerSearch();
+        $("#optionTabs a").click(function () {
+            $("#orderStatus").val($(this).attr("data-orderStatus"));
+            search();
         });
 
-        $('#partnerTabs a[data-partnerStatus="<?php echo $this->partnerStatus; ?>"]').tab('show');
+        $('#optionTabs a[data-orderStatus="<?php echo $this->orderStatus; ?>"]').tab('show');
 
         var dataDictQuery = '/user/common/dict-ajax';
         var dictCode = ["ISIC_INDUSTRY_TYPE", "COUNTRY_ISO_CODE"];
@@ -152,8 +197,8 @@
             success: function (data) {
                 $.data(dataDict, 'dataDict', data);
 
-                $('#partnerListTable').bootstrapTable({
-                    url: '/user/buyer/buyer-list-ajax',
+                $('#resultListTable').bootstrapTable({
+                    url: '/user/sale/sale-order-list-ajax',
                     method: 'post',
                     // showRefresh: true,
                     // search: true,
@@ -168,7 +213,7 @@
                             limit: params.limit,
                             skip: params.offset,
                             keyword: params.search,
-                            partnerStatus: $("#partnerStatus").val()
+                            orderStatus: $("#orderStatus").val()
                         };
                     },
                     columns: [{

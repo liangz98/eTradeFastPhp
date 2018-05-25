@@ -1,5 +1,5 @@
 <?php
-class ordercgController extends Kyapi_Controller_Action
+class PurController extends Kyapi_Controller_Action
 {
 	public function preDispatch()
 	{
@@ -13,7 +13,7 @@ class ordercgController extends Kyapi_Controller_Action
 		}
 		$this->view->cur_pos = $this->_request->getParam('controller');
 		$cururl = $this->getRequestUri();
-		if ($cururl == '/ordercg') {
+		if ($cururl == '/pur') {
 			$this->_request->setParam('all', 'all');
 			$this->indexAction();
 			exit;
@@ -24,7 +24,7 @@ class ordercgController extends Kyapi_Controller_Action
 		if (isset($arr[1]) && !empty($arr[1])) {
 
 
-			preg_match_all('/^\/user\/ordercg\/(index|top|price)-([\d]+)-([\d]+).html/isU', $cururl, $arr);
+			preg_match_all('/^\/user\/pur\/(index|top|price)-([\d]+)-([\d]+).html/isU', $cururl, $arr);
 
 			if (is_array($arr) && count($arr) > 1) {
 				$this->_request->setParam('status', $arr[2][0]);
@@ -114,7 +114,7 @@ class ordercgController extends Kyapi_Controller_Action
             $deliveryList = $this->json->listDelivery($_requestOb, $_orderID);
             $this->view->deliveryList = json_decode($deliveryList)->result;
 
-            $file = "user/ordercg/" . $mod . "-" . $_orderStatus;
+            $file = "user/pur/" . $mod . "-" . $_orderStatus;
             $_limit = 5;
             $pageObj = new Seed_Page($this->_request, $total, $_limit);
             $this->view->page = $pageObj->getPageArray();
@@ -129,7 +129,7 @@ class ordercgController extends Kyapi_Controller_Action
 
 
         if (defined('SEED_WWW_TPL')) {
-            $content = $this->view->render(SEED_WWW_TPL . "/ordercg/index.phtml");
+            $content = $this->view->render(SEED_WWW_TPL . "/pur/index.phtml");
             echo $content;
             exit;
         }
@@ -365,10 +365,10 @@ class ordercgController extends Kyapi_Controller_Action
 
 				if ($resultObject->status != 1) {
                     //添加订单失败
-					Seed_Browser::redirect($this->view->translate('tip_add_fail').$resultObject->error,$this->view->seed_BaseUrl ."/ordercg");
+					Seed_Browser::redirect($this->view->translate('tip_add_fail').$resultObject->error,$this->view->seed_BaseUrl ."/pur");
 				} else {
                     //添加订单成功
-					Shop_Browser::redirect($this->view->translate('tip_add_success'),$this->view->seed_BaseUrl ."/ordercg");
+					Shop_Browser::redirect($this->view->translate('tip_add_success'),$this->view->seed_BaseUrl ."/pur");
 				}
 			} catch (HttpError $ex) {
 				Shop_Browser::redirect($ex->getMessage());
@@ -376,7 +376,7 @@ class ordercgController extends Kyapi_Controller_Action
 		}
 
 		if(defined('SEED_WWW_TPL')){
-			$content = $this->view->render(SEED_WWW_TPL."/ordercg/add.phtml");
+			$content = $this->view->render(SEED_WWW_TPL."/pur/add.phtml");
 			echo $content;
 			exit;
 		}
@@ -640,10 +640,10 @@ class ordercgController extends Kyapi_Controller_Action
 
 				if ($resultObject->status != 1) {
                     //编辑失败
-					Seed_Browser::redirect($this->view->translate('tip_edit_fail') .$resultObject->error,$this->view->seed_BaseUrl ."/ordercg");
+					Seed_Browser::redirect($this->view->translate('tip_edit_fail') .$resultObject->error,$this->view->seed_BaseUrl ."/pur");
 				} else {
                     //编辑成功
-					Shop_Browser::redirect($this->view->translate('tip_edit_success'),$this->view->seed_BaseUrl ."/ordercg");
+					Shop_Browser::redirect($this->view->translate('tip_edit_success'),$this->view->seed_BaseUrl ."/pur");
 				}
 			} catch (HttpError $ex) {
 				Shop_Browser::redirect($ex->getMessage());
@@ -651,7 +651,7 @@ class ordercgController extends Kyapi_Controller_Action
 		}
 
 		if(defined('SEED_WWW_TPL')){
-			$content = $this->view->render(SEED_WWW_TPL."/ordercg/edit.phtml");
+			$content = $this->view->render(SEED_WWW_TPL."/pur/edit.phtml");
 			echo $content;
 			exit;
 		}
@@ -736,7 +736,7 @@ class ordercgController extends Kyapi_Controller_Action
 		}
 
         if (defined('SEED_WWW_TPL')) {
-            $content = $this->view->render(SEED_WWW_TPL . "/ordercg/view.phtml");
+            $content = $this->view->render(SEED_WWW_TPL . "/pur/view.phtml");
             echo $content;
             exit;
         }
@@ -930,7 +930,7 @@ class ordercgController extends Kyapi_Controller_Action
         }
 
         if (defined('SEED_WWW_TPL')) {
-            $content = $this->view->render(SEED_WWW_TPL . "/ordercg/deliveryView.phtml");
+            $content = $this->view->render(SEED_WWW_TPL . "/pur/deliveryView.phtml");
             echo $content;
             exit;
         }
@@ -959,7 +959,7 @@ class ordercgController extends Kyapi_Controller_Action
         }
 
         if (defined('SEED_WWW_TPL')) {
-            $content = $this->view->render(SEED_WWW_TPL . "/ordercg/deliveryExamine.phtml");
+            $content = $this->view->render(SEED_WWW_TPL . "/pur/deliveryExamine.phtml");
             echo $content;
             exit;
         }
@@ -1055,7 +1055,7 @@ class ordercgController extends Kyapi_Controller_Action
         }
 
         if (defined('SEED_WWW_TPL')) {
-            $content = $this->view->render(SEED_WWW_TPL . "/ordercg/deliveryReceipt.phtml");
+            $content = $this->view->render(SEED_WWW_TPL . "/pur/deliveryReceipt.phtml");
             echo $content;
             exit;
         }
@@ -1145,7 +1145,7 @@ class ordercgController extends Kyapi_Controller_Action
 		$this->view->trackview = $_view;
 
 		if(defined('SEED_WWW_TPL')){
-			$content = $this->view->render(SEED_WWW_TPL."/ordercg/track.phtml");
+			$content = $this->view->render(SEED_WWW_TPL."/pur/track.phtml");
 			echo $content;
 			exit;
 		}
@@ -1165,7 +1165,7 @@ class ordercgController extends Kyapi_Controller_Action
 		$this->view->bgd=$bgd;
 
 		if(defined('SEED_WWW_TPL')){
-			$content = $this->view->render(SEED_WWW_TPL."/ordercg/declaration.phtml");
+			$content = $this->view->render(SEED_WWW_TPL."/pur/declaration.phtml");
 			echo $content;
 			exit;
 		}
@@ -1184,7 +1184,7 @@ class ordercgController extends Kyapi_Controller_Action
 		$this->view->pcd=$pcd;
 
 		if(defined('SEED_WWW_TPL')){
-			$content = $this->view->render(SEED_WWW_TPL."/ordercg/trucking.phtml");
+			$content = $this->view->render(SEED_WWW_TPL."/pur/trucking.phtml");
 			echo $content;
 			exit;
 		}
@@ -1203,7 +1203,7 @@ class ordercgController extends Kyapi_Controller_Action
 		$this->view->dcd=$dcd;
 
 		if(defined('SEED_WWW_TPL')){
-			$content = $this->view->render(SEED_WWW_TPL."/ordercg/shipping.phtml");
+			$content = $this->view->render(SEED_WWW_TPL."/pur/shipping.phtml");
 			echo $content;
 			exit;
 		}
@@ -1222,7 +1222,7 @@ class ordercgController extends Kyapi_Controller_Action
         $this->view->jsd = $jsd;
 
         if (defined('SEED_WWW_TPL')) {
-            $content = $this->view->render(SEED_WWW_TPL . "/ordercg/trading.phtml");
+            $content = $this->view->render(SEED_WWW_TPL . "/pur/trading.phtml");
             echo $content;
             exit;
         }
@@ -1367,7 +1367,7 @@ class ordercgController extends Kyapi_Controller_Action
         $this->view->doc = $doc;
 
         if (defined('SEED_WWW_TPL')) {
-            $content = $this->view->render(SEED_WWW_TPL . "/ordercg/attachment.phtml");
+            $content = $this->view->render(SEED_WWW_TPL . "/pur/attachment.phtml");
             echo $content;
             exit;
         }

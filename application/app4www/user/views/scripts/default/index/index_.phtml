@@ -132,12 +132,12 @@
                                     <ul>
                                         <?php if (is_array($this->orderXS) && count($this->orderXS) > 0): ?>
                                             <?php foreach ($this->orderXS as $k1 => $orderxs): ?>
-                                                <li><a href="<?php  echo '/user/orderxs/view?'.base64_encode($orderxs['orderID']);?>"><?php echo $orderxs['orderNo']; ?></a>
+                                                <li><a href="<?php  echo '/user/sale/view?'.base64_encode($orderxs['orderID']);?>"><?php echo $orderxs['orderNo']; ?></a>
                                                 </li>
                                             <?php endforeach; ?>
                                         <?php endif; ?>
                                     </ul>
-                                    <a class="pa u_checked_more" href="/user/orderxs"><?php echo $this->translate('more'); ?>>></a>
+                                    <a class="pa u_checked_more" href="/user/sale"><?php echo $this->translate('more'); ?>>></a>
                                 </div>
                             <?php endif;?>
                            <?php if($v=='2'): ?>
@@ -146,12 +146,12 @@
                                     <ul>
                                         <?php if (is_array($this->orderCG) && count($this->orderCG) > 0): ?>
                                             <?php foreach ($this->orderCG as $k2 => $ordercg): ?>
-                                                <li><a href="<?php  echo '/user/ordercg/view?'.base64_encode($ordercg['orderID']);?>"><?php echo $ordercg['orderNo']; ?></a>
+                                                <li><a href="<?php  echo '/user/pur/view?'.base64_encode($ordercg['orderID']);?>"><?php echo $ordercg['orderNo']; ?></a>
                                                 </li>
                                             <?php endforeach; ?>
                                         <?php endif; ?>
                                     </ul>
-                                    <a class="pa u_checked_more" href="/user/ordercg"><?php echo $this->translate('more'); ?>>></a>
+                                    <a class="pa u_checked_more" href="/user/pur"><?php echo $this->translate('more'); ?>>></a>
                                 </div>
                            <?php endif;?>
                           <?php if($v=='3'): ?>

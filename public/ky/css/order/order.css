@@ -1,3 +1,70 @@
+body {
+    overflow-y:scroll;
+}
+
+.nav-selected:before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 2px;
+    content: "";
+    background-color: #e36209;
+}
+
+/* 订单 - 头部, 最新订单进度 */
+.responsive-utilities-test {
+    margin-top: 5px
+}
+
+.responsive-utilities-test .col-xs-6 {
+    margin-bottom: 10px
+}
+
+.responsive-utilities-test span {
+    display: block;
+    padding: 15px 10px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.1;
+    text-align: center;
+    border-radius: 4px
+}
+
+.hidden-on .order-finished {
+    color: #468847;
+    background-color: #dff0d8;
+    border: 1px solid #d6e9c6
+}
+
+.hidden-on .order-activated {
+    color: #fff;
+    background-color: #f0ad4e;
+    border: 1px solid #d6e9c6
+}
+
+.hidden-on .order-no-start {
+    color: #999;
+    border: 1px solid #ddd
+}
+
+.order-news .row {
+    margin-top: 15px;
+}
+.order-news .row:first-child {
+    margin-top: 0;
+}
+.order-news .news-title {
+    color: #adadad;
+}
+/* end */
+
+
+.panel-body form {
+    margin-top: 15px;
+}
+
+
 .padding-left-15 {
     padding-left: 15px;
 }

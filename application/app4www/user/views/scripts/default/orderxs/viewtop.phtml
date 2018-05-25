@@ -341,7 +341,7 @@
                 $('#zhuangtai').html('<?php echo $this->translate('waiting') . $this->translate('confirmed');?>');
                 /*等待确认*/
                 $.post(
-                    '<?php echo $this->BaseUrl();?>/orderxs/confirm',
+                    '<?php echo $this->BaseUrl();?>/sale/confirm',
                     {'orderID': orderID},
 
                     function (data) {
@@ -381,7 +381,7 @@
                     attachTypeArr += attachType[i].value + "|";
                 }
                 $.post(
-                    '<?php echo $this->BaseUrl();?>/orderxs/agree',
+                    '<?php echo $this->BaseUrl();?>/sale/agree',
                     {'orderID': orderID, 'name': nameArr, 'nid': nidArr, 'size': sizeArr, 'attachType': attachTypeArr},
 
                     function (data) {
@@ -418,7 +418,7 @@
                 }
 
                 $.post(
-                    '<?php echo $this->BaseUrl();?>/orderxs/prepare',
+                    '<?php echo $this->BaseUrl();?>/sale/prepare',
                     {'orderID': orderID, 'name': nameArr, 'nid': nidArr, 'size': sizeArr},
 
                     function (data) {
@@ -455,7 +455,7 @@
                 }
 
                 $.post(
-                    '<?php echo $this->BaseUrl();?>/orderxs/deliver',
+                    '<?php echo $this->BaseUrl();?>/sale/deliver',
                     {'orderID': orderID, 'name': nameArr, 'nid': nidArr, 'size': sizeArr},
                     function (data) {
                         if (data == '1') {
@@ -504,7 +504,7 @@
         }
         var orderID = obj;
         $.post(
-            '<?php echo $this->BaseUrl();?>/orderxs/agree',
+            '<?php echo $this->BaseUrl();?>/sale/agree',
             {'orderID': orderID, 'name': nameArr, 'nid': nidArr, 'size': sizeArr, 'attachType': attachTypeArr},
 
             function (data, status) {

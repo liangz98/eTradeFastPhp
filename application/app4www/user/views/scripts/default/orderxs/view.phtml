@@ -143,7 +143,7 @@
 <div class="o_content_wrap w1200 m0a clearfix">
     <?php echo $this->render(SEED_WWW_TPL.'/left_menu.phtml');?>
     <div class="o_content fr w940">
-        <?php echo $this->render(SEED_WWW_TPL.'/orderxs/viewtop.phtml');?>
+        <?php echo $this->render(SEED_WWW_TPL.'/sale/viewtop.phtml');?>
         <div class="order_table">
             <div class="o_tab" id="o_tab">
                 <ul>
@@ -159,7 +159,7 @@
                         <h4><!--订单信息预览--><?php echo $this->translate('view').$this->translate('orderINF');?></h4>
 
                         <?php if($this->CompOrderAdmin==true && $this->allowEdit==1):?>
-                            <a class="p_ed fr mt10" href="<?php echo '/user/orderxs/edit?'.base64_encode($this->orderid);?>"></a>
+                            <a class="p_ed fr mt10" href="<?php echo '/user/sale/edit?'.base64_encode($this->orderid);?>"></a>
                         <?php endif;?>
 
                     </div>
@@ -470,9 +470,9 @@ $(function(){
 
 	var orderID='<?php echo $this->orders['orderID'];?>';
 	$('#bgwl').click(function(){
-		$('#declaration').load( '<?php echo $this->BaseUrl();?>/orderxs/declaration',{'orderID':orderID});
-		$('#shipping').load( '<?php echo $this->BaseUrl();?>/orderxs/shipping',{'orderID':orderID});
-		$('#trucking').load( '<?php echo $this->BaseUrl();?>/orderxs/trucking',{'orderID':orderID});
+		$('#declaration').load( '<?php echo $this->BaseUrl();?>/sale/declaration',{'orderID':orderID});
+		$('#shipping').load( '<?php echo $this->BaseUrl();?>/sale/shipping',{'orderID':orderID});
+		$('#trucking').load( '<?php echo $this->BaseUrl();?>/sale/trucking',{'orderID':orderID});
 		var declaration=$('#declaration').html();
 		var shipping=$('#shipping').html();
 		var trucking=$('#trucking').html();
@@ -482,30 +482,30 @@ $(function(){
 		}
 	});
 	$('#gzrz').click(function(){
-		$('#track').load( '<?php echo $this->BaseUrl();?>/orderxs/track',{'orderID':orderID,'view':'event'});
+		$('#track').load( '<?php echo $this->BaseUrl();?>/sale/track',{'orderID':orderID,'view':'event'});
 		$('#BYdate').removeClass('on');
 		$('#BYevent').addClass('on');
 	});
 	$('#BYdate').click(function(){
 
-		$('#track').load( '<?php echo $this->BaseUrl();?>/orderxs/track',{'orderID':orderID,'view':'date'});
+		$('#track').load( '<?php echo $this->BaseUrl();?>/sale/track',{'orderID':orderID,'view':'date'});
 		$('#BYdate').addClass('on');
 		$('#BYevent').removeClass('on');
 	});
 	$('#BYevent').click(function(){
-		$('#track').load( '<?php echo $this->BaseUrl();?>/orderxs/track',{'orderID':orderID,'view':'event'});
+		$('#track').load( '<?php echo $this->BaseUrl();?>/sale/track',{'orderID':orderID,'view':'event'});
 		$('#BYdate').removeClass('on');
 		$('#BYevent').addClass('on');
 	});
 
 	$('#wendang').click(function(){
-		$('#attachment').load( '<?php echo $this->BaseUrl();?>/orderxs/attachment',{'orderID':orderID});
+		$('#attachment').load( '<?php echo $this->BaseUrl();?>/sale/attachment',{'orderID':orderID});
 	});
 
 
 	var executionStatus = <?php echo $this->vestut;?>;
 	if (executionStatus >= 7) {
-		$(".paymentTopDiv").load('<?php echo $this->BaseUrl();?>/orderxs/trading', {'orderID': $("#orderID").val()});
+		$(".paymentTopDiv").load('<?php echo $this->BaseUrl();?>/sale/trading', {'orderID': $("#orderID").val()});
 	}
 
 	// *************************** 更新 ********************************
@@ -628,7 +628,7 @@ $(".download-button").bind("click",function(){
 
 // ********************   获取验证手机号码 Start  *************************************
 $(".sign-button").bind("click",function(){
-	var getSignMobile = '/user/ordercg/getsignmobile';
+	var getSignMobile = '/user/pur/getsignmobile';
 	$.post(getSignMobile,
 		{
 
@@ -658,7 +658,7 @@ $(".sign-button").bind("click",function(){
 });
 
 $(".person-sign-button").bind("click",function(){
-	var getSignMobile = '/user/ordercg/getpersonsignmobile';
+	var getSignMobile = '/user/pur/getpersonsignmobile';
 	$.post(getSignMobile,
 		{
 
@@ -693,9 +693,9 @@ $(".person-sign-button").bind("click",function(){
 
 // ********************   获取短信验证码 Start  *************************************
 $("#signSendAuthCodeBtn").click(function () {
-	var sendSignAuthCode = '/user/ordercg/sendsignauthcode';
+	var sendSignAuthCode = '/user/pur/sendsignauthcode';
 	if ($(this).attr("personSend") == "true") {
-		sendSignAuthCode = '/user/ordercg/sendpersonsignauthcode';
+		sendSignAuthCode = '/user/pur/sendpersonsignauthcode';
 	}
 	$.post(sendSignAuthCode,
 		{
@@ -750,10 +750,10 @@ function settime(obj) { //发送验证码倒计时
 
 // ********************   获取短信验证码 Start  *************************************
 $("#singConfirmBtn").click(function () {
-	var doSignPDF = '/user/ordercg/dosignpdf';
+	var doSignPDF = '/user/pur/dosignpdf';
 	var contractID = $(".sign-button").attr("contractID_");
 	if ($(this).attr("personSend") == "true") {
-		doSignPDF = '/user/ordercg/dopersonsignpdf';
+		doSignPDF = '/user/pur/dopersonsignpdf';
 		contractID = $(".person-sign-button").attr("contractID_");
 	}
 	$.post(doSignPDF,
@@ -863,7 +863,7 @@ $("#signNoEContractConfirmBtn").click(function () {
 
 
 	$.post(
-		'<?php echo $this->BaseUrl();?>/orderxs/agree',
+		'<?php echo $this->BaseUrl();?>/sale/agree',
 		{'contractID': contractID, 'name': nameArr, 'nid': nidArr, 'size': sizeArr, 'attachType': attachTypeArr},
 
 		function (data) {
@@ -882,7 +882,7 @@ $(".deliveryViewClass").click(function (obj) {
 	var deliveryID = $(this).attr("deliveryID_");
 	var deliveryStatus = $(this).attr("deliveryStatus_");
 	var deliveryNo = $(this).attr("deliveryNo_");
-	$("#deliveryViewDiv").html("").load("<?php echo $this->BaseUrl();?>/orderxs/deliveryview", {
+	$("#deliveryViewDiv").html("").load("<?php echo $this->BaseUrl();?>/sale/deliveryview", {
 		deliveryID: deliveryID
 	}, function () {
 		layer.closeAll();
@@ -906,7 +906,7 @@ $(".deliveryViewClass").click(function (obj) {
 
 			$("#deliveryEditBtn").click(function () {
 				$("#deliveryViewDiv").html("");
-				$("#deliveryEditViewDiv").html("").load("<?php echo $this->BaseUrl();?>/orderxs/editdelivery", {
+				$("#deliveryEditViewDiv").html("").load("<?php echo $this->BaseUrl();?>/sale/editdelivery", {
 					deliveryID: deliveryID
 				}, function () {
 					var auth_error = $('#deliveryEditDiv').find('.et-auth-error');
@@ -966,7 +966,7 @@ $(".deliveryViewClass").click(function (obj) {
 							deliveryQuantityArr += deliveryQuantity_add[i].value + "|";
 						}
 
-						var editDelivery = '/user/orderxs/editdeliverysave';
+						var editDelivery = '/user/sale/editdeliverysave';
 						$.post(editDelivery,
 							{
 								deliveryID: deliveryID,
@@ -999,7 +999,7 @@ $(".deliveryViewClass").click(function (obj) {
 							});
 					});
 					$("#deliveryEditViewDelBtn").click(function () {
-						var delDelivery = '/user/orderxs/deldelivery';
+						var delDelivery = '/user/sale/deldelivery';
 
 						layer.msg('确定删除发货单？', {
 							time: 0, //不自动关闭
@@ -1040,7 +1040,7 @@ $(".deliveryViewClass").click(function (obj) {
 				var auth_error = $('#deliveryEditDiv').find('.et-auth-error');
 				var deliveryID = $(this).attr("deliveryid_");
 
-				var delDelivery = '/user/orderxs/deldelivery';
+				var delDelivery = '/user/sale/deldelivery';
 
 				layer.msg('确定删除发货单？', {
 					time: 0 //不自动关闭
@@ -1084,7 +1084,7 @@ $("#deliveryAddBtn").click(function () {
 	var orderID = '<?php echo $this->orders['orderID'];?>';
 	var deliveryCrnCode = '<?php echo $this->orders['buyerCrnCode'];?>';
 
-	$("#deliveryViewDiv").html("").load("<?php echo $this->BaseUrl();?>/orderxs/listorderitem", {
+	$("#deliveryViewDiv").html("").load("<?php echo $this->BaseUrl();?>/sale/listorderitem", {
 		orderID: orderID,
 		deliveryCrnCode: deliveryCrnCode
 	}, function () {
@@ -1135,7 +1135,7 @@ $("#deliveryAddBtn").click(function () {
 				deliveryQuantityArr += deliveryQuantity_add[i].value + "|";
 			}
 
-			var doPrepareGoods = '/user/orderxs/preparesave';
+			var doPrepareGoods = '/user/sale/preparesave';
 			$.post(doPrepareGoods,
 				{
 					orderID: orderID,
@@ -1183,7 +1183,7 @@ $("#deliveryAddBtn").click(function () {
 /* 发货详情页 */
 $(".deliveryDeliverViewBtn").click(function () {
 	var deliveryID = $(this).attr("deliveryID_");
-	$("#deliveryViewDiv").html("").load("<?php echo $this->BaseUrl();?>/orderxs/deliver", {
+	$("#deliveryViewDiv").html("").load("<?php echo $this->BaseUrl();?>/sale/deliver", {
 		deliveryID: deliveryID
 	}, function () {
 		layer.closeAll();
@@ -1222,7 +1222,7 @@ $(".deliveryDeliverViewBtn").click(function () {
 				attachTypeArr += attachType[i].value + "|";
 			}
 
-			var deliverGoods = '/user/orderxs/deliversave';
+			var deliverGoods = '/user/sale/deliversave';
 			$.post(deliverGoods,
 				{
 					deliveryID: deliveryID,
@@ -1280,7 +1280,7 @@ $(".paymentTopBtn").click(function () {
 	if (executionStatus >= 7) {
 		$(".signTopDiv").hide();
 		$(".deliveryTopDiv").hide();
-		$(".paymentTopDiv").show().load('<?php echo $this->BaseUrl();?>/orderxs/trading', {'orderID': $("#orderID").val()});
+		$(".paymentTopDiv").show().load('<?php echo $this->BaseUrl();?>/sale/trading', {'orderID': $("#orderID").val()});
 	}
 });
 
@@ -1288,7 +1288,7 @@ $(".paymentTopBtn").click(function () {
 $(".billingInfo").click(function () {
 	var deliveryID = $(this).attr("deliveryID_");
 
-	$("#billingInfoDiv").html("").load("<?php echo $this->BaseUrl();?>/orderxs/deliverbillinginfo", {
+	$("#billingInfoDiv").html("").load("<?php echo $this->BaseUrl();?>/sale/deliverbillinginfo", {
 		deliveryID: deliveryID
 	}, function () {
 		layer.closeAll();
@@ -1323,7 +1323,7 @@ $(".billingInfo").click(function () {
 			var expressName = $("#expressType").find("option:selected").text();
 			var expressNo = $("#expressNo").val();
 
-			var editExpressNo = '/user/orderxs/editexpresssave';
+			var editExpressNo = '/user/sale/editexpresssave';
 			$.post(editExpressNo,
 			{
 				deliveryID: deliveryID,
@@ -1367,7 +1367,7 @@ $(".billingInfo").click(function () {
 			}
 
 			$(".genBillInfoBtn").attr("disabled", true);
-			var genBillingInfo = '/user/orderxs/genbillinginfo';
+			var genBillingInfo = '/user/sale/genbillinginfo';
 			$.post(genBillingInfo,
 				{
 					deliveryID: deliveryID,

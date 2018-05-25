@@ -278,7 +278,7 @@ $(function(){
 			$('#jingdu').html('<?php echo $this->translate('waiting').$this->translate('confirmed');?>');/*等待确认*/
 			$('#zhuangtai').html('<?php echo $this->translate('waiting').$this->translate('confirmed');?>');/*等待确认*/
 			$.post(
-				'<?php echo $this->BaseUrl();?>/ordercg/confirm',
+				'<?php echo $this->BaseUrl();?>/pur/confirm',
 				{'orderID':orderID},
 
 				function(data){
@@ -317,7 +317,7 @@ $(function(){
 				attachTypeArr  += attachType[i].value+"|";
 			}
 			$.post(
-				'<?php echo $this->BaseUrl();?>/ordercg/agree',
+				'<?php echo $this->BaseUrl();?>/pur/agree',
 				{'orderID':orderID,'name':nameArr,'nid':nidArr,'size':sizeArr,'attachType':attachTypeArr},
 
 				function(data){
@@ -353,7 +353,7 @@ $(function(){
 				attachTypeArr  += attachType[i].value+",";
 			}
 			$.post(
-				'<?php echo $this->BaseUrl();?>/ordercg/examine',
+				'<?php echo $this->BaseUrl();?>/pur/examine',
 				{'orderID':orderID,'name':nameArr,'nid':nidArr,'size':sizeArr,'attachTT':attachTypeArr},
 
 				function(data){
@@ -389,7 +389,7 @@ $(function(){
 				attachTypeArr  += attachType[i].value+",";
 			}
 			$.post(
-				'<?php echo $this->BaseUrl();?>/ordercg/receipt',
+				'<?php echo $this->BaseUrl();?>/pur/receipt',
 				{'orderID':orderID,'name':nameArr,'nid':nidArr,'size':sizeArr,'attachType':attachTypeArr},
 				function(data){
 					if(data=='1'){
@@ -435,7 +435,7 @@ function QRht(obj){
 	}
 	var orderID=obj;
 	$.post(
-		'<?php echo $this->BaseUrl();?>/ordercg/agree',
+		'<?php echo $this->BaseUrl();?>/pur/agree',
 		{'orderID':orderID,'name':nameArr,'nid':nidArr,'size':sizeArr,'attachType':attachTypeArr},
 
 		function(data,status){
@@ -452,7 +452,7 @@ function signView($id) {
 		return false;
 	}
 
-	$.post('/user/orderxs/sign',{'id':$id,'url': rs_url},function (data) {
+	$.post('/user/sale/sign',{'id':$id,'url': rs_url},function (data) {
 		if(data==null||data==""){
 			layer.msg('Error,Please try again later!', {
 				icon: 2,

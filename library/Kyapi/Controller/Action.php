@@ -291,10 +291,10 @@ class Kyapi_Controller_Action extends Zend_Controller_Action{
             $this->view->goods_isAllowAdd = Seed_Common::array_search_two($submenus,'link_url','goods/add');
             $this->view->purchase_isAllowView = Seed_Common::array_search_two($submenus,'link_url','purchase/view');
             $this->view->purchase_isAllowAdd = Seed_Common::array_search_two($submenus,'link_url','purchase/add');
-            $this->view->ordercg_isAllowView = Seed_Common::array_search_two($submenus,'link_url','ordercg/view');
-            $this->view->ordercg_isAllowAdd = Seed_Common::array_search_two($submenus,'link_url','ordercg/add');
-            $this->view->orderxs_isAllowView = Seed_Common::array_search_two($submenus,'link_url','orderxs/view');
-            $this->view->orderxs_isAllowAdd = Seed_Common::array_search_two($submenus,'link_url','orderxs/add');
+            $this->view->pur_isAllowView = Seed_Common::array_search_two($submenus,'link_url','pur/view');
+            $this->view->pur_isAllowAdd = Seed_Common::array_search_two($submenus,'link_url','pur/add');
+            $this->view->sale_isAllowView = Seed_Common::array_search_two($submenus,'link_url','sale/view');
+            $this->view->sale_isAllowAdd = Seed_Common::array_search_two($submenus,'link_url','sale/add');
 
         }
 

@@ -185,7 +185,7 @@ function contractSignView($id) {
         return false;
     }
 
-    $.post('/user/orderxs/sign',{'id':$id,'url': rs_url},function (data) {
+    $.post('/user/sale/sign',{'id':$id,'url': rs_url},function (data) {
         if(data==null||data==""){
             layer.msg('Error,Please try again later!', {
                 icon: 2,
@@ -211,7 +211,7 @@ function downloadSignView($id,$type) {
     if($id==null&&$id==""){
         return false;
     }
-    $.post('/user/orderxs/download',{'id':$id,'type':$type},function (data) {
+    $.post('/user/sale/download',{'id':$id,'type':$type},function (data) {
 
     if(data.status==1){
         url=data.result;

@@ -1,6 +1,6 @@
 <?php
 
-class OrderxsController extends Kyapi_Controller_Action
+class SaleController extends Kyapi_Controller_Action
 {
     public function preDispatch() {
         $this->view->cur_pos = 'info';
@@ -13,7 +13,7 @@ class OrderxsController extends Kyapi_Controller_Action
         }
         $this->view->cur_pos = $this->_request->getParam('controller');
         $cururl = $this->getRequestUri();
-        if ($cururl == '/orderxs') {
+        if ($cururl == '/sale') {
             $this->_request->setParam('all', 'all');
             $this->indexAction();
             exit;
@@ -23,7 +23,7 @@ class OrderxsController extends Kyapi_Controller_Action
 
         if (isset($arr[1]) && !empty($arr[1])) {
 
-            preg_match_all('/^\/user\/orderxs\/(index|top|price)-([\d]+)-([\d]+).html/isU', $cururl, $arr);
+            preg_match_all('/^\/user\/sale\/(index|top|price)-([\d]+)-([\d]+).html/isU', $cururl, $arr);
             if (is_array($arr) && count($arr) > 1) {
                 $this->_request->setParam('status', $arr[2][0]);
                 $this->_request->setParam('page', $arr[3][0]);
@@ -111,7 +111,7 @@ class OrderxsController extends Kyapi_Controller_Action
             $linked = ($this->view->status == '00' )? 'edit' :  'view';
             $this->view->linked = $linked;
 
-            $file = "user/orderxs/" . $mod . "-" . $_orderStatus;
+            $file = "user/sale/" . $mod . "-" . $_orderStatus;
             $_limit = 5;
             $pageObj = new Seed_Page($this->_request, $total, $_limit);
             $this->view->page = $pageObj->getPageArray();
@@ -124,7 +124,7 @@ class OrderxsController extends Kyapi_Controller_Action
         }
 
         if (defined('SEED_WWW_TPL')) {
-            $content = $this->view->render(SEED_WWW_TPL . "/orderxs/index.phtml");
+            $content = $this->view->render(SEED_WWW_TPL . "/sale/index.phtml");
             echo $content;
             exit;
         }
@@ -366,10 +366,10 @@ class OrderxsController extends Kyapi_Controller_Action
 
                 if ($resultObject->status != 1) {
                     //添加订单失败
-                    Shop_Browser::redirect($this->view->translate('tip_add_fail').$resultObject->error,$this->view->seed_BaseUrl . "/orderxs");
+                    Shop_Browser::redirect($this->view->translate('tip_add_fail').$resultObject->error,$this->view->seed_BaseUrl . "/sale");
                 } else {
                     //添加订单成功
-                    Shop_Browser::redirect($this->view->translate('tip_add_success'),$this->view->seed_BaseUrl . "/orderxs");
+                    Shop_Browser::redirect($this->view->translate('tip_add_success'),$this->view->seed_BaseUrl . "/sale");
                 }
             } catch (HttpError $ex) {
                 Shop_Browser::redirect($ex->getMessage());
@@ -377,7 +377,7 @@ class OrderxsController extends Kyapi_Controller_Action
         }
 
         if (defined('SEED_WWW_TPL')) {
-            $content = $this->view->render(SEED_WWW_TPL . "/orderxs/add.phtml");
+            $content = $this->view->render(SEED_WWW_TPL . "/sale/add.phtml");
             echo $content;
             exit;
         }
@@ -637,10 +637,10 @@ class OrderxsController extends Kyapi_Controller_Action
 
                 if ($resultObject->status != 1) {
                     //编辑失败
-                    Seed_Browser::redirect($this->view->translate('tip_edit_fail') . $resultObject->error, $this->view->seed_BaseUrl . "/orderxs");
+                    Seed_Browser::redirect($this->view->translate('tip_edit_fail') . $resultObject->error, $this->view->seed_BaseUrl . "/sale");
                 } else {
                     //编辑成功
-                    Shop_Browser::redirect($this->view->translate('tip_edit_success'), $this->view->seed_BaseUrl . "/orderxs");
+                    Shop_Browser::redirect($this->view->translate('tip_edit_success'), $this->view->seed_BaseUrl . "/sale");
                 }
             } catch (HttpError $ex) {
                 Shop_Browser::redirect($ex->getMessage());
@@ -648,7 +648,7 @@ class OrderxsController extends Kyapi_Controller_Action
         }
 
         if (defined('SEED_WWW_TPL')) {
-            $content = $this->view->render(SEED_WWW_TPL . "/orderxs/edit.phtml");
+            $content = $this->view->render(SEED_WWW_TPL . "/sale/edit.phtml");
             echo $content;
             exit;
         }
@@ -770,7 +770,7 @@ class OrderxsController extends Kyapi_Controller_Action
         }
 
         if (defined('SEED_WWW_TPL')) {
-            $content = $this->view->render(SEED_WWW_TPL . "/orderxs/view.phtml");
+            $content = $this->view->render(SEED_WWW_TPL . "/sale/view.phtml");
             echo $content;
             exit;
         }
@@ -1094,7 +1094,7 @@ class OrderxsController extends Kyapi_Controller_Action
         }
 
         if (defined('SEED_WWW_TPL')) {
-            $content = $this->view->render(SEED_WWW_TPL . "/orderxs/deliveryView.phtml");
+            $content = $this->view->render(SEED_WWW_TPL . "/sale/deliveryView.phtml");
             echo $content;
             exit;
         }
@@ -1112,7 +1112,7 @@ class OrderxsController extends Kyapi_Controller_Action
         $this->view->deliveryCrnCode = $deliveryCrnCode;
 
         if (defined('SEED_WWW_TPL')) {
-            $content = $this->view->render(SEED_WWW_TPL . "/orderxs/deliveryAdd.phtml");
+            $content = $this->view->render(SEED_WWW_TPL . "/sale/deliveryAdd.phtml");
             echo $content;
             exit;
         }
@@ -1224,7 +1224,7 @@ class OrderxsController extends Kyapi_Controller_Action
         }
 
         if (defined('SEED_WWW_TPL')) {
-            $content = $this->view->render(SEED_WWW_TPL . "/orderxs/deliveryEdit.phtml");
+            $content = $this->view->render(SEED_WWW_TPL . "/sale/deliveryEdit.phtml");
             echo $content;
             exit;
         }
@@ -1346,7 +1346,7 @@ class OrderxsController extends Kyapi_Controller_Action
         }
 
         if (defined('SEED_WWW_TPL')) {
-            $content = $this->view->render(SEED_WWW_TPL . "/orderxs/deliveryDeliver.phtml");
+            $content = $this->view->render(SEED_WWW_TPL . "/sale/deliveryDeliver.phtml");
             echo $content;
             exit;
         }
@@ -1435,7 +1435,7 @@ class OrderxsController extends Kyapi_Controller_Action
 
         if (defined('SEED_WWW_TPL')) {
             if ($delivery->needTransfer && $delivery->transferRequestDate == null) {
-                $content = $this->view->render(SEED_WWW_TPL . "/orderxs/genBillingInfo.phtml");
+                $content = $this->view->render(SEED_WWW_TPL . "/sale/genBillingInfo.phtml");
                 echo $content;
                 exit;
             } else {
@@ -1445,7 +1445,7 @@ class OrderxsController extends Kyapi_Controller_Action
                 $this->view->deliverySupplierList = $billingInfo->deliverySupplierList;
                 // $purContractAttachmentList = $billingInfo->deliverySupplierList->purContract->attachmentList;
 
-                $content = $this->view->render(SEED_WWW_TPL . "/orderxs/getBillingInfo.phtml");
+                $content = $this->view->render(SEED_WWW_TPL . "/sale/getBillingInfo.phtml");
                 echo $content;
                 exit;
             }
@@ -1549,7 +1549,7 @@ class OrderxsController extends Kyapi_Controller_Action
         $this->view->trackview = $_view;
 
         if (defined('SEED_WWW_TPL')) {
-            $content = $this->view->render(SEED_WWW_TPL . "/orderxs/track.phtml");
+            $content = $this->view->render(SEED_WWW_TPL . "/sale/track.phtml");
             echo $content;
             exit;
         }
@@ -1570,7 +1570,7 @@ class OrderxsController extends Kyapi_Controller_Action
         $this->view->bgd = $bgd;
 
         if (defined('SEED_WWW_TPL')) {
-            $content = $this->view->render(SEED_WWW_TPL . "/orderxs/declaration.phtml");
+            $content = $this->view->render(SEED_WWW_TPL . "/sale/declaration.phtml");
             echo $content;
             exit;
         }
@@ -1590,7 +1590,7 @@ class OrderxsController extends Kyapi_Controller_Action
         $this->view->pcd = $pcd;
 
         if (defined('SEED_WWW_TPL')) {
-            $content = $this->view->render(SEED_WWW_TPL . "/orderxs/trucking.phtml");
+            $content = $this->view->render(SEED_WWW_TPL . "/sale/trucking.phtml");
             echo $content;
             exit;
         }
@@ -1610,7 +1610,7 @@ class OrderxsController extends Kyapi_Controller_Action
         $this->view->dcd = $dcd;
 
         if (defined('SEED_WWW_TPL')) {
-            $content = $this->view->render(SEED_WWW_TPL . "/orderxs/shipping.phtml");
+            $content = $this->view->render(SEED_WWW_TPL . "/sale/shipping.phtml");
             echo $content;
             exit;
         }
@@ -1628,7 +1628,7 @@ class OrderxsController extends Kyapi_Controller_Action
         $this->view->jsd = $jsd;
 
         if (defined('SEED_WWW_TPL')) {
-            $content = $this->view->render(SEED_WWW_TPL . "/orderxs/trading.phtml");
+            $content = $this->view->render(SEED_WWW_TPL . "/sale/trading.phtml");
             echo $content;
             exit;
         }
@@ -1804,7 +1804,7 @@ class OrderxsController extends Kyapi_Controller_Action
         $this->view->doc = $doc;
 
         if (defined('SEED_WWW_TPL')) {
-            $content = $this->view->render(SEED_WWW_TPL . "/orderxs/attachment.phtml");
+            $content = $this->view->render(SEED_WWW_TPL . "/sale/attachment.phtml");
             echo $content;
             exit;
         }

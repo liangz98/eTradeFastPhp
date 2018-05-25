@@ -205,7 +205,7 @@
 <div class="o_content_wrap w1200 m0a clearfix">
     <?php echo $this->render(SEED_WWW_TPL . '/left_menu.phtml'); ?>
     <div class="o_content fr w940">
-        <?php echo $this->render(SEED_WWW_TPL . '/ordercg/viewtop.phtml'); ?>
+        <?php echo $this->render(SEED_WWW_TPL . '/pur/viewtop.phtml'); ?>
         <div class="order_table">
             <div class="o_tab" id="o_tab">
                 <ul>
@@ -221,7 +221,7 @@
                         <h4><!--订单信息预览--><?php echo $this->translate('view') . $this->translate('orderINF'); ?></h4>
                         <?php if ($this->CompOrderAdmin == true && $this->allowEdit == 1): ?>
                             <a class="p_ed fr mt10"
-                               href=<?php echo WWW . 'user/ordercg/edit?' . base64_encode($this->orderid); ?>></a>
+                               href=<?php echo WWW . 'user/pur/edit?' . base64_encode($this->orderid); ?>></a>
                         <?php endif; ?>
                     </div>
                     <div class="info_cont clearfix">
@@ -572,9 +572,9 @@ $(function () {
 	//报关日志
 	var orderID = '<?php echo $this->orders['orderID'];?>';
 	$('#bgwl').click(function () {
-		$('#declaration').load('<?php echo $this->BaseUrl();?>/ordercg/declaration', {'orderID': orderID});
-		$('#shipping').load('<?php echo $this->BaseUrl();?>/ordercg/shipping', {'orderID': orderID});
-		$('#trucking').load('<?php echo $this->BaseUrl();?>/ordercg/trucking', {'orderID': orderID});
+		$('#declaration').load('<?php echo $this->BaseUrl();?>/pur/declaration', {'orderID': orderID});
+		$('#shipping').load('<?php echo $this->BaseUrl();?>/pur/shipping', {'orderID': orderID});
+		$('#trucking').load('<?php echo $this->BaseUrl();?>/pur/trucking', {'orderID': orderID});
 		var declaration = $('#declaration').html();
 		var shipping = $('#shipping').html();
 		var trucking = $('#trucking').html();
@@ -584,26 +584,26 @@ $(function () {
 		}
 	});
 	$('#gzrz').click(function () {
-		$('#track').load('<?php echo $this->BaseUrl();?>/ordercg/track', {'orderID': orderID, 'view': 'event'});
+		$('#track').load('<?php echo $this->BaseUrl();?>/pur/track', {'orderID': orderID, 'view': 'event'});
 		$('#BYdate').removeClass('on');
 		$('#BYevent').addClass('on');
 	});
 	$('#BYdate').click(function () {
 
-		$('#track').load('<?php echo $this->BaseUrl();?>/ordercg/track', {'orderID': orderID, 'view': 'date'});
+		$('#track').load('<?php echo $this->BaseUrl();?>/pur/track', {'orderID': orderID, 'view': 'date'});
 		$('#BYdate').addClass('on');
 		$('#BYevent').removeClass('on');
 	});
 	$('#BYevent').click(function () {
-		$('#track').load('<?php echo $this->BaseUrl();?>/ordercg/track', {'orderID': orderID, 'view': 'event'});
+		$('#track').load('<?php echo $this->BaseUrl();?>/pur/track', {'orderID': orderID, 'view': 'event'});
 		$('#BYdate').removeClass('on');
 		$('#BYevent').addClass('on');
 	});
 	$('#jiesuan').click(function () {
-		$('#trading').load('<?php echo $this->BaseUrl();?>/ordercg/trading', {'orderID': orderID});
+		$('#trading').load('<?php echo $this->BaseUrl();?>/pur/trading', {'orderID': orderID});
 	});
 	$('#wendang').click(function () {
-		$('#attachment').load('<?php echo $this->BaseUrl();?>/ordercg/attachment', {'orderID': orderID});
+		$('#attachment').load('<?php echo $this->BaseUrl();?>/pur/attachment', {'orderID': orderID});
 	});
 });
 
@@ -723,7 +723,7 @@ $(".download-button").bind("click",function(){
 
 // ********************   获取验证手机号码 Start  *************************************
 $(".sign-button").bind("click",function(){
-	var getSignMobile = '/user/ordercg/getsignmobile';
+	var getSignMobile = '/user/pur/getsignmobile';
 	$.post(getSignMobile,
 		{
 
@@ -753,7 +753,7 @@ $(".sign-button").bind("click",function(){
 });
 
 $(".person-sign-button").bind("click",function(){
-	var getSignMobile = '/user/ordercg/getpersonsignmobile';
+	var getSignMobile = '/user/pur/getpersonsignmobile';
 	$.post(getSignMobile,
 		{
 
@@ -788,9 +788,9 @@ $(".person-sign-button").bind("click",function(){
 
 // ********************   获取短信验证码 Start  *************************************
 $("#signSendAuthCodeBtn").click(function () {
-	var sendSignAuthCode = '/user/ordercg/sendsignauthcode';
+	var sendSignAuthCode = '/user/pur/sendsignauthcode';
 	if ($(this).attr("personSend") == "true") {
-		sendSignAuthCode = '/user/ordercg/sendpersonsignauthcode';
+		sendSignAuthCode = '/user/pur/sendpersonsignauthcode';
 	}
 	$.post(sendSignAuthCode,
 		{
@@ -845,10 +845,10 @@ function settime(obj) { //发送验证码倒计时
 
 // ********************   获取短信验证码 Start  *************************************
 $("#singConfirmBtn").click(function () {
-	var doSignPDF = '/user/ordercg/dosignpdf';
+	var doSignPDF = '/user/pur/dosignpdf';
 	var contractID = $(".sign-button").attr("contractID_");
 	if ($(this).attr("personSend") == "true") {
-		doSignPDF = '/user/ordercg/dopersonsignpdf';
+		doSignPDF = '/user/pur/dopersonsignpdf';
 		contractID = $(".person-sign-button").attr("contractID_");
 	}
 	$.post(doSignPDF,
@@ -958,7 +958,7 @@ $("#signNoEContractConfirmBtn").click(function () {
 
 
 	$.post(
-		'<?php echo $this->BaseUrl();?>/orderxs/agree',
+		'<?php echo $this->BaseUrl();?>/sale/agree',
 		{'contractID': contractID, 'name': nameArr, 'nid': nidArr, 'size': sizeArr, 'attachType': attachTypeArr},
 
 		function (data) {
@@ -974,7 +974,7 @@ $("#signNoEContractConfirmBtn").click(function () {
 // ********************   物流详情 Start  *************************************
 $(".deliveryViewClass").click(function (obj) {
 	var deliveryID = $(this).attr("deliveryID_");
-	$("#deliveryExamineViewDiv").html("").load("<?php echo $this->BaseUrl();?>/ordercg/deliveryview", {
+	$("#deliveryExamineViewDiv").html("").load("<?php echo $this->BaseUrl();?>/pur/deliveryview", {
 		deliveryID: deliveryID
 	}, function () {
 		layer.closeAll();
@@ -993,7 +993,7 @@ $(".deliveryViewClass").click(function (obj) {
 $(".deliveryExamineBtn").click(function () {
 	var deliveryID = $(this).attr("deliveryID_");
 
-	$("#deliveryExamineViewDiv").html("").load("<?php echo $this->BaseUrl();?>/ordercg/examine", {
+	$("#deliveryExamineViewDiv").html("").load("<?php echo $this->BaseUrl();?>/pur/examine", {
 		deliveryID: deliveryID
 	}, function () {
 		layer.closeAll();
@@ -1038,7 +1038,7 @@ $(".deliveryExamineBtn").click(function () {
 				return false;
 			}
 
-			var examineGoods = '/user/ordercg/examinesave';
+			var examineGoods = '/user/pur/examinesave';
 			$.post(examineGoods,
 				{
 					deliveryID: deliveryID,
@@ -1074,7 +1074,7 @@ $(".deliveryExamineBtn").click(function () {
 $(".deliveryReceiptBtn").click(function () {
 	var deliveryID = $(this).attr("deliveryID_");
 
-	$("#deliveryExamineViewDiv").html("").load("<?php echo $this->BaseUrl();?>/ordercg/receipt", {
+	$("#deliveryExamineViewDiv").html("").load("<?php echo $this->BaseUrl();?>/pur/receipt", {
 		deliveryID: deliveryID
 	}, function () {
 		layer.closeAll();
@@ -1113,7 +1113,7 @@ $(".deliveryReceiptBtn").click(function () {
 				attachTypeArr += attachType[i].value + "|";
 			}
 
-			var receiptGoods = '/user/ordercg/receiptsave';
+			var receiptGoods = '/user/pur/receiptsave';
 			$.post(receiptGoods,
 				{
 					deliveryID: deliveryID,
@@ -1154,7 +1154,7 @@ $("#deliveryEditBtn").click(function () {
 	$("#deliveryEditConfirmBtn, #deliveryEditViewDelBtn").attr("deliveryID_", $(this).attr("deliveryID_"));
 
 	var auth_error = $('#deliveryEditDiv').find('.et-auth-error');
-	var getDeliveryView = '/user/orderxs/deliveryview';
+	var getDeliveryView = '/user/sale/deliveryview';
 	$.post(getDeliveryView,
 		{
 			deliveryID: $(this).attr("deliveryID_")
@@ -1269,7 +1269,7 @@ $("#deliveryEditConfirmBtn").click(function () {
 		deliveryQuantityArr += deliveryQuantity_add[i].value + "|";
 	}
 
-	var editDelivery = '/user/orderxs/editdelivery';
+	var editDelivery = '/user/sale/editdelivery';
 	$.post(editDelivery,
 		{
 			deliveryID: deliveryID,
@@ -1339,7 +1339,7 @@ $("#deliveryAddConfirmBtn").click(function () {
 		deliveryQuantityArr += deliveryQuantity_add[i].value + "|";
 	}
 
-	var doPrepareGoods = '/user/orderxs/prepare';
+	var doPrepareGoods = '/user/sale/prepare';
 	$.post(doPrepareGoods,
 		{
 			orderID: orderID,
@@ -1376,7 +1376,7 @@ $("#deliveryDelBtn").click(function () {
 	var auth_error = $('#deliveryEditDiv').find('.et-auth-error');
 	var deliveryID = $(this).attr("deliveryid_");
 
-	var delDelivery = '/user/orderxs/deldelivery';
+	var delDelivery = '/user/sale/deldelivery';
 
 	layer.msg('确定删除发货单？', {
 		time: 0 //不自动关闭
@@ -1415,7 +1415,7 @@ $("#deliveryEditViewDelBtn").click(function () {
 	var auth_error = $('#deliveryEditDiv').find('.et-auth-error');
 	var deliveryID = $(this).attr("deliveryid_");
 
-	var delDelivery = '/user/orderxs/deldelivery';
+	var delDelivery = '/user/sale/deldelivery';
 
 	layer.msg('确定删除发货单？', {
 		time: 0, //不自动关闭
@@ -1474,7 +1474,7 @@ $(".paymentTopBtn").click(function () {
 	if (executionStatus >= 7) {
 		$(".signTopDiv").hide();
 		$(".deliveryTopDiv").hide();
-		$(".paymentTopDiv").show().load('<?php echo $this->BaseUrl();?>/orderxs/trading', {'orderID': $("#orderID").val()});
+		$(".paymentTopDiv").show().load('<?php echo $this->BaseUrl();?>/sale/trading', {'orderID': $("#orderID").val()});
 	}
 });
 </script>

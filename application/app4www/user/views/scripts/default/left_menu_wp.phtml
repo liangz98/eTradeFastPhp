@@ -45,10 +45,10 @@
             <a href="/user/orderts">退税申请</a>
         </dd>
         <dd>
-            <a href="/user/orderxs">销售订单</a>
+            <a href="/user/sale">销售订单</a>
         </dd>
         <dd>
-            <a href="/user/ordercg">采购订单</a>
+            <a href="/user/pur">采购订单</a>
         </dd>
     </dl>
     <dl>
@@ -149,13 +149,13 @@ var urlstr = location.href;
 var urlstatus=false;
 $(".o_nav a").each(function () {
 if ((urlstr + '/').indexOf($(this).attr('href')) > -1&&$(this).attr('href')!='') {
-  $(this).parents('dd').addClass('current'); 
+  $(this).parents('dd').addClass('current');
   urlstatus = true;
 } else {
   $(this).parents('dd').removeClass('current');
 }
 });
-if (!urlstatus) 
+if (!urlstatus)
 {$(".o_nav a").eq(0).addClass('current');
 }
 
