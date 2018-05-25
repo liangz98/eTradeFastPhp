@@ -226,7 +226,7 @@
 
                             var base = new Base64();
                             var resultEnCode = base.encode(row.toID);
-                            var href = "/user/buyer/view?"+resultEnCode;
+                            var href = "/user/sale/view?"+resultEnCode;
 
                             <?php if ($this->userrgCode == 'CN'): ?>
 
@@ -246,7 +246,7 @@
                             }
                             var base = new Base64();
                             var resultEnCode = base.encode(row.toID);
-                            var href = "/user/buyer/view?"+resultEnCode;
+                            var href = "/user/sale/view?"+resultEnCode;
 
                             var result = value;
                             var data = $.data(dataDict, 'dataDict');
@@ -270,7 +270,7 @@
                             }
                             var base = new Base64();
                             var resultEnCode = base.encode(row.toID);
-                            var href = "/user/buyer/view?"+resultEnCode;
+                            var href = "/user/sale/view?"+resultEnCode;
 
                             var result = value;
                             var data = $.data(dataDict, 'dataDict');
@@ -294,7 +294,7 @@
                             var delTitle = "<?php echo $this->translate('delete');?>";
                             var base = new Base64();
                             var resultEnCode = base.encode(row.toID);
-                            var href = "/user/buyer/edit?"+resultEnCode;
+                            var href = "/user/sale/edit?"+resultEnCode;
 
                             var result = '';
                             <?php if ($this->CompPartnerAdmin == true || $this->CompOrderAdmin == true): ?>
@@ -306,7 +306,7 @@
                             }
 
                             if (row.partnerStatus === '00' || row.partnerStatus === '01') {
-                                result += '<a href="javascript:void(0)" title="' + delTitle + '" id="' + row.toID + '" data-url="/user/buyer/delete" '
+                                result += '<a href="javascript:void(0)" title="' + delTitle + '" id="' + row.toID + '" data-url="/user/sale/delete" '
                                     + 'data-msg1="<?php echo $this->translate("is_delete");?>" '
                                     + 'data-msg2="<?php echo $this->translate("tip_del_success");?>" '
                                     + 'data-msg3="<?php echo $this->translate("tip_del_fail");?>" '
@@ -317,7 +317,7 @@
                             }
 
                             if (row.partnerStatus === '02') {
-                                result += '<a href="javascript:void(0)" title="' + acceptTitle + '" id="' + row.toID + '" data-url="/user/buyer/accept" '
+                                result += '<a href="javascript:void(0)" title="' + acceptTitle + '" id="' + row.toID + '" data-url="/user/sale/accept" '
                                     + 'data-msg1="<?php echo $this->translate("is_accept");?>" '
                                     + 'data-msg2="<?php echo $this->translate("tip_accept_success");?>" '
                                     + 'data-msg3="<?php echo $this->translate("tip_accept_fail");?>" '
@@ -326,7 +326,7 @@
                                     + '<i class="far fa-check-circle"></i>'
                                     + '</a>&nbsp;';
 
-                                result += '<a href="javascript:void(0)" title="' + rejectTitle + '" id="' + row.toID + '" data-url="/user/buyer/reject" '
+                                result += '<a href="javascript:void(0)" title="' + rejectTitle + '" id="' + row.toID + '" data-url="/user/sale/reject" '
                                     + 'data-msg1="<?php echo $this->translate("is_reject");?>" '
                                     + 'data-msg2="<?php echo $this->translate("tip_reject_success");?>" '
                                     + 'data-msg3="<?php echo $this->translate("tip_reject_fail");?>" '
@@ -345,12 +345,12 @@
         });
 	});
 
-	function partnerSearch() {
-        var listTable = $('#partnerListTable');
+	function search() {
+        var listTable = $('#resultListTable');
         var options = {
             query:{
                 keyword: $("#keyword").val(),
-                partnerStatus: $("#partnerStatus").val()
+                orderStatus: $("#orderStatus").val()
             }
         };
         $(listTable).bootstrapTable('refresh', options);
@@ -376,14 +376,14 @@
                             skin: 'del-class',
                             icon: 1
                         });
-                        partnerSearch();
+                        search();
                         refreshBadge();
                     } else {
                         layer.msg('<span style="color: #EF8200;font-size: 16px;">' + msg3 + '</span><br>' + data.error, {
                             skin: 'del-class',
                             icon: 0
                         });
-                        partnerSearch();
+                        search();
                     }
                 }, "json");
         }, function () {
@@ -392,7 +392,7 @@
     }
 
     function refreshBadge() {
-        var countQuery = '/user/buyer/count-buyer-partner-ajax';
+        var countQuery = '/user/sale/count-sale-order-ajax';
         $.ajax({
             type: "POST",
             url: countQuery,
@@ -407,8 +407,8 @@
                     }
                 });
 
-                $('.badge[data-partnerStatus="02"]').html(waiting);
-                $('.badge[data-partnerStatus="00"]').html(forReview);
+                $('.badge[data-orderStatus="02"]').html(waiting);
+                $('.badge[data-orderStatus="00"]').html(forReview);
             }
         });
     }
