@@ -1,179 +1,372 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<title>快移</title>
-<meta name="description" content="">
-<meta name="keywords" content="">
-<link href="/ky/css/base.css" rel="stylesheet">
-<link href="/ky/css/style.css" rel="stylesheet">
-<link href="/ky/css/img-upload.css" rel="stylesheet">
-<script type="text/javascript" src="/ky/js/jquery.js"></script>
-<script type="text/javascript" src="/ky/js/jquery.wallform.js"></script>
-<script type="text/javascript" src="/ky/js/www.js"></script>
-<script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
-<style type="text/css">
-	.order_progress{padding:0 20px;border-top:5px solid #df7e20;border-bottom: 20px solid #fff;}
-	.progress{display:block;padding: 10px 0;margin: 0 -10px;overflow:hidden;}
-	.progress p{float: left;margin:0 10px;font-size: 12px;}
-	.icon_bg1,.icon_bg2,.icon_bg3{
-		width:210px;
-		height:40px;
-		background-color:#A0A0A0;
-		position:relative;
-		color:#000;
-		line-height: 40px;
-	}
-	/*
-    .icon_bg1:before, .icon_bg1:after, .icon_bg2:before, .icon_bg2:after, .icon_bg3:before, .icon_bg3:after{
-        width:0px;
-        height:0px;
-        border:transparent solid;
-        position:absolute;
-        left:100%;
-        content:""
-    }
-    .icon_bg2:before, .icon_bg3:before{
-        border-width:20px;
-        border-left-color: #f5f5f5;
-        left: 0;
-    }
-    .icon_bg1:after, .icon_bg2:after{
-        border-width:20px;
-        border-left-color: #A0A0A0;
-    }
-	*/
-	.finish{background-color:#4CAF50;
-		color:#fff;}
-	/*
-    .finish:after{
-        border-width:20px;
-        border-left-color: #4CAF50;
-    }
-	*/
-	.go{background-color:#df7e20;
-		color:#fff;}
-	.go:after{border-left-color: #df7e20;}
-	.gocursor {cursor: pointer;}
-	.od_ht_dl{border-top:1px solid #ddd;border-bottom:1px solid #ddd;overflow:hidden;}
-</style>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+	<title>快移</title>
+    <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <link href="/ky/css/partner/partner.css" rel="stylesheet">
+    <link href="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.css" rel="stylesheet">
 </head>
 <body>
-<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
-<div class="o_content_wrap w1200 m0a clearfix">
-    <?php echo $this->render(SEED_WWW_TPL.'/left_menu.phtml');?>
-    <div class="o_content fr w940">
-        <?php  echo $this->render(SEED_WWW_TPL.'/orderxs/newlist.phtml');?>
-        <div class="order_table order_tableh">
-            <ul class="order_state2 clearfix">
-                <li <?php if ($this->status=='03'||$this->status=='04'):?>class="on"<?php endif;?> ><a href= "/user/orderxs/index-04-1.html"><!--有效--><?php echo $this->translate('valid');?><span class="ws_num"><?php if(!empty($this->clConut['03'])||!empty($this->clConut['04'])){ echo '('.($this->clConut['03']+$this->clConut['04']).')';}?></span></a></li>
-             	<li <?php if ($this->status=='01'||$this->status=='05'):?>class="on"<?php endif;?> ><a href= "/user/orderxs/index-01-1.html"><!--审核中--><?php echo $this->translate('forReview');?><span class="wh_num"><?php if(!empty($this->clConut['01'])||!empty($this->clConut['05'])){echo '('.($this->clConut['01']+$this->clConut['05']).')';}?></span></a></li>
-                <li <?php if ($this->status=='02'):?>class="on"<?php endif;?> ><a href= "/user/orderxs/index-02-1.html"><!--待确认--><?php echo $this->translate('forConfirm');?><span class="ws_num"><?php if(!empty($this->clConut['02'])){ echo '('.$this->clConut['02'].')';}?></span></a></li>
-                <li <?php if ($this->status=='00'):?>class="on"<?php endif;?> ><a href= "/user/orderxs/index-00-1.html"><!--草稿--><?php echo $this->translate('draft');?><span class="ha_num"><?php if(!empty($this->clConut['00'])){ echo '('.$this->clConut['00'].')';}?></span></a></li>
-                <li <?php if ($this->status=='10'||$this->status=='CL'):?>class="on"<?php endif;?> ><a href="/user/orderxs/index-10-1.html"><!--历史--><?php echo $this->translate('history');?><span class="wh_num"><?php if(!empty($this->clConut['10'])||!empty($this->clConut['CL'])){ echo '('.($this->clConut['10']+$this->clConut['CL']).')';}?></span></a></li>
-            </ul>
-        </div>
-        <div class="qy_list_wrap curr pr">
-            <div class="qysearch_box">
-                <form action="<?php echo 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];?>" method="POST">
-                        <input class="search_inp" name="keyword" <?php if(!empty($this->keyword)){echo "value=".$this->keyword;}?> placeholder="<?php echo $this->translate('INPkw_order_xs');?>" type="text"><!--可输入订单号、买家名称-->
-                        <input class="ss_btn" type="submit" value="">
 
-                    <?php if($this->CompOrderAdmin==true&&count($this->orderxs_isAllowAdd)>0):?>
-                    <a href="<?php echo '/user/orderxs/add';?>" class="addb_box fr"></a>
-                <?php endif;?>  </form>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
+
+<div class="container-fluid index-body">
+	<div class="container">
+		<div class="row">
+            <div class="col-md-3 company-navigation">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><?php echo $this->translate('partners'); ?></div>
+                    <div class="list-group">
+                        <a href="/user/orderxs" class="list-group-item"><?php echo $this->translate('orderSALLE'); ?></a>
+                        <a href="/user/ordercg" class="list-group-item"><?php echo $this->translate('orderBUY'); ?></a>
+                    </div>
+                </div>
             </div>
-            <table class="qy_table qy_table1">
-                <thead>
-                    <tr>
-                        <th width="185"><!--订单号--><?php echo $this->translate('orderID');?></th>
-                        <th width="185"><!--订单金额--><?php echo $this->translate('orderPrice');?></th>
-                        <th><!--买家--><?php echo $this->translate('buyers');?></th>
-                        <th width="160"><!--更新时间--><?php echo $this->translate('UPdate');?></th>
-                        <?php if($this->CompOrderAdmin==true):?>
-                        <th width="120" ><!--操作--><?php echo $this->translate('madeTT');?></th>
-                        <?php endif;?>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php if(is_array($this->e) && count($this->e)>0):?>
-                <?php foreach ($this->e as $k=>$orders):?>
-                    <tr>
-                        <td><a href="<?php  if(!empty($this->orderxs_isAllowView)){echo '/user/orderxs/'.$this->linked.'?'.base64_encode($orders['orderID']);}?>"><?php echo $orders['orderNo'];?></a></td>
-                        <td><a href="<?php  if(!empty($this->orderxs_isAllowView)){echo '/user/orderxs/'.$this->linked.'?'.base64_encode($orders['orderID']);}?>"><?php echo $orders['buyerCrnCode'].'  '.$orders['totalAmount'];?></a></td>
-                        <td><a href="<?php  if(!empty($this->orderxs_isAllowView)){echo '/user/orderxs/'.$this->linked.'?'.base64_encode($orders['orderID']);}?>"><?php echo $orders['buyerName'];?></a></td>
-                        <td><a href="<?php  if(!empty($this->orderxs_isAllowView)){echo '/user/orderxs/'.$this->linked.'?'.base64_encode($orders['orderID']);}?>"><?php echo date('Y-m-d H:i:s',strtotime($orders['lastUpdate']));?></a></td>
-                        <?php if($this->CompOrderAdmin==true):?>
-                        <td>
-                            <div class="cc_box">
-                            <!--提交订单--> <a title="<?php echo $this->translate('submit');?>"  class="t_edit p_qr" <?php if ($orders['orderStatus']==00){ echo 'style="display:inline-block;"';}?>
-                                           href="javascript:;" id="<?php echo $orders['orderID'];?>" data-url="/user/orderxs/submit"
-                                           data-msg1="<?php echo $this->translate('is_submit');?>" data-msg2="<?php echo $this->translate('tip_forReview_success');?>"
-                                           data-msg3="<?php echo $this->translate('tip_forReview_fail');?>" onclick="doOption(this);"></a>
 
-                            <!--编辑订单--> <a  title="<?php echo $this->translate('edit');?>"  class="t_edit p_ed" <?php if($this->accountID==$orders['client']){if ($orders['orderStatus']==05||$orders['orderStatus']==00||$orders['orderStatus']==02){ echo 'style="display:inline-block;"';}}?>
-                                            href=<?php echo '/user/orderxs/edit?'.base64_encode($orders['orderID']);?>></a>
+            <div class="col-md-9 order-main">
+                <div class="row responsive-utilities-test hidden-on">
+                    <div class="col-xs-6 col-sm-3">
+                        <span class="hidden-xs">超小屏幕</span>
+                        <span class="visible-xs-block">✔ 在超小屏幕上隐藏</span>
+                    </div>
+                    <div class="col-xs-6 col-sm-3">
+                        <span class="hidden-sm">小屏幕</span>
+                        <span class="visible-sm-block">✔ 在小屏幕上隐藏</span>
+                    </div>
+                    <div class="clearfix visible-xs-block"></div>
+                    <div class="col-xs-6 col-sm-3">
+                        <span class="hidden-md">中等屏幕</span>
+                        <span class="visible-md-block">✔ 在中等屏幕上隐藏</span>
+                    </div>
+                    <div class="col-xs-6 col-sm-3">
+                        <span class="hidden-lg">大屏幕</span>
+                        <span class="visible-lg-block">✔ 在大屏幕上隐藏</span>
+                    </div>
+                </div>
 
-                            <!--取消订单--> <a title="<?php echo $this->translate('cancel');?>"  class="t_edit p_delx" <?php if ($orders['orderStatus']==01||$orders['orderStatus']==02||$orders['orderStatus']==05){ echo 'style="display:inline-block;"';}?>
-                                           href="javascript:;" id="<?php echo $orders['orderID'];?>" data-url="/user/orderxs/cancel"
-                                           data-msg1="<?php echo $this->translate('is_cancel');?>" data-msg2="<?php echo $this->translate('tip_cancel_success');?>"
-                                           data-msg3="<?php echo $this->translate('tip_cancel_fail');?>" onclick="doOption(this);"></a>
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading"><?php echo $this->translate('orderSALLE'); ?></div>
+                    <div class="panel-body">
+                        <?php if (!empty($this->resultMsg)): ?>
+                        <div class="alert alert-success alert-dismissible fade in" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <p><?php echo base64_decode($this->resultMsg); ?>!</p>
+                        </div>
+                        <?php endif; ?>
 
-                            <!--删除订单--> <a title="<?php echo $this->translate('delete');?>"  class="t_edit p_del" <?php if ($orders['orderStatus']==00){ echo 'style="display:inline-block;"';}?>
-                                           href="javascript:;" id="<?php echo $orders['orderID'];?>" data-url="/user/orderxs/del"
-                                           data-msg1="<?php echo $this->translate('is_delete');?>" data-msg2="<?php echo $this->translate('tip_del_success');?>"
-                                           data-msg3="<?php echo $this->translate('tip_del_fail');?>" onclick="doOption(this);"></a>
+                        <ul id="partnerTabs" class="nav nav-tabs nav-justified">
+                            <li role="presentation" class="active">
+                                <a href="#forActivate" data-partnerStatus="01" aria-controls="forActivate" role="tab" data-toggle="tab"><?php echo $this->translate('valid'); ?></a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#forActivate" data-partnerStatus="02" aria-controls="forActivate" role="tab" data-toggle="tab">
+                                    <?php echo $this->translate('waiting'); ?>&nbsp;<span class="badge" data-partnerStatus="02"><?php echo $this->countBuyerPartner['02']; ?></span>
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#forActivate" data-partnerStatus="00" aria-controls="forActivate" role="tab" data-toggle="tab">
+                                    <?php echo $this->translate('forReview'); ?>&nbsp;<span class="badge" data-partnerStatus="00"><?php echo $this->countBuyerPartner['00']; ?></span>
+                                </a>
+                            </li>
+                        </ul>
 
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="forActivate">
+                                <form class="form-horizontal" action="javascript:void(0)" onsubmit="partnerSearch()" id="partner_search_form">
+                                    <div class="form-group" style="margin-bottom: 0 !important;">
+                                        <label for="keyword" class="sr-only">keyword</label>
+                                        <div class="col-sm-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fas fa-search"></i></span>
+                                                <input type="text" class="form-control" name="keyword" id="keyword" placeholder="<?php echo $this->translate('INPkw_par_buyer');?>">
+                                                <input type="hidden" name="partnerStatus" id="partnerStatus" value="<?php echo $this->partnerStatus; ?>" >
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <button type="submit" class="btn btn-primary"> Go </button>
+                                        </div>
+                                        <?php if ($this->CompPartnerAdmin == true): ?>
+                                        <div class="col-sm-1 col-sm-offset-4">
+                                            <a title="<?php echo $this->translate('add');?>" href="/user/buyer/add" class="btn btn-default">
+                                                <i class="fas fa-plus"></i>
+                                            </a>
+                                        </div>
+                                        <?php endif; ?>
+                                    </div>
+                                </form>
 
+                                <!-- Table -->
+                                <table id="partnerListTable"></table>
                             </div>
-                        </td>
-                        <?php endif;?>
-                    </tr>
-                    <?php endforeach; ?>
-                <?php else:?>
-                    <tr><td colspan="5"> <?php echo $this->translate('noData');?></td></tr>
-                <?php endif;?>
-                </tbody>
-            </table>
-            <div class="page"> <?php echo $this->showProductPage($this->page);?> </div>
-        </div>
-    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
 </div>
-<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
-<script type="text/javascript" src="/ky/layer-v3.1.1/layer.js"></script>
-<script>
-    function doOption(obj){
-        var url=$(obj).attr('data-url');
-        var id=$(obj).attr('id');
-        var msg1=$(obj).attr('data-msg1');
-        var msg2=$(obj).attr('data-msg2');
-        var msg3=$(obj).attr('data-msg3');
-        //询问框
-        layer.confirm(msg1, {
-            title:false,
-            closeBtn: 0,
-            btn: ['<?php echo $this->translate('yes');?>','<?php echo $this->translate('no');?>'] //按钮
-        }, function(){
-            $.post( url,
-                {'delID':id},
-                function(data){
-                    if( data.status == 1){
-                        layer.msg('<span style="color: #EF8200;font-size: 16px;">'+msg2+'</span>', {skin:'del-class',icon: 1});
-                        parent.window.location.reload();
-                    }
-                    else{
-                        layer.msg('<span style="color: #EF8200;font-size: 16px;">'+msg3+'</span><br>'+data.error, {skin:'del-class',icon: 0});
-                        parent.window.location.reload();
-                    }
-                },"json");
 
-        }, function(){
-            layer.closeAll();
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script src="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.js"></script>
+<script src="/ky/bootstrap-table-1.12.1-dist/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="/ky/js/base64.js"></script>
+
+<script type="text/javascript">
+    var dataDict = {};
+
+    $().ready(function() {
+
+	});
+
+	$(function () {
+        $('.company-navigation').find('a').each(function () {
+            if (this.href === document.location.href || document.location.href.search(this.href) >= 0) {
+                $(this).addClass('nav-selected');
+            } else {
+                $(this).removeClass('nav-selected');
+            }
         });
 
+        $("#partnerTabs a").click(function () {
+            $("#partnerStatus").val($(this).attr("data-partnerStatus"));
+            partnerSearch();
+        });
+
+        $('#partnerTabs a[data-partnerStatus="<?php echo $this->partnerStatus; ?>"]').tab('show');
+
+        var dataDictQuery = '/user/common/dict-ajax';
+        var dictCode = ["ISIC_INDUSTRY_TYPE", "COUNTRY_ISO_CODE"];
+        $.ajax({
+            type: "POST",
+            url: dataDictQuery,
+            data: {
+                dictCode: dictCode,
+                langCode: '<?php echo $this->userLangCode; ?>'
+            },
+            dataType: "json",
+            success: function (data) {
+                $.data(dataDict, 'dataDict', data);
+
+                $('#partnerListTable').bootstrapTable({
+                    url: '/user/buyer/buyer-list-ajax',
+                    method: 'post',
+                    // showRefresh: true,
+                    // search: true,
+                    pagination: true,
+                    classes: 'table table-no-bordered',
+                    sidePagination: 'server',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    pageNumber: 1,
+                    pageSize: 10,
+                    queryParams: function(params) {
+                        return {
+                            limit: params.limit,
+                            skip: params.offset,
+                            keyword: params.search,
+                            partnerStatus: $("#partnerStatus").val()
+                        };
+                    },
+                    columns: [{
+                        field: 'toName',
+                        title: '<?php echo $this->translate("companyName"); ?>',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "-";
+                            }
+
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.toID);
+                            var href = "/user/buyer/view?"+resultEnCode;
+
+                            <?php if ($this->userrgCode == 'CN'): ?>
+
+                            <?php else: ?>
+                            if (row.toEnName !== null && row.toEnName !== '') {
+                                value = row.toEnName;
+                            }
+                            <?php endif; ?>
+                            return '<a href="' + href + '">' + value + '</a>';
+                        }
+                    }, {
+                        field: 'industryCode',
+                        title: '<?php echo $this->translate("industry"); ?>',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "-";
+                            }
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.toID);
+                            var href = "/user/buyer/view?"+resultEnCode;
+
+                            var result = value;
+                            var data = $.data(dataDict, 'dataDict');
+                            $.each(data, function (key, item) {
+                                if (key === 'ISIC_INDUSTRY_TYPE') {
+                                    $.each(item, function (i, dict) {
+                                        if (dict.code === value) {
+                                            result = dict.name;
+                                        }
+                                    });
+                                }
+                            });
+                            return '<a href="' + href + '">' + result + '</a>';
+                        }
+                    }, {
+                        field: 'regdCountryCode',
+                        title: '<?php echo $this->translate("regdCountry"); ?>',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "-";
+                            }
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.toID);
+                            var href = "/user/buyer/view?"+resultEnCode;
+
+                            var result = value;
+                            var data = $.data(dataDict, 'dataDict');
+                            $.each(data, function (key, item) {
+                                if (key === 'COUNTRY_ISO_CODE') {
+                                    $.each(item, function (i, dict) {
+                                        if (dict.code === value) {
+                                            result = dict.name;
+                                        }
+                                    });
+                                }
+                            });
+                            return '<a href="' + href + '">' + result + '</a>';
+                        }
+                    }, {
+                        title: '<?php echo $this->translate("madeTT"); ?>',
+                        formatter: function (value, row, index) {
+                            var editTitle = "<?php echo $this->translate("edit");?>";
+                            var rejectTitle = "<?php echo $this->translate('reject');?>";
+                            var acceptTitle = "<?php echo $this->translate('accept');?>";
+                            var delTitle = "<?php echo $this->translate('delete');?>";
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.toID);
+                            var href = "/user/buyer/edit?"+resultEnCode;
+
+                            var result = '';
+                            <?php if ($this->CompPartnerAdmin == true || $this->CompOrderAdmin == true): ?>
+                            if (row.partnerStatus === '00') {
+                                result += '<a title="' + editTitle+ '" href="' + href + '">'
+                                    + '<i class="far fa-edit"></i>'
+                                    + '</a>&nbsp;';
+
+                            }
+
+                            if (row.partnerStatus === '00' || row.partnerStatus === '01') {
+                                result += '<a href="javascript:void(0)" title="' + delTitle + '" id="' + row.toID + '" data-url="/user/buyer/delete" '
+                                    + 'data-msg1="<?php echo $this->translate("is_delete");?>" '
+                                    + 'data-msg2="<?php echo $this->translate("tip_del_success");?>" '
+                                    + 'data-msg3="<?php echo $this->translate("tip_del_fail");?>" '
+                                    + 'onclick="doOption(this);" '
+                                    + '>'
+                                    + '<i class="far fa-trash-alt"></i>'
+                                    + '</a>&nbsp;';
+                            }
+
+                            if (row.partnerStatus === '02') {
+                                result += '<a href="javascript:void(0)" title="' + acceptTitle + '" id="' + row.toID + '" data-url="/user/buyer/accept" '
+                                    + 'data-msg1="<?php echo $this->translate("is_accept");?>" '
+                                    + 'data-msg2="<?php echo $this->translate("tip_accept_success");?>" '
+                                    + 'data-msg3="<?php echo $this->translate("tip_accept_fail");?>" '
+                                    + 'onclick="doOption(this);" '
+                                    + '>'
+                                    + '<i class="far fa-check-circle"></i>'
+                                    + '</a>&nbsp;';
+
+                                result += '<a href="javascript:void(0)" title="' + rejectTitle + '" id="' + row.toID + '" data-url="/user/buyer/reject" '
+                                    + 'data-msg1="<?php echo $this->translate("is_reject");?>" '
+                                    + 'data-msg2="<?php echo $this->translate("tip_reject_success");?>" '
+                                    + 'data-msg3="<?php echo $this->translate("tip_reject_fail");?>" '
+                                    + 'onclick="doOption(this);" '
+                                    + '>'
+                                    + '<i class="fas fa-ban"></i>'
+                                    + '</a>&nbsp;';
+                            }
+                            <?php endif; ?>
+
+                            return result;
+                        }
+                    }]
+                });
+            }
+        });
+	});
+
+	function partnerSearch() {
+        var listTable = $('#partnerListTable');
+        var options = {
+            query:{
+                keyword: $("#keyword").val(),
+                partnerStatus: $("#partnerStatus").val()
+            }
+        };
+        $(listTable).bootstrapTable('refresh', options);
     }
 
+    function doOption(obj) {
+        var url = $(obj).attr('data-url');
+        var id = $(obj).attr('id');
+        var msg1 = $(obj).attr('data-msg1');
+        var msg2 = $(obj).attr('data-msg2');
+        var msg3 = $(obj).attr('data-msg3');
+        //询问框
+        layer.confirm(msg1, {
+            title: false,
+            closeBtn: 0,
+            btn: ['<?php echo $this->translate('yes');?>', '<?php echo $this->translate('no');?>'] //按钮
+        }, function () {
+            $.post(url,
+                {'delID': id},
+                function (data) {
+                    if (data.status === 1) {
+                        layer.msg('<span style="color: #EF8200;font-size: 16px;">' + msg2 + '</span>', {
+                            skin: 'del-class',
+                            icon: 1
+                        });
+                        partnerSearch();
+                        refreshBadge();
+                    } else {
+                        layer.msg('<span style="color: #EF8200;font-size: 16px;">' + msg3 + '</span><br>' + data.error, {
+                            skin: 'del-class',
+                            icon: 0
+                        });
+                        partnerSearch();
+                    }
+                }, "json");
+        }, function () {
+            layer.closeAll();
+        });
+    }
+
+    function refreshBadge() {
+        var countQuery = '/user/buyer/count-buyer-partner-ajax';
+        $.ajax({
+            type: "POST",
+            url: countQuery,
+            dataType: "json",
+            success: function (data) {
+                var waiting = "", forReview = "";
+                $.each(data, function (i, item) {
+                    if (i === '02') {
+                        waiting = item;
+                    } else if (i === '00') {
+                        forReview = item;
+                    }
+                });
+
+                $('.badge[data-partnerStatus="02"]').html(waiting);
+                $('.badge[data-partnerStatus="00"]').html(forReview);
+            }
+        });
+    }
 </script>
 </body>
 </html>
