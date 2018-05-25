@@ -104,7 +104,7 @@ class SaleController extends Kyapi_Controller_Action
             $querySorts = $this->arrayToObject($querySorts);
         }
 
-        $resultObject = $this->json->listSaleOrderApi($requestObject, $queryParams, $querySorts, $keyword, $skip, $limit);
+        $resultObject = $this->json->listSaleOrderApi($requestObject, $orderStatus, $querySorts, $keyword, $skip, $limit);
         $msg["total"] = json_decode($resultObject)->extData->totalSize;
         $msg["rows"] = json_decode($resultObject)->result;
 

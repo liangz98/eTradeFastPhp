@@ -454,7 +454,7 @@ return array(
     'shopPrities'           => '订单汇率',
     'Prities'               => '订单汇率',
     'orderPrice'            => '订单金额',
-    'UPdate'                => '更新时间',
+    'lastUpdate'                => '更新时间',
     'date'                  => '日期',
 
     'contartNo'                   => '合同号码',

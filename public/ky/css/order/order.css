@@ -59,6 +59,11 @@ body {
 }
 /* end */
 
+/* 标签页徽章背景色 */
+#optionTabs a span {
+    background-color: #01AAED;
+}
+
 
 .panel-body form {
     margin-top: 15px;

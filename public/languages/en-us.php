@@ -461,7 +461,7 @@ return array(
     'shopPrities'           => 'Currency',
     'Prities'               => 'Currency',
     'orderPrice'            => 'Amount',
-    'UPdate'                => 'Update Time',
+    'lastUpdate'            => 'Update Time',
     'date'                  => 'Date',
 
     'contartNo'                   => 'Contract No.',

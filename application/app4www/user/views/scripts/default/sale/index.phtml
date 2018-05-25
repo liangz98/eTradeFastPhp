@@ -217,73 +217,56 @@
                         };
                     },
                     columns: [{
-                        field: 'toName',
-                        title: '<?php echo $this->translate("companyName"); ?>',
+                        field: 'orderNo',
+                        title: '<?php echo $this->translate("orderNo"); ?>',
                         formatter: function (value, row) {
                             if (value === undefined || value === '' || value === null) {
                                 value = "-";
                             }
 
                             var base = new Base64();
-                            var resultEnCode = base.encode(row.toID);
+                            var resultEnCode = base.encode(row.orderID);
                             var href = "/user/sale/view?"+resultEnCode;
-
-                            <?php if ($this->userrgCode == 'CN'): ?>
-
-                            <?php else: ?>
-                            if (row.toEnName !== null && row.toEnName !== '') {
-                                value = row.toEnName;
-                            }
-                            <?php endif; ?>
                             return '<a href="' + href + '">' + value + '</a>';
                         }
                     }, {
-                        field: 'industryCode',
-                        title: '<?php echo $this->translate("industry"); ?>',
+                        field: 'totalAmount',
+                        title: '<?php echo $this->translate("orderPrice"); ?>',
                         formatter: function (value, row) {
                             if (value === undefined || value === '' || value === null) {
                                 value = "-";
                             }
                             var base = new Base64();
-                            var resultEnCode = base.encode(row.toID);
+                            var resultEnCode = base.encode(row.orderID);
                             var href = "/user/sale/view?"+resultEnCode;
 
-                            var result = value;
-                            var data = $.data(dataDict, 'dataDict');
-                            $.each(data, function (key, item) {
-                                if (key === 'ISIC_INDUSTRY_TYPE') {
-                                    $.each(item, function (i, dict) {
-                                        if (dict.code === value) {
-                                            result = dict.name;
-                                        }
-                                    });
-                                }
-                            });
-                            return '<a href="' + href + '">' + result + '</a>';
+                            return '<a href="' + href + '">' + row.buyerCrnCode + " " + value + '</a>';
                         }
                     }, {
-                        field: 'regdCountryCode',
-                        title: '<?php echo $this->translate("regdCountry"); ?>',
+                        field: 'buyerName',
+                        title: '<?php echo $this->translate("buyers"); ?>',
                         formatter: function (value, row) {
                             if (value === undefined || value === '' || value === null) {
                                 value = "-";
                             }
                             var base = new Base64();
-                            var resultEnCode = base.encode(row.toID);
+                            var resultEnCode = base.encode(row.orderID);
                             var href = "/user/sale/view?"+resultEnCode;
 
-                            var result = value;
-                            var data = $.data(dataDict, 'dataDict');
-                            $.each(data, function (key, item) {
-                                if (key === 'COUNTRY_ISO_CODE') {
-                                    $.each(item, function (i, dict) {
-                                        if (dict.code === value) {
-                                            result = dict.name;
-                                        }
-                                    });
-                                }
-                            });
-                            return '<a href="' + href + '">' + result + '</a>';
+                            return '<a href="' + href + '">' + value + '</a>';
+                        }
+                    }, {
+                        field: 'lastUpdate',
+                        title: '<?php echo $this->translate("lastUpdate"); ?>',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "-";
+                            }
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.orderID);
+                            var href = "/user/sale/view?"+resultEnCode;
+
+                            return '<a href="' + href + '">' + new Date(value).format("yyyy-MM-dd hh:mm:ss") + '</a>';
                         }
                     }, {
                         title: '<?php echo $this->translate("madeTT"); ?>',
@@ -293,7 +276,7 @@
                             var acceptTitle = "<?php echo $this->translate('accept');?>";
                             var delTitle = "<?php echo $this->translate('delete');?>";
                             var base = new Base64();
-                            var resultEnCode = base.encode(row.toID);
+                            var resultEnCode = base.encode(row.orderID);
                             var href = "/user/sale/edit?"+resultEnCode;
 
                             var result = '';
@@ -411,6 +394,27 @@
                 $('.badge[data-orderStatus="00"]').html(forReview);
             }
         });
+    }
+
+    Date.prototype.format = function(fmt) {
+        var o = {
+            "M+" : this.getMonth()+1,                 //月份
+            "d+" : this.getDate(),                    //日
+            "h+" : this.getHours(),                   //小时
+            "m+" : this.getMinutes(),                 //分
+            "s+" : this.getSeconds(),                 //秒
+            "q+" : Math.floor((this.getMonth()+3)/3), //季度
+            "S"  : this.getMilliseconds()             //毫秒
+        };
+        if(/(y+)/.test(fmt)) {
+            fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+        }
+        for(var k in o) {
+            if(new RegExp("("+ k +")").test(fmt)){
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+            }
+        }
+        return fmt;
     }
 </script>
 </body>
