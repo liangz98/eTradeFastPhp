@@ -2,6 +2,18 @@ body {
     overflow-y:scroll;
 }
 
+/* 隐藏右侧微调按钮 */
+/* chrome */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button{
+    -webkit-appearance: none!important;
+    margin: 0;
+}
+/* Firefox */
+input[type=number]{
+    -moz-appearance: textfield;
+}
+
 .nav-selected:before {
     position: absolute;
     top: 0;

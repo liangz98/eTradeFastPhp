@@ -5,7 +5,7 @@
 	<title>快移</title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/order/order.css" rel="stylesheet">
-    <link href="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.css" rel="stylesheet">
+    <link href="/ky/bootstrap-select-1.12.4-dist/css/bootstrap-select.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -25,133 +25,297 @@
             </div>
 
             <div class="col-md-9 order-main">
-                <div class="panel panel-default">
-                    <!-- Default panel contents -->
-                    <div class="panel-heading"><?php echo $this->translate('add').$this->translate('orderSALLE');?></div>
-                    <div class="panel-body">
-                        <?php if (!empty($this->resultMsg)): ?>
-                        <div class="alert alert-success alert-dismissible fade in" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <p><?php echo base64_decode($this->resultMsg); ?>!</p>
-                        </div>
-                        <?php endif; ?>
+                <form class="form-horizontal" action="javascript:void(0)" onsubmit="search()" id="search_form">
+                    <input type="hidden" name="accountName" id="accountName">
+                    <input type="hidden" name="crncode" id="crncode">
+                    <input type="hidden" name="comcity" id="comcity">
 
-                        <ul id="optionTabs" class="nav nav-tabs nav-justified">
-                            <li role="presentation" class="active">
-                                <a href="#orderINF01" data-orderStatus="04" aria-controls="forActivate" role="tab" data-toggle="tab"><?php echo $this->translate('orderINF01'); ?></a>
-                            </li>
-                            <li role="presentation">
-                                <a href="#orderINF02" data-orderStatus="01" aria-controls="forActivate" role="tab" data-toggle="tab">
-                                    <?php echo $this->translate('orderINF02'); ?>
-                                </a>
-                            </li>
-                            <li role="presentation">
-                                <a href="#orderINF03" data-orderStatus="02" aria-controls="forActivate" role="tab" data-toggle="tab">
-                                    <?php echo $this->translate('orderINF03'); ?>
-                                </a>
-                            </li>
-                            <li role="presentation">
-                                <a href="#orderINF04" data-orderStatus="00" aria-controls="forActivate" role="tab" data-toggle="tab">
-                                    <?php echo $this->translate('orderINF04'); ?>
-                                </a>
-                            </li>
-                        </ul>
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading"><?php echo $this->translate('orderINF01');?></div>
+                        <div class="panel-body">
+                            <?php if (!empty($this->resultMsg)): ?>
+                            <div class="alert alert-success alert-dismissible fade in" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <p><?php echo base64_decode($this->resultMsg); ?>!</p>
+                            </div>
+                            <?php endif; ?>
 
-                        <div class="tab-content">
-                            <form class="form-horizontal" action="javascript:void(0)" onsubmit="search()" id="search_form">
-                                <input type="hidden" name="accountName" id="accountName">
-                                <input type="hidden" name="crncode" id="crncode">
-                                <input type="hidden" name="comcity" id="comcity">
-
-
-                                <div role="tabpanel" class="tab-pane fade in active" id="orderINF01">
-                                    <div class="form-group">
-                                        <label for="buyerName" class="col-sm-3 control-label"><?php echo $this->translate('buyers'); ?></label>
-                                        <div class="col-sm-8">
-                                            <input type="text" class="form-control" name="buyerName" id="buyerName" placeholder="" value="<?php echo $this->orders['buyerName']; ?>" required >
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="buyerContactName" class="col-sm-3 control-label"><?php echo $this->translate('buyerATTN'); ?></label>
-                                        <div class="col-sm-8">
-                                            <input type="text" class="form-control" name="buyerContactName" id="buyerContactName" placeholder="" value="<?php echo $this->orders['buyerContactName']; ?>" required >
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="buyerCrnCode" class="col-sm-3 control-label"><?php echo $this->translate('payCNY'); ?></label>
-                                        <div class="col-sm-8">
-                                            <select class="selectpicker form-control" name="buyerCrnCode" id="buyerCrnCode" data-live-search="true">
-                                                <?php echo $this->ShowDictionaryList($this->dic_Setting['CURRENCY'], $this->userLangCode, $this->dic_Setting['CURRENCY'], $this->orders['buyerCrnCode']); ?>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="buyerContactName" class="col-sm-3 control-label"><?php echo $this->translate('thisATTN'); ?></label>
-                                        <div class="col-sm-8">
-                                            <input type="text" class="form-control" name="vendorContactName" id="vendorContactName" placeholder="" value="<?php echo $this->orders['vendorContactName']; ?>" required >
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="paymentTerm" class="col-sm-3 control-label"><?php echo $this->translate('remitMD'); ?></label>
-                                        <div class="col-sm-8">
-                                            <select class="selectpicker form-control" name="paymentTerm" id="paymentTerm" data-live-search="true">
-                                                <?php echo $this->ShowDictionaryList($this->dic_Setting['PAYMENT_TERM'], $this->userLangCode, $this->dic_Setting['PAYMENT_TERM'], $this->orders['paymentTerm']); ?>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="paymentPeriod" class="col-sm-3 control-label"><?php echo $this->translate('payDD'); ?></label>
-                                        <div class="col-sm-8">
-                                            <input type="number" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" min="1" step="1" >
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="isSelfSupport" class="col-sm-3 control-label"><?php echo $this->translate('exportMD'); ?></label>
-                                        <div class="col-sm-8">
-                                            <label class="radio-inline">
-                                                <input type="radio" name="isSelfSupport" value="0"> <?php echo $this->translate('siteEX');?>
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio" name="isSelfSupport" value="1"> <?php echo $this->translate('sellersEX');?>
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="buyerOrderRequest" class="col-sm-3 control-label"><?php echo $this->translate('payNeed'); ?></label>
-                                        <div class="col-sm-8">
-                                            <textarea class="form-control" name="buyerOrderRequest" id="buyerOrderRequest" rows="3"><?php echo $this->orders['paymentPeriod']; ?></textarea>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                    <div class="col-sm-offset-3 col-sm-8">
-                                        <a class="btn btn-warning" href="#orderINF02" aria-controls="forActivate" role="tab" data-toggle="tab"><?php echo $this->translate('next'); ?></a>
-                                    </div>
-                                </div>
+                            <div class="form-group">
+                                <label for="buyerName" class="col-sm-2 control-label"><?php echo $this->translate('buyers'); ?></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" name="buyerName" id="buyerName" placeholder="" value="<?php echo $this->orders['buyerName']; ?>" required >
                                 </div>
 
-                                <div role="tabpanel" class="tab-pane fade" id="orderINF02">
-                                    <?php echo $this->translate('orderINF02'); ?>
+                                <label for="buyerContactName" class="col-sm-2 control-label"><?php echo $this->translate('buyerATTN'); ?></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" name="buyerContactName" id="buyerContactName" placeholder="" value="<?php echo $this->orders['buyerContactName']; ?>" required >
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="buyerCrnCode" class="col-sm-2 control-label"><?php echo $this->translate('payCNY'); ?></label>
+                                <div class="col-sm-4">
+                                    <select class="selectpicker form-control" name="buyerCrnCode" id="buyerCrnCode" data-live-search="true">
+                                        <?php echo $this->ShowDictionaryList($this->dic_Setting['CURRENCY'], $this->userLangCode, $this->dic_Setting['CURRENCY'], $this->orders['buyerCrnCode']); ?>
+                                    </select>
                                 </div>
 
-                                <div role="tabpanel" class="tab-pane fade" id="orderINF03">
+                                <label for="buyerContactName" class="col-sm-2 control-label"><?php echo $this->translate('thisATTN'); ?></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" name="vendorContactName" id="vendorContactName" placeholder="" value="<?php echo $this->orders['vendorContactName']; ?>" required >
+                                </div>
+                            </div>
 
+                            <div class="form-group">
+                                <label for="paymentTerm" class="col-sm-2 control-label"><?php echo $this->translate('remitMD'); ?></label>
+                                <div class="col-sm-4">
+                                    <select class="selectpicker form-control" name="paymentTerm" id="paymentTerm" data-live-search="true">
+                                        <?php echo $this->ShowDictionaryList($this->dic_Setting['PAYMENT_TERM'], $this->userLangCode, $this->dic_Setting['PAYMENT_TERM'], $this->orders['paymentTerm']); ?>
+                                    </select>
                                 </div>
 
-                                <div role="tabpanel" class="tab-pane fade" id="orderINF04">
-
+                                <label for="paymentPeriod" class="col-sm-2 control-label"><?php echo $this->translate('payDD'); ?></label>
+                                <div class="col-sm-3">
+                                    <input type="number" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" min="0" step="1" >
                                 </div>
-                            </form>
+                                <div class="col-sm-1">
+                                    <p class="form-control-static">DAYS</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="isSelfSupport" class="col-sm-2 control-label"><?php echo $this->translate('exportMD'); ?></label>
+                                <div class="col-sm-8">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="isSelfSupport" value="0" checked> <?php echo $this->translate('siteEX');?>
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="isSelfSupport" value="1"> <?php echo $this->translate('sellersEX');?>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="buyerOrderRequest" class="col-sm-2 control-label"><?php echo $this->translate('payNeed'); ?></label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" name="buyerOrderRequest" id="buyerOrderRequest" rows="3"><?php echo $this->orders['paymentPeriod']; ?></textarea>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading"><?php echo $this->translate('orderINF02');?></div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label for="quotationMode" class="col-sm-2 control-label"><?php echo $this->translate('payJJ'); ?></label>
+                                <div class="col-sm-8">
+                                    <select class="selectpicker form-control" name="quotationMode" id="quotationMode" data-live-search="true">
+                                        <?php echo $this->ShowDictionaryList($this->dic_Setting['ORDER_QUOTATION_MODE'], $this->userLangCode, $this->dic_Setting['ORDER_QUOTATION_MODE'], $this->orders['quotationMode']); ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="priceTerm" class="col-sm-2 control-label"><?php echo $this->translate('payPrice'); ?></label>
+                                <div class="col-sm-8">
+                                    <select class="selectpicker form-control" name="priceTerm" id="priceTerm" data-live-search="true">
+                                        <?php echo $this->ShowDictionaryList($this->dic_Setting['PRICE_TERM'], $this->userLangCode, $this->dic_Setting['PRICE_TERM'], $this->orders['priceTerm']); ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="packingMode" class="col-sm-2 control-label"><?php echo $this->translate('payCasing'); ?></label>
+                                <div class="col-sm-8">
+                                    <select class="selectpicker form-control" name="packingMode" id="packingMode" data-live-search="true">
+                                        <?php echo $this->ShowDictionaryList($this->dic_Setting['ORDER_PACKING_MODE'], $this->userLangCode, $this->dic_Setting['ORDER_PACKING_MODE'], $this->orders['packingMode']); ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="packingDesc" class="col-sm-2 control-label"><?php echo $this->translate('packINF'); ?></label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" name="packingDesc" id="packingDesc" rows="3"><?php echo $this->orders['packingDesc']; ?></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading"><?php echo $this->translate('orderINF03');?></div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label for="shippingMethod" class="col-sm-2 control-label"><?php echo $this->translate('moveMD'); ?></label>
+                                <div class="col-sm-4">
+                                    <select class="selectpicker form-control" name="shippingMethod" id="shippingMethod" data-live-search="true">
+                                        <?php echo $this->ShowDictionaryList($this->dic_Setting['SHIPPING_METHOD'], $this->userLangCode, $this->dic_Setting['SHIPPING_METHOD'], $this->orders['shippingMethod']); ?>
+                                    </select>
+                                </div>
+
+                                <label for="clearancePlace" class="col-sm-2 control-label"><?php echo $this->translate('POCRC'); ?></label>
+                                <div class="col-sm-4">
+                                    <select class="selectpicker form-control" name="clearancePlace" id="clearancePlace" data-live-search="true">
+                                        <?php echo $this->ShowDictionaryList($this->dic_Setting['EXPORT_POINTS'], $this->userLangCode, $this->dic_Setting['EXPORT_POINTS'], $this->orders['clearancePlace']); ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="loadingPort" class="col-sm-2 control-label"><?php echo $this->translate('portSHIP'); ?></label>
+                                <div class="col-sm-4">
+                                    <select class="selectpicker form-control" name="loadingPort" id="loadingPort" data-live-search="true">
+                                        <option value=""><?php echo $this->translate('et_select'); ?></option>
+                                        <?php echo $this->ShowDictionaryList($this->dic_Setting['SEA_PORT'], $this->userLangCode, $this->dic_Setting['SEA_PORT'], $this->orders['loadingPort']); ?>
+                                    </select>
+                                </div>
+
+                                <label for="dischargePort" class="col-sm-2 control-label"><?php echo $this->translate('portDSCG'); ?></label>
+                                <div class="col-sm-4">
+                                    <select class="selectpicker form-control" name="dischargePort" id="dischargePort" data-live-search="true">
+                                        <option value=""><?php echo $this->translate('et_select'); ?></option>
+                                        <?php echo $this->ShowDictionaryList($this->dic_Setting['SEA_PORT'], $this->userLangCode, $this->dic_Setting['SEA_PORT'], $this->orders['dischargePort']); ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="deliveryPort" class="col-sm-2 control-label"><?php echo $this->translate('portDLVY'); ?></label>
+                                <div class="col-sm-4">
+                                    <select class="selectpicker form-control" name="deliveryPort" id="deliveryPort" data-live-search="true">
+                                        <option value=""><?php echo $this->translate('et_select'); ?></option>
+                                        <?php echo $this->ShowDictionaryList($this->dic_Setting['SEA_PORT'], $this->userLangCode, $this->dic_Setting['SEA_PORT'], $this->orders['deliveryPort']); ?>
+                                    </select>
+                                </div>
+
+                                <label for="deliveryPort" class="col-sm-2 control-label"><?php echo $this->translate('mabyDATE'); ?></label>
+                                <div class="col-sm-4">
+                                    <input type="date" class="form-control" name="deliveryDate" id="deliveryDate" placeholder="" value="<?php echo $this->orders['deliveryDate']; ?>" >
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="shippingServiceType" class="col-sm-2 control-label"><?php echo $this->translate('isFCL'); ?></label>
+                                <div class="col-sm-6">
+                                    <select class="selectpicker form-control" name="shippingServiceType" id="shippingServiceType" data-live-search="true">
+                                        <?php echo $this->ShowDictionaryList($this->dic_Setting['SHIPPING_SERVICE_TYPE'], $this->userLangCode, $this->dic_Setting['SHIPPING_SERVICE_TYPE'], $this->orders['shippingServiceType']); ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sizeQuantityMap_20GP" class="col-sm-2 control-label"><?php echo $this->translate('infoFCL'); ?></label>
+                                <div class="col-sm-1">
+                                    <p class="form-control-static">20GP</p>
+                                </div>
+                                <div class="col-sm-1">
+                                    <input type="number" class="form-control" name="sizeQuantityMap_20GP" id="sizeQuantityMap_20GP" placeholder="" value="<?php echo $this->orders['sizeQuantityMap_20GP']; ?>" min="0" step="1" >
+                                </div>
+                                <div class="col-sm-1">
+                                    <p class="form-control-static">40GP</p>
+                                </div>
+                                <div class="col-sm-1">
+                                    <input type="number" class="form-control" name="sizeQuantityMap_40GP" id="sizeQuantityMap_40GP" placeholder="" value="<?php echo $this->orders['sizeQuantityMap_40GP']; ?>" min="0" step="1" >
+                                </div>
+                                <div class="col-sm-1">
+                                    <p class="form-control-static">40HQ</p>
+                                </div>
+                                <div class="col-sm-1">
+                                    <input type="number" class="form-control" name="sizeQuantityMap_40HP" id="sizeQuantityMap_40HP" placeholder="" value="<?php echo $this->orders['sizeQuantityMap_40HP']; ?>" min="0" step="1" >
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sizeQuantityMap_45HP" class="col-sm-2 control-label"></label>
+                                <div class="col-sm-1">
+                                    <p class="form-control-static">45HQ</p>
+                                </div>
+                                <div class="col-sm-1">
+                                    <input type="number" class="form-control" name="sizeQuantityMap_45HP" id="sizeQuantityMap_45HP" placeholder="" value="<?php echo $this->orders['sizeQuantityMap_45HP']; ?>" min="0" step="1" >
+                                </div>
+                                <div class="col-sm-1">
+                                    <p class="form-control-static">20OT</p>
+                                </div>
+                                <div class="col-sm-1">
+                                    <input type="number" class="form-control" name="sizeQuantityMap_20OT" id="sizeQuantityMap_20OT" placeholder="" value="<?php echo $this->orders['sizeQuantityMap_20OT']; ?>" min="0" step="1" >
+                                </div>
+                                <div class="col-sm-1">
+                                    <p class="form-control-static">40OT</p>
+                                </div>
+                                <div class="col-sm-1">
+                                    <input type="number" class="form-control" name="sizeQuantityMap_40OT" id="sizeQuantityMap_40OT" placeholder="" value="<?php echo $this->orders['sizeQuantityMap_40OT']; ?>" min="0" step="1" >
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="needShipping" class="col-sm-2 control-label"><?php echo $this->translate('logisticSS'); ?></label>
+                                <div class="col-sm-8">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="needShipping" value="1" checked> <?php echo $this->translate('yes');?>
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="needShipping" value="0"> <?php echo $this->translate('no');?>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="shippingRequest" class="col-sm-2 control-label"><?php echo $this->translate('logisticND'); ?></label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" name="shippingRequest" id="shippingRequest" rows="3"><?php echo $this->orders['shippingRequest']; ?></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="isAssignCustomsAgency" class="col-sm-2 control-label"><?php echo $this->translate('selectCHB'); ?></label>
+                                <div class="col-sm-8">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="isAssignCustomsAgency" value="1" checked> <?php echo $this->translate('yes');?>
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="isAssignCustomsAgency" value="0"> <?php echo $this->translate('no');?>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="customsAgencyName" class="col-sm-2 control-label"><?php echo $this->translate('nameCHB'); ?></label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" name="customsAgencyName" id="customsAgencyName" rows="3"><?php echo $this->orders['customsAgencyName']; ?></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="needFinancing" class="col-sm-2 control-label"><?php echo $this->translate('nameSRV'); ?></label>
+                                <div class="col-sm-8">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="needFinancing" value="1" checked> <?php echo $this->translate('yes');?>
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="needFinancing" value="0"> <?php echo $this->translate('no');?>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="financingRequest" class="col-sm-2 control-label"><?php echo $this->translate('needOTH'); ?></label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" name="financingRequest" id="financingRequest" rows="3"><?php echo $this->orders['financingRequest']; ?></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-8">
+                                    <button type="submit" class="btn btn-warning btn-block"><?php echo $this->translate('save'); ?></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
 		</div>
 	</div>
@@ -161,9 +325,7 @@
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
-<script src="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.js"></script>
-<script src="/ky/bootstrap-table-1.12.1-dist/locale/bootstrap-table-zh-CN.min.js"></script>
-<script src="/ky/js/base64.js"></script>
+<script type="text/javascript" src="/ky/bootstrap-select-1.12.4-dist/js/bootstrap-select.min.js"></script>
 
 <script type="text/javascript">
     $().ready(function() {
