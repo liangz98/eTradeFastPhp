@@ -37,10 +37,10 @@ body {
 	width: 100.3%;
 }
 
-.ent-img {
+/*.ent-img {
 	width: 140px !important;
 	padding: 0;
-}
+}*/
 
 div.index-info .col-md-3 {
 	height: 140px;
@@ -69,9 +69,9 @@ div.index-info .col-md-3 {
 	background-color: #f6f6f6;
 }
 
-.index-info .col-md-3:nth-child(2){
+/*.index-info .col-md-3:nth-child(2){
 	width: 30%;
-}
+}*/
 
 div.etf-heading li.selected:before {
 	height: 100%;
