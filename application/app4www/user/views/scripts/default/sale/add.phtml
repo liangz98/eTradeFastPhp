@@ -5,6 +5,7 @@
 	<title>快移</title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/order/order.css" rel="stylesheet">
+    <link href="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.css" rel="stylesheet">
     <link href="/ky/bootstrap-select-1.12.4-dist/css/bootstrap-select.min.css" rel="stylesheet">
 </head>
 <body>
@@ -44,12 +45,24 @@
                             <div class="form-group">
                                 <label for="buyerName" class="col-sm-2 control-label"><?php echo $this->translate('buyers'); ?></label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="buyerName" id="buyerName" placeholder="" value="<?php echo $this->orders['buyerName']; ?>" required >
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="buyerName" id="buyerName" placeholder="" value="<?php echo $this->orders['buyerName']; ?>" required >
+                                        <input type="hidden" name="buyer" id="buyer">
+                                        <div class="input-group-addon">
+                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal"><i class="fas fa-plus"></i></a>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <label for="buyerContactName" class="col-sm-2 control-label"><?php echo $this->translate('buyerATTN'); ?></label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="buyerContactName" id="buyerContactName" placeholder="" value="<?php echo $this->orders['buyerContactName']; ?>" required >
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="buyerContactName" id="buyerContactName" placeholder="" value="<?php echo $this->orders['buyerContactName']; ?>" required >
+                                        <input type="hidden" name="buyerContactID" id="buyerContactID">
+                                        <div class="input-group-addon">
+                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#buyerContactModal"><i class="fas fa-plus"></i></a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -63,7 +76,13 @@
 
                                 <label for="buyerContactName" class="col-sm-2 control-label"><?php echo $this->translate('thisATTN'); ?></label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="vendorContactName" id="vendorContactName" placeholder="" value="<?php echo $this->orders['vendorContactName']; ?>" required >
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="vendorContactName" id="vendorContactName" placeholder="" value="<?php echo $this->dfContactName; ?>" required >
+                                        <input type="hidden" name="vendorContactID" id="vendorContactID" value="<?php echo $this->dfContactID;?>">
+                                        <div class="input-group-addon">
+                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#contactModal"><i class="fas fa-plus"></i></a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -140,6 +159,122 @@
                                 <label for="packingDesc" class="col-sm-2 control-label"><?php echo $this->translate('packINF'); ?></label>
                                 <div class="col-sm-8">
                                     <textarea class="form-control" name="packingDesc" id="packingDesc" rows="3"><?php echo $this->orders['packingDesc']; ?></textarea>
+                                </div>
+                            </div>
+
+                            <div class="page-header">
+                                <h3><?php echo $this->translate('payGoods'); ?></h3>
+                            </div>
+
+                            <div class="alert alert-info alert-dismissible" role="alert">
+                                <a class="selectgoods_a"></a>
+                            </div>
+
+                            <div class="alert alert-info alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <div class="form-group">
+                                    <label for="paymentTerm" class="col-sm-2 control-label"><?php echo $this->translate('productNAME'); ?></label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
+                                    </div>
+
+                                    <label for="paymentPeriod" class="col-sm-2 control-label"><?php echo $this->translate('productENNAME'); ?></label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="paymentTerm" class="col-sm-2 control-label"><?php echo $this->translate('packageTYPE'); ?></label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
+                                    </div>
+
+                                    <label for="paymentPeriod" class="col-sm-2 control-label"><?php echo $this->translate('HSCODE'); ?></label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="paymentTerm" class="col-sm-2 control-label"><?php echo $this->translate('brand'); ?></label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
+                                    </div>
+
+                                    <label for="paymentPeriod" class="col-sm-2 control-label"><?php echo $this->translate('model'); ?></label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="paymentTerm" class="col-sm-2 control-label"><?php echo $this->translate('productMaterial'); ?></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="paymentPeriod" class="col-sm-2 control-label"><?php echo $this->translate('functionUsage'); ?></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="paymentTerm" class="col-sm-2 control-label"><?php echo $this->translate('orderprice'); ?></label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
+                                    </div>
+
+                                    <label for="paymentPeriod" class="col-sm-2 control-label"><?php echo $this->translate('number'); ?></label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="paymentTerm" class="col-sm-2 control-label"><?php echo $this->translate('ordertotal'); ?></label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
+                                    </div>
+
+                                    <label for="paymentPeriod" class="col-sm-2 control-label"><?php echo $this->translate('uiprice'); ?></label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="paymentTerm" class="col-sm-2 control-label"><?php echo $this->translate('uitotal'); ?></label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
+                                    </div>
+
+                                    <label for="paymentPeriod" class="col-sm-2 control-label"><?php echo $this->translate('purchaseUnitPrice'); ?></label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="paymentTerm" class="col-sm-2 control-label"><?php echo $this->translate('quantity'); ?></label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
+                                    </div>
+
+                                    <label for="paymentPeriod" class="col-sm-2 control-label"><?php echo $this->translate('netWeight'); ?></label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="paymentTerm" class="col-sm-2 control-label"><?php echo $this->translate('grossWeight'); ?></label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -321,13 +456,76 @@
 	</div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><?php echo $this->translate('buyers'); ?></h4>
+            </div>
+
+            <div class="modal-body">
+                <table id="buyerListTable"></table>
+            </div>
+
+            <div class="modal-footer">
+<!--                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
+                <button type="button" class="btn btn-primary" id="selectBuyerBtn"><?php echo $this->translate('submit'); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="buyerContactModal" tabindex="-1" role="dialog" aria-labelledby="buyerContactModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><?php echo $this->translate('buyerATTN'); ?></h4>
+            </div>
+
+            <div class="modal-body">
+                <table id="buyerContactListTable"></table>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="selectBuyerContactBtn"><?php echo $this->translate('submit'); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><?php echo $this->translate('thisATTN'); ?></h4>
+            </div>
+
+            <div class="modal-body">
+                <table id="contactListTable"></table>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="selectContactBtn"><?php echo $this->translate('submit'); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
+<script src="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.js"></script>
+<script src="/ky/bootstrap-table-1.12.1-dist/locale/bootstrap-table-zh-CN.min.js"></script>
 <script type="text/javascript" src="/ky/bootstrap-select-1.12.4-dist/js/bootstrap-select.min.js"></script>
 
 <script type="text/javascript">
+    var dataDict = {};
+
     $().ready(function() {
 
 	});
@@ -338,6 +536,302 @@
                 $(this).addClass('nav-selected');
             } else {
                 $(this).removeClass('nav-selected');
+            }
+        });
+
+        var $buyerTable = $("#buyerListTable"),
+            $selectBuyerBtn = $("#selectBuyerBtn"),
+            $buyerModal = $("#myModal"),
+            $buyer = $("#buyer"),
+            $buyerContactModal = $("#buyerContactModal"),
+            $selectBuyerContactBtn = $("#selectBuyerContactBtn"),
+            $buyerContactListTable = $('#buyerContactListTable'),
+            $contactModal = $("#contactModal"),
+            $selectContactBtn = $("#selectContactBtn"),
+            $contactListTable = $('#contactListTable');
+
+        var dataDictQuery = '/user/common/dict-ajax';
+        var dictCode = ["ISIC_INDUSTRY_TYPE", "COUNTRY_ISO_CODE", "PARTNER_STATUS"];
+        $.ajax({
+            type: "POST",
+            url: dataDictQuery,
+            data: {
+                dictCode: dictCode,
+                langCode: '<?php echo $this->userLangCode; ?>'
+            },
+            dataType: "json",
+            success: function (data) {
+                $.data(dataDict, 'dataDict', data);
+
+                $('#buyerListTable').bootstrapTable({
+                    url: '/user/buyer/buyer-list-ajax',
+                    method: 'post',
+                    // showRefresh: true,
+                    // search: true,
+                    pagination: true,
+                    classes: 'table table-no-bordered',
+                    sidePagination: 'server',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    pageNumber: 1,
+                    pageSize: 10,
+                    clickToSelect: true,
+                    queryParams: function(params) {
+                        return {
+                            limit: params.limit,
+                            skip: params.offset,
+                            keyword: params.search,
+                            partnerStatus: $("#partnerStatus").val()
+                        };
+                    },
+                    columns: [{
+                        radio: true
+                    },{
+                        field: 'toName',
+                        title: '<?php echo $this->translate("companyName"); ?>',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "-";
+                            }
+
+                            <?php if ($this->userrgCode == 'CN'): ?>
+
+                            <?php else: ?>
+                            if (row.toEnName !== null && row.toEnName !== '') {
+                                value = row.toEnName;
+                            }
+                            <?php endif; ?>
+                            return value;
+                        }
+                    }, {
+                        field: 'industryCode',
+                        title: '<?php echo $this->translate("industry"); ?>',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "-";
+                            }
+
+                            var result = value;
+                            var data = $.data(dataDict, 'dataDict');
+                            $.each(data, function (key, item) {
+                                if (key === 'ISIC_INDUSTRY_TYPE') {
+                                    $.each(item, function (i, dict) {
+                                        if (dict.code === value) {
+                                            result = dict.name;
+                                        }
+                                    });
+                                }
+                            });
+                            return result;
+                        }
+                    }, {
+                        field: 'regdCountryCode',
+                        title: '<?php echo $this->translate("regdCountry"); ?>',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "-";
+                            }
+
+                            var result = value;
+                            var data = $.data(dataDict, 'dataDict');
+                            $.each(data, function (key, item) {
+                                if (key === 'COUNTRY_ISO_CODE') {
+                                    $.each(item, function (i, dict) {
+                                        if (dict.code === value) {
+                                            result = dict.name;
+                                        }
+                                    });
+                                }
+                            });
+                            return result;
+                        }
+                    }, {
+                        field: 'partnerStatus',
+                        title: '<?php echo $this->translate("state"); ?>',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "-";
+                            }
+
+                            var result = value;
+                            var data = $.data(dataDict, 'dataDict');
+                            $.each(data, function (key, item) {
+                                if (key === 'PARTNER_STATUS') {
+                                    $.each(item, function (i, dict) {
+                                        if (dict.code === value) {
+                                            result = dict.name;
+                                        }
+                                    });
+                                }
+                            });
+                            return result;
+                        }
+                    }]
+                });
+
+                $('#contactListTable').bootstrapTable({
+                    url: '/user/account/contactlistajax',
+                    method: 'post',
+                    // showRefresh: true,
+                    // search: true,
+                    pagination: true,
+                    classes: 'table table-no-bordered',
+                    sidePagination: 'server',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    pageNumber: 1,
+                    pageSize: 10,
+                    clickToSelect: true,
+                    queryParams: function(params) {
+                        return {
+                            limit: params.limit,
+                            skip: params.offset,
+                            keyword: params.search
+                        };
+                    },
+                    columns: [{
+                        radio: true
+                    },{
+                        field: 'name',
+                        title: '<?php echo $this->translate("name"); ?>'
+                    }, {
+                        field: 'ecommloginname',
+                        title: '<?php echo $this->translate("username"); ?>'
+                    }, {
+                        field: 'ecommstatus',
+                        title: '<?php echo $this->translate("userP"); ?>',
+                        formatter: function (value) {
+                            var result = "-";
+                            var data = $.data(dataDict, 'dataDict');
+                            $.each(data, function (key, item) {
+                                if (key === 'ECOMM_STATUS') {
+                                    $.each(item, function (i, dict) {
+                                        if (dict.code === value) {
+                                            result = dict.name;
+                                        }
+                                    });
+                                }
+                            });
+                            return result;
+                        }
+                    }, {
+                        field: 'contactStatus',
+                        title: '<?php echo $this->translate("userPT"); ?>',
+                        formatter: function (value) {
+                            return (value === '01') ? '<?php echo $this->translate('normal') ?>' : '<?php echo $this->translate('disable'); ?>';
+                        }
+                    }, {
+                        field: 'isDefaultPublic',
+                        title: '<?php echo $this->translate("accountDF"); ?>',
+                        formatter: function (value, row) {
+                            return (value === true) ? '<?php echo $this->translate('yes') ?>' : '<?php echo $this->translate('no'); ?>';
+                        }
+                    }]
+                });
+            }
+        });
+
+        $buyerContactListTable.bootstrapTable({
+            url: '/user/buyer/contact-list-ajax',
+            method: 'post',
+            // showRefresh: true,
+            // search: true,
+            pagination: true,
+            classes: 'table table-no-bordered',
+            sidePagination: 'server',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            pageNumber: 1,
+            pageSize: 10,
+            clickToSelect: true,
+            queryParams: function(params) {
+                return {
+                    limit: params.limit,
+                    skip: params.offset,
+                    keyword: params.search,
+                    toID: $("#buyer").val()
+                };
+            },
+            columns: [{
+                radio: true
+            },{
+                field: 'name',
+                title: '<?php echo $this->translate("name"); ?>',
+                formatter: function (value, row) {
+                    if (value === undefined || value === '' || value === null) {
+                        value = "-";
+                    }
+                    return value;
+                }
+            }, {
+                field: 'phone',
+                title: '<?php echo $this->translate("personPhone"); ?>',
+                formatter: function (value, row) {
+                    if (value === undefined || value === '' || value === null) {
+                        value = row.mobilePhone;
+                    }
+                    return value;
+                }
+            }, {
+                field: 'email',
+                title: '<?php echo $this->translate("email"); ?>',
+                formatter: function (value, row) {
+                    if (value === undefined || value === '' || value === null) {
+                        value = "-";
+                    }
+                    return value;
+                }
+            }, {
+                field: 'title',
+                title: '<?php echo $this->translate("position"); ?>',
+                formatter: function (value, row, index) {
+                    return value;
+                }
+            }]
+        });
+
+        $selectBuyerBtn.click(function () {
+            // alert('getSelections: ' + JSON.stringify($buyerTable.bootstrapTable('getSelections')));
+            var selections = $buyerTable.bootstrapTable('getSelections');
+            if (selections.length > 0) {
+                $buyer.val(selections[0].toID);
+                $("#buyerName").val(selections[0].toName);
+                $('#buyerCrnCode').selectpicker('val', selections[0].crnCode);
+
+                $.each(selections[0].contactList, function(i, contact) {
+                    if (contact.isDefaultPublic === true) {
+                        $("#buyerContactID").val(contact.contactID);
+                        $("#buyerContactName").val(contact.name);
+                        return false;
+                    }
+                });
+
+                var options = {
+                    query:{
+                        toID: $buyer.val()
+                    }
+                };
+                $buyerContactListTable.bootstrapTable('refresh', options);
+                $buyerModal.modal('hide');
+            }
+        });
+
+        $selectBuyerContactBtn.click(function () {
+            // alert('getSelections: ' + JSON.stringify($buyerTable.bootstrapTable('getSelections')));
+            console.log(JSON.stringify($buyerContactListTable.bootstrapTable('getSelections')));
+            var selections = $buyerContactListTable.bootstrapTable('getSelections');
+            if (selections.length > 0) {
+                $("#buyerContactID").val(selections[0].contactID);
+                $('#buyerContactName').val(selections[0].name);
+                $buyerContactModal.modal('hide');
+            }
+        });
+
+        $selectContactBtn.click(function () {
+            // alert('getSelections: ' + JSON.stringify($buyerTable.bootstrapTable('getSelections')));
+            console.log(JSON.stringify($contactListTable.bootstrapTable('getSelections')));
+            var selections = $contactListTable.bootstrapTable('getSelections');
+            if (selections.length > 0) {
+                $("#vendorContactID").val(selections[0].contactID);
+                $('#vendorContactName').val(selections[0].name);
+                $contactModal.modal('hide');
             }
         });
 	});
