@@ -48,9 +48,9 @@
                                     <div class="input-group">
                                         <input type="text" class="form-control" name="buyerName" id="buyerName" placeholder="" value="<?php echo $this->orders['buyerName']; ?>" required >
                                         <input type="hidden" name="buyer" id="buyer">
-                                        <div class="input-group-addon">
-                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal"><i class="fas fa-plus"></i></a>
-                                        </div>
+                                        <a class="input-group-addon" href="javascript:void(0)" data-toggle="modal" data-target="#myModal">
+                                            <i class="fas fa-plus"></i>
+                                        </a>
                                     </div>
                                 </div>
 
@@ -59,9 +59,9 @@
                                     <div class="input-group">
                                         <input type="text" class="form-control" name="buyerContactName" id="buyerContactName" placeholder="" value="<?php echo $this->orders['buyerContactName']; ?>" required >
                                         <input type="hidden" name="buyerContactID" id="buyerContactID">
-                                        <div class="input-group-addon">
-                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#buyerContactModal"><i class="fas fa-plus"></i></a>
-                                        </div>
+                                        <a class="input-group-addon" href="javascript:void(0)" data-toggle="modal" data-target="#buyerContactModal">
+                                            <i class="fas fa-plus"></i>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -79,9 +79,9 @@
                                     <div class="input-group">
                                         <input type="text" class="form-control" name="vendorContactName" id="vendorContactName" placeholder="" value="<?php echo $this->dfContactName; ?>" required >
                                         <input type="hidden" name="vendorContactID" id="vendorContactID" value="<?php echo $this->dfContactID;?>">
-                                        <div class="input-group-addon">
-                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#contactModal"><i class="fas fa-plus"></i></a>
-                                        </div>
+                                        <a class="input-group-addon" href="javascript:void(0)" data-toggle="modal" data-target="#contactModal">
+                                            <i class="fas fa-plus"></i>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -166,126 +166,13 @@
                                 <h3><?php echo $this->translate('payGoods'); ?></h3>
                             </div>
 
-                            <div class="alert alert-info alert-dismissible" role="alert">
-                                <p class="text-center" style="cursor: pointer">
-                                    <i class="fas fa-plus"></i> 点击选择商品
-                                </p>
-                            </div>
+                            <div class="orderItemDiv"></div>
 
-                            <div class="form-group">
+                            <div class="form-group selectOrderItem">
                                 <div class="col-sm-12">
-                                    <button type="button" class="btn btn-default btn-lg btn-block">
-                                        <i class="fas fa-plus"></i> 点击选择商品
+                                    <button type="button" class="btn btn-default btn-lg btn-block" data-toggle="modal" data-target="#orderItemModal">
+                                        <i class="fas fa-plus"></i> <?php echo $this->translate('shopADD'); ?>
                                     </button>
-                                </div>
-                            </div>
-
-
-                            <div class="alert alert-info alert-dismissible" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <div class="form-group">
-                                    <label for="paymentTerm" class="col-sm-2 control-label"><?php echo $this->translate('productNAME'); ?></label>
-                                    <div class="col-sm-3">
-                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
-                                    </div>
-
-                                    <label for="paymentPeriod" class="col-sm-2 control-label"><?php echo $this->translate('productENNAME'); ?></label>
-                                    <div class="col-sm-4">
-                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="paymentTerm" class="col-sm-2 control-label"><?php echo $this->translate('packageTYPE'); ?></label>
-                                    <div class="col-sm-3">
-                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
-                                    </div>
-
-                                    <label for="paymentPeriod" class="col-sm-2 control-label"><?php echo $this->translate('HSCODE'); ?></label>
-                                    <div class="col-sm-4">
-                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="paymentTerm" class="col-sm-2 control-label"><?php echo $this->translate('brand'); ?></label>
-                                    <div class="col-sm-3">
-                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
-                                    </div>
-
-                                    <label for="paymentPeriod" class="col-sm-2 control-label"><?php echo $this->translate('model'); ?></label>
-                                    <div class="col-sm-4">
-                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="paymentTerm" class="col-sm-2 control-label"><?php echo $this->translate('productMaterial'); ?></label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="paymentPeriod" class="col-sm-2 control-label"><?php echo $this->translate('functionUsage'); ?></label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="paymentTerm" class="col-sm-2 control-label"><?php echo $this->translate('orderprice'); ?></label>
-                                    <div class="col-sm-3">
-                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
-                                    </div>
-
-                                    <label for="paymentPeriod" class="col-sm-2 control-label"><?php echo $this->translate('number'); ?></label>
-                                    <div class="col-sm-4">
-                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="paymentTerm" class="col-sm-2 control-label"><?php echo $this->translate('ordertotal'); ?></label>
-                                    <div class="col-sm-3">
-                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
-                                    </div>
-
-                                    <label for="paymentPeriod" class="col-sm-2 control-label"><?php echo $this->translate('uiprice'); ?></label>
-                                    <div class="col-sm-4">
-                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="paymentTerm" class="col-sm-2 control-label"><?php echo $this->translate('uitotal'); ?></label>
-                                    <div class="col-sm-3">
-                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
-                                    </div>
-
-                                    <label for="paymentPeriod" class="col-sm-2 control-label"><?php echo $this->translate('purchaseUnitPrice'); ?></label>
-                                    <div class="col-sm-4">
-                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="paymentTerm" class="col-sm-2 control-label"><?php echo $this->translate('quantity'); ?></label>
-                                    <div class="col-sm-3">
-                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
-                                    </div>
-
-                                    <label for="paymentPeriod" class="col-sm-2 control-label"><?php echo $this->translate('netWeight'); ?></label>
-                                    <div class="col-sm-4">
-                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="paymentTerm" class="col-sm-2 control-label"><?php echo $this->translate('grossWeight'); ?></label>
-                                    <div class="col-sm-3">
-                                        <input type="text" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" >
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -526,6 +413,25 @@
     </div>
 </div>
 
+<div class="modal fade" id="orderItemModal" tabindex="-1" role="dialog" aria-labelledby="orderItemModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><?php echo $this->translate('goodsME'); ?></h4>
+            </div>
+
+            <div class="modal-body">
+                <table id="orderItemListTable"></table>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="selectOrderItemBtn"><?php echo $this->translate('confirm'); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
@@ -559,10 +465,14 @@
             $buyerContactListTable = $('#buyerContactListTable'),
             $contactModal = $("#contactModal"),
             $selectContactBtn = $("#selectContactBtn"),
-            $contactListTable = $('#contactListTable');
+            $contactListTable = $('#contactListTable'),
+            $orderItemModal = $("#orderItemModal"),
+            $selectOrderItemBtn = $("#selectOrderItemBtn"),
+            $orderItemListTable = $('#orderItemListTable'),
+            $orderItemDiv = $(".orderItemDiv");
 
         var dataDictQuery = '/user/common/dict-ajax';
-        var dictCode = ["ISIC_INDUSTRY_TYPE", "COUNTRY_ISO_CODE", "PARTNER_STATUS"];
+        var dictCode = ["ISIC_INDUSTRY_TYPE", "COUNTRY_ISO_CODE", "PARTNER_STATUS", "PRODUCT_PRICING_UNIT"];
         $.ajax({
             type: "POST",
             url: dataDictQuery,
@@ -798,6 +708,70 @@
             }]
         });
 
+        $orderItemListTable.bootstrapTable({
+            url: '/user/goods/goods-list-ajax',
+            method: 'post',
+            // showRefresh: true,
+            // search: true,
+            pagination: true,
+            classes: 'table table-no-bordered',
+            sidePagination: 'server',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            pageNumber: 1,
+            pageSize: 10,
+            clickToSelect: true,
+            queryParams: function(params) {
+                return {
+                    limit: params.limit,
+                    skip: params.offset,
+                    keyword: params.search,
+                    productStatus: $("#productStatus").val()
+                };
+            },
+            columns: [{
+                checkbox: true
+            },{
+                field: 'productName',
+                title: '<?php echo $this->translate("productNAME"); ?>'
+            }, {
+                field: 'productBrand',
+                title: '<?php echo $this->translate("brand"); ?>',
+                formatter: function (value, row) {
+                    if (value === undefined || value === '' || value === null) {
+                        value = "-";
+                    }
+                    return value;
+                }
+            }, {
+                field: 'productModel',
+                title: '<?php echo $this->translate("model"); ?>',
+                formatter: function (value, row) {
+                    if (value === undefined || value === '' || value === null) {
+                        value = "-";
+                    }
+                    return value;
+                }
+            }, {
+                field: 'hscode',
+                title: '<?php echo $this->translate("HSCODE"); ?>',
+                formatter: function (value, row) {
+                    if (value === undefined || value === '' || value === null) {
+                        value = "-";
+                    }
+                    return value;
+                }
+            }, {
+                field: 'rebateRate',
+                title: '<?php echo $this->translate("rebateRate"); ?>',
+                formatter: function (value, row) {
+                    if (value === undefined || value === '' || value === null) {
+                        value = "-";
+                    }
+                    return value;
+                }
+            }]
+        });
+
         $selectBuyerBtn.click(function () {
             // alert('getSelections: ' + JSON.stringify($buyerTable.bootstrapTable('getSelections')));
             var selections = $buyerTable.bootstrapTable('getSelections');
@@ -826,7 +800,6 @@
 
         $selectBuyerContactBtn.click(function () {
             // alert('getSelections: ' + JSON.stringify($buyerTable.bootstrapTable('getSelections')));
-            console.log(JSON.stringify($buyerContactListTable.bootstrapTable('getSelections')));
             var selections = $buyerContactListTable.bootstrapTable('getSelections');
             if (selections.length > 0) {
                 $("#buyerContactID").val(selections[0].contactID);
@@ -837,13 +810,178 @@
 
         $selectContactBtn.click(function () {
             // alert('getSelections: ' + JSON.stringify($buyerTable.bootstrapTable('getSelections')));
-            console.log(JSON.stringify($contactListTable.bootstrapTable('getSelections')));
             var selections = $contactListTable.bootstrapTable('getSelections');
             if (selections.length > 0) {
                 $("#vendorContactID").val(selections[0].contactID);
                 $('#vendorContactName').val(selections[0].name);
                 $contactModal.modal('hide');
             }
+        });
+
+        $selectOrderItemBtn.click(function () {
+            // alert('getSelections: ' + JSON.stringify($buyerTable.bootstrapTable('getSelections')));
+            console.log(JSON.stringify($orderItemListTable.bootstrapTable('getSelections')));
+            var selections = $orderItemListTable.bootstrapTable('getSelections');
+                // $selectOrderItem
+            $orderItemDiv.html("");
+            $.each(selections, function (index, item) {
+                var data = $.data(dataDict, 'dataDict');
+                var productPricingUnit = "";
+                $.each(data, function (key, dictItem) {
+                    if (key === 'PRODUCT_PRICING_UNIT') {
+                        $.each(dictItem, function (i, dict) {
+                            if (dict.code === item.pricingUnit) {
+                                productPricingUnit = dict.name;
+                            }
+                        });
+                    }
+                });
+
+                var content = '<div class="alert alert-info alert-dismissible" role="alert">' +
+                    '   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                    '   <div class="form-group">' +
+                    '       <label for="" class="col-sm-2 control-label"><?php echo $this->translate("productNAME"); ?></label>' +
+                    '       <div class="col-sm-3">' +
+                    '           <p class="form-control-static">' + item.productName + '</p>' +
+                    '           <input type="hidden" name="productName[]" value="' + item.productName + '">' +
+                    '           <input type="hidden" name="productID[]" value="' + item.productID + '">' +
+                    '           <input type="hidden" name="itemID[]" value="' + item.itemID + '">' +
+                    '       </div>' +
+
+                    '       <label for="productEnName" class="col-sm-2 control-label"><?php echo $this->translate("productENNAME"); ?></label>' +
+                    '       <div class="col-sm-3">' +
+                    '           <input type="text" class="form-control" name="productEnName[]" id="productEnName" value="' + item.productEnName + '">' +
+                    '       </div>' +
+                    '   </div>' +
+
+                    '   <div class="form-group">' +
+                    '       <label for="packingType" class="col-sm-2 control-label"><?php echo $this->translate("packageTYPE"); ?></label>' +
+                    '       <div class="col-sm-3">' +
+                    '           <select class="selectpicker form-control" name="packingType[]" id="packingType_' + item.productID + '" data-live-search="true">' +
+                    '               <?php echo $this->ShowDictionaryList($this->dic_Setting["PRODUCT_PACKING_TYPE"], $this->userLangCode, $this->dic_Setting["PRODUCT_PACKING_TYPE"], $this->orders['packingType']); ?>' +
+                    '           </select>' +
+                    '       </div>' +
+
+                    '       <label for="hscode" class="col-sm-2 control-label"><?php echo $this->translate("HSCODE"); ?></label>' +
+                    '       <div class="col-sm-3">' +
+                    '           <p class="form-control-static">' + item.hscode + '</p>' +
+                    '           <input type="hidden" name="hscode[]" id="hscode" value="' + item.hscode + '">' +
+                    '       </div>' +
+                    '   </div>' +
+
+                    '   <div class="form-group">' +
+                    '       <label for="brand" class="col-sm-2 control-label"><?php echo $this->translate("brand"); ?></label>' +
+                    '       <div class="col-sm-3">' +
+                    '           <input type="text" class="form-control" name="productBrand[]" id="productBrand" value="' + item.productBrand + '">' +
+                    '       </div>' +
+
+                    '       <label for="model" class="col-sm-2 control-label"><?php echo $this->translate("model"); ?></label>' +
+                    '       <div class="col-sm-3">' +
+                    '           <input type="text" class="form-control" name="productModel[]" id="productModel" value="' + item.productModel + '">' +
+                    '           <input type="hidden" name="productionMode[]" value="' + item.productionMode + '">' +
+                    '           <input type="hidden" name="supplierID[]" value="' + item.supplierID + '">' +
+                    '       </div>' +
+                    '   </div>' +
+
+                    '   <div class="form-group">' +
+                    '       <label for="productMaterial" class="col-sm-2 control-label"><?php echo $this->translate("productMaterial"); ?></label>' +
+                    '       <div class="col-sm-8">' +
+                    '           <input type="text" class="form-control" name="productMaterial[]" id="productMaterial" value="' + item.productMaterial + '">' +
+                    '       </div>' +
+                    '   </div>' +
+
+                    '   <div class="form-group">' +
+                    '       <label for="functionUsage" class="col-sm-2 control-label"><?php echo $this->translate("functionUsage"); ?></label>' +
+                    '       <div class="col-sm-8">' +
+                    '           <input type="text" class="form-control" name="functionUsage[]" id="functionUsage" value="' + item.functionUsage + '">' +
+                    '       </div>' +
+                    '   </div>' +
+
+                    '   <div class="form-group">' +
+                    '       <label for="unitPrice" class="col-sm-2 control-label"><?php echo $this->translate("orderprice"); ?></label>' +
+                    '       <div class="col-sm-1">' +
+                    '           <p class="form-control-static">' + $("#buyerCrnCode").val() + '</p>' +
+                    '       </div>' +
+                    '       <div class="col-sm-2">' +
+                    '           <input type="text" class="form-control" name="unitPrice[]" id="unitPrice_' + item.productID + '" value="' + (item.unitPrice === undefined ? 0 : item.unitPrice) + '">' +
+                    '       </div>' +
+
+                    '       <label for="model" class="col-sm-2 control-label"><?php echo $this->translate("number"); ?></label>' +
+                    '       <div class="col-sm-2">' +
+                    '           <input type="text" class="form-control" name="quantity[]" id="quantity" value="' + (item.quantity === undefined ? 1 : item.quantity) + '">' +
+                    '           <input type="hidden" name="pricingUnit[]" value="' + item.pricingUnit + '">' +
+                    '       </div>' +
+                    '       <div class="col-sm-1">' +
+                    '           <p class="form-control-static">' + productPricingUnit + '</p>' +
+                    '       </div>' +
+                    '   </div>' +
+
+                    '   <div class="form-group">' +
+                    '       <label for="totalPrice" class="col-sm-2 control-label"><?php echo $this->translate("ordertotal"); ?></label>' +
+                    '       <div class="col-sm-1">' +
+                    '           <p class="form-control-static">' + $("#buyerCrnCode").val() + '</p>' +
+                    '       </div>' +
+                    '       <div class="col-sm-2">' +
+                    '           <input type="text" class="form-control" name="totalPrice[]" id="totalPrice" value="' + (item.unitPrice === undefined ? 0 : item.unitPrice) + '">' +
+                    '       </div>' +
+
+                    '       <label for="totalPackage" class="col-sm-2 control-label"><?php echo $this->translate("quantity"); ?></label>' +
+                    '       <div class="col-sm-3">' +
+                    '           <input type="text" class="form-control" name="totalPackage[]" id="totalPackage" value="' + (item.packingQuantity <= 0 ? 1 : item.packingQuantity) + '">' +
+                    '           <input type="hidden" name="packingQuantity_' + item.productID + '" value="' + item.packingQuantity + '">' +
+                    '       </div>' +
+                    '   </div>' +
+
+                    '   <div class="form-group">' +
+                    '       <label for="totalNetWeight" class="col-sm-2 control-label"><?php echo $this->translate("netWeight"); ?></label>' +
+                    '       <div class="col-sm-2">' +
+                    '           <input type="text" class="form-control" name="totalNetWeight[]" id="totalNetWeight" value="' + (item.netWeight === undefined ? 0 : item.netWeight) + '">' +
+                    '       </div>' +
+                    '       <div class="col-sm-1">' +
+                    '           <p class="form-control-static">KGS</p>' +
+                    '       </div>' +
+
+                    '       <label for="totalGrossWeight" class="col-sm-2 control-label"><?php echo $this->translate("grossWeight"); ?></label>' +
+                    '       <div class="col-sm-2">' +
+                    '           <input type="text" class="form-control" name="totalGrossWeight[]" id="totalGrossWeight" value="' + (item.grossWeight === undefined ? 0 : item.grossWeight) + '">' +
+                    '       </div>' +
+                    '       <div class="col-sm-1">' +
+                    '           <p class="form-control-static">KGS</p>' +
+                    '       </div>' +
+                    '   </div>';
+
+                if (item.productionMode === '02') {
+                    content += '   <div class="form-group">' +
+                        '       <label for="PurUnitPrice" class="col-sm-2 control-label"><?php echo $this->translate("purchaseUnitPrice"); ?></label>' +
+                        '       <div class="col-sm-1">' +
+                        '           <p class="form-control-static">' + item.purchaseCrnCode + '</p>' +
+                        '       </div>' +
+                        '       <div class="col-sm-2">' +
+                        '           <input type="text" class="form-control" name="PurUnitPrice[]" id="PurUnitPrice" value="' + (item.purchaseUnitPrice === undefined ? 0 : item.purchaseUnitPrice) + '">' +
+                        '       </div>' +
+
+                        '       <label for="totalPurPrice" class="col-sm-2 control-label"><?php echo $this->translate("purtotal"); ?></label>' +
+                        '       <div class="col-sm-1">' +
+                        '           <p class="form-control-static">' + item.purchaseCrnCode + '</p>' +
+                        '       </div>' +
+                        '       <div class="col-sm-2">' +
+                        '           <input type="text" class="form-control" name="totalPurPrice[]" id="totalPurPrice" value="' + (item.purchaseUnitPrice === undefined ? 0 : item.purchaseUnitPrice) + '">' +
+                        '       </div>' +
+                        '   </div>';
+                }
+
+                content += '</div>' +
+                    '';
+
+                $orderItemDiv.append(content);
+
+                $packingType = $("#packingType_" + item.productID);
+                $packingType.val(item.packingType);
+                $packingType.selectpicker('render');
+            });
+
+            $orderItemModal.modal('hide');
+            // $("select[name='packingType[]']").selectpicker('render');
         });
 	});
 </script>
