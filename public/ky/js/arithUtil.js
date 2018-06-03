@@ -109,26 +109,26 @@ function arithDiv(arg1, arg2) {
  * @param scale
  * @returns
  */
-function arithRound(arg, scale){
+function arithRound(arg, scale) {
     return Math.round(arg * Math.pow(10, scale)) / Math.pow(10, scale);
 }
 
 Number.prototype.add = function (arg) {
     return arithAdd(this, arg);
-}
+};
 
 Number.prototype.sub = function (arg) {
     return arithSub(this, arg);
-}
+};
 
 Number.prototype.mul = function (arg) {
     return arithMul(this, arg);
-}
+};
 
 Number.prototype.div = function (arg) {
     return arithDiv(this, arg);
-}
+};
 
 Number.prototype.round=function(scale) {
     return arithRound(this, scale);
-}
+};

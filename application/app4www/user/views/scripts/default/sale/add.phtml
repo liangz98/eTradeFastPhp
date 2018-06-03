@@ -838,6 +838,7 @@
                 });
 
                 var content = '<div class="alert alert-info alert-dismissible" role="alert">' +
+                    '   <input type="hidden" name="productSize" value="' + item.productSize + '">' +
                     '   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
                     '   <div class="form-group">' +
                     '       <label for="" class="col-sm-2 control-label"><?php echo $this->translate("productNAME"); ?></label>' +
@@ -908,7 +909,7 @@
 
                     '       <label for="model" class="col-sm-2 control-label"><?php echo $this->translate("number"); ?></label>' +
                     '       <div class="col-sm-2">' +
-                    '           <input type="text" class="form-control" name="quantity[]" id="quantity" value="' + (item.quantity === undefined ? 1 : item.quantity) + '">' +
+                    '           <input type="text" class="form-control" name="quantity[]" id="quantity_' + item.productID + '" data-itemid="' + item.productID + '" value="' + (item.quantity === undefined ? 1 : item.quantity) + '">' +
                     '           <input type="hidden" name="pricingUnit[]" value="' + item.pricingUnit + '">' +
                     '       </div>' +
                     '       <div class="col-sm-1">' +
@@ -927,7 +928,7 @@
 
                     '       <label for="totalPackage" class="col-sm-2 control-label"><?php echo $this->translate("quantity"); ?></label>' +
                     '       <div class="col-sm-3">' +
-                    '           <input type="text" class="form-control" name="totalPackage[]" id="totalPackage" value="' + (item.packingQuantity <= 0 ? 1 : item.packingQuantity) + '">' +
+                    '           <input type="text" class="form-control" name="totalPackage[]" id="totalPackage_' + item.productID + '" data-itemid="' + item.productID + '" value="' + (item.packingQuantity <= 0 ? 1 : item.packingQuantity) + '">' +
                     '           <input type="hidden" name="packingQuantity_' + item.productID + '" value="' + item.packingQuantity + '">' +
                     '       </div>' +
                     '   </div>' +
@@ -978,6 +979,14 @@
                 $packingType = $("#packingType_" + item.productID);
                 $packingType.val(item.packingType);
                 $packingType.selectpicker('render');
+
+                $("input[name='quantity[]']").keyup(function () {
+                    var itemID = $(this).attr("data-itemid");
+                    var quantity = $(this).val();
+                    if ($.isNumeric(quantity)) {
+
+                    }
+                });
             });
 
             $orderItemModal.modal('hide');
