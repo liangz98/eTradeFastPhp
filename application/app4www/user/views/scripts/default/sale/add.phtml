@@ -904,12 +904,12 @@
                     '           <p class="form-control-static">' + $("#buyerCrnCode").val() + '</p>' +
                     '       </div>' +
                     '       <div class="col-sm-2">' +
-                    '           <input type="text" class="form-control" name="unitPrice[]" id="unitPrice_' + item.productID + '" value="' + (item.unitPrice === undefined ? 0 : item.unitPrice) + '">' +
+                    '           <input type="text" class="form-control" name="unitPrice[]" id="unitPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="unitPrice" value="' + (item.unitPrice === undefined ? 0 : item.unitPrice) + '">' +
                     '       </div>' +
 
                     '       <label for="model" class="col-sm-2 control-label"><?php echo $this->translate("number"); ?></label>' +
                     '       <div class="col-sm-2">' +
-                    '           <input type="text" class="form-control" name="quantity[]" id="quantity_' + item.productID + '" data-itemid="' + item.productID + '" value="' + (item.quantity === undefined ? 1 : item.quantity) + '">' +
+                    '           <input type="text" class="form-control" name="quantity[]" id="quantity_' + item.productID + '" data-productID="' + item.productID + '" data-type="quantity" value="' + (item.quantity === undefined ? 1 : item.quantity) + '">' +
                     '           <input type="hidden" name="pricingUnit[]" value="' + item.pricingUnit + '">' +
                     '       </div>' +
                     '       <div class="col-sm-1">' +
@@ -923,12 +923,12 @@
                     '           <p class="form-control-static">' + $("#buyerCrnCode").val() + '</p>' +
                     '       </div>' +
                     '       <div class="col-sm-2">' +
-                    '           <input type="text" class="form-control" name="totalPrice[]" id="totalPrice" value="' + (item.unitPrice === undefined ? 0 : item.unitPrice) + '">' +
+                    '           <input type="text" class="form-control" name="totalPrice[]" id="totalPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="totalPrice" value="' + (item.unitPrice === undefined ? 0 : item.unitPrice) + '">' +
                     '       </div>' +
 
                     '       <label for="totalPackage" class="col-sm-2 control-label"><?php echo $this->translate("quantity"); ?></label>' +
                     '       <div class="col-sm-3">' +
-                    '           <input type="text" class="form-control" name="totalPackage[]" id="totalPackage_' + item.productID + '" data-itemid="' + item.productID + '" value="' + (item.packingQuantity <= 0 ? 1 : item.packingQuantity) + '">' +
+                    '           <input type="text" class="form-control" name="totalPackage[]" id="totalPackage_' + item.productID + '" data-productID="' + item.productID + '" value="' + (item.packingQuantity <= 0 ? 1 : item.packingQuantity) + '">' +
                     '           <input type="hidden" name="packingQuantity_' + item.productID + '" value="' + item.packingQuantity + '">' +
                     '       </div>' +
                     '   </div>' +
@@ -958,7 +958,7 @@
                         '           <p class="form-control-static">' + item.purchaseCrnCode + '</p>' +
                         '       </div>' +
                         '       <div class="col-sm-2">' +
-                        '           <input type="text" class="form-control" name="PurUnitPrice[]" id="PurUnitPrice" value="' + (item.purchaseUnitPrice === undefined ? 0 : item.purchaseUnitPrice) + '">' +
+                        '           <input type="text" class="form-control" name="PurUnitPrice[]" id="purchaseUnitPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="purchaseUnitPrice" value="' + (item.purchaseUnitPrice === undefined ? 0 : item.purchaseUnitPrice) + '">' +
                         '       </div>' +
 
                         '       <label for="totalPurPrice" class="col-sm-2 control-label"><?php echo $this->translate("purtotal"); ?></label>' +
@@ -966,25 +966,56 @@
                         '           <p class="form-control-static">' + item.purchaseCrnCode + '</p>' +
                         '       </div>' +
                         '       <div class="col-sm-2">' +
-                        '           <input type="text" class="form-control" name="totalPurPrice[]" id="totalPurPrice" value="' + (item.purchaseUnitPrice === undefined ? 0 : item.purchaseUnitPrice) + '">' +
+                        '           <input type="text" class="form-control" name="totalPurPrice[]" id="totalPurPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="totalPurPrice" value="' + (item.purchaseUnitPrice === undefined ? 0 : item.purchaseUnitPrice) + '">' +
                         '       </div>' +
                         '   </div>';
                 }
-
                 content += '</div>' +
                     '';
 
                 $orderItemDiv.append(content);
 
-                $packingType = $("#packingType_" + item.productID);
+                // 更新包装类型默认选中项
+                var $packingType = $("#packingType_" + item.productID);
                 $packingType.val(item.packingType);
                 $packingType.selectpicker('render');
 
-                $("input[name='quantity[]']").keyup(function () {
-                    var itemID = $(this).attr("data-itemid");
-                    var quantity = $(this).val();
-                    if ($.isNumeric(quantity)) {
+                $("input[name='quantity[]'], input[name='unitPrice[]'], input[name='totalPrice[]'], input[name='PurUnitPrice[]'], input[name='totalPurPrice[]']").keyup(function () {
+                    var productID = $(this).attr("data-productID"),     // ID
+                        $quantity = $("#quantity_" + productID),        // 数量
+                        $unitPrice = $("#unitPrice_" + productID),      // 价格
+                        $totalPrice = $("#totalPrice_" + productID),    // 金额
+                        $purchaseUnitPrice = $("#purchaseUnitPrice_" + productID),      // 采购价格
+                        $totalPurPrice = $("#totalPurPrice_" + productID);              // 采购金额
 
+                    if ($quantity.val() !== "" && !$.isNumeric($quantity.val())) {
+                        alert("数量必须是数值");
+                        return false;
+                    }
+                    if ($unitPrice.val() !== "" && !$.isNumeric($unitPrice.val())) {
+                        alert("价格必须是数值");
+                        return false;
+                    }
+                    if ($totalPrice.val() !== "" && !$.isNumeric($totalPrice.val())) {
+                        alert("金额必须是数值");
+                        return false;
+                    }
+
+                    var dataType = $(this).attr("data-type");
+                    if (dataType === "totalPrice") {
+                        // 计算价格
+                        $unitPrice.val(arithRound(arithDiv($totalPrice.val(), $quantity.val()), 2));
+                    } else if (dataType === "totalPurPrice") {
+                        // 计算采购价格
+                        $purchaseUnitPrice.val(arithRound(arithDiv($totalPurPrice.val(), $quantity.val()), 2));
+                    } else {
+                        console.log($purchaseUnitPrice.length);
+                        // 计算金额
+                        $totalPrice.val(arithRound(arithMul($unitPrice.val(), $quantity.val()), 2));
+                        // 计算采购价格
+                        if ($purchaseUnitPrice !== undefined && $purchaseUnitPrice.length > 0 && $totalPurPrice !== undefined && $totalPurPrice.length > 0) {
+                            $totalPurPrice.val(arithRound(arithMul($purchaseUnitPrice.val(), $quantity.val()), 2));
+                        }
                     }
                 });
             });
