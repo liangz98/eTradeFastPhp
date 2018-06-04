@@ -251,10 +251,11 @@ class Kyapi_Controller_Action extends Zend_Controller_Action{
             $this->view->userID = $userID = $_SESSION['rev_session']['userID'];
             $this->view->accountID = $accountID = $_SESSION['rev_session']['accountID'];
             $this->view->accountName = $accountName = $_SESSION['rev_session']['accountName'];
-            $this->view->accountStatus = $accountName = $_SESSION['rev_session']['accountStatus'];
-            $this->view->crnCode = $accountName = $_SESSION['rev_session']['crnCode'];
+            $this->view->accountStatus = $accountStatus = $_SESSION['rev_session']['accountStatus'];
+            $this->view->crnCode = $crnCode = $_SESSION['rev_session']['crnCode'];
+            $this->view->regdCountryCode = $regdCountryCode = $_SESSION['rev_session']['regdCountryCode'];
             $this->view->userLoginName = $userLoginName = $_SESSION['rev_session']['userName'];
-            $this->view->isPersonAccount = $userLoginName = $_SESSION['rev_session']['isPersonAccount'];
+            $this->view->isPersonAccount = $isPersonAccount = $_SESSION['rev_session']['isPersonAccount'];
             $this->view->ecommloginname = $ecommloginname = $_SESSION['rev_session']['userLoginName'];
             $this->view->userRole = $userRole = $_SESSION['rev_session']['ecommrole'];
             $this->view->submenus = $_SESSION['rev_session']['menus'];//会员中心左侧菜单

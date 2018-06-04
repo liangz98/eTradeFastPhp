@@ -96,7 +96,7 @@
 
                                 <label for="paymentPeriod" class="col-sm-2 control-label"><?php echo $this->translate('payDD'); ?></label>
                                 <div class="col-sm-3">
-                                    <input type="number" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="<?php echo $this->orders['paymentPeriod']; ?>" min="0" step="1" >
+                                    <input type="number" class="form-control" name="paymentPeriod" id="paymentPeriod" placeholder="" value="0" min="0" step="1" >
                                 </div>
                                 <div class="col-sm-1">
                                     <p class="form-control-static">DAYS</p>
@@ -116,9 +116,9 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="buyerOrderRequest" class="col-sm-2 control-label"><?php echo $this->translate('payNeed'); ?></label>
+                                <label for="vendorOrderRequest" class="col-sm-2 control-label"><?php echo $this->translate('payNeed'); ?></label>
                                 <div class="col-sm-8">
-                                    <textarea class="form-control" name="buyerOrderRequest" id="buyerOrderRequest" rows="3"><?php echo $this->orders['paymentPeriod']; ?></textarea>
+                                    <textarea class="form-control" name="vendorOrderRequest" id="vendorOrderRequest" rows="3"><?php echo $this->orders['vendorOrderRequest']; ?></textarea>
                                 </div>
                             </div>
                         </div>
@@ -774,6 +774,7 @@
 
         $selectBuyerBtn.click(function () {
             // alert('getSelections: ' + JSON.stringify($buyerTable.bootstrapTable('getSelections')));
+            console.log(JSON.stringify($buyerTable.bootstrapTable('getSelections')));
             var selections = $buyerTable.bootstrapTable('getSelections');
             if (selections.length > 0) {
                 $buyer.val(selections[0].toID);
@@ -822,9 +823,12 @@
             // alert('getSelections: ' + JSON.stringify($buyerTable.bootstrapTable('getSelections')));
             console.log(JSON.stringify($orderItemListTable.bootstrapTable('getSelections')));
             var selections = $orderItemListTable.bootstrapTable('getSelections');
-                // $selectOrderItem
-            $orderItemDiv.html("");
             $.each(selections, function (index, item) {
+                var $productDiv = $("div[id='" + item.productID + "']");
+                if ($productDiv.length > 0) {
+                    return true;
+                }
+
                 var data = $.data(dataDict, 'dataDict');
                 var productPricingUnit = "";
                 $.each(data, function (key, dictItem) {
@@ -837,7 +841,7 @@
                     }
                 });
 
-                var content = '<div class="alert alert-info alert-dismissible" role="alert">' +
+                var content = '<div class="alert alert-info alert-dismissible" role="alert" id="' + item.productID + '">' +
                     '   <input type="hidden" name="productSize" value="' + item.productSize + '">' +
                     '   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
                     '   <div class="form-group">' +

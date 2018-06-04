@@ -281,7 +281,7 @@ class SaleController extends Kyapi_Controller_Action
                 $_order->buyerContactID = $this->_request->getParam("buyerContactID");
                 $_order->buyerContactName = $this->_request->getParam("buyerContactName");
 
-                $_order->vendorOrderRequest = $this->_request->getParam("buyerOrderRequest");// 订单要求(2选1)
+                $_order->vendorOrderRequest = $this->_request->getParam("vendorOrderRequest");// 订单要求(2选1)
                 $_order->packingMode = $this->_request->getParam("packingMode");// 包装方式
                 $_order->packingDesc = $this->_request->getParam("packingDesc");// 包装描述
                 $_order->paymentPeriod = (int)$this->_request->getParam("paymentPeriod");// 付款期限

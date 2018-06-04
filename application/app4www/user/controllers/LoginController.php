@@ -56,6 +56,7 @@ class LoginController extends Kyapi_Controller_Action {
             $userDetail['accountName'] = $existData['account']['accountName'];//公司名称
             $userDetail['accountStatus'] = $existData['account']['accountStatus'];//公司状态
             $userDetail['crnCode'] = $existData['account']['crnCode'];  //公司默认货币
+            $userDetail['regdCountryCode'] = $existData['account']['regdCountryCode'];  //公司国籍
             $userDetail['user_name'] = $existData['name'];
             $userDetail['ecommloginname'] = $existData['ecommloginname'];//登陆名
             $userDetail['isPersonAccount'] = $existData['isPersonAccount']; // 是否个人用户
@@ -140,6 +141,7 @@ class LoginController extends Kyapi_Controller_Action {
                 'accountName'       => $userDetail['accountName'],
                 'accountStatus'     => $userDetail['accountStatus'],
                 'crnCode'           => $userDetail['crnCode'],
+                'regdCountryCode'   => $userDetail['regdCountryCode'],
                 'userName'          => $userDetail['user_name'],
                 'userLoginName'     => $userDetail['ecommloginname'],
                 'isPersonAccount'   => $userDetail['isPersonAccount'],
@@ -196,6 +198,7 @@ class LoginController extends Kyapi_Controller_Action {
             $userDetail['accountName'] = $existData['account']['accountName'];//公司名称
             $userDetail['accountStatus'] = $existData['account']['accountStatus'];//公司状态
             $userDetail['crnCode'] = $existData['account']['crnCode'];  //公司默认货币
+            $userDetail['regdCountryCode'] = $existData['account']['regdCountryCode'];  //公司国籍
             $userDetail['user_name'] = $existData['name'];
             $userDetail['ecommloginname'] = $existData['ecommloginname'];//登陆名
             $userDetail['isPersonAccount'] = $existData['isPersonAccount']; // 是否个人用户
@@ -286,6 +289,7 @@ class LoginController extends Kyapi_Controller_Action {
                 'accountName'       => $userDetail['accountName'],
                 'accountStatus'     => $userDetail['accountStatus'],
                 'crnCode'           => $userDetail['crnCode'],
+                'regdCountryCode'   => $userDetail['regdCountryCode'],
                 'userName'          => $userDetail['user_name'],
                 'userLoginName'     => $userDetail['ecommloginname'],
                 'isPersonAccount'   => $userDetail['isPersonAccount'],
