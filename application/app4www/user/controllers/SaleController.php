@@ -315,9 +315,9 @@ class SaleController extends Kyapi_Controller_Action
                     $_order->financingRequest = $this->_request->getParam("financingRequest");// 融资服务要求
                 }
                 /*报关行模块开始*/
-                $comcity = $this->_request->getParam("comcity");
+                $regdCountryCode = $this->_request->getParam("regdCountryCode");
                 $buyercity = $this->_request->getParam("buyercity");
-                if ($comcity == $buyercity && $comcity == "CN") {
+                if ($regdCountryCode == $buyercity && $regdCountryCode == "CN") {
                     $_order->isAssignCustomsAgency = false;
                     $_order->customsAgencyName = null;// 报关行名称
                     $_order->customsAgencyCode = null;// 报关行代码
@@ -590,9 +590,9 @@ class SaleController extends Kyapi_Controller_Action
                     $_order->financingRequest = $this->_request->getParam("financingRequest");// 融资服务要求
                 }
                 /*报关行模块开始*/
-                $comcity = $this->_request->getParam("comcity");
+                $regdCountryCode = $this->_request->getParam("regdCountryCode");
                 $buyercity = $this->_request->getParam("buyercity");
-                if ($comcity == $buyercity && $comcity == "CN") {
+                if ($regdCountryCode == $buyercity && $regdCountryCode == "CN") {
                     $_order->isAssignCustomsAgency = false;
                     $_order->customsAgencyName = null;// 报关行名称
                     $_order->customsAgencyCode = null;// 报关行代码

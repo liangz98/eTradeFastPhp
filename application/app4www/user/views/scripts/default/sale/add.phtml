@@ -29,7 +29,7 @@
                 <form class="form-horizontal" action="javascript:void(0)" onsubmit="search()" id="search_form">
                     <input type="hidden" name="accountName" id="accountName">
                     <input type="hidden" name="crncode" id="crncode">
-                    <input type="hidden" name="comcity" id="comcity">
+                    <input type="hidden" name="regdCountryCode" id="regdCountryCode" value="<?php echo $this->regdCountryCode; ?>">
 
                     <div class="panel panel-default">
                         <!-- Default panel contents -->
@@ -48,6 +48,7 @@
                                     <div class="input-group">
                                         <input type="text" class="form-control" name="buyerName" id="buyerName" placeholder="" value="<?php echo $this->orders['buyerName']; ?>" required >
                                         <input type="hidden" name="buyer" id="buyer">
+                                        <input type="hidden" name="buyerRegdCountryCode" id="buyerRegdCountryCode">
                                         <a class="input-group-addon" href="javascript:void(0)" data-toggle="modal" data-target="#myModal">
                                             <i class="fas fa-plus"></i>
                                         </a>
@@ -103,7 +104,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group isSelfSupport">
                                 <label for="isSelfSupport" class="col-sm-2 control-label"><?php echo $this->translate('exportMD'); ?></label>
                                 <div class="col-sm-8">
                                     <label class="radio-inline">
@@ -775,11 +776,16 @@
         $selectBuyerBtn.click(function () {
             // alert('getSelections: ' + JSON.stringify($buyerTable.bootstrapTable('getSelections')));
             console.log(JSON.stringify($buyerTable.bootstrapTable('getSelections')));
-            var selections = $buyerTable.bootstrapTable('getSelections');
+            var selections = $buyerTable.bootstrapTable('getSelections'),
+                $regdCountryCode = $("#regdCountryCode"),
+                $buyerRegdCountryCode = $("#buyerRegdCountryCode"),
+                $buyerCrnCode = $('#buyerCrnCode');
+
             if (selections.length > 0) {
                 $buyer.val(selections[0].toID);
                 $("#buyerName").val(selections[0].toName);
-                $('#buyerCrnCode').selectpicker('val', selections[0].crnCode);
+                $buyerCrnCode.selectpicker('val', selections[0].crnCode);
+                $buyerRegdCountryCode.val(selections[0].regdCountryCode);
 
                 $.each(selections[0].contactList, function(i, contact) {
                     if (contact.isDefaultPublic === true) {
@@ -796,6 +802,46 @@
                 };
                 $buyerContactListTable.bootstrapTable('refresh', options);
                 $buyerModal.modal('hide');
+
+                // 国籍相同隐藏出口方式
+                if ($regdCountryCode.val() === $buyerRegdCountryCode.val()) {
+                    $(".isSelfSupport").hide();
+                } else {
+                    $(".isSelfSupport").show();
+                }
+
+                // 更新价格货币
+                var $unitPriceCrnCode = $(".unitPriceCrnCode");
+                console.log($unitPriceCrnCode.length);
+                $.each($unitPriceCrnCode, function () {
+                    if ($buyerCrnCode.val() !== $(this).html()) {
+                        // 取汇率重新计算
+                        var exchangeRate = '/user/common/exchange-rate-ajax';
+                        $.ajax({
+                            type: "POST",
+                            url: exchangeRate,
+                            data: {
+                                baseCrn: $(this).html(),
+                                contraCrn: $buyerCrnCode.val()
+                            },
+                            dataType: "json",
+                            success: function (data) {
+                                console.log(data);
+                                // 更新货币
+                                $(this).html($buyerCrnCode.val());
+                            }
+                        });
+                    }
+                });
+
+                // 更新金额货币
+                var $totalPriceCrnCode = $(".totalPriceCrnCode");
+                $.each($totalPriceCrnCode, function () {
+                    if ($buyerCrnCode.val() !== $(this).html()) {
+                        // 更新货币
+                        $(this).html($buyerCrnCode.val());
+                    }
+                });
             }
         });
 
@@ -905,7 +951,7 @@
                     '   <div class="form-group">' +
                     '       <label for="unitPrice" class="col-sm-2 control-label"><?php echo $this->translate("orderprice"); ?></label>' +
                     '       <div class="col-sm-1">' +
-                    '           <p class="form-control-static">' + $("#buyerCrnCode").val() + '</p>' +
+                    '           <p class="form-control-static unitPriceCrnCode" data-productID="' + item.productID + '">' + $("#buyerCrnCode").val() + '</p>' +
                     '       </div>' +
                     '       <div class="col-sm-2">' +
                     '           <input type="text" class="form-control" name="unitPrice[]" id="unitPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="unitPrice" value="' + (item.unitPrice === undefined ? 0 : item.unitPrice) + '">' +
@@ -924,7 +970,7 @@
                     '   <div class="form-group">' +
                     '       <label for="totalPrice" class="col-sm-2 control-label"><?php echo $this->translate("ordertotal"); ?></label>' +
                     '       <div class="col-sm-1">' +
-                    '           <p class="form-control-static">' + $("#buyerCrnCode").val() + '</p>' +
+                    '           <p class="form-control-static totalPriceCrnCode">' + $("#buyerCrnCode").val() + '</p>' +
                     '       </div>' +
                     '       <div class="col-sm-2">' +
                     '           <input type="text" class="form-control" name="totalPrice[]" id="totalPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="totalPrice" value="' + (item.unitPrice === undefined ? 0 : item.unitPrice) + '">' +

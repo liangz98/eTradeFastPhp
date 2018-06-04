@@ -123,4 +123,29 @@ class CommonController extends Kyapi_Controller_Action {
         echo json_encode($msg);
         exit;
     }
+
+    public function exchangeRateAjaxAction() {
+        $bizType = $this->_request->getParam('bizType');
+        if (empty($bizType)) {
+            $bizType = null;
+        }
+        $bizID = $this->_request->getParam('bizID');
+        if (empty($bizID)) {
+            $bizID = null;
+        }
+        $baseCrn = $this->_request->getParam('baseCrn');
+        if (empty($baseCrn)) {
+            $baseCrn = 'USD';
+        }
+        $contraCrn = $this->_request->getParam('contraCrn');
+        if (empty($contraCrn)) {
+            $contraCrn = 'CNY';
+        }
+
+        $resultObject = $this->json->getExchangeRateApi($this->_requestObject, $bizType, $bizID, $baseCrn, $contraCrn);
+        $msg = json_decode($resultObject)->result;
+
+        echo json_encode($msg);
+        exit;
+    }
 }
