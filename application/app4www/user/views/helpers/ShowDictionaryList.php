@@ -18,7 +18,7 @@
 //            $dic=$dall;
 //            return $dic;
 //        }
-        
+
         $str=array();
         foreach($dic as $key=>$value){
             if($value['baseLangList']){
@@ -43,24 +43,24 @@
         }
         $dclist="";
         foreach($str as $k=>$v){
-            if(!empty($t)){
-            if($t==$v['code']){
-                $dclist.= '<option selected="selected" value='.$v['code'].'>'.$v['name'].'</option>';
-            }else{
-                $dclist.= '<option value='.$v['code'].'>'.$v['name'].'</option>';
-            }
-            }
-            else{
-                if($lang_code=="zh_CN"){
-                if($v['code']=="CN"){
-                    $dclist.= '<option selected="selected" value='.$v['code'].'>'.$v['name'].'</option>';
-                }else{
-                    $dclist.= '<option value='.$v['code'].'>'.$v['name'].'</option>';
-                }}else{
-                    if($v['code']=="US"){
-                        $dclist.= '<option selected="selected" value='.$v['code'].'>'.$v['name'].'</option>';
-                    }else{
-                        $dclist.= '<option value='.$v['code'].'>'.$v['name'].'</option>';
+            if (!empty($t)) {
+                if ($t == $v['code']) {
+                    $dclist .= '<option selected="selected" value=' . $v['code'] . '>' . $v['name'] . '</option>';
+                } else {
+                    $dclist .= '<option value=' . $v['code'] . '>' . $v['name'] . '</option>';
+                }
+            } else {
+                if ($lang_code == "zh_CN") {
+                    if ($v['code'] == "CN") {
+                        $dclist .= '<option selected="selected" value=' . $v['code'] . '>' . $v['name'] . '</option>';
+                    } else {
+                        $dclist .= '<option value=' . $v['code'] . '>' . $v['name'] . '</option>';
+                    }
+                } else {
+                    if ($v['code'] == "US") {
+                        $dclist .= '<option selected="selected" value=' . $v['code'] . '>' . $v['name'] . '</option>';
+                    } else {
+                        $dclist .= '<option value=' . $v['code'] . '>' . $v['name'] . '</option>';
                     }
                 }
 

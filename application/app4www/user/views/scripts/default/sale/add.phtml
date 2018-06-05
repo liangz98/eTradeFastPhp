@@ -191,43 +191,43 @@
                                     </select>
                                 </div>
 
-                                <label for="clearancePlace" class="col-sm-2 control-label"><?php echo $this->translate('POCRC'); ?></label>
-                                <div class="col-sm-4">
+                                <label for="clearancePlace" class="col-sm-2 control-label clearancePlace"><?php echo $this->translate('POCRC'); ?></label>
+                                <div class="col-sm-4 clearancePlace">
                                     <select class="selectpicker form-control" name="clearancePlace" id="clearancePlace" data-live-search="true">
                                         <?php echo $this->ShowDictionaryList($this->dic_Setting['EXPORT_POINTS'], $this->userLangCode, $this->dic_Setting['EXPORT_POINTS'], $this->orders['clearancePlace']); ?>
                                     </select>
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group seaPort">
                                 <label for="loadingPort" class="col-sm-2 control-label"><?php echo $this->translate('portSHIP'); ?></label>
                                 <div class="col-sm-4">
-                                    <select class="selectpicker form-control" name="loadingPort" id="loadingPort" data-live-search="true">
+                                    <select class="selectpicker form-control seaPortSelect" name="loadingPort" id="loadingPort" data-live-search="true" data-dict-code="SEA_PORT">
                                         <option value=""><?php echo $this->translate('et_select'); ?></option>
-                                        <?php echo $this->ShowDictionaryList($this->dic_Setting['SEA_PORT'], $this->userLangCode, $this->dic_Setting['SEA_PORT'], $this->orders['loadingPort']); ?>
                                     </select>
                                 </div>
 
                                 <label for="dischargePort" class="col-sm-2 control-label"><?php echo $this->translate('portDSCG'); ?></label>
                                 <div class="col-sm-4">
-                                    <select class="selectpicker form-control" name="dischargePort" id="dischargePort" data-live-search="true">
+                                    <select class="selectpicker form-control seaPortSelect" name="dischargePort" id="dischargePort" data-live-search="true" data-dict-code="SEA_PORT">
                                         <option value=""><?php echo $this->translate('et_select'); ?></option>
-                                        <?php echo $this->ShowDictionaryList($this->dic_Setting['SEA_PORT'], $this->userLangCode, $this->dic_Setting['SEA_PORT'], $this->orders['dischargePort']); ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group seaPort">
+                                <label for="deliveryPort" class="col-sm-2 control-label"><?php echo $this->translate('portDLVY'); ?></label>
+                                <div class="col-sm-4">
+                                    <select class="selectpicker form-control seaPortSelect" name="deliveryPort" id="deliveryPort" data-live-search="true" data-dict-code="SEA_PORT">
+                                        <option value=""><?php echo $this->translate('et_select'); ?></option>
+                                        <?php echo $this->ShowDictionaryList($this->dic_Setting['SEA_PORT'], $this->userLangCode, $this->dic_Setting['SEA_PORT'], $this->orders['deliveryPort']); ?>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="deliveryPort" class="col-sm-2 control-label"><?php echo $this->translate('portDLVY'); ?></label>
-                                <div class="col-sm-4">
-                                    <select class="selectpicker form-control" name="deliveryPort" id="deliveryPort" data-live-search="true">
-                                        <option value=""><?php echo $this->translate('et_select'); ?></option>
-                                        <?php echo $this->ShowDictionaryList($this->dic_Setting['SEA_PORT'], $this->userLangCode, $this->dic_Setting['SEA_PORT'], $this->orders['deliveryPort']); ?>
-                                    </select>
-                                </div>
-
-                                <label for="deliveryPort" class="col-sm-2 control-label"><?php echo $this->translate('mabyDATE'); ?></label>
-                                <div class="col-sm-4">
+                                <label for="shippingServiceType" class="col-sm-2 control-label"><?php echo $this->translate('mabyDATE'); ?></label>
+                                <div class="col-sm-6">
                                     <input type="date" class="form-control" name="deliveryDate" id="deliveryDate" placeholder="" value="<?php echo $this->orders['deliveryDate']; ?>" >
                                 </div>
                             </div>
@@ -297,14 +297,14 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group shippingRequest">
                                 <label for="shippingRequest" class="col-sm-2 control-label"><?php echo $this->translate('logisticND'); ?></label>
                                 <div class="col-sm-8">
                                     <textarea class="form-control" name="shippingRequest" id="shippingRequest" rows="3"><?php echo $this->orders['shippingRequest']; ?></textarea>
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group agency">
                                 <label for="isAssignCustomsAgency" class="col-sm-2 control-label"><?php echo $this->translate('selectCHB'); ?></label>
                                 <div class="col-sm-8">
                                     <label class="radio-inline">
@@ -316,10 +316,20 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group agency agencyInfo">
                                 <label for="customsAgencyName" class="col-sm-2 control-label"><?php echo $this->translate('nameCHB'); ?></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" name="customsAgencyName" id="customsAgencyName" value="" placeholder="<?php echo $this->translate('whoCHB'); ?>">
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" name="customsAgencyCode" id="customsAgencyCode" value="" placeholder="<?php echo $this->translate('codeCHB'); ?>">
+                                </div>
+                            </div>
+
+                            <div class="form-group agency">
+                                <label for="customClearanceRequest" class="col-sm-2 control-label"><?php echo $this->translate('needCHB'); ?></label>
                                 <div class="col-sm-8">
-                                    <textarea class="form-control" name="customsAgencyName" id="customsAgencyName" rows="3"><?php echo $this->orders['customsAgencyName']; ?></textarea>
+                                    <textarea class="form-control" name="customClearanceRequest" id="customClearanceRequest" rows="3"><?php echo $this->orders['customClearanceRequest']; ?></textarea>
                                 </div>
                             </div>
 
@@ -335,7 +345,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group financingRequest">
                                 <label for="financingRequest" class="col-sm-2 control-label"><?php echo $this->translate('needOTH'); ?></label>
                                 <div class="col-sm-8">
                                     <textarea class="form-control" name="financingRequest" id="financingRequest" rows="3"><?php echo $this->orders['financingRequest']; ?></textarea>
@@ -461,10 +471,13 @@
             $selectBuyerBtn = $("#selectBuyerBtn"),
             $buyerModal = $("#myModal"),
             $buyer = $("#buyer"),
+            $buyerCrnCode = $('#buyerCrnCode'),
             $buyerContactModal = $("#buyerContactModal"),
             $selectBuyerContactBtn = $("#selectBuyerContactBtn"),
             $buyerContactListTable = $('#buyerContactListTable'),
+            $quotationMode = $("#quotationMode"),
             $contactModal = $("#contactModal"),
+            $shippingMethod = $("#shippingMethod"),
             $selectContactBtn = $("#selectContactBtn"),
             $contactListTable = $('#contactListTable'),
             $orderItemModal = $("#orderItemModal"),
@@ -778,8 +791,7 @@
             console.log(JSON.stringify($buyerTable.bootstrapTable('getSelections')));
             var selections = $buyerTable.bootstrapTable('getSelections'),
                 $regdCountryCode = $("#regdCountryCode"),
-                $buyerRegdCountryCode = $("#buyerRegdCountryCode"),
-                $buyerCrnCode = $('#buyerCrnCode');
+                $buyerRegdCountryCode = $("#buyerRegdCountryCode");
 
             if (selections.length > 0) {
                 $buyer.val(selections[0].toID);
@@ -803,46 +815,129 @@
                 $buyerContactListTable.bootstrapTable('refresh', options);
                 $buyerModal.modal('hide');
 
-                // 国籍相同隐藏出口方式
+                // 国籍相同隐藏出口方式, 报关口岸, 报关行
                 if ($regdCountryCode.val() === $buyerRegdCountryCode.val()) {
                     $(".isSelfSupport").hide();
+                    $(".clearancePlace").hide();
+                    $(".agency").hide();
                 } else {
                     $(".isSelfSupport").show();
+                    $(".clearancePlace").show();
+                    $(".agency").show();
                 }
 
-                // 更新价格货币
-                var $unitPriceCrnCode = $(".unitPriceCrnCode");
-                console.log($unitPriceCrnCode.length);
-                $.each($unitPriceCrnCode, function () {
-                    if ($buyerCrnCode.val() !== $(this).html()) {
-                        // 取汇率重新计算
-                        var exchangeRate = '/user/common/exchange-rate-ajax';
-                        $.ajax({
-                            type: "POST",
-                            url: exchangeRate,
-                            data: {
-                                baseCrn: $(this).html(),
-                                contraCrn: $buyerCrnCode.val()
-                            },
-                            dataType: "json",
-                            success: function (data) {
-                                console.log(data);
-                                // 更新货币
-                                $(this).html($buyerCrnCode.val());
-                            }
-                        });
-                    }
-                });
-
-                // 更新金额货币
-                var $totalPriceCrnCode = $(".totalPriceCrnCode");
-                $.each($totalPriceCrnCode, function () {
-                    if ($buyerCrnCode.val() !== $(this).html()) {
-                        // 更新货币
-                        $(this).html($buyerCrnCode.val());
-                    }
-                });
+                // 更新商品货币
+                updateCrnCode($buyerCrnCode.val());
             }
+        });
+
+        // 订单货币
+        $buyerCrnCode.on('changed.bs.select', function(e, clickedIndex, newValue, oldValue) {
+            // console.log(this.value, clickedIndex, newValue, oldValue)
+            updateCrnCode(this.value);
+        });
+
+        // 计价方式
+        $quotationMode.on('changed.bs.select', function(e, clickedIndex, newValue, oldValue) {
+            // console.log(this.value, clickedIndex, newValue, oldValue)
+            var $products = $("div[data-type='product']"),
+                quotationMode = this.value;
+            $.each($products, function (i, product) {
+                var productID = $(product).attr("id"),
+                    purchaseCrnCode = $("#purchaseCrnCode_" + productID).val(),
+                    purchaseUnitPrice = $("#purchaseUnitPrice_"  + productID).val(),
+                    productionMode = $("#productionMode_" + productID).val(),
+                    $purchaseUnitPrice = $(product).find(".purchaseUnitPrice"),
+                    $purtotal = $(product).find(".purtotal"),
+                    $unitPrice = $("#unitPrice_" + productID);
+
+                console.log(productionMode);
+                console.log(productID);
+                if (quotationMode === 'PO') {   // PO/PI, 删除
+                    if (productionMode === '02') {
+                        $purchaseUnitPrice.html('<?php echo $this->translate("purchaseUnitPrice"); ?>');
+                        $purtotal.html('<?php echo $this->translate("purtotal"); ?>');
+                    } else {
+                        var $quotationModeIV = $(product).find(".quotationModeIV");
+                        $quotationModeIV.remove();
+                    }
+                    $unitPrice.removeAttr("readonly");
+                } else if (quotationMode === 'IV') {    // 开票, 增加
+                    if ($purchaseUnitPrice.length > 0) { // 存在则修改名称
+                        $purchaseUnitPrice.html('<?php echo $this->translate("uiprice"); ?>');
+                        $purtotal.html('<?php echo $this->translate("uitotal"); ?>');
+                    } else {
+                        var content = '   <div class="form-group quotationModeIV">' +
+                            '       <label for="PurUnitPrice" class="col-sm-2 control-label purchaseUnitPrice"><?php echo $this->translate("uiprice"); ?></label>' +
+                            '       <div class="col-sm-1">' +
+                            '           <p class="form-control-static">' + purchaseCrnCode + '</p>' +
+                            '       </div>' +
+                            '       <div class="col-sm-2">' +
+                            '           <input type="text" class="form-control" name="PurUnitPrice[]" id="purchaseUnitPrice_' + productID + '" data-productID="' + productID + '" data-type="purchaseUnitPrice" value="' + purchaseUnitPrice + '">' +
+                            '       </div>' +
+
+                            '       <label for="totalPurPrice" class="col-sm-2 control-label purtotal"><?php echo $this->translate("uitotal"); ?></label>' +
+                            '       <div class="col-sm-1">' +
+                            '           <p class="form-control-static">' + purchaseCrnCode + '</p>' +
+                            '       </div>' +
+                            '       <div class="col-sm-2">' +
+                            '           <input type="text" class="form-control" name="totalPurPrice[]" id="totalPurPrice_' + productID + '" data-productID="' + productID + '" data-type="totalPurPrice" value="' + purchaseUnitPrice + '">' +
+                            '       </div>' +
+                            '   </div>';
+                        $(product).append(content);
+                    }
+                    $unitPrice.attr("readonly", "true");
+                }
+            });
+        });
+
+        var loadingPortSelect = $("#loadingPort");
+        // 运输方式
+        $shippingMethod.on('changed.bs.select', function(e, clickedIndex, newValue, oldValue) {
+            // console.log(this.value, clickedIndex, newValue, oldValue)
+            if (this.value === 'SEA') {
+                $(loadingPortSelect).attr("data-dict-code", "SEA_PORT")
+            } else if (this.value === 'AIR') {
+                $(loadingPortSelect).attr("data-dict-code", "AIR_PORT")
+            } else if (this.value === 'EXPRESS' || this.value === 'LAND') {
+                $(loadingPortSelect).attr("data-dict-code", "CITY_ISO_CODE")
+            }
+        });
+
+        $(loadingPortSelect).on('shown.bs.select', function (e) {
+            $(loadingPortSelect).prev().find("input").keyup(function (event) {
+                var e = event || window.event || arguments.callee.caller.arguments[0];
+                if (e && e.keyCode !== 38 && e.keyCode !== 40) { // 按 Up Down
+                    $(loadingPortSelect).prev().find("input").attr('id', "loadingPortInput"); //为input增加id属性
+                    var loadingPortInput = $("#loadingPortInput");
+                    var keyword = $(loadingPortInput).val();
+                    var hscodeQuery = '/user/common/dict-fuzzy-query-ajax';
+                    $.ajax({
+                        type: "POST",
+                        url: hscodeQuery,
+                        data: {
+                            dictCode: $(loadingPortSelect).attr("data-dict-code"),
+                            langCode: '<?php echo $this->userLangCode; ?>',
+                            keyword: keyword
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            var optionString = "";
+                            if (data.length <= 0) {
+                                optionString += "<option value=''><?php echo $this->translate('et_select'); ?></option>";
+                            }
+                            $.each(data, function (i, item) {
+                                // console.log(item);
+                                optionString += "<option value='" + item.id + "'>" + item.name + "</option>";
+                            });
+
+                            $(loadingPortSelect).html("");
+                            $(loadingPortSelect).append(optionString);
+                            $(loadingPortSelect).selectpicker('refresh');
+                        }
+                    });
+                }
+            })
         });
 
         $selectBuyerContactBtn.click(function () {
@@ -887,7 +982,7 @@
                     }
                 });
 
-                var content = '<div class="alert alert-info alert-dismissible" role="alert" id="' + item.productID + '">' +
+                var content = '<div class="alert alert-info alert-dismissible" role="alert" id="' + item.productID + '" data-type="product">' +
                     '   <input type="hidden" name="productSize" value="' + item.productSize + '">' +
                     '   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
                     '   <div class="form-group">' +
@@ -897,6 +992,8 @@
                     '           <input type="hidden" name="productName[]" value="' + item.productName + '">' +
                     '           <input type="hidden" name="productID[]" value="' + item.productID + '">' +
                     '           <input type="hidden" name="itemID[]" value="' + item.itemID + '">' +
+                    '           <input type="hidden" name="purchaseCrnCode[]" id="purchaseCrnCode_' + item.productID + '" value="' + item.purchaseCrnCode + '">' +
+                    '           <input type="hidden" name="purchaseUnitPrice[]" id="purchaseUnitPrice_' + item.productID + '" value="' + (item.purchaseUnitPrice === undefined ? 0 : item.purchaseUnitPrice) + '">' +
                     '       </div>' +
 
                     '       <label for="productEnName" class="col-sm-2 control-label"><?php echo $this->translate("productENNAME"); ?></label>' +
@@ -923,14 +1020,14 @@
                     '   <div class="form-group">' +
                     '       <label for="brand" class="col-sm-2 control-label"><?php echo $this->translate("brand"); ?></label>' +
                     '       <div class="col-sm-3">' +
-                    '           <input type="text" class="form-control" name="productBrand[]" id="productBrand" value="' + item.productBrand + '">' +
+                    '           <input type="text" class="form-control" name="productBrand[]" id="productBrand_' + item.productID + '" value="' + item.productBrand + '">' +
                     '       </div>' +
 
                     '       <label for="model" class="col-sm-2 control-label"><?php echo $this->translate("model"); ?></label>' +
                     '       <div class="col-sm-3">' +
-                    '           <input type="text" class="form-control" name="productModel[]" id="productModel" value="' + item.productModel + '">' +
-                    '           <input type="hidden" name="productionMode[]" value="' + item.productionMode + '">' +
-                    '           <input type="hidden" name="supplierID[]" value="' + item.supplierID + '">' +
+                    '           <input type="text" class="form-control" name="productModel[]" id="productModel_' + item.productID + '" value="' + item.productModel + '">' +
+                    '           <input type="hidden" name="productionMode[]" id="productionMode_' + item.productID + '" value="' + item.productionMode + '">' +
+                    '           <input type="hidden" name="supplierID[]" id="supplierID_' + item.productID + '" value="' + item.supplierID + '">' +
                     '       </div>' +
                     '   </div>' +
 
@@ -951,7 +1048,7 @@
                     '   <div class="form-group">' +
                     '       <label for="unitPrice" class="col-sm-2 control-label"><?php echo $this->translate("orderprice"); ?></label>' +
                     '       <div class="col-sm-1">' +
-                    '           <p class="form-control-static unitPriceCrnCode" data-productID="' + item.productID + '">' + $("#buyerCrnCode").val() + '</p>' +
+                    '           <p class="form-control-static unitPriceCrnCode" data-productID="' + item.productID + '">' + item.crnCode + '</p>' +
                     '       </div>' +
                     '       <div class="col-sm-2">' +
                     '           <input type="text" class="form-control" name="unitPrice[]" id="unitPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="unitPrice" value="' + (item.unitPrice === undefined ? 0 : item.unitPrice) + '">' +
@@ -970,7 +1067,7 @@
                     '   <div class="form-group">' +
                     '       <label for="totalPrice" class="col-sm-2 control-label"><?php echo $this->translate("ordertotal"); ?></label>' +
                     '       <div class="col-sm-1">' +
-                    '           <p class="form-control-static totalPriceCrnCode">' + $("#buyerCrnCode").val() + '</p>' +
+                    '           <p class="form-control-static totalPriceCrnCode">' + item.crnCode + '</p>' +
                     '       </div>' +
                     '       <div class="col-sm-2">' +
                     '           <input type="text" class="form-control" name="totalPrice[]" id="totalPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="totalPrice" value="' + (item.unitPrice === undefined ? 0 : item.unitPrice) + '">' +
@@ -1001,9 +1098,9 @@
                     '       </div>' +
                     '   </div>';
 
-                if (item.productionMode === '02') {
-                    content += '   <div class="form-group">' +
-                        '       <label for="PurUnitPrice" class="col-sm-2 control-label"><?php echo $this->translate("purchaseUnitPrice"); ?></label>' +
+                if ($("#quotationMode").val() === 'IV') {
+                    content += '   <div class="form-group quotationModeIV">' +
+                        '       <label for="PurUnitPrice" class="col-sm-2 control-label purchaseUnitPrice"><?php echo $this->translate("uiprice"); ?></label>' +
                         '       <div class="col-sm-1">' +
                         '           <p class="form-control-static">' + item.purchaseCrnCode + '</p>' +
                         '       </div>' +
@@ -1011,7 +1108,25 @@
                         '           <input type="text" class="form-control" name="PurUnitPrice[]" id="purchaseUnitPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="purchaseUnitPrice" value="' + (item.purchaseUnitPrice === undefined ? 0 : item.purchaseUnitPrice) + '">' +
                         '       </div>' +
 
-                        '       <label for="totalPurPrice" class="col-sm-2 control-label"><?php echo $this->translate("purtotal"); ?></label>' +
+                        '       <label for="totalPurPrice" class="col-sm-2 control-label purtotal"><?php echo $this->translate("uitotal"); ?></label>' +
+                        '       <div class="col-sm-1">' +
+                        '           <p class="form-control-static">' + item.purchaseCrnCode + '</p>' +
+                        '       </div>' +
+                        '       <div class="col-sm-2">' +
+                        '           <input type="text" class="form-control" name="totalPurPrice[]" id="totalPurPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="totalPurPrice" value="' + (item.purchaseUnitPrice === undefined ? 0 : item.purchaseUnitPrice) + '">' +
+                        '       </div>' +
+                        '   </div>';
+                } else if (item.productionMode === '02') {
+                    content += '   <div class="form-group">' +
+                        '       <label for="PurUnitPrice" class="col-sm-2 control-label purchaseUnitPrice"><?php echo $this->translate("purchaseUnitPrice"); ?></label>' +
+                        '       <div class="col-sm-1">' +
+                        '           <p class="form-control-static">' + item.purchaseCrnCode + '</p>' +
+                        '       </div>' +
+                        '       <div class="col-sm-2">' +
+                        '           <input type="text" class="form-control" name="PurUnitPrice[]" id="purchaseUnitPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="purchaseUnitPrice" value="' + (item.purchaseUnitPrice === undefined ? 0 : item.purchaseUnitPrice) + '">' +
+                        '       </div>' +
+
+                        '       <label for="totalPurPrice" class="col-sm-2 control-label purtotal"><?php echo $this->translate("purtotal"); ?></label>' +
                         '       <div class="col-sm-1">' +
                         '           <p class="form-control-static">' + item.purchaseCrnCode + '</p>' +
                         '       </div>' +
@@ -1024,6 +1139,9 @@
                     '';
 
                 $orderItemDiv.append(content);
+
+                // 更新商品货币及重新计算汇率
+                updateCrnCode($buyerCrnCode.val());
 
                 // 更新包装类型默认选中项
                 var $packingType = $("#packingType_" + item.productID);
@@ -1073,7 +1191,72 @@
             $orderItemModal.modal('hide');
             // $("select[name='packingType[]']").selectpicker('render');
         });
+
+        // Radio
+        $(":radio").click(function () {
+            if ($(this).val() === '0') {
+                if ($(this).attr("name") === 'needShipping') {
+                    $(".shippingRequest").hide();
+                } else if ($(this).attr("name") === 'isAssignCustomsAgency') {
+                    $(".agencyInfo").hide();
+                } else if ($(this).attr("name") === 'needFinancing') {
+                    $(".financingRequest").hide();
+                }
+            } else if ($(this).val() === '1') {
+                if ($(this).attr("name") === 'needShipping') {
+                    $(".shippingRequest").show();
+                } else if ($(this).attr("name") === 'isAssignCustomsAgency') {
+                    $(".agencyInfo").show();
+                } else if ($(this).attr("name") === 'needFinancing') {
+                    $(".financingRequest").show();
+                }
+            }
+        });
 	});
+
+	function updateCrnCode(crnCode) {
+        // 更新价格货币
+        var $unitPriceCrnCodes = $(".unitPriceCrnCode");
+
+        $.each($unitPriceCrnCodes, function () {
+            if (crnCode !== $(this).html()) {
+                var productID = $(this).attr("data-productID"),
+                    $unitPriceCrnCode = $(this);
+                // 取汇率重新计算
+                var exchangeRate = '/user/common/exchange-rate-ajax';
+                $.ajax({
+                    type: "POST",
+                    url: exchangeRate,
+                    data: {
+                        baseCrn: $(this).html(),
+                        contraCrn: crnCode
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        var $quantity = $("#quantity_" + productID),        // 数量
+                            $unitPrice = $("#unitPrice_" + productID),      // 价格
+                            $totalPrice = $("#totalPrice_" + productID);
+
+                        // 价格, 金额
+                        $unitPrice.val(arithRound(arithMul($unitPrice.val(), data), 2));
+                        $totalPrice.val(arithRound(arithMul($unitPrice.val(), $quantity.val()), 2));
+
+                        // 更新货币
+                        $unitPriceCrnCode.html(crnCode);
+                    }
+                });
+            }
+        });
+
+        // 更新金额货币
+        var $totalPriceCrnCode = $(".totalPriceCrnCode");
+        $.each($totalPriceCrnCode, function () {
+            if (crnCode !== $(this).html()) {
+                // 更新货币
+                $(this).html(crnCode);
+            }
+        });
+    }
 </script>
 </body>
 </html>

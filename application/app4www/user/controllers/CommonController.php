@@ -60,53 +60,50 @@ class CommonController extends Kyapi_Controller_Action {
         $dictCode = $this->_request->getParam('dictCode');
         $langCode = $this->_request->getParam('langCode');
         $keyword = $this->_request->getParam('keyword');
-        if (empty($keyword)) {
-            $keyword = null;
-        }
 
-        $cacheM = new Seed_Model_Cache2File();
         $result = array();
 
-            $dic = $cacheM->get($dictCode);
-            $str = array();
-            foreach ($dic['result'] as $key => $value) {
-                if ($value['baseLangList']) {
-                    $setArr = $value['baseLangList'];
-                    foreach ($setArr as $k1 => $v1) {
-                        if ($v1['langCode'] == $langCode) {
-                            // 输出当前语言的name
-                            $str[$key]['code'] = $value['code'];
-                            $str[$key]['name'] = $v1['nameText'];
-                            // 设置缺省
-                            if (empty($str[$key]['name'])) {
-                                if ($v1['langCode'] == "zh_CN") {
-                                    $str[$key]['name'] = $v1['nameText'];
-                                }
+        $cacheM = new Seed_Model_Cache2File();
+
+        // $dic = $cacheM->get('abc_'. $dictCode);
+        $dic = $cacheM->get($dictCode);
+        $str = array();
+        foreach ($dic['result'] as $key => $value) {
+            if ($value['baseLangList']) {
+                $setArr = $value['baseLangList'];
+                foreach ($setArr as $k1 => $v1) {
+                    if ($v1['langCode'] == $langCode) {
+                        // 输出当前语言的name
+                        $str[$key]['code'] = $value['code'];
+                        $str[$key]['name'] = $v1['nameText'];
+                        // 设置缺省
+                        if (empty($str[$key]['name'])) {
+                            if ($v1['langCode'] == "zh_CN") {
+                                $str[$key]['name'] = $v1['nameText'];
                             }
                         }
                     }
-                } else {
-                    $str = $dic;
+                }
+            } else {
+                $str = $dic;
+            }
+        }
+
+        $index = 0;
+        foreach ($str as $key => $value) {
+            if ($keyword != null) {
+                if (stristr($value['name'], $keyword) != false) {
+                    $result[$index]['name'] = $value['name'];
+                    $result[$index]['id'] = $value['code'];
+                    // array_push($result, $value);
+                    $index++;
                 }
             }
 
-            foreach ($str as $key => $value) {
-                if ($keyword == null) {
-                    if ($value['name'] != null) {
-                        $result[$key]['name'] = $value['name'];
-                        $result[$key]['id'] = $value['code'];
-                    }
-                } else {
-                    if (stripos($value['name'], $keyword) != false) {
-                        $result[$key]['name'] = $value['name'];
-                        $result[$key]['id'] = $value['code'];
-                    }
-                }
-
-                // if (count($result) == 10) {
-                //     break;
-                // }
-            }
+            // if (count($result) == 10) {
+            //     break;
+            // }
+        }
         echo json_encode($result);
         exit;
     }
