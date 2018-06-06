@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>快移</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link rel="shortcut icon" type="image/x-icon" href="/ky/images/favicon.ico">
+<link href="/ky/css/base.css" rel="stylesheet">
+<link href="/ky/css/style.css" rel="stylesheet">
+<link href="/ky/css/img-upload.css" rel="stylesheet">
+<link href="/ky/css/select2.min.css" rel="stylesheet">
+<script type="text/javascript" src="/ky/js/jquery.js"></script>
+<script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
+<script type="text/javascript" src="/ky/js/select2.min.js"></script>
+<script type="text/javascript" src="/ky/js/jquery.formToWizard.js"></script>
+<script type="text/javascript" src="/ky/layer-v3.1.1/layer.js"></script>
+<script type="text/javascript" >
+    //分步骤控件 提交按钮
+    $(function () {
+        //回车不提交
+        document.getElementsByTagName('form')[0].onkeydown = function(e){
+            var e = e || event;
+            var keyNum = e.which || e.keyCode;
+            return keyNum==13 ? false : true;
+        };
+
+        $('#SignupForm').formToWizard({
+            submitButton: 'SaveAccount'
+        });
+    });
+</script>
+ <style type="text/css">
+.reveal-modal-bg { position: fixed; height: 100%; width: 100%; z-index: 100; display: none; top: 0; left: 0; background:rgba(00, 00, 00, 0.2) }
+.reveal-modal { visibility: hidden; top: 150px; left: 50%; margin-left: -300px; width: 520px; position: absolute; z-index: 101; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; -moz-box-shadow: 0 0 10px rgba(0,0,0,.4); -webkit-box-shadow: 0 0 10px rgba(0,0,0,.4); -box-shadow: 0 0 10px rgba(0,0,0,.4); background-color: #FFF; 		}
+.reveal-modal.small{width: 200px; margin-left: -140px;}
+.reveal-modal.medium{ width: 400px; margin-left: -240px;}
+.reveal-modal.large{ width: 600px; margin-left: -340px;}
+.reveal-modal.xlarge{ width: 800px; margin-left: -440px;}
+.reveal-modal .close-reveal-modal { font-size: 22px; line-height: 0.5; position: absolute; top: 8px; right: 11px; color: #333; text-shadow: 0 -1px 1px rgba(0,0,0,.6); font-weight: bold; cursor: pointer; 		}
+#step1commands,#step2commands,#step3commands,#step4commands{margin: 20px 0;                                   display: inline-block;}
+.prev, .next {background-color: #DF7E20;padding: 5px 10px;color: #fff;text-decoration: none;margin-left: 15px;}
+#steps {list-style: none;width: 940px;overflow: hidden;border-top:5px solid #DF7E20;}
+#steps li {width: 230px;float: left;padding: 10px 0;background: #f5f5f5;}
+#steps li.current {color: #DF7E20;}
+#SignupForm{width: 930px;margin: 0 auto;border-top: 2px solid #ddd;padding-top: 10px;}
+#step0commands{padding:15px 0;}
+#SaveAccount{width: 76px;background-color: #DF7E20; height: 29px;padding: 0 10px;color: #fff;display: inline-block;margin-left: 15px;margin-bottom: 15px;border: none;font:14px/1.6 "Microsoft Yahei";}
+#step1commands,#step2commands,#step3commands,#step4commands{margin: 20px 0;                                   display: inline-block;}
+.prev, .next {background-color: #DF7E20;padding: 5px 10px;color: #fff;text-decoration: none;margin-left: 15px;}
+#steps {list-style: none;width: 940px;overflow: hidden;border-top:5px solid #DF7E20;}
+#steps li {width: 230px;float: left;padding: 10px 0;background: #f5f5f5;}
+#steps li.current {color: #DF7E20;}
+#SignupForm{width: 930px;margin: 0 auto;border-top: 2px solid #ddd;padding-top: 10px;}
+#step0commands{padding:15px 0;}
+.select2-container{margin-left:8px;}
+.select2-container--open .select2-dropdown--below{margin-left:-8px;}
+#stp3 span, #stp3 input{color: #000;}
+</style>
+</head>
+<body>
+<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
+<div class="o_content_wrap w1200 m0a clearfix">
+    <?php echo $this->render(SEED_WWW_TPL.'/left_menu.phtml');?>
+    <div class="o_content fr w940">
+        <form id="SignupForm"  action="#" method="post">
+            <fieldset>
+                <legend style="display:none;"><!--1、填写订单基本信息--><?php echo $this->translate('orderINF01');?></legend>
+                <div id="stp0" class="n_o_content po30 tl bb#ccc clearfix">
+                    <input type="hidden" id="accountName" name="accountName"><!--获取自己公司名称-->
+                    <input name="crncode" type="hidden" id="crncode"  value=""><!--获取自己公司CrnCode-->
+                    <input type="hidden" id="comcity" value=""><!--获取自己公司国家-->
+                    <!--<input type="hidden" id="orderType" name="orderType" value=""><!--获取订单类型DT和IT--->
+                    <input name="buyer"  type="hidden" id="buyerid" value="<?php echo $this->orders['buyer'];?>"><!--获取委托方公司ID-->
+                    <input type="hidden" id="buyercity" ><!--获取委托方公司公司国家-->
+                    <p>
+                        <label class="public_lab"><!--买家--><?php echo $this->translate('buyers');?></label>
+                        <input readonly="readonly" class="must public_txt1 null" style="border: 1px solid #DF7E20;" type="text" id="buyer" name="buyerName"  value="<?php echo $this->orders['buyerName'];?>">
+                        <a href="#" id="ddbuyer" class="addb_box big-link"></a>
+                    </p>
+                    <p>
+                        <label class="public_lab"><!--买家联系人--><?php echo $this->translate('buyerATTN');?></label>
+                        <input class="null"  type="hidden" id="buyerContactid" name="buyerContactID"  value="<?php echo $this->orders['buyerContactID'];?>">
+                        <input readonly="readonly" class="public_txt1 must null" style="border: 1px solid #DF7E20;" name="buyerContactName" id="buyerContactname" type="text"  value="<?php echo $this->orders['buyerContactName'];?>">
+                        <a href="#" id="buyerContactbt" class="addb_box big-link"></a>
+                    </p>
+                    <p>
+                        <label class="public_lab"><!--订单货币--><?php echo $this->translate('payCNY');?></label>
+                        <select class="public_sel" id="CURRENCY" name="buyerCrnCode"   onmouseover="selectDATA(this)">
+                            <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userLangCode,$this->dic_Setting['CURRENCY'],$this->orders['buyerCrnCode']);?>
+                        </select>
+                    </p>
+                    <p>
+                        <label class="public_lab"><!--本单联系人--><?php echo $this->translate('thisATTN'); ?></label>
+                        <input class="null" name="vendorContactID" type="hidden" id="accountContactID" value="<?php echo $contactID=$this->orders['vendorContactID']==null?$this->dfContactID:$this->orders['vendorContactID'];?>">
+                        <input readonly="readonly"  class="must public_txt1 null" style="border: 1px solid #DF7E20;"
+                               name="vendorContactName" id="accountContactName" type="text" required
+                               data-msg-required="<?php echo $this->translate('de_null'); ?>" value="<?php echo $contactName=$this->orders['vendorContactName']==null?$this->dfContactName:$this->orders['vendorContactName'];?>">
+                        <a href="#" id="accountContactbt" class="addb_box big-link"></a>
+
+                    </p>
+
+                    <p>
+                        <label class="public_lab"><!--结算方式--><?php echo $this->translate('remitMD');?></label>
+                        <select class="public_sel" id="PAYMENT_TERM" name="paymentTerm" >
+                            <?php echo $this-> ShowDictionaryList('datatest_setting',$this->userLangCode,$this->dic_Setting['PAYMENT_TERM'],$this->orders['paymentTerm']);?>
+                        </select>
+                    </p>
+                    <p style="line-height: 30px;">
+                        <label class="public_lab"><!--支付期限--><?php echo $this->translate('payDD');?></label>
+                        <input class="public_txt1 must null" style="width:195px; border: 1px solid #DF7E20;" name="paymentPeriod" id="PAYMENT_PERIOD"  onchange="sizepayterm(this)"  type="text" value="<?php echo $this->orders['paymentPeriod'];?>"  required data-msg-required="<?php echo $this->translate('de_null');?>">&nbsp;&nbsp;DAYS
+                    </p>
+
+                    <div id="chukou">
+                    <p>
+                        <label class="public_lab"><!--出口方式--><?php echo $this->translate('exportMD');?></label>
+                        <label class="choose_lab">
+                            <input  name="isSelfSupport" <?php if($this->orders['isSelfSupport']==false){echo ' checked="checked"';}?> type="radio" value="0" />&nbsp;&nbsp;
+                           <!--平台代理出口--><?php echo $this->translate('siteEX');?></label>
+                        <label class="choose_lab">
+                           <input  name="isSelfSupport" <?php if($this->orders['isSelfSupport']==true){echo ' checked="checked"';}?> type="radio" value="1" />&nbsp;&nbsp;
+                           <!--自营出口--><?php echo $this->translate('sellersEX');?></label>
+
+                    </p></div>
+
+                    <div>
+                        <label class="public_lab"><!--订单要求--><?php echo $this->translate('payNeed');?></label>
+                        <textarea id="order_request" type="text" class="spl_full" style="width: 670px;" name="buyerOrderRequest" cols="200" rows="5"><?php echo $this->orders['vendorOrderRequest'];?></textarea>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend style="display:none;"><!--2、添加商品至订单--><?php echo $this->translate('orderINF02');?></legend>
+                <div id="stp1" class="n_o_content po15 mb30 tl">
+                    <p>
+                        <label class="public_lab"><!--计价方式--><?php echo $this->translate('payJJ');?></label>
+                        <select class="public_sel" id="ORDER_QUOTATION_MODE" name="quotationMode">
+                            <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userLangCode,$this->dic_Setting['ORDER_QUOTATION_MODE'],$this->orders['quotationMode']);?>
+                        </select>
+                    </p>
+                    <p>
+                        <label class="public_lab"><!--价格条款--><?php echo $this->translate('payPrice');?></label>
+                        <select class="public_sel" id="PRICE_TERM" name="priceTerm">
+                            <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userLangCode,$this->dic_Setting['PRICE_TERM'],$this->orders['priceTerm']);?>
+                        </select>
+                    </p>
+                    <p>
+                        <label class="public_lab"><!--包装方式--><?php echo $this->translate('payCasing');?></label>
+                        <select class="public_sel" id="ORDER_PACKING_MODE" name="packingMode">
+                            <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userLangCode,$this->dic_Setting['ORDER_PACKING_MODE'],$this->orders['packingMode']);?>
+                        </select>
+                    </p>
+                    <div class="pt5">
+                        <label class="public_lab"><!--包装说明--><?php echo $this->translate('packINF');?></label>
+                        <textarea class="public_text" name="packingDesc"><?php echo $this->orders['packingDesc'];?>
+                        </textarea>
+                    </div>
+
+                <div class="info_tit pt20">
+                 <h4><!--商品清单--><?php echo $this->translate('payGoods');?></h4>
+                    <a class="fr goods_active"><h4><!--点击选择商品--><?php echo $this->translate('shopADD'); ?></h4></a>
+                </div>
+                    <ul id="selectgoods"><a class="addb_box mt10 goods_active selectgoods_a" style="display:none;"></a>
+                        <?php if(is_array($this->orders['orderItemList']) && count($this->orders['orderItemList'])>0):?>
+                            <?php foreach ($this->orders['orderItemList'] as $k=>$goods):?>
+                                <li id=<?php echo $goods['productID'];?>>
+                                    <input type="hidden" class="baseCRN" value="<?php echo $goods['purCrnCode'];?>">
+                                      <em class="goods_num select_NO"></em>
+
+                                    <input type="hidden" class="n_sp4_3_txt" name="productID[]" id="" value="<?php echo $goods['productID'];?>">
+                                    <input type="hidden" class="n_sp4_3_txt" name="itemID[]" id=""  value="<?php echo $goods['itemID'];?>">
+                                    <a class="goods_add_btn p_delx" onclick="delSelect(this)"></a>
+                                    <div class="pro_view">
+                                        <p>
+                                            <label class="public_lab"><!--商品名称--><?php echo $this->translate('productNAME');?></label>
+                                            <a class="name_line ml10" title="<?php echo $goods['productName'];?>" href="#"><?php echo strlen($goods['productName'])>18?(mb_substr($goods['productName'],0,8,"utf-8").'...'):$goods['productName'];?></a>
+                                            <input  name="productName[]" id="" type="hidden" value="<?php echo $goods['productName'];?>">
+                                        </p>
+                                        <p>
+                                            <label class="public_lab"><!--英文名称--><?php echo $this->translate('productENNAME');?></label>
+                                            <input class="n_sp4_3_txt" name="productEnName[]" id="" type="text" value="<?php echo $goods['productEnName'];?>">
+                                        </p>
+                                        <p>
+                                            <label class="public_lab"><!--包装类型--><?php echo $this->translate('packageTYPE');?></label>
+                                            <select class="n_sp4_3_txt js-example-basic-multiple" id="packingType_<?php echo $goods['productID'];?>"  name="packingType[]">
+                                                <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PACKING_TYPE'],$goods['packingType']);?>
+                                            </select>
+                                        </p>
+                                        <p>
+                                            <label class="public_lab"><!--HSCode--><?php echo $this->translate('HSCODE');?></label>
+                                            <input class="n_sp4_3_txt null" readOnly="1" name="hscode[]" id="" type="text" value="<?php echo $goods['hscode'];?>">
+                                        </p>
+                                        <p>
+                                            <label class="public_lab"><!--品牌--><?php echo $this->translate('brand');?></label>
+                                            <input class="n_sp4_3_txt" name="productBrand[]" id="productBrand_<?php echo $goods['productID'];?>" type="text" value="<?php echo $goods['productBrand'];?>">
+                                        </p>
+                                        <p>
+                                            <label class="public_lab"><!--型号--><?php echo $this->translate('model');?></label>
+                                            <input class="n_sp4_3_txt" name="productModel[]" id="productModel_<?php echo $goods['productID'];?>"  type="text" value="<?php echo $goods['productModel'];?>">
+                                            <input class="n_sp4_3_txt" name="productionMode[]" id="" type="hidden" value="<?php echo $goods['productionMode'];?>">
+                                            <input class="n_sp4_3_txt" name="supplierID[]" id="" type="hidden" value="<?php echo $goods['supplierID'];?>">
+                                        </p>
+                                        <p>
+                                            <label class="public_lab"><!--材质--><?php echo $this->translate('productMaterial');?></label>
+                                            <input class="n_sp4_3_txt" name="productMaterial[]" id="productMaterial_<?php echo $goods['productID'];?>"  type="text" value="<?php echo $goods['productMaterial'];?>">
+                                        </p>
+                                        <p>
+                                            <label class="public_lab"><!--功能用途--><?php echo $this->translate('functionUsage');?></label>
+                                            <input class="n_sp4_3_txt" name="functionUsage[]" id="functionUsage_<?php echo $goods['productID'];?>" type="text" value="<?php echo $goods['functionUsage'];?>">
+                                        </p>
+                                    </div>
+                                    <table  class="n_sp_tab tc" style="margin-top:10px;" id="<?php echo $goods['productID'];?>">
+                                        <tr>
+                                            <th><!--价格--><?php echo $this->translate('orderprice');?></th>
+                                            <th><!--数量--><?php echo $this->translate('number');?></th>
+                                            <th><!--金额--><?php echo $this->translate('ordertotal');?></th>
+                                            <?php if($this->orders['quotationMode']=='IV'):?>
+                                                <th class="uije"><!--开票价格--><?php echo $this->translate('uiprice');?></th>
+                                                <th class="uije"><!--开票金额--><?php echo $this->translate('uitotal');?></th>
+                                            <?php else:?>
+                                                <!--采购价格 采购金额-->
+                                                <?php if($goods['productionMode']=='02'):?>
+                                                    <th class="poje"><?php echo $this->translate('purchaseUnitPrice');?></th>
+                                                    <th class="poje"><?php echo $this->translate('purtotal');?></th>
+                                                <?php endif;?>
+                                            <?php endif;?>
+
+                                            <th><!--件数--><?php echo $this->translate('quantity');?></th>
+                                            <th><!--净重--><?php echo $this->translate('netWeight');?></th>
+                                            <th><!--毛重--><?php echo $this->translate('grossWeight');?></th>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="w30b "><?php echo $this->orders['buyerCrnCode'];?></span>
+                                                <input class="w70b" type="text" <?php if($this->orders['quotationMode']=='IV'){echo "readOnly='true'";}?>  name="unitPrice[]" id="unitPrice_<?php echo $goods['productID'];?>" onchange="divmul(this)" onblur="yzPrice(this)"  value="<?php echo round($goods['unitPrice'],4);?>"></td>
+
+                                            <td><input  style="float:left;" class="w70b" type="text" name="quantity[]" id="quantity_<?php echo $goods['productID'];?>" onchange="divNUM(this)"  onblur="isDigit(this);"  value="<?php echo $goods['quantity'];?>">
+                                    <span id="num_dw" class="w30b">
+                                        <?php echo $this->ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PRICING_UNIT'],$goods['pricingUnit']);?>
+                                        </span>
+                                                <input type="hidden" name="pricingUnit[]"   value="<?php echo $goods['pricingUnit'];?>"></td>
+
+                                            <td><span class="w30b crnCode"><?php echo $this->orders['buyerCrnCode'];?></span>
+                                                <!---金额自动获取=价格乘以数量-->
+                                                <input class="w70b jine" type="text" <?php if($this->orders['quotationMode']=='IV'){echo "readOnly='true'";}?>  name="totalPrice[]" id="totalPrice_<?php echo $goods['productID'];?>" onchange="divchu(this)" onblur="yzPrice(this)" value="<?php echo round($goods['totalPrice'],4);?>"></td>
+                                            <input type="hidden" id="productionMode_<?php echo $goods['productID'];?>" value="<?php echo $goods['productionMode'];?>">
+                                            <?php if($this->orders['quotationMode']=='IV'||$goods['productionMode']=='02'):?>
+                                                <td class="uije poje"><span class="w30b crncodelist"><?php echo $goods['purCrnCode'];?></span>
+                                                    <input class='w70b' type='text' onchange="PURmul(this)" onblur="yzPrice(this)"  id="PurPrice_<?php echo $goods['productID'];?>" name='PurUnitPrice[]' value="<?php echo round($goods['purUnitPrice'],4);?>"></td>
+                                                <td class="uije poje"><span class="w30b "><?php echo $goods['purCrnCode'];?></span>
+                                                    <input class='w70b' type='text' onchange="PURchu(this)"  onblur="yzPrice(this)"  id='totalPurPrice_<?php echo $goods['productID'];?>' name='totalPurPrice[]' value="<?php echo round($goods['totalPurPrice'],4);?>"></td>
+                                            <?php endif;?>
+
+                                            <td><!---总数量除以每件数量=件数-->
+                                                <input class="w" style="height:30px;" type="text" name="totalPackage[]" id="totalpackage_<?php echo $goods['productID'];?>"  value="<?php echo $goods['totalPackage'];?>"></td>
+
+                                            <td><input style="float:left;" class="w70b jinzhong" type="text" name="totalNetWeight[]" id="" onchange="jisuan()" onblur="yzPrice(this)"  value="<?php echo $goods['totalNetWeight'];?> " >
+                                                <span class="w30b" >KGS</span></td>
+                                            <td><input style="float:left;" class="w70b maozhong" type="text" name="totalGrossWeight[]" id="" onchange="jisuan()" onblur="yzPrice(this)"   value="<?php echo $goods['totalGrossWeight'];?>" >
+                                                <span class="w30b" >KGS</span></td>
+
+                                            <input type="hidden" id="rebateRate_<?php echo $goods['productID'];?>" value="<?php echo $goods['rebateRate'];?>">
+                                            <input type="hidden" name="productSize" id="productSize_<?php echo $goods['productID'];?>" value="<?php echo $goods['productSize'];?>">
+                                            <input type="hidden" id="taxRate_<?php echo $goods['productID'];?>" value="<?php echo $goods['taxRate'];?>">
+                                            <input type="hidden" id="supplierName_<?php echo $goods['productID'];?>" value="<?php echo $goods['supplierName'];?>">
+                                        </tr>
+                                    </table></li>
+                            <?php endforeach; ?>
+                        <?php endif;?></ul>
+                    <div id="totalDATA" class="n_sp_total tl">
+                        <p class="p_total"><!--总净重：--><?php echo $this->translate('shopNet'); ?>
+                            <span id="zjinzhong"><?php echo $this->orders['totalNetWeight'];?></span>&nbsp;<b>KGS</b>
+                        </p>
+                        <p class="p_total"><!--总毛重：--><?php echo $this->translate('shopGross'); ?>
+                            <span id="zmaozhong"><?php echo $this->orders['totalGrossWeight'];?></span>&nbsp;<b>KGS</b>
+                        </p>
+                        <p class="p_total" style="width:22%;"><!--订单总金额：--><?php echo $this->translate('shopTotal'); ?>
+                            <b class="totalprice_crncode">&nbsp;<?php echo $this->orders['buyerCrnCode'];?></b>&nbsp;
+                            <span id="zjine"><?php echo $this->orders['totalAmount'];?></span></p>
+                        <p class="p_total" style="width:44%"><!--订单汇率：--><?php echo $this->translate('shopPrities'); ?>
+                            <span id="huilv"></span>
+                        </p>
+
+                    </div>
+                    <!-- 订单附件上传 -->
+                    <div class="yyzz_box">
+                        <p class="zzname"><!--订单附件上传--><?php echo $this->translate('payINF');?></p>
+                        <?php echo $this-> ShowWebuploader($this->orders['attachmentList'],$this->biz_Setting['ORDER'],$this->attach_Setting['ODOD'],"0");?>
+                    </div>
+            </fieldset>
+
+            <fieldset>
+                <legend style="display:none;"><!--3、填写报关物流信息--><?php echo $this->translate('orderINF03');?></legend>
+                <div id="stp2" class="n_o_content po30 tl">
+                        <p>
+                            <label class="n_sp4_lab"><!--运输方式--><?php echo $this->translate('moveMD');?></label>
+                            <select class="public_sel" id="SHIPPING_METHOD" name="shippingMethod">
+                                <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userLangCode,$this->dic_Setting['SHIPPING_METHOD'],$this->orders['shippingMethod']);?>
+                            </select>
+                        </p>
+                        <p id="bgkan">
+                            <label class="n_sp4_lab"><!--报关口岸--><?php echo $this->translate('POCRC');?></label>
+                            <select style="width: 250px;" class="public_sel js-example-basic-single"  id="EXPORT_POINTS" name="clearancePlace">
+                                <?php echo $this-> ShowDictionaryList($this->dic_Setting['EXPORT_POINTS'],$this->userLangCode,$this->dic_Setting['EXPORT_POINTS'],$this->orders['clearancePlace']);?>
+                            </select>
+                        </p>
+                    <div id="gangkou">
+                        <p>
+                            <label id="qiyun" data-msg1="<?php echo $this->translate('shippost1');?>" data-msg2="<?php echo $this->translate('citypost1'); ?>" class="n_sp4_lab">
+                                <!--起运港-->
+                                <?php echo ($this->orders['shippingMethod']=="SEA"||$this->orders['shippingMethod']=="AIR")?
+                                    $this->translate('shippost1'):$this->translate('citypost1');?>
+                            </label>
+                            <select class="public_sel js-data-example-ajax" data-type=<?php echo $this->port;?>  id="SHIPPING_PORT1" name="loadingPort">
+                                <option value=""></option>
+                                <?php echo ($this->orders['shippingMethod']=="SEA"||$this->orders['shippingMethod']=="AIR")?
+                                    $this-> ShowDictionaryList($this->port,$this->userLangCode,$this->port,$this->orders['loadingPort']):
+                                    $this-> ShowDictionaryList($this->port,$this->userLangCode,$this->port,$this->orders['loadingCity']);?>
+                            </select>
+                        </p>
+                        <p>
+                            <label id="xiehuo" data-msg1="<?php echo $this->translate('shippost2');?>" data-msg2="<?php echo $this->translate('citypost2'); ?>" class="n_sp4_lab">
+                                <!--卸货港-->
+                                <?php echo ($this->orders['shippingMethod']=="SEA"||$this->orders['shippingMethod']=="AIR")?
+                                    $this->translate('shippost2'):$this->translate('citypost2');?></label>
+                            <select class="public_sel js-data-example-ajax" data-type=<?php echo $this->port;?>  id="SHIPPING_PORT2" name="dischargePort">
+                                <option value=""></option>
+                                <?php echo ($this->orders['shippingMethod']=="SEA"||$this->orders['shippingMethod']=="AIR")?
+                                    $this-> ShowDictionaryList($this->port,$this->userLangCode,$this->port,$this->orders['dischargePort']):
+                                    $this-> ShowDictionaryList($this->port,$this->userLangCode,$this->port,$this->orders['dischargeCity']);?>
+                            </select>
+                        </p>
+                        <p>
+                            <label id="jiaohuo" data-msg1="<?php echo $this->translate('shippost3');?>" data-msg2="<?php echo $this->translate('citypost3'); ?>" class="n_sp4_lab">
+                                <!--交货港-->
+                                <?php echo ($this->orders['shippingMethod']=="SEA"||$this->orders['shippingMethod']=="AIR")?
+                                    $this->translate('shippost3'):$this->translate('citypost3');?></label>
+                            <select class="public_sel js-data-example-ajax" data-type=<?php echo $this->port;?>  id="SHIPPING_PORT3" name="deliveryPort">
+                                <option value=""></option>
+                                <?php echo ($this->orders['shippingMethod']=="SEA"||$this->orders['shippingMethod']=="AIR")?
+                                    $this-> ShowDictionaryList($this->port,$this->userLangCode,$this->port,$this->orders['deliveryPort']):
+                                    $this-> ShowDictionaryList($this->port,$this->userLangCode,$this->port,$this->orders['deliveryCity']);?>
+                            </select>
+                        </p>
+                        <script type="text/javascript" src="/ky/js/select2ajx.js"></script>
+                    </div>
+                        <p>
+                            <label class="n_sp4_lab"><!--预计交货日期--><?php echo $this->translate('mabyDATE');?></label>
+                            <input class="must public_txt null" style="border: 1px solid #DF7E20;" type="text" name="deliveryDate"  value="<?php echo date('Y-m-d',strtotime($this->orders['deliveryDate']));?>" onfocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'2100-01-01'})">
+                        </p>
+                    <p>
+                        <label class="n_sp4_lab"><!--装柜类型--><?php echo $this->translate('isFCL');?></label>
+                        <select class="public_sel" id="SHIPPING_SERVICE_TYPE" name="shippingServiceType">
+                            <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userLangCode,$this->dic_Setting['SHIPPING_SERVICE_TYPE'],$this->orders['shippingServiceType']);?>
+                        </select>
+                    </p>
+
+                    <div id="zgsliang" <?php echo ($this->orders['shippingServiceType']=='LCL')?'style="display:none"':'style="display:block"';?>>
+                        <label class="n_sp4_lab"><!--装柜数量--><?php echo $this->translate('infoFCL');?></label>
+                        <span class="num"><a>20GP</a><input name="sizeQuantityMap_20GP" onchange="sizemap(this)"  type="text" value="<?php if(empty($this->orders['sizeQuantityMap']['20GP'])){echo '0';}else{ echo $this->orders['sizeQuantityMap']['20GP'];}?>"></span>
+                        <span class="num"><a>40GP</a><input name="sizeQuantityMap_40GP" onchange="sizemap(this)"  type="text" value="<?php if(empty($this->orders['sizeQuantityMap']['40GP'])){echo '0';}else{ echo $this->orders['sizeQuantityMap']['40GP'];}?>"></span>
+                        <span class="num"><a>40HQ</a><input name="sizeQuantityMap_40HP" onchange="sizemap(this)"  type="text" value="<?php if(empty($this->orders['sizeQuantityMap']['40HP'])){echo '0';}else{ echo $this->orders['sizeQuantityMap']['40HP'];}?>"></span>
+                        <span class="num"><a>45HQ</a><input name="sizeQuantityMap_45HP" onchange="sizemap(this)"  type="text" value="<?php if(empty($this->orders['sizeQuantityMap']['45HP'])){echo '0';}else{ echo $this->orders['sizeQuantityMap']['45HP'];}?>"></span>
+                        <span class="num"><a>20OT</a><input name="sizeQuantityMap_20OT" onchange="sizemap(this)"  type="text" value="<?php if(empty($this->orders['sizeQuantityMap']['20OT'])){echo '0';}else{echo $this->orders['sizeQuantityMap']['20OT'];}?>"></span>
+                        <span class="num"><a>40OT</a><input name="sizeQuantityMap_40OT" onchange="sizemap(this)"  type="text" value="<?php if(empty($this->orders['sizeQuantityMap']['40OT'])){echo '0';}else{ echo $this->orders['sizeQuantityMap']['40OT'];}?>"></span>
+                    </div>
+
+                    <div id="wuliufw">
+                    <p>
+                        <label class="n_sp4_lab"><!--物流服务--><?php echo $this->translate('logisticSS');?></label>
+                        <label class="choose_lab"><input name="needShipping" <?php if($this->orders['needShipping']==true){echo ' checked="checked"';}?> type="radio" value="1" />&nbsp;&nbsp;<!--是--><?php echo $this->translate('yes');?></label>
+                        <label class="choose_lab"><input name="needShipping" <?php if($this->orders['needShipping']!=true){echo ' checked="checked"';}?>  type="radio" value="0" />&nbsp;&nbsp;<!--否--><?php echo $this->translate('no');?></label>
+                    </p>
+                    <div class="mb30"  id="wuliufw2">
+                        <label class="public_lab"><!--物流要求--><?php echo $this->translate('logisticND');?></label>
+                        <textarea class="public_text" name="shippingRequest"><?php echo $this->orders['shippingRequest'];?></textarea>
+                    </div>
+                    </div>
+
+               <div id="baoguanmk2">
+                    <p>
+                        <label class="n_sp4_lab"><!--指定报关行--><?php echo $this->translate('selectCHB');?></label>
+                        <label class="choose_lab">
+                            <input class="isbaoguanmk" name="isAssignCustomsAgency" <?php if($this->orders['isAssignCustomsAgency']==true){echo ' checked="checked"';}?> type="radio" value="1" />&nbsp;&nbsp;
+                            <!--是--><?php echo $this->translate('yes');?></label>
+                        <label class="choose_lab">
+                            <input class="isbaoguanmk" name="isAssignCustomsAgency" <?php if($this->orders['isAssignCustomsAgency']!=true){echo ' checked="checked"';}?> type="radio" value="0" />&nbsp;&nbsp;
+                            <!--否--><?php echo $this->translate('no');?></label>
+                    </p>
+                    <div id="baoguanmk">
+                     <p style="display:block;width: 100%;">
+                        <label class="public_lab"><!--报关行名称--><?php echo $this->translate('nameCHB');?></label>
+                        <input class="public_txt" style="border: 1px solid #DF7E20;" name="customsAgencyName" id="" type="text"  placeholder="<?php echo $this->translate('whoCHB');?>" value="<?php echo $this->orders['customsAgencyName'];?>">
+                        <input class="public_txt" style="border: 1px solid #DF7E20;" name="customsAgencyCode" id="" type="text"  placeholder="<?php echo $this->translate('codeCHB');?>" value="<?php echo $this->orders['customsAgencyCode'];?>">
+                     </p></div>
+                    <div class="mb30">
+                        <label class="public_lab"><!--报关要求--><?php echo $this->translate('needCHB');?></label>
+                        <textarea class="public_text" name="customClearanceRequest" ><?php echo $this->orders['customClearanceRequest'];?></textarea>
+                    </div>
+                </div>
+
+              <div id="jinrong2">
+                        <label class="public_lab"> <h4><!--金融服务--><?php echo $this->translate('nameSRV');?></h4></label>
+                        <label class="choose_lab"><input name="needFinancing" <?php if($this->orders['needFinancing']==true){echo ' checked="checked"';}?> type="radio" value="1">&nbsp;&nbsp;<!--是--><?php echo $this->translate('yes');?></label>
+                        <label class="choose_lab"><input name="needFinancing" <?php if($this->orders['needFinancing']!=true){echo ' checked="checked"';}?> type="radio" value="0">&nbsp;&nbsp;<!--否--><?php echo $this->translate('no');?></label>
+
+                    <div id="jinrong">
+                            <label class="public_lab"><!--金融要求--><?php echo $this->translate('needOTH');?></label>
+                            <textarea  type="text" class="public_text" name="financingRequest"><?php echo $this->orders['financingRequest'];?></textarea>
+
+                    </div>
+              </div>
+            </div>
+            </fieldset>
+
+            <fieldset>
+                <legend style="display:none;"><!--4、完成下单--><?php echo $this->translate('orderINF04');?></legend>
+                <div id="stp3" class="n_o_content po30 tl">
+                    <p>
+                        <label class="public_lab"><!--卖家--><?php echo $this->translate('seller');?></label>
+                        <span id="view_01"></span>
+                    </p>
+                    <p>
+                        <label class="public_lab"><!--卖家联系人--><?php echo $this->translate('sellerATTN');?></label>
+                        <span id="view_02"></span>
+                    </p>
+                    <p>
+                        <label class="public_lab"><!--订单货币--><?php echo $this->translate('payCNY');?></label>
+                        <span id="view_03"></span>
+                    </p>
+                    <p>
+                        <label class="public_lab"><!--本单联系人--><?php echo $this->translate('thisATTN');?></label>
+                        <span id="view_04"></span>
+                    </p>
+                    <p>
+                        <label class="public_lab"><!--结算方式--><?php echo $this->translate('remitMD');?></label>
+                        <span id="view_05"></span>
+                    </p>
+                    <p>
+                        <label class="public_lab"><!--支付期限--><?php echo $this->translate('payDD');?></label>
+                        <span id="view_06"></span>&nbsp;&nbsp;DAYS
+                    </p>
+                    <p>
+                        <label class="public_lab"><!--出口方式--><?php echo $this->translate('exportMD');?></label>
+                        <span id="view_07" data-msg1="<?php echo $this->translate('siteEX'); ?>" data-msg2="<?php echo $this->translate('sellersEX'); ?>"></span>
+                    </p>
+                    <p> <label class="public_lab"><!--订单要求--><?php echo $this->translate('payNeed');?></label>
+                        <span  style="width:100%;" id="view_08"></span>
+                    </p>
+                    <p>
+                        <label class="public_lab"><!--计价方式--><?php echo $this->translate('payJJ');?></label>
+                        <span id="view_09"></span>
+                    </p>
+                    <p>
+                        <label class="public_lab"><!--价格条款--><?php echo $this->translate('payPrice');?></label>
+                        <span id="view_10"></span>
+                    </p>
+                    <p>
+                        <label class="public_lab"><!--包装方式--><?php echo $this->translate('payCasing');?></label>
+                        <span id="view_11"></span>
+                    </p>
+                    <p style="width:100%">
+                        <label class="public_lab"><!--包装说明--><?php echo $this->translate('packINF');?></label>
+                        <span style="width:100%;" id="view_12"></span>
+                    </p>
+                    <div id="view_goodslist">
+                    </div>
+                    <div id="view_totalgoods">
+                    </div>
+                    <p>
+                        <label class="n_sp4_lab"><!--运输方式--><?php echo $this->translate('moveMD');?></label>
+                        <span id="view_13"></span>
+                    </p>
+                    <p id="mod_01">
+                        <label class="n_sp4_lab"><!--报关口岸--><?php echo $this->translate('POCRC');?></label>
+                        <span id="view_14"></span>
+                    </p>
+                    <p>
+                        <label  class="n_sp4_lab" id="chengshi1">
+                            <!--起运港--><?php echo $this->translate('portSHIP');?></label>
+                        <span id="view_15"></span>
+                    </p>
+                    <p>
+                        <label  class="n_sp4_lab" id="chengshi2">
+                            <!--卸货港--><?php echo $this->translate('portDSCG');?></label>
+                        <span id="view_16"></span>
+                    </p>
+                    <p>
+                        <label class="n_sp4_lab" id="chengshi3">
+                            <!--交货港--><?php echo $this->translate('portDLVY');?></label>
+                        <span id="view_17"></span>
+                    </p>
+                    <p>
+                        <label class="n_sp4_lab"><!--预计交货日期--><?php echo $this->translate('mabyDATE');?></label>
+                        <span id="view_18"></span>
+                    </p>
+                    <p>
+                        <label class="n_sp4_lab"><!--装柜类型--><?php echo $this->translate('isFCL');?></label>
+                        <span id="view_19"></span>
+                    </p>
+                    <div id="md_02">
+                        <label class="n_sp4_lab"><!--装柜数量--><?php echo $this->translate('infoFCL');?></label>
+                        <span class="num num_view_20"><p>20GP&nbsp;*</p><p id="view_20"></p></span>
+                        <span class="num num_view_21"><p>40GP&nbsp;*</p><p id="view_21"></p></span>
+                        <span class="num num_view_22"><p>40HQ&nbsp;*</p><p id="view_22"></p></span>
+                        <span class="num num_view_23"><p>45HQ&nbsp;*</p><p id="view_23"></p></span>
+                        <span class="num num_view_24"><p>20OT&nbsp;*</p><p id="view_24"></p></span>
+                        <span class="num num_view_25"><p>40OT&nbsp;*</p><p id="view_25"></p></span>
+                    </div>
+                    <div id="md_03">
+                        <label  class="public_lab"><!--物流要求--><?php echo $this->translate('logisticND');?></label>
+                        <span style="width:100%;" id="view_27"></span>
+                    </div>
+                    <div id="md_05">
+                        <div id="md_06">
+                            <p style="display:block;width: 100%;">
+                                <label class="public_lab"><!--报关行名称--><?php echo $this->translate('nameCHB');?></label>
+                                <span id="view_29"></span><span id="view_30"></span>
+                            </p>
+                            <label class="public_lab"><!--报关要求--><?php echo $this->translate('needCHB');?></label>
+                            <span style="width:100%;" id="view_31"></span>
+                        </div> </div>
+                    <div id="md_07">
+                        <p>
+                            <label class="public_lab"><!--金融要求--><?php echo $this->translate('needOTH');?></label>
+                            <span  style="width:100%;" id="view_35"></span> </p>
+                    </div>
+                    <div class="yyzz_box">
+                        <p class="zzname"><!--订单相关资料上传--><?php echo $this->translate('payINF')?></p>
+                    </div>
+                    <div id="view_img">
+                        <ul class="img-view">
+                        </ul>
+                    </div>
+                </div>
+                <div class="order_sub_btn" id="submitform">
+                    <input id="SaveAccount" type="submit" value="<?php echo $this->translate('submit'); ?>">
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
+<script type="text/javascript" src="/ky/js/www.js"></script>
+<script type="text/javascript" src="/ky/js/sendDic.js"></script>
+<script type="text/javascript" src="/ky/js/arithUtil.js"></script>
+<script type="text/javascript" src="/ky/js/etrade.calculator.js"></script>
+<script type="text/javascript" src="/ky/js/jquery.reveal.js"></script>
+<script type="text/javascript" src="/ky/upload/img.js"></script>
+<script type="text/javascript" src="/ky/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="/ky/js/order_functions.js"></script>
+<script type="text/javascript" src="/ky/js/orderXS_step04.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function(){
+
+        /*  编辑订单加载计算orderType DT为内贸  IT为外贸*/
+        orderType='<?php echo $this->orders['orderType'];?>';
+        if(orderType=='DT'){
+            $("#chukou").hide();
+            $("#baoguanmk2").hide();
+            $("#bgkan").hide();
+        }else {
+            $("#chukou").show();
+            $("#baoguanmk2").show();
+            $("#bgkan").show();
+        }
+        jinrong='<?php echo $this->orders['paymentTerm'];?>';
+        if(jinrong=="T/T"){
+            $("#jinrong2").hide();
+        }else {
+            $("#jinrong2").show();
+        }
+        addi();
+        jisuan();
+
+    });
+
+</script>
+
+
+</body>
+</html>
