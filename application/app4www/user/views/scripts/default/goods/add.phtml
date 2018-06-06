@@ -344,6 +344,7 @@
         });
 
         var hscodeSelect = $("#hscode");
+        var timeOut = "";
         $(hscodeSelect).on('shown.bs.select', function (e) {
             $(hscodeSelect).prev().find("input").keyup(function (event) {
                 var e = event || window.event || arguments.callee.caller.arguments[0];
@@ -352,25 +353,31 @@
                     var hscodeInput = $("#hscodeInput");
                     var keyword = $(hscodeInput).val();
                     var hscodeQuery = '/user/common/hscode-ajax';
-                    $.ajax({
-                        type: "POST",
-                        url: hscodeQuery,
-                        data: {
-                            keyword: keyword
-                        },
-                        dataType: "json",
-                        success: function (data) {
-                            var optionString = "";
-                            $.each(data, function (i, item) {
-                                // console.log(item);
-                                optionString += "<option value='" + item.hscode + "' data-pricingUnit='"+item.pricingUnit+"' data-rebateRate='"+item.rebateRate+"' data-taxRate='"+item.taxRate+"'>" + item.hscode + " (" + item.codeName + ")</option>";
-                            });
+                    clearTimeout(timeOut);
+                    timeOut = setTimeout(function () {
+                        $.ajax({
+                            type: "POST",
+                            url: hscodeQuery,
+                            data: {
+                                keyword: keyword
+                            },
+                            dataType: "json",
+                            success: function (data) {
+                                var optionString = "";
+                                if (data.length <= 0) {
+                                    optionString += "<option value=''><?php echo $this->translate('et_select'); ?></option>";
+                                }
+                                $.each(data, function (i, item) {
+                                    // console.log(item);
+                                    optionString += "<option value='" + item.hscode + "' data-pricingUnit='" + item.pricingUnit + "' data-rebateRate='" + item.rebateRate + "' data-taxRate='" + item.taxRate + "'>" + item.hscode + " (" + item.codeName + ")</option>";
+                                });
 
-                            $(hscodeSelect).html("");
-                            $(hscodeSelect).append(optionString);
-                            $(hscodeSelect).selectpicker('refresh');
-                        }
-                    });
+                                $(hscodeSelect).html("");
+                                $(hscodeSelect).append(optionString);
+                                $(hscodeSelect).selectpicker('refresh');
+                            }
+                        });
+                    }, 100);
                 }
             })
         });

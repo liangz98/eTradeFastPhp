@@ -272,24 +272,36 @@
                         title: '<?php echo $this->translate("madeTT"); ?>',
                         formatter: function (value, row, index) {
                             var editTitle = "<?php echo $this->translate("edit");?>";
-                            var rejectTitle = "<?php echo $this->translate('reject');?>";
-                            var acceptTitle = "<?php echo $this->translate('accept');?>";
                             var delTitle = "<?php echo $this->translate('delete');?>";
+                            var cancelTitle = "<?php echo $this->translate('cancel');?>";
+                            var submitForReviewTitle = "<?php echo $this->translate('submit');?>";
                             var base = new Base64();
                             var resultEnCode = base.encode(row.orderID);
                             var href = "/user/sale/edit?"+resultEnCode;
 
                             var result = '';
-                            <?php if ($this->CompPartnerAdmin == true || $this->CompOrderAdmin == true): ?>
-                            if (row.partnerStatus === '00') {
-                                result += '<a title="' + editTitle+ '" href="' + href + '">'
-                                    + '<i class="far fa-edit"></i>'
-                                    + '</a>&nbsp;';
-
+                            <?php if ($this->CompOrderAdmin == true): ?>
+                            if ('<?php echo $this->accountID; ?>' === row.client) {
+                                if (row.orderStatus === '00' || row.orderStatus === '01' || row.orderStatus === '02' || row.orderStatus === '05') {
+                                    result += '<a title="' + editTitle+ '" href="' + href + '">'
+                                        + '<i class="far fa-edit"></i>'
+                                        + '</a>&nbsp;';
+                                }
                             }
 
-                            if (row.partnerStatus === '00' || row.partnerStatus === '01') {
-                                result += '<a href="javascript:void(0)" title="' + delTitle + '" id="' + row.toID + '" data-url="/user/sale/delete" '
+                            if (row.orderStatus === '01' || row.orderStatus === '02' || row.orderStatus === '05') {
+                                result += '<a href="javascript:void(0)" title="' + cancelTitle + '" data-id="' + row.orderID + '" data-url="/user/sale/cancel" '
+                                    + 'data-msg1="<?php echo $this->translate("is_cancel");?>" '
+                                    + 'data-msg2="<?php echo $this->translate("tip_cancel_success");?>" '
+                                    + 'data-msg3="<?php echo $this->translate("tip_cancel_fail");?>" '
+                                    + 'onclick="doOption(this);" '
+                                    + '>'
+                                    + '<i class="fas fa-ban"></i>'
+                                    + '</a>&nbsp;';
+                            }
+
+                            if (row.orderStatus === '00') {
+                                result += '<a href="javascript:void(0)" title="' + delTitle + '" data-id="' + row.orderID + '" data-url="/user/sale/del" '
                                     + 'data-msg1="<?php echo $this->translate("is_delete");?>" '
                                     + 'data-msg2="<?php echo $this->translate("tip_del_success");?>" '
                                     + 'data-msg3="<?php echo $this->translate("tip_del_fail");?>" '
@@ -297,25 +309,14 @@
                                     + '>'
                                     + '<i class="far fa-trash-alt"></i>'
                                     + '</a>&nbsp;';
-                            }
 
-                            if (row.partnerStatus === '02') {
-                                result += '<a href="javascript:void(0)" title="' + acceptTitle + '" id="' + row.toID + '" data-url="/user/sale/accept" '
-                                    + 'data-msg1="<?php echo $this->translate("is_accept");?>" '
-                                    + 'data-msg2="<?php echo $this->translate("tip_accept_success");?>" '
-                                    + 'data-msg3="<?php echo $this->translate("tip_accept_fail");?>" '
+                                result += '<a href="javascript:void(0)" title="' + submitForReviewTitle + '" data-id="' + row.orderID + '" data-url="/user/sale/submit" '
+                                    + 'data-msg1="<?php echo $this->translate("is_submit");?>" '
+                                    + 'data-msg2="<?php echo $this->translate("tip_forReview_success");?>" '
+                                    + 'data-msg3="<?php echo $this->translate("tip_forReview_fail");?>" '
                                     + 'onclick="doOption(this);" '
                                     + '>'
                                     + '<i class="far fa-check-circle"></i>'
-                                    + '</a>&nbsp;';
-
-                                result += '<a href="javascript:void(0)" title="' + rejectTitle + '" id="' + row.toID + '" data-url="/user/sale/reject" '
-                                    + 'data-msg1="<?php echo $this->translate("is_reject");?>" '
-                                    + 'data-msg2="<?php echo $this->translate("tip_reject_success");?>" '
-                                    + 'data-msg3="<?php echo $this->translate("tip_reject_fail");?>" '
-                                    + 'onclick="doOption(this);" '
-                                    + '>'
-                                    + '<i class="fas fa-ban"></i>'
                                     + '</a>&nbsp;';
                             }
                             <?php endif; ?>
@@ -341,7 +342,7 @@
 
     function doOption(obj) {
         var url = $(obj).attr('data-url');
-        var id = $(obj).attr('id');
+        var id = $(obj).attr('data-id');
         var msg1 = $(obj).attr('data-msg1');
         var msg2 = $(obj).attr('data-msg2');
         var msg3 = $(obj).attr('data-msg3');

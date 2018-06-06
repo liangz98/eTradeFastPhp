@@ -276,11 +276,12 @@ return array(
 
 
     // 附件部分
-    'files'                      => '文件',
-    'filename'                   => '文件名称',
-    'finding'                    => '查找目标',
-    'find'                       => '查找',
-    'noData'                     => '暂无数据',
+    'files'        => '文件',
+    'filename'     => '文件名称',
+    'finding'      => '查找目标',
+    'find'         => '查找',
+    'noData'       => '暂无数据',
+    'attachUpload' => '资料上传',
 
     // 个人信息公司模块
     'companyEWM'                 => '查看公司快移码',

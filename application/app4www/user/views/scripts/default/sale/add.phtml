@@ -5,6 +5,7 @@
 	<title>快移</title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/order/order.css" rel="stylesheet">
+    <link href="/ky/css/img-upload.css" rel="stylesheet">
     <link href="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.css" rel="stylesheet">
     <link href="/ky/bootstrap-select-1.12.4-dist/css/bootstrap-select.min.css" rel="stylesheet">
 </head>
@@ -26,7 +27,7 @@
             </div>
 
             <div class="col-md-9 order-main">
-                <form class="form-horizontal" action="javascript:void(0)" onsubmit="search()" id="search_form">
+                <form class="form-horizontal" action="#" method="post" id="order_add_form" name="order_add_form">
                     <input type="hidden" name="accountName" id="accountName">
                     <input type="hidden" name="crncode" id="crncode">
                     <input type="hidden" name="regdCountryCode" id="regdCountryCode" value="<?php echo $this->regdCountryCode; ?>">
@@ -176,6 +177,13 @@
                                     </button>
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <label for="" class="col-sm-2 control-label"><?php echo $this->translate('attachUpload'); ?></label>
+                                <div class="col-sm-10">
+                                    <?php echo $this->ShowWebuploader($this->orders['attachmentList'], $this->biz_Setting['ORDER'], $this->attach_Setting['ODOD'], $this->orders['orderID']); ?>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -200,34 +208,31 @@
                             </div>
 
                             <div class="form-group seaPort">
-                                <label for="loadingPort" class="col-sm-2 control-label"><?php echo $this->translate('portSHIP'); ?></label>
+                                <label for="loadingPort" class="col-sm-2 control-label portSHIP"><?php echo $this->translate('portSHIP'); ?></label>
                                 <div class="col-sm-4">
-                                    <select class="selectpicker form-control seaPortSelect" name="loadingPort" id="loadingPort" data-live-search="true" data-dict-code="SEA_PORT">
+                                    <select class="selectpicker form-control" name="loadingPort" id="loadingPort" data-live-search="true" data-dict-code="SEA_PORT">
                                         <option value=""><?php echo $this->translate('et_select'); ?></option>
                                     </select>
                                 </div>
 
-                                <label for="dischargePort" class="col-sm-2 control-label"><?php echo $this->translate('portDSCG'); ?></label>
+                                <label for="dischargePort" class="col-sm-2 control-label portDSCG"><?php echo $this->translate('portDSCG'); ?></label>
                                 <div class="col-sm-4">
-                                    <select class="selectpicker form-control seaPortSelect" name="dischargePort" id="dischargePort" data-live-search="true" data-dict-code="SEA_PORT">
+                                    <select class="selectpicker form-control" name="dischargePort" id="dischargePort" data-live-search="true" data-dict-code="SEA_PORT">
                                         <option value=""><?php echo $this->translate('et_select'); ?></option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="form-group seaPort">
-                                <label for="deliveryPort" class="col-sm-2 control-label"><?php echo $this->translate('portDLVY'); ?></label>
+                                <label for="deliveryPort" class="col-sm-2 control-label portDLVY"><?php echo $this->translate('portDLVY'); ?></label>
                                 <div class="col-sm-4">
-                                    <select class="selectpicker form-control seaPortSelect" name="deliveryPort" id="deliveryPort" data-live-search="true" data-dict-code="SEA_PORT">
+                                    <select class="selectpicker form-control" name="deliveryPort" id="deliveryPort" data-live-search="true" data-dict-code="SEA_PORT">
                                         <option value=""><?php echo $this->translate('et_select'); ?></option>
-                                        <?php echo $this->ShowDictionaryList($this->dic_Setting['SEA_PORT'], $this->userLangCode, $this->dic_Setting['SEA_PORT'], $this->orders['deliveryPort']); ?>
                                     </select>
                                 </div>
-                            </div>
 
-                            <div class="form-group">
                                 <label for="shippingServiceType" class="col-sm-2 control-label"><?php echo $this->translate('mabyDATE'); ?></label>
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <input type="date" class="form-control" name="deliveryDate" id="deliveryDate" placeholder="" value="<?php echo $this->orders['deliveryDate']; ?>" >
                                 </div>
                             </div>
@@ -447,6 +452,7 @@
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
+<script type="text/javascript" src="/ky/upload/img.js"></script>
 <script src="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.js"></script>
 <script src="/ky/bootstrap-table-1.12.1-dist/locale/bootstrap-table-zh-CN.min.js"></script>
 <script type="text/javascript" src="/ky/bootstrap-select-1.12.4-dist/js/bootstrap-select.min.js"></script>
@@ -891,19 +897,54 @@
             });
         });
 
-        var loadingPortSelect = $("#loadingPort");
+        var loadingPortSelect = $("#loadingPort"),
+            dischargePortSelect = $("#dischargePort"),
+            deliveryPortSelect = $("#deliveryPort");
         // 运输方式
         $shippingMethod.on('changed.bs.select', function(e, clickedIndex, newValue, oldValue) {
             // console.log(this.value, clickedIndex, newValue, oldValue)
             if (this.value === 'SEA') {
-                $(loadingPortSelect).attr("data-dict-code", "SEA_PORT")
+                $(loadingPortSelect).attr("data-dict-code", "SEA_PORT");
+                $(dischargePortSelect).attr("data-dict-code", "SEA_PORT");
+                $(deliveryPortSelect).attr("data-dict-code", "SEA_PORT");
+
+                $(".portSHIP").html("<?php echo $this->translate('portSHIP'); ?>");
+                $(".portDSCG").html("<?php echo $this->translate('portDSCG'); ?>");
+                $(".portDLVY").html("<?php echo $this->translate('portDLVY'); ?>");
             } else if (this.value === 'AIR') {
-                $(loadingPortSelect).attr("data-dict-code", "AIR_PORT")
+                $(loadingPortSelect).attr("data-dict-code", "AIR_PORT");
+                $(dischargePortSelect).attr("data-dict-code", "AIR_PORT");
+                $(deliveryPortSelect).attr("data-dict-code", "AIR_PORT");
+
+                $(".portSHIP").html("<?php echo $this->translate('portSHIP'); ?>");
+                $(".portDSCG").html("<?php echo $this->translate('portDSCG'); ?>");
+                $(".portDLVY").html("<?php echo $this->translate('portDLVY'); ?>");
             } else if (this.value === 'EXPRESS' || this.value === 'LAND') {
-                $(loadingPortSelect).attr("data-dict-code", "CITY_ISO_CODE")
+                $(loadingPortSelect).attr("data-dict-code", "CITY_ISO_CODE");
+                $(dischargePortSelect).attr("data-dict-code", "CITY_ISO_CODE");
+                $(deliveryPortSelect).attr("data-dict-code", "CITY_ISO_CODE");
+
+                $(".portSHIP").html("<?php echo $this->translate('citypost1'); ?>");
+                $(".portDSCG").html("<?php echo $this->translate('citypost2'); ?>");
+                $(".portDLVY").html("<?php echo $this->translate('citypost3'); ?>");
             }
+
+            var optionString = "<option value=''><?php echo $this->translate('et_select'); ?></option>";
+            $(loadingPortSelect).html("");
+            $(loadingPortSelect).append(optionString);
+            $(loadingPortSelect).selectpicker('refresh');
+
+            $(dischargePortSelect).html("");
+            $(dischargePortSelect).append(optionString);
+            $(dischargePortSelect).selectpicker('refresh');
+
+            $(deliveryPortSelect).html("");
+            $(deliveryPortSelect).append(optionString);
+            $(deliveryPortSelect).selectpicker('refresh');
         });
 
+        // 起运港
+        var timeOut = "";
         $(loadingPortSelect).on('shown.bs.select', function (e) {
             $(loadingPortSelect).prev().find("input").keyup(function (event) {
                 var e = event || window.event || arguments.callee.caller.arguments[0];
@@ -912,30 +953,113 @@
                     var loadingPortInput = $("#loadingPortInput");
                     var keyword = $(loadingPortInput).val();
                     var hscodeQuery = '/user/common/dict-fuzzy-query-ajax';
-                    $.ajax({
-                        type: "POST",
-                        url: hscodeQuery,
-                        data: {
-                            dictCode: $(loadingPortSelect).attr("data-dict-code"),
-                            langCode: '<?php echo $this->userLangCode; ?>',
-                            keyword: keyword
-                        },
-                        dataType: "json",
-                        success: function (data) {
-                            var optionString = "";
-                            if (data.length <= 0) {
-                                optionString += "<option value=''><?php echo $this->translate('et_select'); ?></option>";
-                            }
-                            $.each(data, function (i, item) {
-                                // console.log(item);
-                                optionString += "<option value='" + item.id + "'>" + item.name + "</option>";
-                            });
+                    clearTimeout(timeOut);
+                    timeOut = setTimeout(function () {
+                        $.ajax({
+                            type: "POST",
+                            url: hscodeQuery,
+                            data: {
+                                dictCode: $(loadingPortSelect).attr("data-dict-code"),
+                                langCode: '<?php echo $this->userLangCode; ?>',
+                                keyword: keyword
+                            },
+                            dataType: "json",
+                            success: function (data) {
+                                var optionString = "";
+                                if (data.length <= 0) {
+                                    optionString += "<option value=''><?php echo $this->translate('et_select'); ?></option>";
+                                }
+                                $.each(data, function (i, item) {
+                                    // console.log(item);
+                                    optionString += "<option value='" + item.id + "'>" + item.name + "</option>";
+                                });
 
-                            $(loadingPortSelect).html("");
-                            $(loadingPortSelect).append(optionString);
-                            $(loadingPortSelect).selectpicker('refresh');
-                        }
-                    });
+                                $(loadingPortSelect).html("");
+                                $(loadingPortSelect).append(optionString);
+                                $(loadingPortSelect).selectpicker('refresh');
+                            }
+                        });
+                    }, 100);
+                }
+            })
+        });
+
+        // 卸货港
+        $(dischargePortSelect).on('shown.bs.select', function (e) {
+            $(dischargePortSelect).prev().find("input").keyup(function (event) {
+                var e = event || window.event || arguments.callee.caller.arguments[0];
+                if (e && e.keyCode !== 38 && e.keyCode !== 40) { // 按 Up Down
+                    $(dischargePortSelect).prev().find("input").attr('id', "deliveryPortInput"); //为input增加id属性
+                    var deliveryPortInput = $("#deliveryPortInput");
+                    var keyword = $(deliveryPortInput).val();
+                    var hscodeQuery = '/user/common/dict-fuzzy-query-ajax';
+                    clearTimeout(timeOut);
+                    timeOut = setTimeout(function () {
+                        $.ajax({
+                            type: "POST",
+                            url: hscodeQuery,
+                            data: {
+                                dictCode: $(dischargePortSelect).attr("data-dict-code"),
+                                langCode: '<?php echo $this->userLangCode; ?>',
+                                keyword: keyword
+                            },
+                            dataType: "json",
+                            success: function (data) {
+                                var optionString = "";
+                                if (data.length <= 0) {
+                                    optionString += "<option value=''><?php echo $this->translate('et_select'); ?></option>";
+                                }
+                                $.each(data, function (i, item) {
+                                    // console.log(item);
+                                    optionString += "<option value='" + item.id + "'>" + item.name + "</option>";
+                                });
+
+                                $(dischargePortSelect).html("");
+                                $(dischargePortSelect).append(optionString);
+                                $(dischargePortSelect).selectpicker('refresh');
+                            }
+                        });
+                    }, 100);
+                }
+            })
+        });
+
+        // 交货港
+        $(deliveryPortSelect).on('shown.bs.select', function (e) {
+            $(deliveryPortSelect).prev().find("input").keyup(function (event) {
+                var e = event || window.event || arguments.callee.caller.arguments[0];
+                if (e && e.keyCode !== 38 && e.keyCode !== 40) { // 按 Up Down
+                    $(deliveryPortSelect).prev().find("input").attr('id', "dischargePortInput"); //为input增加id属性
+                    var dischargePortInput = $("#dischargePortInput");
+                    var keyword = $(dischargePortInput).val();
+                    var hscodeQuery = '/user/common/dict-fuzzy-query-ajax';
+                    clearTimeout(timeOut);
+                    timeOut = setTimeout(function () {
+                        $.ajax({
+                            type: "POST",
+                            url: hscodeQuery,
+                            data: {
+                                dictCode: $(deliveryPortSelect).attr("data-dict-code"),
+                                langCode: '<?php echo $this->userLangCode; ?>',
+                                keyword: keyword
+                            },
+                            dataType: "json",
+                            success: function (data) {
+                                var optionString = "";
+                                if (data.length <= 0) {
+                                    optionString += "<option value=''><?php echo $this->translate('et_select'); ?></option>";
+                                }
+                                $.each(data, function (i, item) {
+                                    // console.log(item);
+                                    optionString += "<option value='" + item.id + "'>" + item.name + "</option>";
+                                });
+
+                                $(deliveryPortSelect).html("");
+                                $(deliveryPortSelect).append(optionString);
+                                $(deliveryPortSelect).selectpicker('refresh');
+                            }
+                        });
+                    }, 100);
                 }
             })
         });

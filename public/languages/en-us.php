@@ -261,7 +261,6 @@ return array(
     'goodsINF'      => 'Product Info.',
     'purProduct'    => 'Product Procurement',
 
-
     'contract'     => 'Contract',
     'contractSALL' => 'Sales Contract',
     'contractBUY'  => 'Purchase Contract',
@@ -279,19 +278,19 @@ return array(
     'myNO'      => 'Account Security',
     'WebINF'    => 'Account Info.',
 
-    'basicINF'                   => 'Info.',
-    'company_info'               => 'Company Info.',
-    'personNO'                   => 'Staff Info.',
-    'bankNO'                     => 'Bank Account',
-    'file'                       => 'Files',
-    'files'                      => 'File',
-
+    'basicINF'     => 'Info.',
+    'company_info' => 'Company Info.',
+    'personNO'     => 'Staff Info.',
+    'bankNO'       => 'Bank Account',
+    'file'         => 'Files',
+    'files'        => 'File',
 
     //附件部分
-    'filename'                   => 'File Name',
-    'finding'                    => 'Search Target',
-    'find'                       => 'Search',
-    'noData'                     => 'No Results',
+    'filename'     => 'File Name',
+    'finding'      => 'Search Target',
+    'find'         => 'Search',
+    'noData'       => 'No Results',
+    'attachUpload' => 'Files Upload',
 
     //个人信息公司模块
     'companyEWM'                 => 'Click to view the company code',
