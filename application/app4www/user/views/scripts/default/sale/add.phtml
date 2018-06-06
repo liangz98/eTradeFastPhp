@@ -874,12 +874,12 @@
                         $purtotal.html('<?php echo $this->translate("uitotal"); ?>');
                     } else {
                         var content = '   <div class="form-group quotationModeIV">' +
-                            '       <label for="PurUnitPrice" class="col-sm-2 control-label purchaseUnitPrice"><?php echo $this->translate("uiprice"); ?></label>' +
+                            '       <label for="purUnitPrice" class="col-sm-2 control-label purchaseUnitPrice"><?php echo $this->translate("uiprice"); ?></label>' +
                             '       <div class="col-sm-1">' +
                             '           <p class="form-control-static">' + purchaseCrnCode + '</p>' +
                             '       </div>' +
                             '       <div class="col-sm-2">' +
-                            '           <input type="text" class="form-control" name="PurUnitPrice[]" id="purchaseUnitPrice_' + productID + '" data-productID="' + productID + '" data-type="purchaseUnitPrice" value="' + purchaseUnitPrice + '">' +
+                            '           <input type="text" class="form-control" name="purUnitPrice[]" id="purchaseUnitPrice_' + productID + '" data-productID="' + productID + '" data-type="purchaseUnitPrice" value="' + purchaseUnitPrice + '">' +
                             '       </div>' +
 
                             '       <label for="totalPurPrice" class="col-sm-2 control-label purtotal"><?php echo $this->translate("uitotal"); ?></label>' +
@@ -1224,12 +1224,12 @@
 
                 if ($("#quotationMode").val() === 'IV') {
                     content += '   <div class="form-group quotationModeIV">' +
-                        '       <label for="PurUnitPrice" class="col-sm-2 control-label purchaseUnitPrice"><?php echo $this->translate("uiprice"); ?></label>' +
+                        '       <label for="purUnitPrice" class="col-sm-2 control-label purchaseUnitPrice"><?php echo $this->translate("uiprice"); ?></label>' +
                         '       <div class="col-sm-1">' +
                         '           <p class="form-control-static">' + item.purchaseCrnCode + '</p>' +
                         '       </div>' +
                         '       <div class="col-sm-2">' +
-                        '           <input type="text" class="form-control" name="PurUnitPrice[]" id="purchaseUnitPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="purchaseUnitPrice" value="' + (item.purchaseUnitPrice === undefined ? 0 : item.purchaseUnitPrice) + '">' +
+                        '           <input type="text" class="form-control" name="purUnitPrice[]" id="purchaseUnitPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="purchaseUnitPrice" value="' + (item.purchaseUnitPrice === undefined ? 0 : item.purchaseUnitPrice) + '">' +
                         '       </div>' +
 
                         '       <label for="totalPurPrice" class="col-sm-2 control-label purtotal"><?php echo $this->translate("uitotal"); ?></label>' +
@@ -1242,12 +1242,12 @@
                         '   </div>';
                 } else if (item.productionMode === '02') {
                     content += '   <div class="form-group">' +
-                        '       <label for="PurUnitPrice" class="col-sm-2 control-label purchaseUnitPrice"><?php echo $this->translate("purchaseUnitPrice"); ?></label>' +
+                        '       <label for="purUnitPrice" class="col-sm-2 control-label purchaseUnitPrice"><?php echo $this->translate("purchaseUnitPrice"); ?></label>' +
                         '       <div class="col-sm-1">' +
                         '           <p class="form-control-static">' + item.purchaseCrnCode + '</p>' +
                         '       </div>' +
                         '       <div class="col-sm-2">' +
-                        '           <input type="text" class="form-control" name="PurUnitPrice[]" id="purchaseUnitPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="purchaseUnitPrice" value="' + (item.purchaseUnitPrice === undefined ? 0 : item.purchaseUnitPrice) + '">' +
+                        '           <input type="text" class="form-control" name="purUnitPrice[]" id="purchaseUnitPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="purchaseUnitPrice" value="' + (item.purchaseUnitPrice === undefined ? 0 : item.purchaseUnitPrice) + '">' +
                         '       </div>' +
 
                         '       <label for="totalPurPrice" class="col-sm-2 control-label purtotal"><?php echo $this->translate("purtotal"); ?></label>' +
@@ -1258,6 +1258,9 @@
                         '           <input type="text" class="form-control" name="totalPurPrice[]" id="totalPurPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="totalPurPrice" value="' + (item.purchaseUnitPrice === undefined ? 0 : item.purchaseUnitPrice) + '">' +
                         '       </div>' +
                         '   </div>';
+                } else {
+                    content += '    <input type="hidden" name="purUnitPrice[]" value="' + (item.purchaseUnitPrice === undefined ? 0 : item.purchaseUnitPrice) + '">' +
+                        '    <input type="hidden" name="totalPurPrice[]" value="' + (item.purchaseUnitPrice === undefined ? 0 : item.purchaseUnitPrice) + '">';
                 }
                 content += '</div>' +
                     '';
@@ -1272,7 +1275,7 @@
                 $packingType.val(item.packingType);
                 $packingType.selectpicker('render');
 
-                $("input[name='quantity[]'], input[name='unitPrice[]'], input[name='totalPrice[]'], input[name='PurUnitPrice[]'], input[name='totalPurPrice[]']").keyup(function () {
+                $("input[name='quantity[]'], input[name='unitPrice[]'], input[name='totalPrice[]'], input[name='purUnitPrice[]'], input[name='totalPurPrice[]']").keyup(function () {
                     var productID = $(this).attr("data-productID"),     // ID
                         $quantity = $("#quantity_" + productID),        // 数量
                         $unitPrice = $("#unitPrice_" + productID),      // 价格

@@ -189,7 +189,7 @@ class SaleController extends Kyapi_Controller_Action
             $iterm["totalPackage"] = $this->_request->getParam("totalPackage");
             $iterm["totalPrice"] = $this->_request->getParam("totalPrice");
             $iterm["unitPrice"] = $this->_request->getParam("unitPrice");
-            $iterm["PurUnitPrice"] = $this->_request->getParam("PurUnitPrice");
+            $iterm["purUnitPrice"] = $this->_request->getParam("purUnitPrice");
             $iterm["totalPurPrice"] = $this->_request->getParam("totalPurPrice");
             $iterm["productBrand"] = $this->_request->getParam("productBrand");
             $iterm["productModel"] = $this->_request->getParam("productModel");  //商品型号
@@ -221,7 +221,7 @@ class SaleController extends Kyapi_Controller_Action
                     $it3[$k]->totalPurPrice = (double)$it2[$k]['totalPurPrice'];
                     //						$it3[$k]->totalVolume=(double)$it2[$k]['totalVolume'];
                     $it3[$k]->unitPrice = (double)$it2[$k]['unitPrice'];
-                    $it3[$k]->PurUnitPrice = (double)$it2[$k]['PurUnitPrice'];
+                    $it3[$k]->purUnitPrice = (double)$it2[$k]['purUnitPrice'];
                     $it3[$k]->productName = $it2[$k]['productName'];
                     $it3[$k]->productEnName = $it2[$k]['productEnName'];
                     $it3[$k]->productSize = $it2[$k]['productSize'];
@@ -396,6 +396,8 @@ class SaleController extends Kyapi_Controller_Action
         if(!isset($Viewlist['customClearanceRequest']))$Viewlist['customClearanceRequest']=$this->view->translate('noData'); //报关要求
         if(!isset($Viewlist['shippingRequest']))$Viewlist['shippingRequest']=$this->view->translate('noData');   //物流要求
         $this->view->orders = $Viewlist;
+        $this->view->orderItem = json_encode($userView->result->orderItemList);
+
 
         //处理根据返回的运输方式来判断 起运|卸货|交货查询的缓存目录名称
         if ($Viewlist['shippingMethod'] == 'SEA') {
@@ -445,7 +447,7 @@ class SaleController extends Kyapi_Controller_Action
                 $iterm["totalPackage"] = $this->_request->getParam("totalPackage");
                 $iterm["totalPrice"] = $this->_request->getParam("totalPrice");
                 $iterm["unitPrice"] = $this->_request->getParam("unitPrice");
-                $iterm["PurUnitPrice"] = $this->_request->getParam("PurUnitPrice");
+                $iterm["purUnitPrice"] = $this->_request->getParam("purUnitPrice");
                 $iterm["totalPurPrice"] = $this->_request->getParam("totalPurPrice");
                 $iterm["productBrand"] = $this->_request->getParam("productBrand");
                 $iterm["productModel"] = $this->_request->getParam("productModel");  //商品型号
@@ -483,7 +485,7 @@ class SaleController extends Kyapi_Controller_Action
                         $it3[$k]->totalPurPrice = (double)$it2[$k]['totalPurPrice'];
 //						$it3[$k]->totalVolume=(double)$it2[$k]['totalVolume'];
                         $it3[$k]->unitPrice = (double)$it2[$k]['unitPrice'];
-                        $it3[$k]->PurUnitPrice = (double)$it2[$k]['PurUnitPrice'];
+                        $it3[$k]->purUnitPrice = (double)$it2[$k]['purUnitPrice'];
                         $it3[$k]->productName = $it2[$k]['productName'];
                         $it3[$k]->productEnName = $it2[$k]['productEnName'];
                         $it3[$k]->productSize = $it2[$k]['productSize'];
