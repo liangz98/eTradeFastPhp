@@ -850,48 +850,24 @@
                 quotationMode = this.value;
             $.each($products, function (i, product) {
                 var productID = $(product).attr("id"),
-                    purchaseCrnCode = $("#purchaseCrnCode_" + productID).val(),
-                    purchaseUnitPrice = $("#purchaseUnitPrice_"  + productID).val(),
                     productionMode = $("#productionMode_" + productID).val(),
                     $purchaseUnitPrice = $(product).find(".purchaseUnitPrice"),
                     $purtotal = $(product).find(".purtotal"),
-                    $unitPrice = $("#unitPrice_" + productID);
+                    $unitPrice = $("#unitPrice_" + productID),
+                    $purchaseUnitPriceInfo = $(product).find(".purchaseUnitPriceInfo");
 
-                console.log(productionMode);
-                console.log(productID);
-                if (quotationMode === 'PO') {   // PO/PI, 删除
+                if (quotationMode === 'PO') {   // PO/PI, 隐藏
                     if (productionMode === '02') {
                         $purchaseUnitPrice.html('<?php echo $this->translate("purchaseUnitPrice"); ?>');
                         $purtotal.html('<?php echo $this->translate("purtotal"); ?>');
                     } else {
-                        var $quotationModeIV = $(product).find(".quotationModeIV");
-                        $quotationModeIV.remove();
+                        $purchaseUnitPriceInfo.hide();
                     }
                     $unitPrice.removeAttr("readonly");
-                } else if (quotationMode === 'IV') {    // 开票, 增加
-                    if ($purchaseUnitPrice.length > 0) { // 存在则修改名称
-                        $purchaseUnitPrice.html('<?php echo $this->translate("uiprice"); ?>');
-                        $purtotal.html('<?php echo $this->translate("uitotal"); ?>');
-                    } else {
-                        var content = '   <div class="form-group quotationModeIV">' +
-                            '       <label for="purUnitPrice" class="col-sm-2 control-label purchaseUnitPrice"><?php echo $this->translate("uiprice"); ?></label>' +
-                            '       <div class="col-sm-1">' +
-                            '           <p class="form-control-static">' + purchaseCrnCode + '</p>' +
-                            '       </div>' +
-                            '       <div class="col-sm-2">' +
-                            '           <input type="text" class="form-control" name="purUnitPrice[]" id="purchaseUnitPrice_' + productID + '" data-productID="' + productID + '" data-type="purchaseUnitPrice" value="' + purchaseUnitPrice + '">' +
-                            '       </div>' +
-
-                            '       <label for="totalPurPrice" class="col-sm-2 control-label purtotal"><?php echo $this->translate("uitotal"); ?></label>' +
-                            '       <div class="col-sm-1">' +
-                            '           <p class="form-control-static">' + purchaseCrnCode + '</p>' +
-                            '       </div>' +
-                            '       <div class="col-sm-2">' +
-                            '           <input type="text" class="form-control" name="totalPurPrice[]" id="totalPurPrice_' + productID + '" data-productID="' + productID + '" data-type="totalPurPrice" value="' + purchaseUnitPrice + '">' +
-                            '       </div>' +
-                            '   </div>';
-                        $(product).append(content);
-                    }
+                } else if (quotationMode === 'IV') {    // 开票, 显示
+                    $purchaseUnitPrice.html('<?php echo $this->translate("uiprice"); ?>');
+                    $purtotal.html('<?php echo $this->translate("uitotal"); ?>');
+                    $purchaseUnitPriceInfo.show();
                     $unitPrice.attr("readonly", "true");
                 }
             });
@@ -1084,6 +1060,15 @@
             }
         });
 
+        $orderItemModal.on('show.bs.modal', function () {
+            $orderItemListTable.bootstrapTable('uncheckAll');
+            var selectProducts = $(".productAlert");
+            $.each(selectProducts, function () {
+                var productID = $(this).attr("id");
+                $orderItemListTable.bootstrapTable('checkBy', {field:'productID', values:[productID]});
+            });
+        });
+
         $selectOrderItemBtn.click(function () {
             // alert('getSelections: ' + JSON.stringify($buyerTable.bootstrapTable('getSelections')));
             console.log(JSON.stringify($orderItemListTable.bootstrapTable('getSelections')));
@@ -1106,7 +1091,7 @@
                     }
                 });
 
-                var content = '<div class="alert alert-info alert-dismissible" role="alert" id="' + item.productID + '" data-type="product">' +
+                var content = '<div class="alert alert-info alert-dismissible productAlert" role="alert" id="' + item.productID + '" data-type="product">' +
                     '   <input type="hidden" name="productSize" value="' + item.productSize + '">' +
                     '   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
                     '   <div class="form-group">' +
@@ -1207,7 +1192,8 @@
                     '   <div class="form-group">' +
                     '       <label for="totalNetWeight" class="col-sm-2 control-label"><?php echo $this->translate("netWeight"); ?></label>' +
                     '       <div class="col-sm-2">' +
-                    '           <input type="text" class="form-control" name="totalNetWeight[]" id="totalNetWeight" value="' + (item.netWeight === undefined ? 0 : item.netWeight) + '">' +
+                    '           <input type="text" class="form-control" name="netWeight[]" id="netWeight_' + item.productID + '" value="' + (item.netWeight === undefined ? 0 : item.netWeight) + '">' +
+                    '           <input type="hidden" name="totalNetWeight[]" id="totalNetWeight_' + item.productID + '" value="' + item.netWeight + '">' +
                     '       </div>' +
                     '       <div class="col-sm-1">' +
                     '           <p class="form-control-static">KGS</p>' +
@@ -1215,7 +1201,8 @@
 
                     '       <label for="totalGrossWeight" class="col-sm-2 control-label"><?php echo $this->translate("grossWeight"); ?></label>' +
                     '       <div class="col-sm-2">' +
-                    '           <input type="text" class="form-control" name="totalGrossWeight[]" id="totalGrossWeight" value="' + (item.grossWeight === undefined ? 0 : item.grossWeight) + '">' +
+                    '           <input type="text" class="form-control" name="grossWeight[]" id="grossWeight_' + item.productID + '" value="' + (item.grossWeight === undefined ? 0 : item.grossWeight) + '">' +
+                    '           <input type="hidden" name="totalGrossWeight[]" id="totalGrossWeight_' + item.productID + '" value="' + item.grossWeight + '">' +
                     '       </div>' +
                     '       <div class="col-sm-1">' +
                     '           <p class="form-control-static">KGS</p>' +
@@ -1223,7 +1210,7 @@
                     '   </div>';
 
                 if ($("#quotationMode").val() === 'IV') {
-                    content += '   <div class="form-group quotationModeIV">' +
+                    content += '   <div class="form-group purchaseUnitPriceInfo">' +
                         '       <label for="purUnitPrice" class="col-sm-2 control-label purchaseUnitPrice"><?php echo $this->translate("uiprice"); ?></label>' +
                         '       <div class="col-sm-1">' +
                         '           <p class="form-control-static">' + item.purchaseCrnCode + '</p>' +
@@ -1240,7 +1227,12 @@
                         '           <input type="text" class="form-control" name="totalPurPrice[]" id="totalPurPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="totalPurPrice" value="' + (item.purchaseUnitPrice === undefined ? 0 : item.purchaseUnitPrice) + '">' +
                         '       </div>' +
                         '   </div>';
-                } else if (item.productionMode === '02') {
+                } else {
+                    if (item.productionMode === '01') {
+                        content += '   <div class="form-group purchaseUnitPriceInfo" style="display: none;">';
+                    } else {
+                        content += '   <div class="form-group purchaseUnitPriceInfo">';
+                    }
                     content += '   <div class="form-group">' +
                         '       <label for="purUnitPrice" class="col-sm-2 control-label purchaseUnitPrice"><?php echo $this->translate("purchaseUnitPrice"); ?></label>' +
                         '       <div class="col-sm-1">' +
@@ -1258,17 +1250,11 @@
                         '           <input type="text" class="form-control" name="totalPurPrice[]" id="totalPurPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="totalPurPrice" value="' + (item.purchaseUnitPrice === undefined ? 0 : item.purchaseUnitPrice) + '">' +
                         '       </div>' +
                         '   </div>';
-                } else {
-                    content += '    <input type="hidden" name="purUnitPrice[]" value="' + (item.purchaseUnitPrice === undefined ? 0 : item.purchaseUnitPrice) + '">' +
-                        '    <input type="hidden" name="totalPurPrice[]" value="' + (item.purchaseUnitPrice === undefined ? 0 : item.purchaseUnitPrice) + '">';
                 }
                 content += '</div>' +
                     '';
 
                 $orderItemDiv.append(content);
-
-                // 更新商品货币及重新计算汇率
-                updateCrnCode($buyerCrnCode.val());
 
                 // 更新包装类型默认选中项
                 var $packingType = $("#packingType_" + item.productID);
@@ -1281,7 +1267,11 @@
                         $unitPrice = $("#unitPrice_" + productID),      // 价格
                         $totalPrice = $("#totalPrice_" + productID),    // 金额
                         $purchaseUnitPrice = $("#purchaseUnitPrice_" + productID),      // 采购价格
-                        $totalPurPrice = $("#totalPurPrice_" + productID);              // 采购金额
+                        $totalPurPrice = $("#totalPurPrice_" + productID),              // 采购金额
+                        $netWeight = $("#netWeight_" + productID),                      // 净重
+                        $grossWeight = $("#grossWeight_" + productID),                  // 毛重
+                        $totalNetWeight = $("#totalNetWeight_" + productID),            // 总净重
+                        $totalGrossWeight = $("#totalGrossWeight_" + productID);        // 总毛重
 
                     if ($quantity.val() !== "" && !$.isNumeric($quantity.val())) {
                         alert("数量必须是数值");
@@ -1304,7 +1294,6 @@
                         // 计算采购价格
                         $purchaseUnitPrice.val(arithRound(arithDiv($totalPurPrice.val(), $quantity.val()), 2));
                     } else {
-                        console.log($purchaseUnitPrice.length);
                         // 计算金额
                         $totalPrice.val(arithRound(arithMul($unitPrice.val(), $quantity.val()), 2));
                         // 计算采购价格
@@ -1312,8 +1301,15 @@
                             $totalPurPrice.val(arithRound(arithMul($purchaseUnitPrice.val(), $quantity.val()), 2));
                         }
                     }
+
+                    // 计算净重, 毛重
+                    $totalNetWeight.val(arithRound(arithMul($netWeight.val(), $quantity.val()), 2));
+                    $totalGrossWeight.val(arithRound(arithMul($grossWeight.val(), $quantity.val()), 2));
                 });
             });
+
+            // 更新商品货币及重新计算汇率
+            updateCrnCode($buyerCrnCode.val());
 
             $orderItemModal.modal('hide');
             // $("select[name='packingType[]']").selectpicker('render');

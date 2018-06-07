@@ -184,6 +184,8 @@ class SaleController extends Kyapi_Controller_Action
             $iterm["productSize"] = $this->_request->getParam("productSize");
             $iterm["pricingUnit"] = $this->_request->getParam("pricingUnit");
             $iterm["quantity"] = $this->_request->getParam("quantity");
+            $iterm["grossWeight"] = $this->_request->getParam("grossWeight");
+            $iterm["netWeight"] = $this->_request->getParam("netWeight");
             $iterm["totalGrossWeight"] = $this->_request->getParam("totalGrossWeight");
             $iterm["totalNetWeight"] = $this->_request->getParam("totalNetWeight");
             $iterm["totalPackage"] = $this->_request->getParam("totalPackage");
@@ -214,6 +216,8 @@ class SaleController extends Kyapi_Controller_Action
                     $it3[$k]->itemID = $it2[$k]['itemID'];
                     $it3[$k]->supplierID = $it2[$k]['supplierID'];
                     $it3[$k]->quantity = (double)$it2[$k]['quantity'];
+                    $it3[$k]->grossWeight = (double)$it2[$k]['grossWeight'];
+                    $it3[$k]->netWeight = (double)$it2[$k]['netWeight'];
                     $it3[$k]->totalGrossWeight = (double)$it2[$k]['totalGrossWeight'];
                     $it3[$k]->totalNetWeight = (double)$it2[$k]['totalNetWeight'];
                     $it3[$k]->totalPackage = (int)$it2[$k]['totalPackage'];
@@ -442,6 +446,8 @@ class SaleController extends Kyapi_Controller_Action
                 $iterm["productSize"] = $this->_request->getParam("productSize");
                 $iterm["pricingUnit"] = $this->_request->getParam("pricingUnit");
                 $iterm["quantity"] = $this->_request->getParam("quantity");
+                $iterm["grossWeight"] = $this->_request->getParam("grossWeight");
+                $iterm["netWeight"] = $this->_request->getParam("netWeight");
                 $iterm["totalGrossWeight"] = $this->_request->getParam("totalGrossWeight");
                 $iterm["totalNetWeight"] = $this->_request->getParam("totalNetWeight");
                 $iterm["totalPackage"] = $this->_request->getParam("totalPackage");
@@ -478,6 +484,8 @@ class SaleController extends Kyapi_Controller_Action
                         $it3[$k]->itemID = $it2[$k]['itemID'];
                         $it3[$k]->supplierID = $it2[$k]['supplierID'];
                         $it3[$k]->quantity = (double)$it2[$k]['quantity'];
+                        $it3[$k]->grossWeight = (double)$it2[$k]['grossWeight'];
+                        $it3[$k]->netWeight = (double)$it2[$k]['netWeight'];
                         $it3[$k]->totalGrossWeight = (double)$it2[$k]['totalGrossWeight'];
                         $it3[$k]->totalNetWeight = (double)$it2[$k]['totalNetWeight'];
                         $it3[$k]->totalPackage = (int)$it2[$k]['totalPackage'];

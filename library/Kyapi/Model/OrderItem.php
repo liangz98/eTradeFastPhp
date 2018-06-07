@@ -19,6 +19,8 @@ class Kyapi_Model_OrderItem
     public $productName;
     public $quantity;
     public $supplierID;
+    public $grossWeight;
+    public $netWeight;
     public $totalGrossWeight;
     public $totalNetWeight;
     public $totalPackage;
