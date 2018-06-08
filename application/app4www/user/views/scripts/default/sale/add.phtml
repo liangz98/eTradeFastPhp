@@ -233,7 +233,7 @@
 
                                 <label for="shippingServiceType" class="col-sm-2 control-label"><?php echo $this->translate('mabyDATE'); ?></label>
                                 <div class="col-sm-4">
-                                    <input type="date" class="form-control" name="deliveryDate" id="deliveryDate" placeholder="" value="<?php echo $this->orders['deliveryDate']; ?>" >
+                                    <input type="date" class="form-control" name="deliveryDate" id="deliveryDate" placeholder="" value="<?php echo date('Y-m-d', strtotime($this->orders['deliveryDate']));?>" >
                                 </div>
                             </div>
 
@@ -1102,7 +1102,6 @@
                     '           <input type="hidden" name="productID[]" value="' + item.productID + '">' +
                     '           <input type="hidden" name="itemID[]" value="' + item.itemID + '">' +
                     '           <input type="hidden" name="purchaseCrnCode[]" id="purchaseCrnCode_' + item.productID + '" value="' + item.purchaseCrnCode + '">' +
-                    '           <input type="hidden" name="purchaseUnitPrice[]" id="purchaseUnitPrice_' + item.productID + '" value="' + (item.purchaseUnitPrice === undefined ? 0 : item.purchaseUnitPrice) + '">' +
                     '       </div>' +
 
                     '       <label for="productEnName" class="col-sm-2 control-label"><?php echo $this->translate("productENNAME"); ?></label>' +
@@ -1155,14 +1154,6 @@
                     '   </div>' +
 
                     '   <div class="form-group">' +
-                    '       <label for="unitPrice" class="col-sm-2 control-label"><?php echo $this->translate("orderprice"); ?></label>' +
-                    '       <div class="col-sm-1">' +
-                    '           <p class="form-control-static unitPriceCrnCode" data-productID="' + item.productID + '">' + item.crnCode + '</p>' +
-                    '       </div>' +
-                    '       <div class="col-sm-2">' +
-                    '           <input type="text" class="form-control" name="unitPrice[]" id="unitPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="unitPrice" value="' + (item.unitPrice === undefined ? 0 : item.unitPrice) + '">' +
-                    '       </div>' +
-
                     '       <label for="model" class="col-sm-2 control-label"><?php echo $this->translate("number"); ?></label>' +
                     '       <div class="col-sm-2">' +
                     '           <input type="text" class="form-control" name="quantity[]" id="quantity_' + item.productID + '" data-productID="' + item.productID + '" data-type="quantity" value="' + (item.quantity === undefined ? 1 : item.quantity) + '">' +
@@ -1170,16 +1161,6 @@
                     '       </div>' +
                     '       <div class="col-sm-1">' +
                     '           <p class="form-control-static">' + productPricingUnit + '</p>' +
-                    '       </div>' +
-                    '   </div>' +
-
-                    '   <div class="form-group">' +
-                    '       <label for="totalPrice" class="col-sm-2 control-label"><?php echo $this->translate("ordertotal"); ?></label>' +
-                    '       <div class="col-sm-1">' +
-                    '           <p class="form-control-static totalPriceCrnCode">' + item.crnCode + '</p>' +
-                    '       </div>' +
-                    '       <div class="col-sm-2">' +
-                    '           <input type="text" class="form-control" name="totalPrice[]" id="totalPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="totalPrice" value="' + (item.unitPrice === undefined ? 0 : item.unitPrice) + '">' +
                     '       </div>' +
 
                     '       <label for="totalPackage" class="col-sm-2 control-label"><?php echo $this->translate("quantity"); ?></label>' +
@@ -1190,19 +1171,65 @@
                     '   </div>' +
 
                     '   <div class="form-group">' +
+                    '       <label for="unitPrice" class="col-sm-2 control-label"><?php echo $this->translate("orderprice"); ?></label>' +
+                    '       <div class="col-sm-2">' +
+                    '           <input type="text" class="form-control" name="unitPrice[]" id="unitPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="unitPrice" value="' + (item.unitPrice === undefined ? 0 : item.unitPrice) + '">' +
+                    '       </div>' +
+                    '       <div class="col-sm-1">' +
+                    '           <p class="form-control-static">x</p>' +
+                    '       </div>' +
+                    '       <div class="col-sm-1">' +
+                    '           <b><p class="form-control-static quantityMul_' + item.productID + '" data-productID="' + item.productID + '">' + (item.quantity === undefined ? 1 : item.quantity) + '</p></b>' +
+                    '       </div>' +
+                    '       <div class="col-sm-1">' +
+                    '           <p class="form-control-static">=</p>' +
+                    '       </div>' +
+                    '       <div class="col-sm-1">' +
+                    '           <p class="form-control-static unitPriceCrnCode" data-productID="' + item.productID + '">' + item.crnCode + '</p>' +
+                    '       </div>' +
+                    '       <div class="col-sm-2">' +
+                    '           <input type="text" class="form-control" name="totalPrice[]" id="totalPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="totalPrice" value="' + (item.unitPrice === undefined ? 0 : item.unitPrice) + '">' +
+                    '       </div>' +
+                    '   </div>' +
+
+                    '   <div class="form-group">' +
                     '       <label for="totalNetWeight" class="col-sm-2 control-label"><?php echo $this->translate("netWeight"); ?></label>' +
                     '       <div class="col-sm-2">' +
                     '           <input type="text" class="form-control" name="netWeight[]" id="netWeight_' + item.productID + '" value="' + (item.netWeight === undefined ? 0 : item.netWeight) + '">' +
-                    '           <input type="hidden" name="totalNetWeight[]" id="totalNetWeight_' + item.productID + '" value="' + item.netWeight + '">' +
+                    '       </div>' +
+                    '       <div class="col-sm-1">' +
+                    '           <p class="form-control-static">x</p>' +
+                    '       </div>' +
+                    '       <div class="col-sm-1">' +
+                    '           <b><p class="form-control-static quantityMul_' + item.productID + '" data-productID="' + item.productID + '">' + (item.quantity === undefined ? 1 : item.quantity) + '</p></b>' +
+                    '       </div>' +
+                    '       <div class="col-sm-1">' +
+                    '           <p class="form-control-static">=</p>' +
+                    '       </div>' +
+                    '       <div class="col-sm-2">' +
+                    '           <input type="text" class="form-control" name="totalNetWeight[]" id="totalNetWeight_' + item.productID + '" data-productID="' + item.productID + '" data-type="totalNetWeight" value="' + (item.netWeight === undefined ? 0 : item.netWeight) + '">' +
                     '       </div>' +
                     '       <div class="col-sm-1">' +
                     '           <p class="form-control-static">KGS</p>' +
                     '       </div>' +
+                    '   </div>' +
 
-                    '       <label for="totalGrossWeight" class="col-sm-2 control-label"><?php echo $this->translate("grossWeight"); ?></label>' +
+                    '   <div class="form-group">' +
+                    '       <label for="totalNetWeight" class="col-sm-2 control-label"><?php echo $this->translate("grossWeight"); ?></label>' +
                     '       <div class="col-sm-2">' +
                     '           <input type="text" class="form-control" name="grossWeight[]" id="grossWeight_' + item.productID + '" value="' + (item.grossWeight === undefined ? 0 : item.grossWeight) + '">' +
-                    '           <input type="hidden" name="totalGrossWeight[]" id="totalGrossWeight_' + item.productID + '" value="' + item.grossWeight + '">' +
+                    '       </div>' +
+                    '       <div class="col-sm-1">' +
+                    '           <p class="form-control-static">x</p>' +
+                    '       </div>' +
+                    '       <div class="col-sm-1">' +
+                    '           <b><p class="form-control-static quantityMul_' + item.productID + '" data-productID="' + item.productID + '">' + (item.quantity === undefined ? 1 : item.quantity) + '</p></b>' +
+                    '       </div>' +
+                    '       <div class="col-sm-1">' +
+                    '           <p class="form-control-static">=</p>' +
+                    '       </div>' +
+                    '       <div class="col-sm-2">' +
+                    '           <input type="text" class="form-control" name="totalGrossWeight[]" id="totalGrossWeight_' + item.productID + '" data-productID="' + item.productID + '" data-type="totalGrossWeight" value="' + (item.grossWeight === undefined ? 0 : item.grossWeight) + '">' +
                     '       </div>' +
                     '       <div class="col-sm-1">' +
                     '           <p class="form-control-static">KGS</p>' +
@@ -1212,14 +1239,18 @@
                 if ($("#quotationMode").val() === 'IV') {
                     content += '   <div class="form-group purchaseUnitPriceInfo">' +
                         '       <label for="purUnitPrice" class="col-sm-2 control-label purchaseUnitPrice"><?php echo $this->translate("uiprice"); ?></label>' +
-                        '       <div class="col-sm-1">' +
-                        '           <p class="form-control-static">' + item.purchaseCrnCode + '</p>' +
-                        '       </div>' +
                         '       <div class="col-sm-2">' +
                         '           <input type="text" class="form-control" name="purUnitPrice[]" id="purchaseUnitPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="purchaseUnitPrice" value="' + (item.purchaseUnitPrice === undefined ? 0 : item.purchaseUnitPrice) + '">' +
                         '       </div>' +
-
-                        '       <label for="totalPurPrice" class="col-sm-2 control-label purtotal"><?php echo $this->translate("uitotal"); ?></label>' +
+                        '       <div class="col-sm-1">' +
+                        '           <p class="form-control-static">x</p>' +
+                        '       </div>' +
+                        '       <div class="col-sm-1">' +
+                        '           <b><p class="form-control-static quantityMul_' + item.productID + '" data-productID="' + item.productID + '">' + (item.quantity === undefined ? 1 : item.quantity) + '</p></b>' +
+                        '       </div>' +
+                        '       <div class="col-sm-1">' +
+                        '           <p class="form-control-static">=</p>' +
+                        '       </div>' +
                         '       <div class="col-sm-1">' +
                         '           <p class="form-control-static">' + item.purchaseCrnCode + '</p>' +
                         '       </div>' +
@@ -1233,16 +1264,19 @@
                     } else {
                         content += '   <div class="form-group purchaseUnitPriceInfo">';
                     }
-                    content += '   <div class="form-group">' +
-                        '       <label for="purUnitPrice" class="col-sm-2 control-label purchaseUnitPrice"><?php echo $this->translate("purchaseUnitPrice"); ?></label>' +
-                        '       <div class="col-sm-1">' +
-                        '           <p class="form-control-static">' + item.purchaseCrnCode + '</p>' +
-                        '       </div>' +
+                    content += '       <label for="purUnitPrice" class="col-sm-2 control-label purchaseUnitPrice"><?php echo $this->translate("purchaseUnitPrice"); ?></label>' +
                         '       <div class="col-sm-2">' +
                         '           <input type="text" class="form-control" name="purUnitPrice[]" id="purchaseUnitPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="purchaseUnitPrice" value="' + (item.purchaseUnitPrice === undefined ? 0 : item.purchaseUnitPrice) + '">' +
                         '       </div>' +
-
-                        '       <label for="totalPurPrice" class="col-sm-2 control-label purtotal"><?php echo $this->translate("purtotal"); ?></label>' +
+                        '       <div class="col-sm-1">' +
+                        '           <p class="form-control-static">x</p>' +
+                        '       </div>' +
+                        '       <div class="col-sm-1">' +
+                        '           <b><p class="form-control-static quantityMul_' + item.productID + '" data-productID="' + item.productID + '">' + (item.quantity === undefined ? 1 : item.quantity) + '</p></b>' +
+                        '       </div>' +
+                        '       <div class="col-sm-1">' +
+                        '           <p class="form-control-static">=</p>' +
+                        '       </div>' +
                         '       <div class="col-sm-1">' +
                         '           <p class="form-control-static">' + item.purchaseCrnCode + '</p>' +
                         '       </div>' +
@@ -1261,9 +1295,10 @@
                 $packingType.val(item.packingType);
                 $packingType.selectpicker('render');
 
-                $("input[name='quantity[]'], input[name='unitPrice[]'], input[name='totalPrice[]'], input[name='purUnitPrice[]'], input[name='totalPurPrice[]']").keyup(function () {
+                $("input[name='quantity[]'], input[name='unitPrice[]'], input[name='totalPrice[]'], input[name='purUnitPrice[]'], input[name='totalPurPrice[]'], input[name='totalNetWeight[]'], input[name='totalGrossWeight[]']").keyup(function () {
                     var productID = $(this).attr("data-productID"),     // ID
                         $quantity = $("#quantity_" + productID),        // 数量
+                        quantityMul = $(".quantityMul_" + productID),   // 数量Label
                         $unitPrice = $("#unitPrice_" + productID),      // 价格
                         $totalPrice = $("#totalPrice_" + productID),    // 金额
                         $purchaseUnitPrice = $("#purchaseUnitPrice_" + productID),      // 采购价格
@@ -1274,6 +1309,7 @@
                         $totalGrossWeight = $("#totalGrossWeight_" + productID);        // 总毛重
 
                     if ($quantity.val() !== "" && !$.isNumeric($quantity.val())) {
+                        console.log($quantity.val());
                         alert("数量必须是数值");
                         return false;
                     }
@@ -1293,6 +1329,12 @@
                     } else if (dataType === "totalPurPrice") {
                         // 计算采购价格
                         $purchaseUnitPrice.val(arithRound(arithDiv($totalPurPrice.val(), $quantity.val()), 2));
+                    } else if (dataType === "totalNetWeight") {
+                        // 计算净重
+                        $netWeight.val(arithRound(arithDiv($totalNetWeight.val(), $quantity.val()), 4));
+                    } else if (dataType === "totalGrossWeight") {
+                        // 计算毛重
+                        $grossWeight.val(arithRound(arithDiv($totalGrossWeight.val(), $quantity.val()), 4));
                     } else {
                         // 计算金额
                         $totalPrice.val(arithRound(arithMul($unitPrice.val(), $quantity.val()), 2));
@@ -1300,11 +1342,14 @@
                         if ($purchaseUnitPrice !== undefined && $purchaseUnitPrice.length > 0 && $totalPurPrice !== undefined && $totalPurPrice.length > 0) {
                             $totalPurPrice.val(arithRound(arithMul($purchaseUnitPrice.val(), $quantity.val()), 2));
                         }
+                        // 计算净重, 毛重
+                        $totalNetWeight.val(arithRound(arithMul($netWeight.val(), $quantity.val()), 2));
+                        $totalGrossWeight.val(arithRound(arithMul($grossWeight.val(), $quantity.val()), 2));
                     }
 
-                    // 计算净重, 毛重
-                    $totalNetWeight.val(arithRound(arithMul($netWeight.val(), $quantity.val()), 2));
-                    $totalGrossWeight.val(arithRound(arithMul($grossWeight.val(), $quantity.val()), 2));
+                    $.each(quantityMul, function () {
+                       $(this).html($quantity.val());
+                    });
                 });
             });
 

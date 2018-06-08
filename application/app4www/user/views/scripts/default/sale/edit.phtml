@@ -212,14 +212,26 @@
                                 <label for="loadingPort" class="col-sm-2 control-label portSHIP"><?php echo $this->translate('portSHIP'); ?></label>
                                 <div class="col-sm-4">
                                     <select class="selectpicker form-control" name="loadingPort" id="loadingPort" data-live-search="true" data-dict-code="SEA_PORT">
-                                        <option value=""><?php echo $this->translate('et_select'); ?></option>
+                                        <?php if (empty($this->orders['loadingPort']) && empty($this->orders['loadingCity'])): ?>
+                                            <option value=""><?php echo $this->translate('et_select'); ?></option>
+                                        <?php else: ?>
+                                            <?php echo ($this->orders['shippingMethod'] == "SEA" || $this->orders['shippingMethod'] == "AIR") ?
+                                                $this->ShowDictionaryList($this->port, $this->userLangCode, $this->port, $this->orders['loadingPort']) :
+                                                $this->ShowDictionaryList($this->port, $this->userLangCode, $this->port, $this->orders['loadingCity']); ?>
+                                        <?php endif; ?>
                                     </select>
                                 </div>
 
                                 <label for="dischargePort" class="col-sm-2 control-label portDSCG"><?php echo $this->translate('portDSCG'); ?></label>
                                 <div class="col-sm-4">
                                     <select class="selectpicker form-control" name="dischargePort" id="dischargePort" data-live-search="true" data-dict-code="SEA_PORT">
-                                        <option value=""><?php echo $this->translate('et_select'); ?></option>
+                                        <?php if (empty($this->orders['dischargePort']) && empty($this->orders['dischargeCity'])): ?>
+                                            <option value=""><?php echo $this->translate('et_select'); ?></option>
+                                        <?php else: ?>
+                                            <?php echo ($this->orders['shippingMethod'] == "SEA" || $this->orders['shippingMethod'] == "AIR") ?
+                                                $this->ShowDictionaryList($this->port, $this->userLangCode, $this->port, $this->orders['dischargePort']) :
+                                                $this->ShowDictionaryList($this->port, $this->userLangCode, $this->port, $this->orders['dischargeCity']); ?>
+                                        <?php endif; ?>
                                     </select>
                                 </div>
                             </div>
@@ -228,13 +240,19 @@
                                 <label for="deliveryPort" class="col-sm-2 control-label portDLVY"><?php echo $this->translate('portDLVY'); ?></label>
                                 <div class="col-sm-4">
                                     <select class="selectpicker form-control" name="deliveryPort" id="deliveryPort" data-live-search="true" data-dict-code="SEA_PORT">
-                                        <option value=""><?php echo $this->translate('et_select'); ?></option>
+                                        <?php if (empty($this->orders['deliveryPort']) && empty($this->orders['deliveryCity'])): ?>
+                                            <option value=""><?php echo $this->translate('et_select'); ?></option>
+                                        <?php else: ?>
+                                            <?php echo ($this->orders['shippingMethod'] == "SEA" || $this->orders['shippingMethod'] == "AIR") ?
+                                                $this->ShowDictionaryList($this->port, $this->userLangCode, $this->port, $this->orders['deliveryPort']) :
+                                                $this->ShowDictionaryList($this->port, $this->userLangCode, $this->port, $this->orders['deliveryCity']); ?>
+                                        <?php endif; ?>
                                     </select>
                                 </div>
 
                                 <label for="shippingServiceType" class="col-sm-2 control-label"><?php echo $this->translate('mabyDATE'); ?></label>
                                 <div class="col-sm-4">
-                                    <input type="date" class="form-control" name="deliveryDate" id="deliveryDate" placeholder="" value="<?php echo $this->orders['deliveryDate']; ?>" >
+                                    <input type="date" class="form-control" name="deliveryDate" id="deliveryDate" placeholder="" value="<?php echo date('Y-m-d', strtotime($this->orders['deliveryDate']));?>" >
                                 </div>
                             </div>
 
@@ -253,19 +271,19 @@
                                     <p class="form-control-static">20GP</p>
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" name="sizeQuantityMap_20GP" id="sizeQuantityMap_20GP" placeholder="" value="<?php echo $this->orders['sizeQuantityMap_20GP']; ?>" min="0" step="1" >
+                                    <input type="number" class="form-control" name="sizeQuantityMap_20GP" id="sizeQuantityMap_20GP" placeholder="" value="<?php echo $this->orders['sizeQuantityMap']['20GP']; ?>" min="0" step="1" >
                                 </div>
                                 <div class="col-sm-1">
                                     <p class="form-control-static">40GP</p>
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" name="sizeQuantityMap_40GP" id="sizeQuantityMap_40GP" placeholder="" value="<?php echo $this->orders['sizeQuantityMap_40GP']; ?>" min="0" step="1" >
+                                    <input type="number" class="form-control" name="sizeQuantityMap_40GP" id="sizeQuantityMap_40GP" placeholder="" value="<?php echo $this->orders['sizeQuantityMap']['40GP']; ?>" min="0" step="1" >
                                 </div>
                                 <div class="col-sm-1">
                                     <p class="form-control-static">40HQ</p>
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" name="sizeQuantityMap_40HP" id="sizeQuantityMap_40HP" placeholder="" value="<?php echo $this->orders['sizeQuantityMap_40HP']; ?>" min="0" step="1" >
+                                    <input type="number" class="form-control" name="sizeQuantityMap_40HP" id="sizeQuantityMap_40HP" placeholder="" value="<?php echo $this->orders['sizeQuantityMap']['40HP']; ?>" min="0" step="1" >
                                 </div>
                             </div>
 
@@ -275,19 +293,19 @@
                                     <p class="form-control-static">45HQ</p>
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" name="sizeQuantityMap_45HP" id="sizeQuantityMap_45HP" placeholder="" value="<?php echo $this->orders['sizeQuantityMap_45HP']; ?>" min="0" step="1" >
+                                    <input type="number" class="form-control" name="sizeQuantityMap_45HP" id="sizeQuantityMap_45HP" placeholder="" value="<?php echo $this->orders['sizeQuantityMap']['45HP']; ?>" min="0" step="1" >
                                 </div>
                                 <div class="col-sm-1">
                                     <p class="form-control-static">20OT</p>
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" name="sizeQuantityMap_20OT" id="sizeQuantityMap_20OT" placeholder="" value="<?php echo $this->orders['sizeQuantityMap_20OT']; ?>" min="0" step="1" >
+                                    <input type="number" class="form-control" name="sizeQuantityMap_20OT" id="sizeQuantityMap_20OT" placeholder="" value="<?php echo $this->orders['sizeQuantityMap']['20OT']; ?>" min="0" step="1" >
                                 </div>
                                 <div class="col-sm-1">
                                     <p class="form-control-static">40OT</p>
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" name="sizeQuantityMap_40OT" id="sizeQuantityMap_40OT" placeholder="" value="<?php echo $this->orders['sizeQuantityMap_40OT']; ?>" min="0" step="1" >
+                                    <input type="number" class="form-control" name="sizeQuantityMap_40OT" id="sizeQuantityMap_40OT" placeholder="" value="<?php echo $this->orders['sizeQuantityMap']['40OT']; ?>" min="0" step="1" >
                                 </div>
                             </div>
 
@@ -295,10 +313,10 @@
                                 <label for="needShipping" class="col-sm-2 control-label"><?php echo $this->translate('logisticSS'); ?></label>
                                 <div class="col-sm-8">
                                     <label class="radio-inline">
-                                        <input type="radio" name="needShipping" value="1" checked> <?php echo $this->translate('yes');?>
+                                        <input type="radio" name="needShipping" value="1" <?php if ($this->orders['needShipping'] == true) {echo ' checked="checked"';}?> > <?php echo $this->translate('yes');?>
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="needShipping" value="0"> <?php echo $this->translate('no');?>
+                                        <input type="radio" name="needShipping" value="0" <?php if ($this->orders['needShipping'] != true) {echo ' checked="checked"';}?> > <?php echo $this->translate('no');?>
                                     </label>
                                 </div>
                             </div>
@@ -314,10 +332,10 @@
                                 <label for="isAssignCustomsAgency" class="col-sm-2 control-label"><?php echo $this->translate('selectCHB'); ?></label>
                                 <div class="col-sm-8">
                                     <label class="radio-inline">
-                                        <input type="radio" name="isAssignCustomsAgency" value="1" checked> <?php echo $this->translate('yes');?>
+                                        <input type="radio" name="isAssignCustomsAgency" value="1" <?php if ($this->orders['isAssignCustomsAgency'] == true) {echo ' checked="checked"';}?> >  <?php echo $this->translate('yes');?>
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="isAssignCustomsAgency" value="0"> <?php echo $this->translate('no');?>
+                                        <input type="radio" name="isAssignCustomsAgency" value="0" <?php if ($this->orders['isAssignCustomsAgency'] != true) {echo ' checked="checked"';}?> > <?php echo $this->translate('no');?>
                                     </label>
                                 </div>
                             </div>
@@ -325,10 +343,10 @@
                             <div class="form-group agency agencyInfo">
                                 <label for="customsAgencyName" class="col-sm-2 control-label"><?php echo $this->translate('nameCHB'); ?></label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="customsAgencyName" id="customsAgencyName" value="" placeholder="<?php echo $this->translate('whoCHB'); ?>">
+                                    <input type="text" class="form-control" name="customsAgencyName" id="customsAgencyName" value="<?php echo $this->orders['customsAgencyName'];?>" placeholder="<?php echo $this->translate('whoCHB'); ?>">
                                 </div>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="customsAgencyCode" id="customsAgencyCode" value="" placeholder="<?php echo $this->translate('codeCHB'); ?>">
+                                    <input type="text" class="form-control" name="customsAgencyCode" id="customsAgencyCode" value="<?php echo $this->orders['customsAgencyCode'];?>" placeholder="<?php echo $this->translate('codeCHB'); ?>">
                                 </div>
                             </div>
 
@@ -343,10 +361,10 @@
                                 <label for="needFinancing" class="col-sm-2 control-label"><?php echo $this->translate('nameSRV'); ?></label>
                                 <div class="col-sm-8">
                                     <label class="radio-inline">
-                                        <input type="radio" name="needFinancing" value="1" checked> <?php echo $this->translate('yes');?>
+                                        <input type="radio" name="needFinancing" value="1" <?php if ($this->orders['needFinancing'] == true) {echo ' checked="checked"';}?> > <?php echo $this->translate('yes');?>
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="needFinancing" value="0"> <?php echo $this->translate('no');?>
+                                        <input type="radio" name="needFinancing" value="0" <?php if ($this->orders['needFinancing'] != true) {echo ' checked="checked"';}?> > <?php echo $this->translate('no');?>
                                     </label>
                                 </div>
                             </div>
@@ -667,6 +685,85 @@
                             return (value === true) ? '<?php echo $this->translate('yes') ?>' : '<?php echo $this->translate('no'); ?>';
                         }
                     }]
+                });
+
+                // 初始化订单商品
+                $.each(<?php echo $this->orderItem; ?>, function (index, item) {
+                    var data = $.data(dataDict, 'dataDict');
+                    var productPricingUnit = "";
+                    $.each(data, function (key, dictItem) {
+                        if (key === 'PRODUCT_PRICING_UNIT') {
+                            $.each(dictItem, function (i, dict) {
+                                if (dict.code === item.pricingUnit) {
+                                    productPricingUnit = dict.name;
+                                }
+                            });
+                        }
+                    });
+
+                    var content = genOrderItemConten(item, productPricingUnit);
+                    $orderItemDiv.append(content);
+
+                    // 更新包装类型默认选中项
+                    var $packingType = $("#packingType_" + item.productID);
+                    $packingType.val(item.packingType);
+                    $packingType.selectpicker('render');
+
+                    $("input[name='quantity[]'], input[name='unitPrice[]'], input[name='totalPrice[]'], input[name='purUnitPrice[]'], input[name='totalPurPrice[]'], input[name='totalNetWeight[]'], input[name='totalGrossWeight[]']").keyup(function () {
+                        var productID = $(this).attr("data-productID"),     // ID
+                            $quantity = $("#quantity_" + productID),        // 数量
+                            quantityMul = $(".quantityMul_" + productID),   // 数量Label
+                            $unitPrice = $("#unitPrice_" + productID),      // 价格
+                            $totalPrice = $("#totalPrice_" + productID),    // 金额
+                            $purchaseUnitPrice = $("#purchaseUnitPrice_" + productID),      // 采购价格
+                            $totalPurPrice = $("#totalPurPrice_" + productID),              // 采购金额
+                            $netWeight = $("#netWeight_" + productID),                      // 净重
+                            $grossWeight = $("#grossWeight_" + productID),                  // 毛重
+                            $totalNetWeight = $("#totalNetWeight_" + productID),            // 总净重
+                            $totalGrossWeight = $("#totalGrossWeight_" + productID);        // 总毛重
+
+                        if ($quantity.val() !== "" && !$.isNumeric($quantity.val())) {
+                            alert("数量必须是数值");
+                            return false;
+                        }
+                        if ($unitPrice.val() !== "" && !$.isNumeric($unitPrice.val())) {
+                            alert("价格必须是数值");
+                            return false;
+                        }
+                        if ($totalPrice.val() !== "" && !$.isNumeric($totalPrice.val())) {
+                            alert("金额必须是数值");
+                            return false;
+                        }
+
+                        var dataType = $(this).attr("data-type");
+                        if (dataType === "totalPrice") {
+                            // 计算价格
+                            $unitPrice.val(arithRound(arithDiv($totalPrice.val(), $quantity.val()), 2));
+                        } else if (dataType === "totalPurPrice") {
+                            // 计算采购价格
+                            $purchaseUnitPrice.val(arithRound(arithDiv($totalPurPrice.val(), $quantity.val()), 2));
+                        } else if (dataType === "totalNetWeight") {
+                            // 计算净重
+                            $netWeight.val(arithRound(arithDiv($totalNetWeight.val(), $quantity.val()), 4));
+                        } else if (dataType === "totalGrossWeight") {
+                            // 计算毛重
+                            $grossWeight.val(arithRound(arithDiv($totalGrossWeight.val(), $quantity.val()), 4));
+                        } else {
+                            // 计算金额
+                            $totalPrice.val(arithRound(arithMul($unitPrice.val(), $quantity.val()), 2));
+                            // 计算采购价格
+                            if ($purchaseUnitPrice !== undefined && $purchaseUnitPrice.length > 0 && $totalPurPrice !== undefined && $totalPurPrice.length > 0) {
+                                $totalPurPrice.val(arithRound(arithMul($purchaseUnitPrice.val(), $quantity.val()), 2));
+                            }
+                            // 计算净重, 毛重
+                            $totalNetWeight.val(arithRound(arithMul($netWeight.val(), $quantity.val()), 2));
+                            $totalGrossWeight.val(arithRound(arithMul($grossWeight.val(), $quantity.val()), 2));
+                        }
+
+                        $.each(quantityMul, function () {
+                            $(this).html($quantity.val());
+                        });
+                    });
                 });
             }
         });
@@ -1063,76 +1160,6 @@
             }
         });
 
-        // 初始化订单商品
-        var orderItem = <?php echo $this->orderItem; ?>;
-        $.each(orderItem, function (index, item) {
-            var data = $.data(dataDict, 'dataDict');
-            var productPricingUnit = "";
-            $.each(data, function (key, dictItem) {
-                if (key === 'PRODUCT_PRICING_UNIT') {
-                    $.each(dictItem, function (i, dict) {
-                        if (dict.code === item.pricingUnit) {
-                            productPricingUnit = dict.name;
-                        }
-                    });
-                }
-            });
-
-            var content = genOrderItemConten(item, productPricingUnit);
-            $orderItemDiv.append(content);
-
-            // 更新包装类型默认选中项
-            var $packingType = $("#packingType_" + item.productID);
-            $packingType.val(item.packingType);
-            $packingType.selectpicker('render');
-
-            $("input[name='quantity[]'], input[name='unitPrice[]'], input[name='totalPrice[]'], input[name='purUnitPrice[]'], input[name='totalPurPrice[]']").keyup(function () {
-                var productID = $(this).attr("data-productID"),     // ID
-                    $quantity = $("#quantity_" + productID),        // 数量
-                    $unitPrice = $("#unitPrice_" + productID),      // 价格
-                    $totalPrice = $("#totalPrice_" + productID),    // 金额
-                    $purchaseUnitPrice = $("#purchaseUnitPrice_" + productID),      // 采购价格
-                    $totalPurPrice = $("#totalPurPrice_" + productID),              // 采购金额
-                    $netWeight = $("#netWeight_" + productID),                      // 净重
-                    $grossWeight = $("#grossWeight_" + productID),                  // 毛重
-                    $totalNetWeight = $("#totalNetWeight_" + productID),            // 总净重
-                    $totalGrossWeight = $("#totalGrossWeight_" + productID);        // 总毛重
-
-                if ($quantity.val() !== "" && !$.isNumeric($quantity.val())) {
-                    alert("数量必须是数值");
-                    return false;
-                }
-                if ($unitPrice.val() !== "" && !$.isNumeric($unitPrice.val())) {
-                    alert("价格必须是数值");
-                    return false;
-                }
-                if ($totalPrice.val() !== "" && !$.isNumeric($totalPrice.val())) {
-                    alert("金额必须是数值");
-                    return false;
-                }
-
-                var dataType = $(this).attr("data-type");
-                if (dataType === "totalPrice") {
-                    // 计算价格
-                    $unitPrice.val(arithRound(arithDiv($totalPrice.val(), $quantity.val()), 2));
-                } else if (dataType === "totalPurPrice") {
-                    // 计算采购价格
-                    $purchaseUnitPrice.val(arithRound(arithDiv($totalPurPrice.val(), $quantity.val()), 2));
-                } else {
-                    // 计算金额
-                    $totalPrice.val(arithRound(arithMul($unitPrice.val(), $quantity.val()), 2));
-                    // 计算采购价格
-                    if ($purchaseUnitPrice !== undefined && $purchaseUnitPrice.length > 0 && $totalPurPrice !== undefined && $totalPurPrice.length > 0) {
-                        $totalPurPrice.val(arithRound(arithMul($purchaseUnitPrice.val(), $quantity.val()), 2));
-                    }
-                }
-
-                // 计算净重, 毛重
-                $totalNetWeight.val(arithRound(arithMul($netWeight.val(), $quantity.val()), 2));
-                $totalGrossWeight.val(arithRound(arithMul($grossWeight.val(), $quantity.val()), 2));
-            });
-        });
-
         $orderItemModal.on('show.bs.modal', function () {
             $orderItemListTable.bootstrapTable('uncheckAll');
             var selectProducts = $(".productAlert");
@@ -1171,9 +1198,10 @@
                 $packingType.val(item.packingType);
                 $packingType.selectpicker('render');
 
-                $("input[name='quantity[]'], input[name='unitPrice[]'], input[name='totalPrice[]'], input[name='purUnitPrice[]'], input[name='totalPurPrice[]']").keyup(function () {
+                $("input[name='quantity[]'], input[name='unitPrice[]'], input[name='totalPrice[]'], input[name='purUnitPrice[]'], input[name='totalPurPrice[]'], input[name='totalNetWeight[]'], input[name='totalGrossWeight[]']").keyup(function () {
                     var productID = $(this).attr("data-productID"),     // ID
                         $quantity = $("#quantity_" + productID),        // 数量
+                        quantityMul = $(".quantityMul_" + productID),   // 数量Label
                         $unitPrice = $("#unitPrice_" + productID),      // 价格
                         $totalPrice = $("#totalPrice_" + productID),    // 金额
                         $purchaseUnitPrice = $("#purchaseUnitPrice_" + productID),      // 采购价格
@@ -1203,6 +1231,12 @@
                     } else if (dataType === "totalPurPrice") {
                         // 计算采购价格
                         $purchaseUnitPrice.val(arithRound(arithDiv($totalPurPrice.val(), $quantity.val()), 2));
+                    } else if (dataType === "totalNetWeight") {
+                        // 计算净重
+                        $netWeight.val(arithRound(arithDiv($totalNetWeight.val(), $quantity.val()), 4));
+                    } else if (dataType === "totalGrossWeight") {
+                        // 计算毛重
+                        $grossWeight.val(arithRound(arithDiv($totalGrossWeight.val(), $quantity.val()), 4));
                     } else {
                         // 计算金额
                         $totalPrice.val(arithRound(arithMul($unitPrice.val(), $quantity.val()), 2));
@@ -1210,11 +1244,15 @@
                         if ($purchaseUnitPrice !== undefined && $purchaseUnitPrice.length > 0 && $totalPurPrice !== undefined && $totalPurPrice.length > 0) {
                             $totalPurPrice.val(arithRound(arithMul($purchaseUnitPrice.val(), $quantity.val()), 2));
                         }
+
+                        // 计算净重, 毛重
+                        $totalNetWeight.val(arithRound(arithMul($netWeight.val(), $quantity.val()), 2));
+                        $totalGrossWeight.val(arithRound(arithMul($grossWeight.val(), $quantity.val()), 2));
                     }
 
-                    // 计算净重, 毛重
-                    $totalNetWeight.val(arithRound(arithMul($netWeight.val(), $quantity.val()), 2));
-                    $totalGrossWeight.val(arithRound(arithMul($grossWeight.val(), $quantity.val()), 2));
+                    $.each(quantityMul, function () {
+                        $(this).html($quantity.val());
+                    });
                 });
             });
 
@@ -1307,7 +1345,6 @@
             '           <input type="hidden" name="productID[]" value="' + item.productID + '">' +
             '           <input type="hidden" name="itemID[]" value="' + item.itemID + '">' +
             '           <input type="hidden" name="purchaseCrnCode[]" id="purchaseCrnCode_' + item.productID + '" value="' + item.purchaseCrnCode + '">' +
-            '           <input type="hidden" name="purchaseUnitPrice[]" id="purchaseUnitPrice_' + item.productID + '" value="' + (item.purchaseUnitPrice === undefined ? 0 : item.purchaseUnitPrice) + '">' +
             '       </div>' +
 
             '       <label for="productEnName" class="col-sm-2 control-label"><?php echo $this->translate("productENNAME"); ?></label>' +
@@ -1360,14 +1397,6 @@
             '   </div>' +
 
             '   <div class="form-group">' +
-            '       <label for="unitPrice" class="col-sm-2 control-label"><?php echo $this->translate("orderprice"); ?></label>' +
-            '       <div class="col-sm-1">' +
-            '           <p class="form-control-static unitPriceCrnCode" data-productID="' + item.productID + '">' + crnCode + '</p>' +
-            '       </div>' +
-            '       <div class="col-sm-2">' +
-            '           <input type="text" class="form-control" name="unitPrice[]" id="unitPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="unitPrice" value="' + (item.unitPrice === undefined ? 0 : item.unitPrice) + '">' +
-            '       </div>' +
-
             '       <label for="model" class="col-sm-2 control-label"><?php echo $this->translate("number"); ?></label>' +
             '       <div class="col-sm-2">' +
             '           <input type="text" class="form-control" name="quantity[]" id="quantity_' + item.productID + '" data-productID="' + item.productID + '" data-type="quantity" value="' + (item.quantity === undefined ? 1 : item.quantity) + '">' +
@@ -1375,16 +1404,6 @@
             '       </div>' +
             '       <div class="col-sm-1">' +
             '           <p class="form-control-static">' + productPricingUnit + '</p>' +
-            '       </div>' +
-            '   </div>' +
-
-            '   <div class="form-group">' +
-            '       <label for="totalPrice" class="col-sm-2 control-label"><?php echo $this->translate("ordertotal"); ?></label>' +
-            '       <div class="col-sm-1">' +
-            '           <p class="form-control-static totalPriceCrnCode">' + crnCode + '</p>' +
-            '       </div>' +
-            '       <div class="col-sm-2">' +
-            '           <input type="text" class="form-control" name="totalPrice[]" id="totalPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="totalPrice" value="' + (item.totalPrice === undefined ? 0 : item.totalPrice) + '">' +
             '       </div>' +
 
             '       <label for="totalPackage" class="col-sm-2 control-label"><?php echo $this->translate("quantity"); ?></label>' +
@@ -1395,19 +1414,65 @@
             '   </div>' +
 
             '   <div class="form-group">' +
+            '       <label for="unitPrice" class="col-sm-2 control-label"><?php echo $this->translate("orderprice"); ?></label>' +
+            '       <div class="col-sm-2">' +
+            '           <input type="text" class="form-control" name="unitPrice[]" id="unitPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="unitPrice" value="' + (item.unitPrice === undefined ? 0 : item.unitPrice) + '">' +
+            '       </div>' +
+            '       <div class="col-sm-1">' +
+            '           <p class="form-control-static">x</p>' +
+            '       </div>' +
+            '       <div class="col-sm-1">' +
+            '           <b><p class="form-control-static quantityMul_' + item.productID + '" data-productID="' + item.productID + '">' + (item.quantity === undefined ? 1 : item.quantity) + '</p></b>' +
+            '       </div>' +
+            '       <div class="col-sm-1">' +
+            '           <p class="form-control-static">=</p>' +
+            '       </div>' +
+            '       <div class="col-sm-1">' +
+            '           <p class="form-control-static unitPriceCrnCode" data-productID="' + item.productID + '">' + crnCode + '</p>' +
+            '       </div>' +
+            '       <div class="col-sm-2">' +
+            '           <input type="text" class="form-control" name="totalPrice[]" id="totalPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="totalPrice" value="' + (item.totalPrice === undefined ? 0 : item.totalPrice) + '">' +
+            '       </div>' +
+            '   </div>' +
+
+            '   <div class="form-group">' +
             '       <label for="totalNetWeight" class="col-sm-2 control-label"><?php echo $this->translate("netWeight"); ?></label>' +
             '       <div class="col-sm-2">' +
             '           <input type="text" class="form-control" name="netWeight[]" id="netWeight_' + item.productID + '" value="' + (item.netWeight === undefined ? 0 : item.netWeight) + '">' +
-            '           <input type="hidden" name="totalNetWeight[]" id="totalNetWeight_' + item.productID + '" value="' + item.totalNetWeight + '">' +
+            '       </div>' +
+            '       <div class="col-sm-1">' +
+            '           <p class="form-control-static">x</p>' +
+            '       </div>' +
+            '       <div class="col-sm-1">' +
+            '           <b><p class="form-control-static quantityMul_' + item.productID + '" data-productID="' + item.productID + '">' + (item.quantity === undefined ? 1 : item.quantity) + '</p></b>' +
+            '       </div>' +
+            '       <div class="col-sm-1">' +
+            '           <p class="form-control-static">=</p>' +
+            '       </div>' +
+            '       <div class="col-sm-2">' +
+            '           <input type="text" class="form-control" name="totalNetWeight[]" id="totalNetWeight_' + item.productID + '" data-productID="' + item.productID + '" data-type="totalNetWeight" value="' + (item.totalNetWeight === undefined ? 0 : item.totalNetWeight) + '">' +
             '       </div>' +
             '       <div class="col-sm-1">' +
             '           <p class="form-control-static">KGS</p>' +
             '       </div>' +
+            '   </div>' +
 
-            '       <label for="totalGrossWeight" class="col-sm-2 control-label"><?php echo $this->translate("grossWeight"); ?></label>' +
+            '   <div class="form-group">' +
+            '       <label for="totalNetWeight" class="col-sm-2 control-label"><?php echo $this->translate("grossWeight"); ?></label>' +
             '       <div class="col-sm-2">' +
             '           <input type="text" class="form-control" name="grossWeight[]" id="grossWeight_' + item.productID + '" value="' + (item.grossWeight === undefined ? 0 : item.grossWeight) + '">' +
-            '           <input type="hidden" name="totalGrossWeight[]" id="totalGrossWeight_' + item.productID + '" value="' + item.totalGrossWeight + '">' +
+            '       </div>' +
+            '       <div class="col-sm-1">' +
+            '           <p class="form-control-static">x</p>' +
+            '       </div>' +
+            '       <div class="col-sm-1">' +
+            '           <b><p class="form-control-static quantityMul_' + item.productID + '" data-productID="' + item.productID + '">' + (item.quantity === undefined ? 1 : item.quantity) + '</p></b>' +
+            '       </div>' +
+            '       <div class="col-sm-1">' +
+            '           <p class="form-control-static">=</p>' +
+            '       </div>' +
+            '       <div class="col-sm-2">' +
+            '           <input type="text" class="form-control" name="totalGrossWeight[]" id="totalGrossWeight_' + item.productID + '" data-productID="' + item.productID + '" data-type="totalGrossWeight" value="' + (item.totalGrossWeight === undefined ? 0 : item.totalGrossWeight) + '">' +
             '       </div>' +
             '       <div class="col-sm-1">' +
             '           <p class="form-control-static">KGS</p>' +
@@ -1421,23 +1486,31 @@
         } else if (item.purUnitPrice !== undefined) {
             purUnitPrice = item.purUnitPrice;
         }
+        var totalPurPrice = purUnitPrice;
+        if (item.totalPurPrice !== undefined) {
+            totalPurPrice = item.totalPurPrice;
+        }
 
         if ($("#quotationMode").val() === 'IV') {
             content += '   <div class="form-group purchaseUnitPriceInfo">' +
                 '       <label for="purUnitPrice" class="col-sm-2 control-label purchaseUnitPrice"><?php echo $this->translate("uiprice"); ?></label>' +
-                '       <div class="col-sm-1">' +
-                '           <p class="form-control-static">' + purCrnCode + '</p>' +
-                '       </div>' +
                 '       <div class="col-sm-2">' +
                 '           <input type="text" class="form-control" name="purUnitPrice[]" id="purchaseUnitPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="purchaseUnitPrice" value="' + purUnitPrice + '">' +
                 '       </div>' +
-
-                '       <label for="totalPurPrice" class="col-sm-2 control-label purtotal"><?php echo $this->translate("uitotal"); ?></label>' +
+                '       <div class="col-sm-1">' +
+                '           <p class="form-control-static">x</p>' +
+                '       </div>' +
+                '       <div class="col-sm-1">' +
+                '           <b><p class="form-control-static quantityMul_' + item.productID + '" data-productID="' + item.productID + '">' + (item.quantity === undefined ? 1 : item.quantity) + '</p></b>' +
+                '       </div>' +
+                '       <div class="col-sm-1">' +
+                '           <p class="form-control-static">=</p>' +
+                '       </div>' +
                 '       <div class="col-sm-1">' +
                 '           <p class="form-control-static">' + purCrnCode + '</p>' +
                 '       </div>' +
                 '       <div class="col-sm-2">' +
-                '           <input type="text" class="form-control" name="totalPurPrice[]" id="totalPurPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="totalPurPrice" value="' + purUnitPrice + '">' +
+                '           <input type="text" class="form-control" name="totalPurPrice[]" id="totalPurPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="totalPurPrice" value="' + totalPurPrice + '">' +
                 '       </div>' +
                 '   </div>';
         } else {
@@ -1447,19 +1520,23 @@
                 content += '   <div class="form-group purchaseUnitPriceInfo">';
             }
             content += '       <label for="purUnitPrice" class="col-sm-2 control-label purchaseUnitPrice"><?php echo $this->translate("purchaseUnitPrice"); ?></label>' +
-                '       <div class="col-sm-1">' +
-                '           <p class="form-control-static">' + purCrnCode + '</p>' +
-                '       </div>' +
                 '       <div class="col-sm-2">' +
                 '           <input type="text" class="form-control" name="purUnitPrice[]" id="purchaseUnitPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="purchaseUnitPrice" value="' + purUnitPrice + '">' +
                 '       </div>' +
-
-                '       <label for="totalPurPrice" class="col-sm-2 control-label purtotal"><?php echo $this->translate("purtotal"); ?></label>' +
+                '       <div class="col-sm-1">' +
+                '           <p class="form-control-static">x</p>' +
+                '       </div>' +
+                '       <div class="col-sm-1">' +
+                '           <b><p class="form-control-static quantityMul_' + item.productID + '" data-productID="' + item.productID + '">' + (item.quantity === undefined ? 1 : item.quantity) + '</p></b>' +
+                '       </div>' +
+                '       <div class="col-sm-1">' +
+                '           <p class="form-control-static">=</p>' +
+                '       </div>' +
                 '       <div class="col-sm-1">' +
                 '           <p class="form-control-static">' + purCrnCode + '</p>' +
                 '       </div>' +
                 '       <div class="col-sm-2">' +
-                '           <input type="text" class="form-control" name="totalPurPrice[]" id="totalPurPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="totalPurPrice" value="' + purUnitPrice + '">' +
+                '           <input type="text" class="form-control" name="totalPurPrice[]" id="totalPurPrice_' + item.productID + '" data-productID="' + item.productID + '" data-type="totalPurPrice" value="' + totalPurPrice + '">' +
                 '       </div>' +
                 '   </div>';
         }
