@@ -290,7 +290,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group needShipping">
                                 <label for="needShipping" class="col-sm-2 control-label"><?php echo $this->translate('logisticSS'); ?></label>
                                 <div class="col-sm-8">
                                     <label class="radio-inline">
@@ -313,15 +313,15 @@
                                 <label for="isAssignCustomsAgency" class="col-sm-2 control-label"><?php echo $this->translate('selectCHB'); ?></label>
                                 <div class="col-sm-8">
                                     <label class="radio-inline">
-                                        <input type="radio" name="isAssignCustomsAgency" value="1" checked> <?php echo $this->translate('yes');?>
+                                        <input type="radio" name="isAssignCustomsAgency" value="1"> <?php echo $this->translate('yes');?>
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="isAssignCustomsAgency" value="0"> <?php echo $this->translate('no');?>
+                                        <input type="radio" name="isAssignCustomsAgency" value="0" checked> <?php echo $this->translate('no');?>
                                     </label>
                                 </div>
                             </div>
 
-                            <div class="form-group agency agencyInfo">
+                            <div class="form-group agency agencyInfo" style="display: none;">
                                 <label for="customsAgencyName" class="col-sm-2 control-label"><?php echo $this->translate('nameCHB'); ?></label>
                                 <div class="col-sm-4">
                                     <input type="text" class="form-control" name="customsAgencyName" id="customsAgencyName" value="" placeholder="<?php echo $this->translate('whoCHB'); ?>">
@@ -338,19 +338,19 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group financing">
                                 <label for="needFinancing" class="col-sm-2 control-label"><?php echo $this->translate('nameSRV'); ?></label>
                                 <div class="col-sm-8">
                                     <label class="radio-inline">
-                                        <input type="radio" name="needFinancing" value="1" checked> <?php echo $this->translate('yes');?>
+                                        <input type="radio" name="needFinancing" value="1"> <?php echo $this->translate('yes');?>
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="needFinancing" value="0"> <?php echo $this->translate('no');?>
+                                        <input type="radio" name="needFinancing" value="0" checked> <?php echo $this->translate('no');?>
                                     </label>
                                 </div>
                             </div>
 
-                            <div class="form-group financingRequest">
+                            <div class="form-group financingRequest" style="display: none;">
                                 <label for="financingRequest" class="col-sm-2 control-label"><?php echo $this->translate('needOTH'); ?></label>
                                 <div class="col-sm-8">
                                     <textarea class="form-control" name="financingRequest" id="financingRequest" rows="3"><?php echo $this->orders['financingRequest']; ?></textarea>
@@ -478,6 +478,8 @@
             $buyerModal = $("#myModal"),
             $buyer = $("#buyer"),
             $buyerCrnCode = $('#buyerCrnCode'),
+            $paymentTerm = $("#paymentTerm"),
+            $priceTerm = $("#priceTerm"),
             $buyerContactModal = $("#buyerContactModal"),
             $selectBuyerContactBtn = $("#selectBuyerContactBtn"),
             $buyerContactListTable = $('#buyerContactListTable'),
@@ -843,6 +845,19 @@
             updateCrnCode(this.value);
         });
 
+        // 结算方式
+        $paymentTerm.on('changed.bs.select', function(e, clickedIndex, newValue, oldValue) {
+            // console.log(this.value, clickedIndex, newValue, oldValue)
+            if (this.value === 'T/T') {
+                $(".financing, .financingRequest").hide();
+            } else {
+                $(".financing").show();
+                if ($("input[name='needFinancing']:checked").val() === '1') {
+                    $(".financingRequest").show();
+                }
+            }
+        });
+
         // 计价方式
         $quotationMode.on('changed.bs.select', function(e, clickedIndex, newValue, oldValue) {
             // console.log(this.value, clickedIndex, newValue, oldValue)
@@ -871,6 +886,19 @@
                     $unitPrice.attr("readonly", "true");
                 }
             });
+        });
+
+        // 价格条款
+        $priceTerm.on('changed.bs.select', function(e, clickedIndex, newValue, oldValue) {
+            // console.log(this.value, clickedIndex, newValue, oldValue)
+            if (this.value === 'EXW') {
+                $(".needShipping, .shippingRequest").hide();
+            } else {
+                $(".needShipping").show();
+                if ($("input[name='needShipping']:checked").val() === '1') {
+                    $(".shippingRequest").show();
+                }
+            }
         });
 
         var loadingPortSelect = $("#loadingPort"),
@@ -1380,6 +1408,10 @@
                 }
             }
         });
+
+        if ($("input[name='needShipping']:checked").val() === '0') {
+
+        }
 	});
 
 	function updateCrnCode(crnCode) {

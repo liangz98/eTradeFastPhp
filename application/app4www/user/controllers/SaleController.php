@@ -398,7 +398,15 @@ class SaleController extends Kyapi_Controller_Action
         if(!isset($Viewlist['packingDesc']))$Viewlist['packingDesc']=$this->view->translate('NoData');  //包装描述
         if(!isset($Viewlist['financingRequest']))$Viewlist['financingRequest']=$this->view->translate('noData');  //金融要求
         if(!isset($Viewlist['customClearanceRequest']))$Viewlist['customClearanceRequest']=$this->view->translate('noData'); //报关要求
-        if(!isset($Viewlist['shippingRequest']))$Viewlist['shippingRequest']=$this->view->translate('noData');   //物流要求
+        // 物流要求
+        if (!isset($Viewlist['shippingRequest'])) {
+            if (isset($Viewlist['truckingRequest'])) {
+                $Viewlist['shippingRequest'] = $Viewlist['truckingRequest'];
+            } else {
+                $Viewlist['shippingRequest'] = "";
+            }
+        }
+
         $this->view->orders = $Viewlist;
         $this->view->orderItem = json_encode($userView->result->orderItemList);
 
