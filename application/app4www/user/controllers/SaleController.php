@@ -700,6 +700,8 @@ class SaleController extends Kyapi_Controller_Action
         $existData = $userKY->result;
         $existDatt = $this->objectToArray($existData);
 
+        $this->view->orderItem = json_encode($userKY->result->orderItemList);
+
         //当前返回数据为空时 前端显示为无
         if (!isset($existDatt['packingDesc']))
             $existDatt['packingDesc'] = $this->view->translate('noData');  //包装描述

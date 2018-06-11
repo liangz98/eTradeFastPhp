@@ -60,13 +60,13 @@ input[type=number]{
     border: 1px solid #ddd
 }
 
-.order-news .row {
+.order-news .row, .orderInfo .row {
     margin-top: 15px;
 }
 .order-news .row:first-child {
     margin-top: 0;
 }
-.order-news .news-title {
+.order-news .news-title, .view-title {
     color: #adadad;
 }
 /* end */
@@ -147,4 +147,46 @@ input[type=number]{
     margin: 10px 0;
     background: url(/ky/images/order_goodslist.jpg);
     display: inline-block;
+}
+
+/* view */
+.order-view h3, .goods-main-edit .form-group:first-child, .goods-main-add .form-group:first-child, #profile {
+    margin-top: 15px;
+}
+
+.profile-heading-edit {
+    border: none;
+    box-shadow: none;
+    margin-left: 8px;
+    color: #999;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.profile-heading-edit:hover {
+    cursor: pointer;
+    background-color: #FCF8E3;
+    color: #8A6D3B;
+}
+
+.profile-heading-edit .fa-pencil-alt {
+    font-size: 12px;
+    width: auto;
+    margin-right: 5px;
+}
+
+.dl-horizontal dt {
+    text-align: left;
+    width: 110px;
+    font-weight: normal;
+    color: #777;
+}
+
+.dl-horizontal dd {
+    margin-left: 110px;
+    margin-bottom: 15px;
+}
+
+.dl-horizontal dd:first-of-type {
+    margin-top: 20px;
 }
