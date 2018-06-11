@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>快移</title>
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<link href="/ky/css/base.css" rel="stylesheet">
+	<link href="/ky/css/style.css" rel="stylesheet">
+	<link href="/ky/css/authpage.css" rel="stylesheet">
+
+	<!-- order css -->
+	<link href="/ky/css/order/order.css" rel="stylesheet">
+
+	<script type="text/javascript" src="/ky/js/jquery.js"></script>
+	<script type="text/javascript" src="/ky/js/jquery.wallform.js"></script>
+	<script type="text/javascript" src="/ky/js/www.js"></script>
+	<script type="text/javascript" src="/ky/js/funLib.js"></script>
+	<script type="text/javascript" src="/ky/js/arithUtil.js"></script>
+	<script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
+    <script type="text/javascript" src="/ky/layer-v3.1.1/layer.js"></script>
+
+	<!-- layui -->
+	<link href="/ky/layui-v2.3.0/css/layui.css" rel="stylesheet" media="all">
+	<script type="text/javascript" src="/ky/layui-v2.3.0/layui.js"></script>
+
+	<!-- pdf -->
+	<script type="text/javascript" src="/ky/pdf/pdf.js"></script>
+	<script type="text/javascript" src="/ky/pdf/pdf.worker.js"></script>
+
+	<!--  -->
+	<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!--  -->
+	<!--<link href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">-->
+
+	<style type="text/css">
+		.bg_box{width:880px;margin:0 auto;overflow:hidden;}
+		.bg_box p{float:left;}
+		.bg_box span{float:right;color:#a0a0a0;}
+		.trackbg{position:absolute;width:4px;height:100%;top:52px;left:13px;background: #7BBC18;}
+		.info_btn_box{padding:20px;}
+		#order_change{display:none;}
+		.o_tab ul li {width:236px;}
+		.order_progress{padding:0 20px;border-top:5px solid #df7e20;}
+		.progress{display:block; padding: 10px 0;margin:0 -10px;overflow:hidden; height: 60px;}
+		.progress p{float: left;margin:0 10px;font-size: 12px;}
+		.icon_bg1,.icon_bg2,.icon_bg3{
+			width: 210px;
+			height:40px;
+			background-color:#A0A0A0;
+			position:relative;
+			color:#000;
+			line-height: 40px;
+		}
+		/*.icon_bg1:before, .icon_bg1:after, .icon_bg2:before, .icon_bg2:after, .icon_bg3:before, .icon_bg3:after{*/
+			/*width:0px;*/
+			/*height:0px;*/
+			/*border:transparent solid;*/
+			/*position:absolute;*/
+			/*left:100%;*/
+			/*content:""*/
+		/*}*/
+		/*.icon_bg2:before, .icon_bg3:before{*/
+			/*border-width:20px;*/
+			/*border-left-color: #f5f5f5;*/
+			/*left: 0;*/
+		/*}*/
+		/*.icon_bg1:after, .icon_bg2:after{*/
+			/*border-width:20px;*/
+			/*border-left-color: #A0A0A0;*/
+		/*}*/
+		.finish{background-color:#4CAF50;
+			color:#fff;}
+		/*.finish:after{*/
+			/*border-width:20px;*/
+			/*border-left-color: #4CAF50;*/
+		/*}*/
+		.go{background-color:#df7e20;
+			color:#fff;}
+		.go:after{border-left-color: #df7e20;}
+		.gocursor {cursor: pointer;}
+		.od_ht_dl{border-top:1px solid #ddd;border-bottom:1px solid #ddd;overflow:hidden;}
+
+		.sign-button {
+			position: absolute;
+			height: 100px;
+			width: 100px;
+			top: 50px;
+			right: 20px;
+			background: #b4d145;
+			display: block;
+			line-height: 100px;
+			opacity: 0.6;
+			border-radius: 50px;
+			text-align: center;
+			cursor: pointer;
+			font-size: large;
+			color:#ffffff;
+		}
+		.person-sign-button {
+			position: absolute;
+			height: 100px;
+			width: 100px;
+			top: 180px;
+			right: 20px;
+			background: #b4d145;
+			display: block;
+			line-height: 100px;
+			opacity: 0.6;
+			border-radius: 50px;
+			text-align: center;
+			cursor: pointer;
+			font-size: large;
+			color:#ffffff;
+		}
+		.download-button {
+			position: absolute;
+			height: 100px;
+			width: 100px;
+			top: 320px;
+			right: 20px;
+			background: #7180eb;
+			display: block;
+			line-height: 100px;
+			opacity: 0.6;
+			border-radius: 50px;
+			text-align: center;
+			cursor: pointer;
+			font-size: large;
+			color:#ffffff;
+		}
+		.et-auth-bg-orange {
+			background:#f08c00;
+		}
+	</style>
+</head>
+<body>
+<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
+<div class="o_content_wrap w1200 m0a clearfix">
+    <?php echo $this->render(SEED_WWW_TPL.'/left_menu.phtml');?>
+    <div class="o_content fr w940">
+        <?php echo $this->render(SEED_WWW_TPL.'/sale/viewtop.phtml');?>
+        <div class="order_table">
+            <div class="o_tab" id="o_tab">
+                <ul>
+                    <li><a><!--订单信息--><?php echo $this->translate('orderVINF');?></a></li>
+                    <li id="bgwl"><a><!--报关物流--><?php echo $this->translate('logistics');?></a></li>
+                    <li id="gzrz"><a><!--跟踪日志--><?php echo $this->translate('DERIL_log');?></a></li>
+                    <li id="wendang" style="width: 242px;"><a><!--文档--><?php echo $this->translate('file');?></a></li>
+                </ul>
+            </div>
+            <div class="order_info" id="order_info">
+                <div class="info_cont" id="order_change">
+                    <div class="n_o_c_tit">
+                        <h4><!--订单信息预览--><?php echo $this->translate('view').$this->translate('orderINF');?></h4>
+
+                        <?php if($this->CompOrderAdmin==true && $this->allowEdit==1):?>
+                            <a class="p_ed fr mt10" href="<?php echo '/user/sale/edit?'.base64_encode($this->orderid);?>"></a>
+                        <?php endif;?>
+
+                    </div>
+                    <div class="info_cont clearfix">
+                        <dl class="fl">
+                            <dt class="fl"><!--买家-->
+                                <?php echo $this->translate('buyers');?></dt>
+                            <dd class="buyer_contacts"><?php echo $this->orders['buyerName'];?></dd>
+                        </dl>
+                        <dl class="fl">
+                            <dt class="fl"><!--买家联系人--><?php echo $this->translate('buyerATTN');?></dt>
+                            <dd class="buyer_contacts"><?php echo $this->orders['buyerContactName'];?></dd>
+                        </dl>
+                        <dl class="fl">
+                            <dt class="fl"><!--订单货币--><?php echo $this->translate('payCNY');?></dt>
+                            <dd class="buyer_contacts"><?php echo $this->orders['buyerCrnCode'];?></dd>
+                        </dl>
+                        <dl class="fl">
+                            <dt class="fl"><!--本单联系人--><?php echo $this->translate('thisATTN');?></dt>
+                            <dd class="buyer_contacts"><?php echo $this->orders['vendorContactName'];?></dd>
+                        </dl>
+                        <dl class="fl">
+                            <dt class="fl"><!--结算方式--><?php echo $this->translate('remitMD');?></dt>
+                            <dd class="fl price_rules"> <?php echo $this-> ShowDictionaryTo('datatest_setting',$this->userLangCode,$this->dic_Setting['PAYMENT_TERM'],$this->orders['paymentTerm']);?></dd>
+                        </dl>
+                        <dl class="fl">
+                            <dt class="fl"><!--支付期限--><?php echo $this->translate('payDD');?></dt>
+                            <dd class="fl price_rules"><?php echo $this->orders['paymentPeriod'];?>
+                                &nbsp;&nbsp;DAYS</dd>
+                        </dl>
+                        <dl class="fl" id="chukou">
+                            <dt class="fl"><!--出口方式--><?php echo $this->translate('exportMD');?></dt>
+                            <dd class="fl price_rules"><?php if($this->orders['isSelfSupport']==true){echo $this->translate('sellersEX'); }else{ echo $this->translate('siteEX');}?></dd>
+                        </dl>
+
+                        <dl class="fl">
+                            <dt class="fl"><!--计价方式--><?php echo $this->translate('payJJ');?></dt>
+                            <dd class="buyer_contacts"><?php echo $this-> ShowDictionaryTo('datatest_setting',$this->userLangCode,$this->dic_Setting['ORDER_QUOTATION_MODE'],$this->orders['quotationMode']);?></dd>
+                        </dl>
+                        <dl class="fl">
+                            <dt class="fl"><!--价格条款--><?php echo $this->translate('payPrice');?></dt><dd class="fl price_rules"><?php echo $this->orders['priceTerm'];?></dd>
+                        </dl>
+                        <dl class="fl">
+                            <dt class="fl"><!--包装方式--><?php echo $this->translate('payCasing');?></dt>
+                            <dd class="fl price_rules"><?php echo $this->ShowDictionaryTo('datatest_setting',$this->userLangCode,$this->dic_Setting['ORDER_PACKING_MODE'],$this->orders['packingMode']);?></dd>
+                        </dl>
+                        <dl class="fl" style="width:100%">
+                            <dt class="fl"><!--包装说明--><?php echo $this->translate('packINF');?></dt>
+                            <dd class="fl price_rules"><?php echo $this->orders['packingDesc'];?></dd>
+                        </dl>
+                    </div>
+                    <div class="info_tit">
+                        <h4><!--商品清单--><?php echo $this->translate('payGoods');?></h4>
+                    </div>
+                    <div class="info_table_box" id="selectgoods_view">
+                        <?php if(is_array($this->orders['orderItemList']) && count($this->orders['orderItemList'])>0):?>
+                            <?php foreach ($this->orders['orderItemList'] as $k=>$goods):?>
+                                <li id=<?php echo $goods['productID'];?>>
+                                    <div class="pro_view">
+                                        <a href="javascript:itemApp('<?php echo $goods['itemID'];?>','<?php echo $this->orders['buyerCrnCode'];?>');" >
+                                            <em><?php echo $k+1;?></em></a>
+                                        <p>
+                                            <label class="public_lab  mr10"><!--商品名称--><?php echo $this->translate('productNAME');?></label>
+                                            <?php echo $this->showOrderViewGoods($goods['productName']);?>
+                                        </p>
+                                        <p>
+                                            <label class="public_lab  mr10"><!--英文名称--><?php echo $this->translate('productENNAME');?></label>
+                                            <?php echo $this->showOrderViewGoods($goods['productEnName']);?>
+                                        </p>
+                                        <p>
+                                            <label class="public_lab  mr10"><!--包装类型--><?php echo $this->translate('packageTYPE');?></label>
+                                            <span class="view_span" title="<?php echo $this->ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PACKING_TYPE'],$goods['packingType']);?>"><?php echo $this->ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PACKING_TYPE'],$goods['packingType']);?></span>
+                                        </p>
+                                        <p>
+                                            <label class="public_lab  mr10"><!--HSCode--><?php echo $this->translate('HSCODE');?></label>
+                                            <span class="view_span" title="<?php echo $goods['hscode'];?>"><?php echo $goods['hscode'];?></span>
+                                        </p>
+                                        <p>
+                                            <label class="public_lab  mr10"><!--品牌--><?php echo $this->translate('brand');?></label>
+                                            <?php echo $this->showOrderViewGoods($goods['productBrand']);?>
+                                        </p>
+                                        <p>
+                                            <label class="public_lab  mr10"><!--型号--><?php echo $this->translate('model');?></label>
+                                           <?php echo $this->showOrderViewGoods($goods['productModel']);?>
+                                        </p>
+                                        <p>
+                                            <label class="public_lab  mr10"><!--材质--><?php echo $this->translate('productMaterial');?></label>
+                                            <?php echo $this->showOrderViewGoods($goods['productMaterial']);?>
+                                        </p>
+                                        <p>
+                                            <label class="public_lab  mr10"><!--功能用途--><?php echo $this->translate('functionUsage');?></label>
+                                            <?php echo $this->showOrderViewGoods($goods['functionUsage']);?>
+                                        </p>
+                                    </div>
+                                    <table  class="n_sp_tab tc" id=<?php echo $goods['productID'];?>>
+                                        <tr>
+                                            <th><!--价格--><?php echo $this->translate('orderprice');?></th>
+                                            <th><!--数量--><?php echo $this->translate('number');?></th>
+                                            <th style="width: 100px;"><!--金额--><?php echo $this->translate('ordertotal');?></th>
+                                            <?php if($this->orders['quotationMode']=='IV'):?>
+                                                <th class="uije"><!--开票价格--><?php echo $this->translate('uiprice');?></th>
+                                                <th class="uije"><!--开票金额--><?php echo $this->translate('uitotal');?></th>
+                                            <?php else:?>
+                                                <!--采购价格 采购金额-->
+                                                <?php if($goods['productionMode']=='02'):?>
+                                                    <th class="poje"><?php echo $this->translate('purchaseUnitPrice');?></th>
+                                                    <th class="poje"><?php echo $this->translate('purtotal');?></th>
+                                                <?php endif;?>
+                                            <?php endif;?>
+                                            <th><!--件数--><?php echo $this->translate('quantity');?></th>
+                                            <th><!--净重--><?php echo $this->translate('netWeight');?></th>
+                                            <th><!--毛重--><?php echo $this->translate('grossWeight');?></th>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="w50b"><?php echo $this->orders['buyerCrnCode'];?>&nbsp;
+                                                </span><?php echo $goods['unitPrice'];?></td>
+                                            <td><?php echo $goods['quantity'];?>
+                                                <span id="num_dw" class="w30b">&nbsp;
+                                                    <?php echo $this->ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['PRODUCT_PRICING_UNIT'],$goods['pricingUnit']);?></span></td>
+                                            <td><span class="w50b"><?php echo $this->orders['buyerCrnCode'];?>&nbsp;</span><?php echo $goods['totalPrice'];?></td>
+                                            <?php if($this->orders['quotationMode']=='IV'||$goods['productionMode']=='02'):?>
+                                                <td class="uije"><span class="w50b"><?php echo $goods['purCrnCode'];?>&nbsp;</span><?php echo $goods['purUnitPrice'];?></td>
+                                                <td class="uije"><span class="w50b"><?php echo $goods['purCrnCode'];?>&nbsp;</span><?php echo $goods['totalPurPrice'];?></td>
+                                            <?php endif;?>
+                                            <td><!---总数量除以每件数量=件数--><?php echo $goods['totalPackage'];?></td>
+                                            <td><?php echo $goods['totalNetWeight'];?><span class="w50b">&nbsp;KGS</span></td>
+                                            <td><?php echo $goods['totalGrossWeight'];?><span class="w50b">&nbsp;KGS</span></td>
+                                        </tr>
+                                    </table>
+                                </li>
+                            <?php endforeach; ?>
+                        <?php endif;?>
+                    </div>
+                    <div class="n_sp_total tl">
+                        <p class="p_total"><!--总净重：--><?php echo $this->translate('shopNet');?>&nbsp;<span id="zjinzhong"><?php echo $this->orders['totalNetWeight'];?></span>&nbsp;<b>KGS</b></p>
+                        <p class="p_total"><!--总毛重：--><?php echo $this->translate('shopGross');?>&nbsp;<span id="zmaozhong"><?php echo $this->orders['totalGrossWeight'];?></span>&nbsp;<b>KGS</b></p>
+                        <p class="p_total" style="width:22%"><!--订单总金额：--><?php echo $this->translate('shopTotal');?>&nbsp;<b><?php echo $this->orders['buyerCrnCode']; ?>&nbsp;</b><span id="zjine"><?php echo $this->orders['totalAmount'];?></span></p>
+                        <p class="p_total" style="width:44%"><!--订单汇率：--><?php echo $this->translate('shopPrities');?><span id="huilv2" class="huilv"></span></p>
+                    </div>
+                    <div class="info_cont clearfix">
+                        <dl class="fl">
+                            <dt class="fl"><!--运输方式--><?php echo $this->translate('moveMD');?></dt><dd class="place_contacts"><?php echo $this->ShowDictionaryTo('datatest_setting',$this->userLangCode,$this->dic_Setting['SHIPPING_METHOD'],$this->orders['shippingMethod']);?></dd>
+                        </dl>
+                        <dl class="fl" id="bgkan">
+                            <dt class="fl"><!--报关口岸--><?php echo $this->translate('POCRC');?></dt>
+                            <dd class="fl packing_method"> <?php echo $this-> ShowDictionaryTo('EXPORT_POINTS',$this->userLangCode,$this->dic_Setting['EXPORT_POINTS'],$this->orders['clearancePlace']);?></dd>
+                        </dl>
+                        <dl class="fl">
+                            <dt class="fl"><!--起运港--><?php echo $this->translate('portSHIP'); ?></dt>
+                            <dd>
+                                <?php echo $this->ShowDictionaryTo($this->port, $this->userLangCode, $this->port, $this->loadingPort); ?>
+                            </dd>
+                        </dl>
+                        <dl class="fl">
+                            <dt class="fl"><!--卸货港--><?php echo $this->translate('portDSCG'); ?></dt>
+                            <dd>
+                                <?php echo $this->ShowDictionaryTo($this->port, $this->userLangCode,  $this->port,$this->dischargePort); ?>
+                            </dd>
+                        </dl>
+                        <dl class="fl">
+                            <dt class="fl"><!--交货港--><?php echo $this->translate('portDLVY'); ?></dt>
+                            <dd>
+                                <?php echo $this->ShowDictionaryTo($this->port, $this->userLangCode, $this->port, $this->deliveryPort); ?>
+                            </dd>
+                        </dl>
+                        <dl class="fl">
+                            <dt class="fl"><!--预计交货日期--><?php echo $this->translate('mabyDATE');?></dt>
+                            <dd class="destination"><?php echo  date('Y-m-d',strtotime($this->orders['deliveryDate']));?></dd>
+                        </dl>
+                        <dl class="fl" <?php if($this->orders['needShipping']==true){echo 'style="width:100%";';}else{echo 'style="display:none;"';}?>>
+                            <dt class="fl"><!--装柜类型--><?php echo $this->translate('isFCL');?></dt>
+                            <dd class="cabinet"><?php echo $this-> ShowDictionaryTo("datatest_setting",$this->userLangCode,$this->dic_Setting['SHIPPING_SERVICE_TYPE'],$this->orders['shippingServiceType']);?></dd>
+                        </dl>
+                        <?php if($this->orders['sizeQuantityMap']):?>
+                        <dl class="fl" <?php if($this->orders['needShipping']==true){if($this->orders['shippingServiceType']=='FCL'){echo 'style="width:100%;"';}else{echo 'style="display:none;"';}}else{echo 'style="display:none;"';}?>>
+                            <dt class="fl"><!--装柜数量--><?php echo $this->translate('infoFCL'); ?></dt>
+                                <dd class="fl settlement">
+                                    <?php if(!empty($this->orders['sizeQuantityMap']['20GP'])):?>
+                                        <em class="num1"><a>20GP*</a><?php echo $this->orders['sizeQuantityMap']['20GP'];?></em>
+                                    <?php endif;?>
+
+                                    <?php if(!empty($this->orders['sizeQuantityMap']['40GP'])):?>
+                                        <em class="num1"><a>40GP*&nbsp;</a><?php echo $this->orders['sizeQuantityMap']['40GP'];?></em>
+                                    <?php endif;?>
+
+                                    <?php if(!empty($this->orders['sizeQuantityMap']['40HP'])):?>
+                                        <em class="num1"><a>40HQ*&nbsp;</a><?php echo $this->orders['sizeQuantityMap']['40HP'];?></em>
+                                    <?php endif;?>
+
+                                    <?php if(!empty($this->orders['sizeQuantityMap']['45HP'])):?>
+                                        <em class="num1"><a>45HQ*&nbsp;</a><?php echo $this->orders['sizeQuantityMap']['45HP'];?></em>
+                                    <?php endif;?>
+
+                                    <?php if(!empty($this->orders['sizeQuantityMap']['20OT'])):?>
+                                        <em class="num1"><a>20OT*&nbsp;</a><?php echo $this->orders['sizeQuantityMap']['20OT'];?></em>
+                                    <?php endif;?>
+
+                                    <?php if(!empty($this->orders['sizeQuantityMap']['40OT'])):?>
+                                        <em class="num1"><a>40OT*&nbsp;</a><?php echo $this->orders['sizeQuantityMap']['40OT'];?></em>
+                                    <?php endif;?>
+                                </dd>
+                        </dl>
+                        <?php endif;?>
+                        <?php if(($this->orders['needShipping'] == true && $this->accountID=$this->orders['shippingClient'])||($this->orders['needTrucking'] == true &&$this->accountID=$this->orders['truckingClient'])):?>
+                            <dl class="fl">
+                                <dt class="fl"><!--物流要求--><?php echo $this->translate('logisticND'); ?></dt>
+                                <dd class="fl log_service"><?php echo $this->orders['shippingRequest']; ?></dd>
+                            </dl>
+                        <?php endif;?>
+                        <div  id="baoguanmk2">
+                        <dl class="fl" <?php if($this->orders['isAssignCustomsAgency']==false){echo 'style="display:none;"';}?>>
+                            <dt class="fl"><!--报关行名称--><?php echo $this->translate('nameCHB');?></dt>
+                            <dd class="cabinet"><?php echo $this->orders['customsAgencyName'];?></dd>
+                        </dl>
+                        <dl class="fl" <?php if($this->orders['isAssignCustomsAgency']==false){echo 'style="display:none;"';}?>>
+                            <dt class="fl"><!--报关要求--><?php echo $this->translate('needCHB');?></dt><dd class="cabinet"><?php echo $this->orders['customClearanceRequest'];?></dd>
+                        </dl>
+                        </div>
+                    </div>
+                    <?php if($this->orders['paymentTerm']!="T/T"):?>
+                    <?php if(($this->orders['needFinancing'] == true)&&($this->accountID=$this->orders['financingClient'])):?>
+                    <div class="info_cont clearfix" id="jinrong2">
+                        <dl class="fl" style="width: 100%;height: 100px;">
+                            <dt class="fl"><!--金融要求--><?php echo $this->translate('needOTH');?></dt>
+                            <dd class="buyer_contacts"><?php echo $this->orders['financingRequest'];?></dd>
+                        </dl>
+                    </div>
+                    <?php endif;?>
+                    <?php endif;?>
+
+                </div>
+                <div class="info_cont" id="order_change">
+                    <div id="declaration"></div>
+                    <div id="shipping"></div>
+                    <div id="trucking"></div>
+                </div>
+                <div class="info_cont" id="order_change">
+                    <div class="info_h3 clearfix">
+                        <h3 class="fl"></h3>
+                        <div class="info_btn_box fr">
+                            <a class="by_time" id="BYdate" href="javascript:void(0);"><!--按时间分类--><?php echo $this->translate('timeCLASS');?></a>
+                            <a class="by_event" id="BYevent"  href="javascript:void(0);"><!--按事件分类--><?php echo $this->translate('eventCLASS');?></a>
+                        </div>
+                    </div>
+                    <div id="track">
+                    </div>
+                </div>
+                <div class="info_cont">
+                    <div id="attachment"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
+<script type="text/javascript">
+layui.use('form', function(){
+	var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+
+	//……
+
+	//但是，如果你的HTML是动态生成的，自动渲染就会失效
+	//因此你需要在相应的地方，执行下述方法来手动渲染，跟这类似的还有 element.init();
+	form.render();
+});
+
+function itemApp($id,$crn) {
+	$app="view";
+	// $prcetyp 1 表示采购价格 2 表示开票价格 金额
+
+	layer.open({
+		type: 2,
+		title: false,
+		shadeClose: true,
+		shade: 0.8,
+		area: ['700px', '600px'],
+		content: '/user/orderauth/item?ID=' + $id+'&app='+$app+'&crn='+$crn
+	});
+}
+$(function(){
+	var hasNoEContract = $("#hasNoEContract").val();
+	if (hasNoEContract == "True") {
+		$("#attactUpDiv").show();
+	} else {
+		$("#attactUpDiv").hide();
+	}
+
+	/*  编辑订单 必备：orderType DT为内贸  IT为外贸*/
+	orderType='<?php echo $this->orders['orderType'];?>';
+	if(orderType=='DT'){
+		$("#chukou").hide();
+		$("#baoguanmk2").hide();
+		$("#bgkan").hide();
+	}else {
+		$("#chukou").show();
+		$("#baoguanmk2").show();
+		$("#bgkan").show();
+	}
+	jinrong='<?php echo $this->orders['paymentTerm'];?>';
+	if(jinrong=="T/T"){
+		$("#jinrong2").hide();
+	}else {
+		$("#jinrong2").show();
+	}
+
+	//获取汇率view 汇率 统一走 listchange 接口 不能同 新增 一样
+	isRate('<?php echo  $this->veorderID;?>');
+
+	var orderID='<?php echo $this->orders['orderID'];?>';
+	$('#bgwl').click(function(){
+		$('#declaration').load( '<?php echo $this->BaseUrl();?>/sale/declaration',{'orderID':orderID});
+		$('#shipping').load( '<?php echo $this->BaseUrl();?>/sale/shipping',{'orderID':orderID});
+		$('#trucking').load( '<?php echo $this->BaseUrl();?>/sale/trucking',{'orderID':orderID});
+		var declaration=$('#declaration').html();
+		var shipping=$('#shipping').html();
+		var trucking=$('#trucking').html();
+		var bgwl=declaration+shipping+trucking;
+		if(bgwl==null||bgwl==""){
+			$('#declaration').html('<?php $this->translate('noData');?>');
+		}
+	});
+	$('#gzrz').click(function(){
+		$('#track').load( '<?php echo $this->BaseUrl();?>/sale/track',{'orderID':orderID,'view':'event'});
+		$('#BYdate').removeClass('on');
+		$('#BYevent').addClass('on');
+	});
+	$('#BYdate').click(function(){
+
+		$('#track').load( '<?php echo $this->BaseUrl();?>/sale/track',{'orderID':orderID,'view':'date'});
+		$('#BYdate').addClass('on');
+		$('#BYevent').removeClass('on');
+	});
+	$('#BYevent').click(function(){
+		$('#track').load( '<?php echo $this->BaseUrl();?>/sale/track',{'orderID':orderID,'view':'event'});
+		$('#BYdate').removeClass('on');
+		$('#BYevent').addClass('on');
+	});
+
+	$('#wendang').click(function(){
+		$('#attachment').load( '<?php echo $this->BaseUrl();?>/sale/attachment',{'orderID':orderID});
+	});
+
+
+	var executionStatus = <?php echo $this->vestut;?>;
+	if (executionStatus >= 7) {
+		$(".paymentTopDiv").load('<?php echo $this->BaseUrl();?>/sale/trading', {'orderID': $("#orderID").val()});
+	}
+
+	// *************************** 更新 ********************************
+
+});
+
+
+// *************************** PDF Sign View ********************************
+PDFJS.workerSrc = '/ky/pdf/pdf.worker.js';
+
+var pdfDoc = null;
+var pageNum = 1;
+var pageRendering = false;
+var pageNumPending = null;
+var scale = 1.5;
+
+function renderPage(num, id) {
+	var canvas = document.getElementById(id);
+	var ctx = canvas.getContext('2d');
+	pageRendering = true;
+	pdfDoc.getPage(num).then(function(page) {
+		var viewport = page.getViewport(scale);
+		canvas.height = viewport.height;
+		canvas.width = viewport.width;
+
+		var renderContext = {
+			canvasContext: ctx,
+			viewport: viewport
+		};
+		var renderTask = page.render(renderContext);
+
+		renderTask.promise.then(function() {
+			pageRendering = false;
+			if (pageNumPending !== null) {
+				// New page rendering is pending
+				renderPage(pageNumPending);
+				pageNumPending = null;
+			}
+		});
+	});
+
+	//document.getElementById('page_num').textContent = pageNum;
+}
+
+function queueRenderPage(num) {
+	if (pageRendering) {
+		pageNumPending = num;
+	} else {
+		renderPage(num);
+	}
+}
+
+function onPrevPage() {
+	if (pageNum <= 1) {
+		return;
+	}
+	pageNum--;
+	queueRenderPage(pageNum);
+}
+//document.getElementById('prev').addEventListener('click', onPrevPage);
+
+function onNextPage() {
+	if (pageNum >= pdfDoc.numPages) {
+		return;
+	}
+	pageNum++;
+	queueRenderPage(pageNum);
+}
+//document.getElementById('next').addEventListener('click', onNextPage);
+
+function initPdfView(pdfUrl, obj) {
+	$("#pdfPageBox").html("");
+	PDFJS.getDocument(pdfUrl).then(function(pdfDoc_) {
+		pdfDoc = pdfDoc_;
+		//document.getElementById('page_count').textContent = pdfDoc.numPages;
+		for (var i=1;i<=pdfDoc.numPages;i++){
+			var canvasDiv = $("<div style=\"padding-top:10px;padding-bottom:10px;\"></div>");
+			var pageNum = $("<div style=\"background-color: #999999;position:absolute;float: left;height:30px;width:60px;text-align: center;line-height: 30px;color:#ffffff;opacity: 0.6;\">"+i+"/"+pdfDoc.numPages+"</div>");
+			var canvas = $("<canvas></canvas>").attr("id", "the-canvas_"+i);
+			canvasDiv.append(pageNum);
+			canvasDiv.append(canvas);
+			$("#pdfPageBox").append(canvasDiv);
+			renderPage(i, "the-canvas_"+i);
+		}
+	});
+
+	var signTitle = "<?php echo $this->translate('signTitle');?>";
+	layer.open({
+		type: 1,	//Page层类型
+		area: ['1250px', '100%'],
+		title: signTitle,
+		shadeClose: true,
+		shade: 0.6,	//遮罩透明度
+		// anim: 1,	//0-6的动画形式，-1不开启
+		scrollbar: false,
+		content: $("#signViewDiv")
+	});
+
+	$(".download-button").attr("contractID_", obj.id);
+
+	if ($("#isESigned_" + obj.id).val() == 1) {
+		$(".sign-button").hide();
+	} else {
+		$(".sign-button").show().attr("contractID_", obj.id);
+	}
+
+	if ($("#isPSigned_" + obj.id).val() == 1) {
+		$(".person-sign-button").hide();
+	} else {
+		$(".person-sign-button").show().attr("contractID_", obj.id);
+	}
+}
+
+//document.getElementById('prev').addEventListener('click', onPrevPage);
+
+$(".download-button").bind("click",function(){
+	var contractID_ = $(this).attr("contractID_");
+	window.location.href = $("#contractAttachUrl_" + contractID_).val();
+});
+
+// ********************   获取验证手机号码 Start  *************************************
+$(".sign-button").bind("click",function(){
+	var getSignMobile = '/user/pur/getsignmobile';
+	$.post(getSignMobile,
+		{
+
+		},
+		function (data) {
+		}, 'json')
+		.success(function (data) {
+			var mobileStr = "<?php echo $this->translate('mobile_phone');?>";
+			$("#signMobileInput").val(mobileStr + " " +data);
+		})
+		.error(function () {
+			console.log("network error");
+		})
+		.complete(function () {
+			console.log("complete");
+		});
+
+	var signTitle = "<?php echo $this->translate('signTitle');?>";
+	layer.open({
+		type: 1,
+		title: signTitle,
+		shadeClose: true,
+		shade: 0.2,
+		area: ['500px', '420px'],
+		content: $('#doSignPDFLayDiv')
+	});
+});
+
+$(".person-sign-button").bind("click",function(){
+	var getSignMobile = '/user/pur/getpersonsignmobile';
+	$.post(getSignMobile,
+		{
+
+		},
+		function (data) {
+		}, 'json')
+		.success(function (data) {
+			var mobileStr = "<?php echo $this->translate('mobile_phone');?>";
+			$("#signMobileInput").val(mobileStr + " " +data);
+		})
+		.error(function () {
+			console.log("network error");
+		})
+		.complete(function () {
+			console.log("complete");
+		});
+
+	var signTitle = "<?php echo $this->translate('signTitle');?>";
+	layer.open({
+		type: 1,
+		title: signTitle,
+		shadeClose: true,
+		shade: 0.2,
+		area: ['500px', '420px'],
+		content: $('#doSignPDFLayDiv')
+	});
+	$("#signSendAuthCodeBtn").attr("personSend", "true");
+	$("#singConfirmBtn").attr("personSend", "true");
+});
+// ********************   获取验证手机号码 End  *************************************
+
+
+// ********************   获取短信验证码 Start  *************************************
+$("#signSendAuthCodeBtn").click(function () {
+	var sendSignAuthCode = '/user/pur/sendsignauthcode';
+	if ($(this).attr("personSend") == "true") {
+		sendSignAuthCode = '/user/pur/sendpersonsignauthcode';
+	}
+	$.post(sendSignAuthCode,
+		{
+
+		},
+		function (data) {
+		}, 'json')
+		.success(function (data) {
+			var sendingStr = "<?php echo $this->translate('signAuthCodeSending');?>";
+			$("#signSendAuthCodeBtn").text(sendingStr);
+
+			sendSignAuthCodeCountDown();
+		})
+		.error(function () {
+			console.log("network error");
+		})
+		.complete(function () {
+			console.log("complete");
+		});
+});
+
+var countdown=120;
+function sendSignAuthCodeCountDown() {
+	var obj = $("#signSendAuthCodeBtn");
+	settime(obj);
+}
+
+function settime(obj) { //发送验证码倒计时
+	if (countdown == 0) {
+		obj.attr('disabled',false);
+		//obj.removeattr("disabled");
+		obj.removeClass('layui-btn-disabled');
+		var btnStr = "<?php echo $this->translate('signSendAuthCode'); ?>";
+		obj.text(btnStr);
+		countdown = 120;
+		return;
+	} else {
+		console.log(countdown);
+		obj.attr('disabled',true);
+		obj.addClass('layui-btn-disabled');
+		var btnStr = "<?php echo $this->translate('signAuthCodeSending'); ?>";
+		obj.text(btnStr + "(" + countdown + ")");
+		countdown--;
+	}
+	setTimeout(function() {
+			settime(obj) }
+		,1000)
+}
+// ********************   获取短信验证码 End  *************************************
+
+
+
+// ********************   获取短信验证码 Start  *************************************
+$("#singConfirmBtn").click(function () {
+	var doSignPDF = '/user/pur/dosignpdf';
+	var contractID = $(".sign-button").attr("contractID_");
+	if ($(this).attr("personSend") == "true") {
+		doSignPDF = '/user/pur/dopersonsignpdf';
+		contractID = $(".person-sign-button").attr("contractID_");
+	}
+	$.post(doSignPDF,
+		{
+			contractID: contractID,
+			signAuthCode: $("#signAuthCode").val()
+		},
+		function (data) {
+		}, 'json')
+		.success(function (data) {
+			var signMsg = "<?php echo $this->translate('signFail');?>";
+			if (data != null && data != '') {
+				signMsg = "<?php echo $this->translate('signSuccess');?>";
+				layer.msg(signMsg);
+				window.location.reload();
+			} else {
+				$("#signAuthCode").val('');
+				layer.msg(signMsg);
+			}
+		})
+		.error(function () {
+			console.log("network error");
+		})
+		.complete(function () {
+			console.log("complete");
+		});
+});
+
+function sleep(ms) {
+	// return new Promise(resolve => setTimeout(resolve, ms))
+}
+// ********************   获取短信验证码 End  *************************************
+
+
+// ********************   显示非网签上传合同层 Start  *************************************
+function initSignViewNoEContract(obj) {
+
+	var signTitle = "<?php echo $this->translate('signTitle');?>";
+	layer.open({
+		type: 1,	//Page层类型
+		area: ['800px', '550px'],
+		title: signTitle,
+		// shadeClose: true,
+		shade: 0.6,	//遮罩透明度
+		// anim: 1,	//0-6的动画形式，-1不开启
+		scrollbar: false,
+		content: $("#signViewNoEContractDiv")
+	});
+
+
+	$("#signViewNoEContractDiv tr:not(:first)").empty();
+	//获取最后一行的data-id(标识行)
+	var rowIndex = $("#signViewNoEContractDiv tr:last").attr("data-row");
+	if (rowIndex == "" || rowIndex == null) {
+		rowIndex = parseInt(1);
+	} else {
+		rowIndex = parseInt(rowIndex) + 1;
+	}
+
+	var htmlList = '<tr data-row=' + rowIndex + '>';
+
+	htmlList += '<td><a href="#" id="" onclick="doDownload(\''+obj.id+'\')">' + $("#contractName_" + obj.id).val() + '</a></td>';
+
+	htmlList += '<td>' + $("#ext_" + obj.id).val() + '</td>';
+
+	htmlList += '<td><a href="#" id="" onclick="doDownload(\''+obj.id+'\')" class="order_contract_sign fr">下载</a></td>';
+
+	htmlList += '</td></tr>';
+	//在行最后添加数据
+	$("#signViewNoEContractDiv tr:last").after(htmlList);
+
+	$("#signNoEContractConfirmBtn").attr("contractID_", obj.id);
+	// alert(obj.id);
+	// alert($("#contractName_" + obj.id).val());
+}
+
+function doDownload(objID) {
+	window.location.href = $("#contractAttachUrl_" + objID).val();
+}
+// ********************   显示非网签上传合同层 End  *************************************
+
+
+// ********************   非网签签署合同提交按钮 Start  *************************************
+$("#signNoEContractConfirmBtn").click(function () {
+	var contractID = $(this).attr("contractID_");
+
+	var nidArr = "";
+	var nid = document.getElementsByName("attachNid[]");
+	for (var i = 0, j = nid.length; i < j; i++) {
+		nidArr += nid[i].value + "|";
+	}
+	var nameArr = "";
+	var name = document.getElementsByName("attachName[]");
+	for (var i = 0, j = name.length; i < j; i++) {
+		nameArr += name[i].value + "|";
+	}
+	var sizeArr = "";
+	var size = document.getElementsByName("attachSize[]");
+	for (var i = 0, j = size.length; i < j; i++) {
+		sizeArr += size[i].value + "|";
+	}
+	var attachTypeArr = "";
+	var attachType = document.getElementsByName("attachType[]");
+	for (var i = 0, j = attachType.length; i < j; i++) {
+		attachTypeArr += attachType[i].value + "|";
+	}
+
+
+	$.post(
+		'<?php echo $this->BaseUrl();?>/sale/agree',
+		{'contractID': contractID, 'name': nameArr, 'nid': nidArr, 'size': sizeArr, 'attachType': attachTypeArr},
+
+		function (data) {
+			if (data == '1') {
+				document.location.reload();
+			} else {
+				alert(data + 'failed,please try again!');
+			}
+		}, 'json');
+});
+// ********************   非网签签署合同提交按钮 End  *************************************
+
+
+// ********************   物流详情 Start  *************************************
+$(".deliveryViewClass").click(function (obj) {
+	var deliveryID = $(this).attr("deliveryID_");
+	var deliveryStatus = $(this).attr("deliveryStatus_");
+	var deliveryNo = $(this).attr("deliveryNo_");
+	$("#deliveryViewDiv").html("").load("<?php echo $this->BaseUrl();?>/sale/deliveryview", {
+		deliveryID: deliveryID
+	}, function () {
+		layer.closeAll();
+		layer.open({
+			type: 1,
+			title: false,
+			area: ['750px', '97%'],
+			skin: 'layui-layer-rim',
+			scrollbar: false,
+			shade: 0.5,
+			content: $("#deliveryViewDiv")
+		});
+
+		if (deliveryStatus == "1") {
+			$("#deliveryDelBtn").show();
+			$("#deliveryDelBtn").attr("deliveryID_", deliveryID);
+
+			$("#deliveryEditBtn").show();
+			$("#deliveryEditBtn").attr("deliveryID_", deliveryID);
+			$("#deliveryEditBtn").attr("deliveryNo_", deliveryNo);
+
+			$("#deliveryEditBtn").click(function () {
+				$("#deliveryViewDiv").html("");
+				$("#deliveryEditViewDiv").html("").load("<?php echo $this->BaseUrl();?>/sale/editdelivery", {
+					deliveryID: deliveryID
+				}, function () {
+					var auth_error = $('#deliveryEditDiv').find('.et-auth-error');
+					auth_error.hide();
+					layer.closeAll();
+
+					layer.open({
+						type: 1,
+						title: false,
+						area: ['750px', '97%'],
+						skin: 'layui-layer-rim',
+						scrollbar: false,
+						shade: 0.5,
+						content: $("#deliveryEditViewDiv")
+					});
+
+					$("input[name='deliveryQuantity_edit']").change(function () {
+						var unitPrice = $(this).parent().prev().find("label").html();
+						var quantity = $(this).val();
+						var totalAmount = arithMul(unitPrice, quantity);
+
+						totalAmount = formatCurrency(totalAmount, 2);
+						$(this).parent().next().find("label").html(totalAmount);
+					});
+
+					$("#deliveryEditConfirmBtn").click(function () {
+						var nidArr = "";
+						var nid = document.getElementsByName("attachNid[]");
+						for (var i = 0, j = nid.length; i < j; i++) {
+							nidArr += nid[i].value + "|";
+						}
+						var nameArr = "";
+						var name = document.getElementsByName("attachName[]");
+						for (var i = 0, j = name.length; i < j; i++) {
+							nameArr += name[i].value + "|";
+						}
+						var sizeArr = "";
+						var size = document.getElementsByName("attachSize[]");
+						for (var i = 0, j = size.length; i < j; i++) {
+							sizeArr += size[i].value + "|";
+						}
+						var attachTypeArr = "";
+						var attachType = document.getElementsByName("attachType[]");
+						for (var i = 0, j = attachType.length; i < j; i++) {
+							attachTypeArr += attachType[i].value + "|";
+						}
+						// var orderItemID_add = "";
+						var orderItemIDArr = "";
+						var orderItemID_add = document.getElementsByName("orderItemID_edit");
+						for (var i = 0, j = orderItemID_add.length; i < j; i++) {
+							orderItemIDArr += orderItemID_add[i].value + "|";
+						}
+
+						var deliveryQuantityArr = "";
+						var deliveryQuantity_add = document.getElementsByName("deliveryQuantity_edit");
+						for (var i = 0, j = deliveryQuantity_add.length; i < j; i++) {
+							deliveryQuantityArr += deliveryQuantity_add[i].value + "|";
+						}
+
+						var editDelivery = '/user/sale/editdeliverysave';
+						$.post(editDelivery,
+							{
+								deliveryID: deliveryID,
+								name: nameArr,
+								nid: nidArr,
+								size: sizeArr,
+								attachType: attachTypeArr,
+								orderItemID: orderItemIDArr,
+								deliveryQuantity: deliveryQuantityArr
+							},
+							function (data) {
+							}, 'json')
+							.success(function (data) {
+								if (data == '1') {
+									// layer.closeAll();
+									document.location.reload();
+								} else {
+									alert(data + 'failed,please try again!');
+								}
+							})
+							.error(function () {
+								console.log("network error");
+								var tips = "<?php echo $this->translate('et_tips04');?>";
+								auth_error.html("");
+								auth_error.html(tips);
+								auth_error.show();
+							})
+							.complete(function () {
+								console.log("complete");
+							});
+					});
+					$("#deliveryEditViewDelBtn").click(function () {
+						var delDelivery = '/user/sale/deldelivery';
+
+						layer.msg('确定删除发货单？', {
+							time: 0, //不自动关闭
+							btn: ['确定', '取消'],
+							zIndex: 99991014,
+							yes: function(index){
+								$.post(delDelivery,
+									{
+										deliveryID: deliveryID
+									},
+									function (data) {
+									}, 'json')
+									.success(function (data) {
+										if (data == '1') {
+											// layer.closeAll();
+											document.location.reload();
+										} else {
+											alert(data + 'failed,please try again!');
+										}
+									})
+									.error(function () {
+										console.log("network error");
+										var tips = "<?php echo $this->translate('et_tips04');?>";
+										auth_error.html("");
+										auth_error.html(tips);
+										auth_error.show();
+									})
+									.complete(function () {
+										console.log("complete");
+									});
+							}
+						});
+					});
+				});
+			});
+
+			$("#deliveryDelBtn").click(function () {
+				var auth_error = $('#deliveryEditDiv').find('.et-auth-error');
+				var deliveryID = $(this).attr("deliveryid_");
+
+				var delDelivery = '/user/sale/deldelivery';
+
+				layer.msg('确定删除发货单？', {
+					time: 0 //不自动关闭
+					,btn: ['确定', '取消']
+					,yes: function(index){
+						$.post(delDelivery,
+							{
+								deliveryID: deliveryID
+							},
+							function (data) {
+							}, 'json')
+							.success(function (data) {
+								if (data == '1') {
+									// layer.closeAll();
+									document.location.reload();
+								} else {
+									alert(data + 'failed,please try again!');
+								}
+							})
+							.error(function () {
+								console.log("network error");
+								var tips = "<?php echo $this->translate('et_tips04');?>";
+								auth_error.html("");
+								auth_error.html(tips);
+								auth_error.show();
+							})
+							.complete(function () {
+								console.log("complete");
+							});
+					}
+				});
+			});
+		} else {
+			$("#deliveryDelBtn").hide();
+			$("#deliveryEditBtn").hide();
+		}
+	});
+});
+
+$("#deliveryAddBtn").click(function () {
+	var orderID = '<?php echo $this->orders['orderID'];?>';
+	var deliveryCrnCode = '<?php echo $this->orders['buyerCrnCode'];?>';
+
+	$("#deliveryViewDiv").html("").load("<?php echo $this->BaseUrl();?>/sale/listorderitem", {
+		orderID: orderID,
+		deliveryCrnCode: deliveryCrnCode
+	}, function () {
+		layer.closeAll();
+		layer.open({
+			type: 1,
+			title: false,
+			area: ['750px', '97%'],
+			skin: 'layui-layer-rim',
+			scrollbar: false,
+			shade: 0.5,
+			content: $("#deliveryViewDiv")
+		});
+
+		$("#deliveryAddConfirmBtn").click(function () {
+			var auth_error = $('#deliveryAddDiv').find('.et-auth-error');
+
+			var nidArr = "";
+			var nid = document.getElementsByName("attachNid[]");
+			for (var i = 0, j = nid.length; i < j; i++) {
+				nidArr += nid[i].value + "|";
+			}
+			var nameArr = "";
+			var name = document.getElementsByName("attachName[]");
+			for (var i = 0, j = name.length; i < j; i++) {
+				nameArr += name[i].value + "|";
+			}
+			var sizeArr = "";
+			var size = document.getElementsByName("attachSize[]");
+			for (var i = 0, j = size.length; i < j; i++) {
+				sizeArr += size[i].value + "|";
+			}
+			var attachTypeArr = "";
+			var attachType = document.getElementsByName("attachType[]");
+			for (var i = 0, j = attachType.length; i < j; i++) {
+				attachTypeArr += attachType[i].value + "|";
+			}
+			// var orderItemID_add = "";
+			var orderItemIDArr = "";
+			var orderItemID_add = document.getElementsByName("orderItemID_add");
+			for (var i = 0, j = orderItemID_add.length; i < j; i++) {
+				orderItemIDArr += orderItemID_add[i].value + "|";
+			}
+
+			var deliveryQuantityArr = "";
+			var deliveryQuantity_add = document.getElementsByName("deliveryQuantity_add");
+			for (var i = 0, j = deliveryQuantity_add.length; i < j; i++) {
+				deliveryQuantityArr += deliveryQuantity_add[i].value + "|";
+			}
+
+			var doPrepareGoods = '/user/sale/preparesave';
+			$.post(doPrepareGoods,
+				{
+					orderID: orderID,
+					name: nameArr,
+					nid: nidArr,
+					size: sizeArr,
+					attachType: attachTypeArr,
+					orderItemID: orderItemIDArr,
+					deliveryQuantity: deliveryQuantityArr
+				},
+				function (data) {
+				}, 'json')
+				.success(function (data) {
+					if (data == '1') {
+						// layer.closeAll();
+						document.location.reload();
+					} else {
+						alert(data + 'failed,please try again!');
+					}
+				})
+				.error(function () {
+					console.log("network error");
+					var tips = "<?php echo $this->translate('et_tips04');?>";
+					auth_error.html("");
+					auth_error.html(tips);
+					auth_error.show();
+				})
+				.complete(function () {
+					console.log("complete");
+				});
+		});
+
+		$("input[name='deliveryQuantity_add']").change(function () {
+			var unitPrice = $(this).parent().prev().find("label").html();
+			var quantity = $(this).val();
+			var totalAmount = arithMul(unitPrice, quantity);
+
+			totalAmount = formatCurrency(totalAmount, 2);
+			$(this).parent().next().find("label").html(totalAmount);
+			// alert(unitPrice * quantity);
+		});
+	});
+});
+
+/* 发货详情页 */
+$(".deliveryDeliverViewBtn").click(function () {
+	var deliveryID = $(this).attr("deliveryID_");
+	$("#deliveryViewDiv").html("").load("<?php echo $this->BaseUrl();?>/sale/deliver", {
+		deliveryID: deliveryID
+	}, function () {
+		layer.closeAll();
+		layer.open({
+			type: 1,
+			title: false,
+			area: ['750px', '97%'],
+			skin: 'layui-layer-rim',
+			scrollbar: false,
+			shade: 0.5,
+			content: $("#deliveryViewDiv")
+		});
+
+		/* 发货 */
+		$("#deliveryDeliverGoodsBtn").click(function () {
+			var auth_error = $('#deliveryDeliverDiv').find('.et-auth-error');
+
+			var nidArr = "";
+			var nid = document.getElementsByName("attachNid[]");
+			for (var i = 0, j = nid.length; i < j; i++) {
+				nidArr += nid[i].value + "|";
+			}
+			var nameArr = "";
+			var name = document.getElementsByName("attachName[]");
+			for (var i = 0, j = name.length; i < j; i++) {
+				nameArr += name[i].value + "|";
+			}
+			var sizeArr = "";
+			var size = document.getElementsByName("attachSize[]");
+			for (var i = 0, j = size.length; i < j; i++) {
+				sizeArr += size[i].value + "|";
+			}
+			var attachTypeArr = "";
+			var attachType = document.getElementsByName("attachType[]");
+			for (var i = 0, j = attachType.length; i < j; i++) {
+				attachTypeArr += attachType[i].value + "|";
+			}
+
+			var deliverGoods = '/user/sale/deliversave';
+			$.post(deliverGoods,
+				{
+					deliveryID: deliveryID,
+					name: nameArr,
+					nid: nidArr,
+					size: sizeArr,
+					attachType: attachTypeArr
+				},
+				function (data) {
+				}, 'json')
+				.success(function (data) {
+					if (data == '1') {
+						// layer.closeAll();
+						document.location.reload();
+					} else {
+						alert(data + 'failed,please try again!');
+					}
+				})
+				.error(function () {
+					console.log("network error");
+					var tips = "<?php echo $this->translate('et_tips04');?>";
+					auth_error.html("");
+					auth_error.html(tips);
+					auth_error.show();
+				})
+				.complete(function () {
+					console.log("complete");
+				});
+		});
+	});
+});
+
+
+// ********************   物流详情 End  *************************************
+
+$(".signTopBtn").click(function () {
+	var executionStatus = <?php echo $this->vestut;?>;
+	$(".signTopDiv").show();
+	$(".deliveryTopDiv").hide();
+	$(".paymentTopDiv").hide();
+});
+
+$(".deliveryTopBtn").click(function () {
+	var executionStatus = <?php echo $this->vestut;?>;
+	if (executionStatus >= 7) {
+		$(".signTopDiv").hide();
+		$(".deliveryTopDiv").show();
+		$(".paymentTopDiv").hide();
+	}
+
+});
+
+$(".paymentTopBtn").click(function () {
+	var executionStatus = <?php echo $this->vestut;?>;
+	if (executionStatus >= 7) {
+		$(".signTopDiv").hide();
+		$(".deliveryTopDiv").hide();
+		$(".paymentTopDiv").show().load('<?php echo $this->BaseUrl();?>/sale/trading', {'orderID': $("#orderID").val()});
+	}
+});
+
+// ********************   开票资料 Start  *************************************
+$(".billingInfo").click(function () {
+	var deliveryID = $(this).attr("deliveryID_");
+
+	$("#billingInfoDiv").html("").load("<?php echo $this->BaseUrl();?>/sale/deliverbillinginfo", {
+		deliveryID: deliveryID
+	}, function () {
+		layer.closeAll();
+		layer.open({
+			type: 1,
+			title: false,
+			area: ['750px', '97%'],
+			skin: 'layui-layer-rim',
+			scrollbar: false,
+			shade: 0.5,
+			content: $("#billingInfoDiv")
+		});
+
+		layui.use('form', function() {
+			var form = layui.form;
+			form.render();
+		});
+
+		layui.use('element', function(){
+			var element = layui.element;
+			element.render();
+		});
+
+		$(".billingExpressEdit").click(function () {
+			$(".expressShow").hide();
+			$(".expressEdit").show();
+		});
+		$(".billingExpressEditSave").click(function () {
+			var deliveryID = $(this).attr("deliveryID_");
+			var supplierID = $(this).attr("supplierID_");
+			var expressType = $("#expressType").val();
+			var expressName = $("#expressType").find("option:selected").text();
+			var expressNo = $("#expressNo").val();
+
+			var editExpressNo = '/user/sale/editexpresssave';
+			$.post(editExpressNo,
+			{
+				deliveryID: deliveryID,
+				supplierID: supplierID,
+				expressType: expressType,
+				expressNo: expressNo
+			},
+			function (data) {
+			}, 'json')
+			.success(function (data) {
+				$(".expressName_").html(expressName);
+				$(".expressNo_").html(expressNo);
+
+				$("#expressType").val(expressType);
+				$("#expressNo").val(expressNo);
+
+				$(".expressShow").show();
+				$(".expressEdit").hide();
+			})
+			.error(function () {
+				console.log("network error");
+			})
+			.complete(function () {
+				console.log("complete");
+			});
+		});
+
+		$(".genBillInfoBtn").click(function () {
+			var deliveryID = $(this).attr("deliveryID_");
+
+			var supplierIDArray = "";
+			var supplierID = document.getElementsByName("supplierID");
+			for (var i = 0, j = supplierID.length; i < j; i++) {
+				supplierIDArray += supplierID[i].value + "|";
+			}
+
+			var bankAcctIDArray = "";
+			var bankAcctID = document.getElementsByName("bankAcctID");
+			for (var i = 0, j = bankAcctID.length; i < j; i++) {
+				bankAcctIDArray += bankAcctID[i].value + "|";
+			}
+
+			$(".genBillInfoBtn").attr("disabled", true);
+			var genBillingInfo = '/user/sale/genbillinginfo';
+			$.post(genBillingInfo,
+				{
+					deliveryID: deliveryID,
+					supplierID: supplierIDArray,
+					bankAcctID: bankAcctIDArray
+				},
+				function (data) {
+				}, 'json')
+				.success(function (data) {
+					layer.closeAll();
+
+					setTimeout(function () {
+					$("#company-auth").trigger("click");
+				}, 500);
+
+				$(".genBillInfoBtn").attr("disabled", false);
+			});
+		});
+	});
+});
+// ********************   开票资料 End  *************************************
+</script>
+</body>
+</html>
