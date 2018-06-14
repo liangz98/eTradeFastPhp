@@ -2,7 +2,7 @@
 class AdminController extends Seed_Controller_Action4Admin
 {
 	function loginAction()
-	{   
+	{
 		if ($this->_request->isPost()) {
 			try{
 				$session = Zend_Registry::get('session');
@@ -14,17 +14,19 @@ class AdminController extends Seed_Controller_Action4Admin
 					$this->view->message = '请输入用户名！';
 				}elseif(empty($password)){
 					$this->view->message = '请输入密码！';
-				}elseif(empty($vcode)){
-					$this->view->message = '请输入验证码！';
-				}elseif(strlen($vcode)!=5 || $vcode!=$session->vcode){
-					$this->view->message = '验证码不正确！';
-				}else {
+				}
+				// elseif(empty($vcode)){
+				// 	$this->view->message = '请输入验证码！';
+				// }elseif(strlen($vcode)!=5 || $vcode!=$session->vcode){
+				// 	$this->view->message = '验证码不正确！';
+				// }
+				else {
 					//登录认证
 					$adminM = new Seed_Model_User('system');
 					$loginRs = $adminM->isAdminValid($username,$password);
 					$token = $loginRs['token'];
 					$msg = $loginRs['msg'];
-					
+
 					if ($token) {
 						//写入SESSION
 						$auth = Seed_Auth::getInstance();
@@ -33,10 +35,10 @@ class AdminController extends Seed_Controller_Action4Admin
                         $wcUserM = new Wechat_Model_User('wechat');
                         $isService = $wcUserM->fetchOne(array('user_id' => $userInfo['user_id']), 'is_service');
                         $url = $isService=='1'?$this->view->seed_BaseUrl.'/wechat/livehelp':$this->view->seed_BaseUrl.'/';
-						
+
                         //记录用户日志
-						$user = $adminM->fetchRow(array('user_id'=>$userInfo['user_id']));					
-						$userLogM = new Seed_Model_UserLog('system');	
+						$user = $adminM->fetchRow(array('user_id'=>$userInfo['user_id']));
+						$userLogM = new Seed_Model_UserLog('system');
 						$insertData = array();
 		                $insertData['user_name'] = $user['user_name'];
 		                $insertData['real_name'] = $user['real_name'];
@@ -55,7 +57,7 @@ class AdminController extends Seed_Controller_Action4Admin
 			}
 		}
 	}
-	
+
 	function logoutAction()
 	{
 		//删除SESSION
@@ -66,7 +68,7 @@ class AdminController extends Seed_Controller_Action4Admin
 		Seed_Auth::getInstance()->clearIdentity();
 		Seed_Browser::redirect('退出成功！',$this->view->seed_BaseUrl.'/admin/login',1000,"top");
 	}
-	
+
 	function passwdAction()
 	{
 		if ($this->_request->isPost()) {
@@ -75,7 +77,7 @@ class AdminController extends Seed_Controller_Action4Admin
 				if($user_id<1)Seed_Browser::tip_show('用户错误！');
 	    		$adminM = new Seed_Model_User('system');
 				$userDetail = $adminM->fetchRow(array('user_id'=>$user_id));
-				
+
 				$updateData=array();
 	    		$f1 = new Zend_Filter();
 	    		$f1->addFilter(new Zend_Filter_StripTags());
@@ -83,7 +85,7 @@ class AdminController extends Seed_Controller_Action4Admin
 	    		$passwd = $f1->filter($this->_request->getPost('password'));
 	    		$confirm_passwd = $f1->filter($this->_request->getPost('confirm_password'));
 	    		$updateData['user_password'] = md5($userDetail['user_name'].md5($passwd));
-	    		
+
 	    		if($userDetail['user_password']!=md5($userDetail['user_name'].md5($old_passwd))){
 		    		Seed_Browser::tip_show('原密码错误！');
 	    		}elseif(empty($passwd)){

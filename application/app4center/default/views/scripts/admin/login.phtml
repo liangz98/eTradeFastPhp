@@ -25,22 +25,20 @@ if(file_exists($versionfile)){
       <p><strong>密&nbsp;&nbsp;码:</strong><small><span class="add_icon2">
         <input class="text1" name="password" type="password" id="password" />
       </span></small></p>
-      <p><strong>验证码:</strong><small><span class="add_icon3">
-      <input class="text2" name="vcode" onkeypress="dosubmit(event)" type="text" id="vcode" />
-      </span><img src="<?php echo $this->BaseUrl();?>/vcode"  alt="点击刷新" onclick="this.src='<?php echo $this->BaseUrl();?>/vcode?&ref='+Math.random()" /></small></p>
+
       <p><small>
         <input class="login_bnt" name="" type="submit" value="登 录"/>
       </small>
       </p>
      <?php echo (!empty($this->message))?"<p><span style='color:#ff0000;'>&nbsp;".$this->escape($this->message)."</span></p>":"";?>
-      
+
     </form>
   </div>
 </div>
 <script type="text/javascript">
-function dosubmit(e){
-  try{var keyCode = e.keyCode?e.keyCode:(e.which?e.which:e.charCode);if(keyCode == 13)document.getElementById('f').submit();}catch(e){}
-}
+// function dosubmit(e){
+//   try{var keyCode = e.keyCode?e.keyCode:(e.which?e.which:e.charCode);if(keyCode == 13)document.getElementById('f').submit();}catch(e){}
+// }
 </script>
 </body>
 </html>

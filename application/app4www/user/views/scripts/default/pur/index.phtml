@@ -100,10 +100,10 @@
                 <?php if(is_array($this->e) && count($this->e)>0):?>
                 <?php foreach ($this->e as $k=>$orders):?>
                     <tr>
-                        <td><a href="<?php  if(!empty($this->pur_isAllowView)){echo '/user/pur/'.$this->linked.'?'.base64_encode($orders['orderID']);}?>"><?php echo $orders['orderNo'];?></a></td>
-                        <td><a href="<?php  if(!empty($this->pur_isAllowView)){echo '/user/pur/'.$this->linked.'?'.base64_encode($orders['orderID']);}?>"><?php echo $orders['vendorCrnCode'].'  '.$orders['totalAmount'];?></a></td>
-                        <td><a href="<?php  if(!empty($this->pur_isAllowView)){echo '/user/pur/'.$this->linked.'?'.base64_encode($orders['orderID']);}?>"><?php echo $orders['vendorName'];?></a></td>
-                        <td><a href="<?php  if(!empty($this->pur_isAllowView)){echo '/user/pur/'.$this->linked.'?'.base64_encode($orders['orderID']);}?>"><?php echo date('Y-m-d H:i:s',strtotime($orders['lastUpdate']));?></a></td>
+                        <td><a href="<?php  if(true){echo '/user/pur/'.$this->linked.'?'.base64_encode($orders['orderID']);}?>"><?php echo $orders['orderNo'];?></a></td>
+                        <td><a href="<?php  if(true){echo '/user/pur/'.$this->linked.'?'.base64_encode($orders['orderID']);}?>"><?php echo $orders['vendorCrnCode'].'  '.$orders['totalAmount'];?></a></td>
+                        <td><a href="<?php  if(true){echo '/user/pur/'.$this->linked.'?'.base64_encode($orders['orderID']);}?>"><?php echo $orders['vendorName'];?></a></td>
+                        <td><a href="<?php  if(true){echo '/user/pur/'.$this->linked.'?'.base64_encode($orders['orderID']);}?>"><?php echo date('Y-m-d H:i:s',strtotime($orders['lastUpdate']));?></a></td>
                         <?php if($this->CompOrderAdmin==true):?>
                             <td>
                                 <div class="cc_box">

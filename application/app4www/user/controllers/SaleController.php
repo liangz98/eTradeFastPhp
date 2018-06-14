@@ -791,7 +791,7 @@ class SaleController extends Kyapi_Controller_Action
         }
 
         if (defined('SEED_WWW_TPL')) {
-            $content = $this->view->render(SEED_WWW_TPL . "/sale/view.phtml");
+            $content = $this->view->render(SEED_WWW_TPL . "/sale/view_.phtml");
             echo $content;
             exit;
         }
