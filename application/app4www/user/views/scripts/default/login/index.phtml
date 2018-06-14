@@ -145,7 +145,7 @@
 <script type="text/javascript">
     var ref = "";
 	$().ready(function() {
-		if ($.cookie("rmbUser") == "true") {
+		if ($.cookie("rmbUser") === "true") {
 			$("#remember").attr("checked", true);
 			$("#ecommloginname").val($.cookie("username"));
 		}

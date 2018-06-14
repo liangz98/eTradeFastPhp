@@ -18,7 +18,7 @@ if(file_exists($versionfile)){
 <div id="bodybg">
 <div class="logo"><img src="/images/center/logo.png" /><?php if(defined('SEED_VERSION')):?><br>系统版本：<?php echo SEED_VERSION;?><?php endif;?></div>
   <div class="loginfrom">
-    <form method="post" name="f" id="f">
+    <form method="post" name="f" id="f" onsubmit="doSubmit(event)">
       <p><strong>用户名:</strong><small><span class="add_icon1">
         <input class="text1" name="username" type="text" id="username" />
         </span></small></p>
@@ -35,10 +35,26 @@ if(file_exists($versionfile)){
     </form>
   </div>
 </div>
+
+<script src="/ky/js/jquery.cookie.js"></script>
 <script type="text/javascript">
-// function dosubmit(e){
-//   try{var keyCode = e.keyCode?e.keyCode:(e.which?e.which:e.charCode);if(keyCode == 13)document.getElementById('f').submit();}catch(e){}
-// }
+
+    $().ready(function() {
+        if ($.cookie("adminAutoUser") === "true") {
+            $("#username").val($.cookie("adminUsername"));
+            $("#password").val($.cookie("adminPassword"));
+        }
+    });
+
+    function doSubmit(e){
+    //   try{var keyCode = e.keyCode?e.keyCode:(e.which?e.which:e.charCode);if(keyCode == 13)document.getElementById('f').submit();}catch(e){}
+
+        var str_username = $("#username").val();
+        var str_password = $("#password").val();
+        $.cookie("adminAutoUser", "true", {expires: 365}); //存储一个带7天期限的cookie
+        $.cookie("adminUsername", str_username, {expires: 365});
+        $.cookie("adminPassword", str_password, {expires: 365});
+    }
 </script>
 </body>
 </html>
