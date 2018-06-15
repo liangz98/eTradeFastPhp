@@ -32,16 +32,26 @@
                             <div class="col-xs-6 col-sm-3">
                                 <span class="<?php if ($this->vestut == 0) { echo 'order-activated'; } elseif ($this->vestut > 0) { echo 'order-finished'; } ?>"><?php echo $this->translate('confirming'); ?></span>
                             </div>
-                            <div class="col-xs-6 col-sm-3">
-                                <span class="<?php if ($this->vestut == 1 || $this->vestut == 3) { echo 'order-activated'; } elseif ($this->vestut > 1) { echo 'order-finished'; } else { echo 'order-no-start';} ?>"><?php echo $this->translate('sign'); ?></span>
-                            </div>
+
+                            <a href="#sign" aria-controls="info" role="tab" data-toggle="tab">
+                                <div class="col-xs-6 col-sm-3">
+                                    <span class="<?php if ($this->vestut == 1 || $this->vestut == 3) { echo 'order-activated'; } elseif ($this->vestut > 1) { echo 'order-finished'; } else { echo 'order-no-start';} ?>"><?php echo $this->translate('sign'); ?></span>
+                                </div>
+                            </a>
+
                             <div class="clearfix visible-xs-block"></div>
-                            <div class="col-xs-6 col-sm-3">
-                                <span class="<?php if ($this->vestut > 3) { echo 'order-activated'; } elseif ($this->vestut > 7) { echo 'order-finished'; } else { echo 'order-no-start';} ?>"><?php echo $this->translate('delivery'); ?></span>
-                            </div>
-                            <div class="col-xs-6 col-sm-3">
-                                <span class="<?php if ($this->vestut > 3) { echo 'order-activated'; } elseif ($this->vestut > 7) { echo 'order-finished'; } else { echo 'order-no-start';} ?>"><?php echo $this->translate('calculate'); ?></span>
-                            </div>
+
+                            <a href="#delivery" aria-controls="info" role="tab" data-toggle="tab">
+                                <div class="col-xs-6 col-sm-3">
+                                    <span class="<?php if ($this->vestut > 3) { echo 'order-activated'; } elseif ($this->vestut > 7) { echo 'order-finished'; } else { echo 'order-no-start';} ?>"><?php echo $this->translate('delivery'); ?></span>
+                                </div>
+                            </a>
+
+                            <a href="#sign" aria-controls="info" role="tab" data-toggle="tab">
+                                <div class="col-xs-6 col-sm-3">
+                                    <span class="<?php if ($this->vestut > 3) { echo 'order-activated'; } elseif ($this->vestut > 7) { echo 'order-finished'; } else { echo 'order-no-start';} ?>"><?php echo $this->translate('calculate'); ?></span>
+                                </div>
+                            </a>
                         </div>
 
                         <div class="tab-content ">
@@ -51,7 +61,7 @@
                                         <p class="text-right news-title"><?php echo $this->translate('orderNo');?></p>
                                     </div>
                                     <div class="col-xs-4">
-                                        <p><?php echo $this->newE["orderNo"];?></p>
+                                        <p><?php echo $this->orders["orderNo"];?></p>
                                     </div>
                                     <div class="col-xs-2 news-title"><?php echo $this->translate('Prities');?></div>
                                     <div class="col-xs-4"></div>
@@ -71,8 +81,59 @@
                                         <p class="text-right"><?php echo $this->translate('stateING');?></p>
                                     </div>
                                     <div class="col-xs-8">
-                                        <p><?php echo $this->ShowDictionaryTo($this->dic_Setting['ORDER_STATUS'], $this->userLangCode, $this->dic_Setting['ORDER_STATUS'], $this->newE["orderStatus"]); ?></p>
+                                        <p><?php echo $this->ShowDictionaryTo($this->dic_Setting['ORDER_STATUS'], $this->userLangCode, $this->dic_Setting['ORDER_STATUS'], $this->orders["orderStatus"]); ?></p>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane row" id="sign">
+                                <div class="row">
+                                    <div class="col-xs-2">
+                                        <p class="text-right news-title"><?php echo $this->translate('orderNo');?></p>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <p><?php echo $this->orders["orderNo"];?></p>
+                                    </div>
+                                    <div class="col-xs-2 news-title"><?php echo $this->translate('Prities');?></div>
+                                    <div class="col-xs-4"></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-2 news-title">
+                                        <p class="text-right"><?php echo $this->translate('progressING');?></p>
+                                    </div>
+                                    <div class="col-xs-8">
+                                        <p><?php echo $this->plan['plan'];?></p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-2 news-title">
+                                        <p class="text-right"><?php echo $this->translate('files');?></p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <?php
+                                        echo $this->ShowOrderContract($this->contractList, $this->accountID, 'ODTA', $this->orders['client'], $this->hasIDCertificate);
+                                        ?>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-2 news-title">
+                                        <p class="text-right"><?php echo $this->translate('stateING');?></p>
+                                    </div>
+                                    <div class="col-xs-8">
+                                        <p><?php echo $this->ShowDictionaryTo($this->dic_Setting['ORDER_STATUS'], $this->userLangCode, $this->dic_Setting['ORDER_STATUS'], $this->orders["orderStatus"]); ?></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane row" id="delivery">
+                                <div class="col-md-12">
+                                    <p>delivery</p>
                                 </div>
                             </div>
                         </div>
@@ -131,10 +192,12 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-xs-2 view-title"><?php echo $this->translate('exportMD'); ?></div>
-                                        <div class="col-xs-4"><?php if($this->orders['isSelfSupport']==true){echo $this->translate('sellersEX'); }else{ echo $this->translate('siteEX');}?></div>
                                         <div class="col-xs-2 view-title"><?php echo $this->translate('payJJ'); ?></div>
                                         <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->dic_Setting['ORDER_QUOTATION_MODE'], $this->orders['quotationMode']); ?></div>
+                                        <?php if ($this->orders['orderType'] != 'DT'): ?>
+                                        <div class="col-xs-2 view-title"><?php echo $this->translate('exportMD'); ?></div>
+                                        <div class="col-xs-4"><?php if($this->orders['isSelfSupport']==true){echo $this->translate('sellersEX'); }else{ echo $this->translate('siteEX');}?></div>
+                                        <?php endif; ?>
                                     </div>
 
                                     <div class="row">
@@ -155,122 +218,138 @@
 
                                     <div class="orderItemDiv">
                                         <?php if (is_array($this->orders['orderItemList']) && count($this->orders['orderItemList']) > 0): ?>
-                                        <?php foreach ($this->orders['orderItemList'] as $k=>$goods):?>
-                                        <div class="alert alert-info alert-dismissible" role="alert">
-                                            <div class="row">
-                                                <div class="col-xs-2"><?php echo $this->translate("productNAME"); ?></div>
-                                                <div class="col-sm-4"><?php echo $goods['productName'];?></div>
-                                                <div class="col-xs-2"><?php echo $this->translate("productENNAME"); ?></div>
-                                                <div class="col-sm-4"><?php echo $goods['productEnName'];?></div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-xs-2"><?php echo $this->translate("packageTYPE"); ?></div>
-                                                <div class="col-sm-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->dic_Setting['PRODUCT_PACKING_TYPE'], $goods['packingType']); ?></div>
-                                                <div class="col-xs-2"><?php echo $this->translate("HSCODE"); ?></div>
-                                                <div class="col-sm-4"><?php echo $goods['hscode'];?></div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-xs-2"><?php echo $this->translate("brand"); ?></div>
-                                                <div class="col-sm-4"><?php echo $goods['productBrand'];?></div>
-                                                <div class="col-xs-2"><?php echo $this->translate("model"); ?></div>
-                                                <div class="col-sm-4"><?php echo $goods['productModel'];?></div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-xs-2"><?php echo $this->translate("productMaterial"); ?></div>
-                                                <div class="col-sm-8"><?php echo $goods['productMaterial'];?></div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-xs-2"><?php echo $this->translate("functionUsage"); ?></div>
-                                                <div class="col-sm-8"><?php echo $goods['functionUsage'];?></div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-xs-2"><?php echo $this->translate("number"); ?></div>
-                                                <div class="col-sm-4"><?php echo $goods['quantity'];?>&nbsp;&nbsp;<?php echo $this->ShowDictionaryTo("", $this->userLangCode, $this->dic_Setting['PRODUCT_PRICING_UNIT'], $goods['pricingUnit']); ?></div>
-                                                <div class="col-xs-2"><?php echo $this->translate("quantity"); ?></div>
-                                                <div class="col-sm-4"><?php echo $goods['totalPackage'];?></div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-xs-2"><?php echo $this->translate("orderprice"); ?></div>
-                                                <div class="col-sm-1"><?php echo $goods['unitPrice'];?></div>
-                                                <div class="col-xs-1">x</div>
-                                                <div class="col-sm-1"><?php echo $goods['quantity'];?></div>
-                                                <div class="col-xs-1">=</div>
-                                                <div class="col-sm-1"><?php echo $this->orders['buyerCrnCode'];?></div>
-                                                <div class="col-sm-1"><?php echo $goods['totalPrice'];?></div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-xs-2"><?php echo $this->translate("netWeight"); ?></div>
-                                                <div class="col-sm-1"><?php echo $goods['netWeight'];?></div>
-                                                <div class="col-xs-1">x</div>
-                                                <div class="col-sm-1"><?php echo $goods['quantity'];?></div>
-                                                <div class="col-xs-1">=</div>
-                                                <div class="col-sm-1"><?php echo $goods['totalNetWeight'];?></div>
-                                                <div class="col-sm-1">KGS</div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-xs-2"><?php echo $this->translate("grossWeight"); ?></div>
-                                                <div class="col-sm-1"><?php echo $goods['grossWeight'];?></div>
-                                                <div class="col-xs-1">x</div>
-                                                <div class="col-sm-1"><?php echo $goods['quantity'];?></div>
-                                                <div class="col-xs-1">=</div>
-                                                <div class="col-sm-1"><?php echo $goods['totalGrossWeight'];?></div>
-                                                <div class="col-sm-1">KGS</div>
-                                            </div>
-
-                                            <?php if ($this->orders['quotationMode'] === 'IV'): ?>
-                                                <div class="row">
-                                                    <div class="col-xs-2"><?php echo $this->translate("uiprice"); ?></div>
-                                                    <div class="col-sm-1"><?php echo $goods['purUnitPrice'];?></div>
-                                                    <div class="col-xs-1">x</div>
-                                                    <div class="col-sm-1"><?php echo $goods['quantity'];?></div>
-                                                    <div class="col-xs-1">=</div>
-                                                    <div class="col-sm-1"><?php echo $goods['purCrnCode'];?></div>
-                                                    <div class="col-sm-1"><?php echo $goods['totalPurPrice'];?></div>
-                                                </div>
-                                            <?php else: ?>
-                                                <?php if ($goods['productionMode'] != '01'): ?>
+                                            <?php foreach ($this->orders['orderItemList'] as $k=>$goods):?>
+                                                <div class="alert alert-info alert-dismissible" role="alert">
                                                     <div class="row">
-                                                        <div class="col-xs-2"><?php echo $this->translate("purchaseUnitPrice"); ?></div>
-                                                        <div class="col-sm-1"><?php echo $goods['purUnitPrice'];?></div>
+                                                        <div class="col-xs-2"><?php echo $this->translate("productNAME"); ?></div>
+                                                        <div class="col-sm-4"><?php echo $goods['productName'];?></div>
+                                                        <div class="col-xs-2"><?php echo $this->translate("productENNAME"); ?></div>
+                                                        <div class="col-sm-4"><?php echo $goods['productEnName'];?></div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-xs-2"><?php echo $this->translate("packageTYPE"); ?></div>
+                                                        <div class="col-sm-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->dic_Setting['PRODUCT_PACKING_TYPE'], $goods['packingType']); ?></div>
+                                                        <div class="col-xs-2"><?php echo $this->translate("HSCODE"); ?></div>
+                                                        <div class="col-sm-4"><?php echo $goods['hscode'];?></div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-xs-2"><?php echo $this->translate("brand"); ?></div>
+                                                        <div class="col-sm-4"><?php echo $goods['productBrand'];?></div>
+                                                        <div class="col-xs-2"><?php echo $this->translate("model"); ?></div>
+                                                        <div class="col-sm-4"><?php echo $goods['productModel'];?></div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-xs-2"><?php echo $this->translate("productMaterial"); ?></div>
+                                                        <div class="col-sm-8"><?php echo $goods['productMaterial'];?></div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-xs-2"><?php echo $this->translate("functionUsage"); ?></div>
+                                                        <div class="col-sm-8"><?php echo $goods['functionUsage'];?></div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-xs-2"><?php echo $this->translate("number"); ?></div>
+                                                        <div class="col-sm-4"><?php echo $goods['quantity'];?>&nbsp;&nbsp;<?php echo $this->ShowDictionaryTo("", $this->userLangCode, $this->dic_Setting['PRODUCT_PRICING_UNIT'], $goods['pricingUnit']); ?></div>
+                                                        <div class="col-xs-2"><?php echo $this->translate("quantity"); ?></div>
+                                                        <div class="col-sm-4"><?php echo $goods['totalPackage'];?></div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-xs-2"><?php echo $this->translate("orderprice"); ?></div>
+                                                        <div class="col-sm-1"><?php echo $goods['unitPrice'];?></div>
                                                         <div class="col-xs-1">x</div>
                                                         <div class="col-sm-1"><?php echo $goods['quantity'];?></div>
                                                         <div class="col-xs-1">=</div>
-                                                        <div class="col-sm-1"><?php echo $goods['purCrnCode'];?></div>
-                                                        <div class="col-sm-1"><?php echo $goods['totalPurPrice'];?></div>
+                                                        <div class="col-sm-1"><?php echo $this->orders['buyerCrnCode'];?></div>
+                                                        <div class="col-sm-1"><?php echo $goods['totalPrice'];?></div>
                                                     </div>
-                                                <?php endif; ?>
-                                            <?php endif; ?>
-                                        </div>
-                                        <?php endforeach; ?>
+
+                                                    <div class="row">
+                                                        <div class="col-xs-2"><?php echo $this->translate("netWeight"); ?></div>
+                                                        <div class="col-sm-1"><?php echo $goods['netWeight'];?></div>
+                                                        <div class="col-xs-1">x</div>
+                                                        <div class="col-sm-1"><?php echo $goods['quantity'];?></div>
+                                                        <div class="col-xs-1">=</div>
+                                                        <div class="col-sm-1"><?php echo $goods['totalNetWeight'];?></div>
+                                                        <div class="col-sm-1">KGS</div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-xs-2"><?php echo $this->translate("grossWeight"); ?></div>
+                                                        <div class="col-sm-1"><?php echo $goods['grossWeight'];?></div>
+                                                        <div class="col-xs-1">x</div>
+                                                        <div class="col-sm-1"><?php echo $goods['quantity'];?></div>
+                                                        <div class="col-xs-1">=</div>
+                                                        <div class="col-sm-1"><?php echo $goods['totalGrossWeight'];?></div>
+                                                        <div class="col-sm-1">KGS</div>
+                                                    </div>
+
+                                                    <?php if ($this->orders['quotationMode'] === 'IV'): ?>
+                                                        <div class="row">
+                                                            <div class="col-xs-2"><?php echo $this->translate("uiprice"); ?></div>
+                                                            <div class="col-sm-1"><?php echo $goods['purUnitPrice'];?></div>
+                                                            <div class="col-xs-1">x</div>
+                                                            <div class="col-sm-1"><?php echo $goods['quantity'];?></div>
+                                                            <div class="col-xs-1">=</div>
+                                                            <div class="col-sm-1"><?php echo $goods['purCrnCode'];?></div>
+                                                            <div class="col-sm-1"><?php echo $goods['totalPurPrice'];?></div>
+                                                        </div>
+                                                    <?php else: ?>
+                                                        <?php if ($goods['productionMode'] != '01'): ?>
+                                                            <div class="row">
+                                                                <div class="col-xs-2"><?php echo $this->translate("purchaseUnitPrice"); ?></div>
+                                                                <div class="col-sm-1"><?php echo $goods['purUnitPrice'];?></div>
+                                                                <div class="col-xs-1">x</div>
+                                                                <div class="col-sm-1"><?php echo $goods['quantity'];?></div>
+                                                                <div class="col-xs-1">=</div>
+                                                                <div class="col-sm-1"><?php echo $goods['purCrnCode'];?></div>
+                                                                <div class="col-sm-1"><?php echo $goods['totalPurPrice'];?></div>
+                                                            </div>
+                                                        <?php endif; ?>
+                                                    <?php endif; ?>
+                                                </div>
+                                            <?php endforeach; ?>
+
+                                            <div class="alert alert-success alert-dismissible" role="alert">
+                                                <div class="row">
+                                                    <div class="col-xs-2"><?php echo $this->translate("shopNet"); ?></div>
+                                                    <div class="col-sm-3"><?php echo $this->orders['totalNetWeight'];?>&nbsp;<b>KGS</b></div>
+                                                    <div class="col-xs-2"><?php echo $this->translate("shopGross"); ?></div>
+                                                    <div class="col-sm-3"><?php echo $this->orders['totalGrossWeight'];?>&nbsp;<b>KGS</b></div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-xs-2"><?php echo $this->translate("shopTotal"); ?></div>
+                                                    <div class="col-sm-3"><b><?php echo $this->orders['buyerCrnCode']; ?></b>&nbsp;<?php echo $this->orders['totalAmount'];?></div>
+                                                    <div class="col-xs-2"><?php echo $this->translate("shopPrities"); ?></div>
+                                                    <div class="col-sm-4"></div>
+                                                </div>
+                                            </div>
                                         <?php endif; ?>
                                     </div>
 
-                                    <div class="row">
-                                        <div class="col-xs-2 view-title">
-                                            <p>运输方式</p>
-                                        </div>
+                                    <div class="page-header">
+                                        <h3><?php echo $this->translate('moveMD'); ?></h3>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-xs-2 view-title"><?php echo $this->translate('moveMD'); ?></div>
                                         <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->dic_Setting['SHIPPING_METHOD'], $this->orders['shippingMethod']); ?></div>
+                                        <?php if ($this->orders['orderType'] != 'DT'): ?>
                                         <div class="col-xs-2 view-title"><?php echo $this->translate('POCRC'); ?></div>
                                         <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->dic_Setting['EXPORT_POINTS'], $this->orders['clearancePlace']); ?></div>
+                                        <?php endif; ?>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-xs-2 view-title"><?php echo $this->translate('portSHIP'); ?></div>
                                         <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->port, $this->loadingPort); ?></div>
                                         <div class="col-xs-2 view-title"><?php echo $this->translate('portDSCG'); ?></div>
-                                        <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->port, $this->loadingPort); ?></div>
+                                        <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->port, $this->dischargePort); ?></div>
                                     </div>
 
                                     <div class="row">
@@ -281,10 +360,10 @@
                                     </div>
 
                                     <?php if ($this->orders['needShipping'] == true || $this->orders['needTrucking'] == true): ?>
-                                    <div class="row">
-                                        <div class="col-xs-2 view-title"><?php echo $this->translate('isFCL'); ?></div>
-                                        <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->dic_Setting['SHIPPING_SERVICE_TYPE'], $this->orders['shippingServiceType']); ?></div>
-                                    </div>
+                                        <div class="row">
+                                            <div class="col-xs-2 view-title"><?php echo $this->translate('isFCL'); ?></div>
+                                            <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->dic_Setting['SHIPPING_SERVICE_TYPE'], $this->orders['shippingServiceType']); ?></div>
+                                        </div>
 
                                         <?php if ($this->orders['shippingServiceType'] == 'FCL'): ?>
                                         <div class="row">
@@ -339,11 +418,13 @@
                                         <?php endif;?>
                                     <?php endif;?>
 
-                                    <?php if ($this->orders['isAssignCustomsAgency'] == true): ?>
-                                        <div class="row">
-                                            <div class="col-xs-2 view-title"><?php echo $this->translate('nameCHB'); ?></div>
-                                            <div class="col-xs-8"><?php echo $this->orders['customsAgencyName'];?></div>
-                                        </div>
+                                    <?php if ($this->orders['orderType'] != 'DT'): ?>
+                                        <?php if ($this->orders['isAssignCustomsAgency'] == true): ?>
+                                            <div class="row">
+                                                <div class="col-xs-2 view-title"><?php echo $this->translate('nameCHB'); ?></div>
+                                                <div class="col-xs-8"><?php echo $this->orders['customsAgencyName'];?></div>
+                                            </div>
+                                        <?php endif;?>
 
                                         <div class="row">
                                             <div class="col-xs-2 view-title"><?php echo $this->translate('needCHB'); ?></div>

@@ -69,6 +69,28 @@ input[type=number]{
 .order-news .news-title, .view-title {
     color: #adadad;
 }
+
+.new_upicon {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    float: left;
+}
+
+.new_uptitle {
+    line-height: 30px;
+    display: block;
+    float: left;
+}
+
+.order_contract_sign {
+    border: none;
+    background: #EF8200;
+    color: #fff;
+    padding: 5px 15px;
+    border-radius: 5px;
+    margin-right: 20px;
+}
 /* end */
 
 /* 标签页徽章背景色 */

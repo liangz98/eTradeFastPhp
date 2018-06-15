@@ -54,7 +54,6 @@ if (file_exists($versionfile)) {
 
 <script type="text/javascript" src="/ky/js/jquery.cookie.js"></script>
 <script type="text/javascript">
-
     $().ready(function () {
         if ($.cookie("adminAutoUser") === "true") {
             $("#username").val($.cookie("adminUsername"));
@@ -62,9 +61,7 @@ if (file_exists($versionfile)) {
         }
     });
 
-    function doSubmit(e) {
-        //   try{var keyCode = e.keyCode?e.keyCode:(e.which?e.which:e.charCode);if(keyCode == 13)document.getElementById('f').submit();}catch(e){}
-
+    function doSubmit() {
         var str_username = $("#username").val();
         var str_password = $("#password").val();
         $.cookie("adminAutoUser", "true", {expires: 365}); //存储一个带7天期限的cookie
