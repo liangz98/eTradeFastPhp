@@ -36,13 +36,14 @@ if (file_exists($versionfile)) {
 </video>
 
 <div id="bodybg">
+    <!--
     <div class="logo">
         <img src="/images/center/logo.png"/>
-        <?php if (defined('SEED_VERSION')): ?>
-            <br>系统版本：<?php echo SEED_VERSION; ?>
-        <?php endif; ?>
+        <?php /*if (defined('SEED_VERSION')): */?>
+            <br>系统版本：<?php /*echo SEED_VERSION; */?>
+        <?php /*endif; */?>
     </div>
-
+-->
     <div class="loginfrom">
         <form method="post" name="f" id="f" onsubmit="doSubmit(event)">
             <p>
