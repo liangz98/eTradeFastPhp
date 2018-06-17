@@ -47,7 +47,7 @@
                                 </div>
                             </a>
 
-                            <a href="#sign" aria-controls="info" role="tab" data-toggle="tab">
+                            <a href="#calculate" aria-controls="info" role="tab" data-toggle="tab">
                                 <div class="col-xs-6 col-sm-3">
                                     <span class="<?php if ($this->vestut > 3) { echo 'order-activated'; } elseif ($this->vestut > 7) { echo 'order-finished'; } else { echo 'order-no-start';} ?>"><?php echo $this->translate('calculate'); ?></span>
                                 </div>
@@ -55,7 +55,7 @@
                         </div>
 
                         <div class="tab-content ">
-                            <div role="tabpanel" class="tab-pane fade in active" id="confirming">
+                            <div role="tabpanel" class="tab-pane fade <?php if ($this->vestut == 0) { echo 'in active'; } ?>" id="confirming">
                                 <div class="row">
                                     <div class="col-xs-2">
                                         <p class="text-right news-title"><?php echo $this->translate('orderNo');?></p>
@@ -86,7 +86,7 @@
                                 </div>
                             </div>
 
-                            <div role="tabpanel" class="tab-pane row" id="sign">
+                            <div role="tabpanel" class="tab-pane row <?php if ($this->vestut == 1 || $this->vestut == 3) { echo 'in active'; } ?>" id="sign">
                                 <div class="row">
                                     <div class="col-xs-2">
                                         <p class="text-right news-title"><?php echo $this->translate('orderNo');?></p>
@@ -131,9 +131,70 @@
                                 </div>
                             </div>
 
-                            <div role="tabpanel" class="tab-pane row" id="delivery">
+                            <div role="tabpanel" class="tab-pane row <?php if ($this->vestut > 3) { echo 'in active'; } ?>" id="delivery">
                                 <div class="col-md-12">
-                                    <p>delivery</p>
+                                    <table class="layui-table" lay-skin="line" id="deliveryTable" lay-filter="demoEvent">
+                                        <colgroup>
+                                            <col width="60">
+                                            <col width="140">
+                                            <col width="100">
+                                            <col width="160">
+                                            <col>
+                                            <col width="130">
+                                        </colgroup>
+                                        <thead>
+                                        <tr style="background-color: #01AAED; color: white;">
+                                            <th>批次</th>
+                                            <th>收发货单编号</th>
+                                            <th>批次状态</th>
+                                            <th style="text-align: center">日期</th>
+                                            <th style="text-align: center">摘要</th>
+                                            <th style="text-align: center">操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php if (count($this->deliveryList) > 0): ?>
+                                            <?php foreach ($this->deliveryList as $k => $v):?>
+                                                <tr>
+                                                    <td><span class="layui-badge" style="background-color: #4CAF50;"><?php echo $k + 1; ?></span></td>
+                                                    <td class="deliveryViewClass" style="cursor: pointer;" deliveryID_="<?php echo $v->deliveryID; ?>" deliveryStatus_="<?php echo $v->deliveryStatus; ?>" deliveryNo_="<?php echo $v->deliveryNo; ?>"><?php echo $v->deliveryNo; ?></td>
+                                                    <td class="deliveryViewClass" style="cursor: pointer;" deliveryID_="<?php echo $v->deliveryID; ?>" deliveryStatus_="<?php echo $v->deliveryStatus; ?>" deliveryNo_="<?php echo $v->deliveryNo; ?>"><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['DELIVERY_STATUE'], $v->deliveryStatus); ?></td>
+                                                    <td class="deliveryViewClass" style="cursor: pointer;" deliveryID_="<?php echo $v->deliveryID; ?>" deliveryStatus_="<?php echo $v->deliveryStatus; ?>" deliveryNo_="<?php echo $v->deliveryNo; ?>"><?php $date = date_create($v->readyDate); echo date_format($date,"Y年m月d日"); ?></td>
+                                                    <td class="deliveryViewClass" style="cursor: pointer;" deliveryID_="<?php echo $v->deliveryID; ?>" deliveryStatus_="<?php echo $v->deliveryStatus; ?>" deliveryNo_="<?php echo $v->deliveryNo; ?>"><?php $summary = $v->summary; $replaceStr = "<br />"; echo str_replace('\n', $replaceStr, $summary); ?></td>
+                                                    <td style="text-align: center">
+                                                        <?php if ($v->deliveryStatus == 1 && $v->needExamine == False):?>
+                                                            <a class="layui-btn layui-btn-warm deliveryDeliverViewBtn" deliveryID_="<?php echo $v->deliveryID; ?>">发货</a>
+                                                        <?php elseif ($v->deliveryStatus == 2): ?>
+                                                            <a class="layui-btn layui-btn-warm deliveryDeliverViewBtn" deliveryID_="<?php echo $v->deliveryID; ?>">发货</a>
+                                                        <?php elseif (!$this->orders->isSelfSupport && $v->deliveryStatus == 3 && $v->vendorPaymentStatus == 3): ?>
+                                                            <a href='javascript:void(0)' class="billingInfo" deliveryID_="<?php echo $v->deliveryID; ?>" >开票资料</a>
+                                                        <?php elseif (!$this->orders->isSelfSupport && $v->deliveryStatus == 4 && $v->vendorPaymentStatus == 3): ?>
+                                                            <a href='javascript:void(0)' class="billingInfo" deliveryID_="<?php echo $v->deliveryID; ?>" >开票资料</a>
+                                                        <?php endif; ?>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <tr>
+                                                <td colspan="6" style="height: 100px; text-align: center;">
+                                                    <label><?php echo $this->translate('deliveryItemListNull'); ?></label>
+                                                </td>
+                                            </tr>
+                                        <?php endif; ?>
+                                        </tbody>
+                                    </table>
+
+                                    <div style="height: 12px"></div>
+                                    <div>
+                                        <button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target="#addDelivery"><b><?php echo $this->translate('deliveryAdd'); ?></b></button>
+                                        <button class="layui-btn layui-btn-fluid layui-btn-primary" id="deliveryAddBtn"><b><?php echo $this->translate('deliveryAdd'); ?></b></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane row" id="calculate">
+                                <div class="col-md-12">
+                                    calculate
                                 </div>
                             </div>
                         </div>
@@ -468,11 +529,187 @@
 	</div>
 </div>
 
+<!--PDF预览-->
+<div id="signViewDiv" style="display: none; background-color: #F6F6F6;">
+    <div class="sign-button">企业签署</div>
+    <div class="person-sign-button">个人签署</div>
+    <div class="download-button">下载</div>
+    <div class="pdfDoc" style="padding-left:50px;">
+        <div id="pdfPageBox">
+        </div>
+    </div>
+</div>
+
+<!--非网签-->
+<div id="signViewNoEContractDiv" class="layui-form" style="display: none;">
+    <div class="et-auth-error" style="display: none;"></div>
+    <div class="et-auth-content">
+        <div style="margin-top: 20px;"></div>
+
+        <div class="layui-form-item" style="margin-left: 28px;">
+            <div style="text-align: left;">
+                <label class="layui-form-label" style="width: 400px;text-align: left;"><?php echo $this->translate('contractUPInfo'); ?></label>
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-bottom: -5px;margin-top: -15px;margin-left: 28px;margin-right: 28px;">
+            <div style="text-align: left;">
+                <table class="layui-table" id="demo" lay-filter="test">
+                    <colgroup>
+                        <col width="470">
+                        <col width="150">
+                        <col>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>合同列表</th>
+                        <th>类型</th>
+                        <th style="text-align:center">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-left: 28px; margin-top: 50px; width: 600px;">
+            <div class="layui-form-label" style="width: 420px;">
+                <div class="yyzz_box clearfix" style="width: 600px;">
+                    <p class="zzname" style="width: 600px; font-weight:bold;"><?php echo $this->translate('contractUP'); ?><!--合同相关附件上传--></p>
+                    <?php if ($this->vestut == 1) {
+                        echo $this->ShowWebuploader($this->goods['attachmentList'], $this->biz_Setting['ORDER'], $this->attach_Setting['CRIM'], "0", null);
+                    } ?>
+                </div>
+            </div>
+        </div>
+
+
+        <div style="height: 12px"></div>
+        <div class="et-auth-row">
+            <button class="layui-btn" id="signNoEContractConfirmBtn"><?php echo $this->translate('signing'); ?></button>
+        </div>
+    </div>
+</div>
+
+<!--签署-->
+<div id="doSignPDFLayDiv" class="layui-form" style="display: none;">
+    <div class="et-auth-error" style="display: none;"></div>
+    <div class="et-auth-content">
+        <div style="margin-top: 20px;"></div>
+
+        <div class="layui-form-item" style="margin-left: 28px;">
+            <div style="text-align: left;">
+                <label class="layui-form-label" style="width: 180px;text-align: left;"><?php echo $this->translate('signInfo'); ?></label>
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
+            <div style="text-align: left;">
+                <label class="layui-form-label" style="width: 180px;text-align: left;"><b><?php echo $this->translate('signAuthType'); ?></b></label>
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-left: 28px;">
+            <div class="layui-form-label" style="width: 420px;">
+                <input type="text" id="signMobileInput" name="signMobileInput" lay-verify="signMobileInput" autocomplete="off" class="layui-input" readonly="readonly">
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-left: 28px;">
+            <div class="layui-form-label" style="width: 250px;">
+                <input type="text" id="signAuthCode" name="signAuthCode" lay-verify="signAuthCode" autocomplete="off" placeholder="<?php echo $this->translate('signInputAuthCode'); ?>" class="layui-input">
+            </div>
+
+            <div class="layui-form-label" style="width: 140px;">
+                <button class="layui-btn layui-btn-fluid" id="signSendAuthCodeBtn"><?php echo $this->translate('signSendAuthCode'); ?></button>
+            </div>
+        </div>
+
+        <div style="height: 12px"></div>
+        <div class="et-auth-row">
+            <button class="layui-btn layui-btn-fluid" id="singConfirmBtn" style="width: 85%;"><?php echo $this->translate('confirmed'); ?></button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 添加发货记录 -->
+<div class="modal fade" id="addDelivery" tabindex="-1" role="dialog" aria-labelledby="addDeliveryLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><?php echo $this->translate('deliveryAdd'); ?></h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="layui-form-item table-responsive">
+                    <table class="table layui-table" lay-skin="line">
+                        <colgroup>
+                            <col>
+                            <col width="140">
+                            <col width="100">
+                            <col width="100">
+                            <col width="160">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>名称</th>
+                            <th>型号</th>
+                            <th>单价</th>
+                            <th>数量</th>
+                            <th>总价</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($this->orderItemList as $index => $value):?>
+                            <tr>
+                                <td style="text-align: left"><?php echo $value->productName;?></td>
+                                <td style="text-align: left"><?php echo $value->productModel;?></td>
+                                <td style="text-align: left"><?php echo $this->deliveryCrnCode;?><label><?php echo $value->unitPrice;?></label></td>
+                                <td style="text-align: left">
+                                    <?php
+                                    $quantity = $value->quantity - $value->deliveryQuantity <= 0  ? 0 : $value->quantity - $value->deliveryQuantity;
+                                    ?>
+                                    <input name="deliveryQuantity_add" class="layui-input" value="<?php echo $quantity;?>" />
+                                    <input type="hidden" name="orderItemID_add" value="<?php echo $value->itemID;?>" />
+                                </td>
+                                <td style="text-align: left"><?php echo $this->orders['buyerCrnCode']?>&nbsp;<label id="itemID_<?php echo $value->itemID;?>"></label></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <?php echo $this->ShowWebuploader($this->attachmentList, $this->biz_Setting['ORDER'], $this->attach_Setting['DLPG'], null); ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id=""><?php echo $this->translate('submit'); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 物流编辑 -->
+<div id="deliveryViewDiv" style="display: none;"></div>
+
+<div id="deliveryEditViewDiv" style="display: none;"></div>
+
+<div id="billingInfoDiv" style="display: none;"></div>
+
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
 <script type="text/javascript" src="/ky/upload/img.js"></script>
+<!-- pdf -->
+<script type="text/javascript" src="/ky/pdf/pdf.js"></script>
+<script type="text/javascript" src="/ky/pdf/pdf.worker.js"></script>
 
 <script type="text/javascript">
 	$().ready(function() {
@@ -488,6 +725,828 @@
             }
         });
 	});
+
+    // *************************** PDF Sign View ********************************
+    PDFJS.workerSrc = '/ky/pdf/pdf.worker.js';
+
+    var pdfDoc = null;
+    var pageNum = 1;
+    var pageRendering = false;
+    var pageNumPending = null;
+    var scale = 1.5;
+
+    function renderPage(num, id) {
+        var canvas = document.getElementById(id);
+        var ctx = canvas.getContext('2d');
+        pageRendering = true;
+        pdfDoc.getPage(num).then(function(page) {
+            var viewport = page.getViewport(scale);
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            var renderContext = {
+                canvasContext: ctx,
+                viewport: viewport
+            };
+            var renderTask = page.render(renderContext);
+
+            renderTask.promise.then(function() {
+                pageRendering = false;
+                if (pageNumPending !== null) {
+                    // New page rendering is pending
+                    renderPage(pageNumPending);
+                    pageNumPending = null;
+                }
+            });
+        });
+
+        //document.getElementById('page_num').textContent = pageNum;
+    }
+
+    function queueRenderPage(num) {
+        if (pageRendering) {
+            pageNumPending = num;
+        } else {
+            renderPage(num);
+        }
+    }
+
+    function onPrevPage() {
+        if (pageNum <= 1) {
+            return;
+        }
+        pageNum--;
+        queueRenderPage(pageNum);
+    }
+    //document.getElementById('prev').addEventListener('click', onPrevPage);
+
+    function onNextPage() {
+        if (pageNum >= pdfDoc.numPages) {
+            return;
+        }
+        pageNum++;
+        queueRenderPage(pageNum);
+    }
+    //document.getElementById('next').addEventListener('click', onNextPage);
+
+    function initPdfView(pdfUrl, obj) {
+        $("#pdfPageBox").html("");
+        PDFJS.getDocument(pdfUrl).then(function(pdfDoc_) {
+            pdfDoc = pdfDoc_;
+            //document.getElementById('page_count').textContent = pdfDoc.numPages;
+            for (var i=1;i<=pdfDoc.numPages;i++){
+                var canvasDiv = $("<div style=\"padding-top:10px;padding-bottom:10px;\"></div>");
+                var pageNum = $("<div style=\"background-color: #999999;position:absolute;float: left;height:30px;width:60px;text-align: center;line-height: 30px;color:#ffffff;opacity: 0.6;\">"+i+"/"+pdfDoc.numPages+"</div>");
+                var canvas = $("<canvas></canvas>").attr("id", "the-canvas_"+i);
+                canvasDiv.append(pageNum);
+                canvasDiv.append(canvas);
+                $("#pdfPageBox").append(canvasDiv);
+                renderPage(i, "the-canvas_"+i);
+            }
+        });
+
+        var signTitle = "<?php echo $this->translate('signTitle');?>";
+        layer.open({
+            type: 1,	//Page层类型
+            area: ['1150px', '100%'],
+            title: signTitle,
+            shadeClose: true,
+            shade: 0.6,	//遮罩透明度
+            // anim: 1,	//0-6的动画形式，-1不开启
+            scrollbar: false,
+            content: $("#signViewDiv")
+        });
+
+        $(".download-button").attr("contractID_", obj.id);
+
+        if ($("#isESigned_" + obj.id).val() == 1) {
+            $(".sign-button").hide();
+        } else {
+            $(".sign-button").show().attr("contractID_", obj.id);
+        }
+
+        if ($("#isPSigned_" + obj.id).val() == 1) {
+            $(".person-sign-button").hide();
+        } else {
+            $(".person-sign-button").show().attr("contractID_", obj.id);
+        }
+    }
+
+    //document.getElementById('prev').addEventListener('click', onPrevPage);
+
+    $(".download-button").bind("click",function(){
+        var contractID_ = $(this).attr("contractID_");
+        window.location.href = $("#contractAttachUrl_" + contractID_).val();
+    });
+
+    // ********************   获取验证手机号码 Start  *************************************
+    $(".sign-button").bind("click",function(){
+        var getSignMobile = '/user/pur/getsignmobile';
+        $.ajax({
+            type: "POST",
+            url: getSignMobile,
+            data: {
+
+            },
+            dataType: "json",
+            success: function (data) {
+                var mobileStr = "<?php echo $this->translate('mobile_phone');?>";
+                $("#signMobileInput").val(mobileStr + " " +data);
+            }
+        });
+
+        var signTitle = "<?php echo $this->translate('signTitle');?>";
+        layer.open({
+            type: 1,
+            title: signTitle,
+            shadeClose: true,
+            shade: 0.2,
+            area: ['500px', '420px'],
+            content: $('#doSignPDFLayDiv')
+        });
+    });
+
+    $(".person-sign-button").bind("click",function(){
+        var getSignMobile = '/user/pur/getpersonsignmobile';
+        $.ajax({
+            type: "POST",
+            url: getSignMobile,
+            data: {
+
+            },
+            dataType: "json",
+            success: function (data) {
+                var mobileStr = "<?php echo $this->translate('mobile_phone');?>";
+                $("#signMobileInput").val(mobileStr + " " +data);
+            }
+        });
+
+        var signTitle = "<?php echo $this->translate('signTitle');?>";
+        layer.open({
+            type: 1,
+            title: signTitle,
+            shadeClose: true,
+            shade: 0.2,
+            area: ['500px', '420px'],
+            content: $('#doSignPDFLayDiv')
+        });
+        $("#signSendAuthCodeBtn").attr("personSend", "true");
+        $("#singConfirmBtn").attr("personSend", "true");
+    });
+    // ********************   End  *************************************
+
+    // ********************   获取短信验证码 Start  *************************************
+    $("#signSendAuthCodeBtn").click(function () {
+        var sendSignAuthCode = '/user/pur/sendsignauthcode';
+        if ($(this).attr("personSend") == "true") {
+            sendSignAuthCode = '/user/pur/sendpersonsignauthcode';
+        }
+
+        $.ajax({
+            type: "POST",
+            url: sendSignAuthCode,
+            data: {
+
+            },
+            dataType: "json",
+            success: function (data) {
+                var sendingStr = "<?php echo $this->translate('signAuthCodeSending');?>";
+                $("#signSendAuthCodeBtn").text(sendingStr);
+                sendSignAuthCodeCountDown();
+            }
+        });
+    });
+
+    var countdown=120;
+    function sendSignAuthCodeCountDown() {
+        var obj = $("#signSendAuthCodeBtn");
+        settime(obj);
+    }
+
+    function settime(obj) { //发送验证码倒计时
+        if (countdown == 0) {
+            obj.attr('disabled',false);
+            //obj.removeattr("disabled");
+            obj.removeClass('layui-btn-disabled');
+            var btnStr = "<?php echo $this->translate('signSendAuthCode'); ?>";
+            obj.text(btnStr);
+            countdown = 120;
+            return;
+        } else {
+            console.log(countdown);
+            obj.attr('disabled',true);
+            obj.addClass('layui-btn-disabled');
+            var btnStr = "<?php echo $this->translate('signAuthCodeSending'); ?>";
+            obj.text(btnStr + "(" + countdown + ")");
+            countdown--;
+        }
+        setTimeout(function() {
+                settime(obj) }
+            ,1000)
+    }
+    // ********************   获取短信验证码 End  *************************************
+
+
+
+    // ********************   获取短信验证码 Start  *************************************
+    $("#singConfirmBtn").click(function () {
+        var doSignPDF = '/user/pur/dosignpdf';
+        var contractID = $(".sign-button").attr("contractID_");
+        if ($(this).attr("personSend") == "true") {
+            doSignPDF = '/user/pur/dopersonsignpdf';
+            contractID = $(".person-sign-button").attr("contractID_");
+        }
+
+        $.ajax({
+            type: "POST",
+            url: doSignPDF,
+            data: {
+                contractID: contractID,
+                signAuthCode: $("#signAuthCode").val()
+            },
+            dataType: "json",
+            success: function (data) {
+                var signMsg = "<?php echo $this->translate('signFail');?>";
+                if (data != null && data != '') {
+                    signMsg = "<?php echo $this->translate('signSuccess');?>";
+                    layer.msg(signMsg);
+                    window.location.reload();
+                } else {
+                    $("#signAuthCode").val('');
+                    layer.msg(signMsg);
+                }
+            }
+        });
+    });
+    // ********************   获取短信验证码 End  *************************************
+
+
+    // ********************   显示非网签上传合同层 Start  *************************************
+    function initSignViewNoEContract(obj) {
+
+        var signTitle = "<?php echo $this->translate('signTitle');?>";
+        layer.open({
+            type: 1,	//Page层类型
+            area: ['800px', '550px'],
+            title: signTitle,
+            // shadeClose: true,
+            shade: 0.6,	//遮罩透明度
+            // anim: 1,	//0-6的动画形式，-1不开启
+            scrollbar: false,
+            content: $("#signViewNoEContractDiv")
+        });
+
+
+        $("#signViewNoEContractDiv tr:not(:first)").empty();
+        //获取最后一行的data-id(标识行)
+        var rowIndex = $("#signViewNoEContractDiv tr:last").attr("data-row");
+        if (rowIndex == "" || rowIndex == null) {
+            rowIndex = parseInt(1);
+        } else {
+            rowIndex = parseInt(rowIndex) + 1;
+        }
+
+        var htmlList = '<tr data-row=' + rowIndex + '>';
+
+        htmlList += '<td><a href="#" id="" onclick="doDownload(\''+obj.id+'\')">' + $("#contractName_" + obj.id).val() + '</a></td>';
+
+        htmlList += '<td>' + $("#ext_" + obj.id).val() + '</td>';
+
+        htmlList += '<td><a href="#" id="" onclick="doDownload(\''+obj.id+'\')" class="order_contract_sign fr">下载</a></td>';
+
+        htmlList += '</td></tr>';
+        //在行最后添加数据
+        $("#signViewNoEContractDiv tr:last").after(htmlList);
+
+        $("#signNoEContractConfirmBtn").attr("contractID_", obj.id);
+        // alert(obj.id);
+        // alert($("#contractName_" + obj.id).val());
+    }
+
+    function doDownload(objID) {
+        window.location.href = $("#contractAttachUrl_" + objID).val();
+    }
+    // ********************   显示非网签上传合同层 End  *************************************
+
+
+    // ********************   非网签签署合同提交按钮 Start  *************************************
+    $("#signNoEContractConfirmBtn").click(function () {
+        var contractID = $(this).attr("contractID_");
+
+        var nidArr = "";
+        var nid = document.getElementsByName("attachNid[]");
+        for (var i = 0, j = nid.length; i < j; i++) {
+            nidArr += nid[i].value + "|";
+        }
+        var nameArr = "";
+        var name = document.getElementsByName("attachName[]");
+        for (var i = 0, j = name.length; i < j; i++) {
+            nameArr += name[i].value + "|";
+        }
+        var sizeArr = "";
+        var size = document.getElementsByName("attachSize[]");
+        for (var i = 0, j = size.length; i < j; i++) {
+            sizeArr += size[i].value + "|";
+        }
+        var attachTypeArr = "";
+        var attachType = document.getElementsByName("attachType[]");
+        for (var i = 0, j = attachType.length; i < j; i++) {
+            attachTypeArr += attachType[i].value + "|";
+        }
+
+        $.ajax({
+            type: "POST",
+            url: '<?php echo $this->BaseUrl();?>/sale/agree',
+            data: {
+                contractID: contractID,
+                name: nameArr,
+                nid: nidArr,
+                size: sizeArr,
+                attachType: attachTypeArr
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data === '1') {
+                    document.location.reload();
+                } else {
+                    alert(data + 'failed,please try again!');
+                }
+            }
+        });
+    });
+    // ********************   非网签签署合同提交按钮 End  *************************************
+
+
+    // ********************   物流详情 Start  *************************************
+    $(".deliveryViewClass").click(function (obj) {
+        var deliveryID = $(this).attr("deliveryID_");
+        var deliveryStatus = $(this).attr("deliveryStatus_");
+        var deliveryNo = $(this).attr("deliveryNo_");
+        $("#deliveryViewDiv").html("").load("<?php echo $this->BaseUrl();?>/sale/deliveryview", {
+            deliveryID: deliveryID
+        }, function () {
+            layer.closeAll();
+            layer.open({
+                type: 1,
+                title: false,
+                area: ['750px', '97%'],
+                skin: 'layui-layer-rim',
+                scrollbar: false,
+                shade: 0.5,
+                content: $("#deliveryViewDiv")
+            });
+
+            if (deliveryStatus == "1") {
+                $("#deliveryDelBtn").show();
+                $("#deliveryDelBtn").attr("deliveryID_", deliveryID);
+
+                $("#deliveryEditBtn").show();
+                $("#deliveryEditBtn").attr("deliveryID_", deliveryID);
+                $("#deliveryEditBtn").attr("deliveryNo_", deliveryNo);
+
+                $("#deliveryEditBtn").click(function () {
+                    $("#deliveryViewDiv").html("");
+                    $("#deliveryEditViewDiv").html("").load("<?php echo $this->BaseUrl();?>/sale/editdelivery", {
+                        deliveryID: deliveryID
+                    }, function () {
+                        var auth_error = $('#deliveryEditDiv').find('.et-auth-error');
+                        auth_error.hide();
+                        layer.closeAll();
+
+                        layer.open({
+                            type: 1,
+                            title: false,
+                            area: ['750px', '97%'],
+                            skin: 'layui-layer-rim',
+                            scrollbar: false,
+                            shade: 0.5,
+                            content: $("#deliveryEditViewDiv")
+                        });
+
+                        $("input[name='deliveryQuantity_edit']").change(function () {
+                            var unitPrice = $(this).parent().prev().find("label").html();
+                            var quantity = $(this).val();
+                            var totalAmount = arithMul(unitPrice, quantity);
+
+                            totalAmount = formatCurrency(totalAmount, 2);
+                            $(this).parent().next().find("label").html(totalAmount);
+                        });
+
+                        $("#deliveryEditConfirmBtn").click(function () {
+                            var nidArr = "";
+                            var nid = document.getElementsByName("attachNid[]");
+                            for (var i = 0, j = nid.length; i < j; i++) {
+                                nidArr += nid[i].value + "|";
+                            }
+                            var nameArr = "";
+                            var name = document.getElementsByName("attachName[]");
+                            for (var i = 0, j = name.length; i < j; i++) {
+                                nameArr += name[i].value + "|";
+                            }
+                            var sizeArr = "";
+                            var size = document.getElementsByName("attachSize[]");
+                            for (var i = 0, j = size.length; i < j; i++) {
+                                sizeArr += size[i].value + "|";
+                            }
+                            var attachTypeArr = "";
+                            var attachType = document.getElementsByName("attachType[]");
+                            for (var i = 0, j = attachType.length; i < j; i++) {
+                                attachTypeArr += attachType[i].value + "|";
+                            }
+                            // var orderItemID_add = "";
+                            var orderItemIDArr = "";
+                            var orderItemID_add = document.getElementsByName("orderItemID_edit");
+                            for (var i = 0, j = orderItemID_add.length; i < j; i++) {
+                                orderItemIDArr += orderItemID_add[i].value + "|";
+                            }
+
+                            var deliveryQuantityArr = "";
+                            var deliveryQuantity_add = document.getElementsByName("deliveryQuantity_edit");
+                            for (var i = 0, j = deliveryQuantity_add.length; i < j; i++) {
+                                deliveryQuantityArr += deliveryQuantity_add[i].value + "|";
+                            }
+
+                            var editDelivery = '/user/sale/editdeliverysave';
+                            $.ajax({
+                                type: "POST",
+                                url: editDelivery,
+                                data: {
+                                    deliveryID: deliveryID,
+                                    name: nameArr,
+                                    nid: nidArr,
+                                    size: sizeArr,
+                                    attachType: attachTypeArr,
+                                    orderItemID: orderItemIDArr,
+                                    deliveryQuantity: deliveryQuantityArr
+                                },
+                                dataType: "json",
+                                success: function (data) {
+                                    if (data === '1') {
+                                        document.location.reload();
+                                    } else {
+                                        alert(data + 'failed,please try again!');
+                                    }
+                                }
+                            });
+                        });
+                        $("#deliveryEditViewDelBtn").click(function () {
+                            var delDelivery = '/user/sale/deldelivery';
+
+                            layer.msg('确定删除发货单？', {
+                                time: 0, //不自动关闭
+                                btn: ['确定', '取消'],
+                                zIndex: 99991014,
+                                yes: function(index){
+                                    $.ajax({
+                                        type: "POST",
+                                        url: delDelivery,
+                                        data: {
+                                            deliveryID: deliveryID
+                                        },
+                                        dataType: "json",
+                                        success: function (data) {
+                                            if (data === '1') {
+                                                document.location.reload();
+                                            } else {
+                                                alert(data + 'failed,please try again!');
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        });
+                    });
+                });
+
+                $("#deliveryDelBtn").click(function () {
+                    var auth_error = $('#deliveryEditDiv').find('.et-auth-error');
+                    var deliveryID = $(this).attr("deliveryid_");
+
+                    var delDelivery = '/user/sale/deldelivery';
+
+                    layer.msg('确定删除发货单？', {
+                        time: 0 //不自动关闭
+                        ,btn: ['确定', '取消']
+                        ,yes: function(index){
+                            $.ajax({
+                                type: "POST",
+                                url: delDelivery,
+                                data: {
+                                    deliveryID: deliveryID
+                                },
+                                dataType: "json",
+                                success: function (data) {
+                                    if (data === '1') {
+                                        document.location.reload();
+                                    } else {
+                                        alert(data + 'failed,please try again!');
+                                    }
+                                }
+                            });
+                        }
+                    });
+                });
+            } else {
+                $("#deliveryDelBtn").hide();
+                $("#deliveryEditBtn").hide();
+            }
+        });
+    });
+
+    $("#deliveryAddBtn").click(function () {
+        var orderID = '<?php echo $this->orders['orderID'];?>';
+        var deliveryCrnCode = '<?php echo $this->orders['buyerCrnCode'];?>';
+
+        $("#deliveryViewDiv").html("").load("<?php echo $this->BaseUrl();?>/sale/listorderitem", {
+            orderID: orderID,
+            deliveryCrnCode: deliveryCrnCode
+        }, function () {
+            layer.closeAll();
+            layer.open({
+                type: 1,
+                title: false,
+                area: ['750px', '97%'],
+                skin: 'layui-layer-rim',
+                scrollbar: false,
+                shade: 0.5,
+                content: $("#deliveryViewDiv")
+            });
+
+            $("#deliveryAddConfirmBtn").click(function () {
+                var auth_error = $('#deliveryAddDiv').find('.et-auth-error');
+
+                var nid = $("#deliveryAddDiv input[name='attachNid[]']");
+                console.log(nid.length);
+                return false;
+
+                var nidArr = "";
+                var nid = document.getElementsByName("attachNid[]");
+                for (var i = 0, j = nid.length; i < j; i++) {
+                    nidArr += nid[i].value + "|";
+                }
+                var nameArr = "";
+                var name = document.getElementsByName("attachName[]");
+                for (var i = 0, j = name.length; i < j; i++) {
+                    nameArr += name[i].value + "|";
+                }
+                var sizeArr = "";
+                var size = document.getElementsByName("attachSize[]");
+                for (var i = 0, j = size.length; i < j; i++) {
+                    sizeArr += size[i].value + "|";
+                }
+                var attachTypeArr = "";
+                var attachType = document.getElementsByName("attachType[]");
+                for (var i = 0, j = attachType.length; i < j; i++) {
+                    attachTypeArr += attachType[i].value + "|";
+                }
+                // var orderItemID_add = "";
+                var orderItemIDArr = "";
+                var orderItemID_add = document.getElementsByName("orderItemID_add");
+                for (var i = 0, j = orderItemID_add.length; i < j; i++) {
+                    orderItemIDArr += orderItemID_add[i].value + "|";
+                }
+
+                var deliveryQuantityArr = "";
+                var deliveryQuantity_add = document.getElementsByName("deliveryQuantity_add");
+                for (var i = 0, j = deliveryQuantity_add.length; i < j; i++) {
+                    deliveryQuantityArr += deliveryQuantity_add[i].value + "|";
+                }
+
+                var doPrepareGoods = '/user/sale/preparesave';
+                $.ajax({
+                    type: "POST",
+                    url: doPrepareGoods,
+                    data: {
+                        orderID: orderID,
+                        name: nameArr,
+                        nid: nidArr,
+                        size: sizeArr,
+                        attachType: attachTypeArr,
+                        orderItemID: orderItemIDArr,
+                        deliveryQuantity: deliveryQuantityArr
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                        if (data === '1') {
+                            document.location.reload();
+                        } else {
+                            alert(data + 'failed,please try again!');
+                        }
+                    }
+                });
+            });
+
+            $("input[name='deliveryQuantity_add']").change(function () {
+                var unitPrice = $(this).parent().prev().find("label").html();
+                var quantity = $(this).val();
+                var totalAmount = arithMul(unitPrice, quantity);
+
+                totalAmount = formatCurrency(totalAmount, 2);
+                $(this).parent().next().find("label").html(totalAmount);
+                // alert(unitPrice * quantity);
+            });
+        });
+    });
+
+    /* 发货详情页 */
+    $(".deliveryDeliverViewBtn").click(function () {
+        var deliveryID = $(this).attr("deliveryID_");
+        $("#deliveryViewDiv").html("").load("<?php echo $this->BaseUrl();?>/sale/deliver", {
+            deliveryID: deliveryID
+        }, function () {
+            layer.closeAll();
+            layer.open({
+                type: 1,
+                title: false,
+                area: ['750px', '97%'],
+                skin: 'layui-layer-rim',
+                scrollbar: false,
+                shade: 0.5,
+                content: $("#deliveryViewDiv")
+            });
+
+            /* 发货 */
+            $("#deliveryDeliverGoodsBtn").click(function () {
+                var auth_error = $('#deliveryDeliverDiv').find('.et-auth-error');
+
+                var nidArr = "";
+                var nid = document.getElementsByName("attachNid[]");
+                for (var i = 0, j = nid.length; i < j; i++) {
+                    nidArr += nid[i].value + "|";
+                }
+                var nameArr = "";
+                var name = document.getElementsByName("attachName[]");
+                for (var i = 0, j = name.length; i < j; i++) {
+                    nameArr += name[i].value + "|";
+                }
+                var sizeArr = "";
+                var size = document.getElementsByName("attachSize[]");
+                for (var i = 0, j = size.length; i < j; i++) {
+                    sizeArr += size[i].value + "|";
+                }
+                var attachTypeArr = "";
+                var attachType = document.getElementsByName("attachType[]");
+                for (var i = 0, j = attachType.length; i < j; i++) {
+                    attachTypeArr += attachType[i].value + "|";
+                }
+
+                var deliverGoods = '/user/sale/deliversave';
+                $.ajax({
+                    type: "POST",
+                    url: deliverGoods,
+                    data: {
+                        deliveryID: deliveryID,
+                        name: nameArr,
+                        nid: nidArr,
+                        size: sizeArr,
+                        attachType: attachTypeArr
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data === '1') {
+                            document.location.reload();
+                        } else {
+                            alert(data + 'failed,please try again!');
+                        }
+                    }
+                });
+            });
+        });
+    });
+
+
+    // ********************   物流详情 End  *************************************
+
+    $(".signTopBtn").click(function () {
+        var executionStatus = <?php echo $this->vestut;?>;
+        $(".signTopDiv").show();
+        $(".deliveryTopDiv").hide();
+        $(".paymentTopDiv").hide();
+    });
+
+    $(".deliveryTopBtn").click(function () {
+        var executionStatus = <?php echo $this->vestut;?>;
+        if (executionStatus >= 7) {
+            $(".signTopDiv").hide();
+            $(".deliveryTopDiv").show();
+            $(".paymentTopDiv").hide();
+        }
+
+    });
+
+    $(".paymentTopBtn").click(function () {
+        var executionStatus = <?php echo $this->vestut;?>;
+        if (executionStatus >= 7) {
+            $(".signTopDiv").hide();
+            $(".deliveryTopDiv").hide();
+            $(".paymentTopDiv").show().load('<?php echo $this->BaseUrl();?>/sale/trading', {'orderID': $("#orderID").val()});
+        }
+    });
+
+    // ********************   开票资料 Start  *************************************
+    $(".billingInfo").click(function () {
+        var deliveryID = $(this).attr("deliveryID_");
+
+        $("#billingInfoDiv").html("").load("<?php echo $this->BaseUrl();?>/sale/deliverbillinginfo", {
+            deliveryID: deliveryID
+        }, function () {
+            layer.closeAll();
+            layer.open({
+                type: 1,
+                title: false,
+                area: ['750px', '97%'],
+                skin: 'layui-layer-rim',
+                scrollbar: false,
+                shade: 0.5,
+                content: $("#billingInfoDiv")
+            });
+
+            layui.use('form', function() {
+                var form = layui.form;
+                form.render();
+            });
+
+            layui.use('element', function(){
+                var element = layui.element;
+                element.render();
+            });
+
+            $(".billingExpressEdit").click(function () {
+                $(".expressShow").hide();
+                $(".expressEdit").show();
+            });
+            $(".billingExpressEditSave").click(function () {
+                var deliveryID = $(this).attr("deliveryID_");
+                var supplierID = $(this).attr("supplierID_");
+                var expressType = $("#expressType").val();
+                var expressName = $("#expressType").find("option:selected").text();
+                var expressNo = $("#expressNo").val();
+
+                var editExpressNo = '/user/sale/editexpresssave';
+                $.ajax({
+                    type: "POST",
+                    url: editExpressNo,
+                    data: {
+                        deliveryID: deliveryID,
+                        supplierID: supplierID,
+                        expressType: expressType,
+                        expressNo: expressNo
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        $(".expressName_").html(expressName);
+                        $(".expressNo_").html(expressNo);
+
+                        $("#expressType").val(expressType);
+                        $("#expressNo").val(expressNo);
+
+                        $(".expressShow").show();
+                        $(".expressEdit").hide();
+                    }
+                });
+            });
+
+            $(".genBillInfoBtn").click(function () {
+                var deliveryID = $(this).attr("deliveryID_");
+
+                var supplierIDArray = "";
+                var supplierID = document.getElementsByName("supplierID");
+                for (var i = 0, j = supplierID.length; i < j; i++) {
+                    supplierIDArray += supplierID[i].value + "|";
+                }
+
+                var bankAcctIDArray = "";
+                var bankAcctID = document.getElementsByName("bankAcctID");
+                for (var i = 0, j = bankAcctID.length; i < j; i++) {
+                    bankAcctIDArray += bankAcctID[i].value + "|";
+                }
+
+                $(".genBillInfoBtn").attr("disabled", true);
+                var genBillingInfo = '/user/sale/genbillinginfo';
+                $.ajax({
+                    type: "POST",
+                    url: genBillingInfo,
+                    data: {
+                        deliveryID: deliveryID,
+                        supplierID: supplierIDArray,
+                        bankAcctID: bankAcctIDArray
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        layer.closeAll();
+
+                        setTimeout(function () {
+                            $("#company-auth").trigger("click");
+                        }, 500);
+
+                        $(".genBillInfoBtn").attr("disabled", false);
+                    }
+                });
+            });
+        });
+    });
+    // ********************   开票资料 End  *************************************
 </script>
 </body>
 </html>

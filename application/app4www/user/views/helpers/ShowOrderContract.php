@@ -22,8 +22,10 @@ class Zend_View_Helper_ShowOrderContract extends Shop_View_Helper {
                 $attachmentList = $v['attachmentList'];
                 $pdfUrl = $this->view->seed_Setting['KyUrlex'] . '/doc/download.action?sid=' . session_id() . '&nid=' . $attachmentList[0]['attachID'] . '&vid=' . $attachmentList[0]['verifyID'];
 
-                $IMG .= '<li style="width: 100%;float: left;margin: 10px 0;"><em class="new_upicon" style="background:url(\'/ky/ico/pdf.png\') no-repeat;background-size: 20px;"></em>';
+                $IMG .= '<div class="col-xs-9 col-md-offset-1">';
+                $IMG .= '<em class="new_upicon" style="background:url(\'/ky/ico/pdf.png\') no-repeat;background-size: 20px;"></em>';
                 $IMG .= '<p class="new_uptitle">' . $v['contractName'] . '</p>';
+                $IMG .= '</div>';
                 $IMG .= '<input type="hidden" value="' . $v['attachType'] . '" />';
 
                 $IMG .= '<input type="hidden" id="contractAttachUrl_'.$v['contractID'].'" value="' . $pdfUrl . '">';
@@ -94,6 +96,7 @@ class Zend_View_Helper_ShowOrderContract extends Shop_View_Helper {
                 $IMG .= '<input type="hidden" id="isESigned_'.$v['contractID'].'" value="'.$isESigned.'" />';
                 $IMG .= '<input type="hidden" id="isPSigned_'.$v['contractID'].'" value="'.$isPSigned.'" />';
 
+                $IMG .= '<div class="col-xs-2">';
                 // 电子签
                 if ($v['isEContract']) {
                     if (!$isESigned || !$isPSigned) {
@@ -112,10 +115,11 @@ class Zend_View_Helper_ShowOrderContract extends Shop_View_Helper {
                         $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">已签署</a>';
                     }
                 }
-
-                $IMG .= '</li>';
+                $IMG .= '</div>';
             } else {
+                $IMG .= '<div class="col-xs-10 col-md-offset-2">';
                 $IMG .= '<label>暂无数据！</label>';
+                $IMG .= '</div>';
             }
         }
         $IMG .= '<input type="hidden" id="hasNoEContract" value="'.$hasNoEContract.'" />';

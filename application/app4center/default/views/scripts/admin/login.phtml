@@ -1,11 +1,26 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8">
     <title>企业电商运营平台登录</title>
     <link rel="stylesheet" type="text/css" href="/css/center/login.css"/>
     <script type="text/javascript" src="/js/center/jquery.js"></script>
     <script type="text/javascript" src="/js/center/admin.js"></script>
+
+    <style>
+        video{
+            position: fixed;
+            right:0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -9999;
+            /*灰色调*/
+            /*-webkit-filter:grayscale(100%)*/
+        }
+    </style>
 </head>
 <body>
 <?php
@@ -15,6 +30,11 @@ if (file_exists($versionfile)) {
     require_once($versionfile);
 }
 ?>
+
+<video id="v1" autoplay muted loop style="width: 100%">
+    <source  src="/ky/video/pexels.mp4">
+</video>
+
 <div id="bodybg">
     <div class="logo">
         <img src="/images/center/logo.png"/>

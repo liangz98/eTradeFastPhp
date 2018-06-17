@@ -723,6 +723,9 @@ class SaleController extends Kyapi_Controller_Action
         $this->view->vestut = $existDatt['vendorExecStatus'];
         $this->view->veorderID = $existDatt['orderID'];
 
+        // 取回订单商品
+        $orderItemListResultObject = $this->json->listOrderItem($_requestOb, $_orderID);
+        $this->view->orderItemList = json_decode($orderItemListResultObject)->result;
 
         // 取回物流信息
         $deliveryList = $this->json->listDelivery($_requestOb, $_orderID);
