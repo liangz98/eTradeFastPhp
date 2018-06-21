@@ -1124,6 +1124,36 @@ class SaleController extends Kyapi_Controller_Action
         }
     }
 
+    /* 发货单详情 */
+    public function deliveryAjaxAction() {
+        $deliveryID = $this->_request->getParam('deliveryID');
+        $_requestOb = $this->_requestObject;
+        $resultObject = $this->json->getDeliveryView($_requestOb, $deliveryID);
+
+        $msg["delivery"] = json_decode($resultObject)->result;
+
+        $delivery = json_decode($resultObject)->result;
+        $attachmentList = $delivery->attachmentList;
+        foreach ($attachmentList as $k => $v) {
+            if ($v->attachType == "DLPG") {             // 备货
+                $msg["prepareAttachmentList"] = $v;
+            } else if ($v->attachType == "DLEG") {      // 验货
+                $msg["examineAttachmentList"] = $v;
+            } else if ($v->attachType == "DLDG") {      // 发货
+                $msg["deliverAttachmentList"] = $v;
+            } else if ($v->attachType == "DLRG") {      // 收货
+                $msg["receiptAttachmentList"] = $v;
+            } else if ($v->attachType == "DLQF") {      // 质量保证函正本
+                $msg["qualityAttachmentList"] = $v;
+            } else if ($v->attachType == "DLCF") {      // 收货确认函正本
+                $msg["receiptConfirmationAttachmentList"] = $v;
+            }
+        }
+
+        echo json_encode($msg);
+        exit;
+    }
+
     // 订单商品列表
     public function listorderitemAction() {
         $orderID = $this->_request->getParam('orderID');
