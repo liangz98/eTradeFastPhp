@@ -2,14 +2,14 @@ var abc;
 function LTrim(s) {
   var theInput=s;
   var theLength=theInput.length;
-  if (theLength==0) return "";  
+  if (theLength==0) return "";
   var s="",w=0;
   for (var i=0; i<theLength; i++) {
     var theChar=theInput.substring(i,i+1);
     if (theChar!=" ") {
       w=i;
       break;
-    } 
+    }
   }
   return theInput.substring(w,theInput.length);
 }
@@ -47,7 +47,7 @@ function IsEmpty(s) {
 function removeLastComma(str){
 	if(str!=null&&str!=""){
 		if(str.substring(str.length-1,str.length)==","){
-			str=str.slice(0,-1); 
+			str=str.slice(0,-1);
 		}
 	}
 	return str;
@@ -55,15 +55,15 @@ function removeLastComma(str){
 function removeLastSemicolon(str){
 	if(str!=null&&str!=""){
 		if(str.substring(str.length-1,str.length)==";"){
-			str=str.slice(0,-1); 
+			str=str.slice(0,-1);
 		}
 	}
 	return str;
 }
 function parseDate(dateStr){
 	dateStr = dateStr.replace("T"," ");
-	var strArray=dateStr.split(" ");   
-	var strDate=strArray[0].split("-"); 
+	var strArray=dateStr.split(" ");
+	var strDate=strArray[0].split("-");
 	var strTime = new Array("00","00","00");
 	if(strArray.length>1 && strArray[1].indexOf(":")!=-1){
 		var strTime=strArray[1].split(":");
@@ -188,7 +188,7 @@ function bsModalDialog(id, link, args, render){
 		data:$.toJSON(args),
 		url:link,
 		beforeSend: function(){
-			
+
 		},
 		error: function(xhr, textStatus, throwError) {
 		    alert("error");
@@ -204,10 +204,10 @@ function bsModalDialog(id, link, args, render){
 			if(data.content != undefined){
 				$('#'+id).find(".modal-body").html(result.content);
 			}
-			$('#'+id).modal('show') 
-		}        	
+			$('#'+id).modal('show')
+		}
     });
-} 
+}
 function getRandomColor(){
 	return '#'+('00000'+(Math.random()*0x1000000<<0).toString(16)).slice(-6);
 }
@@ -230,11 +230,11 @@ function doButtonAction(form,actionURL,confirmStr,windowOpen,theWidth,theHeight,
 			return false;
 		}
 	}
-  	try{ 
-	  	if(showShade!=undefined && typeof(showShade)=="function"){ 
+  	try{
+	  	if(showShade!=undefined && typeof(showShade)=="function"){
 	  		showShade();
 	  	}
-  	}catch(e){} 
+  	}catch(e){}
   	if(args){
   		var arg = args.split(",");
   		$.each(arg ,function(i, a){
@@ -250,7 +250,7 @@ function doButtonAction(form,actionURL,confirmStr,windowOpen,theWidth,theHeight,
 					}else{
 						str+= "&"+arg_[0]+"="+arg_[1];
 					}
-					
+
 				}else{
 					if($("input[name='"+a+"']").length>0){
 						$.each($("input[name='"+a+"']") ,function(j, b){
@@ -304,8 +304,8 @@ function doButtonAction(form,actionURL,confirmStr,windowOpen,theWidth,theHeight,
 				}
 				if(form!=undefined&&form!=""){
 					if(ajaxFunc!=undefined&&ajaxFunc!=""){
-						var options = { 
-								type:'post', 
+						var options = {
+								type:'post',
 								dataType:'json',
 								contentType:"application/json",
 								url:str,
@@ -313,13 +313,13 @@ function doButtonAction(form,actionURL,confirmStr,windowOpen,theWidth,theHeight,
 									if(e){
 										$(e).attr("disabled", false);
 									}
-									if(hideShade&&typeof(hideShade)=="function"){ 
+									if(hideShade&&typeof(hideShade)=="function"){
 										hideShade();
 								  	}
 									return eval(ajaxFunc+"(data)");
 								}
 							};
-						$("#"+form).ajaxSubmit(options); 
+						$("#"+form).ajaxSubmit(options);
 						if(e){
 							$(e).attr("disabled", false);
 						}
@@ -331,7 +331,7 @@ function doButtonAction(form,actionURL,confirmStr,windowOpen,theWidth,theHeight,
 							$(e).attr("disabled", false);
 						}
 		   				return false;
-					}				
+					}
 				}else{
 					$.ajax({
 					    type:'post',
@@ -353,17 +353,17 @@ function doButtonAction(form,actionURL,confirmStr,windowOpen,theWidth,theHeight,
 						}
 					});
 				}
-					
+
 			}
 		}else{
 			if(e){
 				$(e).attr("disabled", false);
 			}
-			try{ 
-			if(hideShade&&typeof(hideShade)=="function"){ 
+			try{
+			if(hideShade&&typeof(hideShade)=="function"){
 				hideShade();
 		  	}
-			}catch(e){} 
+			}catch(e){}
 			return;
 		}
 	}else{
@@ -372,33 +372,33 @@ function doButtonAction(form,actionURL,confirmStr,windowOpen,theWidth,theHeight,
 			if(e){
 				$(e).attr("disabled", false);
 			}
-			try{ 
-			if(hideShade&&typeof(hideShade)=="function"){ 
+			try{
+			if(hideShade&&typeof(hideShade)=="function"){
 				hideShade();
 		  	}
-			}catch(e){} 
+			}catch(e){}
    			return false;
 		}else if(windowOpen=="MD"){
 			modalDialog(str,theWidth,theHeight,theOther);
 			if(e){
 				$(e).attr("disabled", false);
 			}
-			try{ 
-			if(hideShade&&typeof(hideShade)=="function"){ 
+			try{
+			if(hideShade&&typeof(hideShade)=="function"){
 				hideShade();
 		  	}
-			}catch(e){} 
+			}catch(e){}
    			return false;
 		}else if(windowOpen=="HL"){
 			window.location.href = str;
 			if(e){
 				$(e).attr("disabled", false);
 			}
-			try{ 
-			if(hideShade&&typeof(hideShade)=="function"){ 
+			try{
+			if(hideShade&&typeof(hideShade)=="function"){
 				hideShade();
 		  	}
-			}catch(e){} 
+			}catch(e){}
 			return false;
 		}else{
 			if(isPrompt=="true"){                  // 判断是否Explorer用户提示
@@ -419,8 +419,8 @@ function doButtonAction(form,actionURL,confirmStr,windowOpen,theWidth,theHeight,
 			}
 			if(form!=undefined&&form!=""){
 				if(ajaxFunc!=undefined&&ajaxFunc!=""){
-					var options = { 
-							type:'post', 
+					var options = {
+							type:'post',
 							dataType:'json',
 							contentType:"application/json",
 							url:str,
@@ -428,21 +428,21 @@ function doButtonAction(form,actionURL,confirmStr,windowOpen,theWidth,theHeight,
 								if(e){
 									$(e).attr("disabled", false);
 								}
-								if(hideShade&&typeof(hideShade)=="function"){ 
+								if(hideShade&&typeof(hideShade)=="function"){
 									hideShade();
 							  	}
 								return eval(ajaxFunc+"(data)");
 							}
 						};
-					$("#"+form).ajaxSubmit(options); 
+					$("#"+form).ajaxSubmit(options);
 					if(e){
 						$(e).attr("disabled", false);
 					}
-					try{ 
-					if(hideShade&&typeof(hideShade)=="function"){ 
+					try{
+					if(hideShade&&typeof(hideShade)=="function"){
 						hideShade();
 				  	}
-					}catch(e){} 
+					}catch(e){}
 					return false;
 				}else{
 					$("#"+form).attr("action",str);
@@ -450,11 +450,11 @@ function doButtonAction(form,actionURL,confirmStr,windowOpen,theWidth,theHeight,
 		            if(e){
 						$(e).attr("disabled", false);
 					}
-		            try{ 
-		            if(hideShade&&typeof(hideShade)=="function"){ 
+		            try{
+		            if(hideShade&&typeof(hideShade)=="function"){
 						hideShade();
 				  	}
-		            }catch(e){} 
+		            }catch(e){}
 	   				return false;
 				}
 			}else{
@@ -469,28 +469,28 @@ function doButtonAction(form,actionURL,confirmStr,windowOpen,theWidth,theHeight,
 							if(e){
 								$(e).attr("disabled", false);
 							}
-							try{ 
-							if(hideShade&&typeof(hideShade)=="function"){ 
+							try{
+							if(hideShade&&typeof(hideShade)=="function"){
 								hideShade();
 						  	}
-							}catch(e){} 
+							}catch(e){}
 							return eval(ajaxFunc+"(data)");
 						}
 						if(e){
 							$(e).attr("disabled", false);
 						}
-						try{ 
-						if(hideShade&&typeof(hideShade)=="function"){ 
+						try{
+						if(hideShade&&typeof(hideShade)=="function"){
 							hideShade();
 					  	}
-						}catch(e){} 
+						}catch(e){}
 						return;
 					}
 				});
 			}
-			
+
 		}
-	} 
+	}
 }
 function showShade() {
 	if($("#pageshade")[0]){
@@ -504,4 +504,25 @@ function hideShade() {
 		$("#pageshade").hide();
 		$("#pageshadeimg").hide();
 	}
+}
+/* 扩展格式化时间 */
+Date.prototype.format = function(fmt) {
+    var o = {
+        "M+" : this.getMonth()+1,                 //月份
+        "d+" : this.getDate(),                    //日
+        "h+" : this.getHours(),                   //小时
+        "m+" : this.getMinutes(),                 //分
+        "s+" : this.getSeconds(),                 //秒
+        "q+" : Math.floor((this.getMonth()+3)/3), //季度
+        "S"  : this.getMilliseconds()             //毫秒
+    };
+    if(/(y+)/.test(fmt)) {
+        fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+    }
+    for(var k in o) {
+        if(new RegExp("("+ k +")").test(fmt)){
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+        }
+    }
+    return fmt;
 }

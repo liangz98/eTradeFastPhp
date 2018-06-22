@@ -1134,22 +1134,35 @@ class SaleController extends Kyapi_Controller_Action
 
         $delivery = json_decode($resultObject)->result;
         $attachmentList = $delivery->attachmentList;
+
+        $prepareAttachmentList = array();   // 备货
+        $examineAttachmentList = array();   // 验货
+        $deliverAttachmentList = array();   // 发货
+        $receiptAttachmentList = array();   // 收货
+        $qualityAttachmentList = array();   // 质量保证函正本
+        $receiptConfirmationAttachmentList = array();   // 收货确认函正本
         foreach ($attachmentList as $k => $v) {
             if ($v->attachType == "DLPG") {             // 备货
-                $msg["prepareAttachmentList"] = $v;
+                $prepareAttachmentList[] = $v;
             } else if ($v->attachType == "DLEG") {      // 验货
-                $msg["examineAttachmentList"] = $v;
+                $examineAttachmentList[] = $v;
             } else if ($v->attachType == "DLDG") {      // 发货
-                $msg["deliverAttachmentList"] = $v;
+                $deliverAttachmentList[] = $v;
             } else if ($v->attachType == "DLRG") {      // 收货
-                $msg["receiptAttachmentList"] = $v;
+                $receiptAttachmentList[] = $v;
             } else if ($v->attachType == "DLQF") {      // 质量保证函正本
-                $msg["qualityAttachmentList"] = $v;
+                $qualityAttachmentList[] = $v;
             } else if ($v->attachType == "DLCF") {      // 收货确认函正本
-                $msg["receiptConfirmationAttachmentList"] = $v;
+                $receiptConfirmationAttachmentList[] = $v;
             }
         }
 
+        $msg["prepareAttachmentList"] = $prepareAttachmentList;
+        $msg["examineAttachmentList"] = $examineAttachmentList;
+        $msg["deliverAttachmentList"] = $deliverAttachmentList;
+        $msg["receiptAttachmentList"] = $receiptAttachmentList;
+        $msg["qualityAttachmentList"] = $qualityAttachmentList;
+        $msg["receiptConfirmationAttachmentList"] = $receiptConfirmationAttachmentList;
         echo json_encode($msg);
         exit;
     }
