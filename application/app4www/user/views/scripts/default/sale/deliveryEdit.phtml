@@ -1,12 +1,6 @@
 <div id="deliveryEditDiv" class="layui-form">
-	<div class="et-auth-top et-auth-bg-orange" style="height: 60px; text-align: left;">
-		<h3><?php echo $this->translate('edit'); ?><label class="deliveryNo_"></label><?php echo $this->translate('deliveryItemQuantity'); ?></h3>
-	</div>
 	<div class="et-auth-error" style="display: none;"></div>
-
 	<div class="">
-		<div style="margin-top: 20px;"></div>
-
 		<div class="layui-form-item">
 			<table class="layui-table" lay-skin="line" id="deliveryEditTable">
 				<colgroup>
@@ -42,21 +36,10 @@
 			</table>
 		</div>
 
-		<div class="layui-form-item">
-			<div class="layui-form-label" style="width: 420px;">
-				<div class="yyzz_box clearfix" style="width: 600px;">
-					<p class="zzname" id="deliveryEditAttachment" style="width: 600px; font-weight:bold;"><?php echo $this->translate('PREPARE_GOODS'); ?><!--合同相关附件上传--></p>
-                    <?php
-                        echo $this->ShowWebuploader($this->attachmentList, $this->biz_Setting['ORDER'], $this->attach_Setting['DLPG'], "0", null);
-                    ?>
-				</div>
-			</div>
-		</div>
-
-		<div style="height: 12px"></div>
-		<div class="et-auth-row">
-			<button class="layui-btn layui-btn-warm" id="deliveryEditConfirmBtn"><?php echo $this->translate('confirmed'); ?></button>&nbsp;&nbsp;
-			<a id="deliveryEditViewDelBtn" style="color: #c2c2c2; cursor: pointer;"><?php echo $this->translate('deliveryDel'); ?></a>
-		</div>
+        <div class="row">
+            <div class="col-sm-12">
+                <?php echo $this->ShowWebuploader($this->attachmentList, $this->biz_Setting['ORDER'], $this->attach_Setting['DLPG'], '0', null); ?>
+            </div>
+        </div>
 	</div>
 </div>

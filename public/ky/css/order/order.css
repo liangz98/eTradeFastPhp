@@ -148,6 +148,27 @@ input[type=number]{
     width: 86%;
 }
 
+.et-auth-top {
+    width: 100%;
+    height: 100px;
+    color: #fff;
+}
+
+.et-auth-top h3 {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px;
+}
+
+.et-auth-top p {
+    font-size: 12px;
+    padding: 0 15px;
+}
+
+.et-auth-bg-orange {
+    background:#f08c00;
+}
+
 /* 标签页徽章背景色 */
 #optionTabs a span {
     background-color: #01AAED;

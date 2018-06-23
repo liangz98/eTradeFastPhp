@@ -1297,6 +1297,29 @@ class SaleController extends Kyapi_Controller_Action
         }
     }
 
+    /* 发货单详情 */
+    public function editDeliveryAjaxAction() {
+        $deliveryID = $this->_request->getParam('deliveryID');
+        $_requestOb = $this->_requestObject;
+        $resultObject = $this->json->getDeliveryView($_requestOb, $deliveryID);
+
+        $msg["delivery"] = json_decode($resultObject)->result;
+
+        $delivery = json_decode($resultObject)->result;
+        $attachmentList = $delivery->attachmentList;
+
+        $prepareAttachmentList = array();   // 备货
+        foreach ($attachmentList as $k => $v) {
+            if ($v->attachType == "DLPG") {             // 备货
+                $prepareAttachmentList[] = $v;
+            }
+        }
+
+        $msg["prepareAttachmentList"] = $prepareAttachmentList;
+        echo json_encode($msg);
+        exit;
+    }
+
     // 编辑备货单 - 保存
     public function editdeliverysaveAction() {
         $_requestOb = $this->_requestObject;
@@ -1383,7 +1406,7 @@ class SaleController extends Kyapi_Controller_Action
     }
 
     // 删除备货单
-    public function deldeliveryAction() {
+    public function delDeliveryAjaxAction() {
         $_requestOb = $this->_requestObject;
         // 请求Hessian服务端方法
         $deliveryID = $_POST['deliveryID'];

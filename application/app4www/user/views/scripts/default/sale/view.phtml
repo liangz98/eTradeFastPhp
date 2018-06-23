@@ -155,21 +155,23 @@
                                         <tbody>
                                         <?php if (count($this->deliveryList) > 0): ?>
                                             <?php foreach ($this->deliveryList as $k => $v):?>
-                                                <tr data-toggle="modal" data-target="#viewDelivery" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-status="<?php echo $v->deliveryStatus; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>">
-                                                    <td><span class="layui-badge" style="background-color: #4CAF50;"><?php echo $k + 1; ?></span></td>
-                                                    <td class="deliveryViewClass" style="cursor: pointer;" deliveryID_="<?php echo $v->deliveryID; ?>" deliveryStatus_="<?php echo $v->deliveryStatus; ?>" deliveryNo_="<?php echo $v->deliveryNo; ?>"><?php echo $v->deliveryNo; ?></td>
-                                                    <td class="deliveryViewClass" style="cursor: pointer;" deliveryID_="<?php echo $v->deliveryID; ?>" deliveryStatus_="<?php echo $v->deliveryStatus; ?>" deliveryNo_="<?php echo $v->deliveryNo; ?>"><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['DELIVERY_STATUE'], $v->deliveryStatus); ?></td>
-                                                    <td class="deliveryViewClass" style="cursor: pointer;" deliveryID_="<?php echo $v->deliveryID; ?>" deliveryStatus_="<?php echo $v->deliveryStatus; ?>" deliveryNo_="<?php echo $v->deliveryNo; ?>"><?php $date = date_create($v->readyDate); echo date_format($date,"Y年m月d日"); ?></td>
-                                                    <td class="deliveryViewClass" style="cursor: pointer;" deliveryID_="<?php echo $v->deliveryID; ?>" deliveryStatus_="<?php echo $v->deliveryStatus; ?>" deliveryNo_="<?php echo $v->deliveryNo; ?>"><?php $summary = $v->summary; $replaceStr = "<br />"; echo str_replace('\n', $replaceStr, $summary); ?></td>
+                                                <tr>
+                                                    <td data-toggle="modal" data-target="#viewDelivery" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-status="<?php echo $v->deliveryStatus; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>">
+                                                        <span class="layui-badge" style="background-color: #4CAF50;"><?php echo $k + 1; ?></span>
+                                                    </td>
+                                                    <td style="cursor: pointer;" data-toggle="modal" data-target="#viewDelivery" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-status="<?php echo $v->deliveryStatus; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>"><?php echo $v->deliveryNo; ?></td>
+                                                    <td style="cursor: pointer;" data-toggle="modal" data-target="#viewDelivery" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-status="<?php echo $v->deliveryStatus; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>"><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['DELIVERY_STATUE'], $v->deliveryStatus); ?></td>
+                                                    <td style="cursor: pointer;" data-toggle="modal" data-target="#viewDelivery" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-status="<?php echo $v->deliveryStatus; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>"><?php $date = date_create($v->readyDate); echo date_format($date,"Y年m月d日"); ?></td>
+                                                    <td style="cursor: pointer;" data-toggle="modal" data-target="#viewDelivery" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-status="<?php echo $v->deliveryStatus; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>"><?php $summary = $v->summary; $replaceStr = "<br />"; echo str_replace('\n', $replaceStr, $summary); ?></td>
                                                     <td style="text-align: center">
                                                         <?php if ($v->deliveryStatus == 1 && $v->needExamine == False):?>
                                                             <a class="layui-btn layui-btn-warm deliveryDeliverViewBtn" deliveryID_="<?php echo $v->deliveryID; ?>">发货</a>
                                                         <?php elseif ($v->deliveryStatus == 2): ?>
                                                             <a class="layui-btn layui-btn-warm deliveryDeliverViewBtn" deliveryID_="<?php echo $v->deliveryID; ?>">发货</a>
                                                         <?php elseif (!$this->orders->isSelfSupport && $v->deliveryStatus == 3 && $v->vendorPaymentStatus == 3): ?>
-                                                            <a href='javascript:void(0)' class="billingInfo" deliveryID_="<?php echo $v->deliveryID; ?>" >开票资料</a>
+                                                            <a href='javascript:void(0)' data-toggle="modal" data-target="#billingInfo" data-delivery-id="<?php echo $v->deliveryID; ?>" >开票资料</a>
                                                         <?php elseif (!$this->orders->isSelfSupport && $v->deliveryStatus == 4 && $v->vendorPaymentStatus == 3): ?>
-                                                            <a href='javascript:void(0)' class="billingInfo" deliveryID_="<?php echo $v->deliveryID; ?>" >开票资料</a>
+                                                            <a href='javascript:void(0)' data-toggle="modal" data-target="#billingInfo" data-delivery-id="<?php echo $v->deliveryID; ?>" >开票资料</a>
                                                         <?php endif; ?>
                                                     </td>
                                                 </tr>
@@ -187,7 +189,6 @@
                                     <div style="height: 12px"></div>
                                     <div>
                                         <button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target="#addDelivery"><b><?php echo $this->translate('deliveryAdd'); ?></b></button>
-                                        <button class="layui-btn layui-btn-fluid layui-btn-primary" id="deliveryAddBtn"><b><?php echo $this->translate('deliveryAdd'); ?></b></button>
                                     </div>
                                 </div>
                             </div>
@@ -721,6 +722,46 @@
     </div>
 </div>
 
+<!-- Modal 编辑发货记录 -->
+<div class="modal fade" id="editDelivery" tabindex="-1" role="dialog" aria-labelledby="editDeliveryLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><?php echo $this->translate('edit'); ?> <span class="editDeliveryNo"></span> <?php echo $this->translate('deliveryItemQuantity'); ?></h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="layui-form-item table-responsive editDeliveryTable">
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 editDeliveryItemAttachment">
+                        <?php echo $this->ShowWebuploader($this->attachmentList, $this->biz_Setting['ORDER'], $this->attach_Setting['DLPG'], null); ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="deliveryEditConfirmBtn"><?php echo $this->translate('confirmed'); ?></button>
+                <a id="editDeliveryDelBtn" style="color: #c2c2c2; cursor: pointer;"><?php echo $this->translate('deliveryDel'); ?></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 开票资料 -->
+<div class="modal fade" id="billingInfo" tabindex="-1" role="dialog" aria-labelledby="billingInfoLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="layui-form-item table-responsive billingInfoContent">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- 物流编辑 -->
 <div id="deliveryViewDiv" style="display: none;"></div>
 
@@ -1104,13 +1145,29 @@
 
 
     // ********************   物流详情 Start  *************************************
-    $("#viewDelivery").on('show.bs.modal', function (e) {
+    var $deliveryEditBtn = $("#deliveryEditBtn"),
+        $deliveryDelBtn = $("#deliveryDelBtn"),
+        $viewDelivery = $("#viewDelivery"),
+        $editDelivery = $("#editDelivery");
+    $viewDelivery.on('show.bs.modal', function (e) {
         var triggered = $(e.relatedTarget),
             deliveryID = triggered.data("delivery-id"),
             deliveryStatus = triggered.data("delivery-status"),
             deliveryNo = triggered.data("delivery-no"),
             $viewDeliveryTable = $(".viewDeliveryTable"),
             $deliveryItemAttachment = $(".deliveryItemAttachment");
+
+        if (deliveryStatus === 1) {
+            $deliveryDelBtn.show();
+            $deliveryDelBtn.attr("data-delivery-id", deliveryID);
+
+            $deliveryEditBtn.show();
+            $deliveryEditBtn.attr("data-delivery-id", deliveryID);
+            $deliveryEditBtn.attr("data-delivery-no", deliveryNo);
+        } else {
+            $deliveryDelBtn.hide();
+            $deliveryEditBtn.hide();
+        }
 
         $(".deliveryNo").html(deliveryNo);
         var deliveryUrl = "/user/sale/delivery-ajax";
@@ -1122,13 +1179,7 @@
             },
             dataType: "json",
             success: function (data) {
-                console.log(data);
-
-                console.log(data.deliverAttachmentList.length);
-
                 var attachUrl = '<?php echo $this->seed_Setting['KyUrlex'] ?>';
-                console.log(attachUrl);
-
                 $viewDeliveryTable.html("");
                 var content = '';
                 content += '<table class="layui-table" lay-skin="line" id="deliveryEditTable">'
@@ -1166,19 +1217,36 @@
 
                 // 附件
                 $deliveryItemAttachment.html("");
-                attachmentContent = '';
+                var attachmentContent = '';
 
+                // 备货
+                if (data.prepareAttachmentList.length > 0) {
+                    attachmentContent += genAttachContent(data.prepareAttachmentList, '<?php echo $this->translate('PREPARE_GOODS').$this->translate('download'); ?>', attachmentContent, attachUrl);
+                }
+
+                // 验货
+                if (data.examineAttachmentList.length > 0) {
+                    attachmentContent += genAttachContent(data.examineAttachmentList, '<?php echo $this->translate('EXAMINE_GOODS').$this->translate('download'); ?>', attachmentContent, attachUrl);
+                }
+
+                // 质量保证函正本
+                if (data.qualityAttachmentList.length > 0) {
+                    attachmentContent += genAttachContent(data.qualityAttachmentList, '<?php echo $this->translate('QUALITY_AGREE_FORMAL').$this->translate('download'); ?>', attachmentContent, attachUrl);
+                }
+
+                // 发货
                 if (data.deliverAttachmentList.length > 0) {
-                    $.each(data.deliverAttachmentList, function (index, attach) {
-                        console.log("in");
-                        attachmentContent += '<div class="col-xs-8">'
-                            + '<em class="new_upicon" style="background:url(\'/ky/ico/' + attach.ext + '.png\') no-repeat;background-size: 20px;"></em>'
-                            + '<p class="new_uptitle">' + attach.name + '</p>'
-                            + '</div>'
-                            + '<div class="col-xs-3">'
-                            + '<?php echo $this->translate("creatdate") ?>&nbsp;' + new Date(attach.createTime).format("yyyy-MM-dd hh:mm:ss")
-                            + '</div>';
-                    });
+                    attachmentContent += genAttachContent(data.deliverAttachmentList, '<?php echo $this->translate('DELIVER_GOODS').$this->translate('download'); ?>', attachmentContent, attachUrl);
+                }
+
+                // 收货
+                if (data.receiptAttachmentList.length > 0) {
+                    attachmentContent += genAttachContent(data.receiptAttachmentList, '<?php echo $this->translate('RECEIPT_GOODS').$this->translate('download'); ?>', attachmentContent, attachUrl);
+                }
+
+                // 收货确认函正本
+                if (data.receiptConfirmationAttachmentList.length > 0) {
+                    attachmentContent += genAttachContent(data.receiptConfirmationAttachmentList, '<?php echo $this->translate('RECEIPT_CONFIRMATION_FORMAL').$this->translate('download'); ?>', attachmentContent, attachUrl);
                 }
 
                 $deliveryItemAttachment.html(attachmentContent);
@@ -1186,156 +1254,233 @@
         });
     });
 
-    $(".deliveryViewClass").click(function (obj) {
-        var deliveryID = $(this).attr("deliveryID_");
-        var deliveryStatus = $(this).attr("deliveryStatus_");
-        var deliveryNo = $(this).attr("deliveryNo_");
-        $("#deliveryViewDiv").html("").load("<?php echo $this->BaseUrl();?>/sale/deliveryview", {
-            deliveryID: deliveryID
-        }, function () {
-            layer.closeAll();
-            layer.open({
-                type: 1,
-                title: false,
-                area: ['750px', '97%'],
-                skin: 'layui-layer-rim',
-                scrollbar: false,
-                shade: 0.5,
-                content: $("#deliveryViewDiv")
-            });
+    function genAttachContent(data, title, attachmentContent, attachUrl) {
+        attachmentContent += '<div class="page-header">'
+            + '<h4>' + title + '</h4>'
+            + '</div>';
+        $.each(data, function (index, attach) {
+            var ext = attach.ext !== undefined ? attach.ext.toLowerCase(): '';
+            attachmentContent += '<div class="col-xs-8">'
+                + '<em class="new_upicon" style="background:url(\'/ky/ico/' + ext + '.png\') no-repeat;background-size: 20px;"></em>'
+                + '<a href="' + attachUrl + '/doc/download.action?sid=<?php echo session_id(); ?>&nid=' + attach.attachID + '&vid=' + attach.verifyID + '" download>'
+                + '<p class="new_uptitle">' + attach.name + '</p>'
+                + '</a>'
+                + '</div>'
+                + '<div class="col-xs-4">'
+                + '<?php echo $this->translate("creatdate") ?>&nbsp;' + new Date(attach.createTime).format("yyyy-MM-dd hh:mm:ss")
+                + '</div>';
+        });
+        return attachmentContent;
+    }
 
-            if (deliveryStatus == "1") {
-                $("#deliveryDelBtn").show();
-                $("#deliveryDelBtn").attr("deliveryID_", deliveryID);
-
-                $("#deliveryEditBtn").show();
-                $("#deliveryEditBtn").attr("deliveryID_", deliveryID);
-                $("#deliveryEditBtn").attr("deliveryNo_", deliveryNo);
-
-                $("#deliveryEditBtn").click(function () {
-                    $("#deliveryViewDiv").html("");
-                    $("#deliveryEditViewDiv").html("").load("<?php echo $this->BaseUrl();?>/sale/editdelivery", {
+    $deliveryDelBtn.click(function () {
+        var deliveryID = $(this).attr("data-delivery-id"),
+            delDelivery = '/user/sale/del-delivery-ajax';
+        layer.msg('确定删除发货单？', {
+            time: 0 //不自动关闭
+            ,btn: ['确定', '取消']
+            ,yes: function(index){
+                $.ajax({
+                    type: "POST",
+                    url: delDelivery,
+                    data: {
                         deliveryID: deliveryID
-                    }, function () {
-                        var auth_error = $('#deliveryEditDiv').find('.et-auth-error');
-                        auth_error.hide();
-                        layer.closeAll();
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data === 1) {
+                            document.location.reload();
+                        } else {
+                            alert(data + ' failed, please try again!');
+                        }
+                    }
+                });
+            }
+        });
+    });
 
-                        layer.open({
-                            type: 1,
-                            title: false,
-                            area: ['750px', '97%'],
-                            skin: 'layui-layer-rim',
-                            scrollbar: false,
-                            shade: 0.5,
-                            content: $("#deliveryEditViewDiv")
-                        });
+    // 查看备货单页面点击编辑按钮
+    $deliveryEditBtn.click(function () {
+        $editDelivery.attr('data-delivery-id', $(this).attr("data-delivery-id"));
+        $editDelivery.attr('data-delivery-no', $(this).attr("data-delivery-no"));
 
-                        $("input[name='deliveryQuantity_edit']").change(function () {
-                            var unitPrice = $(this).parent().prev().find("label").html();
-                            var quantity = $(this).val();
-                            var totalAmount = arithMul(unitPrice, quantity);
+        $viewDelivery.modal('hide');
+        setTimeout(function () {
+            $editDelivery.modal('show')
+        }, 400);
+    });
 
-                            totalAmount = formatCurrency(totalAmount, 2);
-                            $(this).parent().next().find("label").html(totalAmount);
-                        });
+    // 呈现备货单编辑页面
+    $editDelivery.on('show.bs.modal', function (e) {
+        var deliveryID = $editDelivery.attr("data-delivery-id"),
+            deliveryNo = $editDelivery.attr("data-delivery-no"),
+            $editDeliveryTable = $(".editDeliveryTable"),
+            $attachView = $(".editDeliveryItemAttachment").find(".img-view");
 
-                        $("#deliveryEditConfirmBtn").click(function () {
-                            var nidArr = "";
-                            var nid = document.getElementsByName("attachNid[]");
-                            for (var i = 0, j = nid.length; i < j; i++) {
-                                nidArr += nid[i].value + "|";
+        $(".editDeliveryNo").html(deliveryNo);
+        $attachView.html("");
+
+        var deliveryUrl = "/user/sale/edit-delivery-ajax";
+        $.ajax({
+            type: "POST",
+            url: deliveryUrl,
+            data: {
+                deliveryID: deliveryID
+            },
+            dataType: "json",
+            success: function (data) {
+                var content = '',
+                    attachmentContent = '',
+                    attachUrl = '<?php echo $this->seed_Setting['KyUrlex'] ?>';
+                if (data.delivery === null) {
+
+                    content += '暂无数据';
+                } else {
+                    content += '<table class="layui-table" lay-skin="line" id="deliveryEditTable">'
+                        + '<colgroup>'
+                        + ' <col>'
+                        + ' <col width="140">'
+                        + ' <col width="120">'
+                        + ' <col width="80">'
+                        + ' <col width="160">'
+                        + '</colgroup>'
+                        + '<thead>'
+                        + '<tr>'
+                        + ' <th>名称</th>'
+                        + ' <th>型号</th>'
+                        + ' <th>单价</th>'
+                        + ' <th>数量</th>'
+                        + ' <th>总价</th>'
+                        + '</thead>'
+                        + '<tbody>';
+
+                    $.each(data.delivery.deliveryItemList, function (index, deliveryItem) {
+                        content += '<tr>'
+                            + '<td style="text-align: left">' + deliveryItem.productName + '</td>'
+                            + '<td style="text-align: left">' + deliveryItem.productModel + '</td>'
+                            + '<td style="text-align: left">' + data.delivery.crnCode + '&nbsp;<label>' + formatCurrency(deliveryItem.buyerUnitPrice, 2) + '</label></td>'
+                            + '<td style="text-align: left">'
+                            + '<input name="deliveryQuantity_edit" class="layui-input" value="' + deliveryItem.deliveryQuantity + '" />'
+                            + '<input type="hidden" name="orderItemID_edit" value="' + deliveryItem.itemID + '" />'
+                            + '</td>'
+                            + '<td style="text-align: left">' + data.delivery.crnCode + '&nbsp;<label id="itemID_' + deliveryItem.itemID + '">' + formatCurrency(deliveryItem.buyerTotalAmount, 2) + '</label></td>'
+                            + '</tr>';
+                    });
+
+                    content += '</tbody>'
+                        + '</table>';
+
+                    $.each(data.prepareAttachmentList, function (index, attach) {
+                        var ext = attach.ext !== undefined ? attach.ext.toLowerCase(): '';
+                        if (ext === "DOCX" || ext === "WPS") {
+                            ext = "doc";
+                        }
+                        if (ext === "XLSX") {
+                            ext = "xls";
+                        }
+                        if (ext === "PPTX") {
+                            ext = "ppt";
+                        }
+                        attachmentContent += '<li>';
+                        if (ext === "jpeg" || ext === "png" || ext === "jpg" || ext === "gif" || ext === "GIF" || ext === "JPG" || ext === "PNG" || ext === "JPEG") {
+                            attachmentContent += '<img width="125px" height="125px"  layer-src="' + attachUrl + '/doc/download.action?sid=<?php echo session_id(); ?>&nid=' + attach.attachID + '&vid=' + attach.verifyID + '" src="' + attachUrl + '/doc/download.action?sid=<?php echo session_id(); ?>&nid=' + attach.attachID + '&vid=' + attach.verifyID + '&size=MIDDLE" name="' + attach.name + '">'
+                                + '<span class="del_to">' + attach.name + '<br><a onclick="view_pic(this)">查看</a>|<a onclick="delete_pic(this)">删除</a></span>';
+                        } else {
+                            attachmentContent += '<img width="125px" height="125px" src="/ky/ico/' + ext + '.png" alt=' + attach.attachType + ' />'
+                                + '<span class="del_to">' + attach.name + '<br>'
+                                + '<a href="' + attachUrl + '/doc/download.action?sid=<?php echo session_id(); ?>&nid=' + attach.attachID + '&vid=' + attach.verifyID + '" download>下载</a>'
+                                + '<a onclick="delete_pic(this)">删除</a>'
+                                + '</span>';
+                        }
+
+                        attachmentContent += '<input type="hidden" name="attachNid[]" value="' + attach.attachID + '" />'
+                            + '<input type="hidden" name="attachType[]" value="' + attach.attachType + '" />'
+                            + '<input type="hidden" name="attachName[]" value="' + attach.name + '" />'
+                            + '<input type="hidden" name="attachSize[]" value="' + attach.size + '" />';
+                        attachmentContent += '</li>';
+                    });
+                }
+
+                $editDeliveryTable.html(content);
+                $attachView.html(attachmentContent);
+
+                $("input[name='deliveryQuantity_edit']").keyup(function () {
+                    var unitPrice = $(this).parent().prev().find("label").html();
+                    var quantity = $(this).val();
+                    if (isNaN(quantity)) {
+                        quantity = 0;
+                    }
+                    var totalAmount = arithMul(unitPrice, quantity);
+
+                    totalAmount = formatCurrency(totalAmount, 2);
+                    $(this).parent().next().find("label").html(totalAmount);
+                });
+
+                $("#deliveryEditConfirmBtn").click(function () {
+                    var nidArr = "";
+                    var nid = $("#editDelivery input[name='attachNid[]']");
+                    for (var i = 0, j = nid.length; i < j; i++) {
+                        nidArr += nid[i].value + "|";
+                    }
+                    var nameArr = "";
+                    var name = $("#editDelivery input[name='attachName[]']");
+                    for (var i = 0, j = name.length; i < j; i++) {
+                        nameArr += name[i].value + "|";
+                    }
+                    var sizeArr = "";
+                    var size = $("#editDelivery input[name='attachSize[]']");
+                    for (var i = 0, j = size.length; i < j; i++) {
+                        sizeArr += size[i].value + "|";
+                    }
+                    var attachTypeArr = "";
+                    var attachType = $("#editDelivery input[name='attachType[]']");
+                    for (var i = 0, j = attachType.length; i < j; i++) {
+                        attachTypeArr += attachType[i].value + "|";
+                    }
+                    // var orderItemID_add = "";
+                    var orderItemIDArr = "";
+                    var orderItemID_add = $("#editDelivery input[name='orderItemID_edit']");
+                    for (var i = 0, j = orderItemID_add.length; i < j; i++) {
+                        orderItemIDArr += orderItemID_add[i].value + "|";
+                    }
+
+                    var deliveryQuantityArr = "";
+                    var deliveryQuantity_add = $("#editDelivery input[name='deliveryQuantity_edit']");
+                    for (var i = 0, j = deliveryQuantity_add.length; i < j; i++) {
+                        deliveryQuantityArr += deliveryQuantity_add[i].value + "|";
+                    }
+
+                    var editDelivery = '/user/sale/editdeliverysave';
+                    $.ajax({
+                        type: "POST",
+                        url: editDelivery,
+                        data: {
+                            deliveryID: deliveryID,
+                            name: nameArr,
+                            nid: nidArr,
+                            size: sizeArr,
+                            attachType: attachTypeArr,
+                            orderItemID: orderItemIDArr,
+                            deliveryQuantity: deliveryQuantityArr
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            if (data === 1) {
+                                document.location.reload();
+                            } else {
+                                alert(data + 'failed,please try again!');
                             }
-                            var nameArr = "";
-                            var name = document.getElementsByName("attachName[]");
-                            for (var i = 0, j = name.length; i < j; i++) {
-                                nameArr += name[i].value + "|";
-                            }
-                            var sizeArr = "";
-                            var size = document.getElementsByName("attachSize[]");
-                            for (var i = 0, j = size.length; i < j; i++) {
-                                sizeArr += size[i].value + "|";
-                            }
-                            var attachTypeArr = "";
-                            var attachType = document.getElementsByName("attachType[]");
-                            for (var i = 0, j = attachType.length; i < j; i++) {
-                                attachTypeArr += attachType[i].value + "|";
-                            }
-                            // var orderItemID_add = "";
-                            var orderItemIDArr = "";
-                            var orderItemID_add = document.getElementsByName("orderItemID_edit");
-                            for (var i = 0, j = orderItemID_add.length; i < j; i++) {
-                                orderItemIDArr += orderItemID_add[i].value + "|";
-                            }
-
-                            var deliveryQuantityArr = "";
-                            var deliveryQuantity_add = document.getElementsByName("deliveryQuantity_edit");
-                            for (var i = 0, j = deliveryQuantity_add.length; i < j; i++) {
-                                deliveryQuantityArr += deliveryQuantity_add[i].value + "|";
-                            }
-
-                            var editDelivery = '/user/sale/editdeliverysave';
-                            $.ajax({
-                                type: "POST",
-                                url: editDelivery,
-                                data: {
-                                    deliveryID: deliveryID,
-                                    name: nameArr,
-                                    nid: nidArr,
-                                    size: sizeArr,
-                                    attachType: attachTypeArr,
-                                    orderItemID: orderItemIDArr,
-                                    deliveryQuantity: deliveryQuantityArr
-                                },
-                                dataType: "json",
-                                success: function (data) {
-                                    if (data === '1') {
-                                        document.location.reload();
-                                    } else {
-                                        alert(data + 'failed,please try again!');
-                                    }
-                                }
-                            });
-                        });
-                        $("#deliveryEditViewDelBtn").click(function () {
-                            var delDelivery = '/user/sale/deldelivery';
-
-                            layer.msg('确定删除发货单？', {
-                                time: 0, //不自动关闭
-                                btn: ['确定', '取消'],
-                                zIndex: 99991014,
-                                yes: function(index){
-                                    $.ajax({
-                                        type: "POST",
-                                        url: delDelivery,
-                                        data: {
-                                            deliveryID: deliveryID
-                                        },
-                                        dataType: "json",
-                                        success: function (data) {
-                                            if (data === '1') {
-                                                document.location.reload();
-                                            } else {
-                                                alert(data + 'failed,please try again!');
-                                            }
-                                        }
-                                    });
-                                }
-                            });
-                        });
+                        }
                     });
                 });
 
-                $("#deliveryDelBtn").click(function () {
-                    var auth_error = $('#deliveryEditDiv').find('.et-auth-error');
-                    var deliveryID = $(this).attr("deliveryid_");
-
-                    var delDelivery = '/user/sale/deldelivery';
-
+                $("#editDeliveryDelBtn").click(function () {
+                    var delDelivery = '/user/sale/del-delivery-ajax';
                     layer.msg('确定删除发货单？', {
-                        time: 0 //不自动关闭
-                        ,btn: ['确定', '取消']
-                        ,yes: function(index){
+                        time: 0, //不自动关闭
+                        btn: ['确定', '取消'],
+                        zIndex: 99991014,
+                        yes: function(index){
                             $.ajax({
                                 type: "POST",
                                 url: delDelivery,
@@ -1344,7 +1489,7 @@
                                 },
                                 dataType: "json",
                                 success: function (data) {
-                                    if (data === '1') {
+                                    if (data === 1) {
                                         document.location.reload();
                                     } else {
                                         alert(data + 'failed,please try again!');
@@ -1354,9 +1499,6 @@
                         }
                     });
                 });
-            } else {
-                $("#deliveryDelBtn").hide();
-                $("#deliveryEditBtn").hide();
             }
         });
     });
@@ -1532,23 +1674,14 @@
     });
 
     // ********************   开票资料 Start  *************************************
-    $(".billingInfo").click(function () {
-        var deliveryID = $(this).attr("deliveryID_");
+    $("#billingInfo").on('show.bs.modal', function (e) {
+        console.log("in");
+        var triggered = $(e.relatedTarget),
+            deliveryID = triggered.data("delivery-id");
 
-        $("#billingInfoDiv").html("").load("<?php echo $this->BaseUrl();?>/sale/deliverbillinginfo", {
+        $(".billingInfoContent").html("").load("/user/sale/deliverbillinginfo", {
             deliveryID: deliveryID
         }, function () {
-            layer.closeAll();
-            layer.open({
-                type: 1,
-                title: false,
-                area: ['750px', '97%'],
-                skin: 'layui-layer-rim',
-                scrollbar: false,
-                shade: 0.5,
-                content: $("#billingInfoDiv")
-            });
-
             layui.use('form', function() {
                 var form = layui.form;
                 form.render();
@@ -1564,6 +1697,7 @@
                 $(".expressEdit").show();
             });
             $(".billingExpressEditSave").click(function () {
+                console.log("in");
                 var deliveryID = $(this).attr("deliveryID_");
                 var supplierID = $(this).attr("supplierID_");
                 var expressType = $("#expressType").val();
