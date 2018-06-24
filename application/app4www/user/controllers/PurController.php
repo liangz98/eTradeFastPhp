@@ -39,100 +39,80 @@ class PurController extends Kyapi_Controller_Action
 	}
 
     public function indexAction() {
-        try {
-            $f1 = new Seed_Filter_Alnum();
-            $mod = $f1->filter($this->_request->getParam('mod'));
-            if (empty($mod)) {
-                $mod = "index";
-            }
+        $this->view->resultMsg = $this->_request->getParam('resultMsg');
 
-            $_orderStatus = strval($this->_request->getParam('status'));
-            if (empty($_orderStatus)) {
-                $_orderStatus = '04';
-            }
+        // 统计所有商品数量
+        $resultObject = $this->json->countPurOrderStatusApi($this->_requestObject);
+        $countOrder = $this->objectToArray(json_decode($resultObject));
+        $this->view->countOrder = $countOrder['result'];
 
-            $_queryParams = $this->_request->getParam('queryParams');
-            if (empty($_queryParams)) {
-                $_querySorts = null;
-            }
-
-            $_querySorts = $this->_request->getParam('querySorts');
-            if (empty($_querySorts)) {
-                $_querySorts = null;
-            }
-
-            $_keyword = $this->_request->getParam('keyword');
-            if (empty($_keyword)) {
-                $_keyword = null;
-            }
-
-            $page = intval($this->_request->getParam('page'));
-            if ($page < 1)
-                $page = 1;
-            $_limit = 5;
-            $_skip = $_limit * ($page - 1);
-
-
-            //统计所有商品数量
-            $orderCount = $this->json->countPurOrderStatusApi($this->_requestObject);
-            $countArr = json_decode($orderCount);
-            $clConut = $this->objectToArray($countArr);
-            $this->view->clConut = $clConut['result'];
-            $_queryParams = $_orderStatus;
-            $_resultData = $this->json->listPurOrderApi($this->_requestObject, $_queryParams, $_querySorts, $_keyword, $_skip, $_limit);
-            $existData = json_decode($_resultData);
-            $existDatt = $this->objectToArray($existData);
-
-            $this->view->e = $existDatt['result'];
-
-            //开始处理【顶部】最新订单状态查询
-            $orderNEW = $this->json->getQuickPruOrderApi($this->_requestObject);
-            $existNEW = json_decode($orderNEW);
-
-            //对象转换ARRAY
-            $existNEWtt = $this->objectToArray($existNEW);
-            $this->view->newE = $existNEWtt['result'];
-            //顶部状态 获取
-            $this->view->vestut = $existNEWtt['result']['buyerExecStatus'];
-            $this->view->veorderID = $existNEWtt['result']['orderID'];
-            //订单进度
-            $this->view->plan = $this->planAction($existNEWtt['result']);
-
-            //统计正常状态数量、分页
-            $existCount = $existDatt['extData'];
-            $total = $existCount['totalSize'];
-            $page = $existCount['totalPage'];
-
-            //设置视图订单状态
-            $this->view->status = $_orderStatus;
-            $this->view->status == '00' ? $linked = 'edit' : $linked = 'view';
-            $this->view->linked = $linked;
-
-            // 取回物流信息
-            $_requestOb=$this->_requestObject;
-            $_orderID = $existNEWtt['result']['orderID'];
-            $deliveryList = $this->json->listDelivery($_requestOb, $_orderID);
-            $this->view->deliveryList = json_decode($deliveryList)->result;
-
-            $file = "user/pur/" . $mod . "-" . $_orderStatus;
-            $_limit = 5;
-            $pageObj = new Seed_Page($this->_request, $total, $_limit);
-            $this->view->page = $pageObj->getPageArray();
-            $this->view->page['pageurl'] = '/' . $file;
-            if ($page > $this->view->page['totalpage'])
-                $page = $this->view->page['totalpage'];
-            if ($page < 1)
-                $page = 1;
-        } catch (Exception $e) {
-            Shop_Browser::redirect($e->getMessage());
+        // bootstrap-table查询状态
+        if (empty($this->_request->getParam('orderStatus'))) {
+            $this->view->orderStatus = '04';
+        } else {
+            $this->view->orderStatus = $this->_request->getParam('orderStatus');
         }
-
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/pur/index.phtml");
             echo $content;
             exit;
         }
+    }
+
+    public function purOrderListAjaxAction() {
+        $msg = array();
+        $requestObject = $this->_requestObject;
+
+        $queryParams = array();
+        $orderStatus = strval($this->_request->getParam('orderStatus'));
+        if (empty($orderStatus)) {
+            $orderStatus = '04';
+        }
+        $queryParams['orderStatus'] = $orderStatus;
+
+        $querySorts = array();
+        // $querySorts['createTime'] = "DESC";
+
+        $keyword = $this->_request->getParam('keyword');
+        if (empty($keyword)) {
+            $keyword = null;
+        }
+
+        $limit = $this->_request->getParam('limit');
+        if (empty($limit) || $limit <= 0) {
+            $limit = 10;
+        }
+
+        $skip = $this->_request->getParam('skip');
+        if (empty($limit) || $limit <= 0) {
+            $skip = 0;
+        }
+
+        if (is_array($queryParams)) {
+            $queryParams = $this->arrayToObject($queryParams);
+        }
+
+        if (is_array($querySorts)) {
+            $querySorts = $this->arrayToObject($querySorts);
+        }
+
+        $resultObject = $this->json->listPurOrderApi($requestObject, $orderStatus, $querySorts, $keyword, $skip, $limit);
+        $msg["total"] = json_decode($resultObject)->extData->totalSize;
+        $msg["rows"] = json_decode($resultObject)->result;
+
+        echo json_encode($msg);
+        exit;
+    }
+
+    public function countPurOrderAjaxAction() {
+        $requestObject = $this->_requestObject;
+
+        $resultObject = $this->json->countPurOrderStatusApi($requestObject);
+        $msg = json_decode($resultObject)->result;
+
+        echo json_encode($msg);
+        exit;
     }
 
 	public function addAction()

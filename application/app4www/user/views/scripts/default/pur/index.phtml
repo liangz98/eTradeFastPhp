@@ -26,61 +26,6 @@
 
             <div class="col-md-9 order-main">
                 <div class="panel panel-default">
-                    <div class="panel-body order-news">
-                        <div class="row responsive-utilities-test hidden-on">
-                            <div class="col-xs-6 col-sm-3">
-                                <span class="<?php if ($this->vestut == 0) { echo 'order-activated'; } elseif ($this->vestut > 0) { echo 'order-finished'; } ?>"><?php echo $this->translate('confirming'); ?></span>
-                            </div>
-                            <div class="col-xs-6 col-sm-3">
-                                <span class="<?php if ($this->vestut == 1 || $this->vestut == 3) { echo 'order-activated'; } elseif ($this->vestut > 1) { echo 'order-finished'; } else { echo 'order-no-start';} ?>"><?php echo $this->translate('sign'); ?></span>
-                            </div>
-                            <div class="clearfix visible-xs-block"></div>
-                            <div class="col-xs-6 col-sm-3">
-                                <span class="<?php if ($this->vestut > 3) { echo 'order-activated'; } elseif ($this->vestut > 7) { echo 'order-finished'; } else { echo 'order-no-start';} ?>"><?php echo $this->translate('delivery'); ?></span>
-                            </div>
-                            <div class="col-xs-6 col-sm-3">
-                                <span class="<?php if ($this->vestut > 3) { echo 'order-activated'; } elseif ($this->vestut > 7) { echo 'order-finished'; } else { echo 'order-no-start';} ?>"><?php echo $this->translate('calculate'); ?></span>
-                            </div>
-                        </div>
-
-                        <div class="tab-content ">
-                            <div role="tabpanel" class="tab-pane fade in active" id="confirming">
-                                <div class="row">
-                                    <div class="col-xs-2">
-                                        <p class="text-right news-title"><?php echo $this->translate('orderNo');?></p>
-                                    </div>
-                                    <div class="col-xs-4">
-                                        <p><?php echo $this->newE["orderNo"];?></p>
-                                    </div>
-                                    <div class="col-xs-2 news-title"><?php echo $this->translate('Prities');?></div>
-                                    <div class="col-xs-4"></div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-xs-2 news-title">
-                                        <p class="text-right"><?php echo $this->translate('progressING');?></p>
-                                    </div>
-                                    <div class="col-xs-8">
-                                        <p><?php echo $this->plan['plan'];?></p>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-xs-2 news-title">
-                                        <p class="text-right"><?php echo $this->translate('stateING');?></p>
-                                    </div>
-                                    <div class="col-xs-8">
-                                        <p><?php echo $this->ShowDictionaryTo($this->dic_Setting['ORDER_STATUS'], $this->userLangCode, $this->dic_Setting['ORDER_STATUS'], $this->newE["orderStatus"]); ?></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-                <div class="panel panel-default">
                     <!-- Default panel contents -->
                     <div class="panel-heading"><?php echo $this->translate('orderSALLE'); ?></div>
                     <div class="panel-body">
@@ -134,7 +79,7 @@
                                         </div>
                                         <?php if ($this->CompPartnerAdmin == true): ?>
                                         <div class="col-sm-1 col-sm-offset-4">
-                                            <a title="<?php echo $this->translate('add');?>" href="/user/sale/add" class="btn btn-default">
+                                            <a title="<?php echo $this->translate('add');?>" href="/user/pur/add" class="btn btn-default">
                                                 <i class="fas fa-plus"></i>
                                             </a>
                                         </div>
@@ -198,7 +143,7 @@
                 $.data(dataDict, 'dataDict', data);
 
                 $('#resultListTable').bootstrapTable({
-                    url: '/user/sale/sale-order-list-ajax',
+                    url: '/user/pur/pur-order-list-ajax',
                     method: 'post',
                     // showRefresh: true,
                     // search: true,
@@ -226,7 +171,7 @@
 
                             var base = new Base64();
                             var resultEnCode = base.encode(row.orderID);
-                            var href = "/user/sale/view?"+resultEnCode;
+                            var href = "/user/pur/view?"+resultEnCode;
                             return '<a href="' + href + '">' + value + '</a>';
                         }
                     }, {
@@ -238,7 +183,7 @@
                             }
                             var base = new Base64();
                             var resultEnCode = base.encode(row.orderID);
-                            var href = "/user/sale/view?"+resultEnCode;
+                            var href = "/user/pur/view?"+resultEnCode;
 
                             return '<a href="' + href + '">' + row.buyerCrnCode + " " + value + '</a>';
                         }
@@ -251,7 +196,7 @@
                             }
                             var base = new Base64();
                             var resultEnCode = base.encode(row.orderID);
-                            var href = "/user/sale/view?"+resultEnCode;
+                            var href = "/user/pur/view?"+resultEnCode;
 
                             return '<a href="' + href + '">' + value + '</a>';
                         }
@@ -264,7 +209,7 @@
                             }
                             var base = new Base64();
                             var resultEnCode = base.encode(row.orderID);
-                            var href = "/user/sale/view?"+resultEnCode;
+                            var href = "/user/pur/view?"+resultEnCode;
 
                             return '<a href="' + href + '">' + new Date(value).format("yyyy-MM-dd hh:mm:ss") + '</a>';
                         }
@@ -277,7 +222,7 @@
                             var submitForReviewTitle = "<?php echo $this->translate('submit');?>";
                             var base = new Base64();
                             var resultEnCode = base.encode(row.orderID);
-                            var href = "/user/sale/edit?"+resultEnCode;
+                            var href = "/user/pur/edit?"+resultEnCode;
 
                             var result = '';
                             <?php if ($this->CompOrderAdmin == true): ?>
@@ -290,7 +235,7 @@
                             }
 
                             if (row.orderStatus === '01' || row.orderStatus === '02' || row.orderStatus === '05') {
-                                result += '<a href="javascript:void(0)" title="' + cancelTitle + '" data-id="' + row.orderID + '" data-url="/user/sale/cancel" '
+                                result += '<a href="javascript:void(0)" title="' + cancelTitle + '" data-id="' + row.orderID + '" data-url="/user/pur/cancel" '
                                     + 'data-msg1="<?php echo $this->translate("is_cancel");?>" '
                                     + 'data-msg2="<?php echo $this->translate("tip_cancel_success");?>" '
                                     + 'data-msg3="<?php echo $this->translate("tip_cancel_fail");?>" '
@@ -301,7 +246,7 @@
                             }
 
                             if (row.orderStatus === '00') {
-                                result += '<a href="javascript:void(0)" title="' + delTitle + '" data-id="' + row.orderID + '" data-url="/user/sale/del" '
+                                result += '<a href="javascript:void(0)" title="' + delTitle + '" data-id="' + row.orderID + '" data-url="/user/pur/del" '
                                     + 'data-msg1="<?php echo $this->translate("is_delete");?>" '
                                     + 'data-msg2="<?php echo $this->translate("tip_del_success");?>" '
                                     + 'data-msg3="<?php echo $this->translate("tip_del_fail");?>" '
@@ -310,7 +255,7 @@
                                     + '<i class="far fa-trash-alt"></i>'
                                     + '</a>&nbsp;';
 
-                                result += '<a href="javascript:void(0)" title="' + submitForReviewTitle + '" data-id="' + row.orderID + '" data-url="/user/sale/submit" '
+                                result += '<a href="javascript:void(0)" title="' + submitForReviewTitle + '" data-id="' + row.orderID + '" data-url="/user/pur/submit" '
                                     + 'data-msg1="<?php echo $this->translate("is_submit");?>" '
                                     + 'data-msg2="<?php echo $this->translate("tip_forReview_success");?>" '
                                     + 'data-msg3="<?php echo $this->translate("tip_forReview_fail");?>" '
@@ -376,7 +321,7 @@
     }
 
     function refreshBadge() {
-        var countQuery = '/user/sale/count-sale-order-ajax';
+        var countQuery = '/user/pur/count-pur-order-ajax';
         $.ajax({
             type: "POST",
             url: countQuery,
