@@ -1042,7 +1042,7 @@ class PurController extends Kyapi_Controller_Action
     }
 
 	//收货 - 保存
-    public function receiptsaveAction() {
+    public function receiptSaveAction() {
 		$_requestOb=$this->_requestObject;
 		// 请求Hessian服务端方法
 		$name=$_POST['name'];

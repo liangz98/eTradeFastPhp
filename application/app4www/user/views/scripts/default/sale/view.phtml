@@ -165,9 +165,9 @@
                                                     <td style="cursor: pointer;" data-toggle="modal" data-target="#viewDelivery" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-status="<?php echo $v->deliveryStatus; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>"><?php $summary = $v->summary; $replaceStr = "<br />"; echo str_replace('\n', $replaceStr, $summary); ?></td>
                                                     <td style="text-align: center">
                                                         <?php if ($v->deliveryStatus == 1 && $v->needExamine == False):?>
-                                                            <a class="layui-btn layui-btn-warm deliveryDeliverViewBtn" deliveryID_="<?php echo $v->deliveryID; ?>">发货</a>
+                                                            <a class="layui-btn layui-btn-warm" data-toggle="modal" data-target="#deliveryDeliver" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>" >发货</a>
                                                         <?php elseif ($v->deliveryStatus == 2): ?>
-                                                            <a class="layui-btn layui-btn-warm deliveryDeliverViewBtn" deliveryID_="<?php echo $v->deliveryID; ?>">发货</a>
+                                                            <a class="layui-btn layui-btn-warm" data-toggle="modal" data-target="#deliveryDeliver" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>" >发货</a>
                                                         <?php elseif (!$this->orders->isSelfSupport && $v->deliveryStatus == 3 && $v->vendorPaymentStatus == 3): ?>
                                                             <a href='javascript:void(0)' data-toggle="modal" data-target="#billingInfo" data-delivery-id="<?php echo $v->deliveryID; ?>" >开票资料</a>
                                                         <?php elseif (!$this->orders->isSelfSupport && $v->deliveryStatus == 4 && $v->vendorPaymentStatus == 3): ?>
@@ -776,7 +776,7 @@
                 </div>
                 <div class="row" style="margin-top: 15px;">
                     <div class="col-sm-12">
-                        <h4 style="color: #56859D; font-weight: bold;"><?php echo $this->translate('QUALITY_AGREE_FORMAL').$this->translate('upload'); ?></h4>
+                        <h4 style="color: #56859D; font-weight: bold;"><?php echo $this->translate('DELIVER_GOODS').$this->translate('upload'); ?></h4>
                         <?php
                         echo $this->ShowWebuploader(null, $this->biz_Setting['ORDER'], $this->attach_Setting['DLDG'], "0", null);
                         ?>
@@ -1615,7 +1615,7 @@
             deliveryNo = triggered.data("delivery-no"),
             $deliveryDeliverContent = $(".deliveryDeliverContent");
 
-        $deliveryDeliverContent.html("").load("<?php echo $this->BaseUrl();?>/pur/deliver", {
+        $deliveryDeliverContent.html("").load("/user/sale/deliver", {
             deliveryID: deliveryID
         }, function () {
             $(".deliverDeliveryNo").html(deliveryNo);

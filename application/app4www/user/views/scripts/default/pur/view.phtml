@@ -800,6 +800,44 @@
     </div>
 </div>
 
+<!-- Modal 收货 -->
+<div class="modal fade" id="deliveryReceipt" tabindex="-1" role="dialog" aria-labelledby="deliveryReceiptLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><?php echo $this->translate('reGOODS'); ?> <span class="receiptDeliveryNo"></span></h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="row deliveryReceiptContent">
+                </div>
+                <div class="row" style="margin-top: 15px;">
+                    <div class="col-sm-12">
+                        <h4 style="color: #56859D; font-weight: bold;"><?php echo $this->translate('RECEIPT_CONFIRMATION_FORMAL').$this->translate('upload'); ?></h4>
+                        <?php
+                        echo $this->ShowWebuploader(null, $this->biz_Setting['ORDER'], $this->attach_Setting['DLCF'], "0", null);
+                        ?>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 15px;">
+                    <div class="col-sm-12">
+                        <h4 style="color: #56859D; font-weight: bold;"><?php echo $this->translate('RECEIPT_GOODS').$this->translate('upload'); ?></h4>
+                        <?php
+                        echo $this->ShowWebuploader(null, $this->biz_Setting['ORDER'], $this->attach_Setting['DLRG'], "0", null);
+                        ?>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="deliveryReceiptGoodsBtn"><?php echo $this->translate('ckGOODS'); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- 物流编辑 -->
 <div id="deliveryViewDiv" style="display: none;"></div>
 
@@ -1619,7 +1657,7 @@
     /* 发货详情页 */
     $(".deliveryDeliverViewBtn").click(function () {
         var deliveryID = $(this).attr("deliveryID_");
-        $("#deliveryViewDiv").html("").load("<?php echo $this->BaseUrl();?>/sale/deliver", {
+        $("#deliveryViewDiv").html("").load("/user/sale/deliver", {
             deliveryID: deliveryID
         }, function () {
             layer.closeAll();
@@ -1690,7 +1728,7 @@
             deliveryNo = triggered.data("delivery-no"),
             $deliveryExamineContent = $(".deliveryExamineContent");
 
-        $deliveryExamineContent.html("").load("<?php echo $this->BaseUrl();?>/pur/examine", {
+        $deliveryExamineContent.html("").load("/user/pur/examine", {
             deliveryID: deliveryID
         }, function () {
             $(".examineDeliveryNo").html(deliveryNo);
@@ -1750,9 +1788,71 @@
         });
     });
 
+    // 收货
+    $deliveryReceipt = $("#deliveryReceipt");
+    $deliveryReceipt.on('show.bs.modal', function (e) {
+        var triggered = $(e.relatedTarget),
+            deliveryID = triggered.data("delivery-id"),
+            deliveryNo = triggered.data("delivery-no"),
+            $deliveryReceiptContent = $(".deliveryReceiptContent");
 
+        $deliveryReceiptContent.html("").load("/user/pur/receipt", {
+            deliveryID: deliveryID
+        }, function () {
+            $(".receiptDeliveryNo").html(deliveryNo);
+            $("#deliveryReceiptGoodsBtn").attr("data-delivery-ID", deliveryID);
+        });
+    });
+
+    /* 提交收货 */
+    $("#deliveryReceiptGoodsBtn").click(function () {
+        var deliveryID = $(this).attr("data-delivery-ID");
+        var nidArr = "";
+        var nid = $("#deliveryReceipt input[name='attachNid[]']");
+        for (var i = 0, j = nid.length; i < j; i++) {
+            nidArr += nid[i].value + "|";
+        }
+        var nameArr = "";
+        var name = $("#deliveryReceipt input[name='attachName[]']");
+        for (var i = 0, j = name.length; i < j; i++) {
+            nameArr += name[i].value + "|";
+        }
+        var sizeArr = "";
+        var size = $("#deliveryReceipt input[name='attachSize[]']");
+        for (var i = 0, j = size.length; i < j; i++) {
+            sizeArr += size[i].value + "|";
+        }
+        var attachTypeArr = "";
+        var attachType = $("#deliveryReceipt input[name='attachType[]']");
+        for (var i = 0, j = attachType.length; i < j; i++) {
+            attachTypeArr += attachType[i].value + "|";
+        }
+
+        var examineGoods = '/user/pur/receipt-save';
+        $.ajax({
+            type: "POST",
+            url: examineGoods,
+            data: {
+                deliveryID: deliveryID,
+                name: nameArr,
+                nid: nidArr,
+                size: sizeArr,
+                attachType: attachTypeArr
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data === 1) {
+                    document.location.reload();
+                } else {
+                    alert(data + 'failed,please try again!');
+                }
+            }
+        });
+    });
     // ********************   物流详情 End  *************************************
 
+
+    // ********************   Start   *************************************
     $(".signTopBtn").click(function () {
         var executionStatus = <?php echo $this->vestut;?>;
         $(".signTopDiv").show();
