@@ -946,7 +946,7 @@ class PurController extends Kyapi_Controller_Action
     }
 
 	// 验货 - 保存
-    public function examinesaveAction() {
+    public function examineSaveAction() {
 		$_requestOb = $this ->_requestObject;
 		// 请求Hessian服务端方法
         $name = $_POST['name'];

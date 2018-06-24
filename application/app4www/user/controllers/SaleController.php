@@ -1443,7 +1443,7 @@ class SaleController extends Kyapi_Controller_Action
     }
 
     // 发货 - 保存
-    public function deliversaveAction() {
+    public function deliverSaveAction() {
         $_requestOb = $this->_requestObject;
         // 请求Hessian服务端方法
         $name = $_POST['name'];

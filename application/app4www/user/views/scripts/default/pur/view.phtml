@@ -164,14 +164,14 @@
                                                     <td style="cursor: pointer;" data-toggle="modal" data-target="#viewDelivery" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-status="<?php echo $v->deliveryStatus; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>"><?php $date = date_create($v->readyDate); echo date_format($date,"Y年m月d日"); ?></td>
                                                     <td style="cursor: pointer;" data-toggle="modal" data-target="#viewDelivery" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-status="<?php echo $v->deliveryStatus; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>"><?php $summary = $v->summary; $replaceStr = "<br />"; echo str_replace('\n', $replaceStr, $summary); ?></td>
                                                     <td style="text-align: center">
-                                                        <?php if ($v->deliveryStatus == 1 && $v->needExamine == False):?>
-                                                            <a class="layui-btn layui-btn-warm deliveryDeliverViewBtn" deliveryID_="<?php echo $v->deliveryID; ?>">发货</a>
+                                                        <?php if ($v->deliveryStatus == 1 && $v->needExamine == True):?>
+                                                            <a class="layui-btn layui-btn-warm" data-toggle="modal" data-target="#deliveryExamine" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>" >验货</a>
                                                         <?php elseif ($v->deliveryStatus == 2): ?>
-                                                            <a class="layui-btn layui-btn-warm deliveryDeliverViewBtn" deliveryID_="<?php echo $v->deliveryID; ?>">发货</a>
-                                                        <?php elseif (!$this->orders->isSelfSupport && $v->deliveryStatus == 3 && $v->vendorPaymentStatus == 3): ?>
-                                                            <a href='javascript:void(0)' data-toggle="modal" data-target="#billingInfo" data-delivery-id="<?php echo $v->deliveryID; ?>" >开票资料</a>
-                                                        <?php elseif (!$this->orders->isSelfSupport && $v->deliveryStatus == 4 && $v->vendorPaymentStatus == 3): ?>
-                                                            <a href='javascript:void(0)' data-toggle="modal" data-target="#billingInfo" data-delivery-id="<?php echo $v->deliveryID; ?>" >开票资料</a>
+                                                            <a class="layui-btn layui-btn-disabled">收货</a>
+                                                        <?php elseif ($v->deliveryStatus == 3): ?>
+                                                            <a class="layui-btn layui-btn-warm deliveryReceiptBtn" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>" >收货</a>
+                                                        <?php elseif ($v->deliveryStatus == 4): ?>
+
                                                         <?php endif; ?>
                                                     </td>
                                                 </tr>
@@ -225,7 +225,7 @@
                                 <div class="col-md-12 orderInfo">
                                     <h3>
                                         <?php if (($this->CompProductAdmin == true || $this->CompOrderAdmin == true) && $this->orders['productStatus'] != 05): ?>
-                                            <a class="profile-heading-edit pull-right btn btn-xs" data-type="base" href="<?php echo '/user/sale/edit?' . base64_encode($this->orders['orderID']); ?>">
+                                            <a class="profile-heading-edit pull-right btn btn-xs" data-type="base" href="<?php echo '/user/pur/edit?' . base64_encode($this->orders['orderID']); ?>">
                                                 <i class="fas fa-pencil-alt" aria-hidden="true"></i><?php echo $this->translate('edit'); ?>
                                             </a>
                                         <?php endif; ?>
@@ -233,17 +233,17 @@
                                     </h3>
 
                                     <div class="row">
-                                        <div class="col-xs-2 view-title"><?php echo $this->translate('buyers'); ?></div>
-                                        <div class="col-xs-4"><?php echo $this->orders['buyerName'];?></div>
-                                        <div class="col-xs-2 view-title"><?php echo $this->translate('buyerATTN'); ?></div>
-                                        <div class="col-xs-4"><?php echo $this->orders['buyerContactName'];?></div>
+                                        <div class="col-xs-2 view-title"><?php echo $this->translate('seller'); ?></div>
+                                        <div class="col-xs-4"><?php echo $this->orders['vendorName'];?></div>
+                                        <div class="col-xs-2 view-title"><?php echo $this->translate('sellerATTN'); ?></div>
+                                        <div class="col-xs-4"><?php echo $this->orders['vendorContactName'];?></div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-xs-2 view-title"><?php echo $this->translate('payCNY'); ?></div>
                                         <div class="col-xs-4"><?php echo $this->orders['buyerCrnCode'];?></div>
                                         <div class="col-xs-2 view-title"><?php echo $this->translate('thisATTN'); ?></div>
-                                        <div class="col-xs-4"><?php echo $this->orders['vendorContactName'];?></div>
+                                        <div class="col-xs-4"><?php echo $this->orders['buyerContactName'];?></div>
                                     </div>
 
                                     <div class="row">
@@ -519,7 +519,7 @@
 
                             <div role="tabpanel" class="tab-pane row" id="profile">
                                 <div class="col-md-12">
-                                    <?php echo $this-> ShowWebuploader($this->orders['attachmentList'],$this->biz_Setting['PRODUCT'],$this->attach_Setting['PDPD'],"1", $this->orders['bankAcctID']);?>
+                                    <?php echo $this->ShowWebuploader($this->orders['attachmentList'],$this->biz_Setting['PRODUCT'],$this->attach_Setting['PDPD'],"1", $this->orders['bankAcctID']);?>
                                 </div>
                             </div>
                         </div>
@@ -757,6 +757,44 @@
             <div class="modal-body">
                 <div class="layui-form-item table-responsive billingInfoContent">
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 验货 -->
+<div class="modal fade" id="deliveryExamine" tabindex="-1" role="dialog" aria-labelledby="deliveryExamineLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><?php echo $this->translate('ckGOODS'); ?> <span class="examineDeliveryNo"></span></h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="row deliveryExamineContent">
+                </div>
+                <div class="row" style="margin-top: 15px;">
+                    <div class="col-sm-12">
+                        <h4 style="color: #56859D; font-weight: bold;"><?php echo $this->translate('QUALITY_AGREE_FORMAL').$this->translate('upload'); ?></h4>
+                        <?php
+                        echo $this->ShowWebuploader(null, $this->biz_Setting['ORDER'], $this->attach_Setting['DLQF'], "0", null);
+                        ?>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 15px;">
+                    <div class="col-sm-12">
+                        <h4 style="color: #56859D; font-weight: bold;"><?php echo $this->translate('EXAMINE_GOODS').$this->translate('upload'); ?></h4>
+                        <?php
+                        echo $this->ShowWebuploader(null, $this->biz_Setting['ORDER'], $this->attach_Setting['DLEG'], "0", null);
+                        ?>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="deliveryExamineGoodsBtn"><?php echo $this->translate('ckGOODS'); ?></button>
             </div>
         </div>
     </div>
@@ -1641,6 +1679,74 @@
                     }
                 });
             });
+        });
+    });
+
+    // 验货
+    $deliveryExamine = $("#deliveryExamine");
+    $deliveryExamine.on('show.bs.modal', function (e) {
+        var triggered = $(e.relatedTarget),
+            deliveryID = triggered.data("delivery-id"),
+            deliveryNo = triggered.data("delivery-no"),
+            $deliveryExamineContent = $(".deliveryExamineContent");
+
+        $deliveryExamineContent.html("").load("<?php echo $this->BaseUrl();?>/pur/examine", {
+            deliveryID: deliveryID
+        }, function () {
+            $(".examineDeliveryNo").html(deliveryNo);
+            $("#deliveryExamineGoodsBtn").attr("data-delivery-ID", deliveryID);
+        });
+    });
+
+    /* 提交验货 */
+    $("#deliveryExamineGoodsBtn").click(function () {
+        var deliveryID = $(this).attr("data-delivery-ID");
+        var nidArr = "";
+        var nid = $("#deliveryExamine input[name='attachNid[]']");
+        for (var i = 0, j = nid.length; i < j; i++) {
+            nidArr += nid[i].value + "|";
+        }
+        var nameArr = "";
+        var name = $("#deliveryExamine input[name='attachName[]']");
+        for (var i = 0, j = name.length; i < j; i++) {
+            nameArr += name[i].value + "|";
+        }
+        var sizeArr = "";
+        var size = $("#deliveryExamine input[name='attachSize[]']");
+        for (var i = 0, j = size.length; i < j; i++) {
+            sizeArr += size[i].value + "|";
+        }
+        var attachTypeArr = "";
+        var attachType = $("#deliveryExamine input[name='attachType[]']");
+        for (var i = 0, j = attachType.length; i < j; i++) {
+            attachTypeArr += attachType[i].value + "|";
+        }
+        if (nidArr.length <= 0) {
+            var tips = "<?php echo $this->translate('tip_forReview_fail');?>" + ", " + "<?php echo $this->translate('tipQualityNoNull');?>";
+            $(".deliveryExamineAlert strong").html(tips);
+            $(".deliveryExamineAlert").removeClass("hidden");
+            return false;
+        }
+
+        var examineGoods = '/user/pur/examine-save';
+        $.ajax({
+            type: "POST",
+            url: examineGoods,
+            data: {
+                deliveryID: deliveryID,
+                name: nameArr,
+                nid: nidArr,
+                size: sizeArr,
+                attachType: attachTypeArr
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data === 1) {
+                    document.location.reload();
+                } else {
+                    alert(data + 'failed,please try again!');
+                }
+            }
         });
     });
 

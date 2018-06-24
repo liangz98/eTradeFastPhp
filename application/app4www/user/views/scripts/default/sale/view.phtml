@@ -762,6 +762,35 @@
     </div>
 </div>
 
+<!-- Modal 发货 -->
+<div class="modal fade" id="deliveryDeliver" tabindex="-1" role="dialog" aria-labelledby="deliveryDeliverLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><?php echo $this->translate('deGOODS'); ?> <span class="deliverDeliveryNo"></span></h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="row deliveryDeliverContent">
+                </div>
+                <div class="row" style="margin-top: 15px;">
+                    <div class="col-sm-12">
+                        <h4 style="color: #56859D; font-weight: bold;"><?php echo $this->translate('QUALITY_AGREE_FORMAL').$this->translate('upload'); ?></h4>
+                        <?php
+                        echo $this->ShowWebuploader(null, $this->biz_Setting['ORDER'], $this->attach_Setting['DLDG'], "0", null);
+                        ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="deliveryDeliverGoodsBtn"><?php echo $this->translate('deGOODS'); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- 物流编辑 -->
 <div id="deliveryViewDiv" style="display: none;"></div>
 
@@ -1578,75 +1607,71 @@
         $(this).parent().next().find("label").html(totalAmount);
     });
 
-    /* 发货详情页 */
-    $(".deliveryDeliverViewBtn").click(function () {
-        var deliveryID = $(this).attr("deliveryID_");
-        $("#deliveryViewDiv").html("").load("<?php echo $this->BaseUrl();?>/sale/deliver", {
+    // 发货
+    $deliveryDeliver = $("#deliveryDeliver");
+    $deliveryDeliver.on('show.bs.modal', function (e) {
+        var triggered = $(e.relatedTarget),
+            deliveryID = triggered.data("delivery-id"),
+            deliveryNo = triggered.data("delivery-no"),
+            $deliveryDeliverContent = $(".deliveryDeliverContent");
+
+        $deliveryDeliverContent.html("").load("<?php echo $this->BaseUrl();?>/pur/deliver", {
             deliveryID: deliveryID
         }, function () {
-            layer.closeAll();
-            layer.open({
-                type: 1,
-                title: false,
-                area: ['750px', '97%'],
-                skin: 'layui-layer-rim',
-                scrollbar: false,
-                shade: 0.5,
-                content: $("#deliveryViewDiv")
-            });
-
-            /* 发货 */
-            $("#deliveryDeliverGoodsBtn").click(function () {
-                var auth_error = $('#deliveryDeliverDiv').find('.et-auth-error');
-
-                var nidArr = "";
-                var nid = document.getElementsByName("attachNid[]");
-                for (var i = 0, j = nid.length; i < j; i++) {
-                    nidArr += nid[i].value + "|";
-                }
-                var nameArr = "";
-                var name = document.getElementsByName("attachName[]");
-                for (var i = 0, j = name.length; i < j; i++) {
-                    nameArr += name[i].value + "|";
-                }
-                var sizeArr = "";
-                var size = document.getElementsByName("attachSize[]");
-                for (var i = 0, j = size.length; i < j; i++) {
-                    sizeArr += size[i].value + "|";
-                }
-                var attachTypeArr = "";
-                var attachType = document.getElementsByName("attachType[]");
-                for (var i = 0, j = attachType.length; i < j; i++) {
-                    attachTypeArr += attachType[i].value + "|";
-                }
-
-                var deliverGoods = '/user/sale/deliversave';
-                $.ajax({
-                    type: "POST",
-                    url: deliverGoods,
-                    data: {
-                        deliveryID: deliveryID,
-                        name: nameArr,
-                        nid: nidArr,
-                        size: sizeArr,
-                        attachType: attachTypeArr
-                    },
-                    dataType: "json",
-                    success: function (data) {
-                        if (data === '1') {
-                            document.location.reload();
-                        } else {
-                            alert(data + 'failed,please try again!');
-                        }
-                    }
-                });
-            });
+            $(".deliverDeliveryNo").html(deliveryNo);
+            $("#deliveryDeliverGoodsBtn").attr("data-delivery-ID", deliveryID);
         });
     });
 
+    /* 提交发货 */
+    $("#deliveryDeliverGoodsBtn").click(function () {
+        var deliveryID = $(this).attr("data-delivery-ID");
+        var nidArr = "";
+        var nid = $("#deliveryDeliver input[name='attachNid[]']");
+        for (var i = 0, j = nid.length; i < j; i++) {
+            nidArr += nid[i].value + "|";
+        }
+        var nameArr = "";
+        var name = $("#deliveryDeliver input[name='attachName[]']");
+        for (var i = 0, j = name.length; i < j; i++) {
+            nameArr += name[i].value + "|";
+        }
+        var sizeArr = "";
+        var size = $("#deliveryDeliver input[name='attachSize[]']");
+        for (var i = 0, j = size.length; i < j; i++) {
+            sizeArr += size[i].value + "|";
+        }
+        var attachTypeArr = "";
+        var attachType = $("#deliveryDeliver input[name='attachType[]']");
+        for (var i = 0, j = attachType.length; i < j; i++) {
+            attachTypeArr += attachType[i].value + "|";
+        }
 
+        var deliverGoods = '/user/sale/deliver-save';
+        $.ajax({
+            type: "POST",
+            url: deliverGoods,
+            data: {
+                deliveryID: deliveryID,
+                name: nameArr,
+                nid: nidArr,
+                size: sizeArr,
+                attachType: attachTypeArr
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data === 1) {
+                    document.location.reload();
+                } else {
+                    alert(data + 'failed,please try again!');
+                }
+            }
+        });
+    });
     // ********************   物流详情 End  *************************************
 
+
+    // ********************   Start  *************************************
     $(".signTopBtn").click(function () {
         var executionStatus = <?php echo $this->vestut;?>;
         $(".signTopDiv").show();
