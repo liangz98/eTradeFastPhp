@@ -86,7 +86,7 @@
 							<input type="text" id="expressNo" name="expressNo" lay-verify="" autocomplete="off" value="<?php echo $deliverySupplier->expressNo ?>" placeholder="请填写<?php echo $this->translate('expressNo'); ?>" class="layui-input">
 						</div>
 						<div class="layui-input-inline expressEdit" style="width: 80px; <?php if ($deliverySupplier->expressNo != null || $deliverySupplier->expressNo != '') { echo 'display: none;';} ?>">
-							<a href='javascript:void(0)' class="billingExpressEditSave line-height-35 link-hover" deliveryID_="<?php echo $this->deliveryID; ?>" supplierID_="<?php echo $deliverySupplier->supplierID; ?>">
+							<a href='javascript:void(0)' class="billingExpressEditSave line-height-35 link-hover" data-delivery-supplier-id="<?php echo $deliverySupplier->deliverySupplierID; ?>" >
 								<?php echo $this->translate('save'); ?>
 							</a>
 						</div>

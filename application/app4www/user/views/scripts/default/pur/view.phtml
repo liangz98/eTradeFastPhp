@@ -169,7 +169,7 @@
                                                         <?php elseif ($v->deliveryStatus == 2): ?>
                                                             <a class="layui-btn layui-btn-disabled">收货</a>
                                                         <?php elseif ($v->deliveryStatus == 3): ?>
-                                                            <a class="layui-btn layui-btn-warm deliveryReceiptBtn" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>" >收货</a>
+                                                            <a class="layui-btn layui-btn-warm" data-toggle="modal" data-target="#deliveryReceipt" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>" >收货</a>
                                                         <?php elseif ($v->deliveryStatus == 4): ?>
 
                                                         <?php endif; ?>
@@ -185,11 +185,6 @@
                                         <?php endif; ?>
                                         </tbody>
                                     </table>
-
-                                    <div style="height: 12px"></div>
-                                    <div>
-                                        <button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target="#addDelivery"><b><?php echo $this->translate('deliveryAdd'); ?></b></button>
-                                    </div>
                                 </div>
                             </div>
 
@@ -660,96 +655,6 @@
     </div>
 </div>
 
-<!-- Modal 添加发货记录 -->
-<div class="modal fade" id="addDelivery" tabindex="-1" role="dialog" aria-labelledby="addDeliveryLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title"><?php echo $this->translate('deliveryAdd'); ?></h4>
-            </div>
-
-            <div class="modal-body">
-                <div class="layui-form-item table-responsive">
-                    <table class="table layui-table" lay-skin="line">
-                        <colgroup>
-                            <col>
-                            <col width="140">
-                            <col width="100">
-                            <col width="100">
-                            <col width="160">
-                        </colgroup>
-                        <thead>
-                        <tr>
-                            <th>名称</th>
-                            <th>型号</th>
-                            <th>单价</th>
-                            <th>数量</th>
-                            <th>总价</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php foreach ($this->orderItemList as $index => $value):?>
-                            <tr>
-                                <td style="text-align: left"><?php echo $value->productName;?></td>
-                                <td style="text-align: left"><?php echo $value->productModel;?></td>
-                                <td style="text-align: left"><?php echo $this->deliveryCrnCode;?><label><?php echo $value->unitPrice;?></label></td>
-                                <td style="text-align: left">
-                                    <?php
-                                    $quantity = $value->quantity - $value->deliveryQuantity <= 0  ? 0 : $value->quantity - $value->deliveryQuantity;
-                                    ?>
-                                    <input name="deliveryQuantity_add" class="layui-input" value="<?php echo $quantity;?>" />
-                                    <input type="hidden" name="orderItemID_add" value="<?php echo $value->itemID;?>" />
-                                </td>
-                                <td style="text-align: left"><?php echo $this->orders['buyerCrnCode']?>&nbsp;<label id="itemID_<?php echo $value->itemID;?>"></label></td>
-                            </tr>
-                        <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-12">
-                        <?php echo $this->ShowWebuploader($this->attachmentList, $this->biz_Setting['ORDER'], $this->attach_Setting['DLPG'], null); ?>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="deliveryAddConfirmBtn"><?php echo $this->translate('submit'); ?></button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal 编辑发货记录 -->
-<div class="modal fade" id="editDelivery" tabindex="-1" role="dialog" aria-labelledby="editDeliveryLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title"><?php echo $this->translate('edit'); ?> <span class="editDeliveryNo"></span> <?php echo $this->translate('deliveryItemQuantity'); ?></h4>
-            </div>
-
-            <div class="modal-body">
-                <div class="layui-form-item table-responsive editDeliveryTable">
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-12 editDeliveryItemAttachment">
-                        <?php echo $this->ShowWebuploader($this->attachmentList, $this->biz_Setting['ORDER'], $this->attach_Setting['DLPG'], null); ?>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="deliveryEditConfirmBtn"><?php echo $this->translate('confirmed'); ?></button>
-                <a id="editDeliveryDelBtn" style="color: #c2c2c2; cursor: pointer;"><?php echo $this->translate('deliveryDel'); ?></a>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Modal 开票资料 -->
 <div class="modal fade" id="billingInfo" tabindex="-1" role="dialog" aria-labelledby="billingInfoLabel">
     <div class="modal-dialog modal-lg" role="document">
@@ -832,7 +737,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="deliveryReceiptGoodsBtn"><?php echo $this->translate('ckGOODS'); ?></button>
+                <button type="button" class="btn btn-primary" id="deliveryReceiptGoodsBtn"><?php echo $this->translate('reGOODS'); ?></button>
             </div>
         </div>
     </div>
@@ -1576,147 +1481,6 @@
                     });
                 });
             }
-        });
-    });
-
-    /* 添加发货记录 */
-    $("#deliveryAddConfirmBtn").click(function () {
-        var auth_error = $('#deliveryAddDiv').find('.et-auth-error');
-
-        var nidArr = "";
-        var nid = $("#addDelivery input[name='attachNid[]']");
-        for (var i = 0, j = nid.length; i < j; i++) {
-            nidArr += nid[i].value + "|";
-        }
-        var nameArr = "";
-        var name = $("#addDelivery input[name='attachName[]']");
-        for (var i = 0, j = name.length; i < j; i++) {
-            nameArr += name[i].value + "|";
-        }
-        var sizeArr = "";
-        var size = $("#addDelivery input[name='attachSize[]']");
-        for (var i = 0, j = size.length; i < j; i++) {
-            sizeArr += size[i].value + "|";
-        }
-        var attachTypeArr = "";
-        var attachType = $("#addDelivery input[name='attachType[]']");
-        for (var i = 0, j = attachType.length; i < j; i++) {
-            attachTypeArr += attachType[i].value + "|";
-        }
-        // var orderItemID_add = "";
-        var orderItemIDArr = "";
-        var orderItemID_add = $("#addDelivery input[name='orderItemID_add']");
-        console.log(orderItemID_add.length);
-        for (var i = 0, j = orderItemID_add.length; i < j; i++) {
-            orderItemIDArr += orderItemID_add[i].value + "|";
-        }
-
-        var deliveryQuantityArr = "";
-        var deliveryQuantity_add = $("#addDelivery input[name='deliveryQuantity_add']");
-        for (var i = 0, j = deliveryQuantity_add.length; i < j; i++) {
-            deliveryQuantityArr += deliveryQuantity_add[i].value + "|";
-        }
-
-        var doPrepareGoods = '/user/sale/preparesave';
-        $.ajax({
-            type: "POST",
-            url: doPrepareGoods,
-            data: {
-                orderID: '<?php echo $this->orders['orderID'];?>',
-                name: nameArr,
-                nid: nidArr,
-                size: sizeArr,
-                attachType: attachTypeArr,
-                orderItemID: orderItemIDArr,
-                deliveryQuantity: deliveryQuantityArr
-            },
-            dataType: "json",
-            success: function (data) {
-                if (data === 1) {
-                    document.location.reload();
-                } else {
-                    alert(data + 'failed,please try again!');
-                }
-            }
-        });
-    });
-
-    /* 添加发货记录 */
-    $("input[name='deliveryQuantity_add']").keyup(function () {
-        var unitPrice = $(this).parent().prev().find("label").html();
-        var quantity = $(this).val();
-        if (isNaN(quantity)) {
-            quantity = 0;
-        }
-        var totalAmount = arithMul(unitPrice, quantity);
-
-        totalAmount = formatCurrency(totalAmount, 2);
-        $(this).parent().next().find("label").html(totalAmount);
-    });
-
-    /* 发货详情页 */
-    $(".deliveryDeliverViewBtn").click(function () {
-        var deliveryID = $(this).attr("deliveryID_");
-        $("#deliveryViewDiv").html("").load("/user/sale/deliver", {
-            deliveryID: deliveryID
-        }, function () {
-            layer.closeAll();
-            layer.open({
-                type: 1,
-                title: false,
-                area: ['750px', '97%'],
-                skin: 'layui-layer-rim',
-                scrollbar: false,
-                shade: 0.5,
-                content: $("#deliveryViewDiv")
-            });
-
-            /* 发货 */
-            $("#deliveryDeliverGoodsBtn").click(function () {
-                var auth_error = $('#deliveryDeliverDiv').find('.et-auth-error');
-
-                var nidArr = "";
-                var nid = document.getElementsByName("attachNid[]");
-                for (var i = 0, j = nid.length; i < j; i++) {
-                    nidArr += nid[i].value + "|";
-                }
-                var nameArr = "";
-                var name = document.getElementsByName("attachName[]");
-                for (var i = 0, j = name.length; i < j; i++) {
-                    nameArr += name[i].value + "|";
-                }
-                var sizeArr = "";
-                var size = document.getElementsByName("attachSize[]");
-                for (var i = 0, j = size.length; i < j; i++) {
-                    sizeArr += size[i].value + "|";
-                }
-                var attachTypeArr = "";
-                var attachType = document.getElementsByName("attachType[]");
-                for (var i = 0, j = attachType.length; i < j; i++) {
-                    attachTypeArr += attachType[i].value + "|";
-                }
-
-                var deliverGoods = '/user/sale/deliversave';
-                $.ajax({
-                    type: "POST",
-                    url: deliverGoods,
-                    data: {
-                        deliveryID: deliveryID,
-                        name: nameArr,
-                        nid: nidArr,
-                        size: sizeArr,
-                        attachType: attachTypeArr
-                    },
-                    dataType: "json",
-                    success: function (data) {
-                        if (data === '1') {
-                            document.location.reload();
-                        } else {
-                            alert(data + 'failed,please try again!');
-                        }
-                    }
-                });
-            });
         });
     });
 

@@ -1580,26 +1580,17 @@ class SaleController extends Kyapi_Controller_Action
     }
 
     // 编辑物流信息
-    public function editexpresssaveAction() {
+    public function editExpressSaveAction() {
         if ($this->_request->isPost()) {
-            $deliveryID = $this->_request->getPost('deliveryID');
-            $supplierID = $this->_request->getPost('supplierID');
+            $deliverySupplierID = $this->_request->getPost('deliverySupplierID');
             $expressType = $this->_request->getPost('expressType');
             $expressNo = $this->_request->getPost('expressNo');
             $_requestOb = $this->_requestObject;
 
             $deliverySupplier = new Kyapi_Model_DeliverySupplier();
-            $deliverySupplier->deliveryID = $deliveryID;
-            $deliverySupplier->supplierID = $supplierID;
+            $deliverySupplier->deliverySupplierID = $deliverySupplierID;
             $deliverySupplier->expressType = $expressType;
             $deliverySupplier->expressNo = $expressNo;
-
-            // var_dump($deliverySupplier);
-            // print_r("----------------");
-            // $delObj = json_encode($deliverySupplier);
-            // print_r("-------2222222222---------");
-            // var_dump($delObj);
-            // exit;
 
             $resultObject = $this->json->editExpressNoApi($_requestOb, $deliverySupplier);
             echo $resultObject->status;

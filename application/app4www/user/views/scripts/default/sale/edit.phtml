@@ -711,7 +711,7 @@
                     $packingType.val(item.packingType);
                     $packingType.selectpicker('render');
 
-                    $("input[name='quantity[]'], input[name='unitPrice[]'], input[name='totalPrice[]'], input[name='purUnitPrice[]'], input[name='totalPurPrice[]'], input[name='totalNetWeight[]'], input[name='totalGrossWeight[]']").keyup(function () {
+                    $("input[name='quantity[]'], input[name='unitPrice[]'], input[name='totalPrice[]'], input[name='purUnitPrice[]'], input[name='totalPurPrice[]'], input[name='netWeight[]'], input[name='grossWeight[]'], input[name='totalNetWeight[]'], input[name='totalGrossWeight[]']").keyup(function () {
                         var productID = $(this).attr("data-productID"),     // ID
                             $quantity = $("#quantity_" + productID),        // 数量
                             quantityMul = $(".quantityMul_" + productID),   // 数量Label
@@ -932,6 +932,9 @@
                     $(".isSelfSupport").show();
                     $(".clearancePlace").show();
                     $(".agency").show();
+                    if ($("input[name='isAssignCustomsAgency']:checked").val() === '0') {
+                        $(".agencyInfo").hide();
+                    }
                 }
 
                 // 更新商品货币
@@ -1226,7 +1229,7 @@
                 $packingType.val(item.packingType);
                 $packingType.selectpicker('render');
 
-                $("input[name='quantity[]'], input[name='unitPrice[]'], input[name='totalPrice[]'], input[name='purUnitPrice[]'], input[name='totalPurPrice[]'], input[name='totalNetWeight[]'], input[name='totalGrossWeight[]']").keyup(function () {
+                $("input[name='quantity[]'], input[name='unitPrice[]'], input[name='totalPrice[]'], input[name='purUnitPrice[]'], input[name='totalPurPrice[]'], input[name='netWeight[]'], input[name='grossWeight[]'], input[name='totalNetWeight[]'], input[name='totalGrossWeight[]']").keyup(function () {
                     var productID = $(this).attr("data-productID"),     // ID
                         $quantity = $("#quantity_" + productID),        // 数量
                         quantityMul = $(".quantityMul_" + productID),   // 数量Label
@@ -1446,7 +1449,7 @@
 
             '       <label for="totalPackage" class="col-sm-2 control-label"><?php echo $this->translate("quantity"); ?></label>' +
             '       <div class="col-sm-3">' +
-            '           <input type="text" class="form-control" name="totalPackage[]" id="totalPackage_' + item.productID + '" data-productID="' + item.productID + '" value="' + (item.packingQuantity <= 0 ? 1 : item.packingQuantity) + '">' +
+            '           <input type="text" class="form-control" name="totalPackage[]" id="totalPackage_' + item.productID + '" data-productID="' + item.productID + '" value="' + item.totalPackage + '">' +
             '           <input type="hidden" name="packingQuantity_' + item.productID + '" value="' + item.packingQuantity + '">' +
             '       </div>' +
             '   </div>' +

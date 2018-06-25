@@ -9,6 +9,7 @@
  */
 class Kyapi_Model_DeliverySupplier
 {
+    public $deliverySupplierID;
     public $deliveryID;
     public $supplierID;
     public $expressType;

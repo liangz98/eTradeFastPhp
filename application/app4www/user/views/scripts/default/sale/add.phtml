@@ -233,7 +233,7 @@
 
                                 <label for="shippingServiceType" class="col-sm-2 control-label"><?php echo $this->translate('mabyDATE'); ?></label>
                                 <div class="col-sm-4">
-                                    <input type="date" class="form-control" name="deliveryDate" id="deliveryDate" placeholder="" value="<?php echo date('Y-m-d', strtotime($this->orders['deliveryDate']));?>" >
+                                    <input type="date" class="form-control" name="deliveryDate" id="deliveryDate" placeholder="" value="<?php echo date('Y-m-d');?>" >
                                 </div>
                             </div>
 
@@ -796,7 +796,7 @@
 
         $selectBuyerBtn.click(function () {
             // alert('getSelections: ' + JSON.stringify($buyerTable.bootstrapTable('getSelections')));
-            console.log(JSON.stringify($buyerTable.bootstrapTable('getSelections')));
+            // console.log(JSON.stringify($buyerTable.bootstrapTable('getSelections')));
             var selections = $buyerTable.bootstrapTable('getSelections'),
                 $regdCountryCode = $("#regdCountryCode"),
                 $buyerRegdCountryCode = $("#buyerRegdCountryCode");
@@ -832,6 +832,9 @@
                     $(".isSelfSupport").show();
                     $(".clearancePlace").show();
                     $(".agency").show();
+                    if ($("input[name='isAssignCustomsAgency']:checked").val() === '0') {
+                        $(".agencyInfo").hide();
+                    }
                 }
 
                 // 更新商品货币
@@ -1223,7 +1226,7 @@
                     '   <div class="form-group">' +
                     '       <label for="totalNetWeight" class="col-sm-2 control-label"><?php echo $this->translate("netWeight"); ?></label>' +
                     '       <div class="col-sm-2">' +
-                    '           <input type="text" class="form-control" name="netWeight[]" id="netWeight_' + item.productID + '" value="' + (item.netWeight === undefined ? 0 : item.netWeight) + '">' +
+                    '           <input type="text" class="form-control" name="netWeight[]" id="netWeight_' + item.productID + '" data-productID="' + item.productID + '" value="' + (item.netWeight === undefined ? 0 : item.netWeight) + '">' +
                     '       </div>' +
                     '       <div class="col-sm-1">' +
                     '           <p class="form-control-static">x</p>' +
@@ -1245,7 +1248,7 @@
                     '   <div class="form-group">' +
                     '       <label for="totalNetWeight" class="col-sm-2 control-label"><?php echo $this->translate("grossWeight"); ?></label>' +
                     '       <div class="col-sm-2">' +
-                    '           <input type="text" class="form-control" name="grossWeight[]" id="grossWeight_' + item.productID + '" value="' + (item.grossWeight === undefined ? 0 : item.grossWeight) + '">' +
+                    '           <input type="text" class="form-control" name="grossWeight[]" id="grossWeight_' + item.productID + '" data-productID="' + item.productID + '" value="' + (item.grossWeight === undefined ? 0 : item.grossWeight) + '">' +
                     '       </div>' +
                     '       <div class="col-sm-1">' +
                     '           <p class="form-control-static">x</p>' +
@@ -1323,7 +1326,7 @@
                 $packingType.val(item.packingType);
                 $packingType.selectpicker('render');
 
-                $("input[name='quantity[]'], input[name='unitPrice[]'], input[name='totalPrice[]'], input[name='purUnitPrice[]'], input[name='totalPurPrice[]'], input[name='totalNetWeight[]'], input[name='totalGrossWeight[]']").keyup(function () {
+                $("input[name='quantity[]'], input[name='unitPrice[]'], input[name='totalPrice[]'], input[name='purUnitPrice[]'], input[name='totalPurPrice[]'], input[name='netWeight[]'], input[name='grossWeight[]'], input[name='totalNetWeight[]'], input[name='totalGrossWeight[]']").keyup(function () {
                     var productID = $(this).attr("data-productID"),     // ID
                         $quantity = $("#quantity_" + productID),        // 数量
                         quantityMul = $(".quantityMul_" + productID),   // 数量Label
@@ -1336,6 +1339,7 @@
                         $totalNetWeight = $("#totalNetWeight_" + productID),            // 总净重
                         $totalGrossWeight = $("#totalGrossWeight_" + productID);        // 总毛重
 
+                    console.log();
                     if ($quantity.val() !== "" && !$.isNumeric($quantity.val())) {
                         console.log($quantity.val());
                         alert("数量必须是数值");

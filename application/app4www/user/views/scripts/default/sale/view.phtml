@@ -168,9 +168,9 @@
                                                             <a class="layui-btn layui-btn-warm" data-toggle="modal" data-target="#deliveryDeliver" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>" >发货</a>
                                                         <?php elseif ($v->deliveryStatus == 2): ?>
                                                             <a class="layui-btn layui-btn-warm" data-toggle="modal" data-target="#deliveryDeliver" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>" >发货</a>
-                                                        <?php elseif (!$this->orders->isSelfSupport && $v->deliveryStatus == 3 && $v->vendorPaymentStatus == 3): ?>
+                                                        <?php elseif (!$this->orders->isSelfSupport && $v->deliveryStatus == 3): ?>
                                                             <a href='javascript:void(0)' data-toggle="modal" data-target="#billingInfo" data-delivery-id="<?php echo $v->deliveryID; ?>" >开票资料</a>
-                                                        <?php elseif (!$this->orders->isSelfSupport && $v->deliveryStatus == 4 && $v->vendorPaymentStatus == 3): ?>
+                                                        <?php elseif (!$this->orders->isSelfSupport && $v->deliveryStatus == 4): ?>
                                                             <a href='javascript:void(0)' data-toggle="modal" data-target="#billingInfo" data-delivery-id="<?php echo $v->deliveryID; ?>" >开票资料</a>
                                                         <?php endif; ?>
                                                     </td>
@@ -1722,21 +1722,18 @@
                 $(".expressEdit").show();
             });
             $(".billingExpressEditSave").click(function () {
-                console.log("in");
-                var deliveryID = $(this).attr("deliveryID_");
-                var supplierID = $(this).attr("supplierID_");
-                var expressType = $("#expressType").val();
-                var expressName = $("#expressType").find("option:selected").text();
+                var deliverySupplierID = $(this).attr("data-delivery-supplier-id");
+                var $expressType = $("#expressType");
+                var expressName = $expressType.find("option:selected").text();
                 var expressNo = $("#expressNo").val();
 
-                var editExpressNo = '/user/sale/editexpresssave';
+                var editExpressNo = '/user/sale/edit-express-save';
                 $.ajax({
                     type: "POST",
                     url: editExpressNo,
                     data: {
-                        deliveryID: deliveryID,
-                        supplierID: supplierID,
-                        expressType: expressType,
+                        deliverySupplierID: deliverySupplierID,
+                        expressType: $expressType.val(),
                         expressNo: expressNo
                     },
                     dataType: "json",
