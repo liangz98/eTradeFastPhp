@@ -21,32 +21,32 @@
 				<h2 class="layui-colla-title"><?php echo $deliverySupplier->supplierName; ?></h2>
 				<div class="layui-colla-content <?php if ($isShow) echo "layui-show" ?>">
 					<div class="layui-form-item margin-bottom-1">
-						<label class="layui-form-label width-100">价税合计金额</label>
+						<label class="layui-form-label width-120">价税合计金额</label>
 						<div class="layui-input-block">
 							<div class="layui-form-mid layui-word-aux"><?php echo $deliverySupplier->supplierCrnCode. ' ' .$deliverySupplier->totalAmount; ?></div>
 						</div>
 					</div>
 
 					<div class="layui-form-item margin-bottom-1">
-						<label class="layui-form-label width-100 text-align-left billingInfoFont font-orange">销售方信息</label>
+						<label class="layui-form-label width-120 text-align-left billingInfoFont font-orange">销售方信息</label>
 					</div>
 
 					<div class="layui-form-item margin-bottom-1">
-						<label class="layui-form-label width-100">名称</label>
+						<label class="layui-form-label width-120">名称</label>
 						<div class="layui-input-block">
 							<div class="layui-form-mid layui-word-aux"><?php echo $deliverySupplier->supplierName ?></div>
 						</div>
 					</div>
 
 					<div class="layui-form-item margin-bottom-1">
-						<label class="layui-form-label width-100">纳税人识别号</label>
+						<label class="layui-form-label width-120">纳税人识别号</label>
 						<div class="layui-input-block">
 							<div class="layui-form-mid layui-word-aux"><?php echo $deliverySupplier->supplier->businessLicenseNo ?></div>
 						</div>
 					</div>
 
 					<div class="layui-form-item margin-bottom-1">
-						<label class="layui-form-label width-100">地址、电话</label>
+						<label class="layui-form-label width-120">地址、电话</label>
 						<div class="layui-input-block">
 							<div class="layui-form-mid layui-word-aux">
 								<?php echo $deliverySupplier->supplier->regdAddress ?>
@@ -56,18 +56,18 @@
 					</div>
 
 					<div class="layui-form-item margin-bottom-1">
-						<label class="layui-form-label width-100">开户行及帐号</label>
+						<label class="layui-form-label width-120">开户行及帐号</label>
 						<div class="layui-input-block">
 							<div class="layui-form-mid layui-word-aux"><?php echo $deliverySupplier->bankName. ' ' .$deliverySupplier->bankAcctNo ?></div>
 						</div>
 					</div>
 
 					<div class="layui-form-item margin-bottom-1">
-						<label class="layui-form-label width-100 text-align-left billingInfoFont font-orange">邮寄信息</label>
+						<label class="layui-form-label width-120 text-align-left billingInfoFont font-orange">邮寄信息</label>
 					</div>
 
 					<div class="layui-form-item margin-bottom-1">
-						<label class="layui-form-label width-100">快递单号</label>
+						<label class="layui-form-label width-120">快递单号</label>
 
 						<div class="layui-input-inline expressShow" style="width: 400px; <?php if ($deliverySupplier->expressNo == null || $deliverySupplier->expressNo == '') { echo 'display: none;';} ?>">
 							<div class="layui-form-mid layui-word-aux">

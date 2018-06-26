@@ -872,6 +872,7 @@
                     $purchaseUnitPrice = $(product).find(".purchaseUnitPrice"),
                     $purtotal = $(product).find(".purtotal"),
                     $unitPrice = $("#unitPrice_" + productID),
+                    $totalPrice = $("#totalPrice_" + productID),
                     $purchaseUnitPriceInfo = $(product).find(".purchaseUnitPriceInfo");
 
                 if (quotationMode === 'PO') {   // PO/PI, 隐藏
@@ -887,6 +888,7 @@
                     $purtotal.html('<?php echo $this->translate("uitotal"); ?>');
                     $purchaseUnitPriceInfo.show();
                     $unitPrice.attr("readonly", "true");
+                    $totalPrice.attr("readonly", "true");
                 }
             });
         });
@@ -1341,12 +1343,12 @@
 
                     console.log();
                     if ($quantity.val() !== "" && !$.isNumeric($quantity.val())) {
-                        console.log($quantity.val());
                         alert("数量必须是数值");
-                        return false;
+                        $quantity.val(1);
                     }
                     if ($unitPrice.val() !== "" && !$.isNumeric($unitPrice.val())) {
                         alert("价格必须是数值");
+
                         return false;
                     }
                     if ($totalPrice.val() !== "" && !$.isNumeric($totalPrice.val())) {

@@ -1583,12 +1583,16 @@ class SaleController extends Kyapi_Controller_Action
     public function editExpressSaveAction() {
         if ($this->_request->isPost()) {
             $deliverySupplierID = $this->_request->getPost('deliverySupplierID');
+            $deliveryID = $this->_request->getPost('deliveryID');
+            $supplierID = $this->_request->getPost('supplierID');
             $expressType = $this->_request->getPost('expressType');
             $expressNo = $this->_request->getPost('expressNo');
             $_requestOb = $this->_requestObject;
 
             $deliverySupplier = new Kyapi_Model_DeliverySupplier();
             $deliverySupplier->deliverySupplierID = $deliverySupplierID;
+            $deliverySupplier->deliveryID = $deliverySupplierID;
+            $deliverySupplier->supplierID = $deliverySupplierID;
             $deliverySupplier->expressType = $expressType;
             $deliverySupplier->expressNo = $expressNo;
 
