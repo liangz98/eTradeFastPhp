@@ -916,6 +916,49 @@ class PurController extends Kyapi_Controller_Action
         }
     }
 
+    // 详情 - view
+    public function deliveryAjaxAction() {
+        $deliveryID = $this->_request->getParam('deliveryID');
+        $_requestOb = $this->_requestObject;
+        $resultObject = $this->json->getDeliveryView($_requestOb, $deliveryID);
+
+        $msg["delivery"] = json_decode($resultObject)->result;
+
+        $delivery = json_decode($resultObject)->result;
+        $attachmentList = $delivery->attachmentList;
+
+        $prepareAttachmentList = array();   // 备货
+        $examineAttachmentList = array();   // 验货
+        $deliverAttachmentList = array();   // 发货
+        $receiptAttachmentList = array();   // 收货
+        $qualityAttachmentList = array();   // 质量保证函正本
+        $receiptConfirmationAttachmentList = array();   // 收货确认函正本
+        foreach ($attachmentList as $k => $v) {
+            if ($v->attachType == "DLPG") {             // 备货
+                $prepareAttachmentList[] = $v;
+            } else if ($v->attachType == "DLEG") {      // 验货
+                $examineAttachmentList[] = $v;
+            } else if ($v->attachType == "DLDG") {      // 发货
+                $deliverAttachmentList[] = $v;
+            } else if ($v->attachType == "DLRG") {      // 收货
+                $receiptAttachmentList[] = $v;
+            } else if ($v->attachType == "DLQF") {      // 质量保证函正本
+                $qualityAttachmentList[] = $v;
+            } else if ($v->attachType == "DLCF") {      // 收货确认函正本
+                $receiptConfirmationAttachmentList[] = $v;
+            }
+        }
+
+        $msg["prepareAttachmentList"] = $prepareAttachmentList;
+        $msg["examineAttachmentList"] = $examineAttachmentList;
+        $msg["deliverAttachmentList"] = $deliverAttachmentList;
+        $msg["receiptAttachmentList"] = $receiptAttachmentList;
+        $msg["qualityAttachmentList"] = $qualityAttachmentList;
+        $msg["receiptConfirmationAttachmentList"] = $receiptConfirmationAttachmentList;
+        echo json_encode($msg);
+        exit;
+    }
+
     // 验货 - view
     public function examineAction() {
         $deliveryID = $this->_request->getParam('deliveryID');

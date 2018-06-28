@@ -1,46 +1,45 @@
-<div id="deliveryBillInfoDiv" class="layui-form">
+<div id="deliveryBillInfoDiv" class="">
 	<div class="et-auth-top et-auth-bg-orange billInfoTop" style="height: 120px; text-align: left;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h3><?php echo $this->translate('deliveryBillTitle'); ?>&nbsp;<label><?php echo $this->delivery->deliveryNo; ?></label></h3>
 		<h6 class="padding-left-15"><?php echo $this->translate('deliveryBillTipsBank'); ?></h6>
 		<h6 class="padding-left-15"><?php echo $this->translate('deliveryBillTipsCheck'); ?></h6>
 	</div>
 	<div class="et-auth-error" style="display: none;"></div>
 
-	<div class="layui-form">
+	<div class="form-horizontal">
 		<div style="margin-top: 20px;"></div>
 
 		<?php
 		foreach ($this->deliverySupplierList as $deliverySupplier):
 		?>
-		<div class="layui-form-item">
-			<label class="layui-form-label width-120">供应商名称</label>
-			<div class="layui-input-block">
+        <div class="form-group" style="margin-right: 0 !important;">
+            <label class="col-sm-2 control-label">供应商名称</label>
+            <div class="col-sm-8">
 				<div class="layui-form-mid layui-word-aux"><?php echo $deliverySupplier->supplierName ?></div>
 				<input type="hidden" name="supplierID" value="<?php echo $deliverySupplier->supplierID ?>" >
 			</div>
 		</div>
 
-		<div class="layui-form-item">
-			<label class="layui-form-label width-120" for="bankAcctID">选择银行帐户</label>
-			<div class="layui-input-block margin-left-150" style="width: 500px;">
-				<select name="bankAcctID" id="bankAcctID" lay-verify="required" lay-search="" lay-filter="bankAcctID">
-					<option value=""><?php echo $this->translate('et_select'); ?></option>
+		<div class="form-group" style="margin-right: 0 !important;">
+            <label for="bankAcctID" class="col-sm-2 control-label">选择银行帐户</label>
+			<div class="col-sm-8">
+                <select class="selectpicker form-control" name="bankAcctID" id="bankAcctID" data-live-search="true">
+                    <option value=""><?php echo $this->translate('et_select'); ?></option>
                     <?php echo $this->ShowBankAccountList(); ?>
-				</select>
+                </select>
 			</div>
 		</div>
 		<?php
 		endforeach;
 		?>
 
-		<div style="height: 12px"></div>
-		<div class="et-auth-row">
-			<button class="layui-btn layui-btn-warm genBillInfoBtn" id="genBillInfoBtn" deliveryID_="<?php echo $this->deliveryID; ?>">
-				<?php echo $this->translate('signingNow'); ?>
-			</button>&nbsp;&nbsp;
-			<a id="addBankAccountBtn" style="color: #01AAED; cursor: pointer;" deliveryID_="<?php echo $this->deliveryID; ?>">
-				<?php echo $this->translate('add').$this->translate('bankAccount'); ?>
-			</a>
+        <div class="form-group" style="margin-right: 0 !important;">
+            <div class="col-sm-8 col-sm-offset-2">
+                <button type="button" class="btn btn-warning genBillInfoBtn" id="genBillInfoBtn" data-delivery-id="<?php echo $this->deliveryID; ?>"><?php echo $this->translate('signingNow'); ?></button>
+                &nbsp;&nbsp;
+                <a id="addBankAccountBtn" style="color: #01AAED; cursor: pointer;" deliveryID_="<?php echo $this->deliveryID; ?>"><?php echo $this->translate('bankAccount'); ?></a>
+            </div>
 		</div>
 	</div>
 </div>

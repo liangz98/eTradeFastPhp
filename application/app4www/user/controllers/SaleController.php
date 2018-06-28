@@ -675,32 +675,13 @@ class SaleController extends Kyapi_Controller_Action
 
     /*查看订单*/
     public function viewAction() {
-        //读取数据字典
-        $cacheM = new Seed_Model_Cache2File();
-        $DATAlist = $cacheM->get("datatest_setting");
-        $this->view->Datalist = $DATAlist;
-        // 请求Hessian服务端方法
         $orderID = $_SERVER['QUERY_STRING'];
         $_orderID = base64_decode($orderID);
         $this->view->orderid = $_orderID;
 
-        $_requestOb = $this->_requestObject;
-        $_resultKY = $this->json->getOrderApi($_requestOb, $_orderID);
-        $userKY = json_decode($_resultKY);
-
-        // 取回当前公司的企业认证状态
-        $_accountID = $this->view->accountID;
-        $account = $this->json->getAccountApi($_requestOb, $_accountID);
-        $this->view->hasIDCertificate = json_decode($account)->result->hasIDCertificate;
-
-        $accountData = $this->objectToArray(json_decode($account)->result);
-        $this->view->account = $accountData;
-
-
-        $existData = $userKY->result;
-        $existDatt = $this->objectToArray($existData);
-
-        $this->view->orderItem = json_encode($userKY->result->orderItemList);
+        $requestObject = $this->_requestObject;
+        $orderResultObject = $this->json->getOrderApi($requestObject, $_orderID);
+        $order = $this->objectToArray(json_decode($orderResultObject)->result);
 
         //当前返回数据为空时 前端显示为无
         if (!isset($existDatt['packingDesc']))
@@ -712,23 +693,36 @@ class SaleController extends Kyapi_Controller_Action
         if (!isset($existDatt['shippingRequest']))
             $existDatt['shippingRequest']=$this->view->translate('noData');   //物流要求
 
-        $this->view->orders = $existDatt;
+        $this->view->orders = $order;
+
+        // 订单商品
+        $this->view->orderItem = $order['orderItemList'];
+
+
+        // 取回当前公司的企业认证状态
+        $_accountID = $this->view->accountID;
+        $account = $this->json->getAccountApi($requestObject, $_accountID);
+        $this->view->hasIDCertificate = json_decode($account)->result->hasIDCertificate;
+
+        $accountData = $this->objectToArray(json_decode($account)->result);
+        $this->view->account = $accountData;
 
         // 订单合同列表
         $bizType = 'OD';
-        $listBizContractResultObject = $this->json->listBizContract($_requestOb, $bizType, $_orderID);
+        $listBizContractResultObject = $this->json->listBizContract($requestObject, $bizType, $_orderID);
         $listBizContract = json_decode($listBizContractResultObject)->result;
         $this->view->contractList = empty($listBizContract) ? null : $this->objectToArray($listBizContract);
 
-        $this->view->vestut = $existDatt['vendorExecStatus'];
-        $this->view->veorderID = $existDatt['orderID'];
+        // 买家执行状态
+        $this->view->vestut = $order['vendorExecStatus'];
+        // $this->view->veorderID = $order->orderID;
 
         // 取回订单商品
-        $orderItemListResultObject = $this->json->listOrderItem($_requestOb, $_orderID);
+        $orderItemListResultObject = $this->json->listOrderItem($requestObject, $_orderID);
         $this->view->orderItemList = json_decode($orderItemListResultObject)->result;
 
         // 取回物流信息
-        $deliveryList = $this->json->listDelivery($_requestOb, $_orderID);
+        $deliveryList = $this->json->listDelivery($requestObject, $_orderID);
         $this->view->deliveryList = json_decode($deliveryList)->result;
 
         // 是否存在已完成的物流
@@ -754,25 +748,8 @@ class SaleController extends Kyapi_Controller_Action
         $deliveryAttachDataList = $deliveryData['result'];
 
 
-        //处理根据返回的运输方式来判断 起运|卸货|交货查询的缓存目录名称
-        if ($existDatt['shippingMethod'] == 'SEA') {
-            $this->view->port = "SEA_PORT";
-            $this->view->loadingPort = $existDatt['loadingPort'];
-            $this->view->dischargePort = $existDatt['dischargePort'];
-            $this->view->deliveryPort = $existDatt['deliveryPort'];
 
-        } else if ($existDatt['shippingMethod'] == 'AIR') {
-            $this->view->port = "AIR_PORT";
-            $this->view->loadingPort = $existDatt['loadingPort'];
-            $this->view->dischargePort = $existDatt['dischargePort'];
-            $this->view->deliveryPort = $existDatt['deliveryPort'];
-        } else {
-            $this->view->port = "CITY_ISO_CODE";
-            $this->view->loadingPort = $existDatt['loadingCity'];
-            $this->view->dischargePort = $existDatt['dischargeCity'];
-            $this->view->deliveryPort = $existDatt['deliveryCity'];
-        };
-
+        // 不可删,但未查出用在哪里
         if ($this->view->accountID == $existDatt['client']) {
             if ($existDatt['orderStatus'] == 05 || $existDatt['orderStatus'] == 00 || $existDatt['orderStatus'] == 02) {
                 $this->view->allowEdit = 1;
@@ -781,16 +758,6 @@ class SaleController extends Kyapi_Controller_Action
             }
         } else {
             $this->view->allowEdit = 0;
-        }
-
-
-        //判断港口/城市
-        if ($existDatt['shippingMethod'] == 'SEA') {
-            $this->view->shipping = 'SEA_PORT';
-        } else if ($existDatt['shippingMethod'] == 'AIR') {
-            $this->view->shipping = 'AIR_PORT';
-        } else {
-            $this->view->shipping = 'CITY_ISO_CODE';
         }
 
         if (defined('SEED_WWW_TPL')) {
@@ -1186,7 +1153,7 @@ class SaleController extends Kyapi_Controller_Action
     }
 
     //备货
-    public function preparesaveAction() {
+    public function prepareSaveAction() {
         $_requestOb = $this->_requestObject;
         // 请求Hessian服务端方法
         $name = $_POST['name'];
@@ -1259,7 +1226,7 @@ class SaleController extends Kyapi_Controller_Action
         foreach ($orderItemID as $index => $value) {
             $deliveryItemList[$index] = new Kyapi_Model_DeliveryItem();
             $deliveryItemList[$index]->orderItemID = $value;
-            $deliveryItemList[$index]->deliveryQuantity = $deliveryQuantity[$index];
+            $deliveryItemList[$index]->deliveryQuantity = (int)$deliveryQuantity[$index];
         }
 
         if (count($_attachList) == 0) {
@@ -1581,24 +1548,21 @@ class SaleController extends Kyapi_Controller_Action
 
     // 编辑物流信息
     public function editExpressSaveAction() {
-        if ($this->_request->isPost()) {
-            $deliverySupplierID = $this->_request->getPost('deliverySupplierID');
-            $deliveryID = $this->_request->getPost('deliveryID');
-            $supplierID = $this->_request->getPost('supplierID');
-            $expressType = $this->_request->getPost('expressType');
-            $expressNo = $this->_request->getPost('expressNo');
-            $_requestOb = $this->_requestObject;
+        $deliverySupplierID = $this->_request->getPost('deliverySupplierID');
+        $expressType = $this->_request->getPost('expressType');
+        $expressNo = $this->_request->getPost('expressNo');
+        $_requestOb = $this->_requestObject;
 
-            $deliverySupplier = new Kyapi_Model_DeliverySupplier();
-            $deliverySupplier->deliverySupplierID = $deliverySupplierID;
-            $deliverySupplier->deliveryID = $deliverySupplierID;
-            $deliverySupplier->supplierID = $deliverySupplierID;
-            $deliverySupplier->expressType = $expressType;
-            $deliverySupplier->expressNo = $expressNo;
+        $deliverySupplier = new Kyapi_Model_DeliverySupplier();
+        $deliverySupplier->deliverySupplierID = $deliverySupplierID;
+        $deliverySupplier->deliveryID = $deliverySupplierID;
+        $deliverySupplier->supplierID = $deliverySupplierID;
+        $deliverySupplier->expressType = $expressType;
+        $deliverySupplier->expressNo = $expressNo;
 
-            $resultObject = $this->json->editExpressNoApi($_requestOb, $deliverySupplier);
-            echo $resultObject->status;
-        }
+        $resultObject = $this->json->editExpressNoApi($_requestOb, $deliverySupplier);
+
+        echo json_encode($resultObject->status);
         exit;
     }
 

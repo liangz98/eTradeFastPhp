@@ -409,14 +409,14 @@
 
                                     <div class="row">
                                         <div class="col-xs-2 view-title"><?php echo $this->translate('portSHIP'); ?></div>
-                                        <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->port, $this->loadingPort); ?></div>
+                                        <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->orders['shippingMethod'], $this->orders['loadingPort']); ?></div>
                                         <div class="col-xs-2 view-title"><?php echo $this->translate('portDSCG'); ?></div>
-                                        <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->port, $this->dischargePort); ?></div>
+                                        <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->orders['shippingMethod'], $this->orders['dischargePort']); ?></div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-xs-2 view-title"><?php echo $this->translate('portDLVY'); ?></div>
-                                        <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->port, $this->deliveryPort); ?></div>
+                                        <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->orders['shippingMethod'], $this->orders['deliveryPort']); ?></div>
                                         <div class="col-xs-2 view-title"><?php echo $this->translate('mabyDATE'); ?></div>
                                         <div class="col-xs-4"><?php echo date('Y-m-d', strtotime($this->orders['deliveryDate'])); ?></div>
                                     </div>
@@ -1250,32 +1250,32 @@
 
                 // 备货
                 if (data.prepareAttachmentList.length > 0) {
-                    attachmentContent += genAttachContent(data.prepareAttachmentList, '<?php echo $this->translate('PREPARE_GOODS').$this->translate('download'); ?>', attachmentContent, attachUrl);
+                    attachmentContent += genAttachContent(data.prepareAttachmentList, '<?php echo $this->translate('PREPARE_GOODS').$this->translate('download'); ?>', attachUrl);
                 }
 
                 // 验货
                 if (data.examineAttachmentList.length > 0) {
-                    attachmentContent += genAttachContent(data.examineAttachmentList, '<?php echo $this->translate('EXAMINE_GOODS').$this->translate('download'); ?>', attachmentContent, attachUrl);
+                    attachmentContent += genAttachContent(data.examineAttachmentList, '<?php echo $this->translate('EXAMINE_GOODS').$this->translate('download'); ?>', attachUrl);
                 }
 
                 // 质量保证函正本
                 if (data.qualityAttachmentList.length > 0) {
-                    attachmentContent += genAttachContent(data.qualityAttachmentList, '<?php echo $this->translate('QUALITY_AGREE_FORMAL').$this->translate('download'); ?>', attachmentContent, attachUrl);
+                    attachmentContent += genAttachContent(data.qualityAttachmentList, '<?php echo $this->translate('QUALITY_AGREE_FORMAL').$this->translate('download'); ?>', attachUrl);
                 }
 
                 // 发货
                 if (data.deliverAttachmentList.length > 0) {
-                    attachmentContent += genAttachContent(data.deliverAttachmentList, '<?php echo $this->translate('DELIVER_GOODS').$this->translate('download'); ?>', attachmentContent, attachUrl);
+                    attachmentContent += genAttachContent(data.deliverAttachmentList, '<?php echo $this->translate('DELIVER_GOODS').$this->translate('download'); ?>', attachUrl);
                 }
 
                 // 收货
                 if (data.receiptAttachmentList.length > 0) {
-                    attachmentContent += genAttachContent(data.receiptAttachmentList, '<?php echo $this->translate('RECEIPT_GOODS').$this->translate('download'); ?>', attachmentContent, attachUrl);
+                    attachmentContent += genAttachContent(data.receiptAttachmentList, '<?php echo $this->translate('RECEIPT_GOODS').$this->translate('download'); ?>', attachUrl);
                 }
 
                 // 收货确认函正本
                 if (data.receiptConfirmationAttachmentList.length > 0) {
-                    attachmentContent += genAttachContent(data.receiptConfirmationAttachmentList, '<?php echo $this->translate('RECEIPT_CONFIRMATION_FORMAL').$this->translate('download'); ?>', attachmentContent, attachUrl);
+                    attachmentContent += genAttachContent(data.receiptConfirmationAttachmentList, '<?php echo $this->translate('RECEIPT_CONFIRMATION_FORMAL').$this->translate('download'); ?>', attachUrl);
                 }
 
                 $deliveryItemAttachment.html(attachmentContent);
@@ -1283,8 +1283,9 @@
         });
     });
 
-    function genAttachContent(data, title, attachmentContent, attachUrl) {
-        attachmentContent += '<div class="page-header">'
+    function genAttachContent(data, title, attachUrl) {
+        var attachmentContent = '<div class="col-xs-12">'
+            + '<div class="page-header">'
             + '<h4>' + title + '</h4>'
             + '</div>';
         $.each(data, function (index, attach) {
@@ -1299,6 +1300,7 @@
                 + '<?php echo $this->translate("creatdate") ?>&nbsp;' + new Date(attach.createTime).format("yyyy-MM-dd hh:mm:ss")
                 + '</div>';
         });
+        attachmentContent += '</div>';
         return attachmentContent;
     }
 
@@ -1570,7 +1572,7 @@
             deliveryQuantityArr += deliveryQuantity_add[i].value + "|";
         }
 
-        var doPrepareGoods = '/user/sale/preparesave';
+        var doPrepareGoods = '/user/sale/prepare-save';
         $.ajax({
             type: "POST",
             url: doPrepareGoods,
@@ -1699,10 +1701,16 @@
     });
 
     // ********************   开票资料 Start  *************************************
-    $("#billingInfo").on('show.bs.modal', function (e) {
-        console.log("in");
+    var $billingInfo = $("#billingInfo");
+    $billingInfo.on('show.bs.modal', function (e) {
         var triggered = $(e.relatedTarget),
             deliveryID = triggered.data("delivery-id");
+        if (deliveryID === undefined || deliveryID === '') {
+            deliveryID = $billingInfo.attr("data-delivery-id");
+        }
+
+
+        $billingInfo.attr("data-delivery-id", deliveryID);
 
         $(".billingInfoContent").html("").load("/user/sale/deliverbillinginfo", {
             deliveryID: deliveryID
@@ -1738,10 +1746,14 @@
                     },
                     dataType: "json",
                     success: function (data) {
-                        $(".expressName_").html(expressName);
+                        if ($expressType.val() !== '') {
+                            $(".expressName_").html(expressName);
+                        } else {
+                            $(".expressName_").html("");
+                        }
                         $(".expressNo_").html(expressNo);
 
-                        $("#expressType").val(expressType);
+                        $("#expressType").val($expressType.val());
                         $("#expressNo").val(expressNo);
 
                         $(".expressShow").show();
@@ -1751,7 +1763,7 @@
             });
 
             $(".genBillInfoBtn").click(function () {
-                var deliveryID = $(this).attr("deliveryID_");
+                var deliveryID = $(this).attr("data-delivery-id");
 
                 var supplierIDArray = "";
                 var supplierID = document.getElementsByName("supplierID");
@@ -1777,12 +1789,15 @@
                     },
                     dataType: "json",
                     success: function (data) {
-                        layer.closeAll();
+                        if (data === 1) {
+                            $billingInfo.modal('hide');
 
-                        setTimeout(function () {
-                            $("#company-auth").trigger("click");
-                        }, 500);
-
+                            setTimeout(function () {
+                                $('#billingInfo').modal('toggle');
+                            }, 500);
+                        } else {
+                            alert(data + 'failed,please try again!');
+                        }
                         $(".genBillInfoBtn").attr("disabled", false);
                     }
                 });

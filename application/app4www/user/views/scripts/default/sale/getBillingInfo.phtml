@@ -77,10 +77,11 @@
 							</div>
 						</div>
 						<div class="layui-input-inline expressEdit" style="width: 180px; <?php if ($deliverySupplier->expressNo != null || $deliverySupplier->expressNo != '') { echo 'display: none;';} ?>">
-							<select name="expressType" id="expressType" lay-verify="required" lay-search="" lay-filter="expressType">
-								<option value=""><?php echo $this->translate('et_select'); ?></option>
-                                <?php echo $this->ShowDictionaryList("datatest_setting", $this->userLangCode, $this->dic_Setting['EXPRESS_TYPE'], $deliverySupplier->expressType);?>
-							</select>
+                            <label for="expressType" class="sr-only">expressType</label>
+                            <select class="selectpicker form-control" name="expressType" id="expressType" data-live-search="true">
+                                <option value=""><?php echo $this->translate('et_select'); ?></option>
+                                <?php echo $this->ShowDictionaryList($this->dic_Setting['EXPRESS_TYPE'], $this->userLangCode, $this->dic_Setting['EXPRESS_TYPE'], $deliverySupplier->expressType); ?>
+                            </select>
 						</div>
 						<div class="layui-input-inline expressEdit" style="width: 220px; <?php if ($deliverySupplier->expressNo != null || $deliverySupplier->expressNo != '') { echo 'display: none;';} ?>">
 							<input type="text" id="expressNo" name="expressNo" lay-verify="" autocomplete="off" value="<?php echo $deliverySupplier->expressNo ?>" placeholder="请填写<?php echo $this->translate('expressNo'); ?>" class="layui-input">
@@ -94,27 +95,23 @@
 
 					<div class="layui-form-item margin-bottom-1">
 						<label class="layui-form-label width-100 text-align-left billingInfoFont font-blue">供货合同</label>
-						<div class="or_curs tl clearfix " style="width: 600px; padding: 10px 15px;">
-							<dl class="fl download_doc">
-								<?php
-                                $contractList = array();
-                                $contractList[] = $deliverySupplier->purContract;
-                                echo $this->ShowTopContract($contractList, $this->accountID, 'CRSE', null, $this->hasIDCertificate);
-								?>
-							</dl>
-						</div>
+                        <div class="col-xs-12">
+                            <?php
+                            $contractList = array();
+                            $contractList[] = $deliverySupplier->purContract;
+                            echo $this->ShowTopContract($contractList, $this->accountID, 'CRSE', null, $this->hasIDCertificate);
+                            ?>
+                        </div>
 					</div>
 
 					<div class="layui-form-item margin-bottom-1">
 						<label class="layui-form-label width-100 text-align-left billingInfoFont font-blue">开票指引</label>
-						<div class="or_curs tl clearfix " style="width: 600px; padding: 10px 15px;">
-							<dl class="fl download_doc">
-                                <?php
-                                $supplierList = array();
-                                $supplierList[] = $deliverySupplier->supplier;
-                                echo $this->ShowTopContract($supplierList, $this->accountID, 'DLIG', null, $this->hasIDCertificate);
-                                ?>
-							</dl>
+                        <div class="col-xs-12">
+                            <?php
+                            $supplierList = array();
+                            $supplierList[] = $deliverySupplier->supplier;
+                            echo $this->ShowTopContract($supplierList, $this->accountID, 'DLIG', null, $this->hasIDCertificate);
+                            ?>
 						</div>
 					</div>
 				</div>

@@ -646,11 +646,6 @@
                     <div class="col-sm-12 deliveryItemAttachment"></div>
                 </div>
             </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="deliveryEditBtn"><?php echo $this->translate('edit'); ?></button>
-                <a id="deliveryDelBtn" style="color: #c2c2c2; cursor: pointer;"><?php echo $this->translate('deliveryDel'); ?></a>
-            </div>
         </div>
     </div>
 </div>
@@ -1151,7 +1146,7 @@
         }
 
         $(".deliveryNo").html(deliveryNo);
-        var deliveryUrl = "/user/sale/delivery-ajax";
+        var deliveryUrl = "/user/pur/delivery-ajax";
         $.ajax({
             type: "POST",
             url: deliveryUrl,
@@ -1202,32 +1197,32 @@
 
                 // 备货
                 if (data.prepareAttachmentList.length > 0) {
-                    attachmentContent += genAttachContent(data.prepareAttachmentList, '<?php echo $this->translate('PREPARE_GOODS').$this->translate('download'); ?>', attachmentContent, attachUrl);
+                    attachmentContent += genAttachContent(data.prepareAttachmentList, '<?php echo $this->translate('PREPARE_GOODS').$this->translate('download'); ?>', attachUrl);
                 }
 
                 // 验货
                 if (data.examineAttachmentList.length > 0) {
-                    attachmentContent += genAttachContent(data.examineAttachmentList, '<?php echo $this->translate('EXAMINE_GOODS').$this->translate('download'); ?>', attachmentContent, attachUrl);
+                    attachmentContent += genAttachContent(data.examineAttachmentList, '<?php echo $this->translate('EXAMINE_GOODS').$this->translate('download'); ?>', attachUrl);
                 }
 
                 // 质量保证函正本
                 if (data.qualityAttachmentList.length > 0) {
-                    attachmentContent += genAttachContent(data.qualityAttachmentList, '<?php echo $this->translate('QUALITY_AGREE_FORMAL').$this->translate('download'); ?>', attachmentContent, attachUrl);
+                    attachmentContent += genAttachContent(data.qualityAttachmentList, '<?php echo $this->translate('QUALITY_AGREE_FORMAL').$this->translate('download'); ?>', attachUrl);
                 }
 
                 // 发货
                 if (data.deliverAttachmentList.length > 0) {
-                    attachmentContent += genAttachContent(data.deliverAttachmentList, '<?php echo $this->translate('DELIVER_GOODS').$this->translate('download'); ?>', attachmentContent, attachUrl);
+                    attachmentContent += genAttachContent(data.deliverAttachmentList, '<?php echo $this->translate('DELIVER_GOODS').$this->translate('download'); ?>', attachUrl);
                 }
 
                 // 收货
                 if (data.receiptAttachmentList.length > 0) {
-                    attachmentContent += genAttachContent(data.receiptAttachmentList, '<?php echo $this->translate('RECEIPT_GOODS').$this->translate('download'); ?>', attachmentContent, attachUrl);
+                    attachmentContent += genAttachContent(data.receiptAttachmentList, '<?php echo $this->translate('RECEIPT_GOODS').$this->translate('download'); ?>', attachUrl);
                 }
 
                 // 收货确认函正本
                 if (data.receiptConfirmationAttachmentList.length > 0) {
-                    attachmentContent += genAttachContent(data.receiptConfirmationAttachmentList, '<?php echo $this->translate('RECEIPT_CONFIRMATION_FORMAL').$this->translate('download'); ?>', attachmentContent, attachUrl);
+                    attachmentContent += genAttachContent(data.receiptConfirmationAttachmentList, '<?php echo $this->translate('RECEIPT_CONFIRMATION_FORMAL').$this->translate('download'); ?>', attachUrl);
                 }
 
                 $deliveryItemAttachment.html(attachmentContent);
@@ -1235,8 +1230,9 @@
         });
     });
 
-    function genAttachContent(data, title, attachmentContent, attachUrl) {
-        attachmentContent += '<div class="page-header">'
+    function genAttachContent(data, title, attachUrl) {
+        var attachmentContent = '<div class="col-xs-12">'
+            + '<div class="page-header">'
             + '<h4>' + title + '</h4>'
             + '</div>';
         $.each(data, function (index, attach) {
@@ -1251,6 +1247,7 @@
                 + '<?php echo $this->translate("creatdate") ?>&nbsp;' + new Date(attach.createTime).format("yyyy-MM-dd hh:mm:ss")
                 + '</div>';
         });
+        attachmentContent += '</div>';
         return attachmentContent;
     }
 
