@@ -85,6 +85,11 @@ class PurchaseController extends Kyapi_Controller_Action
         }
         $queryParams['productStatus'] = $productStatus;
 
+        $supplierID = $this->_request->getParam('supplierID');
+        if (!empty($supplierID)) {
+            $queryParams['supplierID'] = $supplierID;
+        }
+
         $querySorts = array();
         // $querySorts['createTime'] = "DESC";
 

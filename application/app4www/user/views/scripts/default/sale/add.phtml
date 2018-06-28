@@ -76,7 +76,7 @@
                                     </select>
                                 </div>
 
-                                <label for="buyerContactName" class="col-sm-2 control-label"><?php echo $this->translate('thisATTN'); ?></label>
+                                <label for="vendorContactName" class="col-sm-2 control-label"><?php echo $this->translate('thisATTN'); ?></label>
                                 <div class="col-sm-4">
                                     <div class="input-group">
                                         <input type="text" class="form-control" name="vendorContactName" id="vendorContactName" placeholder="" value="<?php echo $this->dfContactName; ?>" required >
@@ -807,6 +807,8 @@
                 $buyerCrnCode.selectpicker('val', selections[0].crnCode);
                 $buyerRegdCountryCode.val(selections[0].regdCountryCode);
 
+                $("#buyerContactID").val("");
+                $("#buyerContactName").val("");
                 $.each(selections[0].contactList, function(i, contact) {
                     if (contact.isDefaultPublic === true) {
                         $("#buyerContactID").val(contact.contactID);
