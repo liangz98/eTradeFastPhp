@@ -10,7 +10,7 @@ class Zend_View_Helper_ShowDictionaryTo extends Shop_View_Helper {
         //$t 查询key
         $cacheM = new Seed_Model_Cache2File();
         if (empty($t)) {
-            return "null $t";
+            return "";
         }
         if (!empty($e)) {
             if ($e == 'SEA') {

@@ -124,6 +124,62 @@ class PurchaseController extends Kyapi_Controller_Action
         exit;
     }
 
+    public function purList4OrderAjaxAction() {
+        $msg = array();
+        $requestObject = $this->_requestObject;
+
+        $queryParams = array();
+        $productStatus = strval($this->_request->getParam('productStatus'));
+        if (empty($productStatus)) {
+            $productStatus = '03';
+        }
+        $queryParams['productStatus'] = $productStatus;
+
+        $supplierID = $this->_request->getParam('supplierID');
+        if (!empty($supplierID)) {
+            $queryParams['supplierID'] = $supplierID;
+        } else {
+            $msg["total"] = 0;
+            $msg["rows"] = null;
+
+            echo json_encode($msg);
+            exit;
+        }
+
+        $querySorts = array();
+        // $querySorts['createTime'] = "DESC";
+
+        $keyword = $this->_request->getParam('keyword');
+        if (empty($keyword)) {
+            $keyword = null;
+        }
+
+        $limit = $this->_request->getParam('limit');
+        if (empty($limit) || $limit <= 0) {
+            $limit = 10;
+        }
+
+        $skip = $this->_request->getParam('skip');
+        if (empty($limit) || $limit <= 0) {
+            $skip = 0;
+        }
+
+        if (is_array($queryParams)) {
+            $queryParams = $this->arrayToObject($queryParams);
+        }
+
+        if (is_array($querySorts)) {
+            $querySorts = $this->arrayToObject($querySorts);
+        }
+
+        $resultObject = $this->json->listPurProductApi($requestObject, $queryParams, $querySorts, $keyword, $skip, $limit);
+        $msg["total"] = json_decode($resultObject)->extData->totalSize;
+        $msg["rows"] = json_decode($resultObject)->result;
+
+        echo json_encode($msg);
+        exit;
+    }
+
     public function countPurProductAjaxAction() {
         $requestObject = $this->_requestObject;
 

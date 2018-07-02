@@ -673,6 +673,69 @@
                         }
                     }]
                 });
+
+                $orderItemListTable.bootstrapTable({
+                    url: '/user/purchase/pur-list-4-order-ajax',
+                    method: 'post',
+                    // showRefresh: true,
+                    // search: true,
+                    pagination: true,
+                    classes: 'table table-no-bordered',
+                    sidePagination: 'server',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    pageNumber: 1,
+                    pageSize: 10,
+                    clickToSelect: true,
+                    queryParams: function(params) {
+                        return {
+                            limit: params.limit,
+                            skip: params.offset,
+                            keyword: params.search
+                        };
+                    },
+                    columns: [{
+                        checkbox: true
+                    },{
+                        field: 'productName',
+                        title: '<?php echo $this->translate("productNAME"); ?>'
+                    }, {
+                        field: 'productBrand',
+                        title: '<?php echo $this->translate("brand"); ?>',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "-";
+                            }
+                            return value;
+                        }
+                    }, {
+                        field: 'productModel',
+                        title: '<?php echo $this->translate("model"); ?>',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "-";
+                            }
+                            return value;
+                        }
+                    }, {
+                        field: 'hscode',
+                        title: '<?php echo $this->translate("HSCODE"); ?>',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "-";
+                            }
+                            return value;
+                        }
+                    }, {
+                        field: 'rebateRate',
+                        title: '<?php echo $this->translate("rebateRate"); ?>',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "-";
+                            }
+                            return value;
+                        }
+                    }]
+                });
             }
         });
 
@@ -788,71 +851,13 @@
 
         // 订单商品
         $orderItemModal.on('show.bs.modal', function () {
-            var supplierID = $("vendor").val();
-            $orderItemListTable.bootstrapTable({
-                url: '/user/purchase/pur-list-ajax',
-                method: 'post',
-                // showRefresh: true,
-                // search: true,
-                pagination: true,
-                classes: 'table table-no-bordered',
-                sidePagination: 'server',
-                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                pageNumber: 1,
-                pageSize: 10,
-                clickToSelect: true,
-                queryParams: function(params) {
-                    return {
-                        limit: params.limit,
-                        skip: params.offset,
-                        keyword: params.search,
-                        productStatus: $("#productStatus").val(),
-                        supplierID: supplierID
-                    };
-                },
-                columns: [{
-                    checkbox: true
-                },{
-                    field: 'productName',
-                    title: '<?php echo $this->translate("productNAME"); ?>'
-                }, {
-                    field: 'productBrand',
-                    title: '<?php echo $this->translate("brand"); ?>',
-                    formatter: function (value, row) {
-                        if (value === undefined || value === '' || value === null) {
-                            value = "-";
-                        }
-                        return value;
-                    }
-                }, {
-                    field: 'productModel',
-                    title: '<?php echo $this->translate("model"); ?>',
-                    formatter: function (value, row) {
-                        if (value === undefined || value === '' || value === null) {
-                            value = "-";
-                        }
-                        return value;
-                    }
-                }, {
-                    field: 'hscode',
-                    title: '<?php echo $this->translate("HSCODE"); ?>',
-                    formatter: function (value, row) {
-                        if (value === undefined || value === '' || value === null) {
-                            value = "-";
-                        }
-                        return value;
-                    }
-                }, {
-                    field: 'rebateRate',
-                    title: '<?php echo $this->translate("rebateRate"); ?>',
-                    formatter: function (value, row) {
-                        if (value === undefined || value === '' || value === null) {
-                            value = "-";
-                        }
-                        return value;
-                    }
-                }]
-            });
+            var supplierID = $("#vendor").val();
+            var options = {
+                query:{
+                    supplierID: supplierID
+                }
+            };
+            $orderItemListTable.bootstrapTable('refresh', options);
         });
 
         // 订单货币
@@ -909,7 +914,7 @@
         // 价格条款
         $priceTerm.on('changed.bs.select', function(e, clickedIndex, newValue, oldValue) {
             // console.log(this.value, clickedIndex, newValue, oldValue)
-            if (this.value === 'EXW') {
+            if (this.value === 'CIF' || this.value === 'CFR') {
                 $(".needShipping, .shippingRequest").hide();
             } else {
                 $(".needShipping").show();

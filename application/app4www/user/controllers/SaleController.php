@@ -248,7 +248,7 @@ class SaleController extends Kyapi_Controller_Action
                 }
             }
 
-            //装柜数量
+            // 装柜数量
             $orderMM = array();
             $orderMM["20GP"] = (int)$this->_request->getParam("sizeQuantityMap_20GP");
             $orderMM["40GP"] = (int)$this->_request->getParam("sizeQuantityMap_40GP");
@@ -257,7 +257,7 @@ class SaleController extends Kyapi_Controller_Action
             $orderMM["20OT"] = (int)$this->_request->getParam("sizeQuantityMap_20OT");
             $orderMM["40OT"] = (int)$this->_request->getParam("sizeQuantityMap_40OT");
 
-            //获取当前订单时间
+            // 获取当前订单时间
             $ddtime = $this->_request->getParam("deliveryDate");
             if (!empty($ddtime)) {
                 $date3 = date("Y-m-d\TH:i:s", strtotime($ddtime));
