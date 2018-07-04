@@ -189,9 +189,7 @@
                             </div>
 
                             <div role="tabpanel" class="tab-pane row" id="calculate">
-                                <div class="col-md-12">
-                                    calculate
-                                </div>
+                                <div class="col-md-12 calculateContent"></div>
                             </div>
                         </div>
                     </div>
@@ -219,7 +217,7 @@
                             <div role="tabpanel" class="tab-pane active row" id="info">
                                 <div class="col-md-12 orderInfo">
                                     <h3>
-                                        <?php if (($this->CompProductAdmin == true || $this->CompOrderAdmin == true) && $this->orders['productStatus'] != 05): ?>
+                                        <?php if (($this->CompProductAdmin == true || $this->CompOrderAdmin == true) && ($this->orders['orderStatus'] == '00' || $this->orders['orderStatus'] == '01' || $this->orders['orderStatus'] == '02' || $this->orders['orderStatus'] == '05')): ?>
                                             <a class="profile-heading-edit pull-right btn btn-xs" data-type="base" href="<?php echo '/user/pur/edit?' . base64_encode($this->orders['orderID']); ?>">
                                                 <i class="fas fa-pencil-alt" aria-hidden="true"></i><?php echo $this->translate('edit'); ?>
                                             </a>
@@ -507,8 +505,12 @@
                             </div>
 
                             <div role="tabpanel" class="tab-pane row" id="log">
-                                <div class="col-md-12">
-                                    <p>日志</p>
+                                <div class="col-md-12 trackViewBtn">
+                                    <button type="button" class="btn btn-warning btn-sm trackTimeBtn" data-order-id="<?php echo $this->orders['orderID'] ?>" data-view="date"><?php echo $this->translate('timeCLASS'); ?></button>
+
+                                    <button type="button" class="btn btn-sm trackEventBtn" data-order-id="<?php echo $this->orders['orderID'] ?>" data-view="event"><?php echo $this->translate('eventCLASS'); ?></button>
+
+                                    <ul class="layui-timeline trackTimeLine"></ul>
                                 </div>
                             </div>
 
@@ -755,6 +757,8 @@
 <script type="text/javascript" src="/ky/pdf/pdf.worker.js"></script>
 
 <script type="text/javascript">
+    var dataDict = {};
+
 	$().ready(function() {
 
 	});
@@ -767,7 +771,112 @@
                 $(this).removeClass('nav-selected');
             }
         });
+
+        var $trackTimeBtn = $(".trackTimeBtn"),
+            $trackEventBtn = $(".trackEventBtn"),
+            $calculateContent = $(".calculateContent");
+
+        var dataDictQuery = '/user/common/dict-ajax';
+        var dictCode = ["BIZ_TYPE", "ACTION_LOG_EVENT_TYPE"];
+        $.ajax({
+            type: "POST",
+            url: dataDictQuery,
+            data: {
+                dictCode: dictCode,
+                langCode: '<?php echo $this->userLangCode; ?>'
+            },
+            dataType: "json",
+            success: function (data) {
+                $.data(dataDict, 'dataDict', data);
+
+                $trackTimeBtn.trigger('click');
+            }
+        });
+
+        $trackTimeBtn.click(function () {
+            var orderID = $(this).attr("data-order-ID"),
+                view = $(this).attr("data-view");
+            genTrack(orderID, view);
+
+            $(this).addClass("btn-warning");
+            $trackEventBtn.removeClass("btn-warning")
+        });
+
+        $trackEventBtn.click(function () {
+            var orderID = $(this).attr("data-order-ID"),
+                view = $(this).attr("data-view");
+            genTrack(orderID, view);
+
+            $(this).addClass("btn-warning");
+            $trackTimeBtn.removeClass("btn-warning")
+        });
+
+        $calculateContent.load('/user/sale/trading', {'orderID': '<?php echo $this->orders['orderID'] ?>'});
 	});
+
+	function genTrack(orderID, view) {
+        // 日志
+        var track = '/user/pur/track-ajax';
+        $.ajax({
+            type: "POST",
+            url: track,
+            data: {
+                orderID: orderID,
+                viewType: view
+            },
+            dataType: "json",
+            success: function (data) {
+                var $trackTimeLine = $(".trackTimeLine"),
+                    trackContent = '';
+
+                $.each(data, function (index, trackList) {
+                    if (view === 'event') {
+                        var data = $.data(dataDict, 'dataDict'),
+                            result = '';
+                        $.each(data, function (key, item) {
+                            if (key === 'ACTION_LOG_EVENT_TYPE  ') {
+                                $.each(item, function (i, dict) {
+                                    if (dict.code === index) {
+                                        result = dict.name;
+                                    }
+                                });
+                            }
+                        });
+
+                        index = result;
+                    }
+                    trackContent += '<li class="layui-timeline-item">'
+                        + '<i class="layui-icon layui-timeline-axis"></i>'
+                        + '<div class="layui-timeline-content layui-text">'
+                        + '<h3 class="layui-timeline-title">' + index + '</h3>';
+
+                    $.each(trackList, function (tackIndex, track) {
+                        var data = $.data(dataDict, 'dataDict'),
+                            result = '';
+                        $.each(data, function (key, item) {
+                            if (key === 'BIZ_TYPE') {
+                                $.each(item, function (i, dict) {
+                                    if (dict.code === track.bizType) {
+                                        result = dict.name;
+                                    }
+                                });
+                            }
+                        });
+
+                        trackContent += '<div class="col-sm-1"><b>' + result + '</b></div>'
+                            + '<div class="col-sm-8">' + track.summary + '</div>'
+                            + '<div class="col-sm-3">' + new Date(track.operateTime).format("yyyy-MM-dd hh:mm:ss") + '</div>';
+                    });
+                    trackContent += '<br>'
+                        + '</div>'
+                        + '</li>';
+                });
+
+                console.log(trackContent);
+                $trackTimeLine.html(trackContent);
+            }
+        });
+    }
 
     // *************************** PDF Sign View ********************************
     PDFJS.workerSrc = '/ky/pdf/pdf.worker.js';

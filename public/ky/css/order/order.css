@@ -288,3 +288,8 @@ input[type=number]{
 .dl-horizontal dd:first-of-type {
     margin-top: 20px;
 }
+
+/* 日志 */
+.trackViewBtn button {
+    margin-top: 15px;
+}

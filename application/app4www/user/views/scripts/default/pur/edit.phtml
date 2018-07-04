@@ -45,24 +45,24 @@
                             <?php endif; ?>
 
                             <div class="form-group">
-                                <label for="buyerName" class="col-sm-2 control-label"><?php echo $this->translate('buyers'); ?></label>
+                                <label for="vendorName" class="col-sm-2 control-label"><?php echo $this->translate('seller'); ?></label>
                                 <div class="col-sm-4">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" name="buyerName" id="buyerName" placeholder="" value="<?php echo $this->orders['buyerName']; ?>" required >
-                                        <input type="hidden" name="buyer" id="buyer">
-                                        <input type="hidden" name="buyerRegdCountryCode" id="buyerRegdCountryCode">
+                                        <input type="text" class="form-control" name="vendorName" id="vendorName" placeholder="" value="<?php echo $this->orders['vendorName']; ?>" required >
+                                        <input type="hidden" name="vendor" id="vendor" value="<?php echo $this->orders['vendor']; ?>">
+                                        <input type="hidden" name="vendorRegdCountryCode" id="vendorRegdCountryCode" value="<?php echo $this->orders['vendorRegdCountryCode']; ?>">
                                         <a class="input-group-addon" href="javascript:void(0)" data-toggle="modal" data-target="#myModal">
                                             <i class="fas fa-plus"></i>
                                         </a>
                                     </div>
                                 </div>
 
-                                <label for="buyerContactName" class="col-sm-2 control-label"><?php echo $this->translate('buyerATTN'); ?></label>
+                                <label for="vendorContactName" class="col-sm-2 control-label"><?php echo $this->translate('sellerATTN'); ?></label>
                                 <div class="col-sm-4">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" name="buyerContactName" id="buyerContactName" placeholder="" value="<?php echo $this->orders['buyerContactName']; ?>" >
-                                        <input type="hidden" name="buyerContactID" id="buyerContactID">
-                                        <a class="input-group-addon" href="javascript:void(0)" data-toggle="modal" data-target="#buyerContactModal">
+                                        <input type="text" class="form-control" name="vendorContactName" id="vendorContactName" placeholder="" value="<?php echo $this->orders['vendorContactName']; ?>" >
+                                        <input type="hidden" name="vendorContactID" id="vendorContactID" value="<?php echo $this->orders['vendorContactID']; ?>">
+                                        <a class="input-group-addon" href="javascript:void(0)" data-toggle="modal" data-target="#vendorContactModal">
                                             <i class="fas fa-plus"></i>
                                         </a>
                                     </div>
@@ -80,8 +80,8 @@
                                 <label for="buyerContactName" class="col-sm-2 control-label"><?php echo $this->translate('thisATTN'); ?></label>
                                 <div class="col-sm-4">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" name="vendorContactName" id="vendorContactName" placeholder="" value="<?php echo $this->dfContactName; ?>" required >
-                                        <input type="hidden" name="vendorContactID" id="vendorContactID" value="<?php echo $this->dfContactID;?>">
+                                        <input type="text" class="form-control" name="buyerContactName" id="buyerContactName" placeholder="" value="<?php echo $this->dfContactName; ?>" required >
+                                        <input type="hidden" name="buyerContactID" id="buyerContactID" value="<?php echo $this->dfContactID;?>">
                                         <a class="input-group-addon" href="javascript:void(0)" data-toggle="modal" data-target="#contactModal">
                                             <i class="fas fa-plus"></i>
                                         </a>
@@ -399,18 +399,18 @@
             </div>
 
             <div class="modal-body">
-                <table id="buyerListTable"></table>
+                <table id="vendorListTable"></table>
             </div>
 
             <div class="modal-footer">
 <!--                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
-                <button type="button" class="btn btn-primary" id="selectBuyerBtn"><?php echo $this->translate('submit'); ?></button>
+                <button type="button" class="btn btn-primary" id="selectVendorBtn"><?php echo $this->translate('submit'); ?></button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="buyerContactModal" tabindex="-1" role="dialog" aria-labelledby="buyerContactModalLabel">
+<div class="modal fade" id="vendorContactModal" tabindex="-1" role="dialog" aria-labelledby="vendorContactModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -419,11 +419,11 @@
             </div>
 
             <div class="modal-body">
-                <table id="buyerContactListTable"></table>
+                <table id="vendorContactListTable"></table>
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="selectBuyerContactBtn"><?php echo $this->translate('submit'); ?></button>
+                <button type="button" class="btn btn-primary" id="selectVendorContactBtn"><?php echo $this->translate('submit'); ?></button>
             </div>
         </div>
     </div>
@@ -492,16 +492,16 @@
             }
         });
 
-        var $buyerTable = $("#buyerListTable"),
-            $selectBuyerBtn = $("#selectBuyerBtn"),
-            $buyerModal = $("#myModal"),
-            $buyer = $("#buyer"),
+        var $vendorListTable = $("#vendorListTable"),
+            $selectVendorBtn = $("#selectVendorBtn"),
+            $vendorModal = $("#myModal"),
+            $vendor = $("#vendor"),
             $buyerCrnCode = $('#buyerCrnCode'),
             $paymentTerm = $("#paymentTerm"),
             $priceTerm = $("#priceTerm"),
-            $buyerContactModal = $("#buyerContactModal"),
-            $selectBuyerContactBtn = $("#selectBuyerContactBtn"),
-            $buyerContactListTable = $('#buyerContactListTable'),
+            $vendorContactModal = $("#vendorContactModal"),
+            $selectVendorContactBtn = $("#selectVendorContactBtn"),
+            $vendorContactListTable = $('#vendorContactListTable'),
             $quotationMode = $("#quotationMode"),
             $contactModal = $("#contactModal"),
             $shippingMethod = $("#shippingMethod"),
@@ -525,8 +525,8 @@
             success: function (data) {
                 $.data(dataDict, 'dataDict', data);
 
-                $('#buyerListTable').bootstrapTable({
-                    url: '/user/buyer/buyer-list-ajax',
+                $vendorListTable.bootstrapTable({
+                    url: '/user/vendor/vendor-list-ajax',
                     method: 'post',
                     // showRefresh: true,
                     // search: true,
@@ -770,8 +770,8 @@
             }
         });
 
-        $buyerContactListTable.bootstrapTable({
-            url: '/user/buyer/contact-list-ajax',
+        $vendorContactListTable.bootstrapTable({
+            url: '/user/vendor/contact-list-ajax',
             method: 'post',
             // showRefresh: true,
             // search: true,
@@ -787,7 +787,7 @@
                     limit: params.limit,
                     skip: params.offset,
                     keyword: params.search,
-                    toID: $("#buyer").val()
+                    toID: $vendor.val()
                 };
             },
             columns: [{
@@ -830,7 +830,7 @@
 
         // 订单商品
         $orderItemListTable.bootstrapTable({
-            url: '/user/goods/goods-list-ajax',
+            url: '/user/purchase/pur-list-4-order-ajax',
             method: 'post',
             // showRefresh: true,
             // search: true,
@@ -845,8 +845,7 @@
                 return {
                     limit: params.limit,
                     skip: params.offset,
-                    keyword: params.search,
-                    productStatus: $("#productStatus").val()
+                    keyword: params.search
                 };
             },
             columns: [{
@@ -894,15 +893,15 @@
         });
 
         // 卖家
-        $selectBuyerBtn.click(function () {
+        $selectVendorBtn.click(function () {
             // alert('getSelections: ' + JSON.stringify($buyerTable.bootstrapTable('getSelections')));
-            console.log(JSON.stringify($buyerTable.bootstrapTable('getSelections')));
-            var selections = $buyerTable.bootstrapTable('getSelections'),
+            console.log(JSON.stringify($vendorListTable.bootstrapTable('getSelections')));
+            var selections = $vendorListTable.bootstrapTable('getSelections'),
                 $regdCountryCode = $("#regdCountryCode"),
                 $buyerRegdCountryCode = $("#buyerRegdCountryCode");
 
             if (selections.length > 0) {
-                $buyer.val(selections[0].toID);
+                $vendor.val(selections[0].toID);
                 $("#buyerName").val(selections[0].toName);
                 $buyerCrnCode.selectpicker('val', selections[0].crnCode);
                 $buyerRegdCountryCode.val(selections[0].regdCountryCode);
@@ -917,11 +916,11 @@
 
                 var options = {
                     query:{
-                        toID: $buyer.val()
+                        toID: $vendor.val()
                     }
                 };
-                $buyerContactListTable.bootstrapTable('refresh', options);
-                $buyerModal.modal('hide');
+                $vendorContactListTable.bootstrapTable('refresh', options);
+                $vendorModal.modal('hide');
 
                 // 国籍相同隐藏出口方式, 报关口岸, 报关行
                 if ($regdCountryCode.val() === $buyerRegdCountryCode.val()) {
@@ -940,6 +939,17 @@
                 // 更新商品货币
                 updateCrnCode($buyerCrnCode.val());
             }
+        });
+
+        // 订单商品
+        $orderItemModal.on('show.bs.modal', function () {
+            var supplierID = $("#vendor").val();
+            var options = {
+                query:{
+                    supplierID: supplierID
+                }
+            };
+            $orderItemListTable.bootstrapTable('refresh', options);
         });
 
         // 订单货币
@@ -994,7 +1004,7 @@
         // 价格条款
         $priceTerm.on('changed.bs.select', function(e, clickedIndex, newValue, oldValue) {
             // console.log(this.value, clickedIndex, newValue, oldValue)
-            if (this.value === 'EXW') {
+            if (this.value === 'CIF' || this.value === 'CFR') {
                 $(".needShipping, .shippingRequest").hide();
             } else {
                 $(".needShipping").show();
@@ -1171,13 +1181,13 @@
             })
         });
 
-        $selectBuyerContactBtn.click(function () {
+        $selectVendorContactBtn.click(function () {
             // alert('getSelections: ' + JSON.stringify($buyerTable.bootstrapTable('getSelections')));
-            var selections = $buyerContactListTable.bootstrapTable('getSelections');
+            var selections = $vendorContactListTable.bootstrapTable('getSelections');
             if (selections.length > 0) {
-                $("#buyerContactID").val(selections[0].contactID);
-                $('#buyerContactName').val(selections[0].name);
-                $buyerContactModal.modal('hide');
+                $("#vendorContactID").val(selections[0].contactID);
+                $('#vendorContactName').val(selections[0].name);
+                $vendorContactModal.modal('hide');
             }
         });
 
@@ -1185,8 +1195,8 @@
             // alert('getSelections: ' + JSON.stringify($buyerTable.bootstrapTable('getSelections')));
             var selections = $contactListTable.bootstrapTable('getSelections');
             if (selections.length > 0) {
-                $("#vendorContactID").val(selections[0].contactID);
-                $('#vendorContactName').val(selections[0].name);
+                $("#buyerContactID").val(selections[0].contactID);
+                $('#buyerContactName').val(selections[0].name);
                 $contactModal.modal('hide');
             }
         });
@@ -1479,7 +1489,7 @@
             '   <div class="form-group">' +
             '       <label for="totalNetWeight" class="col-sm-2 control-label"><?php echo $this->translate("netWeight"); ?></label>' +
             '       <div class="col-sm-2">' +
-            '           <input type="text" class="form-control" name="netWeight[]" id="netWeight_' + item.productID + '" value="' + (item.netWeight === undefined ? 0 : item.netWeight) + '">' +
+            '           <input type="text" class="form-control" name="netWeight[]" id="netWeight_' + item.productID + '" data-productID="' + item.productID + '" value="' + (item.netWeight === undefined ? 0 : item.netWeight) + '">' +
             '       </div>' +
             '       <div class="col-sm-1">' +
             '           <p class="form-control-static">x</p>' +
@@ -1501,7 +1511,7 @@
             '   <div class="form-group">' +
             '       <label for="totalNetWeight" class="col-sm-2 control-label"><?php echo $this->translate("grossWeight"); ?></label>' +
             '       <div class="col-sm-2">' +
-            '           <input type="text" class="form-control" name="grossWeight[]" id="grossWeight_' + item.productID + '" value="' + (item.grossWeight === undefined ? 0 : item.grossWeight) + '">' +
+            '           <input type="text" class="form-control" name="grossWeight[]" id="grossWeight_' + item.productID + '" data-productID="' + item.productID + '" value="' + (item.grossWeight === undefined ? 0 : item.grossWeight) + '">' +
             '       </div>' +
             '       <div class="col-sm-1">' +
             '           <p class="form-control-static">x</p>' +

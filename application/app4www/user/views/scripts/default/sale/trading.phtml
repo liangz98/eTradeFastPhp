@@ -1,13 +1,13 @@
-<table class="st_table">
+<table class="table">
     <thead>
     <tr>
-        <th width="150"><!--时间-->时间</th>
-        <th width="120"><!--类型-->类型</th>
-        <th width="200"><!--交易号丨订单号丨摘要-->交易号丨订单号丨摘要</th>
-        <th><!--对方-->对方</th>
-        <th><!--金额-->金额</th>
-        <th><!--状态-->状态</th>
-        <th><!--操作详情-->操作详情</th>
+        <th>时间</th>
+        <th>类型</th>
+        <th>交易号丨订单号丨摘要</th>
+        <th>对方</th>
+        <th>金额</th>
+        <th>状态</th>
+        <th>操作详情</th>
     </tr>
     </thead>
     <tbody>
@@ -23,6 +23,10 @@
                 <td><a target="_blank" style="color:#86c224" href="/user/settle/listview?<?php echo base64_encode($saltter['tradingID']);?>">详情</a></td>
             </tr>
         <?php endforeach; ?>
+    <?php else:?>
+        <tr>
+            <td colspan="7"><?php echo $this->translate('noData'); ?></td>
+        </tr>
     <?php endif;?>
     </tbody>
 </table>

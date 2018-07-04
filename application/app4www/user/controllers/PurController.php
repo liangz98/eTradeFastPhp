@@ -172,6 +172,8 @@ class PurController extends Kyapi_Controller_Action
             $iterm["productSize"] = $this->_request->getParam("productSize");
             $iterm["pricingUnit"] = $this->_request->getParam("pricingUnit");
             $iterm["quantity"] = $this->_request->getParam("quantity");
+            $iterm["grossWeight"] = $this->_request->getParam("grossWeight");
+            $iterm["netWeight"] = $this->_request->getParam("netWeight");
             $iterm["totalGrossWeight"] = $this->_request->getParam("totalGrossWeight");
             $iterm["totalNetWeight"] = $this->_request->getParam("totalNetWeight");
             $iterm["totalPackage"] = $this->_request->getParam("totalPackage");
@@ -202,6 +204,8 @@ class PurController extends Kyapi_Controller_Action
                     $it3[$k]->itemID = $it2[$k]['itemID'];
                     $it3[$k]->supplierID = $it2[$k]['supplierID'];
                     $it3[$k]->quantity = (double)$it2[$k]['quantity'];
+                    $it3[$k]->grossWeight = (double)$it2[$k]['grossWeight'];
+                    $it3[$k]->netWeight = (double)$it2[$k]['netWeight'];
                     $it3[$k]->totalGrossWeight = (double)$it2[$k]['totalGrossWeight'];
                     $it3[$k]->totalNetWeight = (double)$it2[$k]['totalNetWeight'];
                     $it3[$k]->totalPackage = (int)$it2[$k]['totalPackage'];
@@ -265,7 +269,7 @@ class PurController extends Kyapi_Controller_Action
             $_order->vendorContactID = $this->_request->getParam("vendorContactID");
             $_order->vendorContactName = $this->_request->getParam("vendorContactName");
 
-            $_order->buyerOrderRequest = $this->_request->getParam("buyerOrderRequest");// 订单要求(2选1)
+            $_order->vendorOrderRequest = $this->_request->getParam("vendorOrderRequest");// 订单要求(2选1)
             $_order->packingMode = $this->_request->getParam("packingMode");// 包装方式
             $_order->packingDesc = $this->_request->getParam("packingDesc");// 包装描述
             $_order->paymentPeriod = (int)$this->_request->getParam("paymentPeriod");// 付款期限
@@ -365,280 +369,304 @@ class PurController extends Kyapi_Controller_Action
         }
     }
 
-	public function editAction()
-	{
-		$this->view->langcode="zh_CN";
-		$this->view->ddsetting="datatest_setting";
-		// 请求Hessian服务端方法
-		$orderIDget=$_SERVER['QUERY_STRING'];
-		$_orderIDget =base64_decode($orderIDget);
-		$_requestOb=$this->_requestObject;
+    public function editAction() {
+        $this->view->langcode = "zh_CN";
+        $this->view->ddsetting = "datatest_setting";
+        // 请求Hessian服务端方法
+        $orderIDget = $_SERVER['QUERY_STRING'];
+        $_orderIDget = base64_decode($orderIDget);
+        $_requestOb = $this->_requestObject;
 
-		//获取数据
-		$_resultData= $this->json->getOrderApi($_requestOb,$_orderIDget);
-		$userView = json_decode($_resultData);
-		$viewData =$userView->result;
-		$Viewlist=$this->objectToArray($viewData);
+        //获取数据
+        $_resultData = $this->json->getOrderApi($_requestOb, $_orderIDget);
+        $userView = json_decode($_resultData);
+        $viewData = $userView->result;
+        $Viewlist = $this->objectToArray($viewData);
         //当前返回数据为空时 前端显示为无
-        if(!isset($Viewlist['packingDesc']))$Viewlist['packingDesc']=$this->view->translate('noData');  //包装描述
-        if(!isset($Viewlist['financingRequest']))$Viewlist['financingRequest']=$this->view->translate('noData');  //金融要求
-        if(!isset($Viewlist['customClearanceRequest']))$Viewlist['customClearanceRequest']=$this->view->translate('noData'); //报关要求
-        if(!isset($Viewlist['shippingRequest']))$Viewlist['shippingRequest']=$this->view->translate('noData');   //物流要求
-		$this->view->orders=$Viewlist;
+        if (!isset($Viewlist['packingDesc']))
+            $Viewlist['packingDesc'] = $this->view->translate('noData');  //包装描述
+        if (!isset($Viewlist['financingRequest']))
+            $Viewlist['financingRequest'] = $this->view->translate('noData');  //金融要求
+        if (!isset($Viewlist['customClearanceRequest']))
+            $Viewlist['customClearanceRequest'] = $this->view->translate('noData'); //报关要求
+        // 物流要求
+        if (!isset($Viewlist['shippingRequest'])) {
+            if (isset($Viewlist['truckingRequest'])) {
+                $Viewlist['shippingRequest'] = $Viewlist['truckingRequest'];
+            } else {
+                $Viewlist['shippingRequest'] = "";
+            }
+        }
 
-		//处理根据返回的运输方式来判断 起运|卸货|交货查询的缓存目录名称
-		if ($Viewlist['shippingMethod'] == 'SEA') {
-			$this->view->port = "SEA_PORT";
-		} elseif ($Viewlist['shippingMethod'] == 'AIR') {
-			$this->view->port = "AIR_PORT";
-		} else {
-			$this->view->port = "CITY_ISO_CODE";
-		};
+        $this->view->orders = $Viewlist;
+        $this->view->orderItem = json_encode($userView->result->orderItemList);
 
-		/*获取默认联系人 start*/
-		$_queryP =new queryAccount();
-		/**contactStatus 01有效 02禁用*/
-		$_queryP->contactStatus= "01";
-		$userKY= $this->json->listContactApi($this->_requestObject,$_queryP,null,null,0,0);
-		$userData= $this->objectToArray(json_decode($userKY));
-		$userList= $userData['result'];
+        //处理根据返回的运输方式来判断 起运|卸货|交货查询的缓存目录名称
+        if ($Viewlist['shippingMethod'] == 'SEA') {
+            $this->view->port = "SEA_PORT";
+        } else if ($Viewlist['shippingMethod'] == 'AIR') {
+            $this->view->port = "AIR_PORT";
+        } else {
+            $this->view->port = "CITY_ISO_CODE";
+        };
 
-		foreach($userList as $k=>$v){
-			if($v['isPublicContact']==true){
-				$this->view->dfContactName=$v['name'];
-				$this->view->dfContactID=$v['contactID'];
-			}
-		}
-		/*获取默认联系人 END*/
+        /*获取默认联系人 start*/
+        $_queryP = new queryAccount();
+        /**contactStatus 01有效 02禁用*/
+        $_queryP->contactStatus = "01";
+        $userKY = $this->json->listContactApi($this->_requestObject, $_queryP, null, null, 0, 0);
+        $userData = $this->objectToArray(json_decode($userKY));
+        $userList = $userData['result'];
 
-
-		//处理编辑
-		if ($this->_request->isPost()) {
-
-			try {
-				//订单商品列表
-				$iterm = array();
-				$iterm["orderID"] = $_orderIDget;    //新增不存在
-				//				$iterm["totalVolume"] = $this->_request->getParam("totalVolume"); 体积
-				$iterm["hscode"] = $this->_request->getParam('hscode');
-				$iterm["itemID"] = $this->_request->getParam("itemID");//
-				$iterm["productID"] = $this->_request->getParam("productID");
-				$iterm["supplierID"] = $this->_request->getParam("supplierID");
-				$iterm["packingType"] = $this->_request->getParam('packingType');
-				$iterm["pricingUnit"] = $this->_request->getParam("pricingUnit");
-				$iterm["productName"] = $this->_request->getParam("productName");
-				$iterm["productEnName"] = $this->_request->getParam("productEnName");
-				$iterm["productSize"] = $this->_request->getParam("productSize");
-				$iterm["quantity"] = $this->_request->getParam("quantity");
-				$iterm["totalGrossWeight"] = $this->_request->getParam("totalGrossWeight");
-				$iterm["totalNetWeight"] = $this->_request->getParam("totalNetWeight");
-				$iterm["totalPackage"] = $this->_request->getParam("totalPackage");
-				$iterm["totalPrice"] = $this->_request->getParam("totalPrice");
-				$iterm["unitPrice"] = $this->_request->getParam("unitPrice");
-				$iterm["PurUnitPrice"] = $this->_request->getParam("PurUnitPrice");
-				$iterm["totalPurPrice"] = $this->_request->getParam("totalPurPrice");
-				$iterm["productBrand"] = $this->_request->getParam("productBrand");
-				$iterm["productModel"] = $this->_request->getParam("productModel");  //商品型号
-				$iterm["productionMode"] = $this->_request->getParam("productionMode");//商品生产方式
-				if ($iterm["productionMode"] == "01") {
-					$iterm["isOwnProduct"] = true;
-				} else {
-					$iterm["isOwnProduct"] = false;
-				}
-				$iterm["functionUsage"] = $this->_request->getParam("functionUsage");
-				$iterm["productMaterial"] = $this->_request->getParam("productMaterial");
-				$it2 = array();
-
-				//组装商品列表
-				foreach ($iterm as $key => $value) {
-					foreach ($value as $k => $v) {
-						$it2[$k][$key]= $v;
-					}
-				}
-
-				$it3=array();
-				foreach($it2 as $k=>$v){
-					foreach($v as $k1 =>$v1){
-						$it3[$k] = new Kyapi_Model_OrderItem();
-						$it3[$k]->orderID = $it2[$k]['orderID'];
-						$it3[$k]->hscode = $it2[$k]['hscode'];
-						$it3[$k]->productID = $it2[$k]['productID'];
-						$it3[$k]->itemID = $it2[$k]['itemID'];
-						$it3[$k]->supplierID = $it2[$k]['supplierID'];
-						$it3[$k]->quantity = (double)$it2[$k]['quantity'];
-						$it3[$k]->totalGrossWeight = (double)$it2[$k]['totalGrossWeight'];
-						$it3[$k]->totalNetWeight = (double)$it2[$k]['totalNetWeight'];
-						$it3[$k]->totalPackage = (int)$it2[$k]['totalPackage'];
-						$it3[$k]->totalPrice = (double)$it2[$k]['totalPrice'];
-						$it3[$k]->totalPurPrice = (double)$it2[$k]['totalPurPrice'];
-//						$it3[$k]->totalVolume=(double)$it2[$k]['totalVolume'];
-						$it3[$k]->unitPrice = (double)$it2[$k]['unitPrice'];
-						$it3[$k]->PurUnitPrice = (double)$it2[$k]['PurUnitPrice'];
-						$it3[$k]->pricingUnit = $it2[$k]['pricingUnit'];
-						$it3[$k]->productName = $it2[$k]['productName'];
-						$it3[$k]->productEnName = $it2[$k]['productEnName'];
-						$it3[$k]->productSize = $it2[$k]['productSize'];
-						$it3[$k]->productMaterial = $it2[$k]['productMaterial'];
-						$it3[$k]->functionUsage = $it2[$k]['functionUsage'];
-						$it3[$k]->productBrand = $it2[$k]['productBrand'];
-						$it3[$k]->productModel = $it2[$k]['productModel'];
-						$it3[$k]->productionMode = $it2[$k]['productionMode'];
-						$it3[$k]->isOwnProduct = $it2[$k]['isOwnProduct'];
-						$it3[$k]->packingType = $it2[$k]['packingType'];
-						$it3[$k]->productMaterial = $it2[$k]['productMaterial'];
-						$it3[$k]->functionUsage = $it2[$k]['functionUsage'];
-					}
-				}
+        foreach ($userList as $k => $v) {
+            if ($v['isPublicContact'] == true) {
+                $this->view->dfContactName = $v['name'];
+                $this->view->dfContactID = $v['contactID'];
+            }
+        }
+        /*获取默认联系人 END*/
 
 
-				//获取附件ID
-				$Atachlist = array();
-				$Atachlist["attachID"] = $this->_request->getParam('attachNid');
-				$Atachlist["attachType"] = $this->_request->getParam('attachType');
-				$Atachlist["bizType"] = $this->_request->getParam("bizType");
-				$Atachlist["attachName"] = $this->_request->getParam("attachName");
-				$Atachlist["attachSize"] = $this->_request->getParam("attachSize");
-				$_attach2 = array();
-				foreach ($Atachlist as $k => $v) {
-					foreach ($v as $k1 => $v1) {
-						$_attach2[$k1][$k] = $v1;
-					}
-				}
-				$_attachList = array();
-				foreach ($_attach2 as $k => $v) {
-					foreach ($v as $k1 => $v1) {
-						$_attachList[$k] = new Kyapi_Model_Attachment();
-						$_attachList[$k]->attachID = $_attach2[$k]['attachID'];
-						$_attachList[$k]->attachType = 'ODOD';
-						$_attachList[$k]->bizType = 'OD';
-						$_attachList[$k]->name = $_attach2[$k]['attachName'];
-						$_attachList[$k]->size = (int)$_attach2[$k]['attachSize'];
-					}
-				}
+        //处理编辑
+        if ($this->_request->isPost()) {
+            //订单商品列表
+            $iterm = array();
+            $iterm["orderID"] = $_orderIDget;    //新增不存在
+            //				$iterm["totalVolume"] = $this->_request->getParam("totalVolume"); 体积
+            $iterm["hscode"] = $this->_request->getParam('hscode');
+            $iterm["itemID"] = $this->_request->getParam("itemID");//
+            $iterm["productID"] = $this->_request->getParam("productID");
+            $iterm["supplierID"] = $this->_request->getParam("supplierID");
+            $iterm["packingType"] = $this->_request->getParam('packingType');
+            $iterm["pricingUnit"] = $this->_request->getParam("pricingUnit");
+            $iterm["productName"] = $this->_request->getParam("productName");
+            $iterm["productEnName"] = $this->_request->getParam("productEnName");
+            $iterm["productSize"] = $this->_request->getParam("productSize");
+            $iterm["quantity"] = $this->_request->getParam("quantity");
+            $iterm["grossWeight"] = $this->_request->getParam("grossWeight");
+            $iterm["netWeight"] = $this->_request->getParam("netWeight");
+            $iterm["totalGrossWeight"] = $this->_request->getParam("totalGrossWeight");
+            $iterm["totalNetWeight"] = $this->_request->getParam("totalNetWeight");
+            $iterm["totalPackage"] = $this->_request->getParam("totalPackage");
+            $iterm["totalPrice"] = $this->_request->getParam("totalPrice");
+            $iterm["unitPrice"] = $this->_request->getParam("unitPrice");
+            $iterm["PurUnitPrice"] = $this->_request->getParam("PurUnitPrice");
+            $iterm["totalPurPrice"] = $this->_request->getParam("totalPurPrice");
+            $iterm["productBrand"] = $this->_request->getParam("productBrand");
+            $iterm["productModel"] = $this->_request->getParam("productModel");  //商品型号
+            $iterm["productionMode"] = $this->_request->getParam("productionMode");//商品生产方式
+            if ($iterm["productionMode"] == "01") {
+                $iterm["isOwnProduct"] = true;
+            } else {
+                $iterm["isOwnProduct"] = false;
+            }
+            $iterm["functionUsage"] = $this->_request->getParam("functionUsage");
+            $iterm["productMaterial"] = $this->_request->getParam("productMaterial");
+            $it2 = array();
 
-				//装柜数量
-				$orderMM=array();
-				$orderMM["20GP"]=(int)$this->_request->getParam("sizeQuantityMap_20GP");
-				$orderMM["40GP"]=(int)$this->_request->getParam("sizeQuantityMap_40GP");
-				$orderMM["40HP"]=(int)$this->_request->getParam("sizeQuantityMap_40HP");
-				$orderMM["45HP"]=(int)$this->_request->getParam("sizeQuantityMap_45HP");
-				$orderMM["20OT"]=(int)$this->_request->getParam("sizeQuantityMap_20OT");
-				$orderMM["40OT"]=(int)$this->_request->getParam("sizeQuantityMap_40OT");
-				$_orderMM=$this->arrayToObject($orderMM);
-				//获取当前订单时间
-				$ddtime = $this->_request->getParam("deliveryDate");
-				if (!empty($ddtime)) {
-					$date3 = date("Y-m-d\TH:i:s", strtotime($ddtime));
-				} else {
-					$date3 = date("Y-m-d\TH:i:s", time());
-				}
-
-				$_order = new Kyapi_Model_order();
-				//委托方信息公司ID、公司名称、联系人、联系人ID（本方联系人CRNCODE货币
-				$_order->orderID = $_orderIDget;
-				$_order->buyer = $this->view->accountID;
-				$_order->buyerName = $this->_request->getParam("accountName");
-				$_order->buyerContactID = $this->_request->getParam("buyerContactID");
-				$_order->buyerContactName=$this->_request->getParam("buyerContactName");
-                $_order->buyerCrnCode = $this->_request->getParam("buyerCrnCode");
-				//$_order->buyerCrnCode = $this->_request->getParam("CrnCode");
-				//客户方信息 ID、Name、货币（Crncode）、联系人ID、联系人姓名
-				$_order->vendor = $this->_request->getParam("vendor");
-				$_order->vendorName = $this->_request->getParam("vendorName");
-				$_order->vendorContactID = $this->_request->getParam("vendorContactID");
-				$_order->vendorContactName = $this->_request->getParam("vendorContactName");
-
-				$_order->buyerOrderRequest = $this->_request->getParam("buyerOrderRequest");// 订单要求(2选1)
-				$_order->packingMode = $this->_request->getParam("packingMode");// 包装方式
-				$_order->packingDesc = $this->_request->getParam("packingDesc");// 包装描述
-				$_order->paymentPeriod =(int)$this->_request->getParam("paymentPeriod");// 付款期限
-				$_order->paymentTerm = $this->_request->getParam("paymentTerm");//   结算方式
-				$_order->priceTerm = $this->_request->getParam("priceTerm");// 价格条款
-				$_order->quotationMode = $this->_request->getParam("quotationMode");// 计价方式
-				$_order->totalAmount = (double)$this->_request->getParam("totalAmount");// 订单金额
-				if(empty($_order->totalAmount)){$_order->totalAmount=0;}
-				$_order->shippingMethod = $this->_request->getParam("shippingMethod");// 运输方式(海运和空运显示的是港口 路运显示的是城市)
-				$_order->clearancePlace = $this->_request->getParam("clearancePlace");// 报关口岸 (是否自营为false时;
-
-                if($_order->shippingMethod=="SEA"||$_order->shippingMethod=="AIR"){
-                    $_order->loadingPort = $this->_request->getParam("loadingPort");    // 起运港
-                    $_order->dischargePort = $this->_request->getParam("dischargePort");    // 卸货港
-                    $_order->deliveryPort = $this->_request->getParam("deliveryPort");    // 交货港
-                }else{
-                    $_order->loadingCity = $this->_request->getParam("loadingPort");           // 起运港城市
-                    $_order->dischargeCity = $this->_request->getParam("dischargePort");     // 卸货城市
-                    $_order->deliveryCity = $this->_request->getParam("deliveryPort");    // 交货地点
+            //组装商品列表
+            foreach ($iterm as $key => $value) {
+                foreach ($value as $k => $v) {
+                    $it2[$k][$key] = $v;
                 }
-				$_order->deliveryDate = $date3;// 交货日期
-				$_order->lastUpdate = $date3 = date("Y-m-d\TH:i:s", time()); // 最后更新日期
-				$_order->shippingServiceType = $this->_request->getParam("shippingServiceType");		// 装柜类型
-				$_order->sizeQuantityMap =  $orderMM;					// 货柜数量
-				$_order->isSelfSupport = (boolean)$this->_request->getParam("isSelfSupport");// 是否自营进出口
-				/*金融服务模块开始*/
-				if ($_order->paymentTerm == "T/T") {
-					$_order->needFinancing = false;
-					$_order->financingRequest = null;
-				} else {
-					$_order->needFinancing = (boolean)$this->_request->getParam("needFinancing");// 是否需要融资服务
-					$_order->financingRequest = $this->_request->getParam("financingRequest");// 融资服务要求
-				}
-				/*报关行模块开始*/
-				$comcity = $this->_request->getParam("comcity");
-				$buyercity = $this->_request->getParam("buyercity");
-				if ($comcity == $buyercity && $comcity == "CN") {
-					$_order->isAssignCustomsAgency = false;
-					$_order->customsAgencyName = null;// 报关行名称
-					$_order->customsAgencyCode = null;// 报关行代码
-					$_order->customClearanceRequest = null;// 报关要求
-				} else {
-					$_order->isAssignCustomsAgency = (boolean)$this->_request->getParam("isAssignCustomsAgency");
-					$_order->customsAgencyName = $this->_request->getParam("customsAgencyName");// 报关行名称
-					if ($_order->customsAgencyName) {
-						$_order->customsAgencyCode = null;
-					} else {
-						$_order->customsAgencyCode = $this->_request->getParam("customsAgencyCode");// 报关行代码
-					}
-					$_order->customClearanceRequest = $this->_request->getParam("customClearanceRequest");// 报关要求
-				}
+            }
 
-				/*物流服务模块*/
-				if ($_order->priceTerm == "CIF"||$_order->priceTerm == "CFR") {
-					$_order->needShipping = false;    // 物流安排
-					$_order->shippingRequest = null;// 物流服务要求
-				} else {
-					$_order->needShipping = (boolean)$this->_request->getParam("needShipping");    // 物流安排
-					$_order->shippingRequest = $this->_request->getParam("shippingRequest");// 物流服务要求
-				}
-
-				//		$_order->orderType = $this->_request->getParam("orderType");                 // 订单类型
-//				$_order->saleContractNo = (boolean)$this->_request->getParam("saleContractNo");// 销售合同号码
-//				$_order->saleContractID = (boolean)$this->_request->getParam("saleContractID");// 销售合同号码
-				$_order->orderItemList=$it3;//订单商品集合
-				$_order->attachmentList = $_attachList;//附件集合
-
-				$_requestOb=$this->_requestObject;
-				$_resultData= $this->json->editOrderApi($_requestOb,$_order);
-				$resultObject = json_decode($_resultData);
+            $it3 = array();
+            foreach ($it2 as $k => $v) {
+                foreach ($v as $k1 => $v1) {
+                    $it3[$k] = new Kyapi_Model_OrderItem();
+                    $it3[$k]->orderID = $it2[$k]['orderID'];
+                    $it3[$k]->hscode = $it2[$k]['hscode'];
+                    $it3[$k]->productID = $it2[$k]['productID'];
+                    $it3[$k]->itemID = $it2[$k]['itemID'];
+                    $it3[$k]->supplierID = $it2[$k]['supplierID'];
+                    $it3[$k]->quantity = (double)$it2[$k]['quantity'];
+                    $it3[$k]->grossWeight = (double)$it2[$k]['grossWeight'];
+                    $it3[$k]->netWeight = (double)$it2[$k]['netWeight'];
+                    $it3[$k]->totalGrossWeight = (double)$it2[$k]['totalGrossWeight'];
+                    $it3[$k]->totalNetWeight = (double)$it2[$k]['totalNetWeight'];
+                    $it3[$k]->totalPackage = (int)$it2[$k]['totalPackage'];
+                    $it3[$k]->totalPrice = (double)$it2[$k]['totalPrice'];
+                    $it3[$k]->totalPurPrice = (double)$it2[$k]['totalPurPrice'];
+                    //						$it3[$k]->totalVolume=(double)$it2[$k]['totalVolume'];
+                    $it3[$k]->unitPrice = (double)$it2[$k]['unitPrice'];
+                    $it3[$k]->PurUnitPrice = (double)$it2[$k]['PurUnitPrice'];
+                    $it3[$k]->pricingUnit = $it2[$k]['pricingUnit'];
+                    $it3[$k]->productName = $it2[$k]['productName'];
+                    $it3[$k]->productEnName = $it2[$k]['productEnName'];
+                    $it3[$k]->productSize = $it2[$k]['productSize'];
+                    $it3[$k]->productMaterial = $it2[$k]['productMaterial'];
+                    $it3[$k]->functionUsage = $it2[$k]['functionUsage'];
+                    $it3[$k]->productBrand = $it2[$k]['productBrand'];
+                    $it3[$k]->productModel = $it2[$k]['productModel'];
+                    $it3[$k]->productionMode = $it2[$k]['productionMode'];
+                    $it3[$k]->isOwnProduct = $it2[$k]['isOwnProduct'];
+                    $it3[$k]->packingType = $it2[$k]['packingType'];
+                    $it3[$k]->productMaterial = $it2[$k]['productMaterial'];
+                    $it3[$k]->functionUsage = $it2[$k]['functionUsage'];
+                }
+            }
 
 
-				if ($resultObject->status != 1) {
-                    //编辑失败
-					Seed_Browser::redirect($this->view->translate('tip_edit_fail') .$resultObject->error,$this->view->seed_BaseUrl ."/pur");
-				} else {
-                    //编辑成功
-					Shop_Browser::redirect($this->view->translate('tip_edit_success'),$this->view->seed_BaseUrl ."/pur");
-				}
-			} catch (HttpError $ex) {
-				Shop_Browser::redirect($ex->getMessage());
-			}
-		}
+            //获取附件ID
+            $Atachlist = array();
+            $Atachlist["attachID"] = $this->_request->getParam('attachNid');
+            $Atachlist["attachType"] = $this->_request->getParam('attachType');
+            $Atachlist["bizType"] = $this->_request->getParam("bizType");
+            $Atachlist["attachName"] = $this->_request->getParam("attachName");
+            $Atachlist["attachSize"] = $this->_request->getParam("attachSize");
+            $_attach2 = array();
+            foreach ($Atachlist as $k => $v) {
+                foreach ($v as $k1 => $v1) {
+                    $_attach2[$k1][$k] = $v1;
+                }
+            }
+            $_attachList = array();
+            foreach ($_attach2 as $k => $v) {
+                foreach ($v as $k1 => $v1) {
+                    $_attachList[$k] = new Kyapi_Model_Attachment();
+                    $_attachList[$k]->attachID = $_attach2[$k]['attachID'];
+                    $_attachList[$k]->attachType = 'ODOD';
+                    $_attachList[$k]->bizType = 'OD';
+                    $_attachList[$k]->name = $_attach2[$k]['attachName'];
+                    $_attachList[$k]->size = (int)$_attach2[$k]['attachSize'];
+                }
+            }
 
-		if(defined('SEED_WWW_TPL')){
-			$content = $this->view->render(SEED_WWW_TPL."/pur/edit.phtml");
-			echo $content;
-			exit;
-		}
-	}
+            //装柜数量
+            $orderMM = array();
+            $orderMM["20GP"] = (int)$this->_request->getParam("sizeQuantityMap_20GP");
+            $orderMM["40GP"] = (int)$this->_request->getParam("sizeQuantityMap_40GP");
+            $orderMM["40HP"] = (int)$this->_request->getParam("sizeQuantityMap_40HP");
+            $orderMM["45HP"] = (int)$this->_request->getParam("sizeQuantityMap_45HP");
+            $orderMM["20OT"] = (int)$this->_request->getParam("sizeQuantityMap_20OT");
+            $orderMM["40OT"] = (int)$this->_request->getParam("sizeQuantityMap_40OT");
+            $_orderMM = $this->arrayToObject($orderMM);
+            //获取当前订单时间
+            $ddtime = $this->_request->getParam("deliveryDate");
+            if (!empty($ddtime)) {
+                $date3 = date("Y-m-d\TH:i:s", strtotime($ddtime));
+            } else {
+                $date3 = date("Y-m-d\TH:i:s", time());
+            }
+
+            $_order = new Kyapi_Model_order();
+            //委托方信息公司ID、公司名称、联系人、联系人ID（本方联系人CRNCODE货币
+            $_order->orderID = $_orderIDget;
+            $_order->buyer = $this->view->accountID;
+            $_order->buyerName = $this->_request->getParam("accountName");
+            $_order->buyerContactID = $this->_request->getParam("buyerContactID");
+            $_order->buyerContactName = $this->_request->getParam("buyerContactName");
+            $_order->buyerCrnCode = $this->_request->getParam("buyerCrnCode");
+            //$_order->buyerCrnCode = $this->_request->getParam("CrnCode");
+            //客户方信息 ID、Name、货币（Crncode）、联系人ID、联系人姓名
+            $_order->vendor = $this->_request->getParam("vendor");
+            $_order->vendorName = $this->_request->getParam("vendorName");
+            $_order->vendorContactID = $this->_request->getParam("vendorContactID");
+            $_order->vendorContactName = $this->_request->getParam("vendorContactName");
+
+            $_order->vendorOrderRequest = $this->_request->getParam("vendorOrderRequest");// 订单要求(2选1)
+            $_order->packingMode = $this->_request->getParam("packingMode");// 包装方式
+            $_order->packingDesc = $this->_request->getParam("packingDesc");// 包装描述
+            $_order->paymentPeriod = (int)$this->_request->getParam("paymentPeriod");// 付款期限
+            $_order->paymentTerm = $this->_request->getParam("paymentTerm");//   结算方式
+            $_order->priceTerm = $this->_request->getParam("priceTerm");// 价格条款
+            $_order->quotationMode = $this->_request->getParam("quotationMode");// 计价方式
+            $_order->totalAmount = (double)$this->_request->getParam("totalAmount");// 订单金额
+            if (empty($_order->totalAmount)) {
+                $_order->totalAmount = 0;
+            }
+            $_order->shippingMethod = $this->_request->getParam("shippingMethod");// 运输方式(海运和空运显示的是港口 路运显示的是城市)
+            $_order->clearancePlace = $this->_request->getParam("clearancePlace");// 报关口岸 (是否自营为false时;
+
+            if ($_order->shippingMethod == "SEA" || $_order->shippingMethod == "AIR") {
+                $_order->loadingPort = $this->_request->getParam("loadingPort");    // 起运港
+                $_order->dischargePort = $this->_request->getParam("dischargePort");    // 卸货港
+                $_order->deliveryPort = $this->_request->getParam("deliveryPort");    // 交货港
+            } else {
+                $_order->loadingCity = $this->_request->getParam("loadingPort");           // 起运港城市
+                $_order->dischargeCity = $this->_request->getParam("dischargePort");     // 卸货城市
+                $_order->deliveryCity = $this->_request->getParam("deliveryPort");    // 交货地点
+            }
+            $_order->deliveryDate = $date3;// 交货日期
+            $_order->lastUpdate = $date3 = date("Y-m-d\TH:i:s", time()); // 最后更新日期
+            $_order->shippingServiceType = $this->_request->getParam("shippingServiceType");        // 装柜类型
+            $_order->sizeQuantityMap = $orderMM;                    // 货柜数量
+            $_order->isSelfSupport = (boolean)$this->_request->getParam("isSelfSupport");// 是否自营进出口
+            /*金融服务模块开始*/
+            if ($_order->paymentTerm == "T/T") {
+                $_order->needFinancing = false;
+                $_order->financingRequest = null;
+            } else {
+                $_order->needFinancing = (boolean)$this->_request->getParam("needFinancing");// 是否需要融资服务
+                $_order->financingRequest = $this->_request->getParam("financingRequest");// 融资服务要求
+            }
+            /*报关行模块开始*/
+            $comcity = $this->_request->getParam("comcity");
+            $buyercity = $this->_request->getParam("buyercity");
+            if ($comcity == $buyercity && $comcity == "CN") {
+                $_order->isAssignCustomsAgency = false;
+                $_order->customsAgencyName = null;// 报关行名称
+                $_order->customsAgencyCode = null;// 报关行代码
+                $_order->customClearanceRequest = null;// 报关要求
+            } else {
+                $_order->isAssignCustomsAgency = (boolean)$this->_request->getParam("isAssignCustomsAgency");
+                $_order->customsAgencyName = $this->_request->getParam("customsAgencyName");// 报关行名称
+                if ($_order->customsAgencyName) {
+                    $_order->customsAgencyCode = null;
+                } else {
+                    $_order->customsAgencyCode = $this->_request->getParam("customsAgencyCode");// 报关行代码
+                }
+                $_order->customClearanceRequest = $this->_request->getParam("customClearanceRequest");// 报关要求
+            }
+
+            /*物流服务模块*/
+            if ($_order->priceTerm == "CIF" || $_order->priceTerm == "CFR") {
+                $_order->needShipping = false;    // 物流安排
+                $_order->shippingRequest = null;// 物流服务要求
+            } else {
+                $_order->needShipping = (boolean)$this->_request->getParam("needShipping");    // 物流安排
+                $_order->shippingRequest = $this->_request->getParam("shippingRequest");// 物流服务要求
+            }
+
+            //		$_order->orderType = $this->_request->getParam("orderType");                 // 订单类型
+            //				$_order->saleContractNo = (boolean)$this->_request->getParam("saleContractNo");// 销售合同号码
+            //				$_order->saleContractID = (boolean)$this->_request->getParam("saleContractID");// 销售合同号码
+            $_order->orderItemList = $it3;//订单商品集合
+            $_order->attachmentList = $_attachList;//附件集合
+
+            $_requestOb = $this->_requestObject;
+            $_resultData = $this->json->editOrderApi($_requestOb, $_order);
+            $resultObject = json_decode($_resultData);
+
+            // 页面跳转
+            if ($resultObject->status != 1) {
+                // 统计所有商品数量
+                $countResultObject = $this->json->countPurOrderStatusApi($_requestOb);
+                $countOrder = $this->objectToArray(json_decode($countResultObject));
+                $this->view->countOrder = $countOrder['result'];
+
+                // bootstrap-table查询状态
+                $this->view->orderStatus = '00';
+
+                $this->view->order = $this->objectToArray($_order);
+                $this->view->errMsg = $this->view->translate('tip_edit_fail') . $resultObject->error;
+            } else {
+                $orderStatus = "00";
+                if ($viewData->orderStatus != '00') {
+                    $orderStatus = $viewData->orderStatus;
+                }
+                $resultMsg = base64_encode($this->view->translate('tip_edit_success'));
+                $this->redirect("/pur/index?resultMsg=" . $resultMsg . "&orderStatus=" . $orderStatus);
+            }
+        }
+
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/pur/edit.phtml");
+            echo $content;
+            exit;
+        }
+    }
 
     public function viewAction() {
 		//读取数据字典
@@ -737,6 +765,7 @@ class PurController extends Kyapi_Controller_Action
         }
         exit;
 	}
+
 	//取消订单
 	public function cancelAction()
 	{
@@ -1154,28 +1183,44 @@ class PurController extends Kyapi_Controller_Action
 		exit;
 	}
 
-	//订单跟踪日志
-	public function trackAction()
-	{
-		// 请求Hessian服务端方法
-		$_requestOb=$this->_requestObject;
-		//    $_orderID='EB7E79BD-A9B9-42DC-CBB5-D431264ADC25';
-		$_orderID=$this->_request->getParam('orderID');
-		$_view=$this->_request->getParam('view');
-		if (empty($_view)) {$_view = 'date';}
-		$_resultData= $this->json->getOrderEventLogApi($_requestOb, $_orderID, $_view);
-		$existData= json_decode($_resultData);
-		$trackData = $existData->result;
-		$tracklist = $this->objectToArray($trackData);
-		$this->view->tracklog = $tracklist;
-		$this->view->trackview = $_view;
+    // 订单跟踪日志
+    public function trackAction() {
+        // 请求Hessian服务端方法
+        $requestObject = $this->_requestObject;
+        $orderID = $this->_request->getParam('orderID');
+        $view = $this->_request->getParam('view');
+        if (empty($view)) {
+            $view = 'date';
+        }
+        $_resultData = $this->json->getOrderEventLogApi($requestObject, $orderID, $view);
+        $existData = json_decode($_resultData);
+        $trackData = $existData->result;
+        $tracklist = $this->objectToArray($trackData);
+        $this->view->tracklog = $tracklist;
+        $this->view->trackview = $view;
 
-		if(defined('SEED_WWW_TPL')){
-			$content = $this->view->render(SEED_WWW_TPL."/pur/track.phtml");
-			echo $content;
-			exit;
-		}
-	}
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/pur/track.phtml");
+            echo $content;
+            exit;
+        }
+    }
+
+    public function trackAjaxAction() {
+        $requestObject = $this->_requestObject;
+        $orderID = $this->_request->getParam('orderID');
+        $viewType = $this->_request->getParam('viewType');
+        if (empty($viewType)) {
+            $viewType = 'date';
+        }
+
+        $resultObject = $this->json->getOrderEventLogApi($requestObject, $orderID, $viewType);
+        $msg = json_decode($resultObject)->result;
+
+        echo json_encode($msg);
+        exit;
+    }
+
 	//报关单
 	public function declarationAction()
 	{

@@ -1479,7 +1479,7 @@
             '   <div class="form-group">' +
             '       <label for="totalNetWeight" class="col-sm-2 control-label"><?php echo $this->translate("netWeight"); ?></label>' +
             '       <div class="col-sm-2">' +
-            '           <input type="text" class="form-control" name="netWeight[]" id="netWeight_' + item.productID + '" value="' + (item.netWeight === undefined ? 0 : item.netWeight) + '">' +
+            '           <input type="text" class="form-control" name="netWeight[]" id="netWeight_' + item.productID + '" data-productID="' + item.productID + '" value="' + (item.netWeight === undefined ? 0 : item.netWeight) + '">' +
             '       </div>' +
             '       <div class="col-sm-1">' +
             '           <p class="form-control-static">x</p>' +
@@ -1501,7 +1501,7 @@
             '   <div class="form-group">' +
             '       <label for="totalNetWeight" class="col-sm-2 control-label"><?php echo $this->translate("grossWeight"); ?></label>' +
             '       <div class="col-sm-2">' +
-            '           <input type="text" class="form-control" name="grossWeight[]" id="grossWeight_' + item.productID + '" value="' + (item.grossWeight === undefined ? 0 : item.grossWeight) + '">' +
+            '           <input type="text" class="form-control" name="grossWeight[]" id="grossWeight_' + item.productID + '" data-productID="' + item.productID + '" value="' + (item.grossWeight === undefined ? 0 : item.grossWeight) + '">' +
             '       </div>' +
             '       <div class="col-sm-1">' +
             '           <p class="form-control-static">x</p>' +
