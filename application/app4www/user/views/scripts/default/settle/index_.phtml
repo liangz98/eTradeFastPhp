@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>快移</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="/ky/css/base.css" rel="stylesheet">
+<link href="/ky/css/style.css" rel="stylesheet">
+<script type="text/javascript" src="/ky/js/jquery.js"></script>
+<script type="text/javascript" src="/ky/js/seed.form.js"></script>
+<script type="text/javascript" src="/ky/js/jquery.form.js"></script>
+<script type="text/javascript" src="/ky/js/www.js"></script>
+<script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
+<script type="text/javascript" src="/ky/js/echarts.simple.min.js"></script>
+<script type="text/javascript" src="/ky/layer-v3.1.1/layer.js"></script>
+</head>
+<body>
+<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
+<div class="o_content_wrap w1200 m0a clearfix">
+    <div class="o_tab">
+        <p class="o_tit fl" style="width: 90%;"><!--结算中心--><?php echo $this->translate('Saltter_IN');?></p>
+        <a href="/user/settle/changepwd"  target="_blank" class="fl" style="width: 10%;text-align: right;color:#000;"><!--支付设置--><?php echo $this->translate('Saltter_setting');?></a>
+    </div>
+    <div class="saltter_box clearfix">
+        <div class="st_head clearfix">
+            <div class="st_head_cp">
+                <div class="st_head_cp_t">
+                    <h2><?php echo $this->e['accountName'];?></h2>
+                    <a href="/user/bank" target="_blank"><!--银行账户管理--><?php echo $this->translate('Saltter_Bank');?></a>
+                    <a href="/user/settle/pay"  target="_blank"><!--充值--><?php echo $this->translate('Saltter_recharge');?></a>
+                    <a href="/user/settle/draw"  target="_blank"><!--提现--><?php echo $this->translate('Saltter_draw');?></a>
+                    <a href="/user/settle/exchange"  target="_blank"><!--结汇--><?php echo $this->translate('Saltter_exg');?></a>
+                </div>
+                <div class="st_head_cp_b">
+                    <span class="pricetext f16" style="line-height:100px;"><!--账户余额--><?php echo $this->translate('Saltter_Balance');?></span>
+                    <i class="icon_pro" style="top:38px;left:80px;"></i>
+                    <div class="fr mr30 amount_md02">
+                        <?php foreach($this->paymentAccountBalList as $k =>$v){ echo '<p class="mt10 mb10"><em class="fl amount_md03">'.$k.'</em>'.$this->ShowToPrice($v['balAmount']).'</p>';}?>
+                    </div>
+                </div>
+            </div>
+            <div class="st_head_sum">
+                <div class="st_head_sum_t" id="st_head_sum_t">
+                    <span class="sumtext"><!--金额详细--><?php echo $this->translate('Saltter_IFO');?></span>
+                    <ul class="fr">
+                        <li class="on f20">CNY</li>
+                        <li class="f20">USD</li>
+                    </ul>
+                    <i class="icon_pro" style="top:2px;right:-25px;"></i>
+                </div>
+                <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+                <div id="echarts">
+                <div id="main"  style="float:left;width: 200px;height:180px;margin-top: -40px;"></div>
+                <div id="main2" class="dn" style="float:left;width: 200px;height:180px;margin-top: -40px;"></div>
+                </div>
+                    <div class="st_head_sum_box fl" id="st_head_sum_box">
+
+                    <div class="st_head_sum_b fr" style="display: block;">
+                        <p class="text fr mb10 mt10 st_head_tip2">
+                            <span class="fl"><!--可支配余额--><?php echo $this->translate('Saltter_CIFO');?></span>
+                            <i class="icon_pro" style="top:0;left:80px;"></i>
+                            <?php echo $this->ShowToPrice($this->amount_CNY_F);?>
+                        </p>
+                        <p class="text  fr mb10 mt10 st_head_tip2">
+                            <span class="fl"><!--定向余额--><?php echo $this->translate('Saltter_DIFO');?></span>
+                            <i class="icon_pro" style="top:0;left:75px;"></i>
+                            <?php echo $this->ShowToPrice($this->amount_CNY_D);?>
+                        </p>
+                        <p class="text fr mb10 mt10 st_head_tip2">
+                            <span class="fl"><!--冻结余额--><?php echo $this->translate('Saltter_FIFO');?></span>
+                            <i class="icon_pro" style="top:0;left:75px;"></i>
+                            <?php echo $this->ShowToPrice($this->amount_CNY_B);?>
+                        </p>
+                    </div>
+
+
+                        <div class="st_head_sum_b fr">
+                            <p class="text  fr mb10 mt10 st_head_tip2">
+                                <span class="fl"><!--可支配余额--><?php echo $this->translate('Saltter_CIFO');?></span>
+                                <i class="icon_pro" style="top:0;left:80px;"></i>
+                                <?php echo $this->ShowToPrice($this->amount_USD_F);?>
+                            </p>
+                            <p class="text  fr mb10 mt10 st_head_tip2">
+                                <span class="fl"><!--定向余额--><?php echo $this->translate('Saltter_DIFO');?></span>
+                                <i class="icon_pro" style="top:0;left:75px;"></i>
+                                <?php echo $this->ShowToPrice($this->amount_USD_D);?>
+                            </p>
+                            <p class="text  fr mb10 mt10 st_head_tip2">
+                                <span class="fl"><!--冻结余额--><?php echo $this->translate('Saltter_FIFO');?></span>
+                                <i class="icon_pro" style="top:0;left:75px;"></i>
+                                <?php echo $this->ShowToPrice($this->amount_USD_B);?>
+                            </p>
+                        </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="st_foot mb30">
+            <div class="st_foot_fb">
+                <div class="st_foot_t">
+                    <span class="pricetext f16"><!--快移金融--><?php echo $this->translate('Saltter_ETIFO');?></span>
+                    <a href=""><!--查看金融详情--><?php echo $this->translate('Saltter_VIFO');?></a>
+                    <p class="xydj mr30 f16">
+                        <span>
+                    <!--信用等级--><?php echo $this->translate('Saltter_credit');?>
+                        <i class="icon_pro" ></i></span>
+                        <em class="ml30"><?php echo $this->e['creditRating'];?></em>
+                    </p>
+                </div>
+                <div class="st_foot_c">
+                    <span style="width:<?php echo $this->jd;?>%;"></span>
+                </div>
+                <div class="st_foot_b">
+                    <span><!--可用额度--> <?php echo $this->translate('Saltter_Available').$this->e['creditBal'].'/'.$this->e['creditLimit'];?></span>
+                </div>
+            </div>
+            <div class="st_foot_bl">
+                <div class="st_foot_bl_l">
+                    <p><!--应收余额--><?php echo $this->translate('Saltter_recive').$this->translate('Saltter_able');?></p>
+                    <?php if(is_array($this->paymentTradingBalList['R']) && count($this->paymentTradingBalList['R'])>0):?>
+                    <?php foreach ($this->paymentTradingBalList['R'] as $k=>$trading_CNY):?>
+                            <span><em class="amount_md03"> <?php echo $trading_CNY['crnCode'];?></em>
+                                <?php echo $this->ShowToPrice($trading_CNY);?></span>
+                        <?php endforeach; ?>
+                    <?php endif;?>
+                    <i class="icon_pro" style="top:9px;right:58px;"></i>
+                </div>
+                <div class="st_foot_bl_r ml30">
+                    <p><!--应付余额--><?php echo $this->translate('Saltter_pay').$this->translate('Saltter_able');?></p>
+                    <?php if(is_array($this->paymentTradingBalList['P']) && count($this->paymentTradingBalList['P'])>0):?>
+                    <?php foreach ($this->paymentTradingBalList['P'] as $k=>$trading_CNY):?>
+                            <span><em class="amount_md03"> <?php echo $trading_CNY['crnCode'];?></em>
+                                <?php echo $this->ShowToPrice($trading_CNY['balAmount']);?></span>
+                        <?php endforeach; ?>
+                    <?php endif;?>
+                    <i class="icon_pro" style="top:9px;right:58px;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="st_tit mb10">
+        <p class="f18"><!--最近交易记录--><?php echo $this->translate('Saltter_Lastlist');?></p>
+        <a class="a_border fr" href="/user/settle/list"><!--查看所有--><?php echo $this->translate('Saltter_VALL');?></a>
+    </div>
+    <table class="st_table bt2px">
+        <tbody>
+        <?php if(is_array($this->list) && count($this->e)>0):?>
+            <?php foreach ($this->list as $k=>$saltter):?>
+                <tr>
+                    <td><?php echo date('Y-m-d H:i:s',strtotime($saltter['recordDate']));?></td>
+                    <td><?php echo $saltter['subject'];?></td>
+                    <td><?php echo  $saltter['crnCode'].$this->ShowToRptype($saltter['rptype']).$this->ShowToPrice($saltter['totalAmount']);?></td>
+                    <td>
+                        <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'],$saltter['paymentStatus']);?></td>
+                    <td>
+                        <?php if($saltter['allowPayment']):?>
+                            <a style="color:#EF8200" href="/user/settle/payment?<?php echo base64_encode($saltter['tradingID']);?>">
+                                <!--支付--><?php echo $this->translate('Saltter_payment');?></a>|
+                        <?php endif;?>
+                        <?php if($saltter['allowTransfer']):?>
+                            <a style="color:#86c224" href="/user/settle/transfer?<?php echo base64_encode($saltter['tradingID']);?>">
+                                <!--转账--><?php echo $this->translate('Saltter_transfer');?></a>|
+                        <?php endif;?>
+                        <a style="color:#56859D" href="/user/settle/listview?<?php echo base64_encode($saltter['tradingID']);?>">
+                            <!--详情--><?php echo $this->translate('Saltter_INF');?></a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        <?php else:?>
+            <tr><td colspan="7"> <?php echo $this->translate('noData');?></td></tr>
+        <?php endif;?>
+        </tbody>
+    </table>
+</div>
+<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
+<script type="application/javascript">
+    $(function(){
+    //金融中心首页
+    $('#st_head_sum_t').find('li').eq(0).addClass('on');
+    var $sum_t=$('#st_head_sum_t').find('li');
+    var $sum_box=$('#st_head_sum_box');
+    var $echarts=$('#echarts');
+    $sum_t.each(function(i,item){
+        $(this).on('click',function(){
+            $sum_box.children('div').css('display','none');
+            $echarts.children('div').css('display','none');
+            $sum_box.children('div').eq(i).css('display','block');
+            $echarts.children('div').eq(i).css('display','block');
+            $(this).addClass('on').siblings().removeClass('on');
+        });
+    });
+    });
+    //金融中心首页
+    $('#setting').click(function () {
+        layer.confirm('<?php echo $this->translate('Saltter_tips06');?>？',//首次使用支付功能需要设置支付密码
+            {
+                btn: ['<?php echo $this->translate('Saltter_tips10');?>', '<?php echo $this->translate('Saltter_tips11');?>'] //按钮 好的,去设置  暂时不设置离开该页面
+            }, function () {
+                layer.prompt({ title: '<?php echo $this->translate('Saltter_tips20')?>'},
+                    function (val, index) {
+                    layer.close(index);
+                    $.post('<?php echo $this->BaseUrl();?>/system/checkloginpwd',
+                        {'passpwd': val},
+                        function (data) {
+                            if (data.result == true) {
+                                open("<?php echo $this->BaseUrl();?>/settle/initpwd", "_blank");
+                                layer.confirm('<?php echo $this->translate('Saltter_tips07');?>？', {
+                                    btn: ['<?php echo $this->translate('Saltter_tips12');?>'] //按钮 已完成，继续支付
+                                }, function () {
+                                    layer.closeAll();
+                                });
+                            }
+                            else {
+                                layer.msg('<?php echo $this->translate('Saltter_tips13');?>', {icon: 2});//登录密码错误
+                            }
+                        }, "json");
+                });
+            }
+        );
+
+    });
+    //app.title = '金额环形图';
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+    var zp=<?php echo empty($this->amount_CNY_F)?0:$this->amount_CNY_F;?>;  //可支配余额
+    var dx=<?php echo empty($this->amount_CNY_D)?0:$this->amount_CNY_D;?>;  //定向余额
+    var dj=<?php echo empty($this->amount_CNY_B)?0:$this->amount_CNY_B;?>;   //冻结余额
+    // 指定图表的配置项和数据
+    var option = {
+        tooltip: {
+            trigger: 'item',
+            formatter: " {b}:<br/> {c} ({d}%)"
+        },
+        color:['#86c224','#EF8200','#77c2f6'],
+        series: [
+            {
+                name:'Amount',
+                type:'pie',
+                radius: ['65%', '80%'],
+                label: {
+                    normal: {
+                        show: true,
+                        formatter: " {b}: {d}%",
+                        position: 'center'
+                    },
+                    emphasis: {
+                        show: true,
+                        formatter: " {b}: {d}%",
+                        position: 'center',
+                        textStyle: {
+                            fontWeight: 'bold',
+                            fontSize: '12'
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+                data:[
+                    {value:zp, name:'<?php echo $this->translate('Saltter_CIFO');?>'},//可支配
+                    {value:dx, name:'<?php echo $this->translate('Saltter_DIFO');?>'},//定向
+                    {value:dj, name:'<?php echo $this->translate('Saltter_FIFO');?>'}  //冻结
+                ]
+            }
+        ]
+    };
+    myChart.setOption(option);
+
+    var myChart2 = echarts.init(document.getElementById('main2'));
+    var zp2=<?php echo empty($this->amount_USD_F)?0:$this->amount_USD_F;?>;  //可支配余额
+    var dx2=<?php echo empty($this->amount_USD_D)?0:$this->amount_USD_D;?>;  //定向余额
+    var dj2=<?php echo empty($this->amount_USD_B)?0:$this->amount_USD_B;?>;   //冻结余额
+    // 指定图表的配置项和数据
+    var option2 = {
+        tooltip: {
+            trigger: 'item',
+            formatter: " {b}:<br/> {c} ({d}%)"
+        },
+        color:['#86c224','#EF8200','#77c2f6'],
+        series: [
+            {
+                name:'Amount',
+                type:'pie',
+                radius: ['65%', '80%'],
+                label: {
+                    normal: {
+                        show: true,
+                        formatter: " {b}: {d}%",
+                        position: 'center'
+                    },
+                    emphasis: {
+                        show: true,
+                        formatter: " {b}: {d}%",
+                        position: 'center',
+                        textStyle: {
+                            fontWeight: 'bold',
+                            fontSize: '12'
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+                data:[
+                    {value:zp2, name:'<?php echo $this->translate('Saltter_CIFO');?>'},//可支配
+                    {value:dx2, name:'<?php echo $this->translate('Saltter_DIFO');?>'},//定向
+                    {value:dj2, name:'<?php echo $this->translate('Saltter_FIFO');?>'}  //冻结
+                ]
+            }
+        ]
+    };
+    myChart2.setOption(option2);
+
+</script>
+</body>
+</html>
