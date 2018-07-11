@@ -4,6 +4,10 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
 	<title>快移</title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <link href="/ky/css/settle/settle.css" rel="stylesheet">
+
+    <link href="/ky/css/settle/base.css" rel="stylesheet">
+    <link href="/ky/css/settle/style.css" rel="stylesheet">
 </head>
 <body>
 
@@ -14,7 +18,7 @@
 		<div class="row">
 
             <div class="o_content_wrap w1200 m0a clearfix">
-                <div class="o_tab">
+                <div>
                     <p class="o_tit fl" style="width: 90%;"><!--结算中心--><?php echo $this->translate('Saltter_IN');?></p>
                     <a href="/user/settle/changepwd"  target="_blank" class="fl" style="width: 10%;text-align: right;color:#000;"><!--支付设置--><?php echo $this->translate('Saltter_setting');?></a>
                 </div>
@@ -178,14 +182,153 @@
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
+<script type="text/javascript" src="/ky/js/echarts.simple.min.js"></script>
 <script type="text/javascript">
 	$().ready(function() {
 
 	});
 
 	$(function () {
-
+        //金融中心首页
+        $('#st_head_sum_t').find('li').eq(0).addClass('on');
+        var $sum_t=$('#st_head_sum_t').find('li');
+        var $sum_box=$('#st_head_sum_box');
+        var $echarts=$('#echarts');
+        $sum_t.each(function(i,item){
+            $(this).on('click',function(){
+                $sum_box.children('div').css('display','none');
+                $echarts.children('div').css('display','none');
+                $sum_box.children('div').eq(i).css('display','block');
+                $echarts.children('div').eq(i).css('display','block');
+                $(this).addClass('on').siblings().removeClass('on');
+            });
+        });
 	});
+
+    //金融中心首页
+    $('#setting').click(function () {
+        layer.confirm('<?php echo $this->translate('Saltter_tips06');?>？',//首次使用支付功能需要设置支付密码
+            {
+                btn: ['<?php echo $this->translate('Saltter_tips10');?>', '<?php echo $this->translate('Saltter_tips11');?>'] //按钮 好的,去设置  暂时不设置离开该页面
+            }, function () {
+                layer.prompt({ title: '<?php echo $this->translate('Saltter_tips20')?>'},
+                    function (val, index) {
+                        layer.close(index);
+                        $.post('<?php echo $this->BaseUrl();?>/system/checkloginpwd',
+                            {'passpwd': val},
+                            function (data) {
+                                if (data.result == true) {
+                                    open("<?php echo $this->BaseUrl();?>/settle/initpwd", "_blank");
+                                    layer.confirm('<?php echo $this->translate('Saltter_tips07');?>？', {
+                                        btn: ['<?php echo $this->translate('Saltter_tips12');?>'] //按钮 已完成，继续支付
+                                    }, function () {
+                                        layer.closeAll();
+                                    });
+                                }
+                                else {
+                                    layer.msg('<?php echo $this->translate('Saltter_tips13');?>', {icon: 2});//登录密码错误
+                                }
+                            }, "json");
+                    });
+            }
+        );
+
+    });
+    //app.title = '金额环形图';
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+    var zp=<?php echo empty($this->amount_CNY_F)?0:$this->amount_CNY_F;?>;  //可支配余额
+    var dx=<?php echo empty($this->amount_CNY_D)?0:$this->amount_CNY_D;?>;  //定向余额
+    var dj=<?php echo empty($this->amount_CNY_B)?0:$this->amount_CNY_B;?>;   //冻结余额
+    // 指定图表的配置项和数据
+    var option = {
+        tooltip: {
+            trigger: 'item',
+            formatter: " {b}:<br/> {c} ({d}%)"
+        },
+        color:['#86c224','#EF8200','#77c2f6'],
+        series: [
+            {
+                name:'Amount',
+                type:'pie',
+                radius: ['65%', '80%'],
+                label: {
+                    normal: {
+                        show: true,
+                        formatter: " {b}: {d}%",
+                        position: 'center'
+                    },
+                    emphasis: {
+                        show: true,
+                        formatter: " {b}: {d}%",
+                        position: 'center',
+                        textStyle: {
+                            fontWeight: 'bold',
+                            fontSize: '12'
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+                data:[
+                    {value:zp, name:'<?php echo $this->translate('Saltter_CIFO');?>'},//可支配
+                    {value:dx, name:'<?php echo $this->translate('Saltter_DIFO');?>'},//定向
+                    {value:dj, name:'<?php echo $this->translate('Saltter_FIFO');?>'}  //冻结
+                ]
+            }
+        ]
+    };
+    myChart.setOption(option);
+
+    var myChart2 = echarts.init(document.getElementById('main2'));
+    var zp2=<?php echo empty($this->amount_USD_F)?0:$this->amount_USD_F;?>;  //可支配余额
+    var dx2=<?php echo empty($this->amount_USD_D)?0:$this->amount_USD_D;?>;  //定向余额
+    var dj2=<?php echo empty($this->amount_USD_B)?0:$this->amount_USD_B;?>;   //冻结余额
+    // 指定图表的配置项和数据
+    var option2 = {
+        tooltip: {
+            trigger: 'item',
+            formatter: " {b}:<br/> {c} ({d}%)"
+        },
+        color:['#86c224','#EF8200','#77c2f6'],
+        series: [
+            {
+                name:'Amount',
+                type:'pie',
+                radius: ['65%', '80%'],
+                label: {
+                    normal: {
+                        show: true,
+                        formatter: " {b}: {d}%",
+                        position: 'center'
+                    },
+                    emphasis: {
+                        show: true,
+                        formatter: " {b}: {d}%",
+                        position: 'center',
+                        textStyle: {
+                            fontWeight: 'bold',
+                            fontSize: '12'
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+                data:[
+                    {value:zp2, name:'<?php echo $this->translate('Saltter_CIFO');?>'},//可支配
+                    {value:dx2, name:'<?php echo $this->translate('Saltter_DIFO');?>'},//定向
+                    {value:dj2, name:'<?php echo $this->translate('Saltter_FIFO');?>'}  //冻结
+                ]
+            }
+        ]
+    };
+    myChart2.setOption(option2);
 </script>
 </body>
 </html>
