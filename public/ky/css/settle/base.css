@@ -1,21 +1,4 @@
 @charset "utf-8";
-/*CSS reset*/
-body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td{margin:0;padding:0;}
-table{border-collapse:collapse;border-spacing:0;table-layout: fixed;}
-td{word-break: break-all;word-wrap:break-word;}
-fieldset,img{border:0;}
-address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight: normal;}
-ol,ul{list-style: none;}
-caption,th{text-align: left;}
-h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}
-q:before,q:after{content:'';}
-abbr,acronym{border:0;}
-a{text-decoration:none;color: #666;}
-a:focus{outline:none;}
-img{display:block;}
-body{list-style:none;font:14px/1.6 "Microsoft Yahei","\5B8B\4F53",sans-serif;color: #666;}
-* html, * html body { background-image: url(about:blank);background-attachment: fixed;}
-* html #menu {position: absolute;bottom: auto;top: expression(100+((e=document.documentElement.scrollTop)?e:document.body.scrollTop)+'px');}
 /*文字排版*/
 .f12{font-size:12px;}
 .f13{font-size:13px;}

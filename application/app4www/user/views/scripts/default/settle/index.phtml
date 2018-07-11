@@ -28,9 +28,11 @@
                             <div class="st_head_cp_t">
                                 <h2><?php echo $this->e['accountName'];?></h2>
                                 <a href="/user/bank" target="_blank"><!--银行账户管理--><?php echo $this->translate('Saltter_Bank');?></a>
-                                <a href="/user/settle/pay"  target="_blank"><!--充值--><?php echo $this->translate('Saltter_recharge');?></a>
-                                <a href="/user/settle/draw"  target="_blank"><!--提现--><?php echo $this->translate('Saltter_draw');?></a>
-                                <a href="/user/settle/exchange"  target="_blank"><!--结汇--><?php echo $this->translate('Saltter_exg');?></a>
+                                <!--
+                                <a href="/user/settle/pay"  target="_blank"><?php /*echo $this->translate('Saltter_recharge');*/?></a>
+                                <a href="/user/settle/draw"  target="_blank"><?php /*echo $this->translate('Saltter_draw');*/?></a>
+                                <a href="/user/settle/exchange"  target="_blank"><?php /*echo $this->translate('Saltter_exg');*/?></a>
+                                -->
                             </div>
                             <div class="st_head_cp_b">
                                 <span class="pricetext f16" style="line-height:100px;"><!--账户余额--><?php echo $this->translate('Saltter_Balance');?></span>
@@ -102,9 +104,10 @@
                                 <span class="pricetext f16"><!--快移金融--><?php echo $this->translate('Saltter_ETIFO');?></span>
                                 <a href=""><!--查看金融详情--><?php echo $this->translate('Saltter_VIFO');?></a>
                                 <p class="xydj mr30 f16">
-                        <span>
-                    <!--信用等级--><?php echo $this->translate('Saltter_credit');?>
-                            <i class="icon_pro" ></i></span>
+                                    <span>
+                                    <!--信用等级--><?php echo $this->translate('Saltter_credit');?>
+                                        <i class="icon_pro" ></i>
+                                    </span>
                                     <em class="ml30"><?php echo $this->e['creditRating'];?></em>
                                 </p>
                             </div>
@@ -121,10 +124,10 @@
                                 <?php if(is_array($this->paymentTradingBalList['R']) && count($this->paymentTradingBalList['R'])>0):?>
                                     <?php foreach ($this->paymentTradingBalList['R'] as $k=>$trading_CNY):?>
                                         <span><em class="amount_md03"> <?php echo $trading_CNY['crnCode'];?></em>
-                                            <?php echo $this->ShowToPrice($trading_CNY);?></span>
+                                            <?php echo $this->ShowToPrice($trading_CNY['balAmount']);?></span>
                                     <?php endforeach; ?>
                                 <?php endif;?>
-                                <i class="icon_pro" style="top:9px;right:58px;"></i>
+                                <i class="icon_pro" style="top:9px;right:38px;"></i>
                             </div>
                             <div class="st_foot_bl_r ml30">
                                 <p><!--应付余额--><?php echo $this->translate('Saltter_pay').$this->translate('Saltter_able');?></p>
@@ -134,7 +137,7 @@
                                             <?php echo $this->ShowToPrice($trading_CNY['balAmount']);?></span>
                                     <?php endforeach; ?>
                                 <?php endif;?>
-                                <i class="icon_pro" style="top:9px;right:58px;"></i>
+                                <i class="icon_pro" style="top:9px;right:38px;"></i>
                             </div>
                         </div>
                     </div>
