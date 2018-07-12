@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>快移</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link href="/ky/css/base.css" rel="stylesheet">
+    <link href="/ky/css/style.css" rel="stylesheet">
+    <script type="text/javascript" src="/ky/js/jquery.js"></script>
+    <script type="text/javascript" src="/ky/js/jquery.wallform.js"></script>
+    <script type="text/javascript" src="/ky/js/www.js"></script>
+    <script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
+</head>
+<body>
+<?php echo $this->render(SEED_WWW_TPL . '/header.phtml'); ?>
+<div class="o_content_wrap w1200 m0a clearfix">
+    <div class="st_tit mt20 mb2 pb10" style="border-bottom: 2px solid #ccc;">
+        <p class="f18"><!--记录详情--><?php echo $this->translate('Saltter_Record'); ?></p>
+    </div>
+
+    <div class="st_jl_view clearfix" style="margin-left: 75px;">
+        <div class="st_box">
+            <label class="st_lab2"><!--交易号--><?php echo $this->translate('Saltter_TradeID'); ?>：</label>
+            <span><?php echo $this->e['transNo']; ?></span>
+        </div>
+        <div class="st_box">
+            <label class="st_lab2"><!--记录名称--><?php echo $this->translate('Saltter_wtname'); ?>：</label>
+            <span><?php echo $this->e['subject']; ?></span>
+        </div>
+        <div class="st_box">
+            <label class="st_lab2">
+                <!--应收/应付金额--><?php echo $this->ShowDictionaryTo("", $this->userLangCode, $this->div_Setting['AR_AP_TYPE'], $this->e['rptype']) . $this->translate('ordertotal'); ?>
+                ：</label>
+            <span><?php echo $this->e['crnCode'] . '+' . $this->ShowToPrice($this->e['totalAmount']); ?></span>
+        </div>
+        <div class="st_box">
+            <label class="st_lab2"><!--未结算金额--><?php echo $this->translate('Saltter_Unsettle'); ?>：</label>
+            <span><?php echo $this->e['crnCode'] . '+' . $this->ShowToPrice($this->e['balanceAmount']); ?></span>
+        </div>
+        <div class="st_box">
+            <label class="st_lab2"><!--合同号--><?php echo $this->translate('Saltter_contartNo'); ?>：</label>
+            <span><?php echo $this->e['contractNo']; ?></span>
+        </div>
+        <div class="st_box">
+            <label class="st_lab2"><!--发生时间--><?php echo $this->translate('Saltter_GTime'); ?>：</label>
+            <span><?php echo empty($this->e['recordDate']) ? null : date('Y-m-d H:i:s', strtotime($this->e['recordDate'])); ?></span>
+        </div>
+        <div class="st_box">
+            <label class="st_lab2">
+                <!--预计收/付齐时间--><?php echo $this->ShowToRptypeTitle($this->e['rptype'], 'Saltter_Time_ING'); ?>
+                ：</label>
+            <span><?php echo empty($this->e['expectedDate']) ? null : date('Y-m-d H:i:s', strtotime($this->e['expectedDate'])); ?></span>
+        </div>
+        <div class="st_box">
+            <label class="st_lab2">
+                <!--实际收/付齐时间--><?php echo $this->ShowToRptypeTitle($this->e['rptype'], 'Saltter_Time_Now'); ?>
+                ：</label>
+            <span><?php echo empty($this->e['actualDate']) ? null : date('Y-m-d H:i:s', strtotime($this->e['actualDate'])); ?></span>
+        </div>
+        <div class="st_box">
+            <label class="st_lab2"><!--交易状态--><?php echo $this->translate('Saltter_Status'); ?>：</label>
+            <span><?php echo $this->ShowDictionaryTo("", $this->userLangCode, $this->dic_Setting['PAYMENT_TRADING_STATUS'], $this->e['tradingStatus']); ?>
+                 </span>
+        </div>
+        <div class="st_box">
+            <label class="st_lab2">
+                <!--收/付款状态--><?php echo $this->ShowToRptypeTitle($this->e['rptype'], 'Saltter_FTO_Status'); ?>
+                :</label>
+            <span>
+                    <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'], $this->e['paymentStatus']); ?></span>
+        </div>
+    </div>
+    <div class="st_jl_view mb30 clearfix" style="margin-left: 75px;">
+        <label class="st_lab2"><!--摘要--><?php echo $this->translate('Saltter_DEC'); ?></label>
+        <span><?php echo $this->e['remarks']; ?></span>
+    </div>
+    <div id="st_tab_button">
+        <ul class="fr st_tab_button">
+         <!--  <!-- <li class="on"><!--记录明细-Saltter_wtlist-->
+            <li class=""><!--支付申请--><a href="#"><?php echo $this->translate('Saltter_paylist'); ?></a> </li>
+        </ul>
+    </div>
+    <div id="st_tab_check">
+        <div class="st_tab_child" style="display: none;">
+            <table id="tb1" class="st_table bt2px">
+                <thead>
+                <tr>
+                    <th><!--时间--><?php echo $this->translate('Saltter_Time'); ?></th>
+                    <th><!--对方--><?php echo $this->translate('Saltter_For'); ?></th>
+                    <th><!--金额--><?php echo $this->translate('Saltter_amount'); ?></th>
+                    <th><!--余额--><?php echo $this->translate('Saltter_able'); ?></th>
+                    <th><!--状态--><?php echo $this->translate('Saltter_Status'); ?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if (is_array($this->e['paymentDetailList']) && count($this->e['paymentDetailList']) > 0): ?>
+                    <?php foreach ($this->e['paymentDetailList'] as $k => $DetailList): ?>
+                        <tr>
+                            <td><?php echo date('Y-m-d H:i:s', strtotime($DetailList['recordDate'])); ?></td>
+                            <td><?php echo $DetailList['oppCustomerName'];; ?></td>
+                            <td><?php echo $DetailList['crnCode'].$this->ShowToRptype($DetailList['rptype']).$this->ShowToPrice($DetailList['totalAmount']);?></td>
+                            <td><?php echo $DetailList['crnCode'].$this->ShowToRptype($DetailList['rptype']).$this->ShowToPrice($DetailList['balanceAmount']);?></td>
+                            <td><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'], $DetailList['paymentStatus']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+        <div class="st_tab_child"  style="display: block;">
+            <table  id="tb2" class="st_table bt2px">
+                <thead>
+                <tr>
+                    <th><!--时间--><?php echo $this->translate('Saltter_Time'); ?></th>
+                    <th><!--摘要--><?php echo $this->translate('Saltter_DEC'); ?></th>
+                    <th><!--初始金额--><?php echo $this->translate('Saltter_InitMount'); ?></th>
+                    <th><!--支付金额--><?php echo $this->translate('Saltter_TradeMount'); ?></th>
+                    <th><!--状态--><?php echo $this->translate('Saltter_Status'); ?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if (is_array($this->e['paymentRequestList']) && count($this->e['paymentRequestList']) > 0): ?>
+                    <?php foreach ($this->e['paymentRequestList'] as $k => $DetailList): ?>
+                        <tr>
+                            <td><?php echo date('Y-m-d H:i:s', strtotime($DetailList['paymentDate'])); ?></td>
+                            <td><?php echo $DetailList['explanation'];?></td>
+                            <td><?php echo $DetailList['crnCode'].$this->ShowToRptype($DetailList['rptype']).(empty($DetailList['baseAmount'])?0:$this->ShowToPrice($DetailList['baseAmount'])); ?></td>
+                            <td style="color: #d00000"><?php echo $DetailList['crnCode'].$this->ShowToRptype($DetailList['rptype']).$this->ShowToPrice($DetailList['totalAmount']); ?></td>
+                            <td><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['PAYMENT_REQUEST_STATUS'],$DetailList['requestStatus']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<?php echo $this->render(SEED_WWW_TPL . '/footer.phtml'); ?>
+<script>
+    $(function () {
+        //奇偶行设置
+        //表一
+        $("#tb1 tbody tr:odd").addClass("odd");//odd为偶数行
+        $("#tb1 tbody tr:even").addClass("even");//even为偶数行
+        //表二
+        $("#tb2 tbody tr:odd").addClass("odd");//odd为偶数行
+        $("#tb2 tbody tr:even").addClass("even");//even为偶数行
+        //金融中心首页
+        $('#st_tab_button').find('li').eq(0).addClass('on');
+        var $sum_t = $('#st_tab_button').find('li');
+        var $sum_box = $('#st_tab_check');
+        $sum_t.each(function (i, item) {
+            $(this).on('click', function () {
+                $sum_box.children('div').css('display', 'none');
+                $sum_box.children('div').eq(i).css('display', 'block');
+                $(this).addClass('on').siblings().removeClass('on');
+            });
+        });
+    });
+</script>
+</body>
+</html>
