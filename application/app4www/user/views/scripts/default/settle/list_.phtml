@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>快移</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link href="/ky/css/base.css" rel="stylesheet">
+    <link href="/ky/css/style.css" rel="stylesheet">
+    <script type="text/javascript" src="/ky/js/jquery.js"></script>
+    <script type="text/javascript" src="/ky/js/jquery.wallform.js"></script>
+    <script type="text/javascript" src="/ky/js/www.js"></script>
+    <script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
+</head>
+<body>
+<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
+<div class="o_content_wrap w1200 m0a clearfix">
+    <div class="st_tit mt20 mb2 pb10" style="border-bottom: 2px solid #ccc;">
+        <p class="f18"><!--交易记录--><?php echo $this->translate('Saltter_List');?></p>
+        <a class="a_border ml20" href="/user/settle/lslist"><!--流水账--><?php echo $this->translate('Saltter_Run');?></a>
+
+    </div>
+    <div class="st_wrap p30 mb20">
+        <form action="" method="post">
+        <div class="st_box">
+            <label class="st_lab"><!--状态--><?php echo $this->translate('Saltter_Status');?></label>
+            <select class="st_sel" name="tradingStatus">
+                <?php echo $this->ShowDictionaryList("datatest_setting", $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'],$this->tradingStatus); ?>
+            </select>
+        </div>
+        <div class="st_box">
+            <label class="st_lab"><!--对方名称--><?php echo $this->translate('Saltter_Forname');?></label>
+            <input class="st_input" type="text" name="" id="" value="<?php echo $this->oppCustomerNames;?>">
+        </div>
+        <div class="st_box">
+            <label class="st_lab"><!--订单号丨流水号--><?php echo $this->translate('Saltter_OrderID').'|'.$this->translate('Saltter_RunID');?></label>
+            <input class="st_input" type="text" name="transNo" id="" value="<?php echo $this->transNo;?>">
+        </div>
+        <div class="st_box">
+            <label class="st_lab"><!--交易分类--><?php echo $this->translate('Saltter_Class');?></label>
+            <select class="st_sel" name="tradingType">
+                <?php echo $this->ShowDictionaryList("datatest_setting", $this->userLangCode, $this->dic_Setting['PAYMENT_TRADING_TYPE'],$this->tradingType); ?>
+            </select>
+        </div>
+        <div class="st_box">
+            <label class="st_lab"><!--金额--><?php echo $this->translate('ordertotal');?></label>
+            <input type="hidden" name="crnArray" value="<?php echo $this->crnString;?>">
+            <select class="st_sel" name="crnCode" style="width: 80px;">
+                <?php foreach ($this->crnArr as $k=>$v):?>
+                    <?php if($this->dfcrnCode==$v):?>
+                        <option selected="selected"> <?php echo $v;?></option>
+                    <?php else:?>
+                        <option > <?php echo $v;?></option>
+                    <?php endif;?>
+                <?php endforeach;?>
+            </select>
+            <input style="width:100px" class="st_input" type="text" name="lowerAmount" id="" value="<?php echo $this->lowerAmount;?>">&nbsp; -
+            <input style="width:100px" class="st_input" type="text" name="upperAmount" id="" value="<?php echo $this->upperAmount;?>">&nbsp;
+        </div>
+        <div class="st_box">
+            <label class="st_lab"><!-- 时间 --><?php echo $this->translate('Saltter_Time');?></label>
+            <script language="javascript" type="text/javascript" src="/ky/My97DatePicker/WdatePicker.js"></script>
+            <input class="st_input2" type="text" name="startDate" value="<?php echo $this->startDate;?>" tabindex="1" onfocus="WdatePicker({maxDate:'%y-%M-%d'})"> -
+            <input class="st_input2" type="text" name="endDate" value="<?php echo $this->endDate;?>" tabindex="1" onfocus="WdatePicker({maxDate:'%y-%M-%d'})">
+        </div>
+        <div class="clearfix tc p10">
+            <input class="st_btn" type="submit" value="确定">
+        </div>
+        </form>
+    </div>
+    <table class="st_table bt2px">
+        <thead>
+        <tr>
+            <th width="14%"><!--时间--><?php echo $this->translate('Saltter_Time');?></th>
+            <th width="10%"><!--类型--><?php echo $this->translate('type');?></th>
+            <th width="20%"><!--交易号丨订单号丨摘要--><?php echo $this->translate('Saltter_TradeID').'|'.$this->translate('Saltter_OrderID').'|'.$this->translate('Saltter_DEC');?></th>
+            <th width="20%"><!--对方--><?php echo $this->translate('Saltter_For');?></th>
+            <th width="10%"><!--金额--><?php echo $this->translate('ordertotal');?></th>
+            <th width="13%"><!--状态--><?php echo $this->translate('Saltter_Status');?></th>
+            <th width="13%"><!--操作详情--><?php echo $this->translate('Saltter_Made');?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if(is_array($this->e) && count($this->e)>0):?>
+            <?php foreach ($this->e as $k=>$saltter):?>
+                <tr>
+                    <td><?php echo date('Y-m-d H:i:s',strtotime($saltter['recordDate']));?></td>
+                    <td><?php echo $saltter['rptype']=='O'?$this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['PAYMENT_TRADING_TYPE'],$saltter['tradingType']):$this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['AR_AP_TYPE'],$saltter['rptype']);?></td>
+                    <td><?php echo empty($saltter['subject'])?null:$saltter['subject'].'-';?>
+                        <?php echo empty($saltter['transNo'])?null:$saltter['transNo'].'-';?>
+                        <?php echo $saltter['remarks'];?></td>
+                    <td><?php echo $saltter['customerName'];?></td>
+                    <td><?php echo  $this->ShowToRptype($saltter['rptype']).$saltter['crnCode'].'&nbsp;&nbsp;'.$this->ShowToPrice($saltter['totalAmount']);?></td>
+                    <td><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'],$saltter['paymentStatus']);?></td>
+                    <td>
+                        <?php if($saltter['allowPayment']):?>
+                            <a style="color:#EF8200" href="/user/settle/payment?<?php echo base64_encode($saltter['tradingID']);?>">
+                                <!--支付--><?php echo $this->translate('Saltter_payment');?></a>|
+                        <?php endif;?>
+                        <?php if($saltter['allowTransfer']):?>
+                             <a style="color:#86c224" href="/user/settle/transfer?<?php echo base64_encode($saltter['tradingID']);?>">
+                                <!--转账--><?php echo $this->translate('Saltter_transfer');?></a>|
+                        <?php endif;?>
+                        <a style="color:#56859D" href="/user/settle/listview?<?php echo base64_encode($saltter['tradingID']);?>">
+                            <!--详情--><?php echo $this->translate('Saltter_INF');?></a>
+                    </td>
+
+                </tr>
+            <?php endforeach; ?>
+        <?php else:?>
+        <tr><td colspan="7"> <?php echo $this->translate('noData');?></td></tr>
+        <?php endif;?>
+        </tbody>
+    </table>
+    <div class="page"> <?php echo $this->showProductPage($this->page);?> </div>
+</div>
+<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
+</body>
+</html>
