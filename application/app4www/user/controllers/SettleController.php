@@ -217,8 +217,8 @@ class SettleController extends Kyapi_Controller_Action
             $this->view->lowerAmount=$_lowerAmount;
             $_upperAmount=empty($this->_request->getParam('upperAmount'))?null:$this->_request->getParam('upperAmount');
             $this->view->upperAmount=$_upperAmount;
-            $_tradingStatus=empty($this->_request->getParam('tradingStatus'))?null:$this->_request->getParam('tradingStatus');
-            $this->view->tradingStatus=$_tradingStatus;
+            $_paymentStatus=empty($this->_request->getParam('paymentStatus'))?null:$this->_request->getParam('paymentStatus');
+            $this->view->paymentStatus=$_paymentStatus;
             $_tradingType=empty($this->_request->getParam('tradingType'))?null:$this->_request->getParam('tradingType');
             $this->view->tradingType=$_tradingType;
             $_transNo=empty($this->_request->getParam('transNo'))?null:$this->_request->getParam('transNo');
@@ -242,7 +242,7 @@ class SettleController extends Kyapi_Controller_Action
 
 
             //获取交易记录列表
-            $_resultData=$this->json->listpaymentTradApi($this->_requestObject,$Flowlist, null, $_keyword, $_skip, $_limit,$_startDate,$_endDate,$_lowerAmount,$_upperAmount,$_tradingStatus,$_tradingType,$_transNo);
+            $_resultData=$this->json->listpaymentTradApi($this->_requestObject,$Flowlist, null, $_keyword, $_skip, $_limit,$_startDate,$_endDate,$_lowerAmount,$_upperAmount,$_paymentStatus,$_tradingType,$_transNo);
             $existData = json_decode($_resultData);
             $existDatt = $this->objectToArray($existData);
             $this->view->e = $existDatt['result'];

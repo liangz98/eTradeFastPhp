@@ -4,6 +4,7 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
 	<title>快移</title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <link href="/ky/css/settle/settle.css" rel="stylesheet">
 
     <link href="/ky/css/settle/base.css" rel="stylesheet">
     <link href="/ky/css/settle/style.css" rel="stylesheet">
@@ -23,50 +24,76 @@
 
                 </div>
                 <div class="st_wrap p30 mb20">
-                    <form action="" method="post">
-                        <div class="st_box">
-                            <label class="st_lab"><!--状态--><?php echo $this->translate('Saltter_Status');?></label>
-                            <select class="st_sel" name="tradingStatus">
-                                <?php echo $this->ShowDictionaryList("datatest_setting", $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'],$this->tradingStatus); ?>
-                            </select>
+                    <form class="form-horizontal" action="" method="post">
+                        <div class="form-group">
+                            <label for="paymentStatus" class="col-sm-1 control-label color-title"><?php echo $this->translate('Saltter_Status'); ?></label>
+                            <div class="col-sm-4">
+                                <select class="selectpicker form-control" name="paymentStatus" id="paymentStatus" data-live-search="true">
+                                    <option value=""><?php echo $this->translate('et_select'); ?></option>
+                                    <?php echo $this->ShowDictionaryList($this->dic_Setting['PAYMENT_STATUS'], $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'], $this->tradingStatus); ?>
+                                </select>
+                            </div>
+
+                            <label for="oppCustomerNames" class="col-sm-2 control-label color-title"><?php echo $this->translate('Saltter_Forname'); ?></label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="oppCustomerNames" id="oppCustomerNames" placeholder="" value="<?php echo $this->oppCustomerNames;?>" >
+                            </div>
                         </div>
-                        <div class="st_box">
-                            <label class="st_lab"><!--对方名称--><?php echo $this->translate('Saltter_Forname');?></label>
-                            <input class="st_input" type="text" name="" id="" value="<?php echo $this->oppCustomerNames;?>">
+
+                        <div class="form-group">
+                            <label for="transNo" class="col-sm-1 control-label color-title"><?php echo $this->translate('Saltter_OrderID'); ?></label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="transNo" id="transNo" placeholder="" value="<?php echo $this->transNo;?>" >
+                            </div>
+
+                            <label for="tradingType" class="col-sm-2 control-label color-title"><?php echo $this->translate('Saltter_Class'); ?></label>
+                            <div class="col-sm-4">
+                                <select class="selectpicker form-control" name="tradingType" id="tradingType" data-live-search="true">
+                                    <option value=""><?php echo $this->translate('et_select'); ?></option>
+                                    <?php echo $this->ShowDictionaryList($this->dic_Setting['PAYMENT_TRADING_TYPE'], $this->userLangCode, $this->dic_Setting['PAYMENT_TRADING_TYPE'], $this->tradingType); ?>
+                                </select>
+                            </div>
                         </div>
-                        <div class="st_box">
-                            <label class="st_lab"><!--订单号丨流水号--><?php echo $this->translate('Saltter_OrderID').'|'.$this->translate('Saltter_RunID');?></label>
-                            <input class="st_input" type="text" name="transNo" id="" value="<?php echo $this->transNo;?>">
+
+                        <div class="form-group">
+                            <label for="crnCode" class="col-sm-1 control-label color-title"><?php echo $this->translate('ordertotal'); ?></label>
+                            <div class="col-sm-2">
+                                <select class="selectpicker form-control" name="crnCode" id="crnCode" data-live-search="true">
+                                    <?php foreach ($this->crnArr as $k=>$v):?>
+                                        <?php if($this->dfcrnCode==$v):?>
+                                            <option selected="selected"> <?php echo $v;?></option>
+                                        <?php else:?>
+                                            <option > <?php echo $v;?></option>
+                                        <?php endif;?>
+                                    <?php endforeach;?>
+                                </select>
+                                <input type="hidden" name="crnArray" value="<?php echo $this->crnString;?>">
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="number" class="form-control" name="lowerAmount" id="lowerAmount" placeholder="" value="<?php echo $this->lowerAmount; ?>" min="0" >
+                            </div>
+                            <div class="layui-form-mid">-</div>
+                            <div class="col-sm-2">
+                                <input type="number" class="form-control" name="upperAmount" id="upperAmount" placeholder="" value="<?php echo $this->upperAmount; ?>" min="0" >
+                            </div>
                         </div>
-                        <div class="st_box">
-                            <label class="st_lab"><!--交易分类--><?php echo $this->translate('Saltter_Class');?></label>
-                            <select class="st_sel" name="tradingType">
-                                <?php echo $this->ShowDictionaryList("datatest_setting", $this->userLangCode, $this->dic_Setting['PAYMENT_TRADING_TYPE'],$this->tradingType); ?>
-                            </select>
+
+                        <div class="form-group">
+                            <label for="startDate" class="col-sm-1 control-label color-title"><?php echo $this->translate('Saltter_Time'); ?></label>
+                            <div class="col-sm-3">
+                                <input type="date" class="form-control" name="startDate" id="startDate">
+                            </div>
+                            <div class="layui-form-mid">-</div>
+                            <label for="endDate" class="sr-only">endDate</label>
+                            <div class="col-sm-3">
+                                <input type="date" class="form-control" name="endDate" id="endDate">
+                            </div>
                         </div>
-                        <div class="st_box">
-                            <label class="st_lab"><!--金额--><?php echo $this->translate('ordertotal');?></label>
-                            <input type="hidden" name="crnArray" value="<?php echo $this->crnString;?>">
-                            <select class="st_sel" name="crnCode" style="width: 80px;">
-                                <?php foreach ($this->crnArr as $k=>$v):?>
-                                    <?php if($this->dfcrnCode==$v):?>
-                                        <option selected="selected"> <?php echo $v;?></option>
-                                    <?php else:?>
-                                        <option > <?php echo $v;?></option>
-                                    <?php endif;?>
-                                <?php endforeach;?>
-                            </select>
-                            <input style="width:100px" class="st_input" type="text" name="lowerAmount" id="" value="<?php echo $this->lowerAmount;?>">&nbsp; -
-                            <input style="width:100px" class="st_input" type="text" name="upperAmount" id="" value="<?php echo $this->upperAmount;?>">&nbsp;
-                        </div>
-                        <div class="st_box">
-                            <label class="st_lab"><!-- 时间 --><?php echo $this->translate('Saltter_Time');?></label>
-                            <script language="javascript" type="text/javascript" src="/ky/My97DatePicker/WdatePicker.js"></script>
-                            <input class="st_input2" type="text" name="startDate" value="<?php echo $this->startDate;?>" tabindex="1" onfocus="WdatePicker({maxDate:'%y-%M-%d'})"> -
-                            <input class="st_input2" type="text" name="endDate" value="<?php echo $this->endDate;?>" tabindex="1" onfocus="WdatePicker({maxDate:'%y-%M-%d'})">
-                        </div>
-                        <div class="clearfix tc p10">
-                            <input class="st_btn" type="submit" value="确定">
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-5 col-sm-2">
+                                <button type="submit" class="btn btn-default btn-warning btn-block"><?php echo $this->translate('find'); ?></button>
+                            </div>
                         </div>
                     </form>
                 </div>

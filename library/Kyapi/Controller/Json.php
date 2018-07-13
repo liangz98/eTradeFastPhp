@@ -1505,16 +1505,16 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
      * @param $_endDate
      * @param $_lowerAmount
      * @param $_upperAmount
-     * @param $_tradingStatus
+     * @param $paymentStatus
      * @param $_tradingType
      * @param $_transNo
      * @return mixed
      */
-    public function listpaymentTradApi( $_requestObject, $_queryParams, $_querySorts,$_keyword, $_skip, $_limit,$_startDate,$_endDate,$_lowerAmount,$_upperAmount,$_tradingStatus,$_tradingType,$_transNo)
+    public function listpaymentTradApi( $_requestObject, $_queryParams, $_querySorts,$_keyword, $_skip, $_limit,$_startDate,$_endDate,$_lowerAmount,$_upperAmount,$paymentStatus,$_tradingType,$_transNo)
     {
         // 如果调用java平台的hessian服务 需要指定你传递参数的类型,特别是整形和字符串.
         $_url=$this->url.'/paymentapi/paymentApi!listPaymentTrading.action';
-        $_params =json_encode(array("requestObject"=>$_requestObject,"queryParams"=> $_queryParams,"querySorts"=> $_querySorts,"keyword"=> $_keyword,"skip"=> $_skip,"limit"=> $_limit,"startDate"=> $_startDate,"endDate"=> $_endDate,"lowerAmount"=> $_lowerAmount,"upperAmount"=> $_upperAmount,"tradingStatus"=> $_tradingStatus,"tradingType"=> $_tradingType,"transNo"=> $_transNo));
+        $_params =json_encode(array("requestObject"=>$_requestObject,"queryParams"=> $_queryParams,"querySorts"=> $_querySorts,"keyword"=> $_keyword,"skip"=> $_skip,"limit"=> $_limit,"startDate"=> $_startDate,"endDate"=> $_endDate,"lowerAmount"=> $_lowerAmount,"upperAmount"=> $_upperAmount,"paymentStatus"=> $paymentStatus,"tradingType"=> $_tradingType,"transNo"=> $_transNo));
         $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
         return $resultObject;
     }
