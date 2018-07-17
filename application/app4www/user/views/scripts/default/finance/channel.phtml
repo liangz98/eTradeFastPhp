@@ -1,384 +1,358 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<title>快移</title>
-<meta name="description" content="">
-<meta name="keywords" content="">
-<link href="/ky/css/base.css" rel="stylesheet">
-<link href="/ky/css/style.css" rel="stylesheet">
- <link href="/ky/css/finance.css" rel="stylesheet">
-<link href="/ky/css/finance-search.css" rel="stylesheet">
-<!--<link href="/ky/css/finance-search.css" rel="stylesheet">-->
-<!--<script type="text/javascript" src="/ky/js/jquery.js"></script>-->
-<!--<script type="text/javascript" src="/ky/js/www.js"></script>-->
-<!--    <script type="text/javascript" src="/ky/js/finance-search.js"></script>-->
-<style>
-    .cn_cont_b  p {width: 249px; padding-left: 25px;line-height: 72px;display: inline-block;float: left;font-size: 16px;}
-    .cn_cont_b span{margin-left: 10px;}
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+	<title>快移</title>
+    <link href="/ky/css/layouts/base.css" rel="stylesheet">
 
-    .chl li{  float: left ; height: 24px;  width: 569px;text-align: center;font-size: 14px; padding-top: 5px;}
-    #lion {
-        border-top: 2px solid #f0ad4e; border-left:1px solid #cccccc; width: 571px;
-        background-color: #f7f7f7;
-        border-right: 1px solid #cccccc;
-    }
-    .ic_table{
-       /* height: 150px;*/ width: 1108px;
-        /*border-bottom:#cccccc 1px solid ;*/
-        /*border-left:#cccccc 1px solid ;*/
-        /*border-right:#cccccc 1px solid ;*/
-        border:#cccccc 1px solid;
-        padding: 16px 16px;
-        background-color: #f7f7f7;margin-bottom: 30px;
+    <link href="/ky/css/settle/base.css" rel="stylesheet">
+    <link href="/ky/css/settle/style.css" rel="stylesheet">
 
-    }
-    .WdateDiv .MTitle{background-color: #428bca !important;}
-    .WdateDiv .menuOn {
-        background-color:  #428bca !important;
-    }
-    input#dpOkInput{display: none;}
-    .chl{background-color: #ffffff ;width: 1142px;height: 29px;}
-    .f23{font-size: 30px;}
-    .f116{font-size: 22px;}
-</style>
-    <script type="text/javascript" src="/ky/js/jquery.js"></script>
-    <script type="text/javascript" src="/ky/js/seed.form.js"></script>
-    <script type="text/javascript" src="/ky/js/jquery.form.js"></script>
-    <script type="text/javascript" src="/ky/js/www.js"></script>
-    <script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
-   <script type="text/javascript" src="/ky/js/echarts.js"></script>
-
-    <script type="text/javascript" src="http://echarts.baidu.com/echarts2/doc/example/www/js/echarts.js"></script>
-    <script type="text/javascript" src="/ky/layer-v3.1.1/layer.js"></script>
-    <script type="text/javascript" src="/ky/js/finance-search.js"></script>
-    <script type="text/javascript" src="/ky/pretty-checkbox/js/jquery-labelauty.js"></script>
-    <script type="text/javascript" src="/ky/js/echarts.simple.min.js"></script>
+    <link href="/ky/css/finance.css" rel="stylesheet">
+    <link href="/ky/css/finance-search.css" rel="stylesheet">
 </head>
 <body>
-<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
-<div class="o_content_wrap w1200 m0a clearfix">
-	<div class="o_tab" style="padding-left: 30px;">
-        <p class="o_tit"><!--金融中心--><?php echo $this->translate('Finance_index');?></p>
-    </div>
-    <div class="finance_box clearfix">
 
-        <ul class="chl">
-            <a href="/user/finance/channel/crnCode/CNY"><li id="<?php echo  ($this->crnCode == 'CNY') ? 'lion' :''?>"><span>CNY</span></li></a>
-            <a href="/user/finance/channel/crnCode/USD"><li id="<?php echo  ($this->crnCode == 'USD') ? 'lion' :''?>"><span>USD</span></li></a>
-        </ul>
-        <div class="ic_table" style="">
-            <div class="ifc_cn" style="">
-                <span class="line3"></span>
-                <table class="ifc_cnv_table f16 f116" width="600">
-                    <tbody>
-                    <tr>
-                        <th><!--累计收益--><?php echo $this->translate('gains');?></th>
-                        <th><!--累计投资金额--><?php echo $this->translate('invested');?></th>
-                        <th><!--实际平均收益率--><?php echo $this->translate('arr');?></th>
-                    </tr>
-                    <tr class="f23">
-                        <td><?php echo   $this->cal['gains'];?></td>
-                        <td><?php echo   $this->cal['invested'];?></td>
-                        <td><?php echo  $this->cal['arr'];?></td>
-                    </tr>
-                    </tbody>
-                </table>
-                <table class="ifc_cnv_table" width="">
-                    <tbody>
-                    <tr>
-                        <th><?php echo $this->translate('Finance_operating');?><!--当前再投资金--></th>
-                        <td>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo  $this->cal['operatingAmount'];?></td>
-                    </tr>
-                    <tr>
-                        <th><?php echo $this->translate('Finance_available');?><!--可用资金--></th>
-                        <td>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo  $this->cal['availableAmount'];?></td>
-                    </tr>
-                    <tr>
-                        <th><?php echo $this->translate('Finance_done');?><!--已完成--></th>
-                        <td>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo  $this->cal['done']?></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div id="echarts"><input id="Ddl_Year" type="text" runat="server"  onfocus="WdatePicker({isShowClear:false,isShowToday:false,readOnly:true,skin:'default',dateFmt:'yyyy'})" class="Wdate" style=" margin-top:20px;float:right;width:185px;"/>
-            <div id="ifc_zx"  style="height: 400px;width: 1100px;margin-left: -30px;" >
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
 
-            </div>
-            </div>
-            <script>
-                /*$("#Ddl_Year").val(dateFormat(new Date(), "yyyy"));*/
-                var myChart = echarts.init(document.getElementById('ifc_zx'));
-                option = {
-                     title : {
-                         text: '',
-                         subtext: ''
-                     },
-                     tooltip : {
-                         trigger: 'item',
-                         formatter: "{a} <br/>{b} : {c} "
-                     },
-                     legend: {
-                         data:['收益曲线']
-                     },
-                     grid: {
-                         width: '100%',
-                         borderWidth:'0'
-                     },
-                     calculable : true,
-                     xAxis : [
-                         {
-                             type : 'category',
-                             axisLabel:{
-                                 show: true,
-                                 formatter: null,
-                                 textStyle: {
-                                     color: '#ccc'
-                                 }
-                             },
-                             axisTick:{
-                                 show: false},
-                             axisLine:{
-                                 show:true,
-                                 lineStyle: {
-                                 color:'#ccc',
-                                 width: 1
-                             }},
-                             splitLine:{show: false},//去除网格线
-                             boundaryGap : false,
-                             data : ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月']
-                         }
-                     ],
-                     yAxis : [
-                         {
-                             type : 'value',
-                             axisTick:{
-                                 show: false},
-                             axisLabel:{show:false},
-                             axisLine:{show:false},
-                             splitLine:{show: false}//去除网格线
+<div class="container-fluid index-body">
+	<div class="container">
+		<div class="row">
 
-                         }
-                     ],
-                     series : [
-                         {
-                             name:'收益',
-                             type:'line',
-                             data:[11, 6, 15, 13, 12, 19,18, 7 ],
-                             markPoint : {
-                                 data : []
-                             },
-                             symbolSize:5,
-                             itemStyle : {
-                                 normal : {
-                                     color:'#fff',
-                                     label : {show: true},
-                                     borderColor:'#5cb85c',
-                                     lineStyle:{ color: "#ff6600"  //连线颜色
-                                     }
-                                 }
-                             },
-                             markLine : {
-                                 data : []
-                             }
-                         }
-                     ]
-                 };
+            <div class="o_content_wrap w1200 m0a clearfix">
+                <div class="o_tab" style="padding-left: 30px;">
+                    <p class="o_tit"><!--金融中心--><?php echo $this->translate('Finance_index');?></p>
+                </div>
+                <div class="finance_box clearfix">
 
-                myChart.setOption(option);
-            </script>
-        </div>
-        <div class="fin-search jyTable">
-            <div class="clearfix">
-                <ul class="title title1 left">
-                    <li class='cur'><!--进行中--><?php echo $this->translate('Finance_ING');?></li>
-                    <li><!--历史--><?php echo $this->translate('history');?></li>
-<!--                    <li><!--历史2--><?php //echo $this->translate('历史2');?><!--</li>-->
-                </ul>
-            </div>
-            <div class='zong' style="display: block;height: 250px !important;" id="panel">
-                <div class="list list1">
-                    <div class="tabCon">
-                        <div id="s1">
-                            <form action="/user/finance/channel" method="post">
-                                <dl class="mt10 fl w">
-                                    <dt class="fl"> <!--金融项目号--><?php echo $this->translate('finance').$this->translate('Finance_itermNo');?></dt>
-                                    <dd><input class="st_input_f" type="text" name="factoringNo"></dd>
-                                </dl>
-                                <dl class="mt10 fl w">
-                                    <dt class="fl"> <!--预计收益日--><?php echo $this->translate('yjsyr');?></dt>
-                                    <script language="javascript" type="text/javascript" src="/ky/My97DatePicker/WdatePicker.js"></script>
-                                    <dd><input class="st_input_f" type="text" name="startDate" tabindex="1" onfocus="WdatePicker({maxDate:'%y-%M-%d'})">
-                                        -<input class="st_input_f"  type="text" name="endDate" tabindex="1" onfocus="WdatePicker({maxDate:'%y-%M-%d'})">
-                                    </dd>
-                                </dl>
-                                <dl class="mt10 fl w" >
-                                    <dt class="fl"><!--货币--><?php echo $this->translate('currency');?></dt>
-                                    <input type="hidden" name="crnCode" id="hp" value="<?php echo $this->crnCode;?>" >
-                                    <?php if($this->crnCode == 'USD') :?>
-                                    <dd>&nbsp;&nbsp;&nbsp;<span style="color: #e8811a">USD</span>&nbsp;&nbsp;&nbsp;<span>CNY</span></dd>
-                                    <?php else:?>
-                                        <dd>&nbsp;&nbsp;&nbsp;<span>USD</span>&nbsp;&nbsp;&nbsp;<span style="color: #e8811a">CNY</span></dd>
-                                    <?php endif;?>
-                                </dl>
-                                <dl class="mt10 fl w">
-                                    <dt class="fl"> <!--投资金额--><?php echo $this->translate('loanAmount');?></dt>
-                                    <dd><input class="st_input_f" type="text"  onkeyup="minNumber(this)"  placeholder="0.00" name="lowerAmount">-
-                                        <input class="st_input_f" type="text"  onkeyup="maxNumber(this)"  placeholder="0.00" name="upperAmount">
-                                    </dd>
-                                </dl>
-
-                                <dl class="mt10 fl">
-                                    <dd class="fl ml150"><input class="st_btn" style="border-radius:0;" type="submit" value="<?php echo $this->translate('confirm');?>"></dd><!--确定-->
-                                    <dd class="fl"><input style="background: #ccc;border-radius:0;" class="st_btn" type="reset" name="reset" value="<?php echo $this->translate('clearing');?>"></dd><!--清空-->
-                                </dl>
-                            </form>
+                    <ul class="chl">
+                        <a href="/user/finance/channel/crnCode/CNY"><li id="<?php echo  ($this->crnCode == 'CNY') ? 'lion' :''?>"><span>CNY</span></li></a>
+                        <a href="/user/finance/channel/crnCode/USD"><li id="<?php echo  ($this->crnCode == 'USD') ? 'lion' :''?>"><span>USD</span></li></a>
+                    </ul>
+                    <div class="ic_table" style="">
+                        <div class="ifc_cn" style="">
+                            <span class="line3"></span>
+                            <table class="ifc_cnv_table f16 f116" width="600">
+                                <tbody>
+                                <tr>
+                                    <th><!--累计收益--><?php echo $this->translate('gains');?></th>
+                                    <th><!--累计投资金额--><?php echo $this->translate('invested');?></th>
+                                    <th><!--实际平均收益率--><?php echo $this->translate('arr');?></th>
+                                </tr>
+                                <tr class="f23">
+                                    <td><?php echo   $this->cal['gains'];?></td>
+                                    <td><?php echo   $this->cal['invested'];?></td>
+                                    <td><?php echo  $this->cal['arr'];?></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="ifc_cnv_table" width="">
+                                <tbody>
+                                <tr>
+                                    <th><?php echo $this->translate('Finance_operating');?><!--当前再投资金--></th>
+                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo  $this->cal['operatingAmount'];?></td>
+                                </tr>
+                                <tr>
+                                    <th><?php echo $this->translate('Finance_available');?><!--可用资金--></th>
+                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo  $this->cal['availableAmount'];?></td>
+                                </tr>
+                                <tr>
+                                    <th><?php echo $this->translate('Finance_done');?><!--已完成--></th>
+                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo  $this->cal['done']?></td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
+                        <div id="echarts"><input id="Ddl_Year" type="text" runat="server"  onfocus="WdatePicker({isShowClear:false,isShowToday:false,readOnly:true,skin:'default',dateFmt:'yyyy'})" class="Wdate" style=" margin-top:20px;float:right;width:185px;"/>
+                            <div id="ifc_zx"  style="height: 400px;width: 1100px;margin-left: -30px;" >
+
+                            </div>
+                        </div>
+                        <script>
+                            /*$("#Ddl_Year").val(dateFormat(new Date(), "yyyy"));*/
+                            var myChart = echarts.init(document.getElementById('ifc_zx'));
+                            option = {
+                                title : {
+                                    text: '',
+                                    subtext: ''
+                                },
+                                tooltip : {
+                                    trigger: 'item',
+                                    formatter: "{a} <br/>{b} : {c} "
+                                },
+                                legend: {
+                                    data:['收益曲线']
+                                },
+                                grid: {
+                                    width: '100%',
+                                    borderWidth:'0'
+                                },
+                                calculable : true,
+                                xAxis : [
+                                    {
+                                        type : 'category',
+                                        axisLabel:{
+                                            show: true,
+                                            formatter: null,
+                                            textStyle: {
+                                                color: '#ccc'
+                                            }
+                                        },
+                                        axisTick:{
+                                            show: false},
+                                        axisLine:{
+                                            show:true,
+                                            lineStyle: {
+                                                color:'#ccc',
+                                                width: 1
+                                            }},
+                                        splitLine:{show: false},//去除网格线
+                                        boundaryGap : false,
+                                        data : ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月']
+                                    }
+                                ],
+                                yAxis : [
+                                    {
+                                        type : 'value',
+                                        axisTick:{
+                                            show: false},
+                                        axisLabel:{show:false},
+                                        axisLine:{show:false},
+                                        splitLine:{show: false}//去除网格线
+
+                                    }
+                                ],
+                                series : [
+                                    {
+                                        name:'收益',
+                                        type:'line',
+                                        data:[11, 6, 15, 13, 12, 19,18, 7 ],
+                                        markPoint : {
+                                            data : []
+                                        },
+                                        symbolSize:5,
+                                        itemStyle : {
+                                            normal : {
+                                                color:'#fff',
+                                                label : {show: true},
+                                                borderColor:'#5cb85c',
+                                                lineStyle:{ color: "#ff6600"  //连线颜色
+                                                }
+                                            }
+                                        },
+                                        markLine : {
+                                            data : []
+                                        }
+                                    }
+                                ]
+                            };
+
+                            myChart.setOption(option);
+                        </script>
                     </div>
-                    <div class="tabCon">
-                        <div id="s2">
-                            <form action="#" method="post">
+                    <div class="fin-search jyTable">
+                        <div class="clearfix">
+                            <ul class="title title1 left">
+                                <li class='cur'><!--进行中--><?php echo $this->translate('Finance_ING');?></li>
+                                <li><!--历史--><?php echo $this->translate('history');?></li>
+                                <!--                    <li><!--历史2--><?php //echo $this->translate('历史2');?><!--</li>-->
+                            </ul>
+                        </div>
+                        <div class='zong' style="display: block;height: 250px !important;" id="panel">
+                            <div class="list list1">
+                                <div class="tabCon">
+                                    <div id="s1">
+                                        <form action="/user/finance/channel" method="post">
+                                            <dl class="mt10 fl w">
+                                                <dt class="fl"> <!--金融项目号--><?php echo $this->translate('finance').$this->translate('Finance_itermNo');?></dt>
+                                                <dd><input class="st_input_f" type="text" name="factoringNo"></dd>
+                                            </dl>
+                                            <dl class="mt10 fl w">
+                                                <dt class="fl"> <!--预计收益日--><?php echo $this->translate('yjsyr');?></dt>
+                                                <script language="javascript" type="text/javascript" src="/ky/My97DatePicker/WdatePicker.js"></script>
+                                                <dd><input class="st_input_f" type="text" name="startDate" tabindex="1" onfocus="WdatePicker({maxDate:'%y-%M-%d'})">
+                                                    -<input class="st_input_f"  type="text" name="endDate" tabindex="1" onfocus="WdatePicker({maxDate:'%y-%M-%d'})">
+                                                </dd>
+                                            </dl>
+                                            <dl class="mt10 fl w" >
+                                                <dt class="fl"><!--货币--><?php echo $this->translate('currency');?></dt>
+                                                <input type="hidden" name="crnCode" id="hp" value="<?php echo $this->crnCode;?>" >
+                                                <?php if($this->crnCode == 'USD') :?>
+                                                    <dd>&nbsp;&nbsp;&nbsp;<span style="color: #e8811a">USD</span>&nbsp;&nbsp;&nbsp;<span>CNY</span></dd>
+                                                <?php else:?>
+                                                    <dd>&nbsp;&nbsp;&nbsp;<span>USD</span>&nbsp;&nbsp;&nbsp;<span style="color: #e8811a">CNY</span></dd>
+                                                <?php endif;?>
+                                            </dl>
+                                            <dl class="mt10 fl w">
+                                                <dt class="fl"> <!--投资金额--><?php echo $this->translate('loanAmount');?></dt>
+                                                <dd><input class="st_input_f" type="text"  onkeyup="minNumber(this)"  placeholder="0.00" name="lowerAmount">-
+                                                    <input class="st_input_f" type="text"  onkeyup="maxNumber(this)"  placeholder="0.00" name="upperAmount">
+                                                </dd>
+                                            </dl>
 
-                                <dl class="mt10 fl w">
-                                    <dt class="fl"> <!--金融项目号--><?php echo $this->translate('finance').$this->translate('Finance_itermNo');?></dt>
-                                    <dd><input class="st_input_f" type="text" name="factoringNo"></dd>
-                                </dl>
+                                            <dl class="mt10 fl">
+                                                <dd class="fl ml150"><input class="st_btn" style="border-radius:0;" type="submit" value="<?php echo $this->translate('confirm');?>"></dd><!--确定-->
+                                                <dd class="fl"><input style="background: #ccc;border-radius:0;" class="st_btn" type="reset" name="reset" value="<?php echo $this->translate('clearing');?>"></dd><!--清空-->
+                                            </dl>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="tabCon">
+                                    <div id="s2">
+                                        <form action="#" method="post">
 
-                                <dl class="mt10 fl w">
-                                    <dt class="fl"> <!--预计收益日--><?php echo $this->translate('yjsyr');?></dt>
-                                    <script language="javascript" type="text/javascript" src="/ky/My97DatePicker/WdatePicker.js"></script>
-                                    <dd><input class="st_input_f" type="text" name="startDate" tabindex="1" onfocus="WdatePicker({minDate: '${minDate}', maxDate: '${maxDate}'})">
-                                        -<input class="st_input_f"  type="text" name="endDate" tabindex="1" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'stimeParam\')}', maxDate: '${maxDate}' })">
-                                    </dd>
-                                </dl>
-                                <dl class="mt10 fl w" >
-                                    <dt class="fl"> <!--货币--><?php echo $this->translate('currency');?></dt>
-                                    <input type="hidden" name="crnCode" id="hp" value="<?php echo $this->crnCode;?>" >
-                                    <?php if($this->crnCode == 'USD') :?>
-                                        <dd>&nbsp;&nbsp;&nbsp;<span style="color: #e8811a">USD</span>&nbsp;&nbsp;&nbsp;<span>CNY</span></dd>
-                                    <?php else:?>
-                                        <dd>&nbsp;&nbsp;&nbsp;<span>USD</span>&nbsp;&nbsp;&nbsp;<span style="color: #e8811a">CNY</span></dd>
-                                    <?php endif;?>
-                                </dl>
-                                <dl class="mt10 fl w">
-                                    <dt class="fl"> <!--投资金额--><?php echo $this->translate('loanAmount');?>></dt>
-                                    <dd><input class="st_input_f" type="text" name="lowerAmount">
-                                        -
-                                        <input class="st_input_f" type="text" name="upperAmount">
-                                    </dd>
-                                </dl>
-                                <dl class="mt10 fl">
-                                    <dd class="fl ml150"><input class="st_btn" style="border-radius:0;" type="submit" value="<?php echo $this->translate('confirm');?>"></dd><!--确定-->
-                                    <dd class="fl"><input style="background: #ccc;border-radius:0;" class="st_btn" type="reset" name="reset" value="<?php echo $this->translate('clearing');?>"></dd><!--清空-->
-                                </dl>
-                            </form>
+                                            <dl class="mt10 fl w">
+                                                <dt class="fl"> <!--金融项目号--><?php echo $this->translate('finance').$this->translate('Finance_itermNo');?></dt>
+                                                <dd><input class="st_input_f" type="text" name="factoringNo"></dd>
+                                            </dl>
+
+                                            <dl class="mt10 fl w">
+                                                <dt class="fl"> <!--预计收益日--><?php echo $this->translate('yjsyr');?></dt>
+                                                <script language="javascript" type="text/javascript" src="/ky/My97DatePicker/WdatePicker.js"></script>
+                                                <dd><input class="st_input_f" type="text" name="startDate" tabindex="1" onfocus="WdatePicker({minDate: '${minDate}', maxDate: '${maxDate}'})">
+                                                    -<input class="st_input_f"  type="text" name="endDate" tabindex="1" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'stimeParam\')}', maxDate: '${maxDate}' })">
+                                                </dd>
+                                            </dl>
+                                            <dl class="mt10 fl w" >
+                                                <dt class="fl"> <!--货币--><?php echo $this->translate('currency');?></dt>
+                                                <input type="hidden" name="crnCode" id="hp" value="<?php echo $this->crnCode;?>" >
+                                                <?php if($this->crnCode == 'USD') :?>
+                                                    <dd>&nbsp;&nbsp;&nbsp;<span style="color: #e8811a">USD</span>&nbsp;&nbsp;&nbsp;<span>CNY</span></dd>
+                                                <?php else:?>
+                                                    <dd>&nbsp;&nbsp;&nbsp;<span>USD</span>&nbsp;&nbsp;&nbsp;<span style="color: #e8811a">CNY</span></dd>
+                                                <?php endif;?>
+                                            </dl>
+                                            <dl class="mt10 fl w">
+                                                <dt class="fl"> <!--投资金额--><?php echo $this->translate('loanAmount');?>></dt>
+                                                <dd><input class="st_input_f" type="text" name="lowerAmount">
+                                                    -
+                                                    <input class="st_input_f" type="text" name="upperAmount">
+                                                </dd>
+                                            </dl>
+                                            <dl class="mt10 fl">
+                                                <dd class="fl ml150"><input class="st_btn" style="border-radius:0;" type="submit" value="<?php echo $this->translate('confirm');?>"></dd><!--确定-->
+                                                <dd class="fl"><input style="background: #ccc;border-radius:0;" class="st_btn" type="reset" name="reset" value="<?php echo $this->translate('clearing');?>"></dd><!--清空-->
+                                            </dl>
+                                        </form>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <p class="slide">
+                            <a href="javascript:;" class="btn-slide active"><!--收起--><?php echo $this->translate('shouqi');?></a>
+                        </p>
+                    </div>
+
+                    <div class="cn_box" id="cn_box">
+                        <div class="cn_change">
+                            <?php foreach ($this->list as $k => $v): ?>
+                                <div class="cn_cont" >
+                                    <div class="cn_cont_t">
+                                        <p><!--金融项目号--><?php echo $this->translate('factoringNo');?><span><?php echo $v['factoringNo']?></span></p>
+                                        <p><!--订单号--><?php echo $this->translate('orderNo');?><span><?php echo $v['orderNo']?></span></p>
+                                        <p><!--项目金额--><?php echo $this->translate('loanAmount');?><span><?php echo $v['crnCode']?>&nbsp;<?php echo $this->ShowToPrice($v['factoringActualFinancingAmount'])?></span></p>
+                                        <p><!--状态--><?php echo $this->translate('tradingStatus');?><span>
+                                    <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['CHANNEL_STATUS'], $v['channelStatus']); ?></span></p>
+                                        <a style="margin-left: -50px;" href="/user/finance/channelview/id/<?php echo $v['channelID']?>">
+                                            <span><!--详情--><?php echo $this->translate('Saltter_INF');?></span></a>
+                                    </div>
+                                    <div class="cn_cont_b">
+                                        <p><!--支付期限--><?php echo $this->translate('diffTime');?><span><?php echo $v['period']?>&nbsp;DAYS</span></p>
+                                        <p><!--投资金额--><?php echo $this->translate('financingAmount');?><span class="colorred"><?php echo $v['crnCode']?>&nbsp;<?php echo $this->ShowToPrice($v['financingAmount'])?></span></p>
+                                        <p><!--预期收益--><?php echo $this->translate('yq');?><span class="colorred"><?php echo $v['crnCode']?>&nbsp;<?php echo $this->ShowToPrice($v['interest'])?></span></p>
+                                        <p><!--预期收益日--><?php echo $this->translate('yqr');?><span class="colorred"><?php echo date("Y年m月d日",strtotime($v['expiryDate'],time()))?></span></p>
+                                    </div>
+                                </div>
+                            <?php endforeach;?>
                         </div>
                     </div>
 
                 </div>
             </div>
-            <p class="slide">
-                <a href="javascript:;" class="btn-slide active"><!--收起--><?php echo $this->translate('shouqi');?></a>
-            </p>
-        </div>
 
-        <div class="cn_box" id="cn_box">
-            <div class="cn_change">
-                <?php foreach ($this->list as $k => $v): ?>
-                        <div class="cn_cont" >
-                            <div class="cn_cont_t">
-                                <p><!--金融项目号--><?php echo $this->translate('factoringNo');?><span><?php echo $v['factoringNo']?></span></p>
-                                <p><!--订单号--><?php echo $this->translate('orderNo');?><span><?php echo $v['orderNo']?></span></p>
-                                <p><!--项目金额--><?php echo $this->translate('loanAmount');?><span><?php echo $v['crnCode']?>&nbsp;<?php echo $this->ShowToPrice($v['factoringActualFinancingAmount'])?></span></p>
-                                <p><!--状态--><?php echo $this->translate('tradingStatus');?><span>
-                                    <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['CHANNEL_STATUS'], $v['channelStatus']); ?></span></p>
-                                <a style="margin-left: -50px;" href="/user/finance/channelview/id/<?php echo $v['channelID']?>">
-                                    <span><!--详情--><?php echo $this->translate('Saltter_INF');?></span></a>
-                            </div>
-                            <div class="cn_cont_b">
-                                <p><!--支付期限--><?php echo $this->translate('diffTime');?><span><?php echo $v['period']?>&nbsp;DAYS</span></p>
-                                <p><!--投资金额--><?php echo $this->translate('financingAmount');?><span class="colorred"><?php echo $v['crnCode']?>&nbsp;<?php echo $this->ShowToPrice($v['financingAmount'])?></span></p>
-                                <p><!--预期收益--><?php echo $this->translate('yq');?><span class="colorred"><?php echo $v['crnCode']?>&nbsp;<?php echo $this->ShowToPrice($v['interest'])?></span></p>
-                                <p><!--预期收益日--><?php echo $this->translate('yqr');?><span class="colorred"><?php echo date("Y年m月d日",strtotime($v['expiryDate'],time()))?></span></p>
-                            </div>
-                        </div>
-                <?php endforeach;?>
-            </div>
-        </div>
-
-    </div>
+		</div>
+	</div>
 </div>
 
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script type="text/javascript" src="/ky/js/echarts.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/echarts2/doc/example/www/js/echarts.js"></script>
+<script type="text/javascript" src="/ky/js/finance-search.js"></script>
+<script type="text/javascript" src="/ky/pretty-checkbox/js/jquery-labelauty.js"></script>
+<script type="text/javascript" src="/ky/js/echarts.simple.min.js"></script>
 <script type="text/javascript">
-$(document).ready(function() {
-    $('#cn_tab').find('li').eq(0).addClass('on');
-    $('#cn_box').children('div').eq(0).css('display','block');
-    var $cn_tab=$('#cn_tab').find('li');
-    var $cn_box=$('#cn_box');
-    $cn_tab.each(function(i,item){
-        $(this).on('click',function(){
-            $cn_box.children('div').css('display','none');
-            $cn_box.children('div').eq(i).css('display','block');
-            $(this).addClass('on').siblings().removeClass('on');
+	$().ready(function() {
+        $('#cn_tab').find('li').eq(0).addClass('on');
+        $('#cn_box').children('div').eq(0).css('display','block');
+        var $cn_tab=$('#cn_tab').find('li');
+        var $cn_box=$('#cn_box');
+        $cn_tab.each(function(i,item){
+            $(this).on('click',function(){
+                $cn_box.children('div').css('display','none');
+                $cn_box.children('div').eq(i).css('display','block');
+                $(this).addClass('on').siblings().removeClass('on');
+            });
         });
-    });
-});
+	});
 
-function minNumber(obj){
+	$(function () {
 
-    //得到第一个字符是否为负号
-    var t = obj.value.charAt(0);
-    //先把非数字的都替换掉，除了数字和.
-    obj.value = obj.value.replace(/[^\d\.]/g,'');
-    //必须保证第一个为数字而不是.
-    obj.value = obj.value.replace(/^\./g,'');
-    //保证只有出现一个.而没有多个.
-    obj.value = obj.value.replace(/\.{2,}/g,'.');
-    //保证.只出现一次，而不能出现两次以上
-    obj.value = obj.value.replace('.','$#$').replace(/\./g,'').replace('$#$','.');
+	});
 
-    obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
-    var maxVal=$('#s1').find('input[name="upperAmount"]').val();
-    if(parseFloat(obj.value)>parseFloat(maxVal)){
-        obj.value=0;
+    function minNumber(obj){
+
+        //得到第一个字符是否为负号
+        var t = obj.value.charAt(0);
+        //先把非数字的都替换掉，除了数字和.
+        obj.value = obj.value.replace(/[^\d\.]/g,'');
+        //必须保证第一个为数字而不是.
+        obj.value = obj.value.replace(/^\./g,'');
+        //保证只有出现一个.而没有多个.
+        obj.value = obj.value.replace(/\.{2,}/g,'.');
+        //保证.只出现一次，而不能出现两次以上
+        obj.value = obj.value.replace('.','$#$').replace(/\./g,'').replace('$#$','.');
+
+        obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
+        var maxVal=$('#s1').find('input[name="upperAmount"]').val();
+        if(parseFloat(obj.value)>parseFloat(maxVal)){
+            obj.value=0;
+        }
+        //如果第一位是负号，则允许添加
+        if(t == '-'){
+
+            return;
+        }
+
     }
-    //如果第一位是负号，则允许添加
-    if(t == '-'){
+    function maxNumber(obj){
 
-        return;
+        //得到第一个字符是否为负号
+        var t = obj.value.charAt(0);
+        //先把非数字的都替换掉，除了数字和.
+        obj.value = obj.value.replace(/[^\d\.]/g,'');
+        //必须保证第一个为数字而不是.
+        obj.value = obj.value.replace(/^\./g,'');
+        //保证只有出现一个.而没有多个.
+        obj.value = obj.value.replace(/\.{2,}/g,'.');
+        //保证.只出现一次，而不能出现两次以上
+        obj.value = obj.value.replace('.','$#$').replace(/\./g,'').replace('$#$','.');
+
+        obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
+        var minVal=$('#s1').find('input[name="lowerAmount"]').val();
+        if(parseFloat(obj.value)<parseFloat(minVal)){
+            obj.value=minVal;
+        }
+        //如果第一位是负号，则允许添加
+        if(t == '-'){
+
+            return;
+        }
+
     }
-
-}
-function maxNumber(obj){
-
-    //得到第一个字符是否为负号
-    var t = obj.value.charAt(0);
-    //先把非数字的都替换掉，除了数字和.
-    obj.value = obj.value.replace(/[^\d\.]/g,'');
-    //必须保证第一个为数字而不是.
-    obj.value = obj.value.replace(/^\./g,'');
-    //保证只有出现一个.而没有多个.
-    obj.value = obj.value.replace(/\.{2,}/g,'.');
-    //保证.只出现一次，而不能出现两次以上
-    obj.value = obj.value.replace('.','$#$').replace(/\./g,'').replace('$#$','.');
-
-    obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
-    var minVal=$('#s1').find('input[name="lowerAmount"]').val();
-    if(parseFloat(obj.value)<parseFloat(minVal)){
-        obj.value=minVal;
-    }
-    //如果第一位是负号，则允许添加
-    if(t == '-'){
-
-        return;
-    }
-
-}
-
-
-
-
 </script>
 </body>
 </html>

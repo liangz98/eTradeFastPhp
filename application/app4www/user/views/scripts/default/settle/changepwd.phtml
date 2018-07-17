@@ -12,44 +12,44 @@
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
 
-<div class="container-fluid index-body">
+<div class="container-fluid index-body" style="margin-bottom: 180px;">
 	<div class="container">
 		<div class="row">
 
-            <div class="o_content_wrap w1200 m0a clearfix">
-
-                <div style="margin: 0 auto;" class="o_content w940">
-                    <div class="o_tab">
-                    </div>
-                    <div class="n_o_c_tit">
-                        <h4><!--修改支付密码--><?php echo $this->translate('Saltter_edit_pwd');?></h4>
-                    </div>
-                    <div class="u_info_ed_box">
-                        <form action="#" method="post" id="register_form">
-                            <div class="infobox" style="margin-left: 20%;">
-                                <dl class="infobox_pd">
-                                    <label class="labelbox"><!--登录密码--><?php echo $this->translate('loginPSD')?></label>
-                                    <input type="password"  name="longPSD" value=""/>
-                                </dl>
-                                <dl class="infobox_pd">
-                                    <label class="labelbox"><!--新 密 码--><?php echo $this->translate('newPSD');?></label>
-                                    <input type="password" onblur="checkpwd(this.value)" id="ecommpasswsd" name="newPSD" value=""/>
-                                    <span id="e_pwd" class="f12"></span>
-                                </dl>
-                                <dl class="infobox_pd">
-                                    <label class="labelbox"><!--确认密码--><?php echo $this->translate('confirmPSD');?></label>
-                                    <input type="password" onblur="checkRpwd(this.value)" id="ecommrpasswsd" name="confirmPSD" value=""/>
-                                    <span id="e_rpwd" class="f12"></span>
-                                </dl>
-                            </div>
-                            <p class="tc">
-                                <input class="acc_sbtn" type="submit"  value="<?php echo $this->translate('confirmed');?>"><!--确认-->
-                            </p>
-                        </form>
-                    </div>
-                </div>
+            <div class="page-header">
+                <h3><?php echo $this->translate('Saltter_edit_pwd'); ?></h3>
             </div>
 
+            <form action="#" method="post" id="register_form" class="form-horizontal">
+                <div class="form-group">
+                    <label for="longPSD" class="col-sm-2 col-md-offset-2 control-label"><?php echo $this->translate('loginPSD'); ?></label>
+                    <div class="col-sm-4">
+                        <input type="password" class="form-control" name="longPSD" id="longPSD" placeholder="">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="newPSD" class="col-sm-2 col-md-offset-2 control-label"><?php echo $this->translate('newPSD'); ?></label>
+                    <div class="col-sm-4">
+                        <input type="password" class="form-control" name="newPSD" id="newPSD" onblur="checkpwd(this.value)" placeholder="">
+                        <span id="e_pwd" class="f12"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPSD" class="col-sm-2 col-md-offset-2 control-label"><?php echo $this->translate('confirmPSD'); ?></label>
+                    <div class="col-sm-4">
+                        <input type="password" class="form-control" name="confirmPSD" id="confirmPSD" onblur="checkRpwd(this.value)" placeholder="">
+                        <span id="e_pwd" class="f12"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-4">
+                        <button type="submit" class="btn btn-warning btn-block"><?php echo $this->translate('confirmed'); ?></button>
+                    </div>
+                </div>
+            </form>
 		</div>
 	</div>
 </div>
