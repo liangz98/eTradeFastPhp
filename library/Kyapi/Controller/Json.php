@@ -1828,12 +1828,12 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
     public function   listFactoring($_requestObject,
                                     $_queryParams=null,
                                     $_querySorts=null,
-                                    $_keyword=null,$_skip,$_limit,$_factoringStatus,$_waitConfirmed=null,
-                                    $_waitPayServiceCharge=null,$_factoringNo,$_orderNo,$_crnCode,
-                                    $_startDate=null,
-                                    $_endDate=null,
-                                    $_lowerAmount=null,
-                                    $_upperAmount=null,$_creditor=null,$_debtor=null){
+                                    $_keyword=null,$_skip,$_limit, $factoringStatus, $factoringMode, $factoringNo,  $waitConfirmed=null,
+                                    $waitPayServiceCharge=null, $orderNo, $crnCode,
+                                    $startDate = null,
+                                    $endDate = null,
+                                    $lowerAmount = null,
+                                    $upperAmount = null){
         $_url=$this->url.'/factoringapi/factoringApi!listFactoring.action';
         $_params =json_encode(array("requestObject"=>$_requestObject,
                                      "queryParams"=>$_queryParams,
@@ -1841,18 +1841,17 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
                                      "keyword"=>$_keyword,
                                      "skip"=>$_skip,
                                      "limit"=>$_limit,
-                                     "factoringStatus"=>$_factoringStatus,
-                                     "waitConfirmed"=>$_waitConfirmed,
-                                     "waitPayServiceCharge"=>$_waitPayServiceCharge,
-                                     "factoringNo"=>$_factoringNo,
-                                     "orderNo"=>$_orderNo,
-                                     "crnCode"=>$_crnCode,
-                                     "startDate"=>$_startDate,
-                                     "endDate"=>$_endDate,
-                                     "lowerAmount"=>$_lowerAmount,
-                                     "upperAmount"=>$_upperAmount,
-                                     "creditor"=>$_creditor,
-                                     "debtor"=>$_debtor));
+                                     "factoringStatus"=>$factoringStatus,
+                                     "factoringMode" => $factoringMode,
+                                     "waitConfirmed"=>$waitConfirmed,
+                                     "waitPayServiceCharge"=>$waitPayServiceCharge,
+                                     "factoringNo"=>$factoringNo,
+                                     "orderNo"=>$orderNo,
+                                     "crnCode"=>$crnCode,
+                                     "startDate"=>$startDate,
+                                     "endDate"=>$endDate,
+                                     "lowerAmount"=>$lowerAmount,
+                                     "upperAmount"=>$upperAmount));
         $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
         return $resultObject;
     }

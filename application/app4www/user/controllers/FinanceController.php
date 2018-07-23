@@ -155,6 +155,67 @@ class FinanceController extends Kyapi_Controller_Action
         }
     }
 
+    public function factoringListAjaxAction() {
+        $msg = array();
+        $requestObject = $this->_requestObject;
+
+        $queryParams = array();
+        $orderStatus = strval($this->_request->getParam('orderStatus'));
+        if (empty($orderStatus)) {
+            $orderStatus = '04';
+        }
+        $queryParams['orderStatus'] = $orderStatus;
+
+        $querySorts = array();
+        // $querySorts['createTime'] = "DESC";
+
+        $keyword = $this->_request->getParam('keyword');
+        if (empty($keyword)) {
+            $keyword = null;
+        }
+
+        $limit = $this->_request->getParam('limit');
+        if (empty($limit) || $limit <= 0) {
+            $limit = 10;
+        }
+
+        $skip = $this->_request->getParam('skip');
+        if (empty($limit) || $limit <= 0) {
+            $skip = 0;
+        }
+
+        if (is_array($queryParams)) {
+            $queryParams = $this->arrayToObject($queryParams);
+        }
+
+        if (is_array($querySorts)) {
+            $querySorts = $this->arrayToObject($querySorts);
+        }
+
+        $factoringStatus = $this->_request->getParam('factoringStatus');
+        if (empty($factoringStatus)) {
+            $factoringStatus = '01';
+        }
+        $factoringMode = $this->_request->getParam('factoringMode');
+        $factoringNo = $this->_request->getParam('factoringNo');
+        $orderNo = $this->_request->getParam('orderNo');
+        $crnCode = $this->_request->getParam('crnCode');
+        $startDate = $this->_request->getParam('startDate');
+        $endDate = $this->_request->getParam('endDate');
+        $lowerAmount = $this->_request->getParam('lowerAmount');
+        $upperAmount = $this->_request->getParam('upperAmount');
+
+
+        $resultObject = $this->json->listFactoring($requestObject, $orderStatus, $querySorts, $keyword, $skip, $limit,
+            $factoringStatus, $factoringMode, $factoringNo, $waitConfirmed = false, $waitPayServiceCharge = false, $orderNo, $crnCode,
+            $startDate, $endDate, $lowerAmount, $upperAmount);
+        $msg["total"] = json_decode($resultObject)->extData->totalSize;
+        $msg["rows"] = json_decode($resultObject)->result;
+
+        echo json_encode($msg);
+        exit;
+    }
+
     /**异步请求时间详情**/
     public function datelistAction()
     {

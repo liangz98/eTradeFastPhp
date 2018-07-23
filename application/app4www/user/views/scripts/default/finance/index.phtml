@@ -16,158 +16,125 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="page-header">
-                            <h1>
-                                <?php echo $this->translate('Finance_index'); ?>
-                                <ul class="list-inline pull-right">
-                                    <li><button type="button" class="btn btn-warning">CNY</button></li>
-                                    <li><button type="button" class="btn btn-default">USD</button></li>
-                                </ul>
-                            </h1>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-5">
-                        <ul class="list-unstyled">
-                            <li>
-                                <dl class="dl-horizontal">
-                                    <dt><?php echo $this->translate('Finance_mouth_amount'); ?></dt>
-                                    <dd><?php echo $this->f_crnCode . '&nbsp;&nbsp;' . $this->ShowToPrice($this->MonthTotal); ?></dd>
-                                </dl>
-                            </li>
-                            <li>
-                                <dl class="dl-horizontal">
-                                    <dt><?php echo $this->translate('Finance_re_amount'); ?></dt>
-                                    <dd><?php echo $this->f_crnCode . '&nbsp;&nbsp;' . $this->ShowToPrice($this->TotalAmount); ?></dd>
-                                </dl>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-md-7">
-                        <div class="row">
-                            <div class="col-md-10">
-                                <?php echo $this->translate('Saltter_ETIFO'); ?>
-                            </div>
-                            <div class="col-md-2">
-                                <a href="#" data-toggle="tooltip" title="" data-original-title="<?php echo $this->translate('Saltter_credit'); ?>">
-                                    <?php echo $this->translate('Saltter_credit'); ?>
-                                </a>&nbsp;&nbsp;
-                                <span class="text-success"><?php echo $this->paymentData['creditRating']; ?></span>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="progress">
-                                    <?php
-                                    $percent = round($this->paymentData['creditBal'] / $this->paymentData['creditLimit'] * 100)."%";
-                                    ?>
-                                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em; width: <?php echo $percent; ?>;">
-                                        <span class=""><?php echo $percent; ?></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <?php echo $this->translate('Saltter_Available') . '&nbsp;&nbsp;' . $this->paymentData['creditBal'] . '/' . $this->paymentData['creditLimit']; ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <ul class="nav nav-tabs">
-                            <li role="presentation" class="active">
-                                <a href="#forActivate" aria-controls="forActivate" role="tab" data-toggle="tab"><?php echo $this->translate('forActivate'); ?></a>
-                            </li>
-                            <li role="presentation">
-                                <a href="#forActivate" aria-controls="forActivate" role="tab" data-toggle="tab"><?php echo $this->translate('forLoan'); ?></a>
-                            </li>
-                            <li role="presentation">
-                                <a href="#forActivate" aria-controls="forActivate" role="tab" data-toggle="tab"><?php echo $this->translate('waitPay'); ?></a>
-                            </li>
-                            <li role="presentation">
-                                <a href="#forActivate" aria-controls="forActivate" role="tab" data-toggle="tab"><?php echo $this->translate('rejected'); ?></a>
-                            </li>
-                            <li role="presentation">
-                                <a href="#forActivate" aria-controls="forActivate" role="tab" data-toggle="tab"><?php echo $this->translate('done'); ?></a>
-                            </li>
-                        </ul>
-
-                        <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane fade in active" id="forActivate">
-                                <form class="form-horizontal">
-                                    <div class="form-group">
-                                        <label for="factoringNo" class="col-sm-2 control-label"><?php echo $this->translate('finance') . $this->translate('Finance_itermNo'); ?></label>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="factoringNo" id="factoringNo" placeholder="Jane Doe">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="startDate" class="col-sm-2 control-label"><?php echo $this->translate('Finance_reDate'); ?></label>
-                                        <div class="col-sm-3">
-                                            <input type="date" class="form-control" name="startDate" id="startDate">
-                                        </div>
-                                        <div class="layui-form-mid">-</div>
-                                        <label for="endDate" class="sr-only">endDate</label>
-                                        <div class="col-sm-3">
-                                            <input type="date" class="form-control" name="endDate" id="endDate">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="orderNo" class="col-sm-2 control-label"><?php echo $this->translate('orderNO'); ?></label>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="orderNo" id="orderNo">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="lowerAmount" class="col-sm-2 control-label"><?php echo $this->translate('ordertotal'); ?></label>
-                                        <div class="col-sm-3">
-                                            <input type="number" class="form-control" name="lowerAmount" id="lowerAmount">
-                                        </div>
-                                        <div class="layui-form-mid">-</div>
-                                        <label for="upperAmount" class="sr-only">upperAmount</label>
-                                        <div class="col-sm-3">
-                                            <input type="number" class="form-control" name="upperAmount" id="upperAmount">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <div class="col-sm-offset-2 col-sm-4">
-                                            <button type="submit" class="btn btn-default">Send invitation</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-
-                            <div role="tabpanel" class="tab-pane fade" id="forLoan">
-                                forLoan...
-                            </div>
-
-                            <div role="tabpanel" class="tab-pane fade" id="waitPay">
-                                waitPay...
-                            </div>
-
-                            <div role="tabpanel" class="tab-pane fade" id="rejected">
-                                rejected...
-                            </div>
-
-                            <div role="tabpanel" class="tab-pane fade" id="done">
-                                done...
-                            </div>
-                        </div>
+                        Company Info
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="panel panel-default">
+            <div class="panel-body title-options">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <p class="form-control-static">项目模式</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <button type="button" class="btn btn-warning">全部</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default">订单融资</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default">生产融资</button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-1">
+                        <p class="form-control-static">债权货币</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <button type="button" class="btn btn-warning">全部</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default">USD</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default">CNY</button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-1">
+                        <p class="form-control-static">金额</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <button type="button" class="btn btn-warning">全部</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default">5000以下</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default">5000 至 2万</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default">2万 至 5万</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default">5万 至 10万</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default">10万 至 20万</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default">20万以上</button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-1">
+                        <p class="form-control-static">进度</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <button type="button" class="btn btn-warning">全部</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default">待确权</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default">待回款</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default">待放款</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default">已完成</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <ul class="list-unstyled resultList">
+            <li>
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-sm-11">
+                                <span>项目编号</span>&nbsp;&nbsp;
+                                <span>L20180720440710001-1</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span>订单编号</span>&nbsp;&nbsp;
+                                <span>PO20180720440710002</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span>债权</span>&nbsp;&nbsp;
+                                <span>LACHMI'S INT'L LTD.</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span>项目进度</span>&nbsp;&nbsp;
+                                <span>待确权</span>
+                            </div>
+                            <div class="col-sm-1">
+                                <p class="text-right">详情</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <span>应收帐款</span>&nbsp;&nbsp;
+                                <span>USD 61875.00</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>计划融资</span>&nbsp;&nbsp;
+                                <span>USD 31553.77 (CNY 205800.00)</span>
+                            </div>
+                            <div class="col-md-2">
+                                <span>保理期</span>&nbsp;&nbsp;
+                                <span>109 天</span>
+                            </div>
+                            <div class="col-md-3">
+                                <span>计划回款日</span>&nbsp;&nbsp;
+                                <span>2018-05-21</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li>
+                <div class="panel panel-success">
+                    <div class="panel-heading">Panel heading without title</div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                Info-2
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+
 	</div>
 </div>
 
@@ -181,7 +148,17 @@
 	});
 
 	$(function () {
-        $("[data-toggle='tooltip']").tooltip();
+        var factoringQuery = '/user/finance/factoring-list-ajax';
+        $.ajax({
+            type: "POST",
+            url: factoringQuery,
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (i, item) {
+                    console.log(item);
+                });
+            }
+        });
 	});
 </script>
 </body>

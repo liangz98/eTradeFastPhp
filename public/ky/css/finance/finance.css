@@ -1,3 +1,7 @@
 body {
     overflow-y:scroll;
 }
+
+.title-options .row {
+    margin-bottom: 15px;
+}
