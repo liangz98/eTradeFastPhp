@@ -40,114 +40,7 @@ class FinanceController extends Kyapi_Controller_Action
     /**列表页**/
     public function indexAction()
     {
-        $f1 = new Seed_Filter_Alnum();
-        $mod = $f1->filter($this->_request->getParam('mod'));
-        if (empty($mod)) {
-            $mod = "index";
-        }
 
-        $_requestOb = $this->_requestObject;
-        $crnCode = '';
-        if ($this->_request->isPost()) {
-            //获取附件ID
-            $crnCode = $this->_request->getParam('crnCode');
-        }
-        if ($this->_request->isGet()) {
-            //获取附件ID
-            $crnCode = $this->_request->getParam('code');
-        }
-        // 时间轴接口
-        $this->view->DeTime = [];
-        $DateTime = $this->json->listRepaymentPlanGroupByDay($_requestOb, $crnCode);
-        $existData = $this->objectToArray(json_decode($DateTime));
-        $DeTime = $existData['result'];
-        foreach ($existData['result'] as $k => $v) {
-            if ($k == 'crnCode') {
-                /* $this->view->DcrnCode=$v;修改 统一使用crnCode*/
-                $this->view->DcrnCode = empty($crnCode)?$this->view->crnCode:$crnCode;
-
-            } else {
-                $this->view->DeTime[$k] = $v;
-            }
-        }
-
-
-        //指定 月应还款金额\总还款额
-        if ($crnCode == null) {
-            $crnCode = $this->view->DcrnCode;
-        }
-        $MonthTotal = $this->json->getRepaymentTotalAmount($_requestOb, $crnCode);
-        $existData = $this->objectToArray(json_decode($MonthTotal));
-        $this->view->MonthTotal = $existData['result']['cur'];
-        $this->view->TotalAmount = $existData['result']['all'];
-        //;$this->view->f_crnCode = $existData['result']['crnCode'];修改 统一使用crnCode*/
-        $this->view->f_crnCode = $crnCode;
-
-        //信用额度
-        $paymentData = $this->json->paymentViewApi($_requestOb);
-        $existData = $this->objectToArray(json_decode($paymentData));
-        $this->view->paymentData = $paymenRs = $existData['result'];
-        //获取信用额度百分比
-        if ($paymenRs['creditLimit'] == '0') {
-            $this->view->jd = '0';
-        } else {
-            $this->view->jd = round($paymenRs['creditBal']) / round($paymenRs['creditLimit']) > 0 ? round(($paymenRs['creditBal']) / round($paymenRs['creditLimit']) * 100) : '0';
-        }
-
-        /*金融项目列表*/
-        /*待激活	待放款	待还款	不通过	完成	(factoringStatus值分别为：”01”、”11”、”12”、”04”、”05”，默认”01”)*/
-        $_finStatus = strval($this->_request->getParam('status'));
-        if (empty($_finStatus)) {
-            $_finStatus = '01';
-        }
-        $_startDate = $this->_request->getParam('startDate');
-
-        $_endDate = $this->_request->getParam('endDate');
-
-        $_lowerAmount = $this->_request->getParam('lowerAmount');
-        $_upperAmount = $this->_request->getParam('upperAmount');
-
-        $_factoringNo = $this->_request->getParam('factoringNo');
-        $_orderNo = $this->_request->getParam('orderNo');
-        $_listcrnCode = $this->_request->getParam('listcrnCode');
-        $_querySorts = $this->_request->getParam('querySorts');
-        $_type = $this->_request->getParam('type');
-
-        $_creditor = ($_type == 'creditor') ? $this->view->accountID : null;/*债券*/
-        $_debtor = ($_type == 'debtor') ? $this->view->accountID : null;/*债务*/
-        if (empty($_listcrnCode)) {
-            $_listcrnCode = null;
-        }
-        if (empty($_querySorts)) {
-            $_querySorts = null;
-        }
-
-        $_keyword = $this->_request->getParam('keyword');
-        if (empty($_keyword)) {
-            $_keyword = null;
-        }
-
-        $page = intval($this->_request->getParam('page'));
-        if ($page < 1) $page = 1;
-        $_limit = 5;
-        $_skip = $_limit * ($page - 1);
-        //项目列表
-        $listLoan = $this->json->listFactoring($this->_requestObject, $_queryP = null, $_querySorts = null,
-            $_keyword = null, $_skip, $_limit, $_factoringStatus = $_finStatus, $_waitConfirmed = false,
-            $_waitPayServiceCharge = false, $_factoringNo, $_orderNo, $_listcrnCode, $_startDate,
-            $_endDate, $_lowerAmount, $_upperAmount, $_creditor, $_debtor);
-
-        $existData = $this->objectToArray(json_decode($listLoan));
-        $this->view->listLoan = $existData['result'];
-        $this->view->status = $_finStatus;
-        /*  $file = "user/finance/" . $mod . "-" . $_finStatus;
-          $_limit = 5;
-          $pageObj = new Seed_Page($this->_request, $total, $_limit);
-          $this->view->page = $pageObj->getPageArray();
-          $this->view->page['pageurl'] = '/' . $file;
-          if ($page > $this->view->page['totalpage'])
-              $page = $this->view->page['totalpage'];
-          if ($page < 1) $page = 1;*/
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/finance/index.phtml");
             echo $content;
@@ -160,11 +53,6 @@ class FinanceController extends Kyapi_Controller_Action
         $requestObject = $this->_requestObject;
 
         $queryParams = array();
-        $orderStatus = strval($this->_request->getParam('orderStatus'));
-        if (empty($orderStatus)) {
-            $orderStatus = '04';
-        }
-        $queryParams['orderStatus'] = $orderStatus;
 
         $querySorts = array();
         // $querySorts['createTime'] = "DESC";
@@ -194,22 +82,66 @@ class FinanceController extends Kyapi_Controller_Action
 
         $factoringStatus = $this->_request->getParam('factoringStatus');
         if (empty($factoringStatus)) {
-            $factoringStatus = '01';
+            $factoringStatus = null;
+        } else {
+            if ($factoringStatus == 'all') {
+                $factoringStatus = null;
+            }
         }
         $factoringMode = $this->_request->getParam('factoringMode');
+        if (!empty($factoringMode)) {
+            if ($factoringMode == 'all') {
+                $factoringMode = null;
+            }
+        }
         $factoringNo = $this->_request->getParam('factoringNo');
         $orderNo = $this->_request->getParam('orderNo');
         $crnCode = $this->_request->getParam('crnCode');
+        if (!empty($crnCode)) {
+            if ($crnCode == 'all') {
+                $crnCode = null;
+            }
+        }
         $startDate = $this->_request->getParam('startDate');
+        if (empty($startDate)) {
+            $startDate = null;
+        }
         $endDate = $this->_request->getParam('endDate');
-        $lowerAmount = $this->_request->getParam('lowerAmount');
-        $upperAmount = $this->_request->getParam('upperAmount');
+        if (empty($endDate)) {
+            $endDate = null;
+        }
+
+        $lowerAmount = null;
+        $upperAmount = null;
+        $factoringAmount = $this->_request->getParam('factoringAmount');
+        if (!empty($factoringAmount)) {
+            if ($factoringAmount == 'A1') {
+                $lowerAmount = 0;
+                $upperAmount = 5000;
+            } else if ($factoringAmount == 'A2') {
+                $lowerAmount = 5000;
+                $upperAmount = 20000;
+            } else if ($factoringAmount == 'A3') {
+                $lowerAmount = 20000;
+                $upperAmount = 50000;
+            } else if ($factoringAmount == 'A4') {
+                $lowerAmount = 50000;
+                $upperAmount = 100000;
+            } else if ($factoringAmount == 'A5') {
+                $lowerAmount = 100000;
+                $upperAmount = 200000;
+            } else if ($factoringAmount == 'A6') {
+                $lowerAmount = 200000;
+            }
+        }
 
 
-        $resultObject = $this->json->listFactoring($requestObject, $orderStatus, $querySorts, $keyword, $skip, $limit,
+
+
+        $resultObject = $this->json->listFactoring($requestObject, $queryParams, $querySorts, $keyword, $skip, $limit,
             $factoringStatus, $factoringMode, $factoringNo, $waitConfirmed = false, $waitPayServiceCharge = false, $orderNo, $crnCode,
             $startDate, $endDate, $lowerAmount, $upperAmount);
-        $msg["total"] = json_decode($resultObject)->extData->totalSize;
+        $msg["totalPage"] = json_decode($resultObject)->extData->totalPage;
         $msg["rows"] = json_decode($resultObject)->result;
 
         echo json_encode($msg);

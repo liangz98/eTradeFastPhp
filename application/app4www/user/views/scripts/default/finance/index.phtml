@@ -29,9 +29,10 @@
                         <p class="form-control-static">项目模式</p>
                     </div>
                     <div class="col-sm-9">
-                        <button type="button" class="btn btn-warning">全部</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default">订单融资</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default">生产融资</button>
+                        <button type="button" class="btn btn-warning" data-type="factoringMode" data-value="all">全部</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default" data-type="factoringMode" data-value="RF">应收账款融资</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default" data-type="factoringMode" data-value="PF">生产融资</button>
+                        <input type="hidden" name="factoringMode" id="factoringMode" value="all">
                     </div>
                 </div>
 
@@ -40,9 +41,10 @@
                         <p class="form-control-static">债权货币</p>
                     </div>
                     <div class="col-sm-9">
-                        <button type="button" class="btn btn-warning">全部</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default">USD</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default">CNY</button>
+                        <button type="button" class="btn btn-warning" data-type="crnCode" data-value="all">全部</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default" data-type="crnCode" data-value="USD">USD</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default" data-type="crnCode" data-value="CNY">CNY</button>
+                        <input type="hidden" name="crnCode" id="crnCode" value="all">
                     </div>
                 </div>
 
@@ -51,13 +53,14 @@
                         <p class="form-control-static">金额</p>
                     </div>
                     <div class="col-sm-9">
-                        <button type="button" class="btn btn-warning">全部</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default">5000以下</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default">5000 至 2万</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default">2万 至 5万</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default">5万 至 10万</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default">10万 至 20万</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default">20万以上</button>
+                        <button type="button" class="btn btn-warning" data-type="factoringAmount" data-value="all">全部</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A1">5000以下</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A2">5000 至 2万</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A3">2万 至 5万</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A4">5万 至 10万</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A5">10万 至 20万</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A6">20万以上</button>
+                        <input type="hidden" name="factoringAmount" id="factoringAmount" value="all">
                     </div>
                 </div>
 
@@ -66,75 +69,18 @@
                         <p class="form-control-static">进度</p>
                     </div>
                     <div class="col-sm-9">
-                        <button type="button" class="btn btn-warning">全部</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default">待确权</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default">待回款</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default">待放款</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default">已完成</button>
+                        <button type="button" class="btn btn-warning" data-type="factoringStatus" data-value="all">全部</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default" data-type="factoringStatus" data-value="all">待确权</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default" data-type="factoringStatus" data-value="all">待回款</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default" data-type="factoringStatus" data-value="all">待放款</button>&nbsp;&nbsp;
+                        <button type="button" class="btn btn-default" data-type="factoringStatus" data-value="all">已完成</button>
+                        <input type="hidden" name="factoringStatus" id="factoringStatus" value="all">
                     </div>
                 </div>
             </div>
         </div>
 
-        <ul class="list-unstyled resultList">
-            <li>
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-sm-11">
-                                <span>项目编号</span>&nbsp;&nbsp;
-                                <span>L20180720440710001-1</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <span>订单编号</span>&nbsp;&nbsp;
-                                <span>PO20180720440710002</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <span>债权</span>&nbsp;&nbsp;
-                                <span>LACHMI'S INT'L LTD.</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <span>项目进度</span>&nbsp;&nbsp;
-                                <span>待确权</span>
-                            </div>
-                            <div class="col-sm-1">
-                                <p class="text-right">详情</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <span>应收帐款</span>&nbsp;&nbsp;
-                                <span>USD 61875.00</span>
-                            </div>
-                            <div class="col-md-4">
-                                <span>计划融资</span>&nbsp;&nbsp;
-                                <span>USD 31553.77 (CNY 205800.00)</span>
-                            </div>
-                            <div class="col-md-2">
-                                <span>保理期</span>&nbsp;&nbsp;
-                                <span>109 天</span>
-                            </div>
-                            <div class="col-md-3">
-                                <span>计划回款日</span>&nbsp;&nbsp;
-                                <span>2018-05-21</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </li>
-
-            <li>
-                <div class="panel panel-success">
-                    <div class="panel-heading">Panel heading without title</div>
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                Info-2
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </li>
-        </ul>
-
-
+        <ul class="list-unstyled resultList"></ul>
 	</div>
 </div>
 
@@ -148,18 +94,107 @@
 	});
 
 	$(function () {
+	    var $titleOptions = $(".title-options");
+        $titleOptions.find("button").click(function () {
+            var dataType = $(this).attr("data-type");
+            $("button[data-type='" + dataType + "']").removeClass("btn-warning").addClass("btn-default");
+            $(this).addClass("btn-warning");
+
+            $("#" + dataType).val($(this).attr("data-value"));
+            refreshResultList();
+        });
+
+        refreshResultList();
+	});
+
+	function refreshResultList() {
         var factoringQuery = '/user/finance/factoring-list-ajax';
         $.ajax({
             type: "POST",
             url: factoringQuery,
+            data: {
+                factoringMode: $("#factoringMode").val(),
+                crnCode: $("#crnCode").val(),
+                factoringAmount: $("#factoringAmount").val(),
+                factoringStatus: $("#factoringStatus").val()
+            },
             dataType: "json",
             success: function (data) {
-                $.each(data, function (i, item) {
-                    console.log(item);
-                });
+                console.log(data.rows.length);
+                var contents = '',
+                    $resultList = $(".resultList");
+
+                if (data.rows.length === 0) {
+                    contents += '<li>'
+                        + ' <div class="panel panel-success">'
+                        + '  <div class="panel-heading">'
+                        + '   <div class="row">'
+                        + '    <div class="col-sm-12">'
+                        + '     <p>&nbsp;</p>'
+                        + '    </div>'
+                        + '   </div>'
+                        + '  </div>'
+
+                        + '  <div class="panel-body">'
+                        + '   <div class="row">'
+                        + '    <div class="col-sm-12">'
+                        + '     <p>没有找到匹配的记录</p>'
+                        + '    </div>'
+                        + '   </div>'
+                        + '  </div>'
+                        + ' </div>'
+                        + '</li>';
+                } else {
+                    $.each(data.rows, function (i, item) {
+                        contents += '<li>'
+                            + ' <div class="panel panel-success">'
+                            + '  <div class="panel-heading">'
+                            + '   <div class="row">'
+                            + '    <div class="col-sm-11">'
+                            + '     <span>项目编号</span>&nbsp;&nbsp;'
+                            + '     <span>' + item.factoringNo + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+                            + '     <span>订单编号</span>&nbsp;&nbsp;'
+                            + '     <span>' + item.factoringNo + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+                            + '     <span>债权</span>&nbsp;&nbsp;'
+                            + '     <span>' + item.debtorCustomerName + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+                            + '     <span>项目进度</span>&nbsp;&nbsp;'
+                            + '     <span>' + item.factoringStatus + '</span>'
+                            + '    </div>'
+                            + '    <div class="col-sm-1">'
+                            + '     <p class="text-right">详情</p>'
+                            + '    </div>'
+                            + '   </div>'
+                            + '  </div>'
+
+                            + '  <div class="panel-body">'
+                            + '   <div class="row">'
+                            + '    <div class="col-sm-3">'
+                            + '     <span>应收帐款</span>&nbsp;&nbsp;'
+                            + '     <span>' + item.crnCode + ' 61875.00</span>'
+                            + '    </div>'
+                            + '    <div class="col-sm-4">'
+                            + '     <span>计划融资</span>&nbsp;&nbsp;'
+                            + '     <span>' + item.crnCode + ' 31553.77 (CNY 205800.00)</span>'
+                            + '    </div>'
+                            + '    <div class="col-sm-2">'
+                            + '     <span>保理期</span>&nbsp;&nbsp;'
+                            + '     <span>' + item.period + ' 天</span>'
+                            + '    </div>'
+                            + '    <div class="col-sm-3">'
+                            + '     <span>计划回款日</span>&nbsp;&nbsp;'
+                            + '     <span>2018-05-21</span>'
+                            + '    </div>'
+                            + '   </div>'
+                            + '  </div>'
+                            + ' </div>'
+                            + '</li>';
+                    });
+                }
+
+                $resultList.html(contents);
             }
         });
-	});
+    }
 </script>
 </body>
 </html>
