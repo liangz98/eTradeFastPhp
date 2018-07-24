@@ -1,191 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>快移</title>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-    <link href="/ky/css/base.css" rel="stylesheet">
-    <link href="/ky/css/style.css" rel="stylesheet">
-    <link href="/ky/css/finance.css" rel="stylesheet">
-    <script type="text/javascript" src="/ky/js/jquery.js"></script>
-    <script type="text/javascript" src="/ky/js/seed.form.js"></script>
-    <script type="text/javascript" src="/ky/js/jquery.form.js"></script>
-    <script type="text/javascript" src="/ky/js/www.js"></script>
-    <script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
-    <script type="text/javascript" src="/ky/js/echarts.simple.min.js"></script>
-    <script type="text/javascript" src="/ky/layer-v3.1.1/layer.js"></script>
-    <script>
-        $(document).ready(function () {
-
-            $("#fc_info_view").hover(function () {
-
-                $(".fc_info_list").css("display", "block");
-            }, function () {
-                $(".fc_info_list").css("display", "none");
-            });
-        });
-    </script>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+	<title>快移</title>
+    <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <link href="/ky/css/finance/finance.css" rel="stylesheet">
 </head>
 <body>
-<?php echo $this->render(SEED_WWW_TPL . '/header.phtml'); ?>
-<div class="o_content_wrap w1200 m0a clearfix">
 
-    <input type="hidden" id="finace_record" value="<?php echo $this->LoanView['repaymentPlanList']['recordID']; ?>">
-    <div class="finance_box clearfix">
-        <p class="ifcp_tit mt20"><!--项目详情--><?php echo $this->translate('Finance_info'); ?></p>
-        <div class="finance_md_left">
-            <table class="ifc_pro">
-                <tbody>
-                <tr>
-                    <th><!--批复金额--><?php echo $this->translate('Finance_pamount'); ?></th>
-                    <th><!--距债务方还款日--><?php echo $this->translate('Finance_reAmount'); ?></th>
-                    <th><!--计划费/息期--><?php echo $this->translate('Finance_rePlan'); ?></th>
-                    <th><!--本金--><?php echo $this->translate('Finance_bamount'); ?></th>
-                </tr>
-                <tr>
-                    <td class="f20"><?php echo $this->LoanView['financingCrnCode'] . '&nbsp;&nbsp;' . $this->LoanView['actualFinancingAmount']; ?></td>
-                    <td class="f20"><?php echo  /*$this->mathDate*/
-                            $this->LoanView['repaymentDaysDesc']; ?></td>
-                    <td class="f20"><?php echo date('Y.m.d', strtotime($this->LoanView['loanDate'])) . '-' . date('Y.m.d', strtotime($this->LoanView['expiryDate'])); ?></td>
-                    <td class="f12"><?php echo $this->LoanView['crnCode'] . '&nbsp;&nbsp;' . $this->LoanView['accountsReceivable'] . '<br>O/A' . '&nbsp;&nbsp;' . $this->LoanView['period'] . 'Days'; ?></td>
-                </tr>
-                </tbody>
-            </table>
-            <div class="txt_box">
-                <label class="fc_lab"><!--项目号--><?php echo $this->translate('Finance_itermNo'); ?></label>
-                <p style="color: #217FD5;"><?php echo $this->LoanView['factoringNo']; ?></p>
-            </div>
-            <div class="txt_box">
-                <label class="fc_lab"><!--受理公司--><?php echo $this->translate('Finance_slcom'); ?></label>
-                <p id="fc_info_p"><?php echo $this->LoanView['companyName']; ?></p>
-                <span id="fc_info_view"><!--查看信息--><?php echo $this->translate('viewInfo'); ?>
-                    <div class="fc_info_list" style="display: none;">
-                <div class="entry-trangle-top"></div>
-                <h3><?php echo $this->LoanView['companyName']; ?></h3>
-                <label><!--银行账号--><?php echo $this->translate('bankNO'); ?></label><p><?php echo $this->LoanView['companyBankAcctNo']; ?></p>
-                <label><!--开户名称--><?php echo $this->translate('Saltter_bankactname'); ?></label><p><?php echo $this->LoanView['companyName']; ?></p>
-                <label><!--银行名称--><?php echo $this->translate('accountBKname'); ?></label><p><?php echo $this->LoanView['companyBankName']; ?></p>
-            </div></span>
-            </div>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
 
-            <div class="txt_box">
-                <label class="fc_lab"><!--订单--><?php echo $this->translate('Finance_order'); ?></label>
-                <p style="color: #217FD5;"><?php echo $this->LoanView['orderNo']; ?></p>
-            </div>
+<div class="container-fluid index-body">
+	<div class="container">
+		<div class="row">
 
-        </div>
-
-        <p class="ifcp_tit" style="clear: both;"><!--项目计划--><?php echo $this->translate('Finance_project_plan'); ?><span
-                    class="f12 colorred fn">  <!--（*计划只做参考，实际情况视订单进度而定）--><?php echo $this->translate('Finance_colorred_tip02'); ?></span>
-        </p>
-
-        <div class="ifc_del">
-            <div class="ifc_item">
-                <?php if ($this->LoanView['accountsReceivable'] > 0): ?>
-                    <p><!--本金--><?php echo $this->translate('Finance_amount'); ?></p>
-                    <ul>
-                        <li class="ifc_item_li">
-                            <em class="<?php echo ($this->LoanView['accountsReceivable'] == $this->accountID) ? 'ifc_item_ok' : 'ifc_item_no'; ?>"></em>
-                            <div class="ifc_item_title">
-                                <!--项目本金--><?php echo $this->translate('Finance_accountsReceivable'); ?></div>
-                            <div class="ifc_item_price"><?php echo $this->LoanView['crnCode'] . '&nbsp;&nbsp;' . $this->LoanView['accountsReceivable']; ?></div>
-                            <div class="ifc_item_tips"><?php echo $this->LoanView['accountsReceivableDesc']; ?></div>
-                        </li>
-                    </ul>
-                <?php endif; ?>
-
-                    <?php if (count($this->planService) > 0): ?>
-                        <p><!--服务收费--><?php echo $this->translate('Finance_planService'); ?></p>
-                        <ul>
-                            <?php foreach ($this->planService as $k => $v): ?>
-                                <li class="ifc_item_li">
-                                    <em class="ifc_item_ok"></em>
-                                    <div class="ifc_item_title"><?php echo $v['title']; ?></div>
-                                    <div class="ifc_item_price"><?php echo $this->LoanView['crnCode'] . '&nbsp;&nbsp;' . $v['amount']; ?></div>
-                                    <div class="ifc_item_tips"><?php echo $v['tips']; ?></div>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
-                    <?php endif; ?>
-                    <?php if (count($this->planInterest) > 0): ?>
-                        <p><!--利息--><?php echo $this->translate('Finance_planInterest'); ?></p>
-                        <ul>
-                            <?php foreach ($this->planInterest as $k => $v): ?>
-                                <li class="ifc_item_li">
-                                    <em class="ifc_item_ok"></em>
-                                    <div class="ifc_item_title"><?php echo $v['title']; ?></div>
-                                    <div class="ifc_item_price"><?php echo $this->LoanView['crnCode'] . '&nbsp;&nbsp;' . $v['amount']; ?></div>
-                                    <div class="ifc_item_tips"><?php echo $v['tips']; ?></div>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
-                    <?php endif; ?>
-
-                <?php if (count($this->planRepayment) > 0): ?>
-                    <p><!--还款情况--><?php echo $this->translate('Finance_planRepayment'); ?></p>
-                    <ul>
-                        <?php foreach ($this->planRepayment as $k => $v): ?>
-                            <li class="ifc_item_li">
-                                <em class="ifc_item_ok"></em>
-                                <div class="ifc_item_title"><?php echo $v['title']; ?></div>
-                                <div class="ifc_item_price"><?php echo $this->LoanView['crnCode'] . '&nbsp;&nbsp;' . $v['amount']; ?></div>
-                                <div class="ifc_item_tips"><?php echo $v['tips']; ?></div>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                <?php endif; ?>
-            </div>
-            <div class="ifc_item_total">
-                <p><!--应付金额--><?php echo $this->translate('Finance_Receivable_amount'); ?></p>
-                <span><?php echo $this->LoanView['disPaymentAmount']; ?></span>
-                <input class="st_btn"
-                       style="margin:10px;float: right; border-radius:0;<?php if ($this->LoanView['allowShowPaymentBtn'] == false) {
-                           echo 'background:#ccc;';
-                       } ?>" type="submit" value="<?php echo $this->translate('Saltter_payment'); ?>"></div>
-        </div>
-
-        <p class="ifcp_tit mb20"><!--确权及费用--><?php echo $this->translate('Finance_doc_title'); ?></p>
-        <div class="ifc_comfirm">
-            <p class="tit"><i>1</i><!--提交确权资料--><?php echo $this->translate('Finance_doc_write'); ?>
-                <span class="f12 colorred fn">  <!--（*请点击下载下列资料，签署后在上传）--><?php echo $this->translate('Finance_tip01'); ?></span>
-            </p>
-            <div class="list">
-                <?php echo $this->ShowTopContract($this->contractList, $this->accountID, 'FTTA', $this->orders['client'], null); ?>
-
-            </div>
-
-            <p class="tit"><i>2</i><!--放款--><?php echo $this->translate('Finance_lending'); ?></p>
-            <div class="list">
-                <p><!--以下放款计划会根据实际变动作出调整--><?php echo $this->translate('Finance_tip04'); ?></p>
-                <?php if (is_array($this->LoanView['factoringLoanPlanList']) && count($this->LoanView['factoringLoanPlanList']) > 0): ?>
-                    <table class="ifc_del" style="height: 148px;">
-                        <tbody>
-                        <tr>
-                            <th></th>
-                            <th><!--日期--><?php echo $this->translate('date'); ?></th>
-                            <th><!--本次金额--><?php echo $this->translate('Finance_tamount'); ?></th>
-                            <th><!--类型--><?php echo $this->translate('type'); ?></th>
-                            <th><!--状态--><?php echo $this->translate('state'); ?></th>
-                        </tr>
-
-                        <?php foreach ($this->LoanView['factoringLoanPlanList'] as $k => $v): ?>
-                            <tr>
-                                <td width="5%"><em style="display: inline-block;" class="<?php echo ($v['loanStatus ']=='02')?'ifc_item_ok':'ifc_item_no';?>"></em></td>
-                                <td><?php echo date('Y-m-d', strtotime($v['actualLoanDate'])); ?></td>
-                                <td><?php echo $v['crnCode'] . '&nbsp;&nbsp;' . $v['loanAmount']; ?></td>
-                                <td><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['LOAN_TYPE'], $v['loanType']); ?></td>
-                                <td style="color: #86c224;"><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['LOAN_STATUS'], $v['loanStatus']); ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-
-                        </tbody>
-                    </table>   <?php endif; ?>
-            </div>
-        </div>
-    </div>
+		</div>
+	</div>
 </div>
-<?php echo $this->render(SEED_WWW_TPL . '/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script type="text/javascript">
+	$().ready(function() {
+
+	});
+
+	$(function () {
+
+	});
+</script>
 </body>
 </html>

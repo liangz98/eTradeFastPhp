@@ -88,6 +88,8 @@
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
+<script src="/ky/js/base64.js"></script>
+
 <script type="text/javascript">
 	$().ready(function() {
 
@@ -146,6 +148,8 @@
                         + '</li>';
                 } else {
                     $.each(data.rows, function (i, item) {
+                        var base = new Base64();
+                        var resultEnCode = base.encode(item.factoringID);
                         contents += '<li>'
                             + ' <div class="panel panel-success">'
                             + '  <div class="panel-heading">'
@@ -161,7 +165,7 @@
                             + '     <span>' + item.factoringStatus + '</span>'
                             + '    </div>'
                             + '    <div class="col-sm-1">'
-                            + '     <p class="text-right">详情</p>'
+                            + '     <p class="text-right"><a href="/user/finance/view?' + resultEnCode + '">详情</a></p>'
                             + '    </div>'
                             + '   </div>'
                             + '  </div>'

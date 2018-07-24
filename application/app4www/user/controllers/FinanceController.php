@@ -170,13 +170,11 @@ class FinanceController extends Kyapi_Controller_Action
     }
 
     /**详情页**/
-    public function viewAction()
-    {
-        //项目列表
+    public function viewAction() {
+        $queryString = $_SERVER['QUERY_STRING'];
+        $factoringID = base64_decode($queryString);
 
-        //获取附件ID
-        $_factoringID = $this->_request->getParam('id');
-        $LoanView = $this->json->getFactoringView($this->_requestObject, base64_decode($_factoringID));
+        $LoanView = $this->json->getFactoringView($this->_requestObject, $factoringID);
         $existData = $this->objectToArray(json_decode($LoanView));
         $this->view->LoanView = $LoanView = $existData['result'];
         $this->view->mathDate = ($LoanView['expiryDate'] == 0) ? 0 : date('Y-m-d', strtotime($LoanView['expiryDate'])) - date('Y-m-d', time());
@@ -227,7 +225,7 @@ class FinanceController extends Kyapi_Controller_Action
             /*融资保理利息*/
             if ($LoanView['hasLoanService']) {
                 if ($LoanView['interest'] > 0) {
-                    $this->view->planInterest[$j]['amount'] = $LoanView['interest']+$LoanView['graceInterest ']+$LoanView['overdueInterest'];
+                    $this->view->planInterest[$j]['amount'] = $LoanView['interest'] + $LoanView['graceInterest '] + $LoanView['overdueInterest'];
                     $this->view->planInterest[$j]['title'] = $this->view->translate('Finance_interest');/*融资保理利息*/
                     $this->view->planInterest[$j]['tips'] = $LoanView['interestDesc'];
                     $h = $h + 1;
@@ -244,7 +242,7 @@ class FinanceController extends Kyapi_Controller_Action
         /*还款计划*/
 
         $h = 0;
-        if (is_array($LoanView['factoringRepaymentPlanList'])&&count($LoanView['factoringRepaymentPlanList']) > 0) {
+        if (is_array($LoanView['factoringRepaymentPlanList']) && count($LoanView['factoringRepaymentPlanList']) > 0) {
             foreach ($LoanView['factoringRepaymentPlanList'] as $k => $v) {
                 $this->view->planRepayment[$k]['amount'] = $v['repaymentTotalAmount'];
                 $this->view->planRepayment[$k]['tips'] = date('Y-m-d', strtotime($v['actualDate']));
