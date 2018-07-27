@@ -5,6 +5,7 @@
 	<title>快移</title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/finance/finance.css" rel="stylesheet">
+    <link href="/ky/css/img-upload.css" rel="stylesheet">
 </head>
 <body>
 
@@ -12,9 +13,180 @@
 
 <div class="container-fluid index-body">
 	<div class="container">
-		<div class="row">
+        <div class="panel panel-default">
+            <div class="panel-body bg-color">
+                <div class="row text-white">
+                    <div class="col-sm-12 col-md-5">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="row span-margin">
+                                    <div class="col-md-12">
+                                        <p class="text-center">融资(日)利率</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="text-center span-font-size-30"><?php echo $this->LoanView['interestPercent'] * 100; ?> %</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row span-margin">
+                                    <div class="col-md-12">
+                                        <p class="text-center">逾期(日)利率</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="text-center span-font-size-30"><?php echo $this->LoanView['overdueInterestPercent'] * 100; ?> %</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row span-margin">
+                                    <div class="col-md-12">
+                                        <p class="text-center">宽限期(日)利率</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="text-center span-font-size-30"><?php echo $this->LoanView['graceInterestPercent'] * 100; ?> %</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-		</div>
+                    <div class="col-sm-12 col-md-7">
+                        <div class="row span-margin-10">
+                            <div class="col-md-5">
+                                <span>方案编号</span>&nbsp;&nbsp;
+                                <b><span><?php echo $this->LoanView['factoringNo']; ?></span></b>
+                            </div>
+                            <div class="col-md-7">
+                                <span>债务方</span>&nbsp;&nbsp;
+                                <b><span><?php echo $this->LoanView['debtorCustomerName']; ?></span></b>
+                            </div>
+                        </div>
+                        <div class="row span-margin-10">
+                            <div class="col-md-5">
+                                <span>订单编号</span>&nbsp;&nbsp;
+                                <b><span><?php echo $this->LoanView['orderNo']; ?></span></b>
+                            </div>
+                            <div class="col-md-7">
+                                <span>应收账款金额</span>&nbsp;&nbsp;
+                                <span><b>USD <?php echo $this->LoanView['receivableTotalAmount']; ?></b></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <span>融资模式</span>&nbsp;&nbsp;
+                                <b><span><?php echo $this->ShowDictionaryTo("FACTORING_MODE", $this->userLangCode, $this->dic_Setting['FACTORING_MODE'], $this->LoanView['factoringMode']); ?></span></b>
+                            </div>
+                            <div class="col-md-7">
+                                <span>计划融资金额</span>&nbsp;&nbsp;
+                                <span><b><?php echo $this->LoanView['crnCode']; ?> <?php echo $this->LoanView['financingTotalAmount']; ?></b> 折合 <b><?php echo $this->LoanView['financingCrnCode']; ?> <?php echo $this->LoanView['tgtFinancingTotalAmount']; ?></b></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="span-font-size-18 text-primary">详细资料</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static">保理公司</p>
+                    </div>
+                    <div class="col-md-10">
+                        <p class="form-control-static">
+                            <?php echo $this->LoanView['companyName']; ?>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static">计划放款日</p>
+                    </div>
+                    <div class="col-md-10">
+                        <p class="form-control-static">
+                            <?php echo date('Y-m-d', strtotime($this->LoanView['loanDate'])); ?>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static">计划届满日</p>
+                    </div>
+                    <div class="col-md-10">
+                        <p class="form-control-static">
+                            <?php echo date('Y-m-d', strtotime($this->LoanView['expiryDate'])); ?>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static">预计总利息</p>
+                    </div>
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            <?php echo $this->LoanView['financingCrnCode']; ?> <?php echo $this->LoanView['interest']; ?>
+                        </p>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="well well-sm">计划收取的利息总额，仅作参考。实收利息以实际发货情况及回款情况按日收取。</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static">文件</p>
+                    </div>
+                    <div class="col-md-10"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <?php
+                        echo $this->ShowOrderContract4Factoring($this->contractList, $this->accountID, 'FTTA', $this->orders['client'], $this->hasIDCertificate);
+                        ?>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="span-font-size-26 text-primary">服务费用</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="span-font-size-18 text-primary">放款情况</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="span-font-size-18 text-primary">还款情况</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="span-font-size-18 text-primary">核销记录</p>
+                    </div>
+                </div>
+            </div>
+        </div>
 	</div>
 </div>
 
@@ -22,6 +194,7 @@
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
+<script type="text/javascript" src="/ky/upload/img.js"></script>
 <script type="text/javascript">
 	$().ready(function() {
 

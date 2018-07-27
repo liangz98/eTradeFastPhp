@@ -5,3 +5,50 @@ body {
 .title-options .row {
     margin-bottom: 15px;
 }
+
+.bg-color {
+    background-color: #f0ad4e;
+}
+
+.text-white {
+    color: #fff;
+}
+
+.span-margin {
+    margin-bottom: 25px;
+}
+
+.span-margin-10 {
+    margin-bottom: 10px;
+}
+
+.span-font-size-18 {
+    font-size: 18px;
+}
+
+.span-font-size-30 {
+    font-weight: 400;
+    font-size: 30px;
+}
+
+.new_upicon {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    float: left;
+}
+
+.new_uptitle {
+    line-height: 30px;
+    display: block;
+    float: left;
+}
+
+.order_contract_sign {
+    border: none;
+    background: #EF8200;
+    color: #fff;
+    padding: 5px 15px;
+    border-radius: 5px;
+    margin-right: 20px;
+}

@@ -171,17 +171,25 @@ class FinanceController extends Kyapi_Controller_Action
 
     /**详情页**/
     public function viewAction() {
+        $requestObject = $this->_requestObject;
+
         $queryString = $_SERVER['QUERY_STRING'];
         $factoringID = base64_decode($queryString);
 
-        $LoanView = $this->json->getFactoringView($this->_requestObject, $factoringID);
+        $LoanView = $this->json->getFactoringView($requestObject, $factoringID);
         $existData = $this->objectToArray(json_decode($LoanView));
         $this->view->LoanView = $LoanView = $existData['result'];
         $this->view->mathDate = ($LoanView['expiryDate'] == 0) ? 0 : date('Y-m-d', strtotime($LoanView['expiryDate'])) - date('Y-m-d', time());
+
+        // 取回当前公司的企业认证状态
+        $_accountID = $this->view->accountID;
+        $account = $this->json->getAccountApi($requestObject, $_accountID);
+        $this->view->hasIDCertificate = json_decode($account)->result->hasIDCertificate;
+
         /*文档签署模块*/
         if ($existData['result']['factoringID']) {
             $bizType = 'FT';
-            $_resultKY = $this->json->listBizContract($this->_requestObject, $bizType, $existData['result']['factoringID']);
+            $_resultKY = $this->json->listBizContract($requestObject, $bizType, $existData['result']['factoringID']);
             $res_contract = json_decode($_resultKY);
             if ($res_contract->result) {
                 $this->view->contractList = $this->objectToArray($res_contract->result);

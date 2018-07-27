@@ -91,22 +91,39 @@
 <script src="/ky/js/base64.js"></script>
 
 <script type="text/javascript">
+    var dataDict = {};
+
 	$().ready(function() {
 
 	});
 
 	$(function () {
-	    var $titleOptions = $(".title-options");
-        $titleOptions.find("button").click(function () {
-            var dataType = $(this).attr("data-type");
-            $("button[data-type='" + dataType + "']").removeClass("btn-warning").addClass("btn-default");
-            $(this).addClass("btn-warning");
+        var dataDictQuery = '/user/common/dict-ajax';
+        var dictCode = ["FACTORING_STATUS"];
+        $.ajax({
+            type: "POST",
+            url: dataDictQuery,
+            data: {
+                dictCode: dictCode,
+                langCode: '<?php echo $this->userLangCode; ?>'
+            },
+            dataType: "json",
+            success: function (data) {
+                $.data(dataDict, 'dataDict', data);
 
-            $("#" + dataType).val($(this).attr("data-value"));
-            refreshResultList();
+                var $titleOptions = $(".title-options");
+                $titleOptions.find("button").click(function () {
+                    var dataType = $(this).attr("data-type");
+                    $("button[data-type='" + dataType + "']").removeClass("btn-warning").addClass("btn-default");
+                    $(this).addClass("btn-warning");
+
+                    $("#" + dataType).val($(this).attr("data-value"));
+                    refreshResultList();
+                });
+
+                refreshResultList();
+            }
         });
-
-        refreshResultList();
 	});
 
 	function refreshResultList() {
@@ -150,6 +167,18 @@
                     $.each(data.rows, function (i, item) {
                         var base = new Base64();
                         var resultEnCode = base.encode(item.factoringID);
+
+                        var data = $.data(dataDict, 'dataDict');
+                        var factoringStatus = '-';
+                        $.each(data, function (key, itemDict) {
+                            if (key === 'FACTORING_STATUS') {
+                                $.each(itemDict, function (i, dict) {
+                                    if (dict.code === item.factoringStatus) {
+                                        factoringStatus = dict.name;
+                                    }
+                                });
+                            }
+                        });
                         contents += '<li>'
                             + ' <div class="panel panel-success">'
                             + '  <div class="panel-heading">'
@@ -159,10 +188,10 @@
                             + '     <span>' + item.factoringNo + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
                             + '     <span>订单编号</span>&nbsp;&nbsp;'
                             + '     <span>' + item.factoringNo + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
-                            + '     <span>债权</span>&nbsp;&nbsp;'
+                            + '     <span>债务方</span>&nbsp;&nbsp;'
                             + '     <span>' + item.debtorCustomerName + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
                             + '     <span>项目进度</span>&nbsp;&nbsp;'
-                            + '     <span>' + item.factoringStatus + '</span>'
+                            + '     <span>' + factoringStatus + '</span>'
                             + '    </div>'
                             + '    <div class="col-sm-1">'
                             + '     <p class="text-right"><a href="/user/finance/view?' + resultEnCode + '">详情</a></p>'
@@ -174,11 +203,11 @@
                             + '   <div class="row">'
                             + '    <div class="col-sm-3">'
                             + '     <span>应收帐款</span>&nbsp;&nbsp;'
-                            + '     <span>' + item.crnCode + ' 61875.00</span>'
+                            + '     <span>' + item.crnCode + ' ' + item.receivableTotalAmount  +'</span>'
                             + '    </div>'
                             + '    <div class="col-sm-4">'
                             + '     <span>计划融资</span>&nbsp;&nbsp;'
-                            + '     <span>' + item.crnCode + ' 31553.77 (CNY 205800.00)</span>'
+                            + '     <span>' + item.crnCode + ' ' + item.financingTotalAmount + ' ( ' + item.financingCrnCode + ' ' + item.tgtFinancingTotalAmount  + ')</span>'
                             + '    </div>'
                             + '    <div class="col-sm-2">'
                             + '     <span>保理期</span>&nbsp;&nbsp;'
@@ -186,7 +215,7 @@
                             + '    </div>'
                             + '    <div class="col-sm-3">'
                             + '     <span>计划回款日</span>&nbsp;&nbsp;'
-                            + '     <span>2018-05-21</span>'
+                            + '     <span>' + new Date(item.expiryDate).format("yyyy-MM-dd") + '</span>'
                             + '    </div>'
                             + '   </div>'
                             + '  </div>'
