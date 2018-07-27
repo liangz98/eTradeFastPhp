@@ -75,7 +75,7 @@
                             </div>
                             <div class="col-md-7">
                                 <span>应收账款金额</span>&nbsp;&nbsp;
-                                <span><b>USD <?php echo $this->LoanView['receivableTotalAmount']; ?></b></span>
+                                <span><b><?php echo $this->LoanView['crnCode']; ?> <?php echo $this->LoanView['receivableTotalAmount'] != 0 ? number_format($this->LoanView['receivableTotalAmount'], 2) : '----'; ?></b></span>
                             </div>
                         </div>
                         <div class="row">
@@ -85,7 +85,7 @@
                             </div>
                             <div class="col-md-7">
                                 <span>计划融资金额</span>&nbsp;&nbsp;
-                                <span><b><?php echo $this->LoanView['crnCode']; ?> <?php echo $this->LoanView['financingTotalAmount']; ?></b> 折合 <b><?php echo $this->LoanView['financingCrnCode']; ?> <?php echo $this->LoanView['tgtFinancingTotalAmount']; ?></b></span>
+                                <span><b><?php echo $this->LoanView['crnCode']; ?> <?php echo $this->LoanView['financingTotalAmount'] != 0 ? number_format($this->LoanView['financingTotalAmount'], 2) : '----'; ?></b> 折合 <b><?php echo $this->LoanView['financingCrnCode']; ?> <?php echo $this->LoanView['tgtFinancingTotalAmount'] != 0 ? number_format($this->LoanView['tgtFinancingTotalAmount'], 2) : '----'; ?></b></span>
                             </div>
                         </div>
                     </div>
@@ -103,10 +103,10 @@
 
                 <div class="row">
                     <div class="col-md-2">
-                        <p class="form-control-static">保理公司</p>
+                        <p class="form-control-static text-999">保理公司</p>
                     </div>
                     <div class="col-md-10">
-                        <p class="form-control-static">
+                        <p class="form-control-static text-666">
                             <?php echo $this->LoanView['companyName']; ?>
                         </p>
                     </div>
@@ -114,10 +114,10 @@
 
                 <div class="row">
                     <div class="col-md-2">
-                        <p class="form-control-static">计划放款日</p>
+                        <p class="form-control-static text-999">计划放款日</p>
                     </div>
                     <div class="col-md-10">
-                        <p class="form-control-static">
+                        <p class="form-control-static text-666">
                             <?php echo date('Y-m-d', strtotime($this->LoanView['loanDate'])); ?>
                         </p>
                     </div>
@@ -125,10 +125,10 @@
 
                 <div class="row">
                     <div class="col-md-2">
-                        <p class="form-control-static">计划届满日</p>
+                        <p class="form-control-static text-999">计划届满日</p>
                     </div>
                     <div class="col-md-10">
-                        <p class="form-control-static">
+                        <p class="form-control-static text-666">
                             <?php echo date('Y-m-d', strtotime($this->LoanView['expiryDate'])); ?>
                         </p>
                     </div>
@@ -136,26 +136,26 @@
 
                 <div class="row">
                     <div class="col-md-2">
-                        <p class="form-control-static">预计总利息</p>
+                        <p class="form-control-static text-999">预计总利息</p>
                     </div>
                     <div class="col-md-2">
-                        <p class="form-control-static">
-                            <?php echo $this->LoanView['financingCrnCode']; ?> <?php echo $this->LoanView['interest']; ?>
+                        <p class="form-control-static text-666">
+                            <?php echo $this->LoanView['financingCrnCode']; ?> <?php echo $this->LoanView['interest'] != 0 ? number_format($this->LoanView['interest'], 2) : '----'; ?>
                         </p>
                     </div>
                     <div class="col-md-7">
-                        <div class="well well-sm">计划收取的利息总额，仅作参考。实收利息以实际发货情况及回款情况按日收取。</div>
+                        <div class="well well-sm text-999" style="margin-bottom: 0 !important;">计划收取的利息总额，仅作参考。实收利息以实际发货情况及回款情况按日收取。</div>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-2">
-                        <p class="form-control-static">文件</p>
+                        <p class="form-control-static text-999">文件</p>
                     </div>
                     <div class="col-md-10"></div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-12">
+                    <div class="col-xs-12 text-primary">
                         <?php
                         echo $this->ShowOrderContract4Factoring($this->contractList, $this->accountID, 'FTTA', $this->orders['client'], $this->hasIDCertificate);
                         ?>
@@ -164,25 +164,147 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <p class="span-font-size-26 text-primary">服务费用</p>
+                        <p class="span-font-size-18 text-primary margin-top-15">服务费用</p>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-12">
-                        <p class="span-font-size-18 text-primary">放款情况</p>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>费用项目</th>
+                                <th>费用</th>
+                                <th>服务费率</th>
+                                <th>说明</th>
+                                <th>付款情况</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>基础服务费</td>
+                                <td><?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo $this->LoanView['factoringItem']['serviceCharge'] != 0 ? number_format($this->LoanView['factoringItem']['serviceCharge'], 2) : '----'; ?></td>
+                                <td><?php echo $this->LoanView['serviceChargePercent'] * 100; ?> %</td>
+                                <td class="text-999">计算公式：应收账款金额 * 服务费率 * 汇率。发放融资前款前，一次性收取。</td>
+                                <td><?php echo $this->ShowDictionaryTo("PAYMENT_STATUS", $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'], $this->LoanView['factoringItem']['serviceChargeTradingStatus']); ?></td>
+                            </tr>
+                            <tr>
+                                <td>担保服务费</td>
+                                <td><?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo $this->LoanView['factoringItem']['guaranteeServiceFee'] != 0 ? number_format($this->LoanView['factoringItem']['guaranteeServiceFee'], 2) : '----'; ?></td>
+                                <td><?php echo $this->LoanView['guaranteeServiceFeePercent'] * 100; ?> %</td>
+                                <td class="text-999">计算公式：担保金额 * 服务费率 * 汇率。发放融资前款前，一次性收取。</td>
+                                <td><?php echo $this->ShowDictionaryTo("PAYMENT_STATUS", $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'], $this->LoanView['factoringItem']['serviceChargeTradingStatus']); ?></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-1">
+                        <p class="form-control-static margin-left-5 text-999">合计费用</p>
+                    </div>
+                    <div class="col-md-2">
+                        <p class="form-control-static margin-left-25 text-666">
+                            <?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo $this->LoanView['factoringItem']['serviceCharge'] + $this->LoanView['factoringItem']['guaranteeServiceFee']; ?>
+                        </p>
+                    </div>
+                    <?php if ($this->LoanView['factoringItem']['serviceChargeTradingStatus'] != '3'):?>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-warning">支付</button>
+                    </div>
+                    <?php endif; ?>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="span-font-size-18 text-primary margin-top-15">放款情况</p>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-12">
-                        <p class="span-font-size-18 text-primary">还款情况</p>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>放款编号</th>
+                                <th>放款日期</th>
+                                <th>货币</th>
+                                <th class="text-right">放款金额</th>
+                                <th class="text-right">利息</th>
+                                <th class="text-right">宽限期利息</th>
+                                <th class="text-right">逾期利息</th>
+                                <th class="text-right">合计利息</th>
+                                <th class="text-right">未核销本金</th>
+                                <th class="text-right">未核销利息</th>
+                                <th>状态</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <?php foreach ($this->LoanView['factoringItem']['factoringLoanList'] as $factoringLoan):?>
+                            <tr>
+                                <td><?php echo $factoringLoan['loanNo']; ?></td>
+                                <td><?php echo date('Y-m-d', strtotime($factoringLoan['loanDate'])); ?></td>
+                                <td><?php echo $factoringLoan['loanCrnCode']; ?></td>
+                                <td class="text-right"><?php echo $factoringLoan['loanAmount'] != 0 ? number_format($factoringLoan['loanAmount'], 2) : '----'; ?></td>
+                                <td class="text-right"><?php echo $factoringLoan['totalGeneralInterest'] != 0 ? number_format($factoringLoan['totalGeneralInterest'], 2) : '----'; ?></td>
+                                <td class="text-right"><?php echo $factoringLoan['totalGraceInterest'] != 0 ? number_format($factoringLoan['totalGraceInterest'], 2) : '----'; ?></td>
+                                <td class="text-right"><?php echo $factoringLoan['totalOverdueInterest'] != 0 ? number_format($factoringLoan['totalOverdueInterest'], 2) : '----'; ?></td>
+                                <td class="text-right"><?php echo $factoringLoan['totalInterest'] != 0 ? number_format($factoringLoan['totalInterest'], 2) : '----'; ?> <i class="fas fa-info"></i></td>
+                                <td class="text-right"><?php echo $factoringLoan['writeoffBalAmount'] != 0 ? number_format($factoringLoan['writeoffBalAmount'], 2) : '----'; ?></td>
+                                <td class="text-right"><?php echo $factoringLoan['writeoffBalInterest'] != 0 ? number_format($factoringLoan['writeoffBalInterest'], 2) : '----'; ?></td>
+                                <td><?php echo $this->ShowDictionaryTo("LOAN_STATUS", $this->userLangCode, $this->dic_Setting['LOAN_STATUS'], $factoringLoan['loanStatus']); ?></td>
+                            </tr>
+                            <?php endforeach;?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-12">
-                        <p class="span-font-size-18 text-primary">核销记录</p>
+                        <p class="span-font-size-18 text-primary margin-top-15">还款情况</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>还款编号</th>
+                                <th>还款日期</th>
+                                <th class="text-right">应还金额</th>
+                                <th>结汇汇率</th>
+                                <th class="text-right">已付金额</th>
+                                <th class="text-right">还利息</th>
+                                <th class="text-right">还本金</th>
+                                <th class="text-right">剩余货款</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <?php foreach ($this->LoanView['factoringItem']['factoringRepaymentList'] as $factoringRepayment):?>
+                                <tr>
+                                    <td><?php echo $factoringRepayment['repaymentNo']; ?></td>
+                                    <td><?php echo date('Y-m-d', strtotime($factoringRepayment['repaymentDate'])); ?></td>
+                                    <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo $factoringRepayment['totalAmount'] != 0 ? number_format($factoringRepayment['totalAmount'], 2) : '----'; ?></td>
+                                    <td><?php echo $factoringRepayment['exchangeRate']; ?></td>
+                                    <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo $factoringRepayment['repaymentTotalAmount'] != 0 ? number_format($factoringRepayment['repaymentTotalAmount'], 2) : '----'; ?></td>
+                                    <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo $factoringRepayment['writeoffInterestAmount'] != 0 ? number_format($factoringRepayment['writeoffInterestAmount'], 2) : '----'; ?></td>
+                                    <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo $factoringRepayment['writeoffPrincipalAmount'] != 0 ? number_format($factoringRepayment['writeoffPrincipalAmount'], 2) : '----'; ?></td>
+                                    <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo $factoringRepayment['writeoffFinalAmount'] != 0 ? number_format($factoringRepayment['writeoffFinalAmount'], 2) : '----'; ?></td>
+                                </tr>
+                            <?php endforeach;?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="span-font-size-18 text-primary margin-top-15">核销记录</p>
                     </div>
                 </div>
             </div>

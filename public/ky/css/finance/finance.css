@@ -14,6 +14,26 @@ body {
     color: #fff;
 }
 
+.text-999 {
+    color: #999;
+}
+
+.text-666 {
+    color: #666;
+}
+
+.margin-top-15 {
+    margin-top: 15px;
+}
+
+.margin-left-5 {
+    margin-left: 5px;
+}
+
+.margin-left-25 {
+    margin-left: 25px;
+}
+
 .span-margin {
     margin-bottom: 25px;
 }
@@ -51,4 +71,18 @@ body {
     padding: 5px 15px;
     border-radius: 5px;
     margin-right: 20px;
+}
+
+.table-striped {
+    margin-top: 15px;
+    border-bottom: 1px solid #337ab7;
+}
+
+.table-striped thead {
+    color: #fff;
+    background: #337ab7;
+}
+
+.table-striped tbody {
+    color: #666;
 }

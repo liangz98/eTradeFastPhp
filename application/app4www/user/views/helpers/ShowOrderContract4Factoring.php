@@ -22,7 +22,7 @@ class Zend_View_Helper_ShowOrderContract4Factoring extends Shop_View_Helper {
                 $attachmentList = $v['attachmentList'];
                 $pdfUrl = $this->view->seed_Setting['KyUrlex'] . '/doc/download.action?sid=' . session_id() . '&nid=' . $attachmentList[0]['attachID'] . '&vid=' . $attachmentList[0]['verifyID'];
 
-                $IMG .= '<div class="col-xs-8">';
+                $IMG .= '<div class="col-xs-5">';
                 $IMG .= '<em class="new_upicon" style="background:url(\'/ky/ico/pdf.png\') no-repeat;background-size: 20px;"></em>';
                 $IMG .= '<p class="new_uptitle">' . $v['contractName'] . '</p>';
                 $IMG .= '</div>';
