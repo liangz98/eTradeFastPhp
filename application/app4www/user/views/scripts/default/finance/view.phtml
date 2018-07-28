@@ -6,6 +6,7 @@
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/finance/finance.css" rel="stylesheet">
     <link href="/ky/css/img-upload.css" rel="stylesheet">
+    <link href="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -186,7 +187,13 @@
                                 <td><?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo $this->LoanView['factoringItem']['serviceCharge'] != 0 ? number_format($this->LoanView['factoringItem']['serviceCharge'], 2) : '----'; ?></td>
                                 <td><?php echo $this->LoanView['serviceChargePercent'] * 100; ?> %</td>
                                 <td class="text-999">计算公式：应收账款金额 * 服务费率 * 汇率。发放融资前款前，一次性收取。</td>
-                                <td><?php echo $this->ShowDictionaryTo("PAYMENT_STATUS", $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'], $this->LoanView['factoringItem']['serviceChargeTradingStatus']); ?></td>
+                                <td>
+                                    <?php if ($this->LoanView['factoringItem']['serviceChargeTradingID'] == ''):?>
+                                    未开始
+                                    <?php else:?>
+                                    <?php echo $this->ShowDictionaryTo("PAYMENT_STATUS", $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'], $this->LoanView['factoringItem']['serviceChargeTradingStatus']); ?>
+                                    <?php endif;?>
+                                </td>
                             </tr>
                             <tr>
                                 <td>担保服务费</td>
@@ -209,7 +216,7 @@
                             <?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo $this->LoanView['factoringItem']['serviceCharge'] + $this->LoanView['factoringItem']['guaranteeServiceFee']; ?>
                         </p>
                     </div>
-                    <?php if ($this->LoanView['factoringItem']['serviceChargeTradingStatus'] != '3'):?>
+                    <?php if ($this->LoanView['factoringItem']['serviceChargeTradingStatus'] != '3' && $this->LoanView['factoringItem']['serviceChargeTradingID'] != ''):?>
                     <div class="col-md-2">
                         <button type="button" class="btn btn-warning">支付</button>
                     </div>
@@ -242,6 +249,11 @@
                             </thead>
                             <tbody>
 
+                            <?php if (empty($this->LoanView['factoringItem']['factoringLoanList'])):?>
+                            <tr>
+                                <td colspan="11">暂无放款记录</td>
+                            </tr>
+                            <?php else:?>
                             <?php foreach ($this->LoanView['factoringItem']['factoringLoanList'] as $factoringLoan):?>
                             <tr>
                                 <td><?php echo $factoringLoan['loanNo']; ?></td>
@@ -251,12 +263,15 @@
                                 <td class="text-right"><?php echo $factoringLoan['totalGeneralInterest'] != 0 ? number_format($factoringLoan['totalGeneralInterest'], 2) : '----'; ?></td>
                                 <td class="text-right"><?php echo $factoringLoan['totalGraceInterest'] != 0 ? number_format($factoringLoan['totalGraceInterest'], 2) : '----'; ?></td>
                                 <td class="text-right"><?php echo $factoringLoan['totalOverdueInterest'] != 0 ? number_format($factoringLoan['totalOverdueInterest'], 2) : '----'; ?></td>
-                                <td class="text-right"><?php echo $factoringLoan['totalInterest'] != 0 ? number_format($factoringLoan['totalInterest'], 2) : '----'; ?> <i class="fas fa-info"></i></td>
+                                <td class="text-right">
+                                    <?php echo $factoringLoan['totalInterest'] != 0 ? number_format($factoringLoan['totalInterest'], 2) : '----'; ?> <i class="layui-icon layui-icon-about" data-toggle="modal" data-target="#interestModal" data-loan-id="<?php echo $factoringLoan['loanID']; ?>"></i>
+                                </td>
                                 <td class="text-right"><?php echo $factoringLoan['writeoffBalAmount'] != 0 ? number_format($factoringLoan['writeoffBalAmount'], 2) : '----'; ?></td>
                                 <td class="text-right"><?php echo $factoringLoan['writeoffBalInterest'] != 0 ? number_format($factoringLoan['writeoffBalInterest'], 2) : '----'; ?></td>
                                 <td><?php echo $this->ShowDictionaryTo("LOAN_STATUS", $this->userLangCode, $this->dic_Setting['LOAN_STATUS'], $factoringLoan['loanStatus']); ?></td>
                             </tr>
                             <?php endforeach;?>
+                            <?php endif;?>
                             </tbody>
                         </table>
                     </div>
@@ -285,6 +300,11 @@
                             </thead>
                             <tbody>
 
+                            <?php if (empty($this->LoanView['factoringItem']['factoringRepaymentList'])):?>
+                                <tr>
+                                    <td colspan="11">暂无还款记录</td>
+                                </tr>
+                            <?php else:?>
                             <?php foreach ($this->LoanView['factoringItem']['factoringRepaymentList'] as $factoringRepayment):?>
                                 <tr>
                                     <td><?php echo $factoringRepayment['repaymentNo']; ?></td>
@@ -297,6 +317,7 @@
                                     <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo $factoringRepayment['writeoffFinalAmount'] != 0 ? number_format($factoringRepayment['writeoffFinalAmount'], 2) : '----'; ?></td>
                                 </tr>
                             <?php endforeach;?>
+                            <?php endif;?>
                             </tbody>
                         </table>
                     </div>
@@ -312,18 +333,115 @@
 	</div>
 </div>
 
+<!-- Modal 利息明细 -->
+<div class="modal fade" id="interestModal" tabindex="-1" role="dialog" aria-labelledby="interestLabel">
+    <div class="modal-dialog modal-lg" role="document" style="width: 1080px !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">利息明细</h4>
+            </div>
+
+            <div class="modal-body">
+                <table class="table table-bordered" id="resultListTable">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
 <script type="text/javascript" src="/ky/upload/img.js"></script>
+<script src="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.js"></script>
+<script src="/ky/bootstrap-table-1.12.1-dist/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="/ky/js/base64.js"></script>
+
 <script type="text/javascript">
 	$().ready(function() {
 
 	});
 
 	$(function () {
+        $("#interestModal").on('show.bs.modal', function (e) {
+            console.log("in");
+            var triggered = $(e.relatedTarget),
+                loanID = triggered.data("loan-id");
 
+            $('#resultListTable').bootstrapTable({
+                url: '/user/finance/factoring-interest-list-ajax',
+                method: 'post',
+                // showRefresh: true,
+                // search: true,
+                pagination: true,
+                classes: 'table table-no-bordered',
+                sidePagination: 'server',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                pageNumber: 1,
+                pageSize: 10,
+                height: 489,
+                queryParams: function(params) {
+                    return {
+                        loanID: loanID
+                    };
+                },
+                columns: [{
+                    field: 'orderNo',
+                    title: '<?php echo $this->translate("orderNo"); ?>',
+                    formatter: function (value, row) {
+                        if (value === undefined || value === '' || value === null) {
+                            value = "-";
+                        }
+
+                        var base = new Base64();
+                        var resultEnCode = base.encode(row.orderID);
+                        var href = "/user/sale/view?"+resultEnCode;
+                        return '<a href="' + href + '">' + value + '</a>';
+                    }
+                }, {
+                    field: 'totalAmount',
+                    title: '<?php echo $this->translate("orderPrice"); ?>',
+                    formatter: function (value, row) {
+                        if (value === undefined || value === '' || value === null) {
+                            value = "-";
+                        }
+                        var base = new Base64();
+                        var resultEnCode = base.encode(row.orderID);
+                        var href = "/user/sale/view?"+resultEnCode;
+
+                        return '<a href="' + href + '">' + row.buyerCrnCode + " " + value + '</a>';
+                    }
+                }, {
+                    field: 'buyerName',
+                    title: '<?php echo $this->translate("buyers"); ?>',
+                    formatter: function (value, row) {
+                        if (value === undefined || value === '' || value === null) {
+                            value = "-";
+                        }
+                        var base = new Base64();
+                        var resultEnCode = base.encode(row.orderID);
+                        var href = "/user/sale/view?"+resultEnCode;
+
+                        return '<a href="' + href + '">' + value + '</a>';
+                    }
+                }, {
+                    field: 'lastUpdate',
+                    title: '<?php echo $this->translate("lastUpdate"); ?>',
+                    formatter: function (value, row) {
+                        if (value === undefined || value === '' || value === null) {
+                            value = "-";
+                        }
+                        var base = new Base64();
+                        var resultEnCode = base.encode(row.orderID);
+                        var href = "/user/sale/view?"+resultEnCode;
+
+                        return '<a href="' + href + '">' + new Date(value).format("yyyy-MM-dd hh:mm:ss") + '</a>';
+                    }
+                }]
+            });
+        });
 	});
 </script>
 </body>

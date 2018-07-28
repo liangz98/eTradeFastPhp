@@ -278,6 +278,23 @@ class FinanceController extends Kyapi_Controller_Action
         }
     }
 
+    public function factoringInterestListAjaxAction() {
+        $msg = array();
+        $requestObject = $this->_requestObject;
+
+        $loanID = $this->_request->getParam('loanID');
+        if (empty($loanID)) {
+            $loanID = null;
+        }
+
+        $resultObject = $this->json->listFactoringInterest($requestObject, $loanID);
+        $msg["total"] = 0;
+        $msg["rows"] = json_decode($resultObject)->result;
+
+        echo json_encode($msg);
+        exit;
+    }
+
     /*折线图*/
     public function countgainAction(){
         //项目列表
