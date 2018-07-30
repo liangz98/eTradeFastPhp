@@ -288,7 +288,7 @@ class FinanceController extends Kyapi_Controller_Action
         }
 
         $resultObject = $this->json->listFactoringInterest($requestObject, $loanID);
-        $msg["total"] = 0;
+        $msg["total"] = count(json_decode($resultObject)->result);
         $msg["rows"] = json_decode($resultObject)->result;
 
         echo json_encode($msg);

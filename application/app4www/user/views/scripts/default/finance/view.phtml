@@ -270,7 +270,7 @@
                                 <td class="text-right"><?php echo $factoringLoan['totalGraceInterest'] != 0 ? number_format($factoringLoan['totalGraceInterest'], 2) : '----'; ?></td>
                                 <td class="text-right"><?php echo $factoringLoan['totalOverdueInterest'] != 0 ? number_format($factoringLoan['totalOverdueInterest'], 2) : '----'; ?></td>
                                 <td class="text-right">
-                                    <?php echo $factoringLoan['totalInterest'] != 0 ? number_format($factoringLoan['totalInterest'], 2) : '----'; ?> <i class="layui-icon layui-icon-about" data-toggle="modal" data-target="#interestModal" data-loan-id="<?php echo $factoringLoan['loanID']; ?>"></i>
+                                    <?php echo $factoringLoan['totalInterest'] != 0 ? number_format($factoringLoan['totalInterest'], 2) : '----'; ?> <i class="layui-icon layui-icon-about" style="cursor: pointer;" data-toggle="modal" data-target="#interestModal" data-loan-id="<?php echo $factoringLoan['loanID']; ?>"></i>
                                 </td>
                                 <td class="text-right"><?php echo $factoringLoan['writeoffBalAmount'] != 0 ? number_format($factoringLoan['writeoffBalAmount'], 2) : '----'; ?></td>
                                 <td class="text-right"><?php echo $factoringLoan['writeoffBalInterest'] != 0 ? number_format($factoringLoan['writeoffBalInterest'], 2) : '----'; ?></td>
@@ -356,9 +356,24 @@
     </div>
 </div>
 
+<!--PDF预览-->
+<div id="signViewDiv" style="display: none; background-color: #F6F6F6;">
+    <div class="sign-button">企业签署</div>
+    <div class="person-sign-button">个人签署</div>
+    <div class="download-button">下载</div>
+    <div class="pdfDoc" style="padding-left:50px;">
+        <div id="pdfPageBox">
+        </div>
+    </div>
+</div>
+
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<!-- pdf -->
+<script type="text/javascript" src="/ky/pdf/pdf.js"></script>
+<script type="text/javascript" src="/ky/pdf/pdf.worker.js"></script>
 
 <script type="text/javascript" src="/ky/upload/img.js"></script>
 <script src="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.js"></script>
@@ -371,116 +386,137 @@
 	});
 
 	$(function () {
-        $("#interestModal").on('show.bs.modal', function (e) {
-            console.log("in");
-            var triggered = $(e.relatedTarget),
-                loanID = triggered.data("loan-id");
 
-            $('#resultListTable').bootstrapTable({
-                url: '/user/finance/factoring-interest-list-ajax',
-                method: 'post',
-                // showRefresh: true,
-                // search: true,
-                pagination: true,
-                classes: 'table table-no-bordered',
-                sidePagination: 'server',
-                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                pageNumber: 1,
-                pageSize: 10,
-                queryParams: function(params) {
-                    return {
-                        loanID: loanID
-                    };
-                },
-                columns: [{
-                    field: 'principalAmount',
-                    title: '<?php echo $this->translate("principalAmount"); ?>'
-                }, {
-                    field: 'valueDate',
-                    title: '<?php echo $this->translate("interestValueDate"); ?>',
-                    formatter: function (value) {
-                        return new Date(value).format("yyyy-MM-dd");
-                    }
-                }, {
-                    field: 'expiryDate',
-                    title: '<?php echo $this->translate("interestExpiryDate"); ?>',
-                    formatter: function (value) {
-                        return new Date(value).format("yyyy-MM-dd");
-                    }
-                }, {
-                    field: 'interestDays',
-                    title: '<?php echo $this->translate("interestDays"); ?>',
-                    formatter: function (value) {
-                        if (value === undefined || value === '' || value === null) {
-                            value = "-";
-                        }
-
-                        return value + ' Days';
-                    }
-                }, {
-                    field: 'totalInterest',
-                    title: '<?php echo $this->translate("totalInterest"); ?>',
-                    formatter: function (value) {
-                        if (value === undefined || value === '' || value === null) {
-                            value = "-";
-                        }
-
-                        return value;
-                    }
-                }, {
-                    field: 'graceInterestDays',
-                    title: '<?php echo $this->translate("graceInterestDays"); ?>',
-                    formatter: function (value) {
-                        if (value === undefined || value === '' || value === null) {
-                            value = "-";
-                        }
-
-                        return value + ' Days';
-                    }
-                }, {
-                    field: 'graceInterest',
-                    title: '<?php echo $this->translate("graceInterest"); ?>',
-                    formatter: function (value) {
-                        if (value === undefined || value === '' || value === null) {
-                            value = "-";
-                        }
-
-                        return value;
-                    }
-                }, {
-                    field: 'overdueInterestDays',
-                    title: '<?php echo $this->translate("overdueInterestDays"); ?>',
-                    formatter: function (value) {
-                        if (value === undefined || value === '' || value === null) {
-                            value = "-";
-                        }
-
-                        return value + ' Days';
-                    }
-                }, {
-                    field: 'overdueInterest',
-                    title: '<?php echo $this->translate("overdueInterest"); ?>',
-                    formatter: function (value) {
-                        if (value === undefined || value === '' || value === null) {
-                            value = "-";
-                        }
-
-                        return value;
-                    }
-                }, {
-                    field: 'writeoffBalInterest',
-                    title: '<?php echo $this->translate("writeoffBalInterest"); ?>',
-                    formatter: function (value) {
-                        if (value === undefined || value === '' || value === null) {
-                            value = "-";
-                        }
-
-                        return value;
-                    }
-                }]
-            });
-        });
 	});
+
+    $("#interestModal").on('show.bs.modal', function (e) {
+        var triggered = $(e.relatedTarget),
+            loanID = triggered.data("loan-id"),
+            $resultListTable = $('#resultListTable');
+
+        var options = {
+            query:{
+                loanID: loanID
+            }
+        };
+        $resultListTable.bootstrapTable('refresh', options);
+
+        $resultListTable.bootstrapTable({
+            url: '/user/finance/factoring-interest-list-ajax',
+            method: 'post',
+            // showRefresh: true,
+            // search: true,
+            pagination: true,
+            // onlyInfoPagination: true,
+            classes: 'table table-hover table-no-bordered',
+            sidePagination: 'server',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            queryParams: function(params) {
+                return {
+                    loanID: loanID
+                };
+            },
+            columns: [{
+                field: 'principalAmount',
+                title: '<?php echo $this->translate("principalAmount"); ?>',
+                halign: 'center',
+                align: 'right',
+                formatter: function (value) {
+                    return formatCurrency(value, 2);
+                }
+            }, {
+                field: 'valueDate',
+                title: '<?php echo $this->translate("interestValueDate"); ?>',
+                formatter: function (value) {
+                    return new Date(value).format("yyyy-MM-dd");
+                }
+            }, {
+                field: 'expiryDate',
+                title: '<?php echo $this->translate("interestExpiryDate"); ?>',
+                formatter: function (value) {
+                    return new Date(value).format("yyyy-MM-dd");
+                }
+            }, {
+                field: 'interestDays',
+                title: '<?php echo $this->translate("interestDays"); ?>',
+                formatter: function (value) {
+                    if (value === undefined || value === '' || value === null) {
+                        value = "-";
+                    }
+
+                    return value + ' Days';
+                }
+            }, {
+                field: 'totalInterest',
+                title: '<?php echo $this->translate("totalInterest"); ?>',
+                halign: 'center',
+                align: 'right',
+                formatter: function (value) {
+                    if (value === undefined || value === '' || value === null) {
+                        return "----";
+                    } else {
+                        return formatCurrency(value, 2);
+                    }
+                }
+            }, {
+                field: 'graceInterestDays',
+                title: '<?php echo $this->translate("graceInterestDays"); ?>',
+                formatter: function (value) {
+                    if (value === undefined || value === '' || value === null) {
+                        value = "-";
+                    }
+
+                    return value + ' Days';
+                }
+            }, {
+                field: 'graceInterest',
+                title: '<?php echo $this->translate("graceInterest"); ?>',
+                halign: 'center',
+                align: 'right',
+                formatter: function (value) {
+                    if (value === undefined || value === '' || value === null) {
+                        return "----";
+                    } else {
+                        return formatCurrency(value, 2);
+                    }
+                }
+            }, {
+                field: 'overdueInterestDays',
+                title: '<?php echo $this->translate("overdueInterestDays"); ?>',
+                formatter: function (value) {
+                    if (value === undefined || value === '' || value === null) {
+                        value = "-";
+                    }
+
+                    return value + ' Days';
+                }
+            }, {
+                field: 'overdueInterest',
+                title: '<?php echo $this->translate("overdueInterest"); ?>',
+                halign: 'center',
+                align: 'right',
+                formatter: function (value) {
+                    if (value === undefined || value === '' || value === null) {
+                        return "----";
+                    } else {
+                        return formatCurrency(value, 2);
+                    }
+                }
+            }, {
+                field: 'writeoffBalInterest',
+                title: '<?php echo $this->translate("writeoffBalInterest"); ?>',
+                halign: 'center',
+                align: 'right',
+                formatter: function (value) {
+                    if (value === undefined || value === '' || value === null) {
+                        return "----";
+                    } else {
+                        return formatCurrency(value, 2);
+                    }
+                }
+            }]
+        });
+    });
 </script>
 </body>
 </html>
