@@ -200,7 +200,13 @@
                                 <td><?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo $this->LoanView['factoringItem']['guaranteeServiceFee'] != 0 ? number_format($this->LoanView['factoringItem']['guaranteeServiceFee'], 2) : '----'; ?></td>
                                 <td><?php echo $this->LoanView['guaranteeServiceFeePercent'] * 100; ?> %</td>
                                 <td class="text-999">计算公式：担保金额 * 服务费率 * 汇率。发放融资前款前，一次性收取。</td>
-                                <td><?php echo $this->ShowDictionaryTo("PAYMENT_STATUS", $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'], $this->LoanView['factoringItem']['serviceChargeTradingStatus']); ?></td>
+                                <td>
+                                    <?php if ($this->LoanView['factoringItem']['serviceChargeTradingID'] == ''):?>
+                                        未开始
+                                    <?php else:?>
+                                        <?php echo $this->ShowDictionaryTo("PAYMENT_STATUS", $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'], $this->LoanView['factoringItem']['serviceChargeTradingStatus']); ?>
+                                    <?php endif;?>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -213,12 +219,12 @@
                     </div>
                     <div class="col-md-2">
                         <p class="form-control-static margin-left-25 text-666">
-                            <?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo $this->LoanView['factoringItem']['serviceCharge'] + $this->LoanView['factoringItem']['guaranteeServiceFee']; ?>
+                            <?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo $this->LoanView['factoringItem']['serviceCharge'] + $this->LoanView['factoringItem']['guaranteeServiceFee'] != 0 ? number_format($this->LoanView['factoringItem']['serviceCharge'] + $this->LoanView['factoringItem']['guaranteeServiceFee'], 2) : '----';; ?>
                         </p>
                     </div>
                     <?php if ($this->LoanView['factoringItem']['serviceChargeTradingStatus'] != '3' && $this->LoanView['factoringItem']['serviceChargeTradingID'] != ''):?>
                     <div class="col-md-2">
-                        <button type="button" class="btn btn-warning">支付</button>
+                        <a class="btn btn-warning" href="/user/settle/payment?<?php echo base64_encode($this->LoanView['factoringItem']['serviceChargeTradingID']);?>"><?php echo $this->translate('Saltter_payment');?></a>
                     </div>
                     <?php endif; ?>
                 </div>
@@ -381,63 +387,95 @@
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                 pageNumber: 1,
                 pageSize: 10,
-                height: 489,
                 queryParams: function(params) {
                     return {
                         loanID: loanID
                     };
                 },
                 columns: [{
-                    field: 'orderNo',
-                    title: '<?php echo $this->translate("orderNo"); ?>',
-                    formatter: function (value, row) {
-                        if (value === undefined || value === '' || value === null) {
-                            value = "-";
-                        }
-
-                        var base = new Base64();
-                        var resultEnCode = base.encode(row.orderID);
-                        var href = "/user/sale/view?"+resultEnCode;
-                        return '<a href="' + href + '">' + value + '</a>';
+                    field: 'principalAmount',
+                    title: '<?php echo $this->translate("principalAmount"); ?>'
+                }, {
+                    field: 'valueDate',
+                    title: '<?php echo $this->translate("interestValueDate"); ?>',
+                    formatter: function (value) {
+                        return new Date(value).format("yyyy-MM-dd");
                     }
                 }, {
-                    field: 'totalAmount',
-                    title: '<?php echo $this->translate("orderPrice"); ?>',
-                    formatter: function (value, row) {
-                        if (value === undefined || value === '' || value === null) {
-                            value = "-";
-                        }
-                        var base = new Base64();
-                        var resultEnCode = base.encode(row.orderID);
-                        var href = "/user/sale/view?"+resultEnCode;
-
-                        return '<a href="' + href + '">' + row.buyerCrnCode + " " + value + '</a>';
+                    field: 'expiryDate',
+                    title: '<?php echo $this->translate("interestExpiryDate"); ?>',
+                    formatter: function (value) {
+                        return new Date(value).format("yyyy-MM-dd");
                     }
                 }, {
-                    field: 'buyerName',
-                    title: '<?php echo $this->translate("buyers"); ?>',
-                    formatter: function (value, row) {
+                    field: 'interestDays',
+                    title: '<?php echo $this->translate("interestDays"); ?>',
+                    formatter: function (value) {
                         if (value === undefined || value === '' || value === null) {
                             value = "-";
                         }
-                        var base = new Base64();
-                        var resultEnCode = base.encode(row.orderID);
-                        var href = "/user/sale/view?"+resultEnCode;
 
-                        return '<a href="' + href + '">' + value + '</a>';
+                        return value + ' Days';
                     }
                 }, {
-                    field: 'lastUpdate',
-                    title: '<?php echo $this->translate("lastUpdate"); ?>',
-                    formatter: function (value, row) {
+                    field: 'totalInterest',
+                    title: '<?php echo $this->translate("totalInterest"); ?>',
+                    formatter: function (value) {
                         if (value === undefined || value === '' || value === null) {
                             value = "-";
                         }
-                        var base = new Base64();
-                        var resultEnCode = base.encode(row.orderID);
-                        var href = "/user/sale/view?"+resultEnCode;
 
-                        return '<a href="' + href + '">' + new Date(value).format("yyyy-MM-dd hh:mm:ss") + '</a>';
+                        return value;
+                    }
+                }, {
+                    field: 'graceInterestDays',
+                    title: '<?php echo $this->translate("graceInterestDays"); ?>',
+                    formatter: function (value) {
+                        if (value === undefined || value === '' || value === null) {
+                            value = "-";
+                        }
+
+                        return value + ' Days';
+                    }
+                }, {
+                    field: 'graceInterest',
+                    title: '<?php echo $this->translate("graceInterest"); ?>',
+                    formatter: function (value) {
+                        if (value === undefined || value === '' || value === null) {
+                            value = "-";
+                        }
+
+                        return value;
+                    }
+                }, {
+                    field: 'overdueInterestDays',
+                    title: '<?php echo $this->translate("overdueInterestDays"); ?>',
+                    formatter: function (value) {
+                        if (value === undefined || value === '' || value === null) {
+                            value = "-";
+                        }
+
+                        return value + ' Days';
+                    }
+                }, {
+                    field: 'overdueInterest',
+                    title: '<?php echo $this->translate("overdueInterest"); ?>',
+                    formatter: function (value) {
+                        if (value === undefined || value === '' || value === null) {
+                            value = "-";
+                        }
+
+                        return value;
+                    }
+                }, {
+                    field: 'writeoffBalInterest',
+                    title: '<?php echo $this->translate("writeoffBalInterest"); ?>',
+                    formatter: function (value) {
+                        if (value === undefined || value === '' || value === null) {
+                            value = "-";
+                        }
+
+                        return value;
                     }
                 }]
             });

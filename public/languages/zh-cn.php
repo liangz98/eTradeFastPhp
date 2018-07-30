@@ -1011,6 +1011,18 @@ return array(
     'Finance_dstatus'             => '已还款',
     'Finance_cstatus'             => '待确认',
 
+    // 利息明细
+    'principalAmount'     => '计息本金',
+    'interestValueDate'   => '起息日',
+    'interestExpiryDate'  => '结息日',
+    'interestDays'        => '计息天数',
+    'totalInterest'       => '当期利息',
+    'graceInterestDays'   => '宽限期计息天数',
+    'graceInterest'       => '宽限期利息',
+    'overdueInterestDays' => '逾期计息天数',
+    'overdueInterest'     => '逾期利息',
+    'writeoffBalInterest' => '未核销利息',
+
     'forActivate'     => '待激活',
     'forLoan'         => '待放款',
     'waitPay'         => '待还款',
