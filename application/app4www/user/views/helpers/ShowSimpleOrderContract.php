@@ -54,7 +54,7 @@ class Zend_View_Helper_ShowSimpleOrderContract extends Shop_View_Helper {
             // 电子签
             if ($contract['isEContract']) {
                 if (!$isESigned || !$isPSigned) {
-                    $result .= '<a href="javascript:void(0)" id="' . $contract['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="btn btn-warning order_contract_sign fr">签署</a>';
+                    $result .= '<a href="javascript:void(0)" id="' . $contract['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="btn btn-warning order_contract_sign fr">放款申请</a>';
                 } else {
                     $result .= '<a href="javascript:void(0)" id="' . $contract['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="btn btn-warning order_contract_sign fr">已签署</a>';
                 }
@@ -70,7 +70,7 @@ class Zend_View_Helper_ShowSimpleOrderContract extends Shop_View_Helper {
                 }
             }
         } else {
-            $result .= '<label>未开始</label>';
+            $result .= '<span>未开始</span>';
         }
 
 
