@@ -60,10 +60,10 @@ class Zend_View_Helper_ShowSimpleOrderContract extends Shop_View_Helper {
                         // 个人
                         if ($contract['firstPartySignMode'] == "P" || $contract['firstPartySignMode'] == "B") {
                             if ($this->view->userID == $contract['firstPartyPrincipal']) {
-                                $result .= '<a href="javascript:void(0)" id="' . $contract['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="btn btn-warning order_contract_sign fr">已签署</a>';
+                                $result .= '<a href="javascript:void(0)" id="' . $contract['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="btn btn-warning order_contract_sign fr">已申请</a>';
                             }
                         } else {
-                            $result .= '<a href="javascript:void(0)" id="' . $contract['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="btn btn-warning order_contract_sign fr">已签署</a>';
+                            $result .= '<a href="javascript:void(0)" id="' . $contract['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="btn btn-warning order_contract_sign fr">已申请</a>';
                         }
                     }
 

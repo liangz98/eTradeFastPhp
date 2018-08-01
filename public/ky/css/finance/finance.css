@@ -6,6 +6,10 @@ body {
     margin-bottom: 15px;
 }
 
+.border-right-solid-white {
+    border-right: 1px solid white;
+}
+
 .bg-color {
     background-color: #f0ad4e;
 }

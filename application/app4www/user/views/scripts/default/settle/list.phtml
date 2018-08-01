@@ -118,7 +118,7 @@
                                 <td><?php echo empty($saltter['subject'])?null:$saltter['subject'].'-';?>
                                     <?php echo empty($saltter['transNo'])?null:$saltter['transNo'].'-';?>
                                     <?php echo $saltter['remarks'];?></td>
-                                <td><?php echo $saltter['customerName'];?></td>
+                                <td><?php echo $saltter['oppCustomerName'];?></td>
                                 <td><?php echo  $this->ShowToRptype($saltter['rptype']).$saltter['crnCode'].'&nbsp;&nbsp;'.$this->ShowToPrice($saltter['totalAmount']);?></td>
                                 <td><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'],$saltter['paymentStatus']);?></td>
                                 <td>
