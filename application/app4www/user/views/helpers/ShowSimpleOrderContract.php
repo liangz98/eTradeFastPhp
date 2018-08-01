@@ -56,7 +56,17 @@ class Zend_View_Helper_ShowSimpleOrderContract extends Shop_View_Helper {
                 if (!$isESigned || !$isPSigned) {
                     $result .= '<a href="javascript:void(0)" id="' . $contract['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="btn btn-warning order_contract_sign fr">放款申请</a>';
                 } else {
-                    $result .= '<a href="javascript:void(0)" id="' . $contract['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="btn btn-warning order_contract_sign fr">已签署</a>';
+                    if ($contract['firstParty'] != null && $contract['firstParty'] == $accountID) {
+                        // 个人
+                        if ($contract['firstPartySignMode'] == "P" || $contract['firstPartySignMode'] == "B") {
+                            if ($this->view->userID == $contract['firstPartyPrincipal']) {
+                                $result .= '<a href="javascript:void(0)" id="' . $contract['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="btn btn-warning order_contract_sign fr">已签署</a>';
+                            }
+                        } else {
+                            $result .= '<a href="javascript:void(0)" id="' . $contract['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="btn btn-warning order_contract_sign fr">已签署</a>';
+                        }
+                    }
+
                 }
             } else {
                 $hasNoEContract = "True";

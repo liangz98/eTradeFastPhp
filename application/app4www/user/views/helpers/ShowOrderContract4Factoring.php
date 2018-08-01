@@ -22,6 +22,7 @@ class Zend_View_Helper_ShowOrderContract4Factoring extends Shop_View_Helper {
                 $attachmentList = $v['attachmentList'];
                 $pdfUrl = $this->view->seed_Setting['KyUrlex'] . '/doc/download.action?sid=' . session_id() . '&nid=' . $attachmentList[0]['attachID'] . '&vid=' . $attachmentList[0]['verifyID'];
 
+                $IMG .= '<div class="row">';
                 $IMG .= '<div class="col-xs-5">';
                 $IMG .= '<em class="new_upicon" style="background:url(\'/ky/ico/pdf.png\') no-repeat;background-size: 20px;"></em>';
                 $IMG .= '<p class="new_uptitle">' . $v['contractName'] . '</p>';
@@ -96,13 +97,38 @@ class Zend_View_Helper_ShowOrderContract4Factoring extends Shop_View_Helper {
                 $IMG .= '<input type="hidden" id="isESigned_'.$v['contractID'].'" value="'.$isESigned.'" />';
                 $IMG .= '<input type="hidden" id="isPSigned_'.$v['contractID'].'" value="'.$isPSigned.'" />';
 
-                $IMG .= '<div class="col-xs-2">';
+                $IMG .= '<div class="col-xs-7">';
                 // 电子签
                 if ($v['isEContract']) {
                     if (!$isESigned || !$isPSigned) {
                         $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr">签署</a>';
                     } else {
-                        $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">已签署</a>';
+                        if ($v['firstParty'] != null && $v['firstParty'] == $accountID) {
+                            // 个人
+                            if ($v['firstPartySignMode'] == "P" || $v['firstPartySignMode'] == "B") {
+                                if ($this->view->userID == $v['firstPartyPrincipal']) {
+                                    $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">已签署</a>';
+                                }
+                            } else {
+                                $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">已签署</a>';
+                            }
+                        } elseif ($v['secondParty'] != null && $v['secondParty'] == $accountID) {
+                            if ($v['secondPartySignMode'] == "P" || $v['secondPartySignMode'] == "B") {
+                                if ($v['secondPartySignMode'] == "P" || $v['secondPartySignMode'] == "B") {
+                                    $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">已签署</a>';
+                                }
+                            } else {
+                                $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">已签署</a>';
+                            }
+                        } elseif ($v['thirdParty'] != null && $v['thirdParty'] == $accountID) {
+                            if ($v['thirdPartySignMode'] == "P" || $v['thirdPartySignMode'] == "B") {
+                                if ($this->view->userID == $v['thirdPartyPrincipal']) {
+                                    $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">已签署</a>';
+                                }
+                            } else {
+                                $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">已签署</a>';
+                            }
+                        }
                     }
                 } else {
                     $hasNoEContract = "True";
@@ -115,6 +141,7 @@ class Zend_View_Helper_ShowOrderContract4Factoring extends Shop_View_Helper {
                         $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">已签署</a>';
                     }
                 }
+                $IMG .= '</div>';
                 $IMG .= '</div>';
             } else {
                 $IMG .= '<div class="col-xs-10 col-md-offset-2">';
