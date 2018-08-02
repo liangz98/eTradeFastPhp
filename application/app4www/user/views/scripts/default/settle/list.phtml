@@ -6,8 +6,8 @@
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/settle/settle.css" rel="stylesheet">
 
-    <link href="/ky/css/settle/base.css" rel="stylesheet">
-    <link href="/ky/css/settle/style.css" rel="stylesheet">
+    <link href="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.css" rel="stylesheet">
+    <link href="/ky/bootstrap-select-1.12.4-dist/css/bootstrap-select.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -15,136 +15,93 @@
 
 <div class="container-fluid index-body">
 	<div class="container">
-		<div class="row">
-
-            <div class="o_content_wrap w1200 m0a clearfix">
-                <div class="st_tit mt20 mb2 pb10" style="border-bottom: 2px solid #ccc;">
-                    <p class="f18"><!--交易记录--><?php echo $this->translate('Saltter_List');?></p>
-                    <a class="a_border ml20" href="/user/settle/lslist"><!--流水账--><?php echo $this->translate('Saltter_Run');?></a>
-
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="page-header">
+                    <h3><?php echo $this->translate('Saltter_List'); ?></h3>
                 </div>
-                <div class="st_wrap p30 mb20">
-                    <form class="form-horizontal" action="" method="post">
-                        <div class="form-group">
-                            <label for="paymentStatus" class="col-sm-1 control-label color-title"><?php echo $this->translate('Saltter_Status'); ?></label>
-                            <div class="col-sm-4">
-                                <select class="selectpicker form-control" name="paymentStatus" id="paymentStatus" data-live-search="true">
-                                    <option value=""><?php echo $this->translate('et_select'); ?></option>
-                                    <?php echo $this->ShowDictionaryList($this->dic_Setting['PAYMENT_STATUS'], $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'], $this->tradingStatus); ?>
-                                </select>
-                            </div>
 
-                            <label for="oppCustomerNames" class="col-sm-2 control-label color-title"><?php echo $this->translate('Saltter_Forname'); ?></label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" name="oppCustomerNames" id="oppCustomerNames" placeholder="" value="<?php echo $this->oppCustomerNames;?>" >
-                            </div>
+                <form class="form-horizontal" action="javascript:void(0)" onsubmit="partnerSearch()" id="partner_search_form">
+                    <div class="form-group">
+                        <label for="paymentStatus" class="col-sm-1 control-label"><?php echo $this->translate('Saltter_Status'); ?></label>
+                        <div class="col-sm-4">
+                            <select class="selectpicker form-control" name="paymentStatus" id="paymentStatus" data-live-search="true">
+                                <?php echo $this->ShowDictionaryList($this->dic_Setting['PAYMENT_STATUS'], $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'], $this->paymentStatus); ?>
+                            </select>
                         </div>
 
-                        <div class="form-group">
-                            <label for="transNo" class="col-sm-1 control-label color-title"><?php echo $this->translate('Saltter_OrderID'); ?></label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" name="transNo" id="transNo" placeholder="" value="<?php echo $this->transNo;?>" >
-                            </div>
+                        <label for="keyword" class="col-sm-2 control-label"><?php echo $this->translate('Saltter_Forname'); ?></label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="keyword" id="keyword" placeholder="" >
+                        </div>
+                    </div>
 
-                            <label for="tradingType" class="col-sm-2 control-label color-title"><?php echo $this->translate('Saltter_Class'); ?></label>
-                            <div class="col-sm-4">
-                                <select class="selectpicker form-control" name="tradingType" id="tradingType" data-live-search="true">
-                                    <option value=""><?php echo $this->translate('et_select'); ?></option>
-                                    <?php echo $this->ShowDictionaryList($this->dic_Setting['PAYMENT_TRADING_TYPE'], $this->userLangCode, $this->dic_Setting['PAYMENT_TRADING_TYPE'], $this->tradingType); ?>
-                                </select>
-                            </div>
+                    <div class="form-group">
+                        <label for="transNo" class="col-sm-1 control-label"><?php echo $this->translate('Saltter_TradeID'); ?></label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="transNo" id="transNo" placeholder="" >
                         </div>
 
-                        <div class="form-group">
-                            <label for="crnCode" class="col-sm-1 control-label color-title"><?php echo $this->translate('ordertotal'); ?></label>
-                            <div class="col-sm-2">
-                                <select class="selectpicker form-control" name="crnCode" id="crnCode" data-live-search="true">
-                                    <?php foreach ($this->crnArr as $k=>$v):?>
-                                        <?php if($this->dfcrnCode==$v):?>
-                                            <option selected="selected"> <?php echo $v;?></option>
-                                        <?php else:?>
-                                            <option > <?php echo $v;?></option>
-                                        <?php endif;?>
-                                    <?php endforeach;?>
-                                </select>
-                                <input type="hidden" name="crnArray" value="<?php echo $this->crnString;?>">
-                            </div>
-                            <div class="col-sm-2">
-                                <input type="number" class="form-control" name="lowerAmount" id="lowerAmount" placeholder="" value="<?php echo $this->lowerAmount; ?>" min="0" >
-                            </div>
-                            <div class="layui-form-mid">-</div>
-                            <div class="col-sm-2">
-                                <input type="number" class="form-control" name="upperAmount" id="upperAmount" placeholder="" value="<?php echo $this->upperAmount; ?>" min="0" >
-                            </div>
+                        <label for="tradingType" class="col-sm-2 control-label"><?php echo $this->translate('Saltter_Class'); ?></label>
+                        <div class="col-sm-4">
+                            <select class="selectpicker form-control" name="tradingType" id="tradingType" data-live-search="true">
+                                <?php echo $this->ShowDictionaryList($this->dic_Setting['PAYMENT_TRADING_TYPE'], $this->userLangCode, $this->dic_Setting['PAYMENT_TRADING_TYPE'], $this->tradingType); ?>
+                            </select>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="startDate" class="col-sm-1 control-label color-title"><?php echo $this->translate('Saltter_Time'); ?></label>
-                            <div class="col-sm-3">
-                                <input type="date" class="form-control" name="startDate" id="startDate">
-                            </div>
-                            <div class="layui-form-mid">-</div>
-                            <label for="endDate" class="sr-only">endDate</label>
-                            <div class="col-sm-3">
-                                <input type="date" class="form-control" name="endDate" id="endDate">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-sm-offset-5 col-sm-2">
-                                <button type="submit" class="btn btn-default btn-warning btn-block"><?php echo $this->translate('find'); ?></button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <table class="st_table bt2px">
-                    <thead>
-                    <tr>
-                        <th width="14%"><!--时间--><?php echo $this->translate('Saltter_Time');?></th>
-                        <th width="10%"><!--类型--><?php echo $this->translate('type');?></th>
-                        <th width="20%"><!--交易号丨订单号丨摘要--><?php echo $this->translate('Saltter_TradeID').'|'.$this->translate('Saltter_OrderID').'|'.$this->translate('Saltter_DEC');?></th>
-                        <th width="20%"><!--对方--><?php echo $this->translate('Saltter_For');?></th>
-                        <th width="10%"><!--金额--><?php echo $this->translate('ordertotal');?></th>
-                        <th width="13%"><!--状态--><?php echo $this->translate('Saltter_Status');?></th>
-                        <th width="13%"><!--操作详情--><?php echo $this->translate('Saltter_Made');?></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php if(is_array($this->e) && count($this->e)>0):?>
-                        <?php foreach ($this->e as $k=>$saltter):?>
-                            <tr>
-                                <td><?php echo date('Y-m-d H:i:s',strtotime($saltter['recordDate']));?></td>
-                                <td><?php echo $saltter['rptype']=='O'?$this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['PAYMENT_TRADING_TYPE'],$saltter['tradingType']):$this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['AR_AP_TYPE'],$saltter['rptype']);?></td>
-                                <td><?php echo empty($saltter['subject'])?null:$saltter['subject'].'-';?>
-                                    <?php echo empty($saltter['transNo'])?null:$saltter['transNo'].'-';?>
-                                    <?php echo $saltter['remarks'];?></td>
-                                <td><?php echo $saltter['oppCustomerName'];?></td>
-                                <td><?php echo  $this->ShowToRptype($saltter['rptype']).$saltter['crnCode'].'&nbsp;&nbsp;'.$this->ShowToPrice($saltter['totalAmount']);?></td>
-                                <td><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'],$saltter['paymentStatus']);?></td>
-                                <td>
-                                    <?php if($saltter['allowPayment']):?>
-                                        <a style="color:#EF8200" href="/user/settle/payment?<?php echo base64_encode($saltter['tradingID']);?>">
-                                            <!--支付--><?php echo $this->translate('Saltter_payment');?></a>|
+                    <div class="form-group">
+                        <label for="crnCode" class="col-sm-1 control-label"><?php echo $this->translate('ordertotal'); ?></label>
+                        <div class="col-sm-2">
+                            <input type="hidden" name="crnArray" value="<?php echo $this->crnString;?>">
+                            <select class="selectpicker form-control" name="crnCode" id="crnCode">
+                                <?php foreach ($this->crnArr as $k=>$v):?>
+                                    <?php if($this->dfcrnCode==$v):?>
+                                        <option selected="selected"> <?php echo $v;?></option>
+                                    <?php else:?>
+                                        <option > <?php echo $v;?></option>
                                     <?php endif;?>
-                                    <?php if($saltter['allowTransfer']):?>
-                                        <a style="color:#86c224" href="/user/settle/transfer?<?php echo base64_encode($saltter['tradingID']);?>">
-                                            <!--转账--><?php echo $this->translate('Saltter_transfer');?></a>|
-                                    <?php endif;?>
-                                    <a style="color:#56859D" href="/user/settle/listview?<?php echo base64_encode($saltter['tradingID']);?>">
-                                        <!--详情--><?php echo $this->translate('Saltter_INF');?></a>
-                                </td>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                        <label for="lowerAmount" class="sr-only">lowerAmount</label>
+                        <div class="col-sm-2">
+                            <input type="number" class="form-control" name="lowerAmount" id="lowerAmount">
+                        </div>
+                        <div class="layui-form-mid">-</div>
+                        <label for="upperAmount" class="sr-only">upperAmount</label>
+                        <div class="col-sm-2">
+                            <input type="number" class="form-control" name="upperAmount" id="upperAmount">
+                        </div>
+                    </div>
 
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else:?>
-                        <tr><td colspan="7"> <?php echo $this->translate('noData');?></td></tr>
-                    <?php endif;?>
-                    </tbody>
-                </table>
-                <div class="page"> <?php echo $this->showProductPage($this->page);?> </div>
+                    <div class="form-group">
+                        <label for="startDate" class="col-sm-1 control-label"><?php echo $this->translate('Saltter_Time'); ?></label>
+                        <div class="col-sm-3">
+                            <input type="date" class="form-control" name="startDate" id="startDate">
+                        </div>
+                        <div class="layui-form-mid">-</div>
+                        <label for="endDate" class="sr-only">endDate</label>
+                        <div class="col-sm-3">
+                            <input type="date" class="form-control" name="endDate" id="endDate">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-4 col-sm-4">
+                            <button type="submit" class="btn btn-warning btn-block"><?php echo $this->translate('find'); ?></button>
+                        </div>
+                    </div>
+                </form>
             </div>
+        </div>
 
-		</div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <!-- Table -->
+                <table id="resultListTable"></table>
+            </div>
+        </div>
 	</div>
 </div>
 
@@ -152,13 +109,160 @@
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
+<script src="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.js"></script>
+<script src="/ky/bootstrap-table-1.12.1-dist/locale/bootstrap-table-zh-CN.min.js"></script>
+<script type="text/javascript" src="/ky/bootstrap-select-1.12.4-dist/js/bootstrap-select.min.js"></script>
 <script type="text/javascript">
+    var dataDict = {};
+
 	$().ready(function() {
 
 	});
 
 	$(function () {
+        var dataDictQuery = '/user/common/dict-ajax';
+        var dictCode = ["PAYMENT_TRADING_TYPE", "PAYMENT_STATUS"];
+        $.ajax({
+            type: "POST",
+            url: dataDictQuery,
+            data: {
+                dictCode: dictCode,
+                langCode: '<?php echo $this->userLangCode; ?>'
+            },
+            dataType: "json",
+            success: function (data) {
+                $.data(dataDict, 'dataDict', data);
 
+                $('#resultListTable').bootstrapTable({
+                    url: '/user/settle/payment-trading-list-ajax',
+                    method: 'post',
+                    // showRefresh: true,
+                    // search: true,
+                    pagination: true,
+                    classes: 'table table-no-bordered',
+                    sidePagination: 'server',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    pageNumber: 1,
+                    pageSize: 10,
+                    height: 489,
+                    queryParams: function(params) {
+                        return {
+                            limit: params.limit,
+                            skip: params.offset,
+                            keyword: params.search
+                        };
+                    },
+                    columns: [{
+                        field: 'orderNo',
+                        title: '<?php echo $this->translate("orderNo"); ?>',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "-";
+                            }
+
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.orderID);
+                            var href = "/user/sale/view?"+resultEnCode;
+                            return '<a href="' + href + '">' + value + '</a>';
+                        }
+                    }, {
+                        field: 'totalAmount',
+                        title: '<?php echo $this->translate("orderPrice"); ?>',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "-";
+                            }
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.orderID);
+                            var href = "/user/sale/view?"+resultEnCode;
+
+                            return '<a href="' + href + '">' + row.buyerCrnCode + " " + value + '</a>';
+                        }
+                    }, {
+                        field: 'buyerName',
+                        title: '<?php echo $this->translate("buyers"); ?>',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "-";
+                            }
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.orderID);
+                            var href = "/user/sale/view?"+resultEnCode;
+
+                            return '<a href="' + href + '">' + value + '</a>';
+                        }
+                    }, {
+                        field: 'lastUpdate',
+                        title: '<?php echo $this->translate("lastUpdate"); ?>',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "-";
+                            }
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.orderID);
+                            var href = "/user/sale/view?"+resultEnCode;
+
+                            return '<a href="' + href + '">' + new Date(value).format("yyyy-MM-dd hh:mm:ss") + '</a>';
+                        }
+                    }, {
+                        title: '<?php echo $this->translate("madeTT"); ?>',
+                        formatter: function (value, row, index) {
+                            var editTitle = "<?php echo $this->translate("edit");?>";
+                            var delTitle = "<?php echo $this->translate('delete');?>";
+                            var cancelTitle = "<?php echo $this->translate('cancel');?>";
+                            var submitForReviewTitle = "<?php echo $this->translate('submit');?>";
+                            var base = new Base64();
+                            var resultEnCode = base.encode(row.orderID);
+                            var href = "/user/sale/edit?"+resultEnCode;
+
+                            var result = '';
+                            <?php if ($this->CompOrderAdmin == true): ?>
+                            if ('<?php echo $this->accountID; ?>' === row.client) {
+                                if (row.orderStatus === '00' || row.orderStatus === '01' || row.orderStatus === '02' || row.orderStatus === '05') {
+                                    result += '<a title="' + editTitle+ '" href="' + href + '">'
+                                        + '<i class="far fa-edit"></i>'
+                                        + '</a>&nbsp;';
+                                }
+                            }
+
+                            if (row.orderStatus === '01' || row.orderStatus === '02' || row.orderStatus === '05') {
+                                result += '<a href="javascript:void(0)" title="' + cancelTitle + '" data-id="' + row.orderID + '" data-url="/user/sale/cancel" '
+                                    + 'data-msg1="<?php echo $this->translate("is_cancel");?>" '
+                                    + 'data-msg2="<?php echo $this->translate("tip_cancel_success");?>" '
+                                    + 'data-msg3="<?php echo $this->translate("tip_cancel_fail");?>" '
+                                    + 'onclick="doOption(this);" '
+                                    + '>'
+                                    + '<i class="fas fa-ban"></i>'
+                                    + '</a>&nbsp;';
+                            }
+
+                            if (row.orderStatus === '00') {
+                                result += '<a href="javascript:void(0)" title="' + delTitle + '" data-id="' + row.orderID + '" data-url="/user/sale/del" '
+                                    + 'data-msg1="<?php echo $this->translate("is_delete");?>" '
+                                    + 'data-msg2="<?php echo $this->translate("tip_del_success");?>" '
+                                    + 'data-msg3="<?php echo $this->translate("tip_del_fail");?>" '
+                                    + 'onclick="doOption(this);" '
+                                    + '>'
+                                    + '<i class="far fa-trash-alt"></i>'
+                                    + '</a>&nbsp;';
+
+                                result += '<a href="javascript:void(0)" title="' + submitForReviewTitle + '" data-id="' + row.orderID + '" data-url="/user/sale/submit" '
+                                    + 'data-msg1="<?php echo $this->translate("is_submit");?>" '
+                                    + 'data-msg2="<?php echo $this->translate("tip_forReview_success");?>" '
+                                    + 'data-msg3="<?php echo $this->translate("tip_forReview_fail");?>" '
+                                    + 'onclick="doOption(this);" '
+                                    + '>'
+                                    + '<i class="far fa-check-circle"></i>'
+                                    + '</a>&nbsp;';
+                            }
+                            <?php endif; ?>
+
+                            return result;
+                        }
+                    }]
+                });
+            }
+        });
 	});
 </script>
 </body>

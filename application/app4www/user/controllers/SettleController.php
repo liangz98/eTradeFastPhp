@@ -290,6 +290,74 @@ class SettleController extends Kyapi_Controller_Action
             }
      }
 
+    public function paymentTradingListAjaxAction() {
+        $msg = array();
+        $requestObject = $this->_requestObject;
+
+        $queryParams = array();
+
+        $querySorts = array();
+        // $querySorts['createTime'] = "DESC";
+
+        $keyword = $this->_request->getParam('keyword');
+        if (empty($keyword)) {
+            $keyword = null;
+        }
+
+        $limit = $this->_request->getParam('limit');
+        if (empty($limit) || $limit <= 0) {
+            $limit = 10;
+        }
+
+        $skip = $this->_request->getParam('skip');
+        if (empty($limit) || $limit <= 0) {
+            $skip = 0;
+        }
+
+        if (is_array($queryParams)) {
+            $queryParams = $this->arrayToObject($queryParams);
+        }
+
+        if (is_array($querySorts)) {
+            $querySorts = $this->arrayToObject($querySorts);
+        }
+
+        $startDate = $this->_request->getParam('startDate');
+        if (empty($startDate)) {
+            $startDate = null;
+        }
+        $endDate = $this->_request->getParam('endDate');
+        if (empty($endDate)) {
+            $endDate = null;
+        }
+
+        $lowerAmount = $this->_request->getParam('lowerAmount');
+        $upperAmount = $this->_request->getParam('upperAmount');
+
+        $paymentStatus = strval($this->_request->getParam('paymentStatus'));
+        if (empty($paymentStatus)) {
+            $paymentStatus = null;
+        }
+
+        $tradingType = strval($this->_request->getParam('tradingType'));
+        if (empty($tradingType)) {
+            $tradingType = null;
+        }
+
+        $transNo = strval($this->_request->getParam('transNo'));
+        if (empty($transNo)) {
+            $transNo = null;
+        }
+
+        $resultObject = $this->json->listpaymentTradApi($requestObject, $queryParams, $querySorts, $keyword, $skip, $limit, $startDate, $endDate,
+            $lowerAmount, $upperAmount, $paymentStatus, $tradingType, $transNo);
+        $msg["total"] = json_decode($resultObject)->extData->totalSize;
+        $msg["rows"] = json_decode($resultObject)->result;
+
+        echo json_encode($msg);
+        exit;
+    }
+
     public function lslistAction()
     {
         try{
