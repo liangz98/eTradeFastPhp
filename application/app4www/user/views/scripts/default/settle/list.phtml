@@ -15,17 +15,24 @@
 
 <div class="container-fluid index-body">
 	<div class="container">
+        <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Library</a></li>
+            <li class="active">Data</li>
+        </ol>
+
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="page-header">
                     <h3><?php echo $this->translate('Saltter_List'); ?></h3>
                 </div>
 
-                <form class="form-horizontal" action="javascript:void(0)" onsubmit="partnerSearch()" id="partner_search_form">
+                <form class="form-horizontal" action="javascript:void(0)" onsubmit="search()" id="search_form">
                     <div class="form-group">
                         <label for="paymentStatus" class="col-sm-1 control-label"><?php echo $this->translate('Saltter_Status'); ?></label>
                         <div class="col-sm-4">
                             <select class="selectpicker form-control" name="paymentStatus" id="paymentStatus" data-live-search="true">
+                                <option value=""><?php echo $this->translate('et_select'); ?></option>
                                 <?php echo $this->ShowDictionaryList($this->dic_Setting['PAYMENT_STATUS'], $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'], $this->paymentStatus); ?>
                             </select>
                         </div>
@@ -45,6 +52,7 @@
                         <label for="tradingType" class="col-sm-2 control-label"><?php echo $this->translate('Saltter_Class'); ?></label>
                         <div class="col-sm-4">
                             <select class="selectpicker form-control" name="tradingType" id="tradingType" data-live-search="true">
+                                <option value=""><?php echo $this->translate('et_select'); ?></option>
                                 <?php echo $this->ShowDictionaryList($this->dic_Setting['PAYMENT_TRADING_TYPE'], $this->userLangCode, $this->dic_Setting['PAYMENT_TRADING_TYPE'], $this->tradingType); ?>
                             </select>
                         </div>
@@ -99,7 +107,7 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <!-- Table -->
-                <table id="resultListTable"></table>
+                <table id="resultListTable" class="table-striped"></table>
             </div>
         </div>
 	</div>
@@ -145,7 +153,7 @@
                     contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                     pageNumber: 1,
                     pageSize: 10,
-                    height: 489,
+                    height: 989,
                     queryParams: function(params) {
                         return {
                             limit: params.limit,
@@ -156,6 +164,7 @@
                     columns: [{
                         field: 'recordDate',
                         title: '<?php echo $this->translate("Saltter_Time"); ?>',
+                        valign: 'middle',
                         formatter: function (value, row) {
                             if (value === undefined || value === '' || value === null) {
                                 value = "-";
@@ -165,6 +174,7 @@
                     }, {
                         field: 'rptype',
                         title: '<?php echo $this->translate("type"); ?>',
+                        valign: 'middle',
                         formatter: function (value, row) {
                             if (value === undefined || value === '' || value === null) {
                                 return value = "-";
@@ -198,28 +208,30 @@
                     }, {
                         field: 'transNo',
                         title: '<?php echo $this->translate("Saltter_TradeID"); ?>',
+                        width: 350,
                         formatter: function (value, row) {
                             if (value === undefined || value === '' || value === null) {
-                                value = "-";
+                                value = "";
                             }
+                            value += '<br>';
+
                             var subject = row.subject;
                             if (subject === undefined || subject === '' || subject === null) {
                                 subject = "";
-                            } else {
-                                subject += "-";
                             }
+                            subject += '<br>';
+
                             var remarks = row.remarks;
                             if (remarks === undefined || remarks === '' || remarks === null) {
                                 remarks = "";
-                            } else {
-                                remarks += "-";
                             }
 
-                            return subject + value + remarks;
+                            return value + '<span style="color: #ccc;">' + subject + remarks + '</span>';
                         }
                     }, {
                         field: 'oppCustomerName',
                         title: '<?php echo $this->translate("Saltter_For"); ?>',
+                        valign: 'middle',
                         formatter: function (value, row) {
                             if (value === undefined || value === '' || value === null) {
                                 value = "-";
@@ -230,28 +242,25 @@
                     }, {
                         field: 'totalAmount',
                         title: '<?php echo $this->translate("ordertotal"); ?>',
+                        align: 'right',
+                        halign: 'center',
+                        valign: 'middle',
                         formatter: function (value, row) {
                             if (value === undefined || value === '' || value === null) {
                                 value = "-";
                             }
-                            var rptype = row.rptype;
-
-                            if (rptype === 'O') {
-                                rptype = "";
-                            } else {
-                                if (rptype === 'R') {
-                                    rptype = "+";
-                                } else if (rptype === 'R') {
-                                    rptype = "-";
-                                } else {
-                                    rptype = "";
-                                }
+                            var result = '<p>' + row.crnCode + ' ' + value + '</p>';
+                            if (row.rptype === 'P') {
+                                result = '<p class="text-danger">' + row.crnCode + ' ' + value + '</p>';
                             }
-                            return rptype + row.crnCode + value;
+
+
+                            return result;
                         }
                     }, {
                         field: 'paymentStatus',
                         title: '<?php echo $this->translate("Saltter_Status"); ?>',
+                        valign: 'middle',
                         formatter: function (value, row) {
                             if (value === undefined || value === '' || value === null) {
                                 value = "-";
@@ -261,8 +270,21 @@
                             $.each(data, function (key, item) {
                                 if (key === 'PAYMENT_STATUS') {
                                     $.each(item, function (i, dict) {
-                                        if (dict.code === value) {
-                                            result = dict.name;
+                                        if (dict.code === value + '') {
+                                            if (dict.code === '0') {
+                                                $.each(data, function (key, item) {
+                                                    if (key === 'AR_AP_TYPE') {
+                                                        $.each(item, function (i, dict) {
+                                                            if (dict.code === row.rptype) {
+                                                                result = dict.name;
+                                                            }
+                                                        });
+                                                    }
+                                                });
+
+                                            } else {
+                                                result = dict.name;
+                                            }
                                         }
                                     });
                                 }
@@ -271,6 +293,7 @@
                         }
                     }, {
                         title: '<?php echo $this->translate("madeTT"); ?>',
+                        valign: 'middle',
                         formatter: function (value, row, index) {
                             var base = new Base64();
                             var resultEnCode = base.encode(row.tradingID);
@@ -297,6 +320,23 @@
             }
         });
 	});
+
+    function search() {
+        var listTable = $('#resultListTable');
+        var options = {
+            query:{
+                keyword: $("#keyword").val(),
+                startDate: $("#startDate").val(),
+                endDate: $("#endDate").val(),
+                lowerAmount: $("#lowerAmount").val(),
+                upperAmount: $("#upperAmount").val(),
+                tradingType: $("#tradingType").val(),
+                transNo: $("#transNo").val(),
+                paymentStatus: $("#paymentStatus").val()
+            }
+        };
+        $(listTable).bootstrapTable('refresh', options);
+    }
 </script>
 </body>
 </html>

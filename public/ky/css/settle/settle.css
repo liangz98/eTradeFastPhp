@@ -22,3 +22,12 @@ input[type=number]{
 .transfer-turn .row {
     margin-bottom: 15px;
 }
+
+.bootstrap-table thead {
+    color: #fff;
+    background: #337ab7;
+}
+
+.bootstrap-table tbody {
+    color: #666;
+}

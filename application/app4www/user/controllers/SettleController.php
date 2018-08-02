@@ -297,7 +297,7 @@ class SettleController extends Kyapi_Controller_Action
         $queryParams = array();
 
         $querySorts = array();
-        // $querySorts['createTime'] = "DESC";
+        $querySorts['createTime'] = "DESC";
 
         $keyword = $this->_request->getParam('keyword');
         if (empty($keyword)) {
@@ -332,7 +332,13 @@ class SettleController extends Kyapi_Controller_Action
         }
 
         $lowerAmount = $this->_request->getParam('lowerAmount');
+        if (empty($lowerAmount)) {
+            $lowerAmount = null;
+        }
         $upperAmount = $this->_request->getParam('upperAmount');
+        if (empty($upperAmount)) {
+            $upperAmount = null;
+        }
 
         $paymentStatus = strval($this->_request->getParam('paymentStatus'));
         if (empty($paymentStatus)) {
