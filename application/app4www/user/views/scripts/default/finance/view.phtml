@@ -175,8 +175,8 @@
                             <thead>
                             <tr>
                                 <th>费用项目</th>
-                                <th>费用</th>
-                                <th>服务费率</th>
+                                <th class="text-right">费用</th>
+                                <th class="text-right">服务费率</th>
                                 <th>说明</th>
                                 <th>付款情况</th>
                             </tr>
@@ -184,8 +184,8 @@
                             <tbody>
                             <tr>
                                 <td>基础服务费</td>
-                                <td><?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo $this->LoanView['factoringItem']['serviceCharge'] != 0 ? number_format($this->LoanView['factoringItem']['serviceCharge'], 2) : '----'; ?></td>
-                                <td><?php echo $this->LoanView['serviceChargePercent'] * 100; ?> %</td>
+                                <td class="text-right"><?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo $this->LoanView['factoringItem']['serviceCharge'] != 0 ? number_format($this->LoanView['factoringItem']['serviceCharge'], 2) : '----'; ?></td>
+                                <td class="text-right"><?php echo $this->LoanView['serviceChargePercent'] * 100; ?> %</td>
                                 <td class="text-999">计算公式：应收账款金额 * 服务费率 * 汇率。发放融资款前，一次性收取。</td>
                                 <td>
                                     <?php if ($this->LoanView['factoringItem']['serviceChargeTradingID'] == ''):?>
@@ -197,8 +197,8 @@
                             </tr>
                             <tr>
                                 <td>担保服务费</td>
-                                <td><?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo $this->LoanView['factoringItem']['guaranteeServiceFee'] != 0 ? number_format($this->LoanView['factoringItem']['guaranteeServiceFee'], 2) : '----'; ?></td>
-                                <td><?php echo $this->LoanView['guaranteeServiceFeePercent'] * 100; ?> %</td>
+                                <td class="text-right"><?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo $this->LoanView['factoringItem']['guaranteeServiceFee'] != 0 ? number_format($this->LoanView['factoringItem']['guaranteeServiceFee'], 2) : '----'; ?></td>
+                                <td class="text-right"><?php echo $this->LoanView['guaranteeServiceFeePercent'] * 100; ?> %</td>
                                 <td class="text-999">计算公式：担保金额 * 服务费率 * 汇率。发放融资款前，一次性收取。</td>
                                 <td>
                                     <?php if ($this->LoanView['factoringItem']['serviceChargeTradingID'] == ''):?>
@@ -272,10 +272,10 @@
                                 <td class="text-right">
                                     <?php echo $factoringLoan['totalInterest'] != 0 ? number_format($factoringLoan['totalInterest'], 2) : '----'; ?> <i class="layui-icon layui-icon-about" style="cursor: pointer;" data-toggle="modal" data-target="#interestModal" data-loan-id="<?php echo $factoringLoan['loanID']; ?>"></i>
                                 </td>
-                                <td class="text-right"><?php echo $factoringLoan['writeoffBalAmount'] != 0 ? number_format($factoringLoan['writeoffBalAmount'], 2) : '----'; ?></td>
-                                <td class="text-right"><?php echo $factoringLoan['writeoffBalInterest'] != 0 ? number_format($factoringLoan['writeoffBalInterest'], 2) : '----'; ?></td>
+                                <td class="text-right"><?php echo number_format($factoringLoan['writeoffBalAmount'], 2); ?></td>
+                                <td class="text-right"><?php echo number_format($factoringLoan['writeoffBalInterest'], 2); ?></td>
                                 <td>
-                                    <?php if ($factoringLoan['loanStatus'] == '01' && $factoringLoan['needLoanApplication'] == true):?>
+                                    <?php if ($factoringLoan['loanStatus'] == '00' && $factoringLoan['needLoanApplication'] == true):?>
                                         <?php echo $this->ShowSimpleOrderContract($factoringLoan['loanApplyContract'], $this->accountID); ?>
                                     <?php else:?>
                                         <?php echo $this->ShowDictionaryTo("LOAN_STATUS", $this->userLangCode, $this->dic_Setting['LOAN_STATUS'], $factoringLoan['loanStatus']); ?>
@@ -303,7 +303,7 @@
                                 <th>还款编号</th>
                                 <th>还款日期</th>
                                 <th class="text-right">应还金额</th>
-                                <th>结汇汇率</th>
+                                <th class="text-right">结汇汇率</th>
                                 <th class="text-right">已付金额</th>
                                 <th class="text-right">还利息</th>
                                 <th class="text-right">还本金</th>
@@ -321,12 +321,12 @@
                                 <tr>
                                     <td><?php echo $factoringRepayment['repaymentNo']; ?></td>
                                     <td><?php echo date('Y-m-d', strtotime($factoringRepayment['repaymentDate'])); ?></td>
-                                    <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo $factoringRepayment['totalAmount'] != 0 ? number_format($factoringRepayment['totalAmount'], 2) : '----'; ?></td>
-                                    <td><?php echo $factoringRepayment['exchangeRate']; ?></td>
-                                    <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo $factoringRepayment['repaymentTotalAmount'] != 0 ? number_format($factoringRepayment['repaymentTotalAmount'], 2) : '----'; ?></td>
-                                    <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo $factoringRepayment['writeoffInterestAmount'] != 0 ? number_format($factoringRepayment['writeoffInterestAmount'], 2) : '----'; ?></td>
-                                    <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo $factoringRepayment['writeoffPrincipalAmount'] != 0 ? number_format($factoringRepayment['writeoffPrincipalAmount'], 2) : '----'; ?></td>
-                                    <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo $factoringRepayment['writeoffFinalAmount'] != 0 ? number_format($factoringRepayment['writeoffFinalAmount'], 2) : '----'; ?></td>
+                                    <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo number_format($factoringRepayment['totalAmount'], 2); ?></td>
+                                    <td class="text-right"><?php echo $factoringRepayment['exchangeRate']; ?></td>
+                                    <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo number_format($factoringRepayment['repaymentTotalAmount'], 2); ?></td>
+                                    <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo number_format($factoringRepayment['writeoffInterestAmount'], 2); ?></td>
+                                    <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo number_format($factoringRepayment['writeoffPrincipalAmount'], 2); ?></td>
+                                    <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo number_format($factoringRepayment['writeoffFinalAmount'], 2); ?></td>
                                 </tr>
                             <?php endforeach;?>
                             <?php endif;?>

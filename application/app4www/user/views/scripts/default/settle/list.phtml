@@ -112,6 +112,7 @@
 <script src="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.js"></script>
 <script src="/ky/bootstrap-table-1.12.1-dist/locale/bootstrap-table-zh-CN.min.js"></script>
 <script type="text/javascript" src="/ky/bootstrap-select-1.12.4-dist/js/bootstrap-select.min.js"></script>
+<script src="/ky/js/base64.js"></script>
 <script type="text/javascript">
     var dataDict = {};
 
@@ -121,7 +122,7 @@
 
 	$(function () {
         var dataDictQuery = '/user/common/dict-ajax';
-        var dictCode = ["PAYMENT_TRADING_TYPE", "PAYMENT_STATUS"];
+        var dictCode = ["PAYMENT_TRADING_TYPE", "PAYMENT_STATUS", "AR_AP_TYPE"];
         $.ajax({
             type: "POST",
             url: dataDictQuery,
@@ -153,109 +154,141 @@
                         };
                     },
                     columns: [{
-                        field: 'orderNo',
-                        title: '<?php echo $this->translate("orderNo"); ?>',
+                        field: 'recordDate',
+                        title: '<?php echo $this->translate("Saltter_Time"); ?>',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "-";
+                            }
+                            return new Date(value).format("yyyy-MM-dd hh:mm:ss");
+                        }
+                    }, {
+                        field: 'rptype',
+                        title: '<?php echo $this->translate("type"); ?>',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                return value = "-";
+                            } else {
+                                var result = '';
+                                var data = $.data(dataDict, 'dataDict');
+                                if (value === 0) {
+                                    $.each(data, function (key, item) {
+                                        if (key === 'PAYMENT_TRADING_TYPE') {
+                                            $.each(item, function (i, dict) {
+                                                if (dict.code === value) {
+                                                    result = dict.name;
+                                                }
+                                            });
+                                        }
+                                    });
+                                } else {
+                                    $.each(data, function (key, item) {
+                                        if (key === 'AR_AP_TYPE') {
+                                            $.each(item, function (i, dict) {
+                                                if (dict.code === value) {
+                                                    result = dict.name;
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                                return result;
+                            }
+                        }
+                    }, {
+                        field: 'transNo',
+                        title: '<?php echo $this->translate("Saltter_TradeID"); ?>',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "-";
+                            }
+                            var subject = row.subject;
+                            if (subject === undefined || subject === '' || subject === null) {
+                                subject = "";
+                            } else {
+                                subject += "-";
+                            }
+                            var remarks = row.remarks;
+                            if (remarks === undefined || remarks === '' || remarks === null) {
+                                remarks = "";
+                            } else {
+                                remarks += "-";
+                            }
+
+                            return subject + value + remarks;
+                        }
+                    }, {
+                        field: 'oppCustomerName',
+                        title: '<?php echo $this->translate("Saltter_For"); ?>',
                         formatter: function (value, row) {
                             if (value === undefined || value === '' || value === null) {
                                 value = "-";
                             }
 
-                            var base = new Base64();
-                            var resultEnCode = base.encode(row.orderID);
-                            var href = "/user/sale/view?"+resultEnCode;
-                            return '<a href="' + href + '">' + value + '</a>';
+                            return value;
                         }
                     }, {
                         field: 'totalAmount',
-                        title: '<?php echo $this->translate("orderPrice"); ?>',
+                        title: '<?php echo $this->translate("ordertotal"); ?>',
                         formatter: function (value, row) {
                             if (value === undefined || value === '' || value === null) {
                                 value = "-";
                             }
-                            var base = new Base64();
-                            var resultEnCode = base.encode(row.orderID);
-                            var href = "/user/sale/view?"+resultEnCode;
+                            var rptype = row.rptype;
 
-                            return '<a href="' + href + '">' + row.buyerCrnCode + " " + value + '</a>';
+                            if (rptype === 'O') {
+                                rptype = "";
+                            } else {
+                                if (rptype === 'R') {
+                                    rptype = "+";
+                                } else if (rptype === 'R') {
+                                    rptype = "-";
+                                } else {
+                                    rptype = "";
+                                }
+                            }
+                            return rptype + row.crnCode + value;
                         }
                     }, {
-                        field: 'buyerName',
-                        title: '<?php echo $this->translate("buyers"); ?>',
+                        field: 'paymentStatus',
+                        title: '<?php echo $this->translate("Saltter_Status"); ?>',
                         formatter: function (value, row) {
                             if (value === undefined || value === '' || value === null) {
                                 value = "-";
                             }
-                            var base = new Base64();
-                            var resultEnCode = base.encode(row.orderID);
-                            var href = "/user/sale/view?"+resultEnCode;
-
-                            return '<a href="' + href + '">' + value + '</a>';
-                        }
-                    }, {
-                        field: 'lastUpdate',
-                        title: '<?php echo $this->translate("lastUpdate"); ?>',
-                        formatter: function (value, row) {
-                            if (value === undefined || value === '' || value === null) {
-                                value = "-";
-                            }
-                            var base = new Base64();
-                            var resultEnCode = base.encode(row.orderID);
-                            var href = "/user/sale/view?"+resultEnCode;
-
-                            return '<a href="' + href + '">' + new Date(value).format("yyyy-MM-dd hh:mm:ss") + '</a>';
+                            var result = '';
+                            var data = $.data(dataDict, 'dataDict');
+                            $.each(data, function (key, item) {
+                                if (key === 'PAYMENT_STATUS') {
+                                    $.each(item, function (i, dict) {
+                                        if (dict.code === value) {
+                                            result = dict.name;
+                                        }
+                                    });
+                                }
+                            });
+                            return result;
                         }
                     }, {
                         title: '<?php echo $this->translate("madeTT"); ?>',
                         formatter: function (value, row, index) {
-                            var editTitle = "<?php echo $this->translate("edit");?>";
-                            var delTitle = "<?php echo $this->translate('delete');?>";
-                            var cancelTitle = "<?php echo $this->translate('cancel');?>";
-                            var submitForReviewTitle = "<?php echo $this->translate('submit');?>";
                             var base = new Base64();
-                            var resultEnCode = base.encode(row.orderID);
-                            var href = "/user/sale/edit?"+resultEnCode;
-
+                            var resultEnCode = base.encode(row.tradingID);
                             var result = '';
-                            <?php if ($this->CompOrderAdmin == true): ?>
-                            if ('<?php echo $this->accountID; ?>' === row.client) {
-                                if (row.orderStatus === '00' || row.orderStatus === '01' || row.orderStatus === '02' || row.orderStatus === '05') {
-                                    result += '<a title="' + editTitle+ '" href="' + href + '">'
-                                        + '<i class="far fa-edit"></i>'
-                                        + '</a>&nbsp;';
-                                }
+                            if (row.allowPayment) {
+                                var href = "/user/settle/payment?"+resultEnCode;
+                                var str = "<?php echo $this->translate('Saltter_payment');?>";
+                                result += '<a href="' + href + '">' + str + '</a>|';
+                            }
+                            if (row.allowTransfer) {
+                                var href = "/user/settle/transfer?"+resultEnCode;
+                                var str = "<?php echo $this->translate('Saltter_transfer');?>";
+                                result += '<a href="' + href + '">' + str + '</a>|';
                             }
 
-                            if (row.orderStatus === '01' || row.orderStatus === '02' || row.orderStatus === '05') {
-                                result += '<a href="javascript:void(0)" title="' + cancelTitle + '" data-id="' + row.orderID + '" data-url="/user/sale/cancel" '
-                                    + 'data-msg1="<?php echo $this->translate("is_cancel");?>" '
-                                    + 'data-msg2="<?php echo $this->translate("tip_cancel_success");?>" '
-                                    + 'data-msg3="<?php echo $this->translate("tip_cancel_fail");?>" '
-                                    + 'onclick="doOption(this);" '
-                                    + '>'
-                                    + '<i class="fas fa-ban"></i>'
-                                    + '</a>&nbsp;';
-                            }
-
-                            if (row.orderStatus === '00') {
-                                result += '<a href="javascript:void(0)" title="' + delTitle + '" data-id="' + row.orderID + '" data-url="/user/sale/del" '
-                                    + 'data-msg1="<?php echo $this->translate("is_delete");?>" '
-                                    + 'data-msg2="<?php echo $this->translate("tip_del_success");?>" '
-                                    + 'data-msg3="<?php echo $this->translate("tip_del_fail");?>" '
-                                    + 'onclick="doOption(this);" '
-                                    + '>'
-                                    + '<i class="far fa-trash-alt"></i>'
-                                    + '</a>&nbsp;';
-
-                                result += '<a href="javascript:void(0)" title="' + submitForReviewTitle + '" data-id="' + row.orderID + '" data-url="/user/sale/submit" '
-                                    + 'data-msg1="<?php echo $this->translate("is_submit");?>" '
-                                    + 'data-msg2="<?php echo $this->translate("tip_forReview_success");?>" '
-                                    + 'data-msg3="<?php echo $this->translate("tip_forReview_fail");?>" '
-                                    + 'onclick="doOption(this);" '
-                                    + '>'
-                                    + '<i class="far fa-check-circle"></i>'
-                                    + '</a>&nbsp;';
-                            }
-                            <?php endif; ?>
+                            var infoHref = "/user/settle/listview?"+resultEnCode;
+                            var infoStr = "<?php echo $this->translate('Saltter_INF');?>";
+                            result += '<a href="' + infoHref + '">' + infoStr + '</a>';
 
                             return result;
                         }
