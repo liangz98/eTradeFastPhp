@@ -365,7 +365,7 @@ class SaleController extends Kyapi_Controller_Action
                 $this->view->orderStatus = '00';
 
                 $this->view->order = $this->objectToArray($_order);
-                $this->view->errMsg = $this->view->translate('tip_add_fail') . $resultObject->error;
+                $this->view->resultMsg = $this->view->translate('tip_add_fail') . '! ' . $resultObject->error;
             } else {
                 $resultMsg = base64_encode($this->view->translate('tip_add_success'));
                 $this->redirect("/sale/index?resultMsg=" . $resultMsg . "&orderStatus=00");

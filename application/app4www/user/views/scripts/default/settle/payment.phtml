@@ -1,247 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>快移</title>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-    <link href="/ky/css/base.css" rel="stylesheet">
-    <link href="/ky/css/style.css" rel="stylesheet">
-    <link href="/ky/css/pay.css" rel="stylesheet">
-    <script type="text/javascript" src="/ky/js/jquery.js"></script>
-    <script type="text/javascript" src="/ky/js/jquery.wallform.js"></script>
-    <script type="text/javascript" src="/ky/js/www.js"></script>
-    <script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+	<title>快移</title>
+    <link href="/ky/css/layouts/base.css" rel="stylesheet">
 </head>
 <body>
-<?php echo $this->render(SEED_WWW_TPL . '/header.phtml'); ?>
-<div class="o_content_wrap w1200 m0a clearfix">
-    <div class="st_tit mt20 mb2 pb10">
-        <p class="f18"><!--支付--><?php echo $this->translate('Saltter_payment');?></p>
-    </div>
-    <form action="" method="post">
-    <div class="settle_info">
-            <div class="pm_view clearfix">
-                <div class="">
-                    <label class="pm_lab"><!--名称--><?php echo $this->translate('Saltter_Name');?>：</label>
-                    <span><?php echo $this->paymentTrading['subject']; ?></span>
-                </div>
-                <div class="">
-                    <label class="pm_lab"><!--金额--><?php echo $this->translate('Saltter_amount');?>：</label>
-                    <span style="color: #EE9001;">
-                        <?php echo $this->paymentTrading['crnCode'] . '&nbsp;-&nbsp;'  . $this->ShowToPrice($this->paymentTrading['totalAmount']); ?>
-                    </span>
-                </div>
-                <div class="">
-                    <label class="pm_lab"><!--发生时间--><?php echo $this->translate('Saltter_GTime');?>：</label>
-                    <span><?php if ($this->paymentTrading['recordDate']) {
-                            echo date('Y/m/d', strtotime($this->paymentTrading['recordDate']));
-                        } ?>
-                    </span>
-                </div>
-                <div class="">
-                    <label class="pm_lab"><!--预收付时间--><?php echo $this->translate('Saltter_Time_ING');?>：</label>
-                    <span><?php if ($this->paymentTrading['expectedDate']) {
-                            echo date('Y/m/d', strtotime($this->paymentTrading['expectedDate']));
-                        } ?></span>
-                </div>
-                <div class="">
-                    <label class="pm_lab"><!--摘要--><?php echo $this->translate('Saltter_DEC');?>：</label>
-                    <span><?php echo $this->paymentTrading['remarks']; ?></span>
-                </div>
-                <div class="">
-                    <label class="pm_lab"><!--明细--><?php echo $this->translate('Saltter_mark');?>：</label>
-                    <dl>
-                        <?php if (is_array($this->paymentDetailList) && count($this->paymentDetailList) > 0): ?>
-                            <?php foreach ($this->paymentDetailList as $k => $paymentDetailList): ?>
-                                <span><?php echo $paymentDetailList['oppCustomerName'] . '&nbsp;-&nbsp;' . $paymentDetailList['accruedItemName'] . '&nbsp;-&nbsp;'  . '<em style="color: #EE9001;">'.$paymentDetailList['crnCode'] . '&nbsp;-&nbsp;'  . $this->ShowToPrice($paymentDetailList['balanceAmount']).'</em>'; ?></span>
-                            <?php endforeach; ?>
-                        <?php endif; ?></dl>
-                </div>
-            </div>
-    </div>
-    <div class="payment">
-        <!--定向余额支付-->
-        <?php if ($this->paymentTrading['isOriented'] == true): ?>
-            <div class="pm_box p10">
-                <label class="pm_lab"><!--定向余额支付--><?php echo $this->translate('Saltter_DirectBalAmount');?>：</label>
-                <p class="pm_p">
-                    <?php echo $this->payment['crnCode'] . '<input type="text" id="directAmount" name="directPaymentAmount" value="' . $this->ShowToPrice($this->payment['validDirectBalAmount']) . '">'; ?>
-                </p>
-                <p class="txt">
-                    <!--该笔订单有定向资金，可用定向金额-->
-                    <?php echo '<span>' . $this->translate('Saltter_tips01') . '=</span>USD' . $this->ShowToPrice($this->payment['validDirectBalAmount']) . '*' . $this->ShowExchange($this->reqOb, 'USD', 'CNY', 'PR', null, $this->seed_Setting['KyUrl']) . '=CNY&nbsp;' . $this->ShowToPrice($this->payment['validDirectBalAmount']); ?>
-                </p>
-            </div>
-        <?php endif; ?>
-        <!--自由余额支付-->
-        <div class="pm_box ">
-            <label class="pm_lab">
-                <!--余额支付--><?php echo $this->translate('Saltter_eAmount');?>：</label>
-            <p class="pm_p">
-                <?php echo $this->payment['crnCode'] . '<input id="freeAmount" name="balPaymentAmount" value="">'; ?>
-                </p><?php echo $this->payment['paymentAccountBal']; ?><span id="freeAmount_tip"></span>
-            <p class="txt">
-                <?php echo '<span>'.$this->translate('Saltter_free').'</span>='.$this->translate('Saltter_CNY_free').'</span>CNY' . $this->ShowToPrice($this->paymentAccountBal['balAmount']) . '+<span>'.$this->translate('Saltter_USD_free').'&nbsp;</span>USD' . $this->ShowToPrice($this->paymentAccountBal['balAmount']) . '*' . empty($this->paymentAccountBal['balAmount']) ? null : $this->ShowExchange($this->reqOb, 'USD', 'CNY', 'PR', null, $this->seed_Setting['KyUrl']); ?>
-            </p>
-        </div>
-        <!--银行支付-->
-        <div class="pm_box mb10" id="bank_icon">
-                <a id="bank_id" class="addb_box fl" style="margin: 7px 10px 0 10px;"></a>
-                <p class="pm_p" style="color: #a0a0a0;"><!--添加银行支付--><?php echo $this->translate('Saltter_add_BankAmount');?></p>
-        </div>
 
-        <div class="pm_box mb10"  id="bank_acct" style="display: none;">
-                <label class="pm_lab pr"><a id="bank_rev" class="pa p_del" style="top: 7px;left: 10px;"></a><!--银行支付-->
-                    <!--银行支付--><?php echo $this->translate('Saltter_BankAmount');?>：</label>
-                <p class="pm_p"><?php echo $this->payment['crnCode'] . '<input id="bankAmount" type="text" value="" name="paymentAmount">'; ?>
-                   </p>
-                <p class="txt">
-                    <span><?php echo $this->translate('Saltter_tips00'); ?><!--当使用银行支付时，必须上传转账水单，填写金额必须和水单金额一致--></span>
-                </p>
-            </div>
-            <!-- 订单附件上传 -->
-        <div style="width: 100%;height: 150px;padding-left: 30px;">
-            <!--bizType：PR     attachType：银行凭证：PRSP       发票影像：PRIV-->
-            <?php echo $this->ShowWebuploader('', 'PR', 'PRSP', '0'); ?></div>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
 
-        <div class="pm_box p10">
-            <label class="pm_lab"><!--支付合计--><?php echo $this->translate('Saltter_total');?>：</label>
-            <p class="pm_p"><?php echo $this->payment['crnCode'];?><input id="totalAmount" name="totalAmount" value=""></p>
-            <p class="txt">
-                <span><?php echo $this->translate('Saltter_tips05'); ?><!--本次支付合计大于应付金额，超出部分自动转入自由余额--></span></p>
-        </div>
-        <div class="pm_box p10">
-            <label class="pm_lab"><!--支付密码--><?php echo $this->translate('Saltter_pay_pwd');?>：</label>
-            <input class="pm_input" type="password" name="pwd" id="" value="">
-            <input class="st_btn" type="submit" value="<?php echo $this->translate('confirmed');?>"><!--确认-->
-            <a id="forgetpwd"><!--忘记密码--><?php echo $this->translate('forgetPSD');?>？</a>
-        </div>
-    </div>
-    </form>
+<div class="container-fluid index-body">
+	<div class="container">
+		<div class="row">
+
+		</div>
+	</div>
 </div>
-<?php echo $this->render(SEED_WWW_TPL . '/footer.phtml'); ?>
-<script type="text/javascript" src="/ky/layer-v3.1.1/layer.js"></script>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
 <script type="text/javascript">
-    $(document).ready(function () {
-        /*  银行支付模块点击处理 显示*/
-        $('#bank_id').click(function () {
-            $('#bank_acct').css('display', 'block');
-            $('#bank_acct').find('input').attr('name', 'paymentAmount');
-            $('#bank_icon').css('display', 'none');
-        });
-        /*  银行支付模块点击处理 影藏*/
-        $('#bank_rev').click(function () {
-            $('#bank_acct').css('display', 'none');
-            $('#bank_acct').find('input').attr('name', '');
-            $('#bank_icon').css('display', 'block');
-        });
-        /*  银行支付模块点击 End*/
-        /*  合计金额统计开始*/
-        totalAmount();
-        $('#freeAmount').change(function () {
-            checkfreeamount();
-            totalAmount();
-        });
-        $('#bankAmount').change(function () {
-            totalAmount();
-        });
+	$().ready(function() {
 
-        function checkfreeamount() {
-            balAmount = parseFloat($('#freeAmount').val());
-            if (balAmount > <?php echo floatval($this->payment['validFreeBalAmount']);?>) {
-                $('#freeAmount_tip').html("<?php echo $this->translate('Saltter_tips02');?>");
-                $('#freeAmount').css("border-color", "#EE9001");
-            } else if (balAmount +<?php echo floatval($this->payment['directPaymentAmount']);?> > <?php echo floatval($this->payment['validRequestBalAmount']);?>) {
-                $('#freeAmount_tip').html("<?php echo $this->translate('Saltter_tips03')?>");
-            } else {
-                $('#freeAmount_tip').html("");
-                $('#freeAmount').css("border-color", "#f5f5f5");
-            }
-        }
+	});
 
-        function totalAmount() {
-            if ($('#directAmount').val() != null && $('#directAmount').val() != "") {
-                $directAT = parseInt($('#directAmount').val());
-            } else {
-                $directAT = 0;
-            }
-            if ($('#bankAmount').val() != null && $('#bankAmount').val() != "") {
-                $bankAT = parseInt($('#bankAmount').val());
-            } else {
-                $bankAT = 0;
-            }
-            if ($('#freeAmount').val() != null && $('#freeAmount').val() != "") {
-                $freeAT = parseInt($('#freeAmount').val());
-            } else {
-                $freeAT = 0;
-            }
+	$(function () {
 
-            $totalAT = $directAT + $bankAT + $freeAT;
-            $('#totalAmount').val($totalAT);
-        }
-
-//        //加载页面判断是否需要 初始化支付密码和 判断密码是否被锁定
-//        var initST = '<?php //echo $this->init['userStatus'];?>//';
-//        if (initST == '00') {
-//            layer.confirm('<?php //echo $this->translate('Saltter_tips06');?>//？',//首次使用支付功能需要设置支付密码
-//                {
-//                    btn: ['<?php //echo $this->translate('Saltter_tips10');?>//', '<?php //echo $this->translate('Saltter_tips11');?>//'] //按钮 好的,去设置  暂时不设置离开该页面
-//                }, function () {
-//                    layer.prompt({ title: '<?php //echo $this->translate('Saltter_tips20')?>//'},
-//                        function (val, index) {
-//                        layer.close(index);
-//                        $.post('<?php //echo $this->BaseUrl();?>///system/checkloginpwd',
-//                            {'passpwd': val},
-//                            function (data) {
-//                                if (data.result == true) {
-//                                    open("<?php //echo $this->BaseUrl();?>///settle/initpwd", "_blank");
-//                                    layer.confirm('<?php //echo $this->translate('Saltter_tips07');?>//？', {
-//                                        btn: ['<?php //echo $this->translate('Saltter_tips12');?>//'] //按钮 已完成，继续支付
-//                                    }, function () {
-//                                        layer.closeAll();
-//                                    });
-//                                }
-//                                else {
-//                                    layer.msg('<?php //echo $this->translate('Saltter_tips13');?>//', {icon: 2});//登录密码错误
-//                                }
-//                            }, "json");
-//                    });
-//                }
-//            );
-//        } else if (initST == '03') {
-//            layer.confirm('<?php //echo $this->translate('Saltter_tips08');?>//！',
-//                {
-//                    btn: ['<?php //echo $this->translate('Saltter_tips14');?>//'] //按钮 好的，稍后再试
-//                });
-//        }
-
-    });
-    $('#forgetpwd').click(function () {
-
-        layer.prompt({title: '<?php echo $this->translate('Saltter_tips09');?>', formType: 1},function (val, index) {
-            $.post('<?php echo $this->BaseUrl();?>/system/checkloginpwd',
-                {'passpwd': val},
-                function (data) {
-                    if (data.result == true) {
-                        open("<?php echo $this->BaseUrl();?>/settle/forgetpwd", "_blank");
-                        layer.confirm('<?php echo $this->translate('Saltter_tips15');?>？', { //是否成功修改支付密码
-                            btn: ['<?php echo $this->translate('Saltter_tips16');?>'] //按钮 是的，继续支付
-                        }, function () {
-                            layer.closeAll();
-                        });
-                    }
-                    else {
-                        layer.msg('<?php echo $this->translate('Saltter_tips17');?>', {icon: 2}); //登录密码错误
-                    }
-                }, "json");
-
-            layer.close(index);
-        });
-    });
-
-
+	});
 </script>
 </body>
 </html>
