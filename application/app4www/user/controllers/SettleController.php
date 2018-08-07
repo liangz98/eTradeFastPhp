@@ -582,23 +582,28 @@ class SettleController extends Kyapi_Controller_Action
         }
 	}
 
-    public function paymentAction()
-    {
-        $_initPWD=$this->json->paymentgetAccountUserApi($this->_requestObject);
-        $_initData=$this->objectToArray(json_decode($_initPWD));
+    public function paymentAction() {
+        $_initPWD = $this->json->paymentgetAccountUserApi($this->_requestObject);
+        $_initData = $this->objectToArray(json_decode($_initPWD));
         $this->view->init = $_initData['result'];
-       //获取订单支付信息
-        $tradingID=$_SERVER['QUERY_STRING'];
-        $_tradingID =base64_decode($tradingID);
-        $_resultData=$this->json->Request4PaymentApi($this->_requestObject,$_tradingID);
-        $existData=json_decode($_resultData);
-        $existArr=$this->objectToArray($existData);
-        $this->view->payment=$existArr['result'];
-        $this->view->paymentTrading=$existArr['result']['paymentTrading'];
-        $this->view->paymentDetailList=$existArr['result']['paymentDetailList'];
-        $this->view->paymentAccountBal=$existArr['result']['paymentAccountBalList'];
-
-        //判断自由余额模块
+        //获取订单支付信息
+        $tradingID = $_SERVER['QUERY_STRING'];
+        $_tradingID = base64_decode($tradingID);
+        $_resultData = $this->json->Request4PaymentApi($this->_requestObject, $_tradingID);
+        $existData = json_decode($_resultData);
+        $existArr = $this->objectToArray($existData);
+        $this->view->payment = $existArr['result'];
+        $this->view->paymentTrading = $existArr['result']['paymentTrading'];
+        $this->view->paymentDetailList = $existArr['result']['paymentDetailList'];
+        foreach ($existArr['result']['paymentAccountBalList'] as $paymentAccountBal) {
+            if ($paymentAccountBal['crnCode'] == 'CNY') {
+                $this->view->paymentAccountCNYBal = $paymentAccountBal;
+            } else if ($paymentAccountBal['crnCode'] == 'USD') {
+                $this->view->paymentAccountUSDBal = $paymentAccountBal;
+            } else {
+                $this->view->paymentAccountOtherBal = $paymentAccountBal;
+            }
+        }
 
         if ($this->_request->isPost()) {
             //获取附件ID
@@ -627,36 +632,97 @@ class SettleController extends Kyapi_Controller_Action
                 }
             }
             //入参支付请求
-            $_paymentRequest=new Kyapi_Model_paymentRequest();//实例化
-            $_paymentRequest->crnCode=$existArr['result']['paymentTrading']['crnCode'];
-            $_paymentRequest->payAcctID=$existArr['result']['paymentTrading']['payAcctID'];
-           $_paymentRequest->balPaymentAmount=empty($this->_request->getParam('balPaymentAmount'))?0:$this->_request->getParam('balPaymentAmount');
-            $_paymentRequest->directPaymentAmount=empty($this->_request->getParam('directPaymentAmount'))?0:$this->_request->getParam('directPaymentAmount');
-            $_paymentRequest->paymentAmount=empty($this->_request->getParam('paymentAmount'))?0:$this->_request->getParam('paymentAmount');
-            $_paymentRequest->paymentPwd=$this->_request->getParam('pwd');
+            $_paymentRequest = new Kyapi_Model_paymentRequest();//实例化
+            $_paymentRequest->crnCode = $existArr['result']['paymentTrading']['crnCode'];
+            $_paymentRequest->payAcctID = $existArr['result']['paymentTrading']['payAcctID'];
+            $_paymentRequest->balPaymentAmount = empty($this->_request->getParam('balPaymentAmount')) ? 0 : $this->_request->getParam('balPaymentAmount');
+            $_paymentRequest->directPaymentAmount = empty($this->_request->getParam('directPaymentAmount')) ? 0 : $this->_request->getParam('directPaymentAmount');
+            $_paymentRequest->paymentAmount = empty($this->_request->getParam('paymentAmount')) ? 0 : $this->_request->getParam('paymentAmount');
             $dateNow = date("Y-m-d\TH:i:s", time());
-            $_paymentRequest->paymentDate=$dateNow;
-            $_paymentRequest->tradingID=$existArr['result']['tradingID'];
-            $_paymentRequest->explanation=$existArr['result']['PaymentTrading']['remarks'];
-            $_paymentRequest->paymentPwd=$this->_request->getParam('paymentPwd');
-            $_paymentRequest->attachmentList= $_attachList;//附件集合
+            $_paymentRequest->paymentDate = $dateNow;
+            $_paymentRequest->tradingID = $existArr['result']['tradingID'];
+            $_paymentRequest->explanation = $existArr['result']['PaymentTrading']['remarks'];
+            $_paymentRequest->paymentPwd = $this->_request->getParam('paymentPwd');
+            $_paymentRequest->attachmentList = $_attachList;//附件集合
 
-            $_resultData=$this->json->addPaymentApi($this->_requestObject,$_paymentRequest);
-            $existData=json_decode($_resultData);
+            $_resultData = $this->json->addPaymentApi($this->_requestObject, $_paymentRequest);
+            $existData = json_decode($_resultData);
             if ($existData->status != 1) {
                 //支付失败
-                Shop_Browser::redirect($this->view->translate('tip_payment_fail').$existData->error,$this->view->seed_BaseUrl . "/settle");
+                // Shop_Browser::redirect($this->view->translate('tip_payment_fail') . $existData->error, $this->view->seed_BaseUrl . "/settle");
+
+                $this->view->resultMsg = $this->view->translate('tip_payment_fail') . '! ' . $existData->error;
             } else {
                 //支付成功
-                Shop_Browser::redirect($this->view->translate('tip_payment_success'),$this->view->seed_BaseUrl . "/settle");
+                // Shop_Browser::redirect($this->view->translate('tip_payment_success'), $this->view->seed_BaseUrl . "/settle");
+
+                $resultMsg = base64_encode($existArr['result']['tradingID']);
+                $this->redirect("/settle/listview?" . $resultMsg);
             }
 
         }
 
-        if(defined('SEED_WWW_TPL')){
-            $content = $this->view->render(SEED_WWW_TPL."/settle/payment.phtml");
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/settle/payment.phtml");
             echo $content;
             exit;
+        }
+    }
+
+    public function addPayment() {
+        $tradingID = $this->_request->getParam('tradingID');
+        $_resultData = $this->json->Request4PaymentApi($this->_requestObject, $tradingID);
+        $existData = json_decode($_resultData);
+        $existArr = $this->objectToArray($existData);
+
+        //获取附件ID
+        $Atachlist = array();
+        $Atachlist["attachID"] = $this->_request->getParam('attachNid');
+        $Atachlist["attachType"] = $this->_request->getParam('attachType');
+        $Atachlist["bizType"] = $this->_request->getParam("bizType");
+        $Atachlist["attachName"] = $this->_request->getParam("attachName");
+        $Atachlist["attachSize"] = $this->_request->getParam("attachSize");
+        $_attach2 = array();
+        foreach ($Atachlist as $k => $v) {
+            foreach ($v as $k1 => $v1) {
+                $_attach2[$k1][$k] = $v1;
+            }
+        }
+        $_attachList = array();
+        foreach ($_attach2 as $k => $v) {
+            foreach ($v as $k1 => $v1) {
+                $_attachList[$k] = new Kyapi_Model_Attachment();
+                $_attachList[$k]->attachID = $_attach2[$k]['attachID'];
+                $_attachList[$k]->attachType = $_attach2[$k]['attachType'];
+                $_attachList[$k]->bizType = $_attach2[$k]['bizType'];
+                $_attachList[$k]->name = $_attach2[$k]['attachName'];
+                $_attachList[$k]->size = (int)$_attach2[$k]['attachSize'];
+
+            }
+        }
+        //入参支付请求
+        $_paymentRequest = new Kyapi_Model_paymentRequest();//实例化
+        $_paymentRequest->crnCode = $existArr['result']['paymentTrading']['crnCode'];
+        $_paymentRequest->payAcctID = $existArr['result']['paymentTrading']['payAcctID'];
+        $_paymentRequest->balPaymentAmount = empty($this->_request->getParam('balPaymentAmount')) ? 0 : $this->_request->getParam('balPaymentAmount');
+        $_paymentRequest->directPaymentAmount = empty($this->_request->getParam('directPaymentAmount')) ? 0 : $this->_request->getParam('directPaymentAmount');
+        $_paymentRequest->paymentAmount = empty($this->_request->getParam('paymentAmount')) ? 0 : $this->_request->getParam('paymentAmount');
+        $_paymentRequest->paymentPwd = $this->_request->getParam('pwd');
+        $dateNow = date("Y-m-d\TH:i:s", time());
+        $_paymentRequest->paymentDate = $dateNow;
+        $_paymentRequest->tradingID = $existArr['result']['tradingID'];
+        $_paymentRequest->explanation = $existArr['result']['PaymentTrading']['remarks'];
+        $_paymentRequest->paymentPwd = $this->_request->getParam('paymentPwd');
+        $_paymentRequest->attachmentList = $_attachList;//附件集合
+
+        $_resultData = $this->json->addPaymentApi($this->_requestObject, $_paymentRequest);
+        $existData = json_decode($_resultData);
+        if ($existData->status != 1) {
+            //支付失败
+            Shop_Browser::redirect($this->view->translate('tip_payment_fail') . $existData->error, $this->view->seed_BaseUrl . "/settle");
+        } else {
+            //支付成功
+            Shop_Browser::redirect($this->view->translate('tip_payment_success'), $this->view->seed_BaseUrl . "/settle");
         }
     }
 

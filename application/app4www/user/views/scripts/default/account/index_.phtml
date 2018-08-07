@@ -68,7 +68,7 @@
                                 <?php echo $ulist['contactStatus']=='01'?$this->translate('normal'):$this->translate('disable');?></a></td>
                         <!--是否默认联系人-->
                         <td>
-                            <a href="#" href="javascript:;" id="<?php echo $ulist['contactID'];?>" data-url="/user/account/default"
+                            <a href="#" href="javascript:void(0)" id="<?php echo $ulist['contactID'];?>" data-url="/user/account/default"
                                data-msg1="<?php echo $this->translate('is_default');?>" data-msg2="<?php echo $this->translate('tip_default_success');?>"
                                data-msg3="<?php echo $this->translate('tip_default_fail');?>" <?php if($this->CompAdmin==true){echo'onclick="doOption(this);"';}?>>
                                 <?php if($ulist['isDefaultPublic']==true){echo $this->translate('yes');}else{echo $this->translate('no');};?></a>
@@ -79,7 +79,7 @@
                                 <a title="<?php echo $this->translate('edit');?>" class="p_ed" href="<?php echo '/user/account/edit?'.base64_encode($ulist['contactID']);?>"></a>
                                 <?php  if($this->CompAdmin==true):?>
                                 <!--禁用-->   <a title="<?php echo $this->translate('disable');?>"  <?php if ($ulist['contactStatus']=='01'){echo 'style="display:inline-block;"';}?>  class="t_edit p_jy"
-                                               href="javascript:;" id="<?php echo $ulist['contactID'];?>" data-url="/user/account/invalid"
+                                               href="javascript:void(0)" id="<?php echo $ulist['contactID'];?>" data-url="/user/account/invalid"
                                                data-msg1="<?php echo $this->translate('is_invalid');?>" data-msg2="<?php echo $this->translate('tip_invalid_success');?>"
                                                data-msg3="<?php echo $this->translate('tip_invalid_fail');?>" onclick="doOption(this);"></a>
 

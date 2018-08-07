@@ -17,7 +17,7 @@
 <script type="text/javascript" src="<?php echo $this->seed_Setting['static_app_server']?>/default/vplatform/js/jquery.ba-hashchange.js"></script>
 <script type="text/javascript" src="<?php echo WWW;?>static/sendyou/js/jquery.lazyload.js"></script>
 <style type="text/css">
-    #content{background: #ebebeb;} 
+    #content{background: #ebebeb;}
     .layout{margin-top: 30px;}
 </style>
 <script type="text/javascript">
@@ -56,7 +56,7 @@ function comment_list(){
 <?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
 <div id="content">
 	<div class="bigdiv">
-    	<div class="location"><a href="/">首页</a> &gt; 
+    	<div class="location"><a href="/">首页</a> &gt;
     	   <?php if (is_array($this->parent_cates)){
 		    	   	foreach ($this->parent_cates as $k => $cate){
 		    	   		echo '<a href="/products/top-'.$cate['cate_id'].'.html">'.$cate['cate_name'].'</a>'.'&gt; ';
@@ -65,7 +65,7 @@ function comment_list(){
     	   ?>
     	   <?php echo $this->escape($this->goods['goods_name']);?>
         </div>
-        
+
         <div class="bigbor">
         	<div class="mainshow">
                 <div class="image">
@@ -81,12 +81,12 @@ function comment_list(){
                              <?php foreach ($this->photos as $k => $photo):?>
                                 <li><img class="lazy" data-original="<?php echo $this->showImage($photo['thumb_image']);?>" alt="产品展示小图" width="90px" height="90px"/></li>
                              <?php endforeach;?>
-                             <?php endif;?>  
+                             <?php endif;?>
                             </ul>
                         </dt>
                     </dl>
-                </div>  
-                
+                </div>
+
                 <?php echo $this->render('default/products/goods_main.phtml');?>
         	</div>
             <!--<?php if (is_array($this->recommend_goodses) && count($this->recommend_goodses)>0):?>
@@ -105,36 +105,36 @@ function comment_list(){
         	</div>
               <?php endif;?> -->
 
-            <?php if(count($this->goodses) > 0){?>          
+            <?php if(count($this->goodses) > 0){?>
             <div class="preferetial" style="display:block">
             <?php }else{?>
-            <div class="preferetial" style="display:none">    
-            <?php }?>           
+            <div class="preferetial" style="display:none">
+            <?php }?>
                 <div class="preferetial_top">
                 <p>优惠套装</p>
-                </div>              
+                </div>
                 <div class="preferetial_content">
                     <div class="content_choose" id="content_choose">
                         <ul>
                             <?php foreach($this->goodses as $k => $v ): ?>
-                            <li class="select">优惠套装<?php echo $k+1;?></li> 
+                            <li class="select">优惠套装<?php echo $k+1;?></li>
                             <?php endforeach;?>
                         </ul>
                     </div>
                 <form name="goods_form" method="post" action="" id="goods_form" >
                     <div class="goods" id="goods">
-                    <?php foreach($this->goodses as $k => $v ): ?> 
+                    <?php foreach($this->goodses as $k => $v ): ?>
                         <?php if($k == 0){?>
-                        <div class="goods_group" id="goods_group" style="display:block"> 
+                        <div class="goods_group" id="goods_group" style="display:block">
                         <?php }else{?>
                         <div class="goods_group" id="goods_group" style="display:none">
-                        <?php }?>                   
-                            <div id="group_goods1" class="group_goods1" >                             
+                        <?php }?>
+                            <div id="group_goods1" class="group_goods1" >
                                 <ul>
                                     <?php foreach($v['groups'] as $key => $vv ): ?>
                                     <?php if ($key!= count($vv['goods_name'])-1) echo '<span></span>';?>
-                                    <li>                                
-                                        <a href="/products/<?php echo $vv['goods_mark'];?>.html" target="_blank" title="<?php echo $this->escape($vv['goods_name']);?>"> 
+                                    <li>
+                                        <a href="/products/<?php echo $vv['goods_mark'];?>.html" target="_blank" title="<?php echo $this->escape($vv['goods_name']);?>">
                                         <img class="lazy" data-original="<?php echo $this->ShowImage($vv['goods_list_image']);?>" alt="<?php echo $this->escape($vv['goods_name']);?>" width="176px" width="176px" />
                                         <p><?php echo $this->escape($vv['goods_name']);?></p>
                                         <p style="font-size:16px;color:#008028;font-weight:bold;">￥<?php echo $this->escape($vv['cost_price']);?></p>
@@ -142,31 +142,31 @@ function comment_list(){
                                         <p>数量：<b><?php echo $this->escape($vv['goods_number']);?></b></p>
                                         </a>
                                     </li>
-                                    <?php endforeach;?> 
-                                </ul>                              
-                            </div> 
+                                    <?php endforeach;?>
+                                </ul>
+                            </div>
 
                             <div class="group_goods_account" >
-                            <?php echo '<span></span>';?> 
+                            <?php echo '<span></span>';?>
                                 <ul>
                                 <li style="color:#008028;font-weight:bold;">套装价：￥<?php echo $this->escape($v['all_cost_price']);?></li>
                                 <li>信天邮价：<s>￥<?php echo $this->escape($v['all_shop_price']);?></s></li>
                                 <li>立即节省：￥<?php echo $this->escape($v['discount_price']);?></li>
                                 </ul>
-                               
-                                <p><a href="javascript:;" onclick="ajaxTToCart(<?php echo $v['group_id'];?>,<?php echo $v['groupstock_id']?>);"><b>添加到购物车</b>
-                             
+
+                                <p><a href="javascript:void(0)" onclick="ajaxTToCart(<?php echo $v['group_id'];?>,<?php echo $v['groupstock_id']?>);"><b>添加到购物车</b>
+
                                 </a>
                                 </p>
                                 <input type="hidden" id="goods_number" name="goods_number" value="1" />
                                 <input type="hidden" id="goods_id" name="goods_id" value="" />
                                 <input type="hidden" id="stock_id" name="stock_id" value="" />
-                            </div>                            
+                            </div>
                         </div>
                     <?php endforeach;?>
                     </div>
                 </from>
-                </div>              
+                </div>
             </div>
 
             <div class="layout" id="goods_cont">
@@ -214,7 +214,7 @@ function comment_list(){
                                 <p >商品货号：<?php echo $this->escape($this->goods['goods_sn']);?></p>
                                 <p class="bgcolor">品牌：<?php echo $this->escape($this->goods['brand_name']);?></p>
                                 <p>原产地：<?php echo $this->escape($this->goods['country_name']);?></p>
-                                <p>商品分类：<?php echo $this->escape($this->goods['cate_name']);?></p>                             
+                                <p>商品分类：<?php echo $this->escape($this->goods['cate_name']);?></p>
                                 <p class="bgcolor">商品毛重：<?php echo $this->escape($this->goods['goods_weight']);?></p>
                                 <p>商品单重：无</p>
                                 <p class="bgcolor">计量单位：<?php echo $this->escape($this->goods['unit_name']);?></p>
@@ -275,7 +275,7 @@ function comment_list(){
                         </div>
                     </div>
                 </div>
-            </div>           
+            </div>
         </div>
     </div>
 </div>
@@ -283,12 +283,12 @@ function comment_list(){
 <?php echo $this->render(SEED_WWW_TPL.'/right_fix.phtml');?>
 </body>
 <script type="text/javascript" charset="utf-8">
-      $(function() {  
+      $(function() {
             // placeholder : "/static/sendyou/images/ui/load.png"
-          $("img.lazy").lazyload({  
+          $("img.lazy").lazyload({
               threshold : 200,
-              effect : "fadeIn"  
-          });  
-      });  
-</script> 
+              effect : "fadeIn"
+          });
+      });
+</script>
 </html>
