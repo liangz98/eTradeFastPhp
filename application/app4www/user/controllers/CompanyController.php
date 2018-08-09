@@ -361,7 +361,7 @@ class CompanyController extends Kyapi_Controller_Action
             $keyword = $this->_request->getParam('keyword');
             $valuePCode = $this->_request->getParam('valuePCode');
 
-            $existData = $this->json->dataDictFuzzyQuery($dataDictCode, $keyword, $valuePCode);
+            $existData = $this->json->dataDictFuzzyQuery($dataDictCode, $keyword, $valuePCode, 500);
             $res = json_decode($existData)->result;
             $msg = $res;
             // var_dump($existData);

@@ -2087,9 +2087,12 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
     }
 
     /* 数据字典模糊查找URL*/
-    public function dataDictFuzzyQuery($dataDictCode, $keyword, $valuePCode) {
+    public function dataDictFuzzyQuery($dataDictCode, $keyword, $valuePCode, $limit) {
         $_url=$this->url.'/commonapi/commonApi!dataDictFuzzyQuery.action';
-        $_params =json_encode(array("dataDictCode"=>$dataDictCode, "keyword"=>$keyword, "valuePCode"=>$valuePCode));
+        if (empty($limit)) {
+            $limit = 30;
+        }
+        $_params =json_encode(array("limit" => $limit, "dataDictCode" => $dataDictCode, "keyword" => $keyword, "valuePCode" => $valuePCode));
         $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
         return $resultObject;
     }
