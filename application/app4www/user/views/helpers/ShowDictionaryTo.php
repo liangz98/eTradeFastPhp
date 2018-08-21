@@ -9,7 +9,8 @@ class Zend_View_Helper_ShowDictionaryTo extends Shop_View_Helper {
         //$e  缓存路径-》数据字典代码
         //$t 查询key
         $cacheM = new Seed_Model_Cache2File();
-        if (empty($t)) {
+
+        if (!isset($t)) {
             return "";
         }
         if (!empty($e)) {
@@ -24,6 +25,7 @@ class Zend_View_Helper_ShowDictionaryTo extends Shop_View_Helper {
                 // return $e;
             }
         }
+
         $d_name = 'abc_' . $e;
         $dic = $cacheM->get($d_name);
 

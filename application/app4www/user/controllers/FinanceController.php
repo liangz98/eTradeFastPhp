@@ -135,14 +135,52 @@ class FinanceController extends Kyapi_Controller_Action
             }
         }
 
-
-
-
         $resultObject = $this->json->listFactoring($requestObject, $queryParams, $querySorts, $keyword, $skip, $limit,
             $factoringStatus, $factoringMode, $factoringNo, $waitConfirmed = false, $waitPayServiceCharge = false, $orderNo, $crnCode,
             $startDate, $endDate, $lowerAmount, $upperAmount);
         $msg["totalPage"] = json_decode($resultObject)->extData->totalPage;
         $msg["rows"] = json_decode($resultObject)->result;
+
+        echo json_encode($msg);
+        exit;
+    }
+
+    public function doApplyLoanAjaxAction() {
+        $msg = array();
+        $requestObject = $this->_requestObject;
+
+        $factoringLoan = array();
+        $factoringLoan['loanID'] = $this->_request->getParam('loanID');
+        $factoringLoan['loanDate'] =  date("Y-m-d\TH:i:s", strtotime($this->_request->getParam('loanDate')));
+        $factoringLoan['loanAmount'] = $this->_request->getParam('loanAmount');
+
+        if (is_array($factoringLoan)) {
+            $factoringLoan = $this->arrayToObject($factoringLoan);
+        }
+
+        $resultObject = $this->json->doApplyLoan($requestObject, $factoringLoan);
+        $msg["resultObject"] = json_decode($resultObject);
+
+        // 取回资用申请附件
+        $bizType = 'FL';
+        $bizContractResultObject = $this->json->listBizContract($requestObject, $bizType, json_decode($resultObject)->result->loanID);
+        $msg["bizContract"] = json_decode($bizContractResultObject)->result;
+
+        // 附件服务器URL
+        $msg["kyAttachUrl"] = $this->view->seed_Setting['KyUrlex'];
+
+        echo json_encode($msg);
+        exit;
+    }
+
+    public function getFactoringLoanAjaxAction() {
+        $msg = array();
+        $requestObject = $this->_requestObject;
+
+        $loanID = $this->_request->getParam('loanID');
+
+        $resultObject = $this->json->getFactoringLoanView($requestObject, $loanID);
+        $msg = json_decode($resultObject)->result;
 
         echo json_encode($msg);
         exit;

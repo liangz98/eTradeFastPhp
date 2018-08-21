@@ -1106,7 +1106,7 @@
 
         $selectOrderItemBtn.click(function () {
             // alert('getSelections: ' + JSON.stringify($buyerTable.bootstrapTable('getSelections')));
-            console.log(JSON.stringify($orderItemListTable.bootstrapTable('getSelections')));
+            // console.log(JSON.stringify($orderItemListTable.bootstrapTable('getSelections')));
             var selections = $orderItemListTable.bootstrapTable('getSelections');
             $.each(selections, function (index, item) {
                 var $productDiv = $("div[id='" + item.productID + "']");

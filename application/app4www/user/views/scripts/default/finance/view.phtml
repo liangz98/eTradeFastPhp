@@ -248,9 +248,9 @@
                                 <th class="text-right">宽限期利息</th>
                                 <th class="text-right">逾期利息</th>
                                 <th class="text-right">合计利息</th>
-                                <th class="text-right">未核销本金</th>
-                                <th class="text-right">未核销利息</th>
-                                <th>状态</th>
+                                <th class="text-right">未还本息</th>
+                                <th><?php echo $this->translate('Saltter_Status'); ?></th>
+                                <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -265,20 +265,28 @@
                                 <td><?php echo $factoringLoan['loanNo']; ?></td>
                                 <td><?php echo date('Y-m-d', strtotime($factoringLoan['loanDate'])); ?></td>
                                 <td><?php echo $factoringLoan['loanCrnCode']; ?></td>
-                                <td class="text-right"><?php echo $factoringLoan['loanAmount'] != 0 ? number_format($factoringLoan['loanAmount'], 2) : '----'; ?></td>
+                                <td class="text-right"><?php echo number_format($factoringLoan['loanAmount'], 2); ?></td>
                                 <td class="text-right"><?php echo $factoringLoan['totalGeneralInterest'] != 0 ? number_format($factoringLoan['totalGeneralInterest'], 2) : '----'; ?></td>
                                 <td class="text-right"><?php echo $factoringLoan['totalGraceInterest'] != 0 ? number_format($factoringLoan['totalGraceInterest'], 2) : '----'; ?></td>
                                 <td class="text-right"><?php echo $factoringLoan['totalOverdueInterest'] != 0 ? number_format($factoringLoan['totalOverdueInterest'], 2) : '----'; ?></td>
                                 <td class="text-right">
                                     <?php echo $factoringLoan['totalInterest'] != 0 ? number_format($factoringLoan['totalInterest'], 2) : '----'; ?> <i class="layui-icon layui-icon-about" style="cursor: pointer;" data-toggle="modal" data-target="#interestModal" data-loan-id="<?php echo $factoringLoan['loanID']; ?>"></i>
                                 </td>
-                                <td class="text-right"><?php echo number_format($factoringLoan['writeoffBalAmount'], 2); ?></td>
-                                <td class="text-right"><?php echo number_format($factoringLoan['writeoffBalInterest'], 2); ?></td>
-                                <td>
-                                    <?php if ($factoringLoan['loanStatus'] == '00' && $factoringLoan['needLoanApplication'] == true):?>
-                                        <?php echo $this->ShowSimpleOrderContract($factoringLoan['loanApplyContract'], $this->accountID); ?>
-                                    <?php else:?>
-                                        <?php echo $this->ShowDictionaryTo("LOAN_STATUS", $this->userLangCode, $this->dic_Setting['LOAN_STATUS'], $factoringLoan['loanStatus']); ?>
+                                <td class="text-right">
+                                    <?php echo number_format($factoringLoan['writeoffBalAmount'] + $factoringLoan['writeoffBalInterest'], 2); ?>
+                                </td>
+                                <td class="loanStatus_<?php echo $factoringLoan['loanID']; ?>">
+                                    <?php echo $this->ShowDictionaryTo("LOAN_STATUS", $this->userLangCode, $this->dic_Setting['LOAN_STATUS'], $factoringLoan['loanStatus']); ?>
+                                </td>
+                                <td class="loan_<?php echo $factoringLoan['loanID']; ?>">
+                                    <?php if ($factoringLoan['needLoanApplication'] == true):?>
+                                        <?php if ($factoringLoan['loanStatus'] == '00'):?>
+                                            <button class="btn btn-warning" data-toggle="modal" data-target="#applyContractModal" data-loan-amount="<?php echo $factoringLoan['loanAmount']; ?>" data-loan-id="<?php echo $factoringLoan['loanID']; ?>" data-crn-code="<?php echo $factoringLoan['loanCrnCode']; ?>">放款申请</button>
+                                        <?php elseif ($factoringLoan['loanStatus'] == '05'):?>
+                                            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#applyContractModal" data-loan-amount="<?php echo $factoringLoan['loanAmount']; ?>" data-loan-id="<?php echo $factoringLoan['loanID']; ?>" data-crn-code="<?php echo $factoringLoan['loanCrnCode']; ?>">重新申请</button>
+                                        <?php elseif ($factoringLoan['loanStatus'] == '04'):?>
+                                            <?php echo $this->ShowSimpleOrderContract($factoringLoan['loanApplyContract'], $this->accountID); ?>
+                                        <?php endif;?>
                                     <?php endif;?>
                                 </td>
                             </tr>
@@ -362,6 +370,44 @@
     </div>
 </div>
 
+<!-- Modal 放款申请 -->
+<div class="modal fade" id="applyContractModal" tabindex="-1" role="dialog" aria-labelledby="applyContractLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form class="form-horizontal" action="" method="post" id="applyContractForm" name="applyContractForm">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">放款申请</h4>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" name="loanID" id="loanID">
+                    <input type="hidden" name="loanAmount" id="loanAmount">
+                    <div class="form-group">
+                        <label for="loanDate" class="col-sm-2 control-label">放款日期</label>
+                        <div class="col-sm-5">
+                            <input type="date" class="form-control" name="loanDate" id="loanDate" placeholder="" value="<?php echo date('Y-m-d');?>" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="loanAmount" class="col-sm-2 control-label">放款金额</label>
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                <div class="input-group-addon"><span class="loanCrnCodeSpan"></span></div>
+                                <input type="text" class="form-control" id="loanAmountShow" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="applyContractBtn"><?php echo $this->translate('submit'); ?></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!--PDF预览-->
 <div id="signViewDiv" style="display: none; background-color: #F6F6F6;">
     <div class="sign-button">企业签署</div>
@@ -387,14 +433,143 @@
 <script src="/ky/js/base64.js"></script>
 
 <script type="text/javascript">
+    var dataDict = {};
 
 	$().ready(function() {
+        var options = {
+            //target:        '#applyContractModal',   // target element(s) to be updated with server response
+            beforeSubmit:  showRequest,  // pre-submit callback
+            success:       showResponse,  // post-submit callback
 
+            // other available options:
+            url: '/user/finance/do-apply-loan-ajax',
+            //type:      type        // 'get' or 'post', override for form's 'method' attribute
+            dataType:  'json'        // 'xml', 'script', or 'json' (expected server response type)
+            //clearForm: true        // clear all form fields after successful submit
+            //resetForm: true        // reset the form after successful submit
+
+            // $.ajax options can be used here too, for example:
+            //timeout:   3000
+        };
+
+        $('#applyContractForm').submit(function() {
+            $(this).ajaxSubmit(options);
+            return false;
+        });
 	});
 
 	$(function () {
-
+        var dataDictQuery = '/user/common/dict-ajax';
+        var dictCode = ["LOAN_STATUS"];
+        $.ajax({
+            type: "POST",
+            url: dataDictQuery,
+            data: {
+                dictCode: dictCode,
+                langCode: '<?php echo $this->userLangCode; ?>'
+            },
+            dataType: "json",
+            success: function (data) {
+                $.data(dataDict, 'dataDict', data);
+            }
+        });
 	});
+
+	function showRequest() {
+        $('#applyContractBtn').attr("disabled", "disabled");
+    }
+	function showResponse(data) {
+	    if (data.resultObject.status === 1) {
+            var contract = data.bizContract[0],
+                attachment = contract.attachmentList[0],
+                isESigned = true,
+                isPSigned = true,
+                accountID = '<?php echo $this->accountID ?>',
+                userID = '<?php echo $this->userID ?>',
+                loanStatus = '';
+
+            var dataResult = $.data(dataDict, 'dataDict');
+            $.each(dataResult, function (key, item) {
+                if (key === 'LOAN_STATUS') {
+                    $.each(item, function (i, dict) {
+                        if (dict.code === data.resultObject.result.loanStatus) {
+                            loanStatus = dict.name;
+                        }
+                    });
+                }
+            });
+
+            var pdfUrl = data.kyAttachUrl + '/doc/download.action?sid=' + '<?php echo  session_id(); ?>' + '&nid=' + attachment.attachID + '&vid=' + attachment.verifyID;
+            if (contract.firstParty !== null && contract.firstParty === accountID) {
+                // 企业
+                if (contract.firstPartySignMode === "E" || contract.firstPartySignMode === "B") {
+                    if (contract.firstPartySigningDate === undefined || contract.firstPartySigningDate === null) {
+                        isESigned = false;
+                    }
+                }
+
+                // 个人
+                if (contract.firstPartySignMode === "P" || contract.firstPartySignMode === "B") {
+                    // 签署人是否当前用户
+                    if (userID === contract.firstPartyPrincipal) {
+                        // 是否未签
+                        if (contract.firstPartyPrincipalSigningDate == undefined || contract.firstPartyPrincipalSigningDate === null) {
+                            isPSigned = false;
+                        }
+                    }
+                }
+            }
+            var resultHtml = '<a href="javascript:void(0)" id="' + data.resultObject.result.loanApplyContractID + '" onclick="initPdfView(\'' + pdfUrl + '\', this)" class="btn btn-warning order_contract_sign fr">签署</a>';
+            var eSignedValue = isESigned === true ? 1:'',
+                pSignedValue = isPSigned === true ? 1:'';
+            resultHtml += '<input type="hidden" id="isESigned_' + contract.contractID + '" value="' + eSignedValue + '" />';
+            resultHtml += '<input type="hidden" id="isPSigned_' + contract.contractID + '" value="' + pSignedValue + '" />';
+            resultHtml += '<input type="hidden" id="ext_' + contract.contractID + '" value="' + attachment.ext + '" />';
+            resultHtml += '<input type="hidden" id="contractName_' + contract.contractID + '" value="' + contract.contractName + '" />';
+            resultHtml += '<input type="hidden" id="contractID_' + contract.contractID + '" value="' + contract.contractID + '" />';
+            resultHtml += '<input type="hidden" id="contractAttachUrl_' + contract.contractID + '" value="' + pdfUrl + '" />';
+
+            $(".loan_" + data.resultObject.result.loanID).html(resultHtml);
+            $(".loanStatus_" + data.resultObject.result.loanID).html(loanStatus);
+            $('#applyContractModal').modal('hide');
+            setTimeout(function () {
+                $("#" + data.resultObject.result.loanApplyContractID).trigger("click");
+            }, 300);
+        } else {
+            console.log('error!');
+        }
+
+    }
+
+    $("#applyContractModal").on('show.bs.modal', function (e) {
+        var triggered = $(e.relatedTarget),
+            loanID = triggered.data("loan-id"),
+            loanAmount = triggered.data("loan-amount"),
+            loanCrnCode = triggered.data("crn-code"),
+            $loanCrnCodeSpan = $(".loanCrnCodeSpan");
+
+        $loanCrnCodeSpan.html(loanCrnCode);
+        $("#loanAmount").val(loanAmount);
+        $("#loanAmountShow").val(formatCurrency(loanAmount, 2));
+        $("#loanID").val(loanID);
+
+        var hscodeQuery = '/user/finance/get-factoring-loan-ajax';
+        $.ajax({
+            type: "POST",
+            url: hscodeQuery,
+            data: {
+                loanID: loanID
+            },
+            dataType: "json",
+            success: function (data) {
+
+            }
+        });
+    });
+
+    $("#applyContractBtn").click(function () {
+
+    });
 
     $("#interestModal").on('show.bs.modal', function (e) {
         var triggered = $(e.relatedTarget),
@@ -451,7 +626,7 @@
                         value = "-";
                     }
 
-                    return value + ' Days';
+                    return value;
                 }
             }, {
                 field: 'totalInterest',
@@ -473,7 +648,7 @@
                         value = "-";
                     }
 
-                    return value + ' Days';
+                    return value;
                 }
             }, {
                 field: 'graceInterest',
@@ -495,7 +670,7 @@
                         value = "-";
                     }
 
-                    return value + ' Days';
+                    return value;
                 }
             }, {
                 field: 'overdueInterest',

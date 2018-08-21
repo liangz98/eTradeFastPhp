@@ -1892,6 +1892,32 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
+    /**
+     * 提交融资资用申请
+     * @param $requestObject
+     * @param $factoringLoan
+     * @return mixed
+     */
+    public function doApplyLoan($requestObject, $factoringLoan) {
+        $_url = $this->url . '/factoringapi/factoringApi!doApplyLoan.action';
+        $_params = json_encode(array(
+            "requestObject" => $requestObject,
+            "factoringLoan"   => $factoringLoan
+        ));
+        $resultObject = $this->vpost($_url, $_params); //输出目标地址源码
+        return $resultObject;
+    }
+
+    public function getFactoringLoanView($requestObject, $loanID) {
+        $_url = $this->url . '/factoringapi/factoringApi!getFactoringLoanView.action';
+        $_params = json_encode(array(
+            "requestObject" => $requestObject,
+            "loanID"   => $loanID
+        ));
+        $resultObject = $this->vpost($_url, $_params); //输出目标地址源码
+        return $resultObject;
+    }
+
     /*3.5金融模块接口  确权*/
     public function   doConfrimLoan($_requestObject,$_factoringID,$_attachList){
         $_url=$this->url.'/factoringapi/factoringApi!doConfrimFactoring.action';

@@ -272,6 +272,13 @@
                                     $.each(item, function (i, dict) {
                                         if (dict.code === value + '') {
                                             if (dict.code === '0') {
+                                                if (row.rptype === 'P') {
+                                                    result = '待付';
+                                                } else if (row.rptype === 'R') {
+                                                    result = '待收';
+                                                }
+
+                                                /*
                                                 $.each(data, function (key, item) {
                                                     if (key === 'AR_AP_TYPE') {
                                                         $.each(item, function (i, dict) {
@@ -281,7 +288,7 @@
                                                         });
                                                     }
                                                 });
-
+*/
                                             } else {
                                                 result = dict.name;
                                             }

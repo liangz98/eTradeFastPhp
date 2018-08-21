@@ -12,7 +12,7 @@
 
 <div class="container-fluid index-body">
 	<div class="container">
-        <div class="panel panel-default">
+        <div class="panel panel-default hidden">
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
@@ -139,7 +139,6 @@
             },
             dataType: "json",
             success: function (data) {
-                console.log(data.rows.length);
                 var contents = '',
                     $resultList = $(".resultList");
 
@@ -179,7 +178,7 @@
                                 });
                             }
                         });
-                        contents += '<li>'
+                        contents += '<li style="cursor: pointer;" data-resultEnCode="' + resultEnCode + '">'
                             + ' <div class="panel panel-success">'
                             + '  <div class="panel-heading">'
                             + '   <div class="row">'
@@ -225,6 +224,13 @@
                 }
 
                 $resultList.html(contents);
+
+                $(".resultList li").click(function () {
+                    var resultEnCodeUrl = $(this).attr("data-resultEnCode");
+                    if (resultEnCodeUrl !== undefined && resultEnCodeUrl !== '') {
+                        window.location.href = '/user/finance/view?' + resultEnCodeUrl;
+                    }
+                });
             }
         });
     }

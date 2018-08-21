@@ -18,9 +18,16 @@ input[type=number]{
     color: #22ac38;
 }
 
+.margin-top-15 {
+    margin-top: 15px;
+}
 
 .transfer-turn .row {
     margin-bottom: 15px;
+}
+
+.span-font-size-18 {
+    font-size: 18px;
 }
 
 .bootstrap-table thead {
@@ -29,5 +36,19 @@ input[type=number]{
 }
 
 .bootstrap-table tbody {
+    color: #666;
+}
+
+.table-striped {
+    margin-top: 15px;
+    border-bottom: 1px solid #337ab7;
+}
+
+.table-striped thead {
+    color: #fff;
+    background: #337ab7;
+}
+
+.table-striped tbody {
     color: #666;
 }
