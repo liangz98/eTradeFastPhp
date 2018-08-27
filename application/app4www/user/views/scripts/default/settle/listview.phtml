@@ -110,16 +110,6 @@
 
                 <div class="row">
                     <div class="col-md-2">
-                        <p class="form-control-static text-999">
-                            <?php echo $this->translate('Saltter_Status'); ?>
-                        </p>
-                    </div>
-                    <div class="col-md-4">
-                        <p class="form-control-static text-666">
-                            <?php echo $this->ShowDictionaryTo("PAYMENT_TRADING_STATUS", $this->userLangCode, $this->dic_Setting['PAYMENT_TRADING_STATUS'], $this->e['tradingStatus']); ?>
-                        </p>
-                    </div>
-                    <div class="col-md-2">
                         <p class="form-control-static text-999"><?php echo $this->ShowToRptypeTitle($this->e['rptype'], 'Saltter_FTO_Status'); ?></p>
                     </div>
                     <div class="col-md-4">
@@ -167,7 +157,7 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th></th>
+                                <th>记录编号</th>
                                 <th><?php echo $this->translate('Saltter_Time'); ?></th>
                                 <th class="text-right"><?php echo $this->translate('Saltter_TradeMount'); ?></th>
                                 <th class="text-center"><?php echo $this->translate('Saltter_Status'); ?></th>

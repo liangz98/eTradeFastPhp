@@ -56,239 +56,207 @@ class SettleController extends Kyapi_Controller_Action
 
 
 	/**结算列表**/
-	public function indexAction()
-	{
-	    try{
-
-        //获取结算中心详情
-//        $_req = new Kyapi_Model_requestObject();
-//        $_req->sessionID = "hs2tei8nlt4a50nv57bhr9r0m4";
-//        $_req->userID= "D468C09D-9D8F-8D75-FBBC-0537FE6E0B2F";
-//        $_req->accountID= "72E13EF4-3A16-6CCE-7B42-1D93CC9D910F";
-//        $_req->lang = "zh_CN";
-//        $_req->client = "192.168.5.100";
-//        $_req->timeZone = "GMT +8:00";
-
-        $_initPWD=$this->json->paymentgetAccountUserApi($this->_requestObject);
-        $_initData=$this->objectToArray(json_decode($_initPWD));
-        $this->view->init = $_initData['result'];
-        if($_initData['result']['userStatus']=='00'){
-            Shop_Browser::redirect($this->view->translate('tip_payment_pwd'),$this->view->seed_BaseUrl . "/settle/initpwd");
-        }
-
-        $_resultData=$this->json->paymentViewApi($this->_requestObject);
-        $existData = json_decode($_resultData);
-        $existDatt = $this->objectToArray($existData);
-        $this->view->e = $existDatt['result'];
-
-        //获取最近交易记录
-        $_resultList=$this->json->listpaymentTradApi($this->_requestObject,null, null, null,0, 10);
-
-        $existList = json_decode($_resultList);
-        $dataList = $this->objectToArray($existList);
-        $this->view->list = $dataList['result'];
-
-        //获取信用额度百分比
-          if($existDatt['result']['creditLimit']=='0'){
-             $this->view->jd= '0';}else{
-              $this->view->jd=  round($existDatt['result']['creditBal'])/round($existDatt['result']['creditLimit'])>0?round(($existDatt['result']['creditBal'])/round($existDatt['result']['creditLimit'])*100):'0';
-          }
-
-        //获取多币种余额 各币种余额组成
-
-         if(is_array($existDatt['result']['paymentAccountBalList'])){
-             $item=array();
-             $item2=array();
-             foreach($existDatt['result']['paymentAccountBalList'] as $k=>$v){
-
-                //计算余额 总金额和货币
-                if(!isset($item[$v['crnCode']])){
-                     $item[$v['crnCode']]=$v;
-                }else
-                {
-                    $item[$v['crnCode']]['balAmount']+=$v['balAmount'];
-                }
-
-                  if($v['crnCode']=='CNY'){
-                      //自由余额 balType->F&& balStatus->N+L
-                     if($v['balType']=='F'&&($v['balStatus']=='N'||$v['balStatus']=='L')){
-                       $this->view->amount_CNY_F+=$v['balAmount'];
-                      }
-                     //定向余额 balType->D&& balStatus->N+L
-                     if($v['balType']=='D'&&($v['balStatus']=='N'||$v['balStatus']=='L')){
-                         $this->view->amount_CNY_D+=$v['balAmount'];
-                      }
-                      //冻结余额 && balStatus->B
-                     if($v['balStatus']=='B'){
-                       $this->view->amount_CNY_B+=$v['balAmount'];
-                     }
-                  }
-                  if($v['crnCode']=='USD'){
-                     //自由余额 balType->F&& balStatus->N+L
-                     if($v['balType']=='F'&&($v['balStatus']=='N'||$v['balStatus']=='L')){
-                         $this->view->amount_USD_F+=$v['balAmount'];
-                     }
-                     //定向余额 balType->D&& balStatus->N+L
-                     if($v['balType']=='D'&&($v['balStatus']=='N'||$v['balStatus']=='L')){
-                         $this->view->amount_USD_D+=$v['balAmount'];
-                     }
-                     //冻结余额 && balStatus->B
-                     if($v['balStatus']=='B'){
-                         $this->view->amount_USD_B+=$v['balAmount'];
-                     }
-                  }
-             }
-
-
-
-         }
-
-       $this->view->paymentAccountBalList=$item;
-       $this->view->paymentAccountBalList2=$existDatt['result']['paymentAccountBalList'];
-
-        //获取余额
-        if(is_array($existDatt['result']['paymentTradingBalList'])){
-            $item3=array();
-            foreach($existDatt['result']['paymentTradingBalList'] as $k=>$v){
-                $item3[$v['rptype']][$k]['crnCode']=$v['crnCode'];
-                $item3[$v['rptype']][$k]['balAmount']=$v['balAmount'];
-            }
-        }
-
-
-       $this->view->paymentTradingBalList=$item3;
-        } catch (Exception $e) {
-            Shop_Browser::redirect($e->getMessage());
-        }
-
-		if(defined('SEED_WWW_TPL')){
-			$content = $this->view->render(SEED_WWW_TPL."/settle/index.phtml");
-			echo $content;
-			exit;
-		}
-	}
-
-
-	/**结算列表**/
-	public function listAction()
-	{
-        try{
-//        $_req = new Kyapi_Model_requestObject();
-//        $_req->sessionID = "hs2tei8nlt4a50nv57bhr9r0m4";
-//        $_req->userID= "D468C09D-9D8F-8D75-FBBC-0537FE6E0B2F";
-//        $_req->accountID= "72E13EF4-3A16-6CCE-7B42-1D93CC9D910F";
-//        $_req->lang = "zh_CN";
-//        $_req->client = "192.168.5.100";
-//        $_req->timeZone = "GMT +8:00";
-
-
-            $f1 = new Seed_Filter_Alnum();
-            $mod = $f1->filter($this->_request->getParam('mod'));
-            if (empty($mod)) {$mod = "list";}
-
-            $_PStatus =strval($this->_request->getParam('status'));
-            if(empty( $_PStatus)){  $_PStatus ='03';}
-
-            $_querySorts=$this->_request->getParam('querySorts');
-            if(empty($_querySorts)){ $_querySorts =null;}
-
-            $_keyword=$this->_request->getParam('keyword');
-            if(empty($_keyword)){ $_keyword =null;}
-            $this->view->keyword=$_keyword;
-
-            $page =intval($this->_request->getParam('page'));
-            if($page<1)$page=1;
-            $_limit=8;
-            $_skip=$_limit*($page-1);
-            /*起始时间*/
-            $_startTime=empty($this->_request->getParam('startDate'))?null:$this->_request->getParam('startDate');
-            if (!empty($_startTime)) {
-                $_startDate = date("Y-m-d\TH:i:s", strtotime($_startTime));
+    public function indexAction() {
+        try {
+            $_initPWD = $this->json->paymentgetAccountUserApi($this->_requestObject);
+            $_initData = $this->objectToArray(json_decode($_initPWD));
+            $this->view->init = $_initData['result'];
+            if ($_initData['result']['userStatus'] == '00') {
+                Shop_Browser::redirect($this->view->translate('tip_payment_pwd'), $this->view->seed_BaseUrl . "/settle/initpwd");
             }
 
-            $this->view->startDate=$_startTime;
-            $_endTime=empty($this->_request->getParam('endDate'))?null:$this->_request->getParam('endDate');
-            if (!empty($_endTime)) {
-                $_endDate = date("Y-m-d\TH:i:s", strtotime($_endTime));
-            }
-            $this->view->endDate=$_endTime;
-            /*起始时间Ending*/
-            $_lowerAmount=empty($this->_request->getParam('lowerAmount'))?null:$this->_request->getParam('lowerAmount');
-            $this->view->lowerAmount=$_lowerAmount;
-            $_upperAmount=empty($this->_request->getParam('upperAmount'))?null:$this->_request->getParam('upperAmount');
-            $this->view->upperAmount=$_upperAmount;
-            $_paymentStatus=empty($this->_request->getParam('paymentStatus'))?null:$this->_request->getParam('paymentStatus');
-            $this->view->paymentStatus=$_paymentStatus;
-            $_tradingType=empty($this->_request->getParam('tradingType'))?null:$this->_request->getParam('tradingType');
-            $this->view->tradingType=$_tradingType;
-            $_transNo=empty($this->_request->getParam('transNo'))?null:$this->_request->getParam('transNo');
-            $this->view->transNo=$_transNo;
-            $_oppCustomerNames=empty($this->_request->getParam('oppCustomerNames'))?null:$this->_request->getParam('oppCustomerNames');
-            $this->view->oppCustomerNames=$_oppCustomerNames;
-            /*币种*/
-            $_crnstring=empty($this->_request->getParam('crnArray'))?null:$this->_request->getParam('crnArray');
-            $_crnCodes=empty($this->_request->getParam('crnCode'))?null:$this->_request->getParam('crnCode');
-            $this->view->dfcrnCode=$_crnCode=($_crnCodes)?$_crnCodes:$this->view->crnCode;
-
-            $flolist=array();
-            if($_crnCodes){
-                $flolist['crnCode']=$_crnCodes;
-            }
-            if($_oppCustomerNames){
-                $flolist['oppCustomerDesc']=$_oppCustomerNames;
-            }
-
-            $Flowlist=$this->arrayToObject($flolist);
-
-
-            //获取交易记录列表
-            $_resultData=$this->json->listpaymentTradApi($this->_requestObject,$Flowlist, null, $_keyword, $_skip, $_limit,$_startDate,$_endDate,$_lowerAmount,$_upperAmount,$_paymentStatus,$_tradingType,$_transNo);
+            $_resultData = $this->json->paymentViewApi($this->_requestObject);
             $existData = json_decode($_resultData);
             $existDatt = $this->objectToArray($existData);
             $this->view->e = $existDatt['result'];
 
-            //获取货币集合
-            if($_crnstring){
-                $this->view->crnArr=explode('|',$_crnstring);
-                $this->view->crnString =$_crnstring;
-            }else{
-                $crnArr=array();
-                foreach ($existDatt['result'] as $k=>$v){
-                    $crnArr[]=$v['crnCode'];
+            //获取最近交易记录
+            $querySorts = array();
+            $querySorts['createTime'] = "DESC";
+            if (is_array($querySorts)) {
+                $querySorts = $this->arrayToObject($querySorts);
+            }
+            $_resultList = $this->json->listpaymentTradApi($this->_requestObject, null, $querySorts, null, 0, 10);
+
+            $existList = json_decode($_resultList);
+            $dataList = $this->objectToArray($existList);
+            $this->view->list = $dataList['result'];
+
+            //获取信用额度百分比
+            if ($existDatt['result']['creditLimit'] == '0') {
+                $this->view->jd = '0';
+            } else {
+                $this->view->jd = round($existDatt['result']['creditBal']) / round($existDatt['result']['creditLimit']) > 0 ? round(($existDatt['result']['creditBal']) / round($existDatt['result']['creditLimit']) * 100) : '0';
+            }
+
+            //获取多币种余额 各币种余额组成
+
+            if (is_array($existDatt['result']['paymentAccountBalList'])) {
+                $item = array();
+                $item2 = array();
+                foreach ($existDatt['result']['paymentAccountBalList'] as $k => $v) {
+
+                    //计算余额 总金额和货币
+                    if (!isset($item[$v['crnCode']])) {
+                        $item[$v['crnCode']] = $v;
+                    } else {
+                        $item[$v['crnCode']]['balAmount'] += $v['balAmount'];
+                    }
+
+                    if ($v['crnCode'] == 'CNY') {
+                        //自由余额 balType->F&& balStatus->N+L
+                        if ($v['balType'] == 'F' && ($v['balStatus'] == 'N' || $v['balStatus'] == 'L')) {
+                            $this->view->amount_CNY_F += $v['balAmount'];
+                        }
+                        //定向余额 balType->D&& balStatus->N+L
+                        if ($v['balType'] == 'D' && ($v['balStatus'] == 'N' || $v['balStatus'] == 'L')) {
+                            $this->view->amount_CNY_D += $v['balAmount'];
+                        }
+                        //冻结余额 && balStatus->B
+                        if ($v['balStatus'] == 'B') {
+                            $this->view->amount_CNY_B += $v['balAmount'];
+                        }
+                    }
+                    if ($v['crnCode'] == 'USD') {
+                        //自由余额 balType->F&& balStatus->N+L
+                        if ($v['balType'] == 'F' && ($v['balStatus'] == 'N' || $v['balStatus'] == 'L')) {
+                            $this->view->amount_USD_F += $v['balAmount'];
+                        }
+                        //定向余额 balType->D&& balStatus->N+L
+                        if ($v['balType'] == 'D' && ($v['balStatus'] == 'N' || $v['balStatus'] == 'L')) {
+                            $this->view->amount_USD_D += $v['balAmount'];
+                        }
+                        //冻结余额 && balStatus->B
+                        if ($v['balStatus'] == 'B') {
+                            $this->view->amount_USD_B += $v['balAmount'];
+                        }
+                    }
                 }
-                $this->view->crnArr=array_unique($crnArr);
-                $this->view->crnString =implode('|',$this->view->crnArr);
+
+
+            }
+
+            $this->view->paymentAccountBalList = $item;
+            $this->view->paymentAccountBalList2 = $existDatt['result']['paymentAccountBalList'];
+
+            //获取余额
+            if (is_array($existDatt['result']['paymentTradingBalList'])) {
+                $item3 = array();
+                foreach ($existDatt['result']['paymentTradingBalList'] as $k => $v) {
+                    $item3[$v['rptype']][$k]['crnCode'] = $v['crnCode'];
+                    $item3[$v['rptype']][$k]['balAmount'] = $v['balAmount'];
+                }
             }
 
 
-            //统计正常状态数量、分页
-            $existCount = $existDatt['extData'];
-            $total = $existCount['totalSize'];
-            $page=$existCount['totalPage'];
-
-            //设置视图商品状态
-            $this->view->status= $_PStatus;
-
-
-            $file = "user/settle/" . $mod . "-" . $_PStatus;
-            $_limit=8;
-            $pageObj = new Seed_Page($this->_request,$total,$_limit);
-            $this->view->page = $pageObj->getPageArray();
-            $this->view->page['pageurl'] = '/' . $file;
-            if ($page > $this->view->page['totalpage'])
-                $page = $this->view->page['totalpage'];
-            if ($page < 1) $page = 1;
-
+            $this->view->paymentTradingBalList = $item3;
         } catch (Exception $e) {
             Shop_Browser::redirect($e->getMessage());
         }
 
-            if(defined('SEED_WWW_TPL')){
-                $content = $this->view->render(SEED_WWW_TPL."/settle/list.phtml");
-                echo $content;
-                exit;
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/settle/index.phtml");
+            echo $content;
+            exit;
+        }
+    }
+
+
+	/**结算列表**/
+    public function listAction() {
+        $f1 = new Seed_Filter_Alnum();
+        $mod = $f1->filter($this->_request->getParam('mod'));
+        if (empty($mod)) {
+            $mod = "list";
+        }
+
+        $_PStatus = strval($this->_request->getParam('status'));
+        if (empty($_PStatus)) {
+            $_PStatus = '03';
+        }
+
+        $_querySorts = $this->_request->getParam('querySorts');
+        if (empty($_querySorts)) {
+            $_querySorts = null;
+        }
+
+        $_keyword = $this->_request->getParam('keyword');
+        if (empty($_keyword)) {
+            $_keyword = null;
+        }
+        $this->view->keyword = $_keyword;
+
+        $page = intval($this->_request->getParam('page'));
+        if ($page < 1)
+            $page = 1;
+        $_limit = 8;
+        $_skip = $_limit * ($page - 1);
+        /*起始时间*/
+        $_startTime = empty($this->_request->getParam('startDate')) ? null : $this->_request->getParam('startDate');
+        if (!empty($_startTime)) {
+            $_startDate = date("Y-m-d\TH:i:s", strtotime($_startTime));
+        }
+
+        $this->view->startDate = $_startTime;
+        $_endTime = empty($this->_request->getParam('endDate')) ? null : $this->_request->getParam('endDate');
+        if (!empty($_endTime)) {
+            $_endDate = date("Y-m-d\TH:i:s", strtotime($_endTime));
+        }
+        $this->view->endDate = $_endTime;
+        /*起始时间Ending*/
+        $_lowerAmount = empty($this->_request->getParam('lowerAmount')) ? null : $this->_request->getParam('lowerAmount');
+        $this->view->lowerAmount = $_lowerAmount;
+        $_upperAmount = empty($this->_request->getParam('upperAmount')) ? null : $this->_request->getParam('upperAmount');
+        $this->view->upperAmount = $_upperAmount;
+        $_paymentStatus = empty($this->_request->getParam('paymentStatus')) ? null : $this->_request->getParam('paymentStatus');
+        $this->view->paymentStatus = $_paymentStatus;
+        $_tradingType = empty($this->_request->getParam('tradingType')) ? null : $this->_request->getParam('tradingType');
+        $this->view->tradingType = $_tradingType;
+        $_transNo = empty($this->_request->getParam('transNo')) ? null : $this->_request->getParam('transNo');
+        $this->view->transNo = $_transNo;
+        $_oppCustomerNames = empty($this->_request->getParam('oppCustomerNames')) ? null : $this->_request->getParam('oppCustomerNames');
+        $this->view->oppCustomerNames = $_oppCustomerNames;
+        /*币种*/
+        $_crnstring = empty($this->_request->getParam('crnArray')) ? null : $this->_request->getParam('crnArray');
+        $_crnCodes = empty($this->_request->getParam('crnCode')) ? null : $this->_request->getParam('crnCode');
+        $this->view->dfcrnCode = $_crnCode = ($_crnCodes) ? $_crnCodes : $this->view->crnCode;
+
+        $flolist = array();
+        if ($_crnCodes) {
+            $flolist['crnCode'] = $_crnCodes;
+        }
+        if ($_oppCustomerNames) {
+            $flolist['oppCustomerDesc'] = $_oppCustomerNames;
+        }
+
+        $Flowlist = $this->arrayToObject($flolist);
+
+
+        //获取交易记录列表
+        $_resultData = $this->json->listpaymentTradApi($this->_requestObject, $Flowlist, null, $_keyword, $_skip, $_limit, $_startDate, $_endDate, $_lowerAmount, $_upperAmount, $_paymentStatus, $_tradingType, $_transNo);
+        $existData = json_decode($_resultData);
+        $existDatt = $this->objectToArray($existData);
+        $this->view->e = $existDatt['result'];
+
+        //获取货币集合
+        if ($_crnstring) {
+            $this->view->crnArr = explode('|', $_crnstring);
+            $this->view->crnString = $_crnstring;
+        } else {
+            $crnArr = array();
+            foreach ($existDatt['result'] as $k => $v) {
+                $crnArr[] = $v['crnCode'];
             }
-     }
+            $this->view->crnArr = array_unique($crnArr);
+            $this->view->crnString = implode('|', $this->view->crnArr);
+        }
+
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/settle/list.phtml");
+            echo $content;
+            exit;
+        }
+    }
 
     public function paymentTradingListAjaxAction() {
         $msg = array();
@@ -325,10 +293,14 @@ class SettleController extends Kyapi_Controller_Action
         $startDate = $this->_request->getParam('startDate');
         if (empty($startDate)) {
             $startDate = null;
+        } else {
+            $startDate = date("Y-m-d\TH:i:s", strtotime($startDate));
         }
         $endDate = $this->_request->getParam('endDate');
         if (empty($endDate)) {
             $endDate = null;
+        } else {
+            $endDate = date("Y-m-d\TH:i:s", strtotime($endDate));
         }
 
         $lowerAmount = $this->_request->getParam('lowerAmount');
@@ -502,6 +474,95 @@ class SettleController extends Kyapi_Controller_Action
             echo $content;
             exit;
         }
+    }
+
+    public function paymentFlowListAjaxAction() {
+        $msg = array();
+        $requestObject = $this->_requestObject;
+
+        $queryParams = array();
+
+        $crnCode = empty($this->_request->getParam('crnCode')) ? null : $this->_request->getParam('crnCode');
+        // $queryParams['crnCode'] = $crnCode;
+
+        $debitCredit = $this->_request->getParam('debitCredit');
+        if (!empty($debitCredit)) {
+            if ($debitCredit != 'all') {
+                $queryParams['debitCredit'] = $debitCredit;
+            }
+        }
+
+        $querySorts = array();
+        $querySorts['createTime'] = "DESC";
+
+
+        $keyword = $this->_request->getParam('keyword');
+        if (empty($keyword)) {
+            $keyword = null;
+        }
+
+        $limit = $this->_request->getParam('limit');
+        if (empty($limit) || $limit <= 0) {
+            $limit = 10;
+        }
+
+        $skip = $this->_request->getParam('skip');
+        if (empty($limit) || $limit <= 0) {
+            $skip = 0;
+        }
+
+        if (is_array($queryParams)) {
+            $queryParams = $this->arrayToObject($queryParams);
+        }
+
+        if (is_array($querySorts)) {
+            $querySorts = $this->arrayToObject($querySorts);
+        }
+
+        $startDate = $this->_request->getParam('startDate');
+        if (empty($startDate)) {
+            $startDate = null;
+        } else {
+            $startDate = date("Y-m-d\TH:i:s", strtotime($startDate));
+        }
+        $endDate = $this->_request->getParam('endDate');
+        if (empty($endDate)) {
+            $endDate = null;
+        } else {
+            $endDate = date("Y-m-d\TH:i:s", strtotime($endDate));
+        }
+
+        $lowerAmount = $this->_request->getParam('lowerAmount');
+        if (empty($lowerAmount)) {
+            $lowerAmount = null;
+        }
+        $upperAmount = $this->_request->getParam('upperAmount');
+        if (empty($upperAmount)) {
+            $upperAmount = null;
+        }
+
+        $paymentStatus = strval($this->_request->getParam('paymentStatus'));
+        if (empty($paymentStatus)) {
+            $paymentStatus = null;
+        }
+
+        $tradingType = strval($this->_request->getParam('tradingType'));
+        if (empty($tradingType)) {
+            $tradingType = null;
+        }
+
+        $transNo = strval($this->_request->getParam('transNo'));
+        if (empty($transNo)) {
+            $transNo = null;
+        }
+
+        $resultObject = $this->json->listPaymentFlowApi($requestObject, $queryParams, $querySorts, $keyword, $skip, $limit, $startDate, $endDate,
+            $lowerAmount, $upperAmount, $paymentStatus, $tradingType, $transNo);
+        $msg["total"] = json_decode($resultObject)->extData->totalSize;
+        $msg["rows"] = json_decode($resultObject)->result;
+
+        echo json_encode($msg);
+        exit;
     }
 
 
@@ -779,8 +840,8 @@ class SettleController extends Kyapi_Controller_Action
                 $_paymentRequest["crnCode"]= $existArr['result']['crnCode'];
                 $_balPaymentAmount= $this->_request->getParam('balPaymentAmount');
                 $_directPaymentAmount= $this->_request->getParam('directPaymentAmount');
-                $_banklist= $this->_request->getParam('banklist');
-                $_bankArr=explode('|',$_banklist);
+                $_bankList= $this->_request->getParam('bankList');
+                $_bankArr=explode('|',$_bankList);
                 $_paymentRequest["balPaymentAmount"]= (float)$_balPaymentAmount;
                 $_paymentRequest["directPaymentAmount"]= (float)$_directPaymentAmount;
                 $_paymentRequest["bankAcctID"]= $_bankArr[0];

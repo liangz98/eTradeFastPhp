@@ -101,7 +101,7 @@ class Zend_View_Helper_ShowOrderContract4Factoring extends Shop_View_Helper {
                 // 电子签
                 if ($v['isEContract']) {
                     if (!$isESigned || !$isPSigned) {
-                        $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr">签署</a>';
+                        $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="btn btn-warning order_contract_sign fr">签署</a>';
                     } else {
                         if ($v['firstParty'] != null && $v['firstParty'] == $accountID) {
                             // 个人

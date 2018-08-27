@@ -105,10 +105,14 @@ class FinanceController extends Kyapi_Controller_Action
         $startDate = $this->_request->getParam('startDate');
         if (empty($startDate)) {
             $startDate = null;
+        } else {
+            $startDate = date("Y-m-d\TH:i:s", strtotime($startDate));
         }
         $endDate = $this->_request->getParam('endDate');
         if (empty($endDate)) {
             $endDate = null;
+        } else {
+            $endDate = date("Y-m-d\TH:i:s", strtotime($endDate));
         }
 
         $lowerAmount = null;

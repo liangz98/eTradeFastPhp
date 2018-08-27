@@ -1568,17 +1568,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         $_url=$this->url.'/paymentapi/paymentApi!listPaymentFlow.action';
         $_params =json_encode(array("requestObject"=>$_requestObject,"queryParams"=> $_queryParams,"querySorts"=> $_querySorts,"keyword"=> $_keyword,"skip"=> $_skip,"limit"=> $_limit,"startDate"=> $_startDate,"endDate"=> $_endDate,"lowerAmount"=> $_lowerAmount,"upperAmount"=> $_upperAmount,"tradingStatus"=> $_tradingStatus,"tradingType"=> $_tradingType,"transNo"=> $_transNo));
         $resultObject= $this->vpost($_url,$_params);
-    //    $resultObject=$this->JsonToencode($_params);
-//        $data=preg_replace('/[^,^\"^\'^{^}]*[,]*"[^,^\"^\'^{^}]*"[^,^\"^\'^{^}]*:[^,^\"^\'^{^}]*null/','',$_params);
-//        $resultObject= $this->vpost($_url,$data); //输出目标地址源码
         return $resultObject;
     }
-//    public function JsonToencode($data){
-//        $_url=$this->url.'/paymentapi/paymentApi!listPaymentFlow.action';
-//        $data=preg_replace('/[^,^\"^\'^{^}]*[,]*"[^,^\"^\'^{^}]*"[^,^\"^\'^{^}]*:[^,^\"^\'^{^}]*null/','',$data);
-//        $resultObject= $this->vpost($_url,$data); //输出目标地址源码
-//        return $resultObject;
-//    }
 
     /**1.5结算列表 订单交易记录列表*
      * @param $_requestObject

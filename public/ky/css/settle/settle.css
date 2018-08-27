@@ -18,6 +18,10 @@ input[type=number]{
     color: #22ac38;
 }
 
+.margin-top-10 {
+    margin-top: 10px;
+}
+
 .margin-top-15 {
     margin-top: 15px;
 }
@@ -51,4 +55,23 @@ input[type=number]{
 
 .table-striped tbody {
     color: #666;
+}
+
+/* 首页 */
+.info-balAmount {
+    margin-top: 50px;
+}
+
+.span-font-size-16 {
+    font-size: 16px;
+}
+
+.span-font-size-18 {
+    font-weight: 100;
+    font-size: 18px;
+}
+
+.span-font-size-22 {
+    font-weight: 100;
+    font-size: 22px;
 }

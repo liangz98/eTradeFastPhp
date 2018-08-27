@@ -311,11 +311,11 @@
                                 <th>还款编号</th>
                                 <th>还款日期</th>
                                 <th class="text-right">应还金额</th>
-                                <th class="text-right">结汇汇率</th>
+                                <th class="text-right">汇率</th>
                                 <th class="text-right">已付金额</th>
-                                <th class="text-right">还利息</th>
-                                <th class="text-right">还本金</th>
-                                <th class="text-right">剩余货款</th>
+                                <th class="text-right">支付利息</th>
+                                <th class="text-right">支付本金</th>
+                                <th class="text-right">支付尾款</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -381,6 +381,7 @@
                 </div>
 
                 <div class="modal-body">
+                    <div class="modal-alert-div"></div>
                     <input type="hidden" name="loanID" id="loanID">
                     <input type="hidden" name="loanAmount" id="loanAmount">
                     <div class="form-group">
@@ -562,7 +563,11 @@
             },
             dataType: "json",
             success: function (data) {
-
+                if (data.loanStatus === '05') {
+                    var alertHtml = '<div class="alert alert-warning">拒绝原因：' + data.rejectReason + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + new Date(data.rejectDate).format("yyyy-MM-dd hh:mm:ss") + '</div>';
+                    var $modalAlertDiv = $(".modal-alert-div");
+                    $modalAlertDiv.html(alertHtml);
+                }
             }
         });
     });
