@@ -93,23 +93,6 @@
                 </div>
             </div>
 
-            <?php if ($this->paymentTrading['isOriented'] == true): ?>
-            <div class="form-group">
-                <label for="directPaymentAmount" class="col-sm-2 control-label"><?php echo $this->translate('Saltter_DirectBalAmount'); ?></label>
-                <div class="col-sm-3">
-                    <div class="input-group">
-                        <div class="input-group-addon"><?php echo $this->payment['crnCode']; ?></div>
-                        <input type="number" class="form-control" name="directPaymentAmount" id="directPaymentAmount" value="<?php echo $this->ShowToPrice($this->payment['validDirectBalAmount']); ?>" readonly>
-                    </div>
-                </div>
-                <div class="col-sm-offset-2 col-sm-10">
-                    <p class="form-control-static text-999">
-                        <?php echo $this->translate('Saltter_tips01') . ' = USD ' . $this->ShowToPrice($this->payment['validDirectBalAmount']) . ' * ' . $this->ShowExchange($this->reqOb, 'USD', 'CNY', 'PR', null, $this->seed_Setting['KyUrl']) . ' = CNY&nbsp;' . $this->ShowToPrice($this->payment['validDirectBalAmount']); ?>
-                    </p>
-                </div>
-            </div>
-            <?php endif; ?>
-
             <div class="form-group">
                 <label for="balPaymentAmount" class="col-sm-2 control-label"><?php echo $this->translate('Saltter_eAmount'); ?></label>
                 <div class="col-sm-3">

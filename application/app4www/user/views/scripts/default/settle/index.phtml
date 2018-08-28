@@ -13,7 +13,9 @@
 <div class="container-fluid index-body">
 	<div class="container">
         <div class="page-header">
-            <h3><?php echo $this->translate('Saltter_IN'); ?></h3>
+            <h3><?php echo $this->translate('Saltter_IN'); ?>
+                <small class="pull-right"><a href="/user/settle/changepwd"  target="_blank" class="btn btn-warning btn-xs"><?php echo $this->translate('Saltter_setting');?></a></small>
+            </h3>
         </div>
 
         <div class="panel panel-default">
@@ -218,6 +220,13 @@
 
                 <div class="row">
                     <div class="col-md-12">
+                        <?php if (!empty($this->resultMsg)): ?>
+                            <div class="alert alert-success alert-dismissible fade in" role="alert" id="resultMsg">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <p><?php echo base64_decode($this->resultMsg); ?>!</p>
+                            </div>
+                        <?php endif; ?>
+
                         <table class="table table-striped">
                             <thead>
                             <tr>
@@ -235,7 +244,7 @@
                             <?php if (is_array($this->list) && count($this->e) > 0): ?>
                                 <?php foreach ($this->list as $paymentTrading):?>
                                     <tr>
-                                        <td style="vertical-align: middle; "><?php echo date('Y-m-d H:i:s', strtotime($paymentTrading['recordDate'])); ?></td>
+                                        <td style="vertical-align: middle; " width="170px"><?php echo date('Y-m-d H:i:s', strtotime($paymentTrading['recordDate'])); ?></td>
                                         <td style="vertical-align: middle; ">
                                             <?php if ($paymentTrading['tradingType'] == 'D'): ?>
                                                 <?php echo $this->ShowDictionaryTo("AR_AP_TYPE", $this->userLangCode, $this->dic_Setting['AR_AP_TYPE'], $paymentTrading['rptype']); ?>
@@ -268,6 +277,8 @@
                                                     待付
                                                 <?php elseif ($paymentTrading['rptype'] == 'R'):?>
                                                     待收
+                                                <?php elseif ($paymentTrading['rptype'] == 'O'):?>
+                                                    申请中
                                                 <?php endif;?>
                                             <?php else: ?>
                                                 <?php echo $this->ShowDictionaryTo("PAYMENT_STATUS", $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'], $paymentTrading['paymentStatus']); ?>

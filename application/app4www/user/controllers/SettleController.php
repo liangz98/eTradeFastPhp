@@ -57,6 +57,8 @@ class SettleController extends Kyapi_Controller_Action
 
 	/**结算列表**/
     public function indexAction() {
+        $this->view->resultMsg = $this->_request->getParam('resultMsg');
+
         $_initPWD = $this->json->paymentgetAccountUserApi($this->_requestObject);
         $_initData = $this->objectToArray(json_decode($_initPWD));
         $this->view->init = $_initData['result'];
@@ -973,79 +975,76 @@ class SettleController extends Kyapi_Controller_Action
         }
     }
 
-    //充值页面
-    public function payAction()
-    {
-        $payAmountView=json_decode($this->json->paymentViewApi($this->_requestObject));
-        $payView=$this->objectToArray($payAmountView->result);
-        $payAmountbal=json_decode($this->json->paymentgetAccountBal($this->_requestObject));
-        $paybal=$this->objectToArray($payAmountbal->result);
-        $totalAmount="";
-        foreach ($paybal as $k =>$v){
-          //  echo $v['balAmount']."<br>";
-            if($v['crnCode']==$this->view->crnCode && $v['balType']=='F'&&($v['balStatus']=='N'||$v['balStatus']=='L')){
-                $totalAmount+= $v['balAmount'];
+    // 充值页面
+    public function payAction() {
+        $payAmountView = json_decode($this->json->paymentViewApi($this->_requestObject));
+        $payView = $this->objectToArray($payAmountView->result);
+        $payAmountbal = json_decode($this->json->paymentgetAccountBal($this->_requestObject));
+        $paybal = $this->objectToArray($payAmountbal->result);
+        $totalAmount = "";
+        foreach ($paybal as $k => $v) {
+            if ($v['crnCode'] == $this->view->crnCode && $v['balType'] == 'F' && ($v['balStatus'] == 'N' || $v['balStatus'] == 'L')) {
+                $totalAmount += $v['balAmount'];
             }
         }
+        $this->view->totalAmount = $totalAmount;
+        $payAmountbank = json_decode($this->json->paymentgetRechargeBank($this->_requestObject));
+        $this->view->paybank = $this->objectToArray($payAmountbank->result);
 
-        $this->view->totalAmount=$totalAmount;
-        $payAmountbank=json_decode($this->json->paymentgetRechargeBank($this->_requestObject));
-        $this->view->paybank=$this->objectToArray($payAmountbank->result);
-        if($this->_request->isPost()){
-
-            try {
-                //获取附件ID
-                $Atachlist = array();
-                $Atachlist["attachID"] = $this->_request->getParam('attachNid');
-                $Atachlist["attachType"] = $this->_request->getParam('attachType');
-                $Atachlist["bizType"] = $this->_request->getParam("bizType");
-                $Atachlist["attachName"] = $this->_request->getParam("attachName");
-                $Atachlist["attachSize"] = $this->_request->getParam("attachSize");
-                $_attach2 = array();
-                foreach ($Atachlist as $k => $v) {
-                    foreach ($v as $k1 => $v1) {
-                        $_attach2[$k1][$k] = $v1;
-                    }
+        if ($this->_request->isPost()) {
+            //获取附件ID
+            $Atachlist = array();
+            $Atachlist["attachID"] = $this->_request->getParam('attachNid');
+            $Atachlist["attachType"] = $this->_request->getParam('attachType');
+            $Atachlist["bizType"] = $this->_request->getParam("bizType");
+            $Atachlist["attachName"] = $this->_request->getParam("attachName");
+            $Atachlist["attachSize"] = $this->_request->getParam("attachSize");
+            $_attach2 = array();
+            foreach ($Atachlist as $k => $v) {
+                foreach ($v as $k1 => $v1) {
+                    $_attach2[$k1][$k] = $v1;
                 }
-                $_attachList = array();
-                foreach ($_attach2 as $k => $v) {
-                    foreach ($v as $k1 => $v1) {
-                        $_attachList[$k] = new Kyapi_Model_Attachment();
-                        $_attachList[$k]->attachID = $_attach2[$k]['attachID'];
-                        $_attachList[$k]->attachType = $_attach2[$k]['attachType'];
-                        $_attachList[$k]->bizType = $_attach2[$k]['bizType'];
-                        $_attachList[$k]->name = $_attach2[$k]['attachName'];
-                        $_attachList[$k]->size = (int)$_attach2[$k]['attachSize'];
+            }
+            $_attachList = array();
+            foreach ($_attach2 as $k => $v) {
+                foreach ($v as $k1 => $v1) {
+                    $_attachList[$k] = new Kyapi_Model_Attachment();
+                    $_attachList[$k]->attachID = $_attach2[$k]['attachID'];
+                    $_attachList[$k]->attachType = $_attach2[$k]['attachType'];
+                    $_attachList[$k]->bizType = $_attach2[$k]['bizType'];
+                    $_attachList[$k]->name = $_attach2[$k]['attachName'];
+                    $_attachList[$k]->size = (int)$_attach2[$k]['attachSize'];
 
-                    }
                 }
-            $_paymentRequest=array();
-            $_paymentRequest[ "payAcctID"]= $payView['payAcctID'];
-            $_paymentRequest[ "crnCode"]= "CNY";
-            $_paymentAmount= $this->_request->getParam('paymentAmount');
-            $_paymentRequest[ "paymentAmount"]= (float)$_paymentAmount;
-            $_paymentRequest[ "bankAcctID"]= $this->view->paybank['bankAcctID'];
-            $_paymentRequest[ "bankAcctNo"]=$this->view->paybank['bankAcctNo'];
-            $_paymentRequest[ "bankName"]= $this->view->paybank['bankName'];
+            }
+            $_paymentRequest = array();
+            $_paymentRequest["payAcctID"] = $payView['payAcctID'];
+            $_paymentRequest["crnCode"] = "CNY";
+            $_paymentAmount = $this->_request->getParam('paymentAmount');
+            $_paymentRequest["paymentAmount"] = (float)$_paymentAmount;
+            $_paymentRequest["bankAcctID"] = $this->view->paybank['bankAcctID'];
+            $_paymentRequest["bankAcctNo"] = $this->view->paybank['bankAcctNo'];
+            $_paymentRequest["bankName"] = $this->view->paybank['bankName'];
             $dateNow = date("Y-m-d\TH:i:s", time());
-            $_paymentRequest[ "paymentDate"]= $dateNow;
-            $_paymentRequest[ "explanation"]= "充值摘要";
-            $_paymentRequest[ "paymentPwd"]= $this->_request->getParam('paymentPwd');
-            $_paymentRequest["attachmentList"]= $_attachList;//附件集合
-            $_requestObject=$this->json->paymentaddRecharge($this->_requestObject,$_paymentRequest);
-            $rebObject=json_decode($_requestObject);
-            if($rebObject->status==1){
-                Shop_Browser::redirect($this->view->translate('tip_recharge_success'),$this->view->seed_BaseUrl . "/settle");
-            }else{
-                Shop_Browser::redirect($this->view->translate('tip_recharge_fail'),$this->view->seed_BaseUrl . "/settle/pay");
-            }
-            } catch (HttpError $ex) {
-                Shop_Browser::redirect($ex->getMessage());
+            $_paymentRequest["paymentDate"] = $dateNow;
+            $_paymentRequest["explanation"] = "充值摘要";
+            $_paymentRequest["paymentPwd"] = $this->_request->getParam('paymentPwd');
+            $_paymentRequest["attachmentList"] = $_attachList;//附件集合
+            $_requestObject = $this->json->paymentaddRecharge($this->_requestObject, $_paymentRequest);
+            $rebObject = json_decode($_requestObject);
+
+            if ($rebObject->status != 1) {
+                $this->view->resultMsg = $this->view->translate('tip_recharge_fail') . '! ' . $rebObject->error;
+            } else {
+                // $resultMsg = base64_encode($rebObject['result']['tradingID']);
+                $resultMsg = base64_encode($this->view->translate('tip_recharge_success'));
+                $this->redirect("/settle/index?resultMsg=" . $resultMsg . "#resultMsg");
+
             }
         }
 
-        if(defined('SEED_WWW_TPL')){
-            $content = $this->view->render(SEED_WWW_TPL."/settle/pay.phtml");
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/settle/pay.phtml");
             echo $content;
             exit;
         }

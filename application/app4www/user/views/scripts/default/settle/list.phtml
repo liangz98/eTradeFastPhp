@@ -164,6 +164,7 @@
                         field: 'recordDate',
                         title: '<?php echo $this->translate("Saltter_Time"); ?>',
                         valign: 'middle',
+                        width: 170,
                         formatter: function (value, row) {
                             if (value === undefined || value === '' || value === null) {
                                 value = "-";
@@ -171,7 +172,7 @@
                             return new Date(value).format("yyyy-MM-dd hh:mm:ss");
                         }
                     }, {
-                        field: 'rptype',
+                        field: 'tradingType',
                         title: '<?php echo $this->translate("type"); ?>',
                         valign: 'middle',
                         formatter: function (value, row) {
@@ -180,7 +181,7 @@
                             } else {
                                 var result = '';
                                 var data = $.data(dataDict, 'dataDict');
-                                if (value === 0) {
+                                if (value !== 'D') {
                                     $.each(data, function (key, item) {
                                         if (key === 'PAYMENT_TRADING_TYPE') {
                                             $.each(item, function (i, dict) {
@@ -194,7 +195,7 @@
                                     $.each(data, function (key, item) {
                                         if (key === 'AR_AP_TYPE') {
                                             $.each(item, function (i, dict) {
-                                                if (dict.code === value) {
+                                                if (dict.code === row.rptype) {
                                                     result = dict.name;
                                                 }
                                             });
@@ -275,19 +276,9 @@
                                                     result = '待付';
                                                 } else if (row.rptype === 'R') {
                                                     result = '待收';
+                                                } else if (row.rptype === 'O') {
+                                                    result = '申请中';
                                                 }
-
-                                                /*
-                                                $.each(data, function (key, item) {
-                                                    if (key === 'AR_AP_TYPE') {
-                                                        $.each(item, function (i, dict) {
-                                                            if (dict.code === row.rptype) {
-                                                                result = dict.name;
-                                                            }
-                                                        });
-                                                    }
-                                                });
-*/
                                             } else {
                                                 result = dict.name;
                                             }

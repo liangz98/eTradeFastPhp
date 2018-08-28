@@ -85,3 +85,16 @@ input[type=number]{
     font-weight: 100;
     font-size: 22px;
 }
+
+/* 充值页面 */
+.pay-heading p {
+    margin: 10px 0;
+}
+
+.pay-row {
+    margin: 10px -15px;
+}
+
+.pay-row .col-md-10 {
+    margin-left: -50px;
+}

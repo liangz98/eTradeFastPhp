@@ -582,7 +582,7 @@ class PurchaseController extends Kyapi_Controller_Action
         }
     }
 
-    public function forreviewAction() {
+    public function forReviewAction() {
         //提示：提交审核
         if ($this->_request->isPost()) {
             // 请求Hessian服务端方法bankAcctID
