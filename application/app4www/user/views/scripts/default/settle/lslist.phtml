@@ -184,15 +184,21 @@
                             return new Date(value).format("yyyy-MM-dd hh:mm:ss");
                         }
                     }, {
-                        field: 'customerName',
+                        field: 'oppCustomerDesc',
                         title: '<?php echo $this->translate("Saltter_Name"); ?>',
                         width: 350,
                         formatter: function (value, row) {
                             if (value === undefined || value === '' || value === null) {
                                 value = "";
                             }
+                            value += '<br>';
 
-                            return value;
+                            var explanation = row.explanation;
+                            if (explanation === undefined || explanation === '' || explanation === null) {
+                                explanation = "";
+                            }
+
+                            return value + '<span style="color: #ccc;">' + explanation + '</span>';
                         }
                     }, {
                         field: 'totalAmount',

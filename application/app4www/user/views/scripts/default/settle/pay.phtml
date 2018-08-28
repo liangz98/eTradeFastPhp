@@ -1,73 +1,241 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>快移</title>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-    <link href="/ky/css/base.css" rel="stylesheet">
-    <link href="/ky/css/style.css" rel="stylesheet">
-    <link href="/ky/css/pay.css" rel="stylesheet">
-    <script type="text/javascript" src="/ky/js/jquery.js"></script>
-    <script type="text/javascript" src="/ky/js/jquery.wallform.js"></script>
-    <script type="text/javascript" src="/ky/js/www.js"></script>
-    <script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+	<title>快移</title>
+    <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <link href="/ky/css/settle/settle.css" rel="stylesheet">
+    <link href="/ky/css/img-upload.css" rel="stylesheet">
 </head>
-
 <body>
-<?php echo $this->render(SEED_WWW_TPL . '/header.phtml'); ?>
-<div class="o_content_wrap w1000 m0a clearfix">
-    <h2 class="w"><!--充值--><?php echo $this->translate('Saltter_recharge');?></h2>
-    <div class="pay">
-        <label><!--充值货币--><?php echo $this->translate('Saltter_recharge').$this->translate('Saltter_currency');?></label>
-        <span class="pay_slt"><?php echo $this->crnCode;?></span>
-    </div>
-    <div class="pay">
-        <label><!--账户余额--><?php echo $this->translate('Saltter_Balance');?></label>
-        <em><?php echo $this->crnCode;?></em>
-        <span class="pay_yu"><?php echo $this->ShowToPrice($this->totalAmount);?></span>
-    </div>
-    <div class="pay_tip">
-     <h3><!--温馨提示--><?php echo $this->translate('Saltter_prompt');?></h3>
-        <p><!--1、目前仅支持--><?php echo $this->translate('Saltter_prompt_r1');?>
-       <br> <?php echo $this->translate('Saltter_prompt_r2');?></p>
-    </div>
-    <div class="pay_list">
-        <h3 class="w"><?php echo $this->translate('Saltter_prompt_r3');?></h3>
-        <p>
-            <label><!--开户名称--><?php echo $this->translate('Saltter_bankactname');?>：</label>
-            <span><?php echo $this->paybank['bankAcctName'];?></span></p>
-        <p>
-            <label><!--开户银行--><?php echo $this->translate('Saltter_bankname');?>：</label>
-            <span><?php echo $this->paybank['bankName'];?></span></p>
-        <p>
-            <label><!--银行账号--><?php echo $this->translate('Saltter_bankactno');?>：</label>
-            <span><?php echo $this->paybank['bankAcctNo'];?></span></p>
-        <p>
-            <label><!--银行地址--><?php echo $this->translate('Saltter_bankaddress');?>：</label>
-            <span><?php echo $this->paybank['bankAddress'];?></span></p>
-        <p>
-            <label><b>SWIFT CODE：</b></label>
-            <span><b><?php echo $this->paybank['swiftcode'];?></b></span></p>
 
-    </div>
-    <form action="#" method="post">
-    <div class="pay">
-        <label><!--充值金额--><?php echo $this->translate('Saltter_recharge').$this->translate('ordertotal');?></label>
-        <em><?php echo $this->crnCode;?></em>&nbsp;<input class="pay_inpt" type="text" name="paymentAmount" value="">
-    </div>
-    <div class="pay">
-       <h3><!--银行凭证--><?php echo $this->translate('Saltter_bankact');?></h3>
-        <div style="width: 100%;height: 150px;margin-left: -30px;">  <?php echo $this->ShowWebuploader('', 'PR', 'PRSP', '0'); ?></div>
-   </div>
-    <div class="pay">
-        <label><!--支付密码--><?php echo $this->translate('Saltter_pay_pwd');?></label>
-        <input class="pay_inp" type="password" name="paymentPwd" value="">
-        <input class="pay_btn" type="submit" value="<?php echo $this->translate('confirmed');?>">
-    </div>
-    </form>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
+
+<div class="container-fluid index-body">
+	<div class="container">
+        <ol class="breadcrumb">
+            <li><a href="/"><?php echo $this->translate('nav_index'); ?></a></li>
+            <li><a href="/user/settle"><?php echo $this->translate('Saltter_IN'); ?></a></li>
+            <li><a href="/user/settle/list"><?php echo $this->translate('Saltter_List'); ?></a></li>
+            <li class="active"><?php echo $this->translate('Saltter_payment'); ?></li>
+        </ol>
+
+        <div class="page-header">
+            <h3><?php echo $this->translate('Saltter_payment'); ?></h3>
+        </div>
+
+        <?php if (!empty($this->resultMsg)): ?>
+        <div class="alert alert-danger alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <p><?php echo $this->resultMsg; ?>!</p>
+        </div>
+        <?php endif; ?>
+
+        <form class="form-horizontal" action="#" method="post">
+            <input type="hidden" name="tradingID" value="<?php echo $this->payment['tradingID']; ?>">
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><?php echo $this->translate('Saltter_Name'); ?></label>
+                        <div class="col-sm-4">
+                            <p class="form-control-static"><?php echo $this->paymentTrading['subject']; ?></p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><?php echo $this->translate('Saltter_amount'); ?></label>
+                        <div class="col-sm-4">
+                            <p class="form-control-static"><?php echo $this->paymentTrading['crnCode'] . ' ' . number_format($this->paymentTrading['totalAmount'], 2); ?></p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><?php echo $this->translate('Saltter_Unsettle'); ?></label>
+                        <div class="col-sm-4">
+                            <p class="form-control-static"><?php echo $this->paymentTrading['crnCode'] . ' ' . number_format($this->paymentTrading['balanceAmount'], 2); ?></p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><?php echo $this->translate('Saltter_GTime'); ?></label>
+                        <div class="col-sm-4">
+                            <p class="form-control-static"><?php echo date('Y-m-d', strtotime($this->paymentTrading['recordDate'])); ?></p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><?php echo $this->translate('Saltter_Time_ING'); ?></label>
+                        <div class="col-sm-4">
+                            <p class="form-control-static"><?php echo date('Y-m-d', strtotime($this->paymentTrading['expectedDate'])); ?></p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><?php echo $this->translate('Saltter_DEC'); ?></label>
+                        <div class="col-sm-9">
+                            <p class="form-control-static"><?php echo $this->paymentTrading['remarks']; ?></p>
+                        </div>
+                    </div>
+
+                    <div class="form-group hide">
+                        <label class="col-sm-2 control-label"><?php echo $this->translate('Saltter_mark'); ?></label>
+                        <div class="col-sm-9">
+                            <p class="form-control-static">
+                                <?php if (is_array($this->paymentDetailList) && count($this->paymentDetailList) > 0): ?>
+                                    <?php foreach ($this->paymentDetailList as $k => $paymentDetailList): ?>
+                                        <span><?php echo $paymentDetailList['oppCustomerName'] . '&nbsp;-&nbsp;' . $paymentDetailList['accruedItemName'] . '&nbsp;-&nbsp;'  . '<em style="color: #EE9001;">'.$paymentDetailList['crnCode'] . '&nbsp;-&nbsp;'  . $this->ShowToPrice($paymentDetailList['balanceAmount']).'</em>'; ?></span>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <?php if ($this->paymentTrading['isOriented'] == true): ?>
+            <div class="form-group">
+                <label for="directPaymentAmount" class="col-sm-2 control-label"><?php echo $this->translate('Saltter_DirectBalAmount'); ?></label>
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <div class="input-group-addon"><?php echo $this->payment['crnCode']; ?></div>
+                        <input type="number" class="form-control" name="directPaymentAmount" id="directPaymentAmount" value="<?php echo $this->ShowToPrice($this->payment['validDirectBalAmount']); ?>" readonly>
+                    </div>
+                </div>
+                <div class="col-sm-offset-2 col-sm-10">
+                    <p class="form-control-static text-999">
+                        <?php echo $this->translate('Saltter_tips01') . ' = USD ' . $this->ShowToPrice($this->payment['validDirectBalAmount']) . ' * ' . $this->ShowExchange($this->reqOb, 'USD', 'CNY', 'PR', null, $this->seed_Setting['KyUrl']) . ' = CNY&nbsp;' . $this->ShowToPrice($this->payment['validDirectBalAmount']); ?>
+                    </p>
+                </div>
+            </div>
+            <?php endif; ?>
+
+            <div class="form-group">
+                <label for="balPaymentAmount" class="col-sm-2 control-label"><?php echo $this->translate('Saltter_eAmount'); ?></label>
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <div class="input-group-addon"><?php echo $this->payment['crnCode']; ?></div>
+                        <input type="number" class="form-control" name="balPaymentAmount" id="balPaymentAmount" min="0" value="0" step="0.01">
+                    </div>
+                </div>
+                <div class="col-sm-offset-2 col-sm-10">
+                    <p class="form-control-static text-999">
+                        <?php echo $this->translate('Saltter_free') . ' ' . $this->payment['crnCode'] . ' ' . $this->payment['validFreeBalAmount'] . ' = '.$this->translate('Saltter_CNY_free'). ' ' . $this->paymentAccountCNYBal['crnCode']. ' ' . number_format($this->paymentAccountCNYBal['balAmount'], 2) . ' + ' . $this->translate('Saltter_USD_free'). ' ' . $this->paymentAccountUSDBal['crnCode']. ' ' . number_format($this->paymentAccountUSDBal['balAmount'], 2) . ' * '; ?>
+                        <?php echo $this->ShowExchange($this->reqOb, 'USD', 'CNY', 'PR', null, $this->seed_Setting['KyUrl']); ?>
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group bankGroup">
+                <label class="col-sm-2 control-label bankLabel" style="cursor: pointer;"><i class="fas fa-plus-circle"></i> <?php echo $this->translate('Saltter_add_BankAmount'); ?></label>
+            </div>
+
+            <div class="form-group hide paymentGroup">
+                <label for="paymentAmount" class="col-sm-2 control-label paymentLabel" style="cursor: pointer;"><i class="fas fa-minus-circle"></i> <?php echo $this->translate('Saltter_BankAmount'); ?></label>
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <div class="input-group-addon"><?php echo $this->payment['crnCode']; ?></div>
+                        <input type="number" class="form-control" name="paymentAmount" id="paymentAmount" min="0" step="0.01">
+                    </div>
+                </div>
+                <div class="col-sm-offset-2 col-sm-10">
+                    <p class="form-control-static text-999">
+                        <?php echo $this->translate('Saltter_tips00'); ?>
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="totalAmount" class="col-sm-2 control-label"><?php echo $this->translate('Saltter_total'); ?></label>
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <div class="input-group-addon"><?php echo $this->payment['crnCode']; ?></div>
+                        <input type="number" class="form-control" name="totalAmount" id="totalAmount" readonly>
+                    </div>
+                </div>
+                <div class="col-sm-offset-2 col-sm-10">
+                    <p class="form-control-static text-999">
+                        <?php echo $this->translate('Saltter_tips05'); ?>
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label"><?php echo $this->translate('attachUpload'); ?></label>
+                <div class="col-sm-10">
+                    <?php echo $this->ShowWebuploader('', 'PR', 'PRSP', '0'); ?>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="paymentPwd" class="col-sm-2 control-label"><?php echo $this->translate('Saltter_pay_pwd'); ?></label>
+                <div class="col-sm-3">
+                    <input type="password" class="form-control" name="paymentPwd" id="paymentPwd" required>
+                </div>
+                <div class="col-sm-2">
+                    <button type="submit" class="btn btn-warning"><?php echo $this->translate('confirmed'); ?></button>&nbsp;&nbsp;<a href="javascript:void(0)"><?php echo $this->translate('forgetPSD');?></a>
+                </div>
+            </div>
+        </form>
+	</div>
 </div>
-<?php echo $this->render(SEED_WWW_TPL . '/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script type="text/javascript" src="/ky/upload/img.js"></script>
+
+<script type="text/javascript">
+	$().ready(function() {
+
+	});
+
+    var $directPaymentAmount = $("#directPaymentAmount"),
+        $balPaymentAmount = $("#balPaymentAmount"),
+        $paymentAmount = $("#paymentAmount"),
+        $totalAmount = $("#totalAmount"),
+        directPaymentAmount = 0,
+        balPaymentAmount = 0,
+        paymentAmount = 0;
+
+	$(function () {
+        $paymentAmount.val(0);
+        doAddPaymentAmount();
+
+	    $("#directPaymentAmount, #balPaymentAmount, #paymentAmount").keyup(function () {
+            doAddPaymentAmount();
+        });
+
+	    $(".bankLabel").click(function () {
+            $(".paymentGroup").removeClass("hide");
+            $(".bankGroup").addClass("hide");
+
+            doAddPaymentAmount();
+        });
+
+        $(".paymentLabel").click(function () {
+            $(".paymentGroup").addClass("hide");
+            $(".bankGroup").removeClass("hide");
+
+            $paymentAmount.val(0);
+            doAddPaymentAmount();
+        });
+	});
+
+	function doAddPaymentAmount() {
+        if ($directPaymentAmount.val() !== "" && $.isNumeric($directPaymentAmount.val())) {
+            directPaymentAmount = $directPaymentAmount.val();
+        }
+        if ($balPaymentAmount.val() !== "" && $.isNumeric($balPaymentAmount.val())) {
+            balPaymentAmount = $balPaymentAmount.val();
+        }
+        if ($paymentAmount.val() !== "" && $.isNumeric($paymentAmount.val())) {
+            paymentAmount = $paymentAmount.val();
+        }
+
+        $totalAmount.val(arithAdd(arithAdd(directPaymentAmount, balPaymentAmount), paymentAmount));
+    }
+</script>
 </body>
 </html>

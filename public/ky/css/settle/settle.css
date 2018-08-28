@@ -58,8 +58,18 @@ input[type=number]{
 }
 
 /* 首页 */
+.info-company {
+    border-left: #ccc 1px solid;
+}
+
 .info-balAmount {
     margin-top: 50px;
+}
+
+.info-paymentTradingBal {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: #ccc 1px solid;
 }
 
 .span-font-size-16 {

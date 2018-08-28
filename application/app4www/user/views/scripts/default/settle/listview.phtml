@@ -17,6 +17,7 @@
             <li><a href="/"><?php echo $this->translate('nav_index'); ?></a></li>
             <li><a href="/user/settle"><?php echo $this->translate('Saltter_IN'); ?></a></li>
             <li><a href="/user/settle/list"><?php echo $this->translate('Saltter_List'); ?></a></li>
+            <li><a href="/user/settle/lslist"><?php echo $this->translate('Saltter_Run'); ?></a></li>
             <li class="active"><?php echo $this->translate('Saltter_INF'); ?></li>
         </ol>
 
@@ -62,6 +63,21 @@
                     <div class="col-md-4">
                         <p class="form-control-static text-666">
                             <?php echo $this->e['crnCode'] . ' ' . $this->ShowToPrice($this->e['balanceAmount']); ?>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('type'); ?></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="form-control-static text-666">
+                            <?php if ($this->e['tradingType'] == 'D'): ?>
+                                <?php echo $this->ShowDictionaryTo("AR_AP_TYPE", $this->userLangCode, $this->dic_Setting['AR_AP_TYPE'], $this->e['rptype']); ?>
+                            <?php else: ?>
+                                <?php echo $this->ShowDictionaryTo("PAYMENT_TRADING_TYPE", $this->userLangCode, $this->dic_Setting['PAYMENT_TRADING_TYPE'], $this->e['tradingType']); ?>
+                            <?php endif;?>
                         </p>
                     </div>
                 </div>
