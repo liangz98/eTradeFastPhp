@@ -9,20 +9,26 @@
     </tr>
     </thead>
     <tbody>
-    <?php foreach ($this->productList as $product): ?>
-        <tr>
-            <td><?php echo $product->productName; ?></td>
-            <td><?php echo $product->productBrand; ?></td>
-            <td>
-                <?php echo $product->productModel ?>
-            </td>
-            <td>
-                <?php echo $product->supplierName ?>
-            </td>
-            <td>
-                <?php echo $this->ShowDictionaryTo($this->dic_Setting["PRODUCT_STATUS"], $this->userLangCode, $this->dic_Setting["PRODUCT_STATUS"], $product->productStatus); ?>
-            </td>
-        </tr>
-    <?php endforeach; ?>
+    <?php if (count($this->productList) > 0): ?>
+        <?php foreach ($this->productList as $product): ?>
+            <tr>
+                <td><?php echo $product->productName; ?></td>
+                <td><?php echo $product->productBrand; ?></td>
+                <td>
+                    <?php echo $product->productModel ?>
+                </td>
+                <td>
+                    <?php echo $product->supplierName ?>
+                </td>
+                <td>
+                    <?php echo $this->ShowDictionaryTo($this->dic_Setting["PRODUCT_STATUS"], $this->userLangCode, $this->dic_Setting["PRODUCT_STATUS"], $product->productStatus); ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    <?php else: ?>
+    <tr>
+        <td colspan="5"><?php echo $this->translate('noData'); ?></td>
+    </tr>
+    <?php endif;?>
     </tbody>
 </table>
