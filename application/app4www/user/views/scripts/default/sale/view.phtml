@@ -80,8 +80,14 @@
                                     <div class="col-xs-2 news-title">
                                         <p class="text-right"><?php echo $this->translate('stateING');?></p>
                                     </div>
-                                    <div class="col-xs-8">
+                                    <div class="col-xs-4">
                                         <p><?php echo $this->ShowDictionaryTo($this->dic_Setting['ORDER_STATUS'], $this->userLangCode, $this->dic_Setting['ORDER_STATUS'], $this->orders["orderStatus"]); ?></p>
+                                    </div>
+                                    <div class="col-xs-2 news-title"><?php echo $this->translate('operatING');?></div>
+                                    <div class="col-xs-4">
+                                        <?php if ($this->orders["allowVendorConfirm"] == 1): ?>
+                                        <button type="button" class="btn btn-warning" id="vendorConfirmBtn" data-order-id="<?php echo $this->orders["orderID"];?>"><?php echo $this->translate('confirmed'); ?></button>
+                                        <?php endif;?>
                                     </div>
                                 </div>
                             </div>
@@ -865,6 +871,27 @@
         });
 
         $calculateContent.load('/user/sale/trading', {'orderID': '<?php echo $this->orders['orderID'] ?>'});
+
+        /* 确认订单 */
+        $("#vendorConfirmBtn").click(function () {
+            var track = '/user/sale/confirm';
+            var orderID = $(this).attr("data-order-id");
+            $.ajax({
+                type: "POST",
+                url: track,
+                data: {
+                    orderID: orderID
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data === 1) {
+                        document.location.reload();
+                    } else {
+                        alert(data + 'failed, please try again!');
+                    }
+                }
+            });
+        });
 	});
 
     function genTrack(orderID, view) {

@@ -46,6 +46,7 @@
                                 <div class="col-md-10">
                                     <h3>
                                         <?php echo $this->e['accountName']; ?>
+                                        <input type="hidden" name="accountName" value="<?php echo $this->e['accountName']; ?>">
                                     </h3>
                                     <?php if ($this->e['accountEnName']): ?>
                                         <p>
@@ -54,6 +55,9 @@
                                     <?php endif; ?>
 
                                     <form class="form-horizontal company-main-edit" action="<?php echo $this->baseUrl();?>/company/edit" method="post" id="company_form" name="company_form">
+                                        <input type="hidden" name="accountName" value="<?php echo $this->e['accountName']; ?>">
+                                        <input type="hidden" name="accountEnName" value="<?php echo $this->e['accountEnName']; ?>">
+
                                         <div class="form-group">
                                             <label for="regdAddress" class="col-sm-2 control-label"><?php echo $this->translate('address'); ?></label>
                                             <div class="col-sm-9">
@@ -92,25 +96,35 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label"><?php echo $this->translate('company_incorporation_date'); ?></label>
+                                            <label for="incorporationDate" class="col-sm-2 control-label"><?php echo $this->translate('company_incorporation_date'); ?></label>
                                             <div class="col-sm-9">
-                                                <p class="form-control-static">
-                                                    <?php if ($this->e['incorporationDate']) {
-                                                        echo date('Y-m-d', strtotime($this->e['incorporationDate']));
-                                                    } else {
-                                                        echo null;
-                                                    } ?>
-                                                </p>
+                                                <?php if ($this->e['accountStatus'] == '01') : ?>
+                                                    <p class="form-control-static">
+                                                        <?php if ($this->e['incorporationDate']) {
+                                                            echo date('Y-m-d', strtotime($this->e['incorporationDate']));
+                                                        } else {
+                                                            echo null;
+                                                        } ?>
+                                                    </p>
+                                                <?php else: ?>
+                                                    <input type="date" class="form-control" name="incorporationDate" id="incorporationDate" value="<?php echo date('Y-m-d', strtotime($this->e['incorporationDate']));?>">
+                                                <?php endif; ?>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label"><?php echo $this->translate('industry'); ?></label>
+                                            <label for="industryCode" class="col-sm-2 control-label"><?php echo $this->translate('industry'); ?></label>
                                             <div class="col-sm-9">
-                                                <p class="form-control-static">
-                                                    <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ISIC_INDUSTRY_TYPE'], $this->e['industryCode']); ?>
-                                                </p>
-                                                <input type="hidden" name="industryCode" value="<?php echo $this->e['industryCode']; ?>" >
+                                                <?php if ($this->e['accountStatus'] == '01') : ?>
+                                                    <p class="form-control-static">
+                                                        <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ISIC_INDUSTRY_TYPE'], $this->e['industryCode']); ?>
+                                                    </p>
+                                                    <input type="hidden" name="industryCode" value="<?php echo $this->e['industryCode']; ?>" >
+                                                <?php else: ?>
+                                                    <select class="form-control" name="industryCode" id="industryCode">
+                                                        <?php echo $this-> ShowDictionaryList($this->dic_Setting['ISIC_INDUSTRY_TYPE'] ,$this->userLangCode,$this->dic_Setting['ISIC_INDUSTRY_TYPE'], $this->e['industryCode']);?>
+                                                    </select>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
 
@@ -124,23 +138,37 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label"><?php echo $this->translate('businessLicenseNo'); ?></label>
+                                            <label for="businessLicenseNo" class="col-sm-2 control-label"><?php echo $this->translate('businessLicenseNo'); ?></label>
                                             <div class="col-sm-9">
-                                                <p class="form-control-static"><?php echo $this->e['businessLicenseNo']; ?></p>
+                                                <?php if ($this->e['accountStatus'] == '01') : ?>
+                                                    <p class="form-control-static"><?php echo $this->e['businessLicenseNo']; ?></p>
+                                                <?php else: ?>
+                                                    <input type="text" class="form-control" name="businessLicenseNo" id="businessLicenseNo" placeholder="" value="<?php echo $this->e['businessLicenseNo'];?>" >
+                                                <?php endif; ?>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label"><?php echo $this->translate('ECC'); ?></label>
+                                            <label for="customsCode" class="col-sm-2 control-label"><?php echo $this->translate('ECC'); ?></label>
                                             <div class="col-sm-9">
-                                                <p class="form-control-static"><?php echo $this->e['customsCode']; ?></p>
+                                                <?php if ($this->e['accountStatus'] == '01') : ?>
+                                                    <p class="form-control-static"><?php echo $this->e['customsCode']; ?></p>
+                                                <?php else: ?>
+                                                    <input type="text" class="form-control" name="customsCode" id="customsCode" placeholder="" value="<?php echo $this->e['customsCode'];?>" >
+                                                <?php endif; ?>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label"><?php echo $this->translate('crnCode'); ?></label>
+                                            <label for="crnCode" class="col-sm-2 control-label"><?php echo $this->translate('crnCode'); ?></label>
                                             <div class="col-sm-9">
-                                                <p class="form-control-static"><?php echo $this->ShowDictionaryTo($this->dic_Setting['CURRENCY'], $this->userLangCode, $this->dic_Setting['CURRENCY'], $this->e['crnCode']); ?></p>
+                                                <?php if ($this->e['accountStatus'] == '01') : ?>
+                                                    <p class="form-control-static"><?php echo $this->ShowDictionaryTo($this->dic_Setting['CURRENCY'], $this->userLangCode, $this->dic_Setting['CURRENCY'], $this->e['crnCode']); ?></p>
+                                                <?php else: ?>
+                                                    <select class="form-control" name="crnCode" id="crnCode">
+                                                        <?php echo $this-> ShowDictionaryList($this->dic_Setting['CURRENCY'] ,$this->userLangCode,$this->dic_Setting['CURRENCY'], $this->e['crnCode']);?>
+                                                    </select>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
 
