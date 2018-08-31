@@ -97,6 +97,7 @@ body {
 .dl-horizontal dd {
     margin-left: 110px;
     margin-bottom: 15px;
+	line-height: 34px;
 }
 
 .dl-horizontal dd:first-of-type {
