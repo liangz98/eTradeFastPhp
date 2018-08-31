@@ -91,7 +91,7 @@ body {
     width: 110px;
     font-weight: normal;
     color: #777;
-	min-height: 34px;
+	line-height: 34px;
 }
 
 .dl-horizontal dd {
