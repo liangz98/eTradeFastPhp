@@ -295,12 +295,12 @@ class CompanyController extends Kyapi_Controller_Action
             $acctName = $this->_request->getParam('acctName');
             $auth_acctNo = $this->_request->getParam('auth_acctNo');
             $bankName = $this->_request->getParam('bankName');
-            $proviceName = $this->_request->getParam('proviceName');
+            $provinceName = $this->_request->getParam('provinceName');
             $cityName = $this->_request->getParam('cityName');
             $subbranchName = $this->_request->getParam('subbranchName');
 
             $_requestOb = $this->_requestObject;
-            $resultObject = $this->json->doEntRealNameToPay($_requestOb, $acctName, $auth_acctNo, $bankName, $proviceName, $cityName, $subbranchName);
+            $resultObject = $this->json->doEntRealNameToPay($_requestOb, $acctName, $auth_acctNo, $bankName, $provinceName, $cityName, $subbranchName);
             // 取回接口请求状态
             $apiStatus = json_decode($resultObject)->status;
             if ($apiStatus == 1) {
