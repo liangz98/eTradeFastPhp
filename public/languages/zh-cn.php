@@ -160,6 +160,7 @@ return array(
     'contacts'                 => '联系人',
     'contactsID'               => '联系人ID',
     'callMD'                   => '联系方式',
+    'contactInfo'              => '通信地址',
     'baseINF'                  => '员工资料',
     'basicInfo'                => '基本资料',
     'viewInfo'                 => '查看信息',

@@ -15,7 +15,7 @@
 		<div class="row">
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><?php echo $this->translate('personNO'); ?></div>
+                    <div class="panel-heading"><?php echo $this->translate('myINF'); ?></div>
                     <div class="panel-body">
                         <div class="col-md-12">
                             <h3>
@@ -34,6 +34,227 @@
                                 <p class="form-control-static text-666">
                                     <?php echo $this->e['salutation']; ?>
                                 </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('sex'); ?></p>
+                            </div>
+                            <div class="col-md-10">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->ShowDictionaryTo("SEX", $this->userLangCode, $this->dic_Setting['SEX'], $this->e['sex']); ?>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('birthday'); ?></p>
+                            </div>
+                            <div class="col-md-10">
+                                <p class="form-control-static text-666">
+                                    <?php echo date('Y-m-d',strtotime($this->e['birthdate']));?>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('certificateType'); ?></p>
+                            </div>
+                            <div class="col-md-10">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->ShowDictionaryTo("ID_TYPE", $this->userLangCode, $this->dic_Setting['ID_TYPE'], $this->e['identityType']); ?>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('certificateNo'); ?></p>
+                            </div>
+                            <div class="col-md-10">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->e['identityNo'];?>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('division'); ?></p>
+                            </div>
+                            <div class="col-md-10">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->e['department'];?>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('job'); ?></p>
+                            </div>
+                            <div class="col-md-10">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->e['title'];?>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><?php echo $this->translate('contactInfo'); ?></div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('email'); ?></p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->e['email'];?>&nbsp;&nbsp;
+                                    <?php if (!empty($this->e['email']) && empty($this->e['emailVerifyTime']) && $this->accountID == $this->e['accountID']): ?>
+                                        <button type="button" class="btn btn-warning btn-sm"><?php echo $this->translate('verify'); ?></button>
+                                    <?php endif; ?>
+                                </p>
+                            </div>
+
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('mobile'); ?></p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->e['mobilePhone'];?>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('telephone'); ?></p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->e['phone'];?>
+                                </p>
+                            </div>
+
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('fax'); ?></p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->e['fax'];?>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('HPname'); ?></p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->e['assistantName'];?>
+                                </p>
+                            </div>
+
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('HPphone'); ?></p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->e['assistantPhone'];?>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('maillADD'); ?></p>
+                            </div>
+                            <div class="col-md-10">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->e['mailingAddress'];?>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('postcode'); ?></p>
+                            </div>
+                            <div class="col-md-10">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->e['mailingZipCode'];?>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('timezone'); ?></p>
+                            </div>
+                            <div class="col-md-10">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->ShowDictionaryTo("TIME_ZONE", $this->userLangCode, $this->dic_Setting['TIME_ZONE'], $this->e['contactPreference']['timeZone']); ?>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('langCode'); ?></p>
+                            </div>
+                            <div class="col-md-10">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->ShowDictionaryTo("SYS_LANG", $this->userLangCode, $this->dic_Setting['SYS_LANG'], $this->e['contactPreference']['langCode']); ?>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><?php echo $this->translate('WebINF'); ?></div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('elogname'); ?></p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->e['ecommloginname'];?>&nbsp;&nbsp;
+                                    <?php if (!empty($this->e['ecommloginname']) && $this->e['ecommstatus'] == "NV" && $this->userID == $this->e['contactID']): ?>
+                                        <button type="button" class="btn btn-warning btn-sm"><?php echo $this->translate('verify'); ?></button>
+                                    <?php endif; ?>
+                                </p>
+                            </div>
+
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('userP'); ?></p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->ShowDictionaryTo("ECOMM_STATUS", $this->userLangCode, $this->dic_Setting['ECOMM_STATUS'], $this->e['ecommstatus']); ?>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('userROLE'); ?></p>
+                            </div>
+                            <div class="col-md-10">
+                                <?php if ($this->e['ecommrole']): ?>
+                                    <?php foreach (explode(",", $this->e['ecommrole']) as $k2 => $roleDD): ?>
+                                        <p class="form-control-static text-666">
+                                            <?php echo $this->ShowDictionaryTo("ECOMM_ROLE", $this->userLangCode, $this->dic_Setting['ECOMM_ROLE'], $roleDD); ?>
+                                        </p>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>

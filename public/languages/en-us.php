@@ -171,6 +171,7 @@ return array(
     'contacts'                 => 'Contacts',
     'contactsID'               => 'Contacts ID',
     'callMD'                   => 'Contact Method',
+    'contactInfo'              => 'Contact Info',
     'baseINF'                  => 'Staff Info.',
     'basicInfo'                => 'Basic Info.',
     'viewInfo'                 => 'View Info.',
