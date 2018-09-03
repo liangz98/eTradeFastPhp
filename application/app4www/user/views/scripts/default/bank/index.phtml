@@ -58,10 +58,10 @@
                                 <?php endif; ?>
                             </div>
                         </form>
-                    </div>
 
-                    <!-- Table -->
-                    <table id="bankListTable"></table>
+                        <!-- Table -->
+                        <table id="bankListTable"></table>
+                    </div>
                 </div>
             </div>
 		</div>
@@ -93,7 +93,7 @@
         });
 
         var dataDictQuery = '/user/common/dict-ajax';
-        var dictCode = new Array("BANK_ACCOUNT_STATUS");
+        var dictCode = ["BANK_ACCOUNT_STATUS", "BANK_ACCOUNT_TYPE"];
         $.ajax({
             type: "POST",
             url: dataDictQuery,
@@ -144,15 +144,20 @@
                             return '<a href="' + href + '">' + value + '</a>';
                         }
                     }, {
-                        field: 'bankAcctID',
+                        field: 'bankAcctType',
                         title: '<?php echo $this->translate("bankAcctType"); ?>',
                         formatter: function (value) {
                             var result ="";
-                            if (value === 'NV') {
-                                result = "<?php echo $this->ShowDictionaryTo($this->dic_Setting['BANK_ACCOUNT_TYPE'], $this->userLangCode, $this->dic_Setting['BANK_ACCOUNT_TYPE'], 'NV'); ?>";
-                            } else {
-                                result = "<?php echo $this->ShowDictionaryTo($this->dic_Setting['BANK_ACCOUNT_TYPE'], $this->userLangCode, $this->dic_Setting['BANK_ACCOUNT_TYPE'], 'AT'); ?>";
-                            }
+                            var data = $.data(dataDict, 'dataDict');
+                            $.each(data, function (key, item) {
+                                if (key === 'BANK_ACCOUNT_TYPE') {
+                                    $.each(item, function (i, dict) {
+                                        if (dict.code === value) {
+                                            result = dict.name;
+                                        }
+                                    });
+                                }
+                            });
                             return result;
                         }
                     }, {

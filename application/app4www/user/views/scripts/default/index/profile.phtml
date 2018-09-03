@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+	<title>快移</title>
+    <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <link href="/ky/css/index/index.css" rel="stylesheet">
+</head>
+<body>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
+
+<div class="container-fluid index-body">
+	<div class="container">
+		<div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><?php echo $this->translate('personNO'); ?></div>
+                    <div class="panel-body">
+                        <div class="col-md-12">
+                            <h3>
+                                <a class="profile-heading-edit pull-right btn btn-xs" data-type="base" href="<?php echo '/user/account/edit?' . base64_encode($this->e['contactID']); ?>">
+                                    <i class="fas fa-pencil-alt" aria-hidden="true"></i><?php echo $this->translate('edit'); ?>
+                                </a>
+                                <?php echo $this->e['name']; ?>
+                            </h3>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('title'); ?></p>
+                            </div>
+                            <div class="col-md-10">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->e['salutation']; ?>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script type="text/javascript">
+	$().ready(function() {
+
+	});
+
+	$(function () {
+        $('.company-navigation').find('a').each(function () {
+            if (this.href === document.location.href || document.location.href.search(this.href) >= 0) {
+                $(this).addClass('nav-selected');
+            } else {
+                $(this).removeClass('nav-selected');
+            }
+        });
+	});
+</script>
+</body>
+</html>

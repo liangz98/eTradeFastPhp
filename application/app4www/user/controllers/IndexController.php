@@ -7,7 +7,6 @@
  */
 class IndexController extends Kyapi_Controller_Action {
 
-    /*
     public function preDispatch() {
         $this->view->cur_pos = 'index';
         //清除 免登陆session
@@ -19,7 +18,6 @@ class IndexController extends Kyapi_Controller_Action {
             Mobile_Browser::redirect('请先登录系统！', $this->view->seed_Setting['user_app_server'] . "/login");
         }
     }
-    */
 
     public function indexAction() {
         if (empty($_SESSION['rev_session']['userID'])) {
@@ -136,6 +134,23 @@ class IndexController extends Kyapi_Controller_Action {
     {
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/index/photo.phtml");
+            echo $content;
+            exit;
+        }
+    }
+
+    public function profileAction() {
+        // 设置请求数据
+        $requestObject = $this->_requestObject;
+        $contactID = $this->view->userID;
+        $resultObject = $this->json->getContactApi($requestObject, $contactID);
+        $userData = $this->objectToArray(json_decode($resultObject));
+
+        $this->view->e = $userData['result'];
+        $this->view->ecommrole = explode(",", $userData['result']['ecommrole']);
+
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/index/profile.phtml");
             echo $content;
             exit;
         }

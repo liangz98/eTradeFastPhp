@@ -241,7 +241,7 @@
                             </thead>
                             <tbody>
 
-                            <?php if (is_array($this->list) && count($this->e) > 0): ?>
+                            <?php if (is_array($this->list) && count($this->list) > 0): ?>
                                 <?php foreach ($this->list as $paymentTrading):?>
                                     <tr>
                                         <td style="vertical-align: middle; " width="170px"><?php echo date('Y-m-d H:i:s', strtotime($paymentTrading['recordDate'])); ?></td>

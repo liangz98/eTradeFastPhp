@@ -20,11 +20,6 @@ body {
     /*width: 320px;*/
 }
 
-#contactListTable {
-    margin-left: 15px;
-    width: 97%;
-}
-
 .fixed-table-pagination {
     margin: 0 15px;
 }
