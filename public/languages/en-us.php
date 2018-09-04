@@ -273,11 +273,12 @@ return array(
 
 
     //个人信息右侧title
-    'myINF'     => 'Personal Profile',
-    'myPHOTO'   => 'Profile Photo',
-    'editPWD'   => 'Change Password',
-    'myNO'      => 'Account Security',
-    'WebINF'    => 'Account Info.',
+    'myINF'       => 'Personal Profile',
+    'myPHOTO'     => 'Profile Photo',
+    'editPWD'     => 'Change Password',
+    'editProfile' => 'Edit Profile',
+    'myNO'        => 'Account Security',
+    'WebINF'      => 'Account Info.',
 
     'basicINF'     => 'Info.',
     'company_info' => 'Company Info.',

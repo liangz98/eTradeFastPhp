@@ -27,6 +27,7 @@ class IndexController extends Kyapi_Controller_Action {
                 exit;
             }
         } else {
+
             /*$sortlistM = new Seed_Model_Sortlist('system');
             $insertData=array();
             $is_sortlist = $sortlistM->fetchRows(null,array('user_id'=>$this->view->userID),'id desc');
@@ -140,6 +141,8 @@ class IndexController extends Kyapi_Controller_Action {
     }
 
     public function profileAction() {
+        $this->view->resultMsg = $this->_request->getParam('resultMsg');
+
         // 设置请求数据
         $requestObject = $this->_requestObject;
         $contactID = $this->view->userID;
@@ -156,16 +159,15 @@ class IndexController extends Kyapi_Controller_Action {
         }
     }
 
-    public function editAction()
-    {
+    public function editAction() {
         // 设置请求数据
-        $_requestOb=$this->_requestObject;
-        $_contactID =$this->view->userID;
-        $userKY= $this->json->getContactApi($_requestOb,$_contactID);
-        $userData= $this->objectToArray(json_decode($userKY));
+        $_requestOb = $this->_requestObject;
+        $_contactID = $this->view->userID;
+        $userKY = $this->json->getContactApi($_requestOb, $_contactID);
+        $userData = $this->objectToArray(json_decode($userKY));
 
-        $this->view->e=$userData['result'];
-        $this->view->ecommrole=explode(",",$userData['result']['ecommrole']);
+        $this->view->e = $userData['result'];
+        $this->view->ecommrole = explode(",", $userData['result']['ecommrole']);
 
 
         if ($this->_request->isPost()) {
@@ -176,19 +178,19 @@ class IndexController extends Kyapi_Controller_Action {
             $_account['ecommloginname'] = $userData['result']['ecommloginname'];
             $_account['phone'] = $this->_request->getParam('phone');
             //判断是否为默认联系人
-            $isDefaultPublic=($this->_request->getParam('isDefaultPublic')=='1')?true:false;
-            $_account['isDefaultPublic']=$isDefaultPublic;
+            $isDefaultPublic = ($this->_request->getParam('isDefaultPublic') == '1') ? true : false;
+            $_account['isDefaultPublic'] = $isDefaultPublic;
             //判断是否为订单联系人
-            $isPublicContact=($this->_request->getParam('isPublicContact')=='1')?true:false;
-            $_account['isPublicContact']=$isPublicContact;
+            $isPublicContact = ($this->_request->getParam('isPublicContact') == '1') ? true : false;
+            $_account['isPublicContact'] = $isPublicContact;
 
-            $emrole=$this->_request->getParam('ecommrole');
-            $emrole2=implode(',',$emrole);
+            $emrole = $this->_request->getParam('ecommrole');
+            $emrole2 = implode(',', $emrole);
             $_account['ecommrole'] = $userData['result']['ecommrole'];
             $_account['mobilePhone'] = $this->_request->getParam('mobilePhone');
             $_account['email'] = $this->_request->getParam('email');
             $_account['salutation'] = $this->_request->getParam('salutation');
-            $ddtime= $this->_request->getParam('birthday');
+            $ddtime = $this->_request->getParam('birthdate');
             if (!empty($ddtime)) {
                 $date3 = date("Y-m-d\TH:i:s", strtotime($ddtime));
             } else {
@@ -215,34 +217,35 @@ class IndexController extends Kyapi_Controller_Action {
             $_account['mailingStreet'] = $this->_request->getParam('mailingStreet');
             /*添加字段证件号码  证件类型*/
             $_account['identityType'] = '01';
-          //  $_account['identityType'] = $this->_request->getParam('identityType');
+            //  $_account['identityType'] = $this->_request->getParam('identityType');
             //判断状态修改name 和身份证号码
-            if($userData['result']['realAuthStatus']==0||$userData['result']['realAuthStatus']==-1){
+            if ($userData['result']['realAuthStatus'] == 0 || $userData['result']['realAuthStatus'] == -1) {
                 $_account['name'] = $this->_request->getParam('name');
                 $_account['identityNo'] = $this->_request->getParam('identityNo');
-            }else{
+            } else {
                 $_account['name'] = $userData['result']['name'];
                 $_account['identityNo'] = $userData['result']['identityNo'];
             }
 
             $userKY = $this->json->editContactApi($_requestOb, $_account);
-            $userEdit= $this->objectToArray(json_decode($userKY));
+            $resultObject = json_decode($userKY);
 
-            if ($userEdit['status']!= 1) {
-                //编辑失败
-                Shop_Browser::redirect($this->view->translate('tip_edit_fail').$userEdit['error'], $this->view->seed_Setting['user_app_server'].'/index');
+            // 页面跳转
+            if ($resultObject->status != 1) {
+                $this->view->resultMsg = $this->view->translate('tip_edit_fail') . '! ' . $resultObject->error;
             } else {
-                //编辑成功
-                Shop_Browser::redirect($this->view->translate('tip_edit_success'), $this->view->seed_Setting['user_app_server'].'/index');
+                $resultMsg = base64_encode($this->view->translate('tip_edit_success'));
+                $this->redirect("/index/profile?resultMsg=" . $resultMsg);
             }
         }
 
-        if(defined('SEED_WWW_TPL')){
-            $content = $this->view->render(SEED_WWW_TPL."/index/edit.phtml");
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/index/edit.phtml");
             echo $content;
             exit;
         }
     }
+
     /*个人身份认证*/
     function authuserAction(){
         $msg=0;

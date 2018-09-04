@@ -15,6 +15,13 @@
 	<div class="container">
 		<div class="row">
             <div class="col-md-10 col-md-offset-1">
+                <?php if (!empty($this->resultMsg)): ?>
+                    <div class="alert alert-success alert-dismissible fade in" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <p><?php echo base64_decode($this->resultMsg); ?>!</p>
+                    </div>
+                <?php endif; ?>
+
                 <div class="panel panel-default">
                     <div class="panel-heading"><?php echo $this->translate('myINF'); ?></div>
                     <div class="panel-body">

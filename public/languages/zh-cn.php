@@ -263,11 +263,12 @@ return array(
 
 
     // 个人信息右侧title
-    'myINF'     => '个人信息',
-    'myPHOTO'   => '头像上传',
-    'editPWD'   => '修改密码',
-    'myNO'      => '账户安全',
-    'WebINF'    => '平台账号信息',
+    'myINF'       => '个人信息',
+    'myPHOTO'     => '头像上传',
+    'editPWD'     => '修改密码',
+    'editProfile' => '修改个人资料',
+    'myNO'        => '账户安全',
+    'WebINF'      => '平台账号信息',
 
     'basicINF'                   => '基本信息',
     'company_info'               => '公司信息',
