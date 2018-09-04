@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title><?php echo $this->escape($this->seed_Setting['www_html_title']);?></title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="/ky/css/base.css" rel="stylesheet">
+<link href="/ky/css/style.css" rel="stylesheet">
+<link href="/ky/css/authpage.css" rel="stylesheet">
+<script type="text/javascript" src="/ky/js/jquery.js"></script>
+<script type="text/javascript" src="/ky/js/www.js"></script>
+<script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
+<script type="text/javascript" src="/ky/layer-v3.1.1/layer.js"></script>
+    <style type="text/css">
+        #acEmail, #acReg {
+            width: 40px;
+            height: 25px;
+            line-height: 25px;
+            color: #fff;
+            text-align: center;
+            margin: 0 10px;
+            display: inline-block;
+            background: #ff8c21;
+            border-radius: 5px;
+            border: 1px solid #de6e06;
+        }
+    </style>
+<script type="text/javascript">
+
+    //身份证号码的验证规则
+    function isIdCardNo(num){
+        //if (isNaN(num)) {alert("输入的不是数字！"); return false;}
+        var len = num.length, re;
+        if (len == 15)
+            re = new RegExp(/^(\d{6})()?(\d{2})(\d{2})(\d{2})(\d{2})(\w)$/);
+        else if (len == 18)
+            re = new RegExp(/^(\d{6})()?(\d{4})(\d{2})(\d{2})(\d{3})(\w)$/);
+        else {
+            //alert("输入的数字位数不对。");
+            return false;
+        }
+        var a = num.match(re);
+        if (a != null)
+        {
+            if (len==15)
+            {
+                var D = new Date("19"+a[3]+"/"+a[4]+"/"+a[5]);
+                var B = D.getYear()==a[3]&&(D.getMonth()+1)==a[4]&&D.getDate()==a[5];
+            }
+            else
+            {
+                var D = new Date(a[3]+"/"+a[4]+"/"+a[5]);
+                var B = D.getFullYear()==a[3]&&(D.getMonth()+1)==a[4]&&D.getDate()==a[5];
+            }
+            if (!B) {
+                //alert("输入的身份证号 "+ a[0] +" 里出生日期不对。");
+                return false;
+            }
+        }
+        if(!re.test(num)){
+            //alert("身份证最后一位只能是数字和字母。");
+            return false;
+        }
+        return true;
+    }
+
+    function selectAA() {
+        $.ajax(
+            {
+                type: "post",
+                url: "<?php echo WWW;?>user/data/country",
+                data: { "type": "COUNTRY_ISO_CODE" },
+                success: function (msg) {
+                    var json;
+                    if(typeof msg === 'object'){
+                        json = msg;
+                    }
+                    else{
+                        json = eval('(' + msg + ')');
+                    }
+                    $.each(json, function (n, value) {
+                        $("#COUNTRY_ISO_CODE").append("<option value=" + value.code + ">" + value.name + "</option>");
+                    });
+                    $("#COUNTRY_ISO_CODE").val("CN");
+                    //  $("#COUNTRY_ISO_CODE  option[value="+Coun+"] ").attr("selected",true)
+                    selectBB();
+                }
+            });
+    };
+
+
+    function selectBB() {
+        $("#PROVINCE_CODE").html("");
+        $.ajax(
+            {
+                type: "post",
+                url: "<?php echo WWW;?>user/data/province",
+                data: { "provinceID":$('#COUNTRY_ISO_CODE').attr("value")},
+                success: function (msg2) {
+
+                    var json2;
+                    if(typeof msg2 === 'object'){
+                        json2 = msg2;
+                    }
+                    else{
+                        json2 = eval('(' + msg2 + ')');
+                    }
+                    $.each(json2, function (n, value) {
+                        $("#PROVINCE_CODE").append("<option value=" + value.code + ">" + value.name + "</option>");
+                    });
+                    $("#PROVINCE_CODE").val("44");
+                    selectCC();
+                }
+            });
+    };
+    function selectCC() {
+        $("#CITY_CODE").html("");
+        $.ajax(
+            {
+                type: "post",
+                url: "<?php echo WWW;?>user/data/city",
+                data: {"cityID":$('#PROVINCE_CODE').attr("value") },
+                success: function (msg3) {
+                    var json3;
+                    if(typeof msg3 === 'object'){
+                        json3 = msg3;
+                    }
+                    else{
+                        json3 = eval('(' + msg3 + ')');
+                    }
+                    $.each(json3, function (n, value) {
+                        $("#CITY_CODE").append("<option value=" + value.code + ">" + value.name + "</option>");
+                    });
+                    $("#CITY_CODE").val("4401");
+                }
+            })
+    };
+    $(function () {
+        selectAA();
+        $('#COUNTRY_ISO_CODE').bind("change", selectBB);
+        $('#PROVINCE_CODE').bind("change", selectCC);
+
+    });
+    $(document).ready(function () {
+
+        $('#acEmail').click(function () {
+            //询问框
+            layer.confirm('<?php echo $this->translate('tip_active_02')?>', {
+                title: false,
+                btn: ['<?php echo $this->translate('yes');?>', '<?php echo $this->translate('no');?>'] //按钮
+            }, function () {
+                $.post('<?php echo $this->BaseUrl();?>/check/sendemail',
+                    {'contactID':'<?php echo $this->e['contactID'];?>'},
+                    function (data) {
+
+                        layer.msg(data, {icon: 1});
+                        location.href = '../../../../../../../public/ky/css/login';
+
+                    }, "json");
+
+            }, function () {
+                layer.closeAll();
+            });
+        });
+        $('#acReg').click(function () {
+            //询问框
+            layer.confirm('<?php echo $this->translate('tip_active_02')?>', {
+                title: false,
+                btn: ['<?php echo $this->translate('yes');?>', '<?php echo $this->translate('no');?>'] //按钮
+            }, function () {
+                $.post('<?php echo $this->BaseUrl();?>/check/sendlogin',
+                    {'contactID':'<?php echo $this->e['contactID'];?>'},
+                    function (data) {
+
+                        layer.msg(data, {icon: 1});
+                        location.href = '../../../../../../../public/ky/css/login';
+
+                    }, "json");
+
+            }, function () {
+                layer.closeAll();
+            });
+        });
+    });
+</script>
+</head>
+<body>
+
+<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
+<div class="o_content_wrap w1200 m0a clearfix">
+    <div style="margin: 0 auto;" class="o_content w940">
+        <div class="o_tab">
+            <ul>
+                <li class="cur"><a href="<?php echo WWW;?>user/index/edit"><!-- 个人信息 --><?php echo $this->translate('myINF');?></a></li>
+                <li><a href="<?php echo WWW;?>user/index/photo"><!-- 头像 --><?php echo $this->translate('myPHOTO');?></a></li>
+                <li><a href="<?php echo WWW;?>user/index/passwd"><!-- 账户安全 --><?php echo $this->translate('myNO');?></a></li>
+            </ul>
+        </div>
+        <div class="n_o_c_tit">
+            <h4><!--编辑员工资料--><?php echo $this->translate('basicINF');?></h4>
+        </div>
+        <div class="u_info_ed_box">
+            <form action="#" method="post" id="account_edit_form">
+                <div class="infobox clearfix">
+                    <div>
+                        <label class="labelbox"><!-- 姓名 --><?php echo $this->translate('name');?></label>
+                        <input
+                            <?php if($this->e['realAuthStatus']!=0&&$this->e['realAuthStatus']!=-1){
+                            echo 'readonly="readonly" style="border:none;background:#f5f5f5;"';}else{
+                            echo 'style="border:1px solid #DF7E20;"';
+                        }?> class="must"  type="text" name="name" id="name" value="<?php echo $this->e['name'];?>" tabindex="1" required data-msg-required="<?php echo $this->translate('de_null');?>" />
+                        <?php if($this->userrgCode=='CN'):?>
+                        <a href="#">
+                            <!--persRealAuthStatus改realAuthStatus 12.19-->
+                        <?php if ($this->e['realAuthStatus'] <= 0||$this->e['realAuthStatus']==4):?>
+                            <span id="user-authno" class="et-ico et-ico-auth-uno"></span>
+                        <?php elseif($this->e['realAuthStatus'] == 2):?>
+                            <span id="user-authok"  class="et-ico et-ico-auth-uok"></span>
+                        <?php endif;?>
+                        </a>
+                        <?php endif;?>
+                    </div>
+                    <div>
+                        <label class="labelbox"><!-- 称谓 --><?php echo $this->translate('title');?></label>
+                        <input type="text" name="salutation" value="<?php echo $this->e['salutation'];?>" tabindex="1" />
+                    </div>
+                    <div>
+                        <label class="labelbox"><!-- 性别 --><?php echo $this->translate('sex');?></label>
+                        <select class="dq_select"  name="sex">
+                            <?php echo $this->ShowDictionaryList('datatest_setting',$this->userLangCode,'SEX',$this->e['sex']);?></select>
+                    </div>
+                    <div>
+                        <label class="labelbox"><!-- 生日 --><?php echo $this->translate('birthday');?></label>
+                        <script language="javascript" type="text/javascript" src="/ky/My97DatePicker/WdatePicker.js"></script>
+                        <input type="text" name="birthdate" value="<?php echo date('Y-m-d',strtotime($this->e['birthdate']));?>" tabindex="1" onfocus="WdatePicker({minDate:'1900-01-01',maxDate:'2001-01-01'})">
+                    </div>
+                    <div>
+                        <label class="labelbox"><!-- 证件类型 --><?php echo $this->translate('certificateType');?></label>
+                        <select class="dq_select2"  name="identityType"  disabled="disabled" style="
+    appearance: none;
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari 和 Chrome */
+    border: 0;
+    background: transparent;
+    color: #000;
+">
+                            <?php echo $this->ShowDictionaryList('datatest_setting',$this->userLangCode,'ID_TYPE',$this->e['identityType']);?></select>
+                    </div>
+                    <div>
+                        <label class="labelbox"><!-- 证件号码 --><?php echo $this->translate('certificateNo');?></label>
+                        <input <?php if($this->e['realAuthStatus']!=0&&$this->e['realAuthStatus']!=-1){echo 'disabled="disabled" style="border:none;"';}?> type="text" id="identityNo" name="identityNo" value="<?php echo $this->e['identityNo'];?>" tabindex="1" data-rule-identityNo="true" />
+                    </div>
+                    <div>
+                        <label class="labelbox"><!-- 部门 --><?php echo $this->translate('division');?></label>
+                        <input type="text" name="department" value="<?php echo $this->e['department'];?>" tabindex="1" />
+                    </div>
+                    <div>
+                        <label class="labelbox"><!-- 公司职务 --><?php echo $this->translate('job');?></label>
+                        <input type="text" name="title" value="<?php echo $this->e['title'];?>" tabindex="1" />
+                    </div>
+                    <div>
+                        <label class="labelbox"><!-- 电子邮箱 --><?php echo $this->translate('email');?></label>
+                        <input class="must" style="border:1px solid #DF7E20;" type="text" name="email" id="email" value="<?php echo $this->e['email'];?>" tabindex="1" data-rule-mail="email" required data-msg-required="<?php echo $this->translate('de_null');?>" />
+                        <?php if (!empty($this->e['email']) && empty($this->e['emailVerifyTime']) && $this->accountID==$this->e['accountID']):?>
+                            <a href="#" id="acEmail"><?php echo $this->translate('verify'); ?></a>
+                        <?php endif; ?>
+                    </div>
+
+                    <div>
+                        <label class="labelbox"><!-- 移动电话 --><?php echo $this->translate('mobile');?></label>
+                        <input class="must" style="border:1px solid #DF7E20;" type="text" name="mobilePhone" id="mobilePhone" value="<?php echo $this->e['mobilePhone'];?>" tabindex="1" data-rule-mobile="true" required data-msg-required="<?php echo $this->translate('de_null');?>" />
+                    </div>
+                    <div>
+                        <label class="labelbox"><!-- 固定电话 --><?php echo $this->translate('telephone');?></label>
+                        <input class="must" style="border:1px solid #DF7E20;" type="text" name="phone" id="phone" value="<?php echo $this->e['phone'];?>" tabindex="1" data-rule-phone="true" required data-msg-required="<?php echo $this->translate('de_null');?>" />
+                    </div>
+                    <div>
+                        <label class="labelbox"><!-- 传真 --><?php echo $this->translate('fax');?></label>
+                        <input type="text" name="fax" id="fax" value="<?php echo $this->e['fax'];?>" data-rule-fax="true" tabindex="1" />
+                    </div>
+                    <div>
+                        <label class="labelbox"><!-- 助理姓名 --><?php echo $this->translate('HPname');?></label>
+                        <input  type="text" name="assistantName"  value="<?php echo $this->e['assistantName'];?>"  />
+                    </div>
+                    <div>
+                        <label class="labelbox"><!-- 助理电话 --><?php echo $this->translate('HPphone');?></label>
+                        <input type="text" name="assistantPhone" value="<?php echo $this->e['assistantPhone'];?>" >
+                    </div>
+                    <div style="width: 100%;">
+                        <label class="labelbox"><!-- 邮寄地址 --><?php echo $this->translate('maillADD');?></label>
+<!--                        <select class="dq_select" id="COUNTRY_ISO_CODE" name="mailingCountryCode">-->
+<!---->
+<!--                        </select>-->
+<!--                        <select class="dq_select" id="PROVINCE_CODE" name="mailingStateCode" onclick="selectCC()">-->
+<!---->
+<!---->
+<!--                        </select>-->
+<!--                        <select class="dq_select" id="CITY_CODE" name="mailingCityCode">-->
+<!---->
+<!--                        </select>-->
+                        <input style="width: 670px;" type="text" name="mailingAddress" value="<?php echo $this->e['mailingAddress'];?>" tabindex="1" />
+                    </div>
+<!--                    <div style="width: 100%;margin-left: 115px;">-->
+<!--                       -->
+<!--                    </div>-->
+                    <div style="width: 100%;">
+                        <label class="labelbox"><!-- 邮政编码 --><?php echo $this->translate('postcode');?></label>
+                        <input type="text" name="mailingZipCode" value="<?php echo $this->e['mailingZipCode'];?>" tabindex="1" />
+                    </div>
+                    <div>
+                        <label class="labelbox"><!-- 时区 --><?php echo $this->translate('timezone');?></label>
+                        <select class="dq_select2" name="timeZone" id="timeZone">
+                            <?php echo $this->ShowDictionaryList('datatest_setting',$this->userLangCode,$this->dic_Setting['TIME_ZONE'],$this->e['contactPreference']['timeZone']);?>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="labelbox"><!-- 语言 --><?php echo $this->translate('langCode');?></label>
+                        <select class="dq_select" name="langCode" id="langCode">
+                            <?php echo $this->ShowDictionaryList('datatest_setting',$this->userLangCode,$this->dic_Setting['SYS_LANG'],$this->e['contactPreference']['langCode']);?>
+                        </select>
+                    </div> </div>
+
+
+                    <div class="n_o_c_tit">
+                        <h4><!--平台账号信息--><?php echo $this->translate('WebINF');?></h4>
+                    </div>
+                <div class="infobox clearfix">
+                    <div>
+                        <label class="labelbox"><!-- 登录名 --><?php echo $this->translate('elogname');?></label>
+                        &nbsp;&nbsp;&nbsp;<?php echo $this->e['ecommloginname'];?>
+                        <?php if (!empty($this->e['ecommloginname']) && $this->e['ecommstatus'] == "NV"&& $this->userID==$this->e['contactID']): ?>
+                            <a href="#" id="acReg"><?php echo $this->translate('verify'); ?></a>
+                        <?php endif;?>
+                    </div>
+                    <div></div>
+                    <div>
+                        <label class="labelbox"><!-- 用户状态 --><?php echo $this->translate('userP');?></label><!--正常--><!--禁用-->&nbsp;&nbsp;&nbsp;
+                        <?php echo $this->ShowDictionaryTo('datatest_setting',$this->userLangCode,'ECOMM_STATUS',$this->e['ecommstatus']);?>
+                    </div>
+
+                    <div style="width: 88%;height:auto;">
+                        <label class="labelbox"><!-- 平台角色 --><?php echo $this->translate('userROLE');?></label>
+                        <div style="margin-left:125px;">
+                            <?php if($this->e['ecommrole']):?>
+                                <?php foreach (explode(",",$this->e['ecommrole']) as $k2=>$roleDD):?>
+                                    <?php echo $this->ShowDictionaryTo('datatest_setting',$this->userLangCode,'ECOMM_ROLE',$roleDD).',';?>
+                                <?php endforeach;?>
+                            <?php endif;?>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="com_btn_box tc">
+                       <input type="submit" value="<?php echo $this->translate('confirm');?>" ><!--确定-->
+                 </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
+<div id="et-layer-userauth" style="display: none;">
+    <div class="et-auth-top et-auth-bg-no">
+        <h3><!--个人实名认证--><?php echo $this->translate('userSignh3');?></h3>
+        <p><!--*仅支持由中华人民共和国居民身份证的用户进行认证，请准确填写并核对无误后，点击确认按钮提交认证-->
+            <?php echo $this->translate('userSignp01');?>
+        </p>
+    </div>
+    <div class="et-auth-error" style="display: none;"></div>
+    <div class="et-auth-content">
+        <div class="et-auth-row">
+            <label for="name"><!--姓名--><?php echo $this->translate('name');?></label>
+            <p class="et_auth_name" id="et_auth_name"><?php echo $this->e['name']; ?></p>
+        </div>
+        <div class="et-auth-row">
+            <label for="name"><!--身份证--><?php echo $this->translate('ID_card');?></label>
+            <p class="et_auth_identityNo" id="et_auth_identityNo"><?php echo $this->e['identityNo'];?></p>
+        </div>
+        <div class="et-auth-row">
+            <label for="name"><!--移动电话--><?php echo $this->translate('mobile');?></label>
+            <p class="et_auth_mobilePhone" id="et_auth_mobilePhone"><?php echo $this->e['mobilePhone']; ?></p>
+        </div>
+        <div class="et-auth-row">
+            <button type="button"  class="et-btn"><!--确认--><?php echo $this->translate('confirmed'); ?></button></div>
+    </div>
+</div>
+<div id="et-layer-userauth2" style="display: none;">
+    <div class="et-auth-top et-auth-bg-ok">
+        <h3><!--个人实名认证--><?php echo $this->translate('userSignh31');?></h3>
+        <p><!--*仅支持由中华人民共和国居民身份证的用户进行认证，请准确填写并核对无误后，点击确认按钮提交认证-->
+            <?php echo $this->translate('userSignp02');?></p>
+    </div>
+    <div class="et-auth-error" style="display: none;"></div>
+    <div class="et-auth-content">
+        <div class="et-auth-row">
+            <label for="name"><!--姓名--><?php echo $this->translate('name');?></label>
+            <p class="et_auth_name"><?php echo $this->e['name']; ?></p>
+        </div>
+        <div class="et-auth-row">
+            <label for="name"><!--身份证--><?php echo $this->translate('ID_card');?></label>
+            <p class="et_auth_code"><?php echo $this->e['identityNo'];?></p>
+        </div>
+        <div class="et-auth-row">
+            <label for="name"><!--移动电话--><?php echo $this->translate('mobile');?></label>
+            <p class="et_auth_bankaccount"><?php echo $this->e['mobilePhone']; ?></p>
+        </div>
+    </div>
+</div>
+<script src="/ky/js/jquery.validate.js"></script>
+<script>
+$(function(){
+
+    $('#user-authno').click(function () {
+    	var name = $("#name").val();
+    	var identityNo = $("#identityNo").val();
+    	var mobilePhone = $("#mobilePhone").val();
+
+    	$("#et_auth_name").html(name);
+		$("#et_auth_identityNo").html(identityNo);
+		$("#et_auth_mobilePhone").html(mobilePhone);
+
+		var auth_error = $('#et-layer-userauth').find('.et-auth-error');
+		if (name == '' || identityNo == '' || mobilePhone == '') {
+			var tips2="<?php echo $this->translate('userTips01');?><a href='#' id='reEditUserInfo' style='color: #6298cd;'><?php echo $this->translate('edit');?></a><?php echo $this->translate('userTips02');?>";
+			auth_error.html("");
+			auth_error.html(tips2);
+			auth_error.show();
+
+			$("#reEditUserInfo").bind("click", function() {
+				layer.closeAll();
+				auth_error.html("");
+				auth_error.hide();
+			});
+		}
+
+        layer.open({
+            type: 1,
+            title: false,
+            shadeClose: true,
+            shade: 0.2,
+            area: ['500px','300px'],
+            content: $('#et-layer-userauth')
+        })
+    });
+    $('#user-authok').click(function () {
+        var id_card='<?php echo $this->e['certificateNo']; ?>';
+        if(id_card=""){
+            layer.msg('IDcard is NULL', {icon: 2,
+                time: 20000 //20s后自动关闭
+            });
+            return false;
+        }
+        layer.open({
+            type: 1,
+            title: false,
+            shadeClose: true,
+            shade: 0.2,
+            area: ['500px','300px'],
+            content: $('#et-layer-userauth2')
+        })
+    });
+
+
+    $('#et-layer-userauth-edit').click(function () {
+        layer.closeAll();
+    });
+
+    $('#et-layer-userauth').find('button[type="button"]').click(function () {
+        var auth_error=$('#et-layer-userauth').find('.et-auth-error');
+
+		var doUserAuth = '/user/index/authuser';
+        $.post(doUserAuth,
+            {
+            	auth:1
+			},function (data) {
+                console.log("ok");
+            },'json')
+            .success(function (data) {
+                if (data == 0) {
+					auth_error.hide();
+					layer.closeAll();
+					layer.open({
+						type: 1,
+						title: false,
+						shadeClose: true,
+						shade: 0.2,
+						area: ['500px','300px'],
+						content: $('#et-layer-userauth2')
+					})
+                } else {
+                    var tips2="<?php echo $this->translate('userTips01');?><a href='#' id='reEditUserInfo' style='color: #6298cd;'><?php echo $this->translate('edit');?></a><?php echo $this->translate('userTips02');?>";
+                    auth_error.html("");
+                    auth_error.html(tips2);
+                    auth_error.show();
+
+					$("#reEditUserInfo").bind("click", function() {
+						layer.closeAll();
+						auth_error.html("");
+						auth_error.hide();
+					});
+                }
+             })
+            .error(function () {
+                console.log("network error");
+                var tips2="warning：network error";
+                auth_error.html("");
+                auth_error.html(tips2);
+                auth_error.show();
+            })
+            .complete(function () {
+                console.log("complete");
+            });
+    });
+
+    $("#account_edit_form").validate({
+        submitHandler: function() {
+            form.submit();
+        }
+    })
+});
+// 身份证号码验证
+jQuery.validator.addMethod("identityNo", function(value, element) {
+    //var idCard = /^(\d{6})()?(\d{4})(\d{2})(\d{2})(\d{3})(\w)$/;
+    return this.optional(element) || isIdCardNo(value);
+}, "<?php echo $this->translate('de_format');?>");
+
+jQuery.validator.addMethod("mail", function (value, element) {
+    var mail = /^[a-z0-9._%-]+@([a-z0-9-]+\.)+[a-z]{2,4}$/;
+    return this.optional(element) || (mail.test(value));
+}, "<?php echo $this->translate('email').$this->translate('de_format');?>");
+jQuery.validator.addMethod("phone", function (value, element) {
+    var phone = /^[\d|\-|\+|\s]+$/;
+    return this.optional(element) || (phone.test(value));
+}, "<?php echo $this->translate('phone').$this->translate('de_format');?>");
+jQuery.validator.addMethod("mobile", function (value, element) {
+    var mobile = /^[\d|\-|\+|\s]+$/;
+    return this.optional(element) || (mobile.test(value));
+}, "<?php echo $this->translate('mobile_phone').$this->translate('de_format');?>");
+jQuery.validator.addMethod("fax",function(value,element){
+    var fax = /^[\d|\-|\+|\s]+$/;
+    return this.optional(element) || (fax.test(value));
+},"<?php echo $this->translate('fax').$this->translate('de_format');?>");
+</script>
+</body>
+</html>

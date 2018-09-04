@@ -80,3 +80,54 @@ div.etf-heading li.selected:before {
 	position:absolute;
 	content: "";
 }
+
+.et-ico {
+    width: 22px;
+    height: 22px;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+
+.et-ico-auth-cno {
+    background: url(/ky/ico/companyauth-no.png) no-repeat 0 0;
+}
+
+.et-ico-auth-cok {
+    background: url(/ky/ico/companyauth-ok.png) no-repeat 0 0;
+}
+
+.et-ico-auth-cing {
+    background: url(/ky/ico/companyauth-ing.png) no-repeat 0 0;
+}
+
+.et-ico-auth-uno {
+    background: url(/ky/ico/userauth-no.png) no-repeat 0 0;
+}
+
+.et-ico-auth-uok {
+    background: url(/ky/ico/userauth-ok.png) no-repeat 0 0;
+}
+
+.profile-heading-edit {
+    border: none;
+    box-shadow: none;
+    margin-left: 8px;
+    color: #999;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.profile-heading-edit:hover {
+    cursor: pointer;
+    background-color: #FCF8E3;
+    color: #8A6D3B;
+}
+
+.avatar-div p:nth-of-type(2) {
+    margin-top: 15px;
+}
+
+.avatar-div p:last-child {
+    margin-top: 55px;
+}
