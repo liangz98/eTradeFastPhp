@@ -423,6 +423,47 @@
                 content: $('#et-layer-userauth2')
             })
         });
+
+        $('#et-layer-userauth').find('button[type="button"]').click(function () {
+            var auth_error=$('#et-layer-userauth').find('.et-auth-error');
+
+            var doUserAuth = '/user/index/authuser';
+
+            $.ajax({
+                type: "POST",
+                url: doUserAuth,
+                data: {
+                    auth: 1
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data === '0') {
+                        document.location.reload();
+                        // auth_error.hide();
+                        // layer.closeAll();
+                        // layer.open({
+                        //     type: 1,
+                        //     title: false,
+                        //     shadeClose: true,
+                        //     shade: 0.2,
+                        //     area: ['500px','300px'],
+                        //     content: $('#et-layer-userauth2')
+                        // })
+                    } else {
+                        var tips2="<?php echo $this->translate('userTips01');?><a href='#' id='reEditUserInfo' style='color: #6298cd;'><?php echo $this->translate('edit');?></a><?php echo $this->translate('userTips02');?>";
+                        auth_error.html("");
+                        auth_error.html(tips2);
+                        auth_error.show();
+
+                        $("#reEditUserInfo").bind("click", function() {
+                            layer.closeAll();
+                            auth_error.html("");
+                            auth_error.hide();
+                        });
+                    }
+                }
+            });
+        });
 	});
 </script>
 </body>
