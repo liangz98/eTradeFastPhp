@@ -133,8 +133,6 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
 <script type="text/javascript">
-    var serviceContractData = '';
-
 	$().ready(function() {
 		$("#register_form").validate({
 			rules: {
@@ -184,24 +182,6 @@
 	});
 
 	$(function () {
-        console.log("111");
-        var getServiceContractUrl = '/register/servicehtml';
-        $.ajax({
-            type: "GET",
-            url: getServiceContractUrl,
-            data: {
-
-            },
-            dataType: "json",
-            success: function (data) {
-                console.log("111");
-                console.log(data);
-                serviceContractData = data;
-
-
-            }
-        });
-
 		$("#serviceContract").click(function () {
 			if ($("#isReadServiceContract").val() == 'false') {
 				$("#serviceContract").prop('checked', false);
