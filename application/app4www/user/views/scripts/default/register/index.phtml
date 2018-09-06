@@ -138,6 +138,8 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
 <script type="text/javascript">
+    var serviceContractData = '';
+
 	$().ready(function() {
 		$("#register_form").validate({
 			rules: {
@@ -186,6 +188,11 @@
 	});
 
 	$(function () {
+        var getServiceContractUrl = '/register/servicehtml';
+        $.get(getServiceContractUrl, function (service) {
+            serviceContractData = service;
+        });
+
 		$("#serviceContract").click(function () {
 			if ($("#isReadServiceContract").val() == 'false') {
 				$("#serviceContract").prop('checked', false);
@@ -223,25 +230,22 @@
 	});
 
 	function toReadServiceContract() {
-		$.get('/register/servicehtml', function(service){
-			layer.open({
-				type: 1,
-				title: "<?php echo $this->translate('service_contract'); ?>",
-				area: ['1024px', '97%'],
-				scrollbar: false,
-				content: service,
-				success: function(layero, index){
-					$(".layui-layer-content").scroll(function () {
-						// console.log(this.scrollHeight);
-						if (this.scrollHeight - this.scrollTop === this.clientHeight) {
-							console.log("in");
-							$("#isReadServiceContract").val('true');
-							$("#serviceContract").prop('checked', true);
-						}
-					});
-				}
-			});
-		});
+        layer.open({
+            type: 1,
+            title: "<?php echo $this->translate('service_contract'); ?>",
+            area: ['1024px', '97%'],
+            scrollbar: false,
+            content: serviceContractData,
+            success: function(layero, index){
+                $(".layui-layer-content").scroll(function () {
+                    // console.log(this.scrollHeight);
+                    if (this.scrollHeight - this.scrollTop === this.clientHeight) {
+                        $("#isReadServiceContract").val('true');
+                        $("#serviceContract").prop('checked', true);
+                    }
+                });
+            }
+        });
 	}
 
 	// 邮箱登录名验证
