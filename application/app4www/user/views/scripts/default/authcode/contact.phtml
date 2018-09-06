@@ -32,14 +32,6 @@
 	<div class="container">
 		<div class="col-md-10 col-md-offset-1 col-xs-12 register-form-div">
 			<form class="form-horizontal register-form-body" action="#" method="post" id="register_form" name="register_form">
-
-                <?php if (!empty($this->resultMsg)): ?>
-                    <div class="alert alert-warning alert-dismissible fade in" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <p><?php echo $this->resultMsg; ?>!</p>
-                    </div>
-                <?php endif; ?>
-
 				<div class="register-type-info">
                     <div class="row">
 						<div class="col-md-6 text-center active">
@@ -47,6 +39,13 @@
 						</div>
 					</div>
 				</div>
+
+                <?php if (!empty($this->resultMsg)): ?>
+                    <div class="alert alert-warning alert-dismissible fade in" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <p><?php echo $this->resultMsg; ?>!</p>
+                    </div>
+                <?php endif; ?>
 
                 <div class="form-group">
                     <label for="name" class="col-sm-3 control-label"><?php echo $this->translate('name'); ?></label>
@@ -134,6 +133,8 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
 <script type="text/javascript">
+    var serviceContractData = '';
+
 	$().ready(function() {
 		$("#register_form").validate({
 			rules: {
@@ -183,6 +184,24 @@
 	});
 
 	$(function () {
+        console.log("111");
+        var getServiceContractUrl = '/register/servicehtml';
+        $.ajax({
+            type: "GET",
+            url: getServiceContractUrl,
+            data: {
+
+            },
+            dataType: "json",
+            success: function (data) {
+                console.log("111");
+                console.log(data);
+                serviceContractData = data;
+
+
+            }
+        });
+
 		$("#serviceContract").click(function () {
 			if ($("#isReadServiceContract").val() == 'false') {
 				$("#serviceContract").prop('checked', false);
@@ -220,25 +239,25 @@
 	});
 
 	function toReadServiceContract() {
-		$.post('/register/servicehtml', {}, function(service){
-			layer.open({
-				type: 1,
-				title: "<?php echo $this->translate('service_contract'); ?>",
-				area: ['1024px', '97%'],
-				scrollbar: false,
-				content: service,
-				success: function(layero, index){
-					$(".layui-layer-content").scroll(function () {
-						// console.log(this.scrollHeight);
-						if (this.scrollHeight - this.scrollTop === this.clientHeight) {
-							console.log("in");
-							$("#isReadServiceContract").val('true');
-							$("#serviceContract").prop('checked', true);
-						}
-					});
-				}
-			});
-		});
+        $.get('/register/servicehtml', function(service){
+            layer.open({
+                type: 1,
+                title: "<?php echo $this->translate('service_contract'); ?>",
+                area: ['1024px', '97%'],
+                scrollbar: false,
+                content: service,
+                success: function(layero, index){
+                    $(".layui-layer-content").scroll(function () {
+                        // console.log(this.scrollHeight);
+                        if (this.scrollHeight - this.scrollTop === this.clientHeight) {
+                            console.log("in");
+                            $("#isReadServiceContract").val('true');
+                            $("#serviceContract").prop('checked', true);
+                        }
+                    });
+                }
+            });
+        });
 	}
 
 	// 邮箱登录名验证

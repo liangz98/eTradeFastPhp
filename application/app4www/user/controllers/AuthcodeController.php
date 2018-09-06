@@ -80,6 +80,8 @@ class AuthcodeController extends Kyapi_Controller_Action
     function contactAction(){
         $this->view->resultMsg = $this->_request->getParam('resultMsg');
 
+        echo $this->_request->getParam('resultMsg');
+
         $authCode=$_SERVER['QUERY_STRING'];
         //$authCode=base64_decode($_SERVER['QUERY_STRING']);
         //$authCode=$this->_request->getParam('authCode');;
@@ -139,20 +141,15 @@ class AuthcodeController extends Kyapi_Controller_Action
 
             $_contact->accountID = $this->view->account['account']['accountID'];
             $_contact->accountType = $this->view->account['account']['accountType'];
-            // $_contact->accountName = $this->view->account['account']['accountName'];
+            $_contact->accountName = $this->view->account['account']['accountName'];
             $_contact->regdAddress = $this->view->account['account']['regdAddress'];
             $_contact->regdCountryCode = $this->view->account['account']['regdCountryCode'];
             $_contact->email = $this->view->account['account']['email'];
 
-
-
             $_resultData = $this->json->contactRegisterByAuthCodeApi($_requestObject, $_contact, $authCode);
             $resultObject = json_decode($_resultData);
             if ($resultObject->status != 1) {
-                //注册失败
-                // Seed_Browser::redirect($this->view->translate('tip_register_fail') . $resultObject->error, $this->view->seed_BaseUrl . "/login");
-
-                $this->view->errMsg = $this->view->translate('tip_edit_fail') . $resultObject->error;
+                $this->view->resultMsg = $this->view->translate('tip_register_fail') . $resultObject->error;
             } else {
                 //注册成功
                 Shop_Browser::redirect($this->view->translate('tip_register_success'), $this->view->seed_BaseUrl . "/login");

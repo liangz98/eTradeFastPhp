@@ -223,7 +223,7 @@
 	});
 
 	function toReadServiceContract() {
-		$.post('/register/servicehtml', {}, function(service){
+		$.get('/register/servicehtml', function(service){
 			layer.open({
 				type: 1,
 				title: "<?php echo $this->translate('service_contract'); ?>",
