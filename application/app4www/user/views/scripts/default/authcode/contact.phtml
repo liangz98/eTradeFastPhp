@@ -5,7 +5,7 @@
 	<title>快移</title>
 	<link href="/ky/css/login/login.css" rel="stylesheet">
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
-	<link href="/ky/css/register/register.css" rel="stylesheet">
+	<link href="/ky/css/authCode/authCode.css" rel="stylesheet">
 </head>
 <body>
 
@@ -161,6 +161,7 @@
 			},
 			errorPlacement: function(error, element) {
 				// Append error within linked label
+                $(error).addClass("col-md-offset-3");
 				$(element)
 					.closest( "form" )
 					.find( "label[for='" + element.attr( "id" ) + "']" )
