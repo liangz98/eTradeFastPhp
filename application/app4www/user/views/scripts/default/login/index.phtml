@@ -53,6 +53,13 @@
 
 				<hr>
 				<form class="form-horizontal login-body-form" action="<?php echo $this->baseUrl();?>/login" method="post" id="login_form" name="login_form">
+                    <?php if (!empty($this->resultMsg)): ?>
+                        <div class="alert alert-warning alert-dismissible fade in" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <p><?php echo $this->resultMsg; ?>!</p>
+                        </div>
+                    <?php endif; ?>
+
 					<div class="form-group">
 						<label class="sr-only" for="ecommloginname"></label>
 						<div class="input-group" style="margin-bottom: 15px;">
@@ -121,9 +128,9 @@
 				</form>
 
                 <div class="row qr-row hidden">
-                    <div class="col-md-10 col-md-offset-1" id="qrLoginImg"></div>
+                    <div class="col-md-10 col-md-offset-1" id="qrLoginImg"  style="height: 230px;"></div>
                     <div class="col-md-10 col-md-offset-1">
-                        <a href="#" class="btn btn-default center-block" role="button">使用手机快移扫描登录</a>
+                        <a href="javascript:void(0)" class="btn btn-default center-block" role="button">使用手机快移扫描登录</a>
                     </div>
 
                     <div class="col-md-10 col-md-offset-1">

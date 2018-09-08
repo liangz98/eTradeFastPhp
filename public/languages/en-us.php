@@ -136,14 +136,14 @@ return array(
 
     //注册页表单注释文字
     'is_name'                  => "Please fill out your real name",
-    'is_emlog'                 => "admin@etradfast.com",
+    'is_emlog'                 => "name@example.com",
     'is_passwd'                => "Please provide 8-30 upper and lowercase letters",
     'is_rpasswd'               => "Please re-enter password",
     'is_phone'                 => "Please enter a valid phone number( or mobile)",
     'is_tel'                   => "Please enter a valid landline",
     'is_comname'               => "Please enter the full legal name of the company",
     'is_regadress'             => "Company legal address",
-    'ps_email'                 => "admin@eTrade.com",
+    'ps_email'                 => "name@example.com",
     'service_contract'         => "《Etradfast Trading Platform Services User Agreement》",
     'check_service_contract'   => "请阅读并同意相关服务条款",
     //登录/注册/表单/合作伙伴/我的卖家/买家/通讯录

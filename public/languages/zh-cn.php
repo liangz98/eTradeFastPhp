@@ -125,16 +125,16 @@ return array(
 
     //注册页表单注释文字
     'is_name'                  => "请填写真实姓名",
-    'is_emlog'                 => "zhangsan@etradFast.com",
+    'is_emlog'                 => "name@example.com",
     'is_passwd'                => "请设置8-30位，包含数字、大小写字母的密码",
     'is_rpasswd'               => "请再次输入密码",
     'is_phone'                 => "请填写有效的移动电话号码或固话号码",
     'is_tel'                   => "请填写有效的固定电话",
     'is_comname'               => "请填写营业执照的企业名称",
     'is_regadress'             => "请填写公司的联系地址",
-    'ps_email'                 => "admin@eTradeFast.com",
+    'ps_email'                 => "name@example.com",
     'service_contract'         => "《快移交易云平台服务协议》",
-    'check_service_contract'   => "请阅读并同意相关服务条款",
+    'check_service_contract'   => "已阅读并同意相关服务条款",
     //登录/注册/表单/合作伙伴/我的卖家/买家/通讯录
     'alreadyRegistered'        => '已经注册，现在就',
     'companyRegister'          => '企业注册',

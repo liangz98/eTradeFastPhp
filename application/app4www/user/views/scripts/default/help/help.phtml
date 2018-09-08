@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+	<title>快移</title>
+    <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <link href="/ky/css/help/help.css" rel="stylesheet">
+
+    <style type="text/css">
+        @media (max-width: 2400px) {
+            .book-body {
+                padding-left:200px;
+            }
+        }
+
+        @media (max-width: 1600px) {
+            .book-body {
+                padding-left:200px;
+            }
+        }
+
+        @media (max-width: 1400px) {
+            .book-body {
+                padding-left:200px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .book-body {
+                padding-left:200px;
+            }
+        }
+        @media (max-width: 700px) {
+            .book-body {
+                padding-left:0px;
+            }
+        }
+        @media (min-width: 600px) {
+            #category{
+                position: fixed;
+                left: 20px;
+                /*top:0;*/
+                height: 100%;
+                overflow-y: scroll;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
+
+<div class="block-div"></div>
+
+<div class="container-fluid help-index-body">
+	<div class="container">
+		<div class="row">
+            <!--返回顶部-->
+            <a href="javascript:scroll(0,0)"  class="goTopLink">回到顶部</a>
+            <!--目录栏，设置占用宽度为20%可以根据实际情况设置-->
+            <div style="width:20%;" id="category" class="book-summary"></div>
+            <!--文章主体部分-->
+            <div class="book-body"></div>
+            <?php echo $this->render(SEED_WWW_TPL . '/help/book.phtml'); ?>
+		</div>
+	</div>
+</div>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script src="/ky/jquery-3.3.1/jquery-3.3.1.min.js"></script>
+<script src="/ky/highlight-9.12.0-dist/highlight.pack.js"></script>
+<script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+
+	$().ready(function() {
+        $(".help-index-body h1, .help-index-body h2, .help-index-body h3, .help-index-body h4, .help-index-body h5, .help-index-body h6").each(function (i, item) {
+            //给<H>类标签编号
+            renameHTag(item);
+            //获取标签的名字,h1,还是h2
+            var tag = $(item).get(0).localName;
+
+            //为该标签设置id属性
+            var headID = "help_head_" + i;
+            $(item).attr("id", headID);
+            //添加一个页内超链接,并设置class选择器
+            $("#category").append('<a class="new_' + tag + '" href="#'+ headID + '">' + $(item).text() + '</a></br>');
+            //为每一个标题超链接的class属性设置左边距
+            $(".new_h1").css("margin-left", 0);
+            $(".new_h2").css("margin-left", 20);
+            $(".new_h3").css("margin-left", 40);
+            $(".new_h4").css("margin-left", 60);
+            $(".new_h5").css("margin-left", 80);
+            $(".new_h6").css("margin-left", 100);
+        });
+        //设置class选择器为.book-body的html内容
+        var $bookBody = $(".book-body");
+        $bookBody.html($bookBody.nextAll());
+
+        $(".help-index-body a").click(function () {
+            var scrollHeight = 60;
+            if ($(document).scrollTop() === 0) {
+                scrollHeight += 30;
+            }
+            $("html, body").animate({scrollTop: $($(this).attr("href")).offset().top - scrollHeight + "px"}, 500);
+            return false;   // 不要这句会有点卡顿
+        });
+	});
+
+	$(function () {
+        $(window).scroll(function () {
+            if ($(document).scrollTop() > 19) {
+                $(".index-person-top").hide();
+                $(".navbar").addClass("navbar-fixed-top");
+                $(".help-index-body").css("padding-top", "60px");
+            } else {
+                $(".index-person-top").show();
+                $(".navbar").removeClass("navbar-fixed-top");
+                $(".help-index-body").css("padding-top", "0");
+            }
+        });
+    });
+
+    var hCount = [0, 0, 0, 0, 0, 0];
+
+    //设置计数器
+    function setHCount(number) {
+        //当前计数器加一
+        hCount[number - 1]++;
+        for (var i = number, length = hCount.length; i < length; i++) {
+            //子目录计数器全部置零
+            hCount[i] = 0;
+        }
+    }
+
+    //重命名目录名称
+    function setHTagValue(item, number) {
+        //获取标题名
+        var text = $(item).get(0).innerHTML;
+        //初始化空字符串
+        var before = "";
+        //生成序号
+        for (var i = 0, length = hCount.length; i < number; i++) {
+            if (i < number - 1)
+                before += hCount[i] + ".";
+            else
+                before += hCount[i] + " ";
+        }
+        //在标题前面加上序号
+        $(item).get(0).innerHTML = before + text;
+    }
+
+    function renameHTag(item) {
+        var tag = $(item).get(0).localName;
+        if (tag === "h1") {
+            setHCount(1);
+            // console.log("捕获到标签:%s", tag);
+            setHTagValue(item, 1);
+        }
+        if (tag === "h2") {
+            setHCount(2);
+            // console.log("捕获到标签:%s", tag);
+            setHTagValue(item, 2);
+        }
+        if (tag === "h3") {
+            setHCount(3);
+            // console.log("捕获到标签:%s", tag);
+            setHTagValue(item, 3);
+        }
+        if (tag === "h4") {
+            setHCount(4);
+            // console.log("捕获到标签:%s", tag);
+            setHTagValue(item, 4);
+        }
+        if (tag === "h5") {
+            setHCount(5);
+            // console.log("捕获到标签:%s", tag);
+            setHTagValue(item, 5);
+        }
+        if (tag === "h6") {
+            setHCount(6);
+            // console.log("捕获到标签:%s", tag);
+            setHTagValue(item, 6)
+        }
+    }
+</script>
+</body>
+</html>
