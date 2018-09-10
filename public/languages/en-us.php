@@ -751,11 +751,12 @@ return array(
     'tip_reset_fail'    => '重置失败',
     'tip_reset_pwd'     => '重置密码',
 
-    'tip_login_success' => '登录成功',
-    'tip_login_fail'    => '登录失败',
-    'tip_login_fail_n'  => '登录失败，用户名或密码错误',
-    'tip_login_two'     => '已登录,请勿重复登录',
-    'tip_login_out'     => '成功退出',
+    'tip_login_success'       => '登录成功',
+    'tip_login_fail'          => '登录失败',
+    'tip_login_fail_n'        => '登录失败，用户名或密码错误',
+    'tip_login_fail_TryTimes' => '失败次数过多，请30分钟后再登录',
+    'tip_login_two'           => '已登录,请勿重复登录',
+    'tip_login_out'           => '成功退出',
 
     'tip_add_success' => '添加成功',
     'tip_add_fail'    => '添加失败',
