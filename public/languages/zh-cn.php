@@ -145,6 +145,7 @@ return array(
     'login_s'                  => '登录',
     'login'                    => '登录 LOGIN',
     'forgetPSD'                => '忘记密码',
+    'findPSD'                  => '找回密码',
     'longPSD'                  => '原始密码',
     'userREG'                  => '用户注册',
     'userRegister'             => '马上注册',

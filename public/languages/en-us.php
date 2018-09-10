@@ -156,6 +156,7 @@ return array(
     'login_s'                  => 'LOGIN',
     'login'                    => 'LOGIN In',
     'forgetPSD'                => 'Forgot password?',
+    'findPSD'                  => 'Reset password',
     'longPSD'                  => 'Old Password',
     'userREG'                  => 'Register',
     'userRegister'             => 'Register',

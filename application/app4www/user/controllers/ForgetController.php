@@ -9,39 +9,34 @@ class ForgetController extends Kyapi_Controller_Action
 //		}
 //	}
 
-	function indexAction()
-	{
-		if ($this->_request->isPost()) {
-//			$authCode=$_SERVER['authCode'];
-//			$authCode =base64_decode($authCode);
+    function indexAction() {
+        $this->view->resultMsg = $this->_request->getParam('resultMsg');
+        $this->view->resultSuccessMsg = $this->_request->getParam('resultSuccessMsg');
 
-			try {
+        if ($this->_request->isPost()) {
+            $_requestOb = $this->_requestObject;
+            $loginName = trim($this->_request->getPost('ecommloginname'));
+            $contactName = trim($this->_request->getPost('contactName'));
 
-				$_requestOb=$this->_requestObject;
-				$loginName=trim($this->_request->getPost('ecommloginname'));
-				$contactname=trim($this->_request->getPost('contactname'));
+            // 请求Hessian服务端方法
+            $userKY = $this->json->forgotPasswordApi($_requestOb, $loginName, $contactName);
+            $resultObject = json_decode($userKY);
 
-				// 请求Hessian服务端方法
-				$userKY= $this->json->forgotPasswordApi($_requestOb,$loginName,$contactname);
-				$resultObject =json_decode($userKY);
-				if ($resultObject->status != 1) {
-				    //验证错误，请5分钟后再试
-					Shop_Browser::redirect($this->view->translate('tip_email_error'),$this->view->seed_BaseUrl . "/forget");
-				} else {
-				    //请到邮箱激活
-					Shop_Browser::redirect($this->view->translate('tip_email_active'),$this->view->seed_BaseUrl . "/forget");
-				}
-			} catch (Exception $e) {
-				Shop_Browser::redirect($e->getMessage());
-			}
-		}
 
-		if(defined('SEED_WWW_TPL')){
-			$content = $this->view->render(SEED_WWW_TPL."/forget/index.phtml");
-			echo $content;
-			exit;
-		}
-	}
+            if ($resultObject->status != 1) {
+                $this->view->resultMsg = $this->view->translate('tip_email_error');
+            } else {
+                $this->view->resultSuccessMsg = $this->view->translate('tip_register_success');
+            }
+        }
+
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/forget/index.phtml");
+            echo $content;
+            exit;
+        }
+    }
+
 	function checkAction(){
 
 		$_requestOb=$this->_requestObject;
