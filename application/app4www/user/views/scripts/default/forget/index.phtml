@@ -31,18 +31,6 @@
 <div class="container-fluid register-body">
 	<div class="container">
 		<div class="col-md-10 col-md-offset-1 col-xs-12 register-form-div">
-            <?php if (!empty($this->resultMsg)): ?>
-                <div class="alert alert-warning alert-dismissible fade in" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <p><?php echo $this->resultMsg; ?>!</p>
-                </div>
-            <?php endif; ?>
-
-            <?php if (!empty($this->resultSuccessMsg)): ?>
-                <div class="alert alert-success alert-dismissible fade in" role="alert">
-                    <p><?php echo $this->resultSuccessMsg; ?>!</p>
-                </div>
-            <?php else: ?>
 			<form class="form-horizontal register-form-body" action="#" method="post" id="register_form" name="register_form">
 				<div class="register-type-info">
                     <div class="row">
@@ -59,7 +47,11 @@
                     </div>
                 <?php endif; ?>
 
-
+                <?php if (!empty($this->resultSuccessMsg)): ?>
+                    <div class="alert alert-success alert-dismissible fade in" role="alert">
+                        <p><?php echo $this->resultSuccessMsg; ?>!</p>
+                    </div>
+                <?php else: ?>
                 <div class="form-group phone">
                     <label for="ecommloginname" class="col-sm-3 control-label"><?php echo $this->translate('username'); ?></label>
                     <div class="col-sm-7">
@@ -79,8 +71,8 @@
 					    <button type="submit" class="btn btn-warning btn-default btn-block"><?php echo $this->translate('submit'); ?></button>
                     </div>
 				</div>
+                <?php endif; ?>
 			</form>
-            <?php endif; ?>
 		</div>
 	</div>
 </div>
