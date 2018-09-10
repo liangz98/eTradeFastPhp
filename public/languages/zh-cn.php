@@ -147,7 +147,7 @@ return array(
     'forgetPSD'                => '忘记密码',
     'longPSD'                  => '原始密码',
     'userREG'                  => '用户注册',
-    'userRegister'             => '免费注册',
+    'userRegister'             => '马上注册',
     'userTT'                   => '用户资料',
     'confirmPSD'               => '确认密码',
     'newPSD'                   => '新 密 码',
@@ -747,6 +747,7 @@ return array(
 
     'tip_login_success' => '登录成功',
     'tip_login_fail'    => '登录失败',
+    'tip_login_fail_n'  => '登录失败，用户名或密码错误',
     'tip_login_two'     => '已登录,请勿重复登录',
     'tip_login_out'     => '成功退出',
 

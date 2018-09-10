@@ -69,7 +69,9 @@
                         <li><a href="/user/bank"><?php echo $this->translate('bankNO'); ?></a></li>
                     </ul>
                 </li>
-                <?php endif;?>
+                <?php else: ?>
+                <li><a href="/user/bank"><?php echo $this->translate('bankNO'); ?></a></li>
+                <?php endif; ?>
 
                 <?php if ($this->accountStatus == '01'): ?>
                 <!-- 公司状态正常 -->

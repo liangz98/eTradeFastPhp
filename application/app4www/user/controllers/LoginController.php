@@ -43,7 +43,7 @@ class LoginController extends Kyapi_Controller_Action {
                 $_COOKIE["needAuthCode"] = "1";
 
                 // $this->redirect("/login");
-                $this->view->resultMsg = $this->view->translate('tip_login_fail') . json_decode($resultObject)->error;
+                $this->view->resultMsg = $this->view->translate('tip_login_fail_n');
             } else {
                 // 删除需要验证码的cookie
                 setcookie("needAuthCode", "", time() - 1);

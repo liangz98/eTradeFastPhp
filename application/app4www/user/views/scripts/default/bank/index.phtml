@@ -16,12 +16,19 @@
 		<div class="row">
             <div class="col-md-3 company-navigation">
                 <div class="panel panel-default">
+                    <?php if ($this->isPersonAccount != 1): ?>
                     <div class="panel-heading"><?php echo $this->translate('companyMNG'); ?></div>
                     <div class="list-group">
                         <a href="/user/company" class="list-group-item"><?php echo $this->translate('company_info'); ?></a>
                         <a href="/user/account" class="list-group-item"><?php echo $this->translate('personNO'); ?></a>
                         <a href="/user/bank" class="list-group-item"><?php echo $this->translate('bankNO'); ?></a>
                     </div>
+                    <?php else: ?>
+                        <div class="panel-heading"><?php echo $this->translate('bankNO'); ?></div>
+                        <div class="list-group">
+                            <a href="/user/bank" class="list-group-item"><?php echo $this->translate('bankNO'); ?></a>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
 

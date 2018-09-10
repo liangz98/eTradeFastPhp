@@ -37,11 +37,11 @@
 
 				<div class="register-type-info">
                     <div class="row">
-						<div class="col-md-6 text-center active">
-							<a href="javascript:void(0)" id="changeCompanyRegister" ispersonaccount="false"><?php echo $this->translate('companyRegister'); ?></a>
+						<div class="col-md-6 text-center active changeCompanyRegisterDiv" data-is-person="false" style="cursor: pointer;">
+							<a href="javascript:void(0)" id="changeCompanyRegister" data-is-person="false"><?php echo $this->translate('companyRegister'); ?></a>
 						</div>
-						<div class="col-md-6 text-center">
-							<a href="javascript:void(0)" id="changePersonRegister" ispersonaccount="true"><?php echo $this->translate('个人注册'); ?></a>
+						<div class="col-md-6 text-center changePersonRegisterDiv" data-is-person="true" style="cursor: pointer;">
+							<a href="javascript:void(0)" id="changePersonRegister" data-is-person="true"><?php echo $this->translate('个人注册'); ?></a>
 						</div>
 					</div>
 				</div>
@@ -217,14 +217,34 @@
                 $(this).parent().addClass("active");
                 $("#changePersonRegister").parent().removeClass("active");
         });
+		$(".changeCompanyRegisterDiv").click(function () {
+            $(this).addClass("active");
+            $(".changePersonRegisterDiv").removeClass("active");
+        });
 
 		$("#changePersonRegister").click(function () {
                 $(this).parent().addClass("active");
                 $("#changeCompanyRegister").parent().removeClass("active");
         });
+        $(".changePersonRegisterDiv").click(function () {
+            $(this).addClass("active");
+            $(".changeCompanyRegisterDiv").removeClass("active");
+        });
 
 		$("#changeCompanyRegister,#changePersonRegister").click(function () {
-            if ($(this).attr("isPersonAccount") === 'true') {
+            if ($(this).attr("data-is-person") === 'true') {
+                $(".accountName,.email").hide();
+                $("#isPersonAccount").val("true");
+                $(".phone").after($(".address"));
+            } else {
+                $(".accountName,.email").show();
+                $("#isPersonAccount").val("false");
+                $(".email").after($(".address"));
+            }
+        });
+
+        $(".changeCompanyRegisterDiv, .changePersonRegisterDiv").click(function () {
+            if ($(this).attr("data-is-person") === 'true') {
                 $(".accountName,.email").hide();
                 $("#isPersonAccount").val("true");
                 $(".phone").after($(".address"));
