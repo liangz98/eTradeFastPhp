@@ -45,7 +45,7 @@ class LoginController extends Kyapi_Controller_Action {
                 // $this->redirect("/login");
 
                 $resultMsg = $this->view->translate('tip_login_fail_n');
-                if ($userKY['result'] > 5) {
+                if ($userKY['errorCode'] == 'ACCOUNT_FREEZE') {
                     $resultMsg = $this->view->translate('tip_login_fail_TryTimes');
                 }
 
