@@ -26,7 +26,7 @@ class ForgetController extends Kyapi_Controller_Action
             if ($resultObject->status != 1) {
                 $this->view->resultMsg = $this->view->translate('tip_email_error');
             } else {
-                $this->view->resultSuccessMsg = $this->view->translate('tip_register_success');
+                $this->view->resultSuccessMsg = $this->view->translate('tip_email_active');
             }
         }
 
