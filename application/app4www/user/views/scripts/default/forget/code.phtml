@@ -95,15 +95,12 @@
 	$().ready(function() {
 		$("#register_form").validate({
 			rules: {
-				ecommloginname: {
-					checkLoginName: true
-				},
 				ecommpasswsd: {
 					isValidPassword: true,
 					minlength: 8,
 					maxlength: 30
 				},
-				checkecommrpasswsd: {
+                checkECommPassword: {
 					reCheckPassword: true
 				}
 			},
