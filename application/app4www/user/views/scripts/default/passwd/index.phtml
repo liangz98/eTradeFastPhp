@@ -1,62 +1,144 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>快移</title>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-    <link href="/ky/css/base.css" rel="stylesheet">
-    <link href="/ky/css/style.css" rel="stylesheet">
-    <script type="text/javascript" src="/ky/js/jquery.js"></script>
-    <script type="text/javascript" src="/ky/js/jquery.wallform.js"></script>
-    <script type="text/javascript" src="/ky/js/www.js"></script>
-    <script type="text/javascript" src="/ky/js/jquery.movebg.js"></script>
-    <script type="text/javascript">
-        function doPasswd(){
-            SeedMsgBox('正在保存中，请稍候...');
-            var options = {
-                target:     '#SeedMsgTxt',
-                url:        '<?php echo $this->baseUrl();?>/passwd',
-                success: function() {
-                }
-            };
-            $('#register_form').ajaxSubmit(options);
-        }
-    </script>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+	<title>快移</title>
+    <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <link href="/ky/css/password/password.css" rel="stylesheet">
 </head>
 <body>
-<?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
-<div class="o_content_wrap w1200 m0a clearfix">
-    <div style="margin: 0 auto;" class="o_content w940">
 
-        <div class="n_o_c_tit2">
-            <h3>修改密码</h3>
-        </div>
-            <div class="u_info_ed_box">
-            <form action="#" method="post" id="register_form">
-                <div class="infobox">
-                <dl class="infobox_pd">
-                    <label>旧密码：</label>
-                    <input type="text" name="ecommpasswsd" value=""/>
-                </dl>
-                 <dl class="infobox_pd">
-                    <label>新密码：</label>
-                    <input type="text" name="newpwd" value=""/>
-                </dl>
-                <dl class="infobox_pd">
-                    <label>确认密码</label>
-                    <input type="text" name="newpwd" value=""/>
-                </dl>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
+
+<div class="container-fluid index-body">
+	<div class="container">
+        <div class="col-md-10 col-md-offset-1 col-xs-12 register-form-div">
+            <form class="form-horizontal register-form-body" action="" method="post" id="password_form" name="password_form">
+                <div class="register-type-info">
+                    <div class="row">
+                        <div class="col-md-12 text-center active">
+                            <a href="javascript:void(0)"><?php echo $this->translate('editPWD'); ?></a>
+                        </div>
                     </div>
-                <p class="tc">
-                    <input class="acc_rbtn" type="button" value="返回首页">
-                    <input class="acc_sbtn" onclick="doPasswd()" type="submit" value="确认">
-                </p>
+                </div>
+
+                <?php if (!empty($this->resultMsg)): ?>
+                    <div class="alert alert-warning alert-dismissible fade in" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <p><?php echo $this->resultMsg; ?>!</p>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (!empty($this->resultSuccessMsg)): ?>
+                    <div class="alert alert-success alert-dismissible fade in" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <p><?php echo $this->resultSuccessMsg; ?>!</p>
+                    </div>
+                <?php endif; ?>
+
+                <div class="form-group phone">
+                    <label for="loginPwd" class="col-sm-3 control-label"><?php echo $this->translate('loginPSD'); ?></label>
+                    <div class="col-sm-7">
+                        <input type="password" class="form-control" name="loginPwd" id="loginPwd" required placeholder="<?php echo $this->translate('is_passwd'); ?>" >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="col-sm-3 control-label"><?php echo $this->translate('newPSD'); ?></label>
+                    <div class="col-sm-7">
+                        <input type="password" class="form-control" name="password" id="password" required placeholder="<?php echo $this->translate('is_rpasswd'); ?>" >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="checkPassword" class="col-sm-3 control-label"><?php echo $this->translate('confirmPSD'); ?></label>
+                    <div class="col-sm-7">
+                        <input type="password" class="form-control" name="checkPassword" id="checkPassword" required placeholder="<?php echo $this->translate('is_rpasswd'); ?>" >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-12 col-md-7 col-md-offset-3">
+                        <button type="submit" class="btn btn-warning btn-default btn-block"><?php echo $this->translate('submit'); ?></button>
+                    </div>
+                </div>
             </form>
         </div>
-    </div>
+	</div>
 </div>
-<?php echo $this->render(SEED_WWW_TPL.'/footer.phtml');?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script type="text/javascript">
+	$().ready(function() {
+        $("#password_form").validate({
+            rules: {
+                password: {
+                    isValidPassword: true,
+                    minlength: 8,
+                    maxlength: 30
+                },
+                loginPwd: {
+                    isValidPassword: true,
+                    minlength: 8,
+                    maxlength: 30
+                }
+                checkPassword: {
+                    reCheckPassword: true
+                }
+            },
+            messages: {
+                password : {
+                    required: "<?php echo $this->translate('de_null'); ?>",
+                    minlength: "<?php echo $this->translate('mat_psd');?>",
+                    maxlength: "<?php echo $this->translate('is_passwd');?>"
+                },
+                loginPwd: {
+                    required: "<?php echo $this->translate('de_null'); ?>",
+                    minlength: "<?php echo $this->translate('mat_psd');?>",
+                    maxlength: "<?php echo $this->translate('is_passwd');?>"
+                }
+            },
+            errorPlacement: function(error, element) {
+                // Append error within linked label
+                $(error).addClass("col-md-offset-3");
+                $(element)
+                    .closest( "form" )
+                    .find( "label[for='" + element.attr( "id" ) + "']" )
+                    .parent().addClass("has-error").removeClass("has-success")
+                    .append( error );
+            },
+            success: function(label) {
+                var forName = $(label).attr("for");
+                $("label[for='" + forName + "']").parent().addClass("has-success").removeClass("has-error");
+                $(label).remove();
+            },
+            highlight: function (element) {
+                $("label[for='" + element.id + "']").parent().addClass("has-error").removeClass("has-success");
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+	});
+
+	$(function () {
+
+	});
+
+    // 密码规验证(8-30位  字母数字)
+    jQuery.validator.addMethod("isValidPassword", function(value, element) {
+        var regExp=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,30}$/;
+        return this.optional(element) || (regExp.test(value));
+    }, "<?php echo $this->translate('is_passwd');?>");
+
+    // 验证确认密码
+    jQuery.validator.addMethod("reCheckPassword", function(value, element) {
+        var psw = $("#password").val();
+        return this.optional(element) || (value === psw);
+    }, "<?php echo $this->translate('is_psd');?>");
+</script>
 </body>
 </html>

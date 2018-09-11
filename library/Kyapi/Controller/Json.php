@@ -1689,10 +1689,10 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
      * @param $_password
      * @return mixed
      */
-    public function paymentchangePasswordApi($_requestObject,$_oldPwd,$_password)
+    public function paymentchangePasswordApi($_requestObject, $_oldPwd, $_password)
     {
         $_url=$this->url.'/paymentapi/paymentApi!changePassword.action';
-        $_params =json_encode(array("requestObject"=>$_requestObject,"loginPwd"=>$_oldPwd,"password"=> $_password));
+        $_params =json_encode(array("requestObject"=>$_requestObject, "loginPwd"=>$_oldPwd, "password"=> $_password));
         $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
         return $resultObject;
     }

@@ -77,14 +77,6 @@ class ForgetController extends Kyapi_Controller_Action
 	// 忘记密码 创建新密码
 	function pwdAction(){
 		if ($this->_request->isPost()) {
-            // if (!empty($this->_request->getParam('authCode'))) {
-            // 	$_authCode=$this->_request->getParam('authCode');
-            // } else {
-            //     //激活码不正确
-            // 	Shop_Browser::redirect($this->view->translate('tip_email_check'),$this->view->seed_BaseUrl . "/login");
-            // 	exit;
-            // }
-
             $requestObject = $this->_requestObject;
             $password = $this->_request->getParam('ecommpasswsd');
             $authCode = $this->_request->getParam('authCode');

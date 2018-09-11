@@ -16,10 +16,11 @@ class LoginController extends Kyapi_Controller_Action {
 
     function indexAction() {
         $this->view->resultMsg = $this->_request->getParam('resultMsg');
+        $this->view->needAuthCode = $this->_request->getParam('needAuthCode');
 
-        if (!empty($_COOKIE['needAuthCode'])) {
-            $this->view->needAuthCode = $_COOKIE['needAuthCode'];
-        }
+        // if (!empty($_COOKIE['needAuthCode'])) {
+        //     $this->view->needAuthCode = $_COOKIE['needAuthCode'];
+        // }
 
         if ($this->_request->isPost()) {
             // 请求服务端方法
@@ -50,6 +51,7 @@ class LoginController extends Kyapi_Controller_Action {
                 }
 
                 $this->view->resultMsg = $resultMsg;
+                $this->view->needAuthCode = 1;
             } else {
                 // 删除需要验证码的cookie
                 setcookie("needAuthCode", "", time() - 1);
