@@ -57,58 +57,49 @@ class ForgetController extends Kyapi_Controller_Action
 	}
 	//验证邮件CODE
 	function codeAction(){
+        $this->view->resultMsg = $this->_request->getParam('resultMsg');
 
-            if (!empty($this->_request->getParam('authCode'))) {
-                $this->view->authCode=$this->_request->getParam('authCode');
-            } else {
-                //激活码不正确
-                Shop_Browser::redirect($this->view->translate('tip_email_check'),$this->view->seed_BaseUrl . "/login");
-                exit;
-            }
+        if (!empty($this->_request->getParam('authCode'))) {
+            $this->view->authCode=$this->_request->getParam('authCode');
+        } else {
+            //激活码不正确
+            Shop_Browser::redirect($this->view->translate('tip_email_check'),$this->view->seed_BaseUrl . "/login");
+            exit;
+        }
 
         if(defined('SEED_WWW_TPL')){
             $content = $this->view->render(SEED_WWW_TPL."/forget/code.phtml");
             echo $content;
             exit;
         }
-
 	}
-	//忘记密码 创建新密码
 
+	// 忘记密码 创建新密码
 	function pwdAction(){
-
-
 		if ($this->_request->isPost()) {
-			try {
-				if (!empty($this->_request->getParam('authCode'))) {
-					$_authCode=$this->_request->getParam('authCode');
-				} else {
-				    //激活码不正确
-					Shop_Browser::redirect($this->view->translate('tip_email_check'),$this->view->seed_BaseUrl . "/login");
-					exit;
-				}
+            // if (!empty($this->_request->getParam('authCode'))) {
+            // 	$_authCode=$this->_request->getParam('authCode');
+            // } else {
+            //     //激活码不正确
+            // 	Shop_Browser::redirect($this->view->translate('tip_email_check'),$this->view->seed_BaseUrl . "/login");
+            // 	exit;
+            // }
 
-                $_requestOb=$this->_requestObject;
-				$_newPwd=$this->_request->getParam('ecommpasswsd');
+            $requestObject = $this->_requestObject;
+            $password = $this->_request->getParam('ecommpasswsd');
+            $authCode = $this->_request->getParam('authCode');
 
-				// 请求Hessian服务端方法
-				$userKY= $this->json->changePasswordByAuthCodeApi($_requestOb,$_authCode,$_newPwd);
-				$resultObject =json_decode($userKY);
 
-				if ($resultObject->status != 1) {
-				    //重置失败
-                    Shop_Browser::redirect($this->view->translate('tip_reset_fail'),$this->view->seed_BaseUrl . "/login");
-				} else {
-				    //重置成功
-                    Shop_Browser::redirect($this->view->translate('tip_reset_success'),$this->view->seed_BaseUrl . "/login");
-				}
-			} catch (Exception $e) {
-                Shop_Browser::redirect($e->getMessage(),$this->view->seed_BaseUrl . "/login");
-			}
+            // 请求Hessian服务端方法
+            $userKY = $this->json->changePasswordByAuthCodeApi($requestObject, $authCode, $password);
+            $resultObject = json_decode($userKY);
+
+            if ($resultObject->status != 1) {
+                $this->view->resultMsg = $this->view->translate('tip_reset_fail') . $resultObject->error;
+            } else {
+                //注册成功
+                Shop_Browser::redirect($this->view->translate('tip_reset_success'), $this->view->seed_BaseUrl . "/login");
+            }
 		}
-
 	}
-
-
-
 }
