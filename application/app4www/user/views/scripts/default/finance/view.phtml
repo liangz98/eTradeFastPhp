@@ -155,7 +155,7 @@
                     </div>
                     <div class="col-md-10"></div>
                 </div>
-                <div class="row">
+                <div class="row factoring-contract">
                     <div class="col-xs-12 text-primary">
                         <?php
                         echo $this->ShowOrderContract4Factoring($this->contractList, $this->accountID, 'FTTA', $this->orders['client'], $this->hasIDCertificate);
@@ -163,13 +163,13 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row hide">
                     <div class="col-md-12">
                         <p class="span-font-size-18 text-primary margin-top-15">服务费用</p>
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row hide">
                     <div class="col-md-12">
                         <table class="table table-striped">
                             <thead>
@@ -213,7 +213,7 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row hide">
                     <div class="col-md-1">
                         <p class="form-control-static margin-left-5 text-999">合计费用</p>
                     </div>
@@ -416,6 +416,99 @@
     <div class="download-button">下载</div>
     <div class="pdfDoc" style="padding-left:50px;">
         <div id="pdfPageBox">
+        </div>
+    </div>
+</div>
+
+<!--非网签-->
+<div id="signViewNoEContractDiv" class="layui-form" style="display: none;">
+    <div class="et-auth-error" style="display: none;"></div>
+    <div class="et-auth-content">
+        <div style="margin-top: 20px;"></div>
+
+        <div class="layui-form-item" style="margin-left: 28px;">
+            <div style="text-align: left;">
+                <label class="layui-form-label" style="width: 400px;text-align: left;"><?php echo $this->translate('contractUPInfo'); ?></label>
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-bottom: -5px;margin-top: -15px;margin-left: 28px;margin-right: 28px;">
+            <div style="text-align: left;">
+                <table class="layui-table" id="demo" lay-filter="test">
+                    <colgroup>
+                        <col width="470">
+                        <col width="150">
+                        <col>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>合同列表</th>
+                        <th>类型</th>
+                        <th style="text-align:center">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-left: 28px; margin-top: 50px; width: 600px;">
+            <div class="layui-form-label" style="width: 420px;">
+                <div class="yyzz_box clearfix" style="width: 600px;">
+                    <p class="zzname" style="width: 600px; font-weight:bold;"><?php echo $this->translate('contractUP'); ?><!--合同相关附件上传--></p>
+                    <?php if ($this->vestut == 1) {
+                        echo $this->ShowWebuploader($this->goods['attachmentList'], $this->biz_Setting['ORDER'], $this->attach_Setting['CRIM'], "0", null);
+                    } ?>
+                </div>
+            </div>
+        </div>
+
+
+        <div style="height: 12px"></div>
+        <div class="et-auth-row">
+            <button class="layui-btn" id="signNoEContractConfirmBtn"><?php echo $this->translate('signing'); ?></button>
+        </div>
+    </div>
+</div>
+
+<!--签署-->
+<div id="doSignPDFLayDiv" class="layui-form" style="display: none;">
+    <div class="et-auth-error" style="display: none;"></div>
+    <div class="et-auth-content">
+        <div style="margin-top: 20px;"></div>
+
+        <div class="layui-form-item" style="margin-left: 28px;">
+            <div style="text-align: left;">
+                <label class="layui-form-label" style="width: 180px;text-align: left;"><?php echo $this->translate('signInfo'); ?></label>
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
+            <div style="text-align: left;">
+                <label class="layui-form-label" style="width: 180px;text-align: left;"><b><?php echo $this->translate('signAuthType'); ?></b></label>
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-left: 28px;">
+            <div class="layui-form-label" style="width: 420px;">
+                <input type="text" id="signMobileInput" name="signMobileInput" lay-verify="signMobileInput" autocomplete="off" class="layui-input" readonly="readonly">
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-left: 28px;">
+            <div class="layui-form-label" style="width: 250px;">
+                <input type="text" id="signAuthCode" name="signAuthCode" lay-verify="signAuthCode" autocomplete="off" placeholder="<?php echo $this->translate('signInputAuthCode'); ?>" class="layui-input">
+            </div>
+
+            <div class="layui-form-label" style="width: 140px;">
+                <button class="layui-btn layui-btn-fluid" id="signSendAuthCodeBtn"><?php echo $this->translate('signSendAuthCode'); ?></button>
+            </div>
+        </div>
+
+        <div style="height: 12px"></div>
+        <div class="et-auth-row">
+            <button class="layui-btn layui-btn-fluid" id="singConfirmBtn" style="width: 85%;"><?php echo $this->translate('confirmed'); ?></button>
         </div>
     </div>
 </div>

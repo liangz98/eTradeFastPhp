@@ -74,6 +74,10 @@ body {
     color: #666;
 }
 
+.factoring-contract .row {
+    margin-bottom: 5px;
+}
+
 /* 网签 */
 .sign-button {
     position: absolute;
@@ -122,4 +126,30 @@ body {
     cursor: pointer;
     font-size: large;
     color:#ffffff;
+}
+
+.et-auth-row {
+    margin: 15px auto;
+    width: 86%;
+}
+
+.et-auth-top {
+    width: 100%;
+    height: 100px;
+    color: #fff;
+}
+
+.et-auth-top h3 {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px;
+}
+
+.et-auth-top p {
+    font-size: 12px;
+    padding: 0 15px;
+}
+
+.et-auth-bg-orange {
+    background:#f08c00;
 }
