@@ -265,10 +265,10 @@
                                         <td class="text-right" style="vertical-align: middle;">
                                             <?php if ($paymentTrading['rptype'] == 'P'):?>
                                                 <p class="text-danger">
-                                                    <?php echo $paymentTrading['crnCode']; ?>&nbsp;<?php echo $paymentTrading['totalAmount']; ?>
+                                                    <?php echo $paymentTrading['crnCode']; ?>&nbsp;<?php echo number_format($paymentTrading['totalAmount'], 2); ?>
                                                 </p>
                                             <?php else: ?>
-                                                <?php echo $paymentTrading['crnCode']; ?>&nbsp;<?php echo $paymentTrading['totalAmount']; ?>
+                                                <?php echo $paymentTrading['crnCode']; ?>&nbsp;<?php echo number_format($paymentTrading['totalAmount'], 2); ?>
                                             <?php endif; ?>
                                         </td>
                                         <td style="vertical-align: middle; ">

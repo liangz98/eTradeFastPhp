@@ -79,6 +79,15 @@ body {
 }
 
 /* 网签 */
+.order_contract_sign {
+    border: none;
+    background: #EF8200;
+    color: #fff;
+    padding: 5px 15px;
+    border-radius: 5px;
+    margin-right: 20px;
+}
+
 .sign-button {
     position: absolute;
     height: 100px;

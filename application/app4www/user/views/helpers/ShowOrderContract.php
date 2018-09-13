@@ -55,7 +55,9 @@ class Zend_View_Helper_ShowOrderContract extends Shop_View_Helper {
                             }
                         }
                     }
-                } elseif ($v['secondParty'] != null && $v['secondParty'] == $accountID) {
+                }
+
+                if ($v['secondParty'] != null && $v['secondParty'] == $accountID) {
                     // 企业
                     if ($v['secondPartySignMode'] == "E" || $v['secondPartySignMode'] == "B") {
                         if ($v['secondPartySigningDate'] == null) {
@@ -73,7 +75,9 @@ class Zend_View_Helper_ShowOrderContract extends Shop_View_Helper {
                             }
                         }
                     }
-                } elseif ($v['thirdParty'] != null && $v['thirdParty'] == $accountID) {
+                }
+
+                if ($v['thirdParty'] != null && $v['thirdParty'] == $accountID) {
                     // 企业
                     if ($v['thirdPartySignMode'] == "E" || $v['thirdPartySignMode'] == "B") {
                         if ($v['thirdPartySigningDate'] == null) {
