@@ -119,7 +119,7 @@ class Zend_View_Helper_ShowOrderContract4Factoring extends Shop_View_Helper {
                         }
                         if ($v['secondParty'] != null && $v['secondParty'] == $accountID) {
                             if ($v['secondPartySignMode'] == "P" || $v['secondPartySignMode'] == "B") {
-                                if ($v['secondPartySignMode'] == "P" || $v['secondPartySignMode'] == "B") {
+                                if ($this->view->userID == $v['secondPartyPrincipal']) {
                                     $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="btn btn-default fr" style="background: #ccc;">已签署</a>';
                                 }
                             } else {
