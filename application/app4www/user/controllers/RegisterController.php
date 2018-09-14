@@ -156,7 +156,8 @@ class RegisterController extends Kyapi_Controller_Action
                         $config['port'] = $this->view->seed_Setting['KyUrlRedisPort'];
                         $redis = new Kyapi_Model_redisInit();
                         $redis->connect($config);
-                        $redis->set('PHPREDIS_ACTIVE_USERS:' . $userDetail['user_id'], 'PHPREDIS_SESSION:' . session_id(), 86400);
+                        // $redis->set('PHPREDIS_ACTIVE_USERS:' . $userDetail['user_id'], 'PHPREDIS_SESSION:' . session_id(), 86400);
+                        $redis->set('PHPREDIS_ACTIVE_USERS:' . $userDetail['user_id'], 'PHPREDIS_SESSION:' . session_id(), 3600);
                         $redis->set('PHPREDIS_ACTIVE_SESSION:' . session_id(), $userDetail['user_id'], 86400);
 
                         Shop_Browser::redirect($this->view->translate('tip_register_success'), $this->view->seed_Setting['user_app_server'] . "/index");

@@ -174,40 +174,33 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th>费用项目</th>
+                                <th width="140">放款编号</th>
                                 <th class="text-right">费用</th>
-                                <th class="text-right">服务费率</th>
                                 <th>说明</th>
-                                <th>付款情况</th>
+                                <th width="140"><?php echo $this->translate('Saltter_Status'); ?></th>
+                                <th width="140">操作</th>
                             </tr>
                             </thead>
                             <tbody>
+                            <?php if (empty($this->serviceChargeList)):?>
+                                <tr>
+                                    <td colspan="4"><?php echo $this->translate('noData'); ?></td>
+                                </tr>
+                            <?php else:?>
+                            <?php foreach ($this->serviceChargeList as $serviceCharge):?>
                             <tr>
-                                <td>基础服务费</td>
-                                <td class="text-right"><?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo $this->LoanView['factoringItem']['serviceCharge'] != 0 ? number_format($this->LoanView['factoringItem']['serviceCharge'], 2) : '----'; ?></td>
-                                <td class="text-right"><?php echo $this->LoanView['serviceChargePercent'] * 100; ?> %</td>
-                                <td class="text-999">计算公式：应收账款金额 * 服务费率 * 汇率。发放融资款前，一次性收取。</td>
-                                <td>
-                                    <?php if ($this->LoanView['factoringItem']['serviceChargeTradingID'] == ''):?>
-                                    未开始
-                                    <?php else:?>
-                                    <?php echo $this->ShowDictionaryTo("PAYMENT_STATUS", $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'], $this->LoanView['factoringItem']['serviceChargeTradingStatus']); ?>
+                                <td style="vertical-align: middle; "><?php echo $serviceCharge['loanNo']; ?></td>
+                                <td class="text-right" style="vertical-align: middle; "><?php echo $serviceCharge['loanCrnCode']; ?> <?php echo number_format($serviceCharge['serviceCharge'], 2); ?></td>
+                                <td class="text-999" style="vertical-align: middle; "><?php echo number_format($serviceCharge['loanAmount'], 2); ?> x <?php echo $serviceCharge['serviceChargePercent'] * 100; ?> % = <?php echo number_format($serviceCharge['serviceCharge'], 2); ?>。发放融资款前，一次性收取。</td>
+                                <td style="vertical-align: middle; "><?php echo $this->ShowDictionaryTo("LOAN_STATUS", $this->userLangCode, $this->dic_Setting['LOAN_STATUS'], $serviceCharge['serviceChargeTradingStatus']); ?></td>
+                                <td style="vertical-align: middle; ">
+                                    <?php if ($serviceCharge['serviceChargeTradingStatus'] == '0'):?>
+                                        <a class="btn btn-warning btn-sm" href="/user/settle/payment?<?php echo base64_encode($serviceCharge['serviceChargeTradingID']);?>"><?php echo $this->translate('Saltter_payment');?></a>
                                     <?php endif;?>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>担保服务费</td>
-                                <td class="text-right"><?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo $this->LoanView['factoringItem']['guaranteeServiceFee'] != 0 ? number_format($this->LoanView['factoringItem']['guaranteeServiceFee'], 2) : '----'; ?></td>
-                                <td class="text-right"><?php echo $this->LoanView['guaranteeServiceFeePercent'] * 100; ?> %</td>
-                                <td class="text-999">计算公式：担保金额 * 服务费率 * 汇率。发放融资款前，一次性收取。</td>
-                                <td>
-                                    <?php if ($this->LoanView['factoringItem']['serviceChargeTradingID'] == ''):?>
-                                        未开始
-                                    <?php else:?>
-                                        <?php echo $this->ShowDictionaryTo("PAYMENT_STATUS", $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'], $this->LoanView['factoringItem']['serviceChargeTradingStatus']); ?>
-                                    <?php endif;?>
-                                </td>
-                            </tr>
+                            <?php endforeach; ?>
+                            <?php endif;?>
                             </tbody>
                         </table>
                     </div>
@@ -219,14 +212,9 @@
                     </div>
                     <div class="col-md-2">
                         <p class="form-control-static margin-left-25 text-666">
-                            <?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo $this->LoanView['factoringItem']['serviceCharge'] + $this->LoanView['factoringItem']['guaranteeServiceFee'] != 0 ? number_format($this->LoanView['factoringItem']['serviceCharge'] + $this->LoanView['factoringItem']['guaranteeServiceFee'], 2) : '----';; ?>
+                            <?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo number_format($this->serviceChargeTotalAmount, 2); ?>
                         </p>
                     </div>
-                    <?php if ($this->LoanView['factoringItem']['serviceChargeTradingStatus'] != '3' && $this->LoanView['factoringItem']['serviceChargeTradingID'] != ''):?>
-                    <div class="col-md-2">
-                        <a class="btn btn-warning" href="/user/settle/payment?<?php echo base64_encode($this->LoanView['factoringItem']['serviceChargeTradingID']);?>"><?php echo $this->translate('Saltter_payment');?></a>
-                    </div>
-                    <?php endif; ?>
                 </div>
 
                 <div class="row">
@@ -279,15 +267,17 @@
                                     <?php echo $this->ShowDictionaryTo("LOAN_STATUS", $this->userLangCode, $this->dic_Setting['LOAN_STATUS'], $factoringLoan['loanStatus']); ?>
                                 </td>
                                 <td class="loan_<?php echo $factoringLoan['loanID']; ?>">
-                                    <?php if ($factoringLoan['needLoanApplication'] == true):?>
-                                        <?php if ($factoringLoan['loanStatus'] == '00'):?>
+                                    <?php if ($factoringLoan['needLoanApplication'] == true): ?>
+                                        <?php if ($factoringLoan['loanStatus'] == '00'): ?>
                                             <button class="btn btn-warning" data-toggle="modal" data-target="#applyContractModal" data-loan-amount="<?php echo $factoringLoan['loanAmount']; ?>" data-loan-id="<?php echo $factoringLoan['loanID']; ?>" data-crn-code="<?php echo $factoringLoan['loanCrnCode']; ?>">放款申请</button>
-                                        <?php elseif ($factoringLoan['loanStatus'] == '05'):?>
+                                        <?php elseif ($factoringLoan['loanStatus'] == '05'): ?>
                                             <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#applyContractModal" data-loan-amount="<?php echo $factoringLoan['loanAmount']; ?>" data-loan-id="<?php echo $factoringLoan['loanID']; ?>" data-crn-code="<?php echo $factoringLoan['loanCrnCode']; ?>">重新申请</button>
-                                        <?php elseif ($factoringLoan['loanStatus'] == '04'):?>
-                                            <?php echo $this->ShowSimpleOrderContract($factoringLoan['loanApplyContract'], $this->accountID); ?>
-                                        <?php endif;?>
-                                    <?php endif;?>
+                                        <?php elseif ($factoringLoan['loanStatus'] == '04'): ?>
+                                            <?php echo $this->ShowSimpleOrderContract($factoringLoan['loanApplyContract'], $this->accountID, $factoringLoan['loanStatus']); ?>
+                                        <?php else: ?>
+                                            <?php echo $this->ShowSimpleOrderContract($factoringLoan['loanApplyContract'], $this->accountID, $factoringLoan['loanStatus']); ?>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                             <?php endforeach;?>

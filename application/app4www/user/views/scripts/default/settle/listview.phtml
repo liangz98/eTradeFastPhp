@@ -62,7 +62,10 @@
                     </div>
                     <div class="col-md-4">
                         <p class="form-control-static text-666">
-                            <?php echo $this->e['crnCode'] . ' ' . $this->ShowToPrice($this->e['balanceAmount']); ?>
+                            <?php echo $this->e['crnCode'] . ' ' . $this->ShowToPrice($this->e['balanceAmount']); ?> &nbsp;&nbsp;
+                            <?php if ($this->e['allowPayment']): ?>
+                                <a class="btn btn-warning btn-sm" href="/user/settle/payment?<?php echo base64_encode($this->e['tradingID']); ?>"><?php echo $this->translate('Saltter_payment'); ?></a>
+                            <?php endif; ?>
                         </p>
                     </div>
                 </div>

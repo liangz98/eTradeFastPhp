@@ -240,13 +240,28 @@ class FinanceController extends Kyapi_Controller_Action
             $this->view->contractList = [];
         }
 
+        // 封装费用集合
+        $serviceChargeList = array();
+        $serviceChargeTotalAmount = 0;
+        foreach ($LoanView['factoringItem']['factoringLoanList'] as $loanKey => $factoringLoan) {
+            if ($factoringLoan['loanType'] == 'P' && $factoringLoan['serviceChargeTradingID'] != null) {
+                $serviceCharge['loanNo'] = $factoringLoan['loanNo'];
+                $serviceCharge['loanAmount'] = $factoringLoan['loanAmount'];
+                $serviceCharge['serviceChargePercent'] = $LoanView['serviceChargePercent'];
+                $serviceCharge['loanCrnCode'] = $factoringLoan['loanCrnCode'];
+                $serviceCharge['serviceCharge'] = $factoringLoan['serviceCharge'];
+                $serviceCharge['serviceChargeTradingID'] = $factoringLoan['serviceChargeTradingID'];
+                $serviceCharge['serviceChargeTradingStatus'] = $factoringLoan['serviceChargeTradingStatus'];
+                $serviceChargeTotalAmount += $factoringLoan['serviceCharge'];
+                array_push($serviceChargeList, $serviceCharge);
+            }
+        }
+        $this->view->serviceChargeList = $serviceChargeList;
+        $this->view->serviceChargeTotalAmount = $serviceChargeTotalAmount;
+
         /*组装项目列表*/
         $this->view->planAmount = [];
-        /*判断本金是否显示*/
-        /* if($LoanView['accountsReceivable']>0){
-             $this->view->planAmount['amount']=$LoanView['accountsReceivable'];
 
-         }*/
         /*判断服务收费 和利息 是否显示*/
         $this->view->planService = [];
         $this->view->planInterest = [];

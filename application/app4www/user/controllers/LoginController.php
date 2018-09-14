@@ -166,8 +166,10 @@ class LoginController extends Kyapi_Controller_Action {
                 $config['port'] = $this->view->seed_Setting['KyUrlRedisPort'];
                 $redis = new Kyapi_Model_redisInit();
                 $redis->connect($config);
-                $redis->set('PHPREDIS_ACTIVE_USERS:' . $userDetail['user_id'], 'PHPREDIS_SESSION:' . session_id(), 86400);
-                $redis->set('PHPREDIS_ACTIVE_SESSION:' . session_id(), $userDetail['user_id'], 86400);
+                // $redis->set('PHPREDIS_ACTIVE_USERS:' . $userDetail['user_id'], 'PHPREDIS_SESSION:' . session_id(), 86400);
+                // $redis->set('PHPREDIS_ACTIVE_SESSION:' . session_id(), $userDetail['user_id'], 86400);
+                $redis->set('PHPREDIS_ACTIVE_USERS:' . $userDetail['user_id'], 'PHPREDIS_SESSION:' . session_id(), 3600);
+                $redis->set('PHPREDIS_ACTIVE_SESSION:' . session_id(), $userDetail['user_id'], 3600);
 
                 $this->redirect("/");
             }
@@ -315,8 +317,11 @@ class LoginController extends Kyapi_Controller_Action {
             $config['port'] = $this->view->seed_Setting['KyUrlRedisPort'];
             $redis = new Kyapi_Model_redisInit();
             $redis->connect($config);
-            $redis->set('PHPREDIS_ACTIVE_USERS:' . $userDetail['user_id'], 'PHPREDIS_SESSION:' . session_id(), 86400);
-            $redis->set('PHPREDIS_ACTIVE_SESSION:' . session_id(), $userDetail['user_id'], 86400);
+            // $redis->set('PHPREDIS_ACTIVE_USERS:' . $userDetail['user_id'], 'PHPREDIS_SESSION:' . session_id(), 86400);
+            // $redis->set('PHPREDIS_ACTIVE_SESSION:' . session_id(), $userDetail['user_id'], 86400);
+
+            $redis->set('PHPREDIS_ACTIVE_USERS:' . $userDetail['user_id'], 'PHPREDIS_SESSION:' . session_id(), 3600);
+            $redis->set('PHPREDIS_ACTIVE_SESSION:' . session_id(), $userDetail['user_id'], 3600);
 
             $msg = $apiStatus;
         } else {

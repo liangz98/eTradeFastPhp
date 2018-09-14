@@ -44,7 +44,8 @@ class orderauthController extends Kyapi_Controller_Action
 		$config['port'] = $this->view->seed_Setting['KyUrlRedisPort'];
 		$redis=new Kyapi_Model_redisInit();
 		$redis->connect($config);
-		$redis->set('PHPREDIS_ACTIVE_USERS:'.$userKY['userID'],'PHPREDIS_SESSION:'.session_id(),86400);
+		// $redis->set('PHPREDIS_ACTIVE_USERS:'.$userKY['userID'],'PHPREDIS_SESSION:'.session_id(),86400);
+        $redis->set('PHPREDIS_ACTIVE_USERS:'.$userKY['userID'],'PHPREDIS_SESSION:'.session_id(),3600);
 		$redis->set('PHPREDIS_ACTIVE_SESSION:'.session_id(),$userKY['userID'],86400);
 
         //强制重新组装session 数据
