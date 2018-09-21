@@ -377,7 +377,21 @@
                     <div class="form-group">
                         <label for="loanDate" class="col-sm-2 control-label">放款日期</label>
                         <div class="col-sm-5">
-                            <input type="date" class="form-control" name="loanDate" id="loanDate" placeholder="" value="<?php echo date('Y-m-d');?>" >
+                            <?php
+                            $showLoanDate = date("Y-m-d", strtotime("+1 day", strtotime(date('Y-m-d'))));
+                            $noWorkDay = true;
+                            while ($noWorkDay) {
+                                $url = "http://api.goseek.cn/Tools/holiday?date=".$date = date("Ymd", strtotime($showLoanDate));
+                                $res = file_get_contents($url);
+                                $res = json_decode($res,true);
+                                if ($res['data'] != 1 && $res['data'] != 2) {
+                                    $noWorkDay = false;
+                                } else {
+                                    $showLoanDate = date("Y-m-d", strtotime("+1 day", strtotime($showLoanDate)));
+                                }
+                            }
+                            ?>
+                            <input type="text" class="form-control" name="loanDate" id="loanDate" placeholder="" value="<?php echo $showLoanDate;?>" >
                         </div>
                     </div>
                     <div class="form-group">
@@ -559,6 +573,14 @@
                 $.data(dataDict, 'dataDict', data);
             }
         });
+
+        $('#loanDate').datepicker({
+            format: "yyyy-mm-dd",
+            language: "zh-CN",
+            daysOfWeekDisabled: "0,6",
+            daysOfWeekHighlighted: "0,6",
+            autoclose: true
+        });
 	});
 
 	function showRequest() {
@@ -633,12 +655,17 @@
             loanAmount = triggered.data("loan-amount"),
             loanCrnCode = triggered.data("crn-code"),
             $loanCrnCodeSpan = $(".loanCrnCodeSpan"),
-            $loanAmountInput = $("#loanAmount");
+            $loanAmountInput = $("#loanAmount"),
+            $loanDate = $('#loanDate'),
+            $loanDateVal = $loanDate.val();
 
         $loanCrnCodeSpan.html(loanCrnCode);
         $loanAmountInput.val(loanAmount);
         $loanAmountInput.attr("max", loanAmount);
         $("#loanID").val(loanID);
+
+
+        $loanDate.datepicker('setStartDate', $loanDateVal);
 
         var hscodeQuery = '/user/finance/get-factoring-loan-ajax';
         $.ajax({
@@ -649,10 +676,12 @@
             },
             dataType: "json",
             success: function (data) {
-                if (data.loanStatus === '05') {
-                    var alertHtml = '<div class="alert alert-warning">拒绝原因：' + data.rejectReason + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + new Date(data.rejectDate).format("yyyy-MM-dd hh:mm:ss") + '</div>';
-                    var $modalAlertDiv = $(".modal-alert-div");
-                    $modalAlertDiv.html(alertHtml);
+                if (data !== null) {
+                    if (data.loanStatus === '05') {
+                        var alertHtml = '<div class="alert alert-warning">拒绝原因：' + data.rejectReason + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + new Date(data.rejectDate).format("yyyy-MM-dd hh:mm:ss") + '</div>';
+                        var $modalAlertDiv = $(".modal-alert-div");
+                        $modalAlertDiv.html(alertHtml);
+                    }
                 }
             }
         });
