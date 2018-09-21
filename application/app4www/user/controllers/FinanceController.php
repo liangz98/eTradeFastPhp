@@ -156,7 +156,9 @@ class FinanceController extends Kyapi_Controller_Action
         $factoringLoan = array();
         $factoringLoan['loanID'] = $this->_request->getParam('loanID');
         $factoringLoan['loanDate'] =  date("Y-m-d\TH:i:s", strtotime($this->_request->getParam('loanDate')));
+        // $factoringLoan['loanAmount'] = $this->_request->getParam('loanAmount');
         $factoringLoan['loanAmount'] = $this->_request->getParam('loanAmount');
+
 
         if (is_array($factoringLoan)) {
             $factoringLoan = $this->arrayToObject($factoringLoan);
