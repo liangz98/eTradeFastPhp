@@ -948,7 +948,7 @@ class SettleController extends Kyapi_Controller_Action
                 $this->view->resultMsg = $this->view->translate('tip_edit_fail') . '! ' . $existData->error;
             } else {
                 $resultMsg = base64_encode($this->view->translate('tip_edit_success'));
-                $this->redirect("/settle/index?resultMsg=" . $resultMsg);
+                $this->redirect("/settle/index?successMsg=" . $resultMsg);
             }
         }
         if (defined('SEED_WWW_TPL')) {

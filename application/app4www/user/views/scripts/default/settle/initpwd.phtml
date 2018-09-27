@@ -6,7 +6,6 @@
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
 
     <link href="/ky/css/settle/base.css" rel="stylesheet">
-    <link href="/ky/css/settle/style.css" rel="stylesheet">
 </head>
 <body>
 
@@ -24,7 +23,7 @@
                 <div class="form-group">
                     <label for="newPSD" class="col-sm-2 col-md-offset-2 control-label"><?php echo $this->translate('newPSD'); ?></label>
                     <div class="col-sm-4">
-                        <input type="password" class="form-control" name="newPSD" id="newPSD" onblur="checkpwd(this.value)" placeholder="">
+                        <input type="password" class="form-control" name="newPSD" id="newPSD" placeholder="">
                         <span id="e_pwd" class="f12"></span>
                     </div>
                 </div>
@@ -32,7 +31,7 @@
                 <div class="form-group">
                     <label for="confirmPSD" class="col-sm-2 col-md-offset-2 control-label"><?php echo $this->translate('confirmPSD'); ?></label>
                     <div class="col-sm-4">
-                        <input type="password" class="form-control" name="confirmPSD" id="confirmPSD" onblur="checkRpwd(this.value)" placeholder="">
+                        <input type="password" class="form-control" name="confirmPSD" id="confirmPSD" placeholder="">
                         <span id="e_pwd" class="f12"></span>
                     </div>
                 </div>
@@ -73,6 +72,7 @@
             },
             errorPlacement: function(error, element) {
                 // Append error within linked label
+                $(error).addClass("col-md-offset-4");
                 $(element)
                     .closest( "form" )
                     .find( "label[for='" + element.attr( "id" ) + "']" )
@@ -105,7 +105,7 @@
 
     // 验证确认密码
     jQuery.validator.addMethod("reCheckPassword", function(value, element) {
-        var psw = $("#ecommpasswsd").val();
+        var psw = $("#newPSD").val();
         return this.optional(element) || (value === psw);
     }, "<?php echo $this->translate('is_psd');?>");
 </script>
