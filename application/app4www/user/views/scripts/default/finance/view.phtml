@@ -7,7 +7,7 @@
     <link href="/ky/css/finance/finance.css" rel="stylesheet">
     <link href="/ky/css/img-upload.css" rel="stylesheet">
     <link href="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.css" rel="stylesheet">
-    <link href="/ky/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
+    <link href="/ky/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -378,20 +378,20 @@
                         <label for="loanDate" class="col-sm-2 control-label">放款日期</label>
                         <div class="col-sm-5">
                             <?php
-                            $showLoanDate = date("Y-m-d", strtotime("+1 day", strtotime(date('Y-m-d'))));
+                            $showLoanStartDate = date("Y-m-d", strtotime("+1 day", strtotime(date('Y-m-d'))));
                             $noWorkDay = true;
                             while ($noWorkDay) {
-                                $url = "http://api.goseek.cn/Tools/holiday?date=".$date = date("Ymd", strtotime($showLoanDate));
+                                $url = "http://api.goseek.cn/Tools/holiday?date=".$date = date("Ymd", strtotime($showLoanStartDate));
                                 $res = file_get_contents($url);
                                 $res = json_decode($res,true);
                                 if ($res['data'] != 1 && $res['data'] != 2) {
                                     $noWorkDay = false;
                                 } else {
-                                    $showLoanDate = date("Y-m-d", strtotime("+1 day", strtotime($showLoanDate)));
+                                    $showLoanStartDate = date("Y-m-d", strtotime("+1 day", strtotime($showLoanStartDate)));
                                 }
                             }
                             ?>
-                            <input type="text" class="form-control" name="loanDate" id="loanDate" placeholder="" value="<?php echo $showLoanDate;?>" >
+                            <input type="text" class="form-control" name="loanDate" id="loanDate" placeholder="" value="<?php echo $showLoanStartDate;?>" >
                         </div>
                     </div>
                     <div class="form-group">
@@ -528,8 +528,8 @@
 <script type="text/javascript" src="/ky/upload/img.js"></script>
 <script src="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.js"></script>
 <script src="/ky/bootstrap-table-1.12.1-dist/locale/bootstrap-table-zh-CN.min.js"></script>
-<script src="/ky/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.min.js"></script>
-<script src="/ky/bootstrap-datepicker-1.6.4-dist/locales/bootstrap-datepicker.zh-CN.min.js"></script>
+<script src="/ky/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/ky/bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
 <script src="/ky/js/base64.js"></script>
 
 <script type="text/javascript">
@@ -574,7 +574,8 @@
             }
         });
 
-        $('#loanDate').datepicker({
+        $('#loanDate').datetimepicker({
+            minView: "month",
             format: "yyyy-mm-dd",
             language: "zh-CN",
             daysOfWeekDisabled: "0,6",
@@ -657,7 +658,7 @@
             $loanCrnCodeSpan = $(".loanCrnCodeSpan"),
             $loanAmountInput = $("#loanAmount"),
             $loanDate = $('#loanDate'),
-            $loanDateVal = $loanDate.val();
+            $loanDateVal = '<?php echo $showLoanStartDate; ?>';
 
         $loanCrnCodeSpan.html(loanCrnCode);
         $loanAmountInput.val(loanAmount);
@@ -665,7 +666,7 @@
         $("#loanID").val(loanID);
 
 
-        $loanDate.datepicker('setStartDate', $loanDateVal);
+        $loanDate.datetimepicker('setStartDate', $loanDateVal);
 
         var hscodeQuery = '/user/finance/get-factoring-loan-ajax';
         $.ajax({

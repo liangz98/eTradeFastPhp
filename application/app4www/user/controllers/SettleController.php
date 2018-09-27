@@ -904,59 +904,60 @@ class SettleController extends Kyapi_Controller_Action
         }
     }
 
-    public function changepwdAction()
-    {
+    public function changepwdAction() {
         //忘记密码
-       if($this->_request->isPost()){
-            $_newPSD=$this->_request->getParam('newPSD');
-            $_confirmPSD=$this->_request->getParam('confirmPSD');
-           if($_newPSD!=$_confirmPSD){
-               Seed_Browser::autoclose($this->view->translate('is_psd'),$this->view->seed_BaseUrl . "/settle/initpwd");
-               exit;
-           }
-            $_loginPwd=$this->_request->getParam('longPSD');
-            $_resultData=$this->json->paymentchangePasswordApi($this->_requestObject,$_loginPwd,$_newPSD);
-            $_Data=json_decode($_resultData);
-           if ($_Data->status != 1) {
-               //忘记密码修改
-               Seed_Browser::autoclose($this->view->translate('tip_edit_fail').$_Data->error,$this->view->seed_BaseUrl . "/settle");
-           } else {
-               Seed_Browser::autoclose($this->view->translate('tip_edit_success'),$this->view->seed_BaseUrl . "/settle");
-           }
-       }
-        if(defined('SEED_WWW_TPL')){
-            $content = $this->view->render(SEED_WWW_TPL."/settle/changepwd.phtml");
-            echo $content;
-            exit;
-        }
-    }
-
-    public function initpwdAction()
-    {
-        //初始化密码
-        if ($this->_request->isPost()){
-
-            $_password=trim($this->_request->getParam('password'));
-            $_password2=trim($this->_request->getParam('password2'));
-            if($_password!=$_password2){
-                Seed_Browser::autoclose($this->view->translate('is_psd'),$this->view->seed_BaseUrl . "/settle/initpwd");
+        if ($this->_request->isPost()) {
+            $_newPSD = $this->_request->getParam('newPSD');
+            $_confirmPSD = $this->_request->getParam('confirmPSD');
+            if ($_newPSD != $_confirmPSD) {
+                Seed_Browser::autoclose($this->view->translate('is_psd'), $this->view->seed_BaseUrl . "/settle/initpwd");
                 exit;
             }
-            $_resultData=$this->json->paymentinitPasswordApi($this->_requestObject,$_password);
-            $_Data=json_decode($_resultData);
-                 if ($_Data->status != 1) {
-                     //初始化密码失败
-                     Seed_Browser::autoclose($this->view->translate('tip_edit_fail').$_Data->error,$this->view->seed_BaseUrl . "/settle");
-                 } else {
-                     Seed_Browser::autoclose($this->view->translate('tip_edit_success'),$this->view->seed_BaseUrl . "/settle");
-                 }
+            $_loginPwd = $this->_request->getParam('longPSD');
+            $_resultData = $this->json->paymentchangePasswordApi($this->_requestObject, $_loginPwd, $_newPSD);
+            $_Data = json_decode($_resultData);
+            if ($_Data->status != 1) {
+                //忘记密码修改
+                Seed_Browser::autoclose($this->view->translate('tip_edit_fail') . $_Data->error, $this->view->seed_BaseUrl . "/settle");
+            } else {
+                Seed_Browser::autoclose($this->view->translate('tip_edit_success'), $this->view->seed_BaseUrl . "/settle");
+            }
         }
-        if(defined('SEED_WWW_TPL')){
-            $content = $this->view->render(SEED_WWW_TPL."/settle/initpwd.phtml");
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/settle/changepwd.phtml");
             echo $content;
             exit;
         }
     }
+
+    public function initpwdAction() {
+        //初始化密码
+        if ($this->_request->isPost()) {
+
+            $newPSD = trim($this->_request->getParam('newPSD'));
+            $confirmPSD = trim($this->_request->getParam('confirmPSD'));
+            if ($newPSD != $confirmPSD) {
+                Seed_Browser::autoclose($this->view->translate('is_psd'), $this->view->seed_BaseUrl . "/settle/initpwd");
+                exit;
+            }
+            $_resultData = $this->json->paymentinitPasswordApi($this->_requestObject, $newPSD);
+            $existData = json_decode($_resultData);
+
+            if ($existData->status != 1) {
+                // 初始化密码失败
+                $this->view->resultMsg = $this->view->translate('tip_edit_fail') . '! ' . $existData->error;
+            } else {
+                $resultMsg = base64_encode($this->view->translate('tip_edit_success'));
+                $this->redirect("/settle/index?resultMsg=" . $resultMsg);
+            }
+        }
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/settle/initpwd.phtml");
+            echo $content;
+            exit;
+        }
+    }
+
     public function mbinitpwdAction()
     {
         if(defined('SEED_WWW_TPL')){
