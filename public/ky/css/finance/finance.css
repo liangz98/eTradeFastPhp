@@ -162,3 +162,29 @@ body {
 .et-auth-bg-orange {
     background:#f08c00;
 }
+
+/* 信用评级 */
+.creditRating {
+    left: -10px;
+    height: 149px;
+    background: url("/ky/images/creditRating.png") no-repeat 0 -40px;
+}
+
+.creditTitle {
+    margin-top: 10px;
+    color: #fff;
+    font-size: 16px;
+}
+
+.creditInfo {
+    margin-top: 20px;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.creditInfo-unApply {
+    margin-top: 10px;
+    color: #fff;
+    font-size: 14px;
+}

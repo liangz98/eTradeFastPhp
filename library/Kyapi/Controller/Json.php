@@ -1991,6 +1991,51 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
         return $resultObject;
     }
+
+    /* 金融模块 - 信用等级接口 */
+    public function getCreditRating($requestObject) {
+        $url = $this->url . '/accountapi/accountApi!getCreditRating.action';
+        $params = json_encode(array(
+            "requestObject" => $requestObject
+        ));
+        $resultObject = $this->vpost($url, $params);
+        return $resultObject;
+    }
+
+    /* 金融模块 - 信用等级接口 */
+    public function initEvaluationApply($requestObject) {
+        $url = $this->url . '/accountapi/accountApi!initEvaluationApply.action';
+        $params = json_encode(array(
+            "requestObject" => $requestObject
+        ));
+        $resultObject = $this->vpost($url, $params);
+        return $resultObject;
+    }
+
+    /* 金融模块 - 信用等级接口 */
+    public function saveEvaluationApply($requestObject, $evaluationInstance, $evaluationApplyDocumentList) {
+        $url = $this->url . '/accountapi/accountApi!saveEvaluationApply.action';
+        $params = json_encode(array(
+            "requestObject" => $requestObject,
+            "evaluationInstance" => $evaluationInstance,
+            "evaluationApplyDocumentList" => $evaluationApplyDocumentList
+        ));
+        $resultObject = $this->vpost($url, $params);
+        return $resultObject;
+    }
+
+    /* 金融模块 - 信用等级接口 */
+    public function submitEvaluationApply($requestObject, $evaluationInstance, $evaluationApplyDocumentList) {
+        $url = $this->url . '/accountapi/accountApi!submitEvaluationApply.action';
+        $params = json_encode(array(
+            "requestObject" => $requestObject,
+            "evaluationInstance" => $evaluationInstance,
+            "evaluationApplyDocumentList" => $evaluationApplyDocumentList
+        ));
+        $resultObject = $this->vpost($url, $params);
+        return $resultObject;
+    }
+
     /*4.1 企业实名认证 申请*/
     public function   doEntRealNameAuth($_requestObject,$_account){
         $_url=$this->url.'/accountapi/accountApi!doEntRealNameAuth.action';

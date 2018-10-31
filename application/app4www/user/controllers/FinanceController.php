@@ -38,8 +38,18 @@ class FinanceController extends Kyapi_Controller_Action
     }
 
     /**列表页**/
-    public function indexAction()
-    {
+    public function indexAction() {
+        $requestObject = $this->_requestObject;
+        // 信用评级信息
+        $resultObject = $this->json->getCreditRating($requestObject);
+        $creditRating = json_decode($resultObject)->result;
+
+        $this->view->creditRating = $creditRating;
+        $this->view->level = $creditRating->level;
+        $this->view->instance = $creditRating->instance;
+        $this->view->validDate = $creditRating->validDate;
+        $this->view->expiryDate = $creditRating->expiryDate;
+        $this->view->applyStatus = $creditRating->instance->applyStatus;
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/finance/index.phtml");
@@ -190,6 +200,28 @@ class FinanceController extends Kyapi_Controller_Action
 
         echo json_encode($msg);
         exit;
+    }
+
+    /* init Evaluation */
+    public function initEvaluationApplyAction() {
+        $dataType = $this->_request->getParam('dataType');;
+        $requestObject = $this->_requestObject;
+
+        if ($dataType == 'init') {
+            $resultObject = $this->json->initEvaluationApply($requestObject);
+            $creditRating = json_decode($resultObject)->result;
+            $this->view->instance = $creditRating->instance;
+        } elseif ($dataType == 'instance') {
+            $resultObject = $this->json->getCreditRating($requestObject);
+            $creditRating = json_decode($resultObject)->result;
+            $this->view->instance = $creditRating->instance;
+        }
+
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/finance/evaluation.phtml");
+            echo $content;
+            exit;
+        }
     }
 
     /**异步请求时间详情**/

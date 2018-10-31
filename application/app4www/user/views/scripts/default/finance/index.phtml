@@ -5,6 +5,7 @@
 	<title>快移</title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/finance/finance.css" rel="stylesheet">
+    <link href="/ky/css/img-upload.css" rel="stylesheet">
 </head>
 <body>
 
@@ -25,56 +26,86 @@
         <div class="panel panel-default">
             <div class="panel-body title-options">
                 <div class="row">
-                    <div class="col-sm-1">
-                        <p class="form-control-static">项目模式</p>
-                    </div>
-                    <div class="col-sm-9">
-                        <button type="button" class="btn btn-warning" data-type="factoringMode" data-value="all">全部</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default" data-type="factoringMode" data-value="RF">应收账款融资</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default" data-type="factoringMode" data-value="PF">生产融资</button>
-                        <input type="hidden" name="factoringMode" id="factoringMode" value="all">
-                    </div>
-                </div>
+                    <div class="col-sm-11">
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <p class="form-control-static">项目模式</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <button type="button" class="btn btn-warning" data-type="factoringMode" data-value="all">全部</button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringMode" data-value="RF">应收账款融资</button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringMode" data-value="PF">生产融资</button>
+                                <input type="hidden" name="factoringMode" id="factoringMode" value="all">
+                            </div>
+                        </div>
 
-                <div class="row">
-                    <div class="col-sm-1">
-                        <p class="form-control-static">债权货币</p>
-                    </div>
-                    <div class="col-sm-9">
-                        <button type="button" class="btn btn-warning" data-type="crnCode" data-value="all">全部</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default" data-type="crnCode" data-value="USD">USD</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default" data-type="crnCode" data-value="CNY">CNY</button>
-                        <input type="hidden" name="crnCode" id="crnCode" value="all">
-                    </div>
-                </div>
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <p class="form-control-static">债权货币</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <button type="button" class="btn btn-warning" data-type="crnCode" data-value="all">全部</button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="crnCode" data-value="USD">USD</button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="crnCode" data-value="CNY">CNY</button>
+                                <input type="hidden" name="crnCode" id="crnCode" value="all">
+                            </div>
+                        </div>
 
-                <div class="row">
-                    <div class="col-sm-1">
-                        <p class="form-control-static">金额</p>
-                    </div>
-                    <div class="col-sm-9">
-                        <button type="button" class="btn btn-warning" data-type="factoringAmount" data-value="all">全部</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A1">5000以下</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A2">5000 至 2万</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A3">2万 至 5万</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A4">5万 至 10万</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A5">10万 至 20万</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A6">20万以上</button>
-                        <input type="hidden" name="factoringAmount" id="factoringAmount" value="all">
-                    </div>
-                </div>
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <p class="form-control-static">金额</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <button type="button" class="btn btn-warning" data-type="factoringAmount" data-value="all">全部</button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A1">5000以下</button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A2">5000 至 2万</button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A3">2万 至 5万</button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A4">5万 至 10万</button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A5">10万 至 20万</button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A6">20万以上</button>
+                                <input type="hidden" name="factoringAmount" id="factoringAmount" value="all">
+                            </div>
+                        </div>
 
-                <div class="row">
-                    <div class="col-sm-1">
-                        <p class="form-control-static">进度</p>
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <p class="form-control-static">进度</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <button type="button" class="btn btn-warning" data-type="factoringStatus" data-value="all">全部</button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringStatus" data-value="all">待确权</button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringStatus" data-value="all">待回款</button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringStatus" data-value="all">待放款</button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringStatus" data-value="all">已完成</button>
+                                <input type="hidden" name="factoringStatus" id="factoringStatus" value="all">
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-9">
-                        <button type="button" class="btn btn-warning" data-type="factoringStatus" data-value="all">全部</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default" data-type="factoringStatus" data-value="all">待确权</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default" data-type="factoringStatus" data-value="all">待回款</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default" data-type="factoringStatus" data-value="all">待放款</button>&nbsp;&nbsp;
-                        <button type="button" class="btn btn-default" data-type="factoringStatus" data-value="all">已完成</button>
-                        <input type="hidden" name="factoringStatus" id="factoringStatus" value="all">
+                    <div class="col-sm-1 creditRating">
+                        <p class="creditTitle">快移信用</p>
+                        <?php if (!empty($this->level)): ?>
+                            <?php
+                            $nowDate = strtotime(date("Y-m-d"));
+                            $expiryDate = strtotime(date("Y-m-d", strtotime($this->expiryDate)));
+                            ?>
+                            <?php if ($nowDate > $expiryDate): ?>
+                                <p class="text-center creditInfo"><?php echo "过期"; ?></p>
+                            <?php else: ?>
+                                <p class="text-center creditInfo"><?php echo $this->level; ?></p>
+                            <?php endif; ?>
+                        <?php elseif (!empty($this->instance)): ?>
+                            <?php if ($this->applyStatus == 0): ?>
+                                <p class="text-center creditInfo-unApply" style="cursor: pointer;" data-toggle="modal" data-target="#applyCreditModal" data-type="instance">
+                                    提交资料<br >申请评核
+                                </p>
+                            <?php else: ?>
+                                <p class="text-center creditInfo"><?php echo "评估中"; ?></p>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <p class="text-center creditInfo-unApply" style="cursor: pointer;" data-toggle="modal" data-target="#applyCreditModal" data-type="init">
+                                提交资料<br >申请评核
+                            </p>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -84,11 +115,39 @@
 	</div>
 </div>
 
+<!-- Modal 申请评核 -->
+<div class="modal fade" id="applyCreditModal" tabindex="-1" role="dialog" aria-labelledby="applyCreditLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form class="form-horizontal" action="" method="post" id="applyContractForm" name="applyContractForm">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">申请评核</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1" class="col-sm-12">Email address</label>
+                        <div class="col-sm-12">
+                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="applyCreditBtn"><?php echo $this->translate('submit'); ?></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
 <script src="/ky/js/base64.js"></script>
+<script type="text/javascript" src="/ky/upload/img.js"></script>
 
 <script type="text/javascript">
     var dataDict = {};
@@ -123,6 +182,15 @@
 
                 refreshResultList();
             }
+        });
+
+        $("#applyCreditModal").on('show.bs.modal', function (e) {
+            var triggered = $(e.relatedTarget),
+                dataType = triggered.data("type"),
+                $evaluationBody = $("#applyCreditModal").find(".modal-body"),
+                initUrl = '/user/finance/init-evaluation-apply';
+
+            $evaluationBody.html("").load(initUrl, {"dataType": dataType});
         });
 	});
 
