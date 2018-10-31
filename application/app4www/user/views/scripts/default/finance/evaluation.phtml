@@ -1,0 +1,14 @@
+<?php foreach ($this->instance->evaluationApplyDocumentList as $k => $evaluationDocument): ?>
+<div class="form-group">
+    <label for="exampleInputEmail1" class="col-sm-12">' + evaluationDocument.title + '</label>
+    <?php if ($evaluationDocument->documentType == 'TA' || $evaluationDocument->documentType == 'TX'): ?>
+    <div class="col-sm-12">
+        <input type="text" class="form-control" id="<?php echo $evaluationDocument->documentID ?>" name="<?php echo $evaluationDocument->documentID ?>" placeholder="">
+    </div>
+    <?php endif; ?>
+
+    <?php if ($evaluationDocument->documentType == 'TA' || $evaluationDocument->documentType == 'AT'): ?>
+
+    <?php endif; ?>
+</div>
+<?php endforeach;?>
