@@ -39,6 +39,8 @@ class FinanceController extends Kyapi_Controller_Action
 
     /**列表页**/
     public function indexAction() {
+        $this->view->resultMsg = $this->_request->getParam('resultMsg');
+
         $requestObject = $this->_requestObject;
         // 信用评级信息
         $resultObject = $this->json->getCreditRating($requestObject);
@@ -204,7 +206,10 @@ class FinanceController extends Kyapi_Controller_Action
 
     /* init Evaluation */
     public function initEvaluationApplyAction() {
-        $dataType = $this->_request->getParam('dataType');;
+        $queryString = $_SERVER['QUERY_STRING'];
+        $dataType = base64_decode($queryString);
+
+        // $dataType = $this->_request->getParam('dataType');;
         $requestObject = $this->_requestObject;
 
         if ($dataType == 'init') {
@@ -215,6 +220,76 @@ class FinanceController extends Kyapi_Controller_Action
             $resultObject = $this->json->getCreditRating($requestObject);
             $creditRating = json_decode($resultObject)->result;
             $this->view->instance = $creditRating->instance;
+        }
+
+        if ($this->_request->isPost()) {
+            $evaluationInstance = array();
+            $evaluationInstance['instanceID'] = $this->_request->getParam('instanceID');
+            if (is_array($evaluationInstance)) {
+                $evaluationInstance = $this->arrayToObject($evaluationInstance);
+            }
+
+            $evaluationApplyDocumentList = array();
+
+            $documentIDList = $this->_request->getParam('documentID');
+
+            $requestAttachList = array();
+            $requestAttachList["attachID"] = $this->_request->getParam('attachNid');
+            $requestAttachList["attachName"] = $this->_request->getParam("attachName");
+            $requestAttachList["attachSize"] = $this->_request->getParam("attachSize");
+            $requestAttachList["attachType"] = $this->_request->getParam("attachType");
+            $requestAttachList["attachBizID"] = $this->_request->getParam("attachBizID");
+            $requestAttachListInit = array();
+            foreach ($requestAttachList as $k => $v) {
+                foreach ($v as $k1 => $v1) {
+                    $requestAttachListInit[$k1][$k] = $v1;
+                }
+            }
+
+            foreach ($documentIDList as $key => $documentID) {
+                $evaluationApplyDocumentList[$key]['documentID'] = $documentID;
+                $evaluationApplyDocumentList[$key]['contents'] = $this->_request->getParam("contents_".$documentID);
+
+                $attachmentList = array();
+                $i = 0;
+                foreach ($requestAttachListInit as $attachKey => $attach) {
+                    if ($attach['attachBizID'] == $documentID) {
+                        $attachmentList[$i]['attachID'] = $attach['attachID'];
+                        $attachmentList[$i]['attachType'] = "0000";
+                        $attachmentList[$i]['name'] = $attach['attachName'];
+                        $attachmentList[$i]['size'] = (int)$attach['attachSize'];
+                        $i++;
+                    }
+                }
+
+                if (is_array($attachmentList) && !empty($attachmentList)) {
+                    $evaluationApplyDocumentList[$key]['attachmentList'] = $attachmentList;
+                }
+            }
+
+            // 判断是保存还是提交
+            $submitType = $this->_request->getParam('submitType');
+            if ($submitType == 'save') {
+                $resultObject = $this->json->saveEvaluationApply($requestObject, $evaluationInstance, $evaluationApplyDocumentList);
+                $resultObject = json_decode($resultObject);
+
+                // 跳转
+                $resultMsg = base64_encode($this->view->translate('save').' Success');
+                if ($resultObject->status != 0) {
+                    $resultMsg = base64_encode($this->view->translate('save').' fail');
+                }
+                $this->redirect("/finance/index?resultMsg=" . $resultMsg);
+            } else {
+                $resultObject = $this->json->submitEvaluationApply($requestObject, $evaluationInstance, $evaluationApplyDocumentList);
+                $resultObject = json_decode($resultObject);
+
+                // 跳转
+                $resultMsg = base64_encode($this->view->translate('et_tips05'));
+                if ($resultObject->status != 0) {
+                    $resultMsg = base64_encode($this->view->translate('tip_forReview_fail'));
+                }
+                $this->redirect("/finance/index?resultMsg=" . $resultMsg);
+            }
         }
 
         if (defined('SEED_WWW_TPL')) {
@@ -581,4 +656,3 @@ class FinanceController extends Kyapi_Controller_Action
 
 
 }
-

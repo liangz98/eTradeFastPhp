@@ -170,14 +170,18 @@
                                                     <td style="cursor: pointer;" data-toggle="modal" data-target="#viewDelivery" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-status="<?php echo $v->deliveryStatus; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>"><?php $date = date_create($v->readyDate); echo date_format($date,"Y年m月d日"); ?></td>
                                                     <td style="cursor: pointer;" data-toggle="modal" data-target="#viewDelivery" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-status="<?php echo $v->deliveryStatus; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>"><?php $summary = $v->summary; $replaceStr = "<br />"; echo str_replace('\n', $replaceStr, $summary); ?></td>
                                                     <td style="text-align: center">
-                                                        <?php if ($v->deliveryStatus == 1 && $v->needExamine == False):?>
+                                                        <?php if ($v->deliveryStatus == 1 && $v->needExamine == False): ?>
                                                             <a class="layui-btn layui-btn-warm" data-toggle="modal" data-target="#deliveryDeliver" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>" >发货</a>
                                                         <?php elseif ($v->deliveryStatus == 2): ?>
                                                             <a class="layui-btn layui-btn-warm" data-toggle="modal" data-target="#deliveryDeliver" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>" >发货</a>
-                                                        <?php elseif (!$this->orders->isSelfSupport && $v->deliveryStatus == 3): ?>
-                                                            <a href='javascript:void(0)' data-toggle="modal" data-target="#billingInfo" data-delivery-id="<?php echo $v->deliveryID; ?>" >开票资料</a>
-                                                        <?php elseif (!$this->orders->isSelfSupport && $v->deliveryStatus == 4): ?>
-                                                            <a href='javascript:void(0)' data-toggle="modal" data-target="#billingInfo" data-delivery-id="<?php echo $v->deliveryID; ?>" >开票资料</a>
+                                                        <?php elseif ($v->deliveryStatus == 3): ?>
+                                                            <?php if (!$this->orders->isSelfSupport): ?>
+                                                                <a href='javascript:void(0)' data-toggle="modal" data-target="#billingInfo" data-delivery-id="<?php echo $v->deliveryID; ?>">开票资料</a>
+                                                            <?php endif; ?>
+                                                        <?php elseif ($v->deliveryStatus == 4): ?>
+                                                            <?php if (!$this->orders->isSelfSupport): ?>
+                                                                <a href='javascript:void(0)' data-toggle="modal" data-target="#billingInfo" data-delivery-id="<?php echo $v->deliveryID; ?>">开票资料</a>
+                                                            <?php endif; ?>
                                                         <?php endif; ?>
                                                     </td>
                                                 </tr>

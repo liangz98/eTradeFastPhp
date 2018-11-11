@@ -1,14 +1,84 @@
-<?php foreach ($this->instance->evaluationApplyDocumentList as $k => $evaluationDocument): ?>
-<div class="form-group">
-    <label for="exampleInputEmail1" class="col-sm-12">' + evaluationDocument.title + '</label>
-    <?php if ($evaluationDocument->documentType == 'TA' || $evaluationDocument->documentType == 'TX'): ?>
-    <div class="col-sm-12">
-        <input type="text" class="form-control" id="<?php echo $evaluationDocument->documentID ?>" name="<?php echo $evaluationDocument->documentID ?>" placeholder="">
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+    <title>快移</title>
+    <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <link href="/ky/css/img-upload.css" rel="stylesheet">
+</head>
+<body>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
+
+<div class="container-fluid index-body">
+    <div class="container">
+        <div class="page-header">
+            <h2>申请评核</h2>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form class="form-horizontal" action="" method="post" id="applyCreditForm" name="applyCreditForm">
+                    <input type="hidden" name="instanceID" value="<?php echo $this->instance->instanceID; ?>">
+                    <?php foreach ($this->instance->evaluationApplyDocumentList as $k => $evaluationDocument): ?>
+                        <input type="hidden" name="documentID[]" value="<?php echo $evaluationDocument->documentID; ?>">
+                        <input type="hidden" name="mandatory_<?php echo $evaluationDocument->documentID; ?>" value="<?php echo $evaluationDocument->isMandatory; ?>">
+                        <input type="hidden" name="documentType_<?php echo $evaluationDocument->documentID; ?>" value="<?php echo $evaluationDocument->documentType; ?>">
+                        <input type="hidden" name="submitType" id="submitType" value="save">
+                        <div class="form-group">
+                            <label for="" class="col-sm-12"><?php echo $evaluationDocument->title ?>
+
+                                <?php if ($evaluationDocument->isMandatory): ?>
+                                Mandatory1
+                                <?php endif;?>
+                            </label>
+                            <?php if ($evaluationDocument->documentType == 'TA' || $evaluationDocument->documentType == 'TX'): ?>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" id="<?php echo $evaluationDocument->documentID; ?>" name="contents_<?php echo $evaluationDocument->documentID; ?>" value="<?php echo $evaluationDocument->contents; ?>" placeholder="">
+                                </div>
+                            <?php endif; ?>
+
+                            <?php if ($evaluationDocument->documentType == 'TA' || $evaluationDocument->documentType == 'AT'): ?>
+                                <?php echo $evaluationDocument->documentID; ?>
+                                <?php echo $this->ShowWebuploader($evaluationDocument->attachmentList, $this->biz_Setting['EA'], $this->attach_Setting['0000'], '', $evaluationDocument->documentID); ?>
+                            <?php endif; ?>
+                        </div>
+                    <?php endforeach;?>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-3">
+                            <button type="button" class="btn btn-warning btn-block" onclick="$('#submitType').val('save');applyCreditForm.submit();">
+                                <?php echo $this->translate('save'); ?>
+                            </button>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <button type="button" class="btn btn-warning btn-block" onclick="$('#submitType').val('submit');applyCreditForm.submit();">
+                                <?php echo $this->translate('submit'); ?>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-    <?php endif; ?>
-
-    <?php if ($evaluationDocument->documentType == 'TA' || $evaluationDocument->documentType == 'AT'): ?>
-
-    <?php endif; ?>
 </div>
-<?php endforeach;?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script src="/ky/js/base64.js"></script>
+<script type="text/javascript" src="/ky/upload/img.js"></script>
+
+<script type="text/javascript">
+    $().ready(function() {
+
+    });
+
+    $(function () {
+
+    });
+</script>
+</body>
+</html>

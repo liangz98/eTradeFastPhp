@@ -110,7 +110,7 @@ function webupload_pic() {
 
             if (type != "jpeg" && type != "png" && type != "jpg" && type != "gif" && type != "GIF" && type != "JPG" && type != "PNG") {
                 $(".webupload_current").parent().parent().find('.img-view').prepend("<li><img width='125px' height='125px' class='img_common' src='/ky/ico/" + type + ".png' alt=" + name + "></a><span class='del_to' >" + name + "<br><a href=" + response.doc + " download>下载</a>|<a onclick='delete_pic(this)'>删除</a></span>" +
-                    "<input type='hidden' name='attachNid[]' value=" + nid + "><input type='hidden'  name='attachName[]' value=" + name + "><input type='hidden'  name='attachSize[]' value=" + size + "><input type='hidden'  name='attachType[]' value=" + atach_new + "><input type='hidden'  name='bizType[]' value=" + bizTT + "></li>");
+                    "<input type='hidden' name='attachNid[]' value=" + nid + "><input type='hidden'  name='attachName[]' value=" + name + "><input type='hidden'  name='attachSize[]' value=" + size + "><input type='hidden'  name='attachType[]' value=" + atach_new + "><input type='hidden'  name='bizType[]' value=" + bizTT + "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
                 if (atach_new == "CRSE" || atach_new == "ODSE") {
                     if ($('#KEY_CRCT').length > 0) {
                         var k = $(".webupload_current").parent().parent().parent().find('#KEY_CRCT').val();
@@ -127,7 +127,7 @@ function webupload_pic() {
                 }
             } else {
                 $(".webupload_current").parent().parent().find('.img-view').prepend("<li><img width='125px' height='125px' class='img_common' src="  + response.pic + " data-pic=" + response.pic + " alt=''/><span class='del_to' >"+name+"<br><a onclick='view_pic(this)'>查看</a>|<a onclick='delete_pic(this)'>删除</a></span>" +
-                "<input type='hidden' name='attachNid[]' value=" +nid+ "><input type='hidden'  name='attachName[]' value="+name+ "><input type='hidden'  name='attachSize[]' value="+size+ "><input type='hidden'  name='attachType[]' value="+atach_new+ "><input type='hidden'  name='bizType[]' value="+bizTT+ "></li>");
+                "<input type='hidden' name='attachNid[]' value=" +nid+ "><input type='hidden'  name='attachName[]' value="+name+ "><input type='hidden'  name='attachSize[]' value="+size+ "><input type='hidden'  name='attachType[]' value="+atach_new+ "><input type='hidden'  name='bizType[]' value="+bizTT+ "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
                 if(atach_new=="CRSE"||atach_new=="ODSE"){
                     if ($('#KEY_CRCT').length>0) {
                         var k=$(".webupload_current").parent().parent().parent().find('#KEY_CRCT').val();
@@ -186,5 +186,7 @@ function webupload_pic() {
 function addWebuploadCurrent(obj) {
     $(".webupload_current").removeClass("webupload_current");
     obj.addClass("webupload_current");
+    console.log($(obj).attr("data-biz-id"));
+    bizID = $(obj).attr("data-biz-id");
 }
 

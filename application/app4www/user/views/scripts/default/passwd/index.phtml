@@ -130,7 +130,8 @@
 
     // 密码规验证(8-30位  字母数字)
     jQuery.validator.addMethod("isValidPassword", function(value, element) {
-        var regExp=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,30}$/;
+        // var regExp=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,30}$/;
+        var regExp = /^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$/;
         return this.optional(element) || (regExp.test(value));
     }, "<?php echo $this->translate('is_passwd');?>");
 

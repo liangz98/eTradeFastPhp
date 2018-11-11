@@ -25,6 +25,13 @@
 
         <div class="panel panel-default">
             <div class="panel-body title-options">
+                <?php if (!empty($this->resultMsg)): ?>
+                <div class="alert alert-success alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <p><?php echo base64_decode(str_replace(" ", "+", $this->resultMsg)); ?>!</p>
+                </div>
+                <?php endif; ?>
+
                 <div class="row">
                     <div class="col-sm-11">
                         <div class="row">
@@ -95,14 +102,14 @@
                             <?php endif; ?>
                         <?php elseif (!empty($this->instance)): ?>
                             <?php if ($this->applyStatus == 0): ?>
-                                <p class="text-center creditInfo-unApply" style="cursor: pointer;" data-toggle="modal" data-target="#applyCreditModal" data-type="instance">
+                                <p class="text-center creditInfo-unApply" style="cursor: pointer;" data-type="instance">
                                     提交资料<br >申请评核
                                 </p>
                             <?php else: ?>
                                 <p class="text-center creditInfo"><?php echo "评估中"; ?></p>
                             <?php endif; ?>
                         <?php else: ?>
-                            <p class="text-center creditInfo-unApply" style="cursor: pointer;" data-toggle="modal" data-target="#applyCreditModal" data-type="init">
+                            <p class="text-center creditInfo-unApply" style="cursor: pointer;" data-type="init">
                                 提交资料<br >申请评核
                             </p>
                         <?php endif; ?>
@@ -113,33 +120,6 @@
 
         <ul class="list-unstyled resultList"></ul>
 	</div>
-</div>
-
-<!-- Modal 申请评核 -->
-<div class="modal fade" id="applyCreditModal" tabindex="-1" role="dialog" aria-labelledby="applyCreditLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <form class="form-horizontal" action="" method="post" id="applyContractForm" name="applyContractForm">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">申请评核</h4>
-                </div>
-
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="exampleInputEmail1" class="col-sm-12">Email address</label>
-                        <div class="col-sm-12">
-                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" id="applyCreditBtn"><?php echo $this->translate('submit'); ?></button>
-                </div>
-            </form>
-        </div>
-    </div>
 </div>
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
@@ -182,6 +162,13 @@
 
                 refreshResultList();
             }
+        });
+
+        $(".creditInfo-unApply").click(function () {
+            var dataType = $(this).attr("data-type");
+            var base = new Base64();
+            var requestEnCode = base.encode(dataType);
+            window.location.href = "/user/finance/init-evaluation-apply?" + requestEnCode;
         });
 
         $("#applyCreditModal").on('show.bs.modal', function (e) {
