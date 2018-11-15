@@ -252,6 +252,7 @@ class Kyapi_Controller_Action extends Zend_Controller_Action{
             $this->view->accountID = $accountID = $_SESSION['rev_session']['accountID'];
             $this->view->accountName = $accountName = $_SESSION['rev_session']['accountName'];
             $this->view->accountStatus = $accountStatus = $_SESSION['rev_session']['accountStatus'];
+            $this->view->accountType = $accountType = $_SESSION['rev_session']['accountType'];
             $this->view->crnCode = $crnCode = $_SESSION['rev_session']['crnCode'];
             $this->view->regdCountryCode = $regdCountryCode = $_SESSION['rev_session']['regdCountryCode'];
             $this->view->userLoginName = $userLoginName = $_SESSION['rev_session']['userName'];

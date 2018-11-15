@@ -615,6 +615,8 @@ return array(
     'upADD'     => 'Additional Attachments',
     'upINFO'    => 'Please download the relevant contract documents, read carefully, after confirming, sign, print and return.',
 
+    'notice'    => 'Notice',
+    'mandatory' => 'Mandatory',
 
     'goodsPS01' => '*After changing these parameters, goods need to be re-inspected',
     'goodsPS02' => '*After changing these parameters, goods need to be re-inspected',

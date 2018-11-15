@@ -82,10 +82,14 @@
                 <li>
                     <a href="/user/finance"><?php echo $this->translate('Finance_index'); ?></a>
                 </li>
-                <?php endif;?>
-                <li class="hidden">
+                <?php endif; ?>
+
+                <?php if ($this->accountType == 'CO07'): ?>
+                <!-- 公司类型: 资金方 -->
+                <li>
                     <a href="/user/finance/channel"><?php echo $this->translate('nav_channel'); ?></a>
                 </li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>

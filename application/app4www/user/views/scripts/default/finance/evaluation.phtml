@@ -4,6 +4,7 @@
     <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
     <title>快移</title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <link href="/ky/css/finance/finance.css" rel="stylesheet">
     <link href="/ky/css/img-upload.css" rel="stylesheet">
 </head>
 <body>
@@ -18,20 +19,34 @@
 
         <div class="panel panel-default">
             <div class="panel-body">
+                <?php if (!empty($this->errMsg)): ?>
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Warning!</strong> <?php echo $this->errMsg; ?>
+                    </div>
+                <?php endif; ?>
+
+                <div class="alert alert-info alert-dismissible" role="alert">
+<!--                    <h2>--><?php //echo $this->translate('notice'); ?><!--!</h2>-->
+                    <?php foreach ($this->instance->evaluationApplyNoticeList as $k => $evaluationApplyNotice): ?>
+                    <p><strong><?php echo $evaluationApplyNotice->descText; ?></strong></p>
+                    <?php endforeach;?>
+                </div>
+
                 <form class="form-horizontal" action="" method="post" id="applyCreditForm" name="applyCreditForm">
                     <input type="hidden" name="instanceID" value="<?php echo $this->instance->instanceID; ?>">
+                    <input type="hidden" name="submitType" id="submitType" value="save">
                     <?php foreach ($this->instance->evaluationApplyDocumentList as $k => $evaluationDocument): ?>
                         <input type="hidden" name="documentID[]" value="<?php echo $evaluationDocument->documentID; ?>">
-                        <input type="hidden" name="mandatory_<?php echo $evaluationDocument->documentID; ?>" value="<?php echo $evaluationDocument->isMandatory; ?>">
-                        <input type="hidden" name="documentType_<?php echo $evaluationDocument->documentID; ?>" value="<?php echo $evaluationDocument->documentType; ?>">
-                        <input type="hidden" name="submitType" id="submitType" value="save">
+                        <input type="hidden" id="mandatory_<?php echo $evaluationDocument->documentID; ?>" name="mandatory_<?php echo $evaluationDocument->documentID; ?>" value="<?php echo $evaluationDocument->isMandatory; ?>">
+                        <input type="hidden" id="documentType_<?php echo $evaluationDocument->documentID; ?>" name="documentType_<?php echo $evaluationDocument->documentID; ?>" value="<?php echo $evaluationDocument->documentType; ?>">
                         <div class="form-group">
-                            <label for="" class="col-sm-12"><?php echo $evaluationDocument->title ?>
-
+                            <label for="" class="col-sm-12" id="title_<?php echo $evaluationDocument->documentID; ?>"><?php echo $evaluationDocument->title ?>
                                 <?php if ($evaluationDocument->isMandatory): ?>
-                                Mandatory1
+                                (<?php echo $this->translate('mandatory'); ?>)
                                 <?php endif;?>
                             </label>
+
                             <?php if ($evaluationDocument->documentType == 'TA' || $evaluationDocument->documentType == 'TX'): ?>
                                 <div class="col-sm-12">
                                     <input type="text" class="form-control" id="<?php echo $evaluationDocument->documentID; ?>" name="contents_<?php echo $evaluationDocument->documentID; ?>" value="<?php echo $evaluationDocument->contents; ?>" placeholder="">
@@ -39,21 +54,21 @@
                             <?php endif; ?>
 
                             <?php if ($evaluationDocument->documentType == 'TA' || $evaluationDocument->documentType == 'AT'): ?>
-                                <?php echo $evaluationDocument->documentID; ?>
                                 <?php echo $this->ShowWebuploader($evaluationDocument->attachmentList, $this->biz_Setting['EA'], $this->attach_Setting['0000'], '', $evaluationDocument->documentID); ?>
                             <?php endif; ?>
                         </div>
+                        <span class="help-block"><?php echo $evaluationDocument->description; ?></span>
                     <?php endforeach;?>
 
                     <div class="form-group">
                         <div class="col-sm-offset-3 col-sm-3">
-                            <button type="button" class="btn btn-warning btn-block" onclick="$('#submitType').val('save');applyCreditForm.submit();">
+                            <button type="button" class="btn btn-warning btn-block subButton" data-submit-type="save">
                                 <?php echo $this->translate('save'); ?>
                             </button>
                         </div>
 
                         <div class="col-sm-3">
-                            <button type="button" class="btn btn-warning btn-block" onclick="$('#submitType').val('submit');applyCreditForm.submit();">
+                            <button type="button" class="btn btn-warning btn-block subButton" data-submit-type="submit">
                                 <?php echo $this->translate('submit'); ?>
                             </button>
                         </div>
@@ -77,7 +92,93 @@
     });
 
     $(function () {
+        $(".subButton").click(function () {
+            var isSubmit = true,
+                submitType = $(this).attr("data-submit-type");
 
+            $('#submitType').val(submitType);
+
+            if (submitType === 'submit') {
+                $("input[name='documentID[]']").each(function () {
+                    var documentID = $(this).val();
+                    console.log(documentID);
+                    if ($("#mandatory_" + documentID).val() === '1') {
+                        var $contents = $("#" + documentID),
+                            documentType = $("#documentType_" + documentID).val(),
+                            $documentTitle = $("#title_" + documentID);
+
+                        console.log(documentType);
+
+                        // 文本 + 附件
+                        var hasAttach = false;
+                        if (documentType === 'TA') {
+                            if ($contents.length > 0) {
+                                console.log($contents.val());
+                                if ($contents.val() === '') {
+                                    isSubmit = false;
+                                    $documentTitle.addClass("mandatoryWarning");
+                                    $("html,body").animate({scrollTop: $documentTitle.offset().top - 10}, 1000);
+                                    return false;
+                                }
+                            } else {
+                                isSubmit = false;
+                                $documentTitle.addClass("mandatoryWarning");
+                                $("html,body").animate({scrollTop: $documentTitle.offset().top - 10}, 1000);
+                                return false;
+                            }
+
+                            $("input[name='attachBizID[]']").each(function () {
+                                if ($(this).val() === documentID) {
+                                    hasAttach = true;
+                                    return false;
+                                }
+                            });
+                            if (!hasAttach) {
+                                isSubmit = false;
+                                $documentTitle.addClass("mandatoryWarning");
+                                $("html,body").animate({scrollTop: $documentTitle.offset().top - 10}, 1000);
+                                console.log("need Mandatory attach!");
+                                return false;
+                            }
+                        } else if (documentType === 'TX') { // 文本
+                            if ($contents.length > 0) {
+                                console.log($contents.val());
+                                if ($contents.val() === '') {
+                                    isSubmit = false;
+                                    $documentTitle.addClass("mandatoryWarning");
+                                    $("html,body").animate({scrollTop: $documentTitle.offset().top - 10}, 1000);
+                                    return false;
+                                }
+                            } else {
+                                isSubmit = false;
+                                $documentTitle.addClass("mandatoryWarning");
+                                $("html,body").animate({scrollTop: $documentTitle.offset().top - 10}, 1000);
+                                return false;
+                            }
+                        } else if (documentType === 'AT') { // 附件
+                            $("input[name='attachBizID[]']").each(function () {
+                                if ($(this).val() === documentID) {
+                                    hasAttach = true;
+                                    return false;
+                                }
+                            });
+                            if (!hasAttach) {
+                                isSubmit = false;
+                                $documentTitle.addClass("mandatoryWarning");
+                                $("html,body").animate({scrollTop: $documentTitle.offset().top - 10}, 1000);
+                                console.log("need Mandatory attach!");
+                                return false;
+                            }
+                        }
+                    }
+                    $documentTitle.removeClass("mandatoryWarning");
+                });
+            }
+
+            if (isSubmit) {
+                $('form').submit();
+            }
+        });
     });
 </script>
 </body>

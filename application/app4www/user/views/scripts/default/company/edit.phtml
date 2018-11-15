@@ -63,7 +63,9 @@
                                             <div class="col-sm-9">
                                                 <p class="form-control-static"><?php echo $this->ShowDictionaryTo($this->dic_Setting["COUNTRY_ISO_CODE"], $this->userLangCode, $this->dic_Setting["COUNTRY_ISO_CODE"], $this->e['regdCountryCode']); ?></p>
                                                 <input type="text" class="form-control" name="regdAddress" id="regdAddress" placeholder="" value="<?php echo $this->e['regdAddress']; ?>" >
-                                                <input type="text" class="form-control" name="regdEnAddress" id="regdEnAddress" placeholder="" value="<?php echo $this->e['regdEnAddress']; ?>" >
+                                                <?php if ($this->e['regdCountryCode'] == 'CN'): ?>
+                                                <input type="text" class="form-control regdCN" name="regdEnAddress" id="regdEnAddress" placeholder="" value="<?php echo $this->e['regdEnAddress']; ?>" >
+                                                <?php endif; ?>
                                             </div>
                                         </div>
 

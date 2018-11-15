@@ -1938,35 +1938,23 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
     /*3.8金融模块接口   渠道列表 */
-    public function   listFinancingChannel($_requestObject,
-                                           $_queryParams,
-                                           $_querySorts,
-                                           $_keyword,
-                                           $_skip,
-                                           $_limit,
-                                           $_loanNo,
-                                           $_crnCode,
-                                           $_startDate,
-                                           $_endDate,
-                                           $_lowerAmount,
-                                           $_upperAmount
-
-    ){
-        $_url=$this->url.'/factoringapi/factoringApi!listFinancingChannel.action';
-        $_params =json_encode(array( "requestObject"=>$_requestObject,
-                                     "queryParams"=>$_queryParams,
-                                     "querySorts"=>$_querySorts,
-                                     "keyword"=>$_keyword,
-                                     "skip"=>$_skip,
-                                     "limit"=>$_limit,
-                                     "loanNo"=>$_loanNo,
-                                     "crnCode"=>$_crnCode,
-                                     "startDate"=>$_startDate,
-                                     "endDate"=>$_endDate,
-                                     "lowerAmount"=>$_lowerAmount,
-                                     "upperAmount"=>$_upperAmount,)
-                            );
-        $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
+    public function listFinancingChannel($_requestObject, $_queryParams, $_querySorts, $_keyword, $_skip, $_limit, $_loanNo, $_crnCode, $_startDate, $_endDate, $_lowerAmount, $_upperAmount) {
+        $_url = $this->url . '/factoringapi/factoringApi!listFinancingChannel.action';
+        $_params = json_encode(array(
+                "requestObject" => $_requestObject,
+                "queryParams"   => $_queryParams,
+                "querySorts"    => $_querySorts,
+                "keyword"       => $_keyword,
+                "skip"          => $_skip,
+                "limit"         => $_limit,
+                "loanNo"        => $_loanNo,
+                "crnCode"       => $_crnCode,
+                "startDate"     => $_startDate,
+                "endDate"       => $_endDate,
+                "lowerAmount"   => $_lowerAmount,
+                "upperAmount"   => $_upperAmount,
+            ));
+        $resultObject = $this->vpost($_url, $_params); //输出目标地址源码
         return $resultObject;
     }
     /*3.8.1金融模块接口  折现图  收益统计(按月分组) */

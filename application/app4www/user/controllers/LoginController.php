@@ -64,7 +64,8 @@ class LoginController extends Kyapi_Controller_Action {
                 $userDetail['user_id'] = $existData['contactID'];
                 $userDetail['accountID'] = $existData['account']['accountID'];//公司ID
                 $userDetail['accountName'] = $existData['account']['accountName'];//公司名称
-                $userDetail['accountStatus'] = $existData['account']['accountStatus'];//公司状态
+                $userDetail['accountStatus'] = $existData['account']['accountStatus'];  // 公司状态
+                $userDetail['accountType'] = $existData['account']['accountType'];      // 公司类型
                 $userDetail['crnCode'] = $existData['account']['crnCode'];  //公司默认货币
                 $userDetail['regdCountryCode'] = $existData['account']['regdCountryCode'];  //公司国籍
                 $userDetail['user_name'] = $existData['name'];
@@ -150,6 +151,7 @@ class LoginController extends Kyapi_Controller_Action {
                     'accountID'         => $userDetail['accountID'],
                     'accountName'       => $userDetail['accountName'],
                     'accountStatus'     => $userDetail['accountStatus'],
+                    'accountType'       => $userDetail['accountType'],
                     'crnCode'           => $userDetail['crnCode'],
                     'regdCountryCode'   => $userDetail['regdCountryCode'],
                     'userName'          => $userDetail['user_name'],
@@ -210,6 +212,7 @@ class LoginController extends Kyapi_Controller_Action {
             $userDetail['accountID'] = $existData['account']['accountID'];//公司ID
             $userDetail['accountName'] = $existData['account']['accountName'];//公司名称
             $userDetail['accountStatus'] = $existData['account']['accountStatus'];//公司状态
+            $userDetail['accountType'] = $existData['account']['accountType'];      // 公司类型
             $userDetail['crnCode'] = $existData['account']['crnCode'];  //公司默认货币
             $userDetail['regdCountryCode'] = $existData['account']['regdCountryCode'];  //公司国籍
             $userDetail['user_name'] = $existData['name'];
@@ -301,6 +304,7 @@ class LoginController extends Kyapi_Controller_Action {
                 'accountID'         => $userDetail['accountID'],
                 'accountName'       => $userDetail['accountName'],
                 'accountStatus'     => $userDetail['accountStatus'],
+                'accountType'       => $userDetail['accountType'],
                 'crnCode'           => $userDetail['crnCode'],
                 'regdCountryCode'   => $userDetail['regdCountryCode'],
                 'userName'          => $userDetail['user_name'],

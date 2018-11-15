@@ -246,30 +246,35 @@ class FinanceController extends Kyapi_Controller_Action
                 }
             }
 
-            foreach ($documentIDList as $key => $documentID) {
-                $evaluationApplyDocumentList[$key]['documentID'] = $documentID;
-                $evaluationApplyDocumentList[$key]['contents'] = $this->_request->getParam("contents_".$documentID);
-
-                $attachmentList = array();
-                $i = 0;
-                foreach ($requestAttachListInit as $attachKey => $attach) {
-                    if ($attach['attachBizID'] == $documentID) {
-                        $attachmentList[$i]['attachID'] = $attach['attachID'];
-                        $attachmentList[$i]['attachType'] = "0000";
-                        $attachmentList[$i]['name'] = $attach['attachName'];
-                        $attachmentList[$i]['size'] = (int)$attach['attachSize'];
-                        $i++;
-                    }
-                }
-
-                if (is_array($attachmentList) && !empty($attachmentList)) {
-                    $evaluationApplyDocumentList[$key]['attachmentList'] = $attachmentList;
-                }
-            }
-
             // 判断是保存还是提交
             $submitType = $this->_request->getParam('submitType');
             if ($submitType == 'save') {
+                foreach ($documentIDList as $key => $documentID) {
+                    $documentType = $this->_request->getParam("documentType_".$documentID);
+                    $mandatory = $this->_request->getParam("mandatory_".$documentID);
+
+                    $evaluationApplyDocumentList[$key]['documentID'] = $documentID;
+                    $contents = $this->_request->getParam("contents_".$documentID);
+                    $evaluationApplyDocumentList[$key]['contents'] = $contents;
+
+                    $attachmentList = array();
+                    $i = 0;
+                    foreach ($requestAttachListInit as $attachKey => $attach) {
+                        if ($attach['attachBizID'] == $documentID) {
+                            $attachmentList[$i]['attachID'] = $attach['attachID'];
+                            $attachmentList[$i]['attachType'] = "0000";
+                            $attachmentList[$i]['name'] = $attach['attachName'];
+                            $attachmentList[$i]['size'] = (int)$attach['attachSize'];
+                            $i++;
+                        }
+                    }
+
+                    if (is_array($attachmentList) && !empty($attachmentList)) {
+                        $evaluationApplyDocumentList[$key]['attachmentList'] = $attachmentList;
+                    }
+                }
+
+                // 保存
                 $resultObject = $this->json->saveEvaluationApply($requestObject, $evaluationInstance, $evaluationApplyDocumentList);
                 $resultObject = json_decode($resultObject);
 
@@ -280,6 +285,61 @@ class FinanceController extends Kyapi_Controller_Action
                 }
                 $this->redirect("/finance/index?resultMsg=" . $resultMsg);
             } else {
+                foreach ($documentIDList as $key => $documentID) {
+                    $documentType = $this->_request->getParam("documentType_".$documentID);
+                    $mandatory = $this->_request->getParam("mandatory_".$documentID);
+
+                    $evaluationApplyDocumentList[$key]['documentID'] = $documentID;
+                    $contents = $this->_request->getParam("contents_".$documentID);
+                    $evaluationApplyDocumentList[$key]['contents'] = $contents;
+
+                    $attachmentList = array();
+                    $i = 0;
+                    foreach ($requestAttachListInit as $attachKey => $attach) {
+                        if ($attach['attachBizID'] == $documentID) {
+                            $attachmentList[$i]['attachID'] = $attach['attachID'];
+                            $attachmentList[$i]['attachType'] = "0000";
+                            $attachmentList[$i]['name'] = $attach['attachName'];
+                            $attachmentList[$i]['size'] = (int)$attach['attachSize'];
+                            $i++;
+                        }
+                    }
+
+                    if (is_array($attachmentList) && !empty($attachmentList)) {
+                        $evaluationApplyDocumentList[$key]['attachmentList'] = $attachmentList;
+                    }
+
+                    // 验证必填项
+                    if ($mandatory) {
+                        if ($documentType == 'TA' || $documentType == 'TX') {
+                            if (empty($contents) || empty($attachmentList)) {
+                                $this->view->errMsg = $this->view->translate('tip_forReview_fail') . $documentID . '  ' . $documentType;
+
+                                $content = $this->view->render(SEED_WWW_TPL . "/finance/evaluation.phtml");
+                                echo $content;
+                                exit;
+                            }
+                        } elseif ($documentType == 'AT') {
+                            if (empty($attachmentList)) {
+                                $this->view->errMsg = $this->view->translate('tip_forReview_fail') . $documentID . '  ' . $documentType;
+
+                                $content = $this->view->render(SEED_WWW_TPL . "/finance/evaluation.phtml");
+                                echo $content;
+                                exit;
+                            }
+                        } elseif ($documentType == 'TX') {
+                            if (empty($contents)) {
+                                $this->view->errMsg = $this->view->translate('tip_forReview_fail') . $documentID . '  ' . $documentType;
+
+                                $content = $this->view->render(SEED_WWW_TPL . "/finance/evaluation.phtml");
+                                echo $content;
+                                exit;
+                            }
+                        }
+                    }
+                }
+
+                // 提交
                 $resultObject = $this->json->submitEvaluationApply($requestObject, $evaluationInstance, $evaluationApplyDocumentList);
                 $resultObject = json_decode($resultObject);
 
@@ -516,9 +576,8 @@ class FinanceController extends Kyapi_Controller_Action
         }
     }
 
-    /**渠道页**/
-    public function channelAction()
-    {
+    // 渠道页
+    public function channelAction() {
         $_requestOb = $this->_requestObject;
         $_crnCode = $this->_request->getParam('crnCode');
         if (empty($_crnCode)) {
@@ -545,7 +604,8 @@ class FinanceController extends Kyapi_Controller_Action
         }
 
         $page = intval($this->_request->getParam('page'));
-        if ($page < 1) $page = 1;
+        if ($page < 1)
+            $page = 1;
         $_limit = 5;
         $_skip = $_limit * ($page - 1);
 
@@ -558,48 +618,10 @@ class FinanceController extends Kyapi_Controller_Action
         $list = $this->json->listFinancingChannel($_requestOb, null, $_querySorts, $_keyword, 0, null, $_loanNo, $_crnCode, $_startDate, $_endDate, $_lowerAmount, $_upperAmount);
         $existData = $this->objectToArray(json_decode($list));
 
-
-        // $this->view->list = $existData['result'];
-
-
-//        $str = "{
-//    \"extData\": {
-//        \"totalSize\": 1,
-//        \"totalPage\": 1
-//    },
-//    \"latency\": 268,
-//    \"result\": [
-//        {
-//            \"accountsReceivable\": 4788,
-//            \"crnCode\": \"USD\",
-//            \"expiryDate\": \"2017-11-07T00:00:00\",
-//            \"loanDate\": \"2017-10-07T00:00:00\",
-//            \"hasAttachment\": false,
-//            \"interestAmount\": 30.02,
-//            \"interestPercent\": 0.00033,
-//            \"factoringID\": \"0C553429-882A-DEC0-47BC-0750FA90CCDA\",
-//            \"factoringNo\": \"L2017101315054110001\",
-//            \"period\": 18,
-//            \"factoringStatus\": \"03\",
-//            \"orderID\": \"39B90E20-F757-8B65-09DE-605603C8887C\",
-//            \"orderNo\": \"PO201709191000\",
-//            \"payAcctID\": \"4C954253-51EA-EBB5-2631-2376CBE5BBEA\",
-//            \"channelName\": \"我是海外来投资的\",
-//            \"channelStatus\": \"01\",
-//            \"financingAmount\": 4788,
-//            \"tradingStatus\": 0
-//        }
-//    ],
-//    \"status\": 1
-//}
-//";
-//        $existData = $this->objectToArray(json_decode($str));
         $list = $existData['result'];
         foreach ($list as $k => $v) {
             $list[$k]['diffTime'] = $this->diffBetweenTwoDays($v['loanDate'], $v['expiryDate']);
-
         }
-
 
         $this->view->list = $list;
         $this->view->crnCode = $_crnCode;
@@ -611,26 +633,17 @@ class FinanceController extends Kyapi_Controller_Action
     }
 
 
-    /**渠道详情页**/
-    public function channelviewAction()
-    {
-
+    // 渠道详情页
+    public function channelviewAction() {
         $_channelID = $this->_request->getParam('id');
 
         $channelInfo = $this->json->getFinancingChannelView($this->_requestObject, $_channelID);
 
-        // $channelRow = $this->objectToArray(json_decode($channelInfo));
-
-        //  $this->view->channelRow  = $channelRow['result'];
-
-
         $channelRow = $this->objectToArray(json_decode($channelInfo));
         $list = $channelRow['result'];
 
-
         $list['diffTime'] = $this->diffBetweenTwoDays(date("Y-m-d", time()), $list['expiryDate']);
         $list['companyName'] = trim($list['companyName']);
-        // print_r($list); exit;
         $this->view->channelRow = $list;
 
         if (defined('SEED_WWW_TPL')) {
@@ -640,9 +653,7 @@ class FinanceController extends Kyapi_Controller_Action
         }
     }
 
-
-    function diffBetweenTwoDays($day1, $day2)
-    {
+    function diffBetweenTwoDays($day1, $day2) {
         $second1 = strtotime($day1);
         $second2 = strtotime($day2);
 
@@ -653,6 +664,4 @@ class FinanceController extends Kyapi_Controller_Action
         }
         return ($second1 - $second2) / 86400;
     }
-
-
 }
