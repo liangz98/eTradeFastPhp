@@ -1937,46 +1937,68 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
         return $resultObject;
     }
-    /*3.8金融模块接口   渠道列表 */
-    public function listFinancingChannel($_requestObject, $_queryParams, $_querySorts, $_keyword, $_skip, $_limit, $_loanNo, $_crnCode, $_startDate, $_endDate, $_lowerAmount, $_upperAmount) {
-        $_url = $this->url . '/factoringapi/factoringApi!listFinancingChannel.action';
+
+    // 渠道列表
+    public function listFactoringItem4Channel($_requestObject, $itemNo, $factoringNo, $orderNo, $itemStatus, $crnCode, $startDate, $endDate, $lowerAmount, $upperAmount) {
+        $_url = $this->url . '/factoringapi/factoringApi!listFactoringItem4Channel.action';
         $_params = json_encode(array(
-                "requestObject" => $_requestObject,
-                "queryParams"   => $_queryParams,
-                "querySorts"    => $_querySorts,
-                "keyword"       => $_keyword,
-                "skip"          => $_skip,
-                "limit"         => $_limit,
-                "loanNo"        => $_loanNo,
-                "crnCode"       => $_crnCode,
-                "startDate"     => $_startDate,
-                "endDate"       => $_endDate,
-                "lowerAmount"   => $_lowerAmount,
-                "upperAmount"   => $_upperAmount,
-            ));
+            "requestObject" => $_requestObject,
+            "itemNo"        => $itemNo,
+            "factoringNo"   => $factoringNo,
+            "orderNo"       => $orderNo,
+            "itemStatus"    => $itemStatus,
+            "crnCode"       => $crnCode,
+            "startDate"     => $startDate,
+            "endDate"       => $endDate,
+            "lowerAmount"   => $lowerAmount,
+            "upperAmount"   => $upperAmount,
+        ));
         $resultObject = $this->vpost($_url, $_params); //输出目标地址源码
         return $resultObject;
     }
-    /*3.8.1金融模块接口  折现图  收益统计(按月分组) */
-    public function   countGains($_requestObject,$_year,$_crnCode){
-        $_url=$this->url.'/factoringapi/factoringApi!countGains.action';
-        $_params =json_encode(array("requestObject"=>$_requestObject,"year"=>$_year,"crnCode"=>$_crnCode));
-        $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
+
+    // 金融模块接口  折现图  收益统计(按月分组)
+    public function countGains($_requestObject, $year, $crnCode) {
+        $_url = $this->url . '/factoringapi/factoringApi!countGains.action';
+        $_params = json_encode(array(
+            "requestObject" => $_requestObject,
+            "year"          => $year,
+            "crnCode"       => $crnCode
+        ));
+        $resultObject = $this->vpost($_url, $_params); //输出目标地址源码
         return $resultObject;
     }
 
-    /*3.8.2金融模块接口   统计累计收益/累计投资金额/平均收益率 */
-    public function   countAccumulative($_requestObject,$crnCode){
-        $_url=$this->url.'/factoringapi/factoringApi!countAccumulative.action';
-        $_params =json_encode(array("requestObject"=>$_requestObject,'crnCode'=>$crnCode));
-        $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
+    // 金融模块接口 统计累计收益/累计投资金额/平均收益率
+    public function countAccumulative($_requestObject, $crnCode) {
+        $_url = $this->url . '/factoringapi/factoringApi!countAccumulative.action';
+        $_params = json_encode(array(
+            "requestObject" => $_requestObject,
+            "crnCode"       => $crnCode
+        ));
+        $resultObject = $this->vpost($_url, $_params); //输出目标地址源码
         return $resultObject;
     }
-    /*3.8.2金融模块接口   渠道详情 */
-    public function   getFinancingChannelView($_requestObject,$_channelID){
-        $_url=$this->url.'/factoringapi/factoringApi!getFinancingChannelView.action';
-        $_params =json_encode(array("requestObject"=>$_requestObject,"channelID"=>$_channelID));
-        $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
+
+    // 金融模块接口 渠道详情
+    public function getFinancingItemView4Channel($_requestObject, $itemID) {
+        $_url = $this->url . '/factoringapi/factoringApi!getFinancingItemView4Channel.action';
+        $_params = json_encode(array(
+            "requestObject" => $_requestObject,
+            "itemID"        => $itemID
+        ));
+        $resultObject = $this->vpost($_url, $_params); //输出目标地址源码
+        return $resultObject;
+    }
+
+    // 金融模块接口 渠道利息列表
+    public function listFactoringInterest4Channel($_requestObject, $loanID) {
+        $_url = $this->url . '/factoringapi/factoringApi!listFactoringInterest4Channel.action';
+        $_params = json_encode(array(
+            "requestObject" => $_requestObject,
+            "loanID"        => $loanID
+        ));
+        $resultObject = $this->vpost($_url, $_params); //输出目标地址源码
         return $resultObject;
     }
 

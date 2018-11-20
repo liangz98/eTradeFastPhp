@@ -16,28 +16,81 @@
             <div class="panel-body">
                 <ul class="nav nav-tabs nav-justified">
                     <li role="presentation" class="active">
-                        <a href="#cnyContent" aria-controls="info" role="tab" data-toggle="tab"><?php echo $this->translate('CNY'); ?></a>
+                        <a href="#usdContent" class="accumulativeTab" aria-controls="info" role="tab" data-toggle="tab" data-crn-code="CNY"><?php echo $this->translate('CNY'); ?></a>
                     </li>
                     <li role="presentation">
-                        <a href="#usdContent" aria-controls="profile" role="tab" data-toggle="tab"><?php echo $this->translate('USD'); ?></a>
+                        <a href="#usdContent" class="accumulativeTab" aria-controls="profile" role="tab" data-toggle="tab" data-crn-code="USD"><?php echo $this->translate('USD'); ?></a>
                     </li>
                 </ul>
 
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active row" id="cnyContent">
+                    <div role="tabpanel" class="tab-pane active row" id="usdContent">
                         <div class="col-sm-12">
                             <div class="alert alert-info alert-dismissible" role="alert">
-                                <h3><?php echo $this->translate('gains');?></h3>
-                                <h3><?php echo $this->translate('invested');?></h3>
-                                <h3><?php echo $this->translate('arr');?></h3>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-8 border-right-solid-white">
+                                        <div class="col-md-4">
+                                            <div class="row span-margin">
+                                                <div class="col-md-12">
+                                                    <p class="text-center"><?php echo $this->translate('gains');?></p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p class="text-center span-font-size-30"><span id="gains"></span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="row span-margin">
+                                                <div class="col-md-12">
+                                                    <p class="text-center"><?php echo $this->translate('invested');?></p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p class="text-center span-font-size-30"><span id="invested"></span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="row span-margin">
+                                                <div class="col-md-12">
+                                                    <p class="text-center"><?php echo $this->translate('arr');?></p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p class="text-center span-font-size-30"><span id="arr"></span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                    <div class="col-sm-12 col-md-4">
+                                        <div class="row span-margin-10 margin-left-25">
+                                            <span>在投资金</span>&nbsp;&nbsp;
+                                            <b><span id="operatingAmount"></span></b>
+                                        </div>
+
+                                        <div class="row span-margin-10 margin-left-25">
+                                            <span>可用资金</span>&nbsp;&nbsp;
+                                            <b><span id="availableAmount"></span></b>
+                                        </div>
+
+                                        <div class="row margin-left-25">
+                                            <span>已完成项目</span>&nbsp;&nbsp;
+                                            <b><span id="done"></span> 单</b>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div id="ifc_zx" style="float: left; height: 400px; width: 1100px; margin-left: -30px;"></div>
+                        <div id="ifc_zx" style="float: left; height: 400px; width: 1100px; padding-left: 10px"></div>
                     </div>
 
-                    <div role="tabpanel" class="tab-pane row" id="usdContent">
+                    <div role="tabpanel" class="tab-pane row" id="cnyContent">
 
                     </div>
                 </div>
@@ -112,120 +165,107 @@
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
-<script type="text/javascript" src="/ky/js/echarts.simple.min.js"></script>
+<script src="/ky/js/base64.js"></script>
+<script type="text/javascript" src="/ky/echarts-4.2.0/echarts.min.js"></script>
+
 <script type="text/javascript">
+    var dataDict = {};
+    var myChart = echarts.init(document.getElementById('ifc_zx'));
+
 	$().ready(function() {
 
 	});
 
 	$(function () {
-        var myChart = echarts.init(document.getElementById('ifc_zx'));
-        option = {
-            title : {
-                text: '',
-                subtext: ''
-            },
-            tooltip : {
-                trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} "
-            },
-            legend: {
-                data:['收益曲线']
-            },
-            grid: {
-                width: 'auto',
-                borderWidth:'0'
-            },
-            calculable : true,
-            xAxis : [
-                {
-                    type : 'category',
-                    axisLabel:{
-                        show: true,
-                        formatter: null,
-                        textStyle: {
-                            color: '#ccc'
-                        }
-                    },
-                    axisTick:{
-                        show: false},
-                    axisLine:{
-                        show:true,
-                        lineStyle: {
-                            color:'#ccc',
-                            width: 1
-                        }},
-                    splitLine:{show: false},//去除网格线
-                    boundaryGap : false,
-                    data : ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月']
-                }
-            ],
-            yAxis : [
-                {
-                    type : 'value',
-                    axisTick:{
-                        show: false},
-                    axisLabel:{show:false},
-                    axisLine:{show:false},
-                    splitLine:{show: false}//去除网格线
+	    // 初始化收效数据
+        initAccumulative('CNY');
+        initGains('CNY', new Date().getFullYear());
 
-                }
-            ],
-            series : [
-                {
-                    name:'收益',
-                    type:'line',
-                    data:[1, 2, 15, 20, 8, 30,18, 7 ],
-                    markPoint : {
-                        data : []
-                    },
-                    symbolSize:5,
-                    itemStyle : {
-                        normal : {
-                            // borderColor:'#5cb85c',
-                            // lineStyle:{
-                            //     color: "#ff6600"  //连线颜色
-                            // },
-                            label : {show: true}
+        $(".accumulativeTab").click(function () {
+            initAccumulative($(this).attr("data-crn-code"));
+            initGains($(this).attr("data-crn-code"), new Date().getFullYear());
+        });
+
+        // 初始化ECharts
+        option = {
+            baseOption: {
+                timeline: {
+                    data: ['2017', '2018'],
+                    // data: [],
+                    currentIndex: 1,
+                    bottom: '-5',
+                    label: {
+                        formatter: function (value, index) {
+                            // 格式化，只显示年份
+                            var date = new Date(value);
+                            return date.getFullYear();
                         }
-                    },
-                    markLine : {
-                        data : []
                     }
+                },
+                title: {
+                    show: true,
+                    text: '收益图表',
+                    subtext: '收益(万元)'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross'
+                    }
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                legend: {
+                    data:['收益', '应收收益']
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    name: '收益',
+                    data: [1, 2, 15, 20, 8, 20, 32, 7],
+                    type: 'line',
+                    itemStyle: {
+                        normal: {
+                            label: {show: true}
+                        }
+                    }
+                },{
+                    name: '应收收益',
+                    type: 'bar',
+                    data: [220, 182, 191, 234, 290]
+                }]
+            },
+            options: [
+                {
+                    title: {
+                        text: '2017收益分析'
+                    },
+                    series: [
+                        {data: [1, 2, 15, 20, 8, 20, 32, 7]},
+                        {data: [220, 182, 191, 234, 290]}
+                    ]
+                }, {
+                    title: {
+                        text: '2018收益分析'
+                    },
+                    series: [
+                        {data: [1, 2, 15, 20, 8, 20, 32, 7]},
+                        {data: [220, 182, 191, 234, 290]}
+                    ]
                 }
             ]
         };
 
-
-
-        option3 = {
-            title: {
-                show: true,
-                text: 'ECharts 入门示例'
-            },
-            tooltip: {},
-            legend: {
-                data:['销量']
-            },
-            xAxis: {
-                type: 'category',
-                data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
-            },
-            yAxis: {
-                type: 'value'
-            },
-            series: [{
-                data: [1, 2, 15, 20, 8, 30, 18, 7],
-                type: 'line',
-                itemStyle: {
-                    normal: {
-                        label: {show: true}
-                    }
-                }
-            }]
-        };
-
-        myChart.setOption(option3);
+        myChart.setOption(option);
 
 
         var dataDictQuery = '/user/common/dict-ajax';
@@ -257,7 +297,7 @@
 	});
 
     function refreshResultList() {
-        var factoringQuery = '/user/finance/factoring-list-ajax';
+        var factoringQuery = '/user/finance/list-factoring-item-channel-ajax';
         $.ajax({
             type: "POST",
             url: factoringQuery,
@@ -295,15 +335,15 @@
                 } else {
                     $.each(data.rows, function (i, item) {
                         var base = new Base64();
-                        var resultEnCode = base.encode(item.factoringID);
+                        var resultEnCode = base.encode(item.itemID);
 
                         var data = $.data(dataDict, 'dataDict');
-                        var factoringStatus = '-';
+                        var itemStatus = '-';
                         $.each(data, function (key, itemDict) {
                             if (key === 'FACTORING_STATUS') {
                                 $.each(itemDict, function (i, dict) {
-                                    if (dict.code === item.factoringStatus) {
-                                        factoringStatus = dict.name;
+                                    if (dict.code === item.itemStatus) {
+                                        itemStatus = dict.name;
                                     }
                                 });
                             }
@@ -313,37 +353,37 @@
                             + '  <div class="panel-heading">'
                             + '   <div class="row">'
                             + '    <div class="col-sm-11">'
-                            + '     <span>项目编号</span>&nbsp;&nbsp;'
-                            + '     <span>' + item.factoringNo + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+                            + '     <span>项目号</span>&nbsp;&nbsp;'
+                            + '     <span>' + item.itemNo + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
                             + '     <span>订单编号</span>&nbsp;&nbsp;'
-                            + '     <span>' + item.factoringNo + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
-                            + '     <span>债务方</span>&nbsp;&nbsp;'
-                            + '     <span>' + item.debtorCustomerName + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
-                            + '     <span>项目进度</span>&nbsp;&nbsp;'
-                            + '     <span>' + factoringStatus + '</span>'
+                            + '     <span>' + item.orderNo + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+                            + '     <span>项目金额</span>&nbsp;&nbsp;'
+                            + '     <span>' + item.crnCode + ' ' + item.receivableAmount + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+                            + '     <span>状态</span>&nbsp;&nbsp;'
+                            + '     <span>' + itemStatus + '</span>'
                             + '    </div>'
                             + '    <div class="col-sm-1">'
-                            + '     <p class="text-right"><a href="/user/finance/view?' + resultEnCode + '">详情</a></p>'
+                            + '     <p class="text-right"><a href="/user/finance/channelview?' + resultEnCode + '">详情</a></p>'
                             + '    </div>'
                             + '   </div>'
                             + '  </div>'
 
                             + '  <div class="panel-body">'
                             + '   <div class="row">'
-                            + '    <div class="col-sm-3">'
-                            + '     <span>应收帐款</span>&nbsp;&nbsp;'
-                            + '     <span>' + item.crnCode + ' ' + item.receivableTotalAmount  +'</span>'
+                            + '    <div class="col-sm-2">'
+                            + '     <span>支付期限</span>&nbsp;&nbsp;'
+                            + '     <span>' + item.period + ' Days' +'</span>'
                             + '    </div>'
                             + '    <div class="col-sm-4">'
-                            + '     <span>计划融资</span>&nbsp;&nbsp;'
-                            + '     <span>' + item.crnCode + ' ' + item.financingTotalAmount + ' ( ' + item.financingCrnCode + ' ' + item.tgtFinancingTotalAmount  + ')</span>'
-                            + '    </div>'
-                            + '    <div class="col-sm-2">'
-                            + '     <span>保理期</span>&nbsp;&nbsp;'
-                            + '     <span>' + item.period + ' 天</span>'
+                            + '     <span>投资金额</span>&nbsp;&nbsp;'
+                            + '     <span>' + item.financingCrnCode + ' ' + item.financingAmount + '</span>'
                             + '    </div>'
                             + '    <div class="col-sm-3">'
-                            + '     <span>计划回款日</span>&nbsp;&nbsp;'
+                            + '     <span>预计收益</span>&nbsp;&nbsp;'
+                            + '     <span>' + item.financingCrnCode + ' ' + item.interest + '</span>'
+                            + '    </div>'
+                            + '    <div class="col-sm-3">'
+                            + '     <span>预计收益日</span>&nbsp;&nbsp;'
                             + '     <span>' + new Date(item.expiryDate).format("yyyy-MM-dd") + '</span>'
                             + '    </div>'
                             + '   </div>'
@@ -358,8 +398,52 @@
                 $(".resultList li").click(function () {
                     var resultEnCodeUrl = $(this).attr("data-resultEnCode");
                     if (resultEnCodeUrl !== undefined && resultEnCodeUrl !== '') {
-                        window.location.href = '/user/finance/view?' + resultEnCodeUrl;
+                        window.location.href = '/user/finance/channelview?' + resultEnCodeUrl;
                     }
+                });
+            }
+        });
+    }
+    
+    function initAccumulative(crnCode) {
+        var accumulativeUrl = '/user/finance/count-accumulative-ajax';
+        $.ajax({
+            type: "POST",
+            url: accumulativeUrl,
+            data: {
+                crnCode: crnCode
+            },
+            dataType: "json",
+            success: function (data) {
+                $("#availableAmount").html(data.availableAmount);
+                $("#operatingAmount").html(data.operatingAmount);
+                $("#arr").html(data.arr);
+                $("#done").html(data.done);
+                $("#invested").html(data.invested);
+                $("#gains").html(data.gains);
+            }
+        });
+    }
+
+    function initGains(crnCode, year) {
+        var gainsUrl = '/user/finance/count-gains-ajax';
+        $.ajax({
+            type: "POST",
+            url: gainsUrl,
+            data: {
+                crnCode: crnCode,
+                year: year
+            },
+            dataType: "json",
+            success: function (data) {
+                // 填入数据
+                myChart.setOption({
+                    baseOption: {
+                        timeline: {
+                            data: data.totalYear
+                        }
+                    },
+                    options: data.options
                 });
             }
         });

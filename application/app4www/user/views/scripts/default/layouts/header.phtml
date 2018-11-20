@@ -35,9 +35,9 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="/"><?php echo $this->translate('nav_index'); ?> <span class="sr-only">(current)</span></a></li>
+                <li <?php if ($this->accountType == 'CO07'){ echo "class='hidden'";} ?>><a href="/"><?php echo $this->translate('nav_index'); ?> <span class="sr-only">(current)</span></a></li>
                 <!--<li><a href="#">Link</a></li>-->
-                <li class="dropdown">
+                <li class="dropdown <?php if ($this->accountType == 'CO07'){ echo " hidden";} ?>">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $this->translate('orderIN'); ?> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="/user/sale"><?php echo $this->translate('orderSALLE'); ?></a></li>
@@ -45,7 +45,7 @@
                     </ul>
                 </li>
 
-                <li class="dropdown">
+                <li class="dropdown <?php if ($this->accountType == 'CO07'){ echo " hidden";} ?>">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $this->translate('partners'); ?> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="/user/buyer"><?php echo $this->translate('partners_buyers'); ?></a></li>
@@ -53,7 +53,7 @@
                     </ul>
                 </li>
 
-                <li class="dropdown">
+                <li class="dropdown <?php if ($this->accountType == 'CO07'){ echo " hidden";} ?>">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $this->translate('goods'); ?> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="/user/goods"><?php echo $this->translate('goodsME'); ?></a></li>
@@ -62,7 +62,7 @@
                 </li>
 
                 <?php if ($this->isPersonAccount != 1): ?>
-                <li class="dropdown">
+                <li class="dropdown <?php if ($this->accountType == 'CO07'){ echo " hidden";} ?>">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $this->translate('companyMNG'); ?> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="/user/company"><?php echo $this->translate('company_info'); ?></a></li>
@@ -71,7 +71,7 @@
                     </ul>
                 </li>
                 <?php else: ?>
-                <li><a href="/user/bank"><?php echo $this->translate('bankNO'); ?></a></li>
+                <li <?php if ($this->accountType == 'CO07'){ echo "class='hidden'";} ?>><a href="/user/bank"><?php echo $this->translate('bankNO'); ?></a></li>
                 <?php endif; ?>
 
                 <?php if ($this->accountStatus == '01'): ?>
@@ -79,7 +79,7 @@
                 <li>
                     <a href="/user/settle"><?php echo $this->translate('Saltter_IN'); ?></a>
                 </li>
-                <li>
+                <li <?php if ($this->accountType == 'CO07'){ echo "class='hidden'";} ?>>
                     <a href="/user/finance"><?php echo $this->translate('Finance_index'); ?></a>
                 </li>
                 <?php endif; ?>

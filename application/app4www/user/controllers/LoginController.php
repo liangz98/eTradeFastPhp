@@ -173,7 +173,12 @@ class LoginController extends Kyapi_Controller_Action {
                 $redis->set('PHPREDIS_ACTIVE_USERS:' . $userDetail['user_id'], 'PHPREDIS_SESSION:' . session_id(), 3600);
                 $redis->set('PHPREDIS_ACTIVE_SESSION:' . session_id(), $userDetail['user_id'], 3600);
 
-                $this->redirect("/");
+                if ($existData['account']['accountType'] == 'CO07') {
+
+                    $this->redirect("/finance/channel");
+                } else {
+                    $this->redirect("/");
+                }
             }
         }
         if (defined('SEED_WWW_TPL')) {

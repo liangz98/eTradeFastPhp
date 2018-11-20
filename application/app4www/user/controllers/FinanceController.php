@@ -380,7 +380,7 @@ class FinanceController extends Kyapi_Controller_Action
         exit;
     }
 
-    /**详情页**/
+    // 详情页
     public function viewAction() {
         $requestObject = $this->_requestObject;
 
@@ -521,23 +521,6 @@ class FinanceController extends Kyapi_Controller_Action
         exit;
     }
 
-    /*折线图*/
-    public function countgainAction(){
-        //项目列表
-        if ($this->_request->isPost()) {
-            //获取附件ID
-            $_crncode = $this->_request->getParam('crncode');
-            $_year = $this->_request->getParam('year');
-            $countArr = $this->json->countGains($this->_requestObject, $_year, $_crncode);
-            $existData = $this->objectToArray(json_decode($countArr));
-            $resData=$existData['result'];
-            echo json_encode($resData);
-            exit;
-
-        }
-        exit;
-    }
-
     /*还款计算器*/
     public function calculationAction()
     {
@@ -578,53 +561,7 @@ class FinanceController extends Kyapi_Controller_Action
 
     // 渠道页
     public function channelAction() {
-        $_requestOb = $this->_requestObject;
-        $_crnCode = $this->_request->getParam('crnCode');
-        if (empty($_crnCode)) {
-            $_crnCode = $this->view->crnCode;
-        }
-
-        $_querySorts = $this->_request->getParam('querySorts');
-        if ($this->_request->isPost()) {
-            $_startDate = $this->_request->getPost('startDate');
-            $_endDate = $this->_request->getPost('endDate');
-            $_lowerAmount = $this->_request->getPost('lowerAmount');
-            $_upperAmount = $this->_request->getPost('upperAmount');
-            $_crnCode = $this->_request->getPost('crnCode');
-            $_loanNo = $this->_request->getPost('loanNo');
-        }
-
-        if (empty($_querySorts)) {
-            $_querySorts = null;
-        }
-
-        $_keyword = $this->_request->getParam('keyword');
-        if (empty($_keyword)) {
-            $_keyword = null;
-        }
-
-        $page = intval($this->_request->getParam('page'));
-        if ($page < 1)
-            $page = 1;
-        $_limit = 5;
-        $_skip = $_limit * ($page - 1);
-
-
-        //头部统计
-        $countAccumulative = $this->json->countAccumulative($_requestOb, $_crnCode);
-        $testcal = $this->objectToArray(json_decode($countAccumulative));
-        $this->view->cal = $testcal['result'];
-
-        $list = $this->json->listFinancingChannel($_requestOb, null, $_querySorts, $_keyword, 0, null, $_loanNo, $_crnCode, $_startDate, $_endDate, $_lowerAmount, $_upperAmount);
-        $existData = $this->objectToArray(json_decode($list));
-
-        $list = $existData['result'];
-        foreach ($list as $k => $v) {
-            $list[$k]['diffTime'] = $this->diffBetweenTwoDays($v['loanDate'], $v['expiryDate']);
-        }
-
-        $this->view->list = $list;
-        $this->view->crnCode = $_crnCode;
+        // $_requestOb = $this->_requestObject;
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/finance/channel.phtml");
             echo $content;
@@ -632,12 +569,228 @@ class FinanceController extends Kyapi_Controller_Action
         }
     }
 
+    // 统计累计收益/累计投资金额/平均收益率
+    public function countAccumulativeAjaxAction() {
+        $msg = array();
+        $requestObject = $this->_requestObject;
+
+        $crnCode = $this->_request->getParam('crnCode');
+
+        $resultObject = $this->json->countAccumulative($requestObject, $crnCode);
+        $msg = json_decode($resultObject)->result;
+
+        echo json_encode($msg);
+        exit;
+    }
+
+    // 折线图
+    public function countGainsAjaxAction() {
+        $msg = array();
+        $requestObject = $this->_requestObject;
+
+        $crnCode = $this->_request->getParam('crnCode');
+        $year = $this->_request->getParam('year');
+
+        // $resultObject = $this->json->countGains($requestObject, $year, $crnCode);
+        // $msg = json_decode($resultObject)->result;
+
+        $totalYear[] = (string)2017;
+        if (($year - 5) > (int)$totalYear[0]) {
+            $totalYear[0] = (string)($year - 5);
+        }
+        for ($n = 1; $n < 6; $n++) {
+            if ((int)$totalYear[count($totalYear) - 1] < $year) {
+                $totalYear[] = (string)($totalYear[count($totalYear) - 1] + 1);
+            }
+        }
+
+        $month = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+        $optionsArray = array();
+        $seriesArray = array();
+
+        foreach ($totalYear as $currYear) {
+            $resultObject = $this->json->countGains($requestObject, $currYear, $crnCode);
+
+            if (count(json_decode($resultObject)->result) > 0) {
+                $dataCont = array();
+                $monthDataArray = array();
+                $seriesArray = array();
+
+                // gains
+
+                foreach ($month as $monthItem) {
+                    $resultItem = array();
+                    foreach (json_decode($resultObject)->result as $key => $item) {
+                        if ($item->month == $monthItem) {
+                            $resultItem = $item;
+                            break;
+                        }
+                    }
+                    if (!empty($resultItem)) {
+                        $monthDataArray[] = $resultItem->gains;
+                    } else {
+                        $monthDataArray[] = 0;
+                    }
+                }
+                $dataCont['data'] = $monthDataArray;
+                $seriesArray['series'][] = $dataCont;
+
+                // arGains
+                $monthDataArray = array();
+                foreach ($month as $monthItem) {
+                    $resultItem = array();
+                    foreach (json_decode($resultObject)->result as $key => $item) {
+                        if ($item->month == $monthItem) {
+                            $resultItem = $item;
+                            break;
+                        }
+                    }
+
+                    if (!empty($resultItem)) {
+                        $monthDataArray[] = $resultItem->arGains;
+                    } else {
+                        $monthDataArray[] = 0;
+                    }
+                }
+                $dataCont['data'] = $monthDataArray;
+                $seriesArray['series'][] = $dataCont;
+
+
+            } else {
+                $seriesArray = array();
+                for ($n = 1; $n < 3; $n++) {
+                    $dataCont = array();
+                    $monthDataArray = array();
+                    foreach ($month as $monthItem) {
+                        $monthDataArray[] = 0;
+                    }
+                    $dataCont['data'] = $monthDataArray;
+
+                    $seriesArray['series'][] = $dataCont;
+                }
+            }
+
+            $optionsArray[] = $seriesArray;
+        }
+
+
+        $msg['totalYear'] = $totalYear;
+        $msg['options'] = $optionsArray;
+
+        echo json_encode($msg);
+        exit;
+    }
+
+    // 列表
+    public function listFactoringItemChannelAjaxAction() {
+        $msg = array();
+        $requestObject = $this->_requestObject;
+
+        $queryParams = array();
+
+        $querySorts = array();
+        // $querySorts['createTime'] = "DESC";
+
+        $keyword = $this->_request->getParam('keyword');
+        if (empty($keyword)) {
+            $keyword = null;
+        }
+
+        $limit = $this->_request->getParam('limit');
+        if (empty($limit) || $limit <= 0) {
+            $limit = 10;
+        }
+
+        $skip = $this->_request->getParam('skip');
+        if (empty($limit) || $limit <= 0) {
+            $skip = 0;
+        }
+
+        if (is_array($queryParams)) {
+            $queryParams = $this->arrayToObject($queryParams);
+        }
+
+        if (is_array($querySorts)) {
+            $querySorts = $this->arrayToObject($querySorts);
+        }
+
+        $itemStatus = $this->_request->getParam('itemStatus');
+        if (empty($itemStatus)) {
+            $itemStatus = null;
+        } else {
+            if ($itemStatus == 'all') {
+                $itemStatus = null;
+            }
+        }
+        $factoringMode = $this->_request->getParam('factoringMode');
+        if (!empty($factoringMode)) {
+            if ($factoringMode == 'all') {
+                $factoringMode = null;
+            }
+        }
+        $factoringNo = $this->_request->getParam('factoringNo');
+        $itemNo = $this->_request->getParam('itemNo');
+        $orderNo = $this->_request->getParam('orderNo');
+        $crnCode = $this->_request->getParam('crnCode');
+        if (!empty($crnCode)) {
+            if ($crnCode == 'all') {
+                $crnCode = null;
+            }
+        }
+        $startDate = $this->_request->getParam('startDate');
+        if (empty($startDate)) {
+            $startDate = null;
+        } else {
+            $startDate = date("Y-m-d\TH:i:s", strtotime($startDate));
+        }
+        $endDate = $this->_request->getParam('endDate');
+        if (empty($endDate)) {
+            $endDate = null;
+        } else {
+            $endDate = date("Y-m-d\TH:i:s", strtotime($endDate));
+        }
+
+        $lowerAmount = null;
+        $upperAmount = null;
+        $factoringAmount = $this->_request->getParam('factoringAmount');
+        if (!empty($factoringAmount)) {
+            if ($factoringAmount == 'A1') {
+                $lowerAmount = 0;
+                $upperAmount = 5000;
+            } else if ($factoringAmount == 'A2') {
+                $lowerAmount = 5000;
+                $upperAmount = 20000;
+            } else if ($factoringAmount == 'A3') {
+                $lowerAmount = 20000;
+                $upperAmount = 50000;
+            } else if ($factoringAmount == 'A4') {
+                $lowerAmount = 50000;
+                $upperAmount = 100000;
+            } else if ($factoringAmount == 'A5') {
+                $lowerAmount = 100000;
+                $upperAmount = 200000;
+            } else if ($factoringAmount == 'A6') {
+                $lowerAmount = 200000;
+            }
+        }
+
+        $resultObject = $this->json->listFactoringItem4Channel($requestObject, $itemNo, $factoringNo, $orderNo, $itemStatus, $crnCode,
+            $startDate, $endDate, $lowerAmount, $upperAmount);
+        $msg["totalPage"] = json_decode($resultObject)->extData->totalPage;
+        $msg["rows"] = json_decode($resultObject)->result;
+
+        echo json_encode($msg);
+        exit;
+    }
 
     // 渠道详情页
     public function channelviewAction() {
-        $_channelID = $this->_request->getParam('id');
+        $requestObject = $this->_requestObject;
+        $queryString = $_SERVER['QUERY_STRING'];
+        $itemID = base64_decode($queryString);
 
-        $channelInfo = $this->json->getFinancingChannelView($this->_requestObject, $_channelID);
+
+        $channelInfo = $this->json->getFinancingItemView4Channel($requestObject, $itemID);
 
         $channelRow = $this->objectToArray(json_decode($channelInfo));
         $list = $channelRow['result'];

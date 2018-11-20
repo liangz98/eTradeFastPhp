@@ -185,7 +185,7 @@
                             <tbody>
                             <?php if (empty($this->serviceChargeList)):?>
                                 <tr>
-                                    <td colspan="4"><?php echo $this->translate('noData'); ?></td>
+                                    <td colspan="5"><?php echo $this->translate('noData'); ?></td>
                                 </tr>
                             <?php else:?>
                             <?php foreach ($this->serviceChargeList as $serviceCharge):?>
@@ -285,6 +285,21 @@
                             <?php endif;?>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <span class="margin-left-5 text-999">实际利息</span>
+                        <span class="margin-left-25 text-666"><?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo number_format($this->LoanView['factoringItem']['actualInterest'], 2); ?></span>
+                    </div>
+                    <div class="col-md-3">
+                        <span class="margin-left-5 text-999">宽限期利息</span>
+                        <span class="margin-left-25 text-666"><?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo number_format($this->LoanView['factoringItem']['graceInterest'], 2); ?></span>
+                    </div>
+                    <div class="col-md-3">
+                        <span class="margin-left-5 text-999">逾期利息</span>
+                        <span class="margin-left-25 text-666"><?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo number_format($this->LoanView['factoringItem']['overdueInterest'], 2); ?></span>
                     </div>
                 </div>
 
