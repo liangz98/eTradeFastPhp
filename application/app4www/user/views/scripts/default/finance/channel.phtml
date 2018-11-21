@@ -101,7 +101,7 @@
             <div class="panel-body title-options">
                 <div class="row">
                     <div class="col-sm-11">
-                        <div class="row">
+                        <div class="row hidden">
                             <div class="col-sm-1">
                                 <p class="form-control-static"><?php echo $this->translate('Finance_itermNo');?></p>
                             </div>
@@ -436,6 +436,8 @@
             },
             dataType: "json",
             success: function (data) {
+                // console.log(JSON.stringify(data.options));
+
                 // 填入数据
                 myChart.setOption({
                     baseOption: {

@@ -616,8 +616,10 @@ class FinanceController extends Kyapi_Controller_Action
                 $monthDataArray = array();
                 $seriesArray = array();
 
-                // gains
+                $textInfo['text'] = $currYear . '收益分析';
+                $seriesArray['title'] = $textInfo;
 
+                // gains
                 foreach ($month as $monthItem) {
                     $resultItem = array();
                     foreach (json_decode($resultObject)->result as $key => $item) {
@@ -658,6 +660,10 @@ class FinanceController extends Kyapi_Controller_Action
 
             } else {
                 $seriesArray = array();
+
+                $textInfo['text'] = $currYear . '收益分析';
+                $seriesArray['title'] = $textInfo;
+
                 for ($n = 1; $n < 3; $n++) {
                     $dataCont = array();
                     $monthDataArray = array();

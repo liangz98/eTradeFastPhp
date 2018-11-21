@@ -5,7 +5,6 @@
 	<title>快移</title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/finance/finance.css" rel="stylesheet">
-    <link href="/ky/css/img-upload.css" rel="stylesheet">
     <link href="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.css" rel="stylesheet">
     <link href="/ky/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 </head>
@@ -18,76 +17,74 @@
         <div class="panel panel-default">
             <div class="panel-body bg-color">
                 <div class="row text-white">
-                    <div class="col-sm-12 col-md-7 border-right-solid-white">
-                        <div class="row span-margin-10">
-                            <div class="col-md-5">
-                                <span>方案编号</span>&nbsp;&nbsp;
-                                <b><span><?php echo $this->LoanView['factoringNo']; ?></span></b>
-                            </div>
-                            <div class="col-md-7">
-                                <span>债务方</span>&nbsp;&nbsp;
-                                <b><span><?php echo $this->LoanView['debtorCustomerName']; ?></span></b>
-                            </div>
-                        </div>
-                        <div class="row span-margin-10">
-                            <div class="col-md-5">
-                                <span>订单编号</span>&nbsp;&nbsp;
-                                <b><span><?php echo $this->LoanView['factoringItem']['orderNo']; ?></span></b>
-                            </div>
-                            <div class="col-md-7">
-                                <span>应收账款金额</span>&nbsp;&nbsp;
-                                <span><b><?php echo $this->LoanView['crnCode']; ?> <?php echo $this->LoanView['receivableTotalAmount'] != 0 ? number_format($this->LoanView['receivableTotalAmount'], 2) : '----'; ?></b></span>
-                            </div>
-                        </div>
+                    <div class="col-sm-12 col-md-8 border-right-solid-white">
                         <div class="row">
-                            <div class="col-md-5">
-                                <span>融资模式</span>&nbsp;&nbsp;
-                                <b><span><?php echo $this->ShowDictionaryTo("FACTORING_MODE", $this->userLangCode, $this->dic_Setting['FACTORING_MODE'], $this->LoanView['factoringMode']); ?></span></b>
+                            <div class="col-md-4">
+                                <div class="row span-margin">
+                                    <div class="col-md-12">
+                                        <p class="text-center"><?php echo $this->translate('financingAmountview'); ?></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="text-center span-font-size-30"><?php echo $this->channelRow['financingCrnCode'] ?> <?php echo $this->channelRow['financingAmount'] ?></p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-7">
-                                <span>计划融资金额</span>&nbsp;&nbsp;
-                                <span><b><?php echo $this->LoanView['crnCode']; ?> <?php echo $this->LoanView['financingTotalAmount'] != 0 ? number_format($this->LoanView['financingTotalAmount'], 2) : '----'; ?></b> 折合 <b><?php echo $this->LoanView['financingCrnCode']; ?> <?php echo $this->LoanView['tgtFinancingTotalAmount'] != 0 ? number_format($this->LoanView['tgtFinancingTotalAmount'], 2) : '----'; ?></b></span>
+                            <div class="col-md-4">
+                                <div class="row span-margin">
+                                    <div class="col-md-12">
+                                        <p class="text-center"><?php echo $this->translate('arr'); ?></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="text-center span-font-size-30"><?php echo number_format($this->channelRow['interest'] / $this->channelRow['financingAmount'] * 100, 2); ?> %</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row span-margin">
+                                    <div class="col-md-12">
+                                        <p class="text-center"><?php echo $this->translate('diffTimes'); ?></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="text-center span-font-size-30"><?php echo $this->channelRow['diffTime']; ?> DAYS</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-sm-12 col-md-5">
+                    <div class="col-sm-12 col-md-4">
+                        <div class="row span-margin-10">
+                            <div class="col-md-12">
+                                <span><?php echo $this->translate('accountsReceivable'); ?></span>&nbsp;&nbsp;
+                                <b><span><?php echo $this->channelRow['crnCode'].'&nbsp;&nbsp;'.$this->channelRow['receivableAmount'];?></span></b>
+                            </div>
+                        </div>
+                        <div class="row span-margin-10">
+                            <div class="col-md-5">
+                                <span>项目<?php echo $this->translate('period'); ?></span>&nbsp;&nbsp;
+                                <b><span><?php echo $this->channelRow['period'] ?>&nbsp;DAYS</span></b>
+                            </div>
+                            <div class="col-md-7">
+
+                            </div>
+                        </div>
                         <div class="row">
-                            <div class="col-md-4">
-                                <div class="row span-margin">
-                                    <div class="col-md-12">
-                                        <p class="text-center">融资(日)利率</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <p class="text-center span-font-size-30"><?php echo $this->LoanView['interestPercent'] * 100; ?> %</p>
-                                    </div>
-                                </div>
+                            <div class="col-md-5">
+                                <span><?php echo $this->translate('inputProportion'); ?></span>&nbsp;&nbsp;
+                                <b>
+                                    <span>
+                                    <?php echo number_format($this->channelRow['financingAmount'] / $this->channelRow['receivableAmount'] * 100, 2); ?> %
+                                    </span>
+                                </b>
                             </div>
-                            <div class="col-md-4">
-                                <div class="row span-margin">
-                                    <div class="col-md-12">
-                                        <p class="text-center">逾期(日)利率</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <p class="text-center span-font-size-30"><?php echo $this->LoanView['overdueInterestPercent'] * 100; ?> %</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="row span-margin">
-                                    <div class="col-md-12">
-                                        <p class="text-center">宽限期(日)利率</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <p class="text-center span-font-size-30"><?php echo $this->LoanView['graceInterestPercent'] * 100; ?> %</p>
-                                    </div>
-                                </div>
+                            <div class="col-md-7">
+
                             </div>
                         </div>
                     </div>
@@ -99,121 +96,83 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <p class="span-font-size-18 text-primary">详细资料</p>
+                        <p class="span-font-size-18 text-primary"><?php echo $this->translate('Finance_info'); ?></p>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-2">
-                        <p class="form-control-static text-999">保理公司</p>
+                        <p class="form-control-static text-999"><?php echo $this->translate('factoringNo'); ?></p>
                     </div>
                     <div class="col-md-10">
                         <p class="form-control-static text-666">
-                            <?php echo $this->LoanView['companyName']; ?>
+                            <?php echo $this->channelRow['itemNo'] ?>
                         </p>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-2">
-                        <p class="form-control-static text-999">计划放款日</p>
+                        <p class="form-control-static text-999"><?php echo $this->translate('companyName'); ?></p>
                     </div>
                     <div class="col-md-10">
                         <p class="form-control-static text-666">
-                            <?php echo date('Y-m-d', strtotime($this->LoanView['loanDate'])); ?>
+                            <?php echo $this->channelRow['factoring']['companyName'] ?>
                         </p>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-2">
-                        <p class="form-control-static text-999">计划届满日</p>
+                        <p class="form-control-static text-999"><?php echo $this->translate('orderNon'); ?></p>
                     </div>
                     <div class="col-md-10">
                         <p class="form-control-static text-666">
-                            <?php echo date('Y-m-d', strtotime($this->LoanView['expiryDate'])); ?>
+                            <?php echo $this->channelRow['orderNo'] ?>
                         </p>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-2">
-                        <p class="form-control-static text-999">预计总利息</p>
+                        <p class="form-control-static text-999"><?php echo $this->translate('Finance_project_date'); ?></p>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-10">
                         <p class="form-control-static text-666">
-                            <?php echo $this->LoanView['financingCrnCode']; ?> <?php echo $this->LoanView['interest'] != 0 ? number_format($this->LoanView['interest'], 2) : '----'; ?>
+                            <?php echo date('Y/m/d', strtotime($this->channelRow['loanDate']));?> - <?php echo date("Y/m/d",strtotime($this->channelRow['expiryDate']));?>
                         </p>
                     </div>
-                    <div class="col-md-7">
-                        <div class="well well-sm text-999" style="margin-bottom: 0 !important;">计划收取的利息总额，仅作参考。实收利息以实际发货情况及回款情况按日收取。</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('financingAmountview'); ?></p>
+                    </div>
+                    <div class="col-md-10">
+                        <p class="form-control-static text-666">
+                            <?php echo $this->channelRow['factoring']['financingCrnCode'] . '&nbsp;' . $this->ShowToPrice($this->channelRow['financingAmount']); ?>
+                        </p>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-2">
-                        <p class="form-control-static text-999">文件</p>
+                        <p class="form-control-static text-999"><?php echo $this->translate('yjsy'); ?></p>
                     </div>
-                    <div class="col-md-10"></div>
-                </div>
-                <div class="row factoring-contract">
-                    <div class="col-xs-12 text-primary">
-                        <?php
-                        echo $this->ShowOrderContract4Factoring($this->contractList, $this->accountID, 'FTTA', $this->orders['client'], $this->hasIDCertificate);
-                        ?>
+                    <div class="col-md-10">
+                        <p class="form-control-static text-666">
+                            <?php echo $this->channelRow['factoring']['financingCrnCode'] . '&nbsp;' . $this->ShowToPrice($this->channelRow['interest']); ?>
+                        </p>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-md-12">
-                        <p class="span-font-size-18 text-primary margin-top-15">服务费用</p>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th width="140">放款编号</th>
-                                <th class="text-right">费用</th>
-                                <th>说明</th>
-                                <th width="140"><?php echo $this->translate('Saltter_Status'); ?></th>
-                                <th width="140">操作</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php if (empty($this->serviceChargeList)):?>
-                                <tr>
-                                    <td colspan="5"><?php echo $this->translate('noData'); ?></td>
-                                </tr>
-                            <?php else:?>
-                            <?php foreach ($this->serviceChargeList as $serviceCharge):?>
-                            <tr>
-                                <td style="vertical-align: middle; "><?php echo $serviceCharge['loanNo']; ?></td>
-                                <td class="text-right" style="vertical-align: middle; "><?php echo $serviceCharge['loanCrnCode']; ?> <?php echo number_format($serviceCharge['serviceCharge'], 2); ?></td>
-                                <td class="text-999" style="vertical-align: middle; "><?php echo number_format($serviceCharge['loanAmount'], 2); ?> x <?php echo $serviceCharge['serviceChargePercent'] * 100; ?> % = <?php echo number_format($serviceCharge['serviceCharge'], 2); ?>。发放融资款前，一次性收取。</td>
-                                <td style="vertical-align: middle; "><?php echo $this->ShowDictionaryTo("LOAN_STATUS", $this->userLangCode, $this->dic_Setting['LOAN_STATUS'], $serviceCharge['serviceChargeTradingStatus']); ?></td>
-                                <td style="vertical-align: middle; ">
-                                    <?php if ($serviceCharge['serviceChargeTradingStatus'] == '0'):?>
-                                        <a class="btn btn-warning btn-sm" href="/user/settle/payment?<?php echo base64_encode($serviceCharge['serviceChargeTradingID']);?>"><?php echo $this->translate('Saltter_payment');?></a>
-                                    <?php endif;?>
-                                </td>
-                            </tr>
-                            <?php endforeach; ?>
-                            <?php endif;?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-1">
-                        <p class="form-control-static margin-left-5 text-999">合计费用</p>
-                    </div>
                     <div class="col-md-2">
-                        <p class="form-control-static margin-left-25 text-666">
-                            <?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo number_format($this->serviceChargeTotalAmount, 2); ?>
+                        <p class="form-control-static text-999"><?php echo $this->translate('Finance_project_total'); ?></p>
+                    </div>
+                    <div class="col-md-10">
+                        <p class="form-control-static text-666">
+                            <?php echo $this->channelRow['crnCode'] . '&nbsp;' . $this->ShowToPrice($this->channelRow['financingAmount'] + $this->channelRow['interest']); ?>
                         </p>
                     </div>
                 </div>
@@ -239,67 +198,53 @@
                                 <th class="text-right">合计利息</th>
                                 <th class="text-right">未还本息</th>
                                 <th><?php echo $this->translate('Saltter_Status'); ?></th>
-                                <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
 
-                            <?php if (empty($this->LoanView['factoringItem']['factoringLoanList'])):?>
-                            <tr>
-                                <td colspan="11">暂无放款记录</td>
-                            </tr>
+                            <?php if (empty($this->channelRow['factoringChannelLoanList'])):?>
+                                <tr>
+                                    <td colspan="10">暂无放款记录</td>
+                                </tr>
                             <?php else:?>
-                            <?php foreach ($this->LoanView['factoringItem']['factoringLoanList'] as $factoringLoan):?>
-                            <tr>
-                                <td><?php echo $factoringLoan['loanNo']; ?></td>
-                                <td><?php echo date('Y-m-d', strtotime($factoringLoan['loanDate'])); ?></td>
-                                <td><?php echo $factoringLoan['loanCrnCode']; ?></td>
-                                <td class="text-right"><?php echo number_format($factoringLoan['loanAmount'], 2); ?></td>
-                                <td class="text-right"><?php echo $factoringLoan['totalGeneralInterest'] != 0 ? number_format($factoringLoan['totalGeneralInterest'], 2) : '----'; ?></td>
-                                <td class="text-right"><?php echo $factoringLoan['totalGraceInterest'] != 0 ? number_format($factoringLoan['totalGraceInterest'], 2) : '----'; ?></td>
-                                <td class="text-right"><?php echo $factoringLoan['totalOverdueInterest'] != 0 ? number_format($factoringLoan['totalOverdueInterest'], 2) : '----'; ?></td>
-                                <td class="text-right">
-                                    <?php echo $factoringLoan['totalInterest'] != 0 ? number_format($factoringLoan['totalInterest'], 2) : '----'; ?> <i class="layui-icon layui-icon-about" style="cursor: pointer;" data-toggle="modal" data-target="#interestModal" data-loan-id="<?php echo $factoringLoan['loanID']; ?>"></i>
-                                </td>
-                                <td class="text-right">
-                                    <?php echo number_format($factoringLoan['writeoffBalAmount'] + $factoringLoan['writeoffBalInterest'], 2); ?>
-                                </td>
-                                <td class="loanStatus_<?php echo $factoringLoan['loanID']; ?>">
-                                    <?php echo $this->ShowDictionaryTo("LOAN_STATUS", $this->userLangCode, $this->dic_Setting['LOAN_STATUS'], $factoringLoan['loanStatus']); ?>
-                                </td>
-                                <td class="loan_<?php echo $factoringLoan['loanID']; ?>">
-                                    <?php if ($factoringLoan['needLoanApplication'] == true): ?>
-                                        <?php if ($factoringLoan['loanStatus'] == '00'): ?>
-                                            <button class="btn btn-warning" data-toggle="modal" data-target="#applyContractModal" data-loan-amount="<?php echo $factoringLoan['loanAmount']; ?>" data-loan-id="<?php echo $factoringLoan['loanID']; ?>" data-crn-code="<?php echo $factoringLoan['loanCrnCode']; ?>">放款申请</button>
-                                        <?php elseif ($factoringLoan['loanStatus'] == '05'): ?>
-                                            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#applyContractModal" data-loan-amount="<?php echo $factoringLoan['loanAmount']; ?>" data-loan-id="<?php echo $factoringLoan['loanID']; ?>" data-crn-code="<?php echo $factoringLoan['loanCrnCode']; ?>">重新申请</button>
-                                        <?php elseif ($factoringLoan['loanStatus'] == '04'): ?>
-                                            <?php echo $this->ShowSimpleOrderContract($factoringLoan['loanApplyContract'], $this->accountID, $factoringLoan['loanStatus']); ?>
-                                        <?php else: ?>
-                                            <?php echo $this->ShowSimpleOrderContract($factoringLoan['loanApplyContract'], $this->accountID, $factoringLoan['loanStatus']); ?>
-                                        <?php endif; ?>
-                                    <?php endif; ?>
-                                </td>
-                            </tr>
-                            <?php endforeach;?>
+                                <?php foreach ($this->channelRow['factoringChannelLoanList'] as $factoringLoan):?>
+                                    <tr>
+                                        <td><?php echo $factoringLoan['factoringLoan']['loanNo']; ?></td>
+                                        <td><?php echo date('Y-m-d', strtotime($factoringLoan['loanDate'])); ?></td>
+                                        <td><?php echo $factoringLoan['factoringLoan']['loanCrnCode']; ?></td>
+                                        <td class="text-right"><?php echo number_format($factoringLoan['loanAmount'], 2); ?></td>
+                                        <td class="text-right"><?php echo $factoringLoan['totalGeneralInterest'] != 0 ? number_format($factoringLoan['totalGeneralInterest'], 2) : '----'; ?></td>
+                                        <td class="text-right"><?php echo $factoringLoan['totalGraceInterest'] != 0 ? number_format($factoringLoan['totalGraceInterest'], 2) : '----'; ?></td>
+                                        <td class="text-right"><?php echo $factoringLoan['totalOverdueInterest'] != 0 ? number_format($factoringLoan['totalOverdueInterest'], 2) : '----'; ?></td>
+                                        <td class="text-right">
+                                            <?php echo $factoringLoan['totalInterest'] != 0 ? number_format($factoringLoan['totalInterest'], 2) : '----'; ?> <i class="layui-icon layui-icon-about" style="cursor: pointer;" data-toggle="modal" data-target="#interestModal" data-loan-id="<?php echo $factoringLoan['loanID']; ?>"></i>
+                                        </td>
+                                        <td class="text-right">
+                                            <?php echo number_format($factoringLoan['writeoffBalAmount'] + $factoringLoan['writeoffBalInterest'], 2); ?>
+                                        </td>
+                                        <td class="loanStatus_<?php echo $factoringLoan['loanID']; ?>">
+                                            <?php echo $this->ShowDictionaryTo("LOAN_STATUS", $this->userLangCode, $this->dic_Setting['LOAN_STATUS'], $factoringLoan['loanStatus']); ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach;?>
                             <?php endif;?>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row hidden">
                     <div class="col-md-3">
                         <span class="margin-left-5 text-999">实际利息</span>
-                        <span class="margin-left-25 text-666"><?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo number_format($this->LoanView['factoringItem']['actualInterest'], 2); ?></span>
+                        <span class="margin-left-25 text-666"><?php echo $this->channelRow['financingCrnCode']; ?> <?php echo number_format($this->channelRow['actualInterest'], 2); ?></span>
                     </div>
                     <div class="col-md-3">
                         <span class="margin-left-5 text-999">宽限期利息</span>
-                        <span class="margin-left-25 text-666"><?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo number_format($this->LoanView['factoringItem']['graceInterest'], 2); ?></span>
+                        <span class="margin-left-25 text-666"><?php echo $this->channelRow['financingCrnCode']; ?> <?php echo number_format($this->channelRow['graceInterest'], 2); ?></span>
                     </div>
                     <div class="col-md-3">
                         <span class="margin-left-5 text-999">逾期利息</span>
-                        <span class="margin-left-25 text-666"><?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo number_format($this->LoanView['factoringItem']['overdueInterest'], 2); ?></span>
+                        <span class="margin-left-25 text-666"><?php echo $this->channelRow['financingCrnCode']; ?> <?php echo number_format($this->channelRow['overdueInterest'], 2); ?></span>
                     </div>
                 </div>
 
@@ -326,32 +271,26 @@
                             </thead>
                             <tbody>
 
-                            <?php if (empty($this->LoanView['factoringItem']['factoringRepaymentList'])):?>
+                            <?php if (empty($this->channelRow['factoringRepaymentList'])):?>
                                 <tr>
                                     <td colspan="11">暂无还款记录</td>
                                 </tr>
                             <?php else:?>
-                            <?php foreach ($this->LoanView['factoringItem']['factoringRepaymentList'] as $factoringRepayment):?>
-                                <tr>
-                                    <td><?php echo $factoringRepayment['repaymentNo']; ?></td>
-                                    <td><?php echo date('Y-m-d', strtotime($factoringRepayment['repaymentDate'])); ?></td>
-                                    <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo number_format($factoringRepayment['totalAmount'], 2); ?></td>
-                                    <td class="text-right"><?php echo $factoringRepayment['exchangeRate']; ?></td>
-                                    <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo number_format($factoringRepayment['repaymentTotalAmount'], 2); ?></td>
-                                    <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo number_format($factoringRepayment['writeoffInterestAmount'], 2); ?></td>
-                                    <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo number_format($factoringRepayment['writeoffPrincipalAmount'], 2); ?></td>
-                                    <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo number_format($factoringRepayment['writeoffFinalAmount'], 2); ?></td>
-                                </tr>
-                            <?php endforeach;?>
+                                <?php foreach ($this->channelRow['factoringRepaymentList'] as $factoringRepayment):?>
+                                    <tr>
+                                        <td><?php echo $factoringRepayment['repaymentNo']; ?></td>
+                                        <td><?php echo date('Y-m-d', strtotime($factoringRepayment['repaymentDate'])); ?></td>
+                                        <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo number_format($factoringRepayment['totalAmount'], 2); ?></td>
+                                        <td class="text-right"><?php echo $factoringRepayment['exchangeRate']; ?></td>
+                                        <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo number_format($factoringRepayment['repaymentTotalAmount'], 2); ?></td>
+                                        <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo number_format($factoringRepayment['writeoffInterestAmount'], 2); ?></td>
+                                        <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo number_format($factoringRepayment['writeoffPrincipalAmount'], 2); ?></td>
+                                        <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo number_format($factoringRepayment['writeoffFinalAmount'], 2); ?></td>
+                                    </tr>
+                                <?php endforeach;?>
                             <?php endif;?>
                             </tbody>
                         </table>
-                    </div>
-                </div>
-
-                <div class="row hidden">
-                    <div class="col-md-12">
-                        <p class="span-font-size-18 text-primary margin-top-15">核销记录</p>
                     </div>
                 </div>
             </div>
@@ -376,201 +315,19 @@
     </div>
 </div>
 
-<!-- Modal 放款申请 -->
-<div class="modal fade" id="applyContractModal" tabindex="-1" role="dialog" aria-labelledby="applyContractLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form class="form-horizontal" action="" method="post" id="applyContractForm" name="applyContractForm">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">放款申请</h4>
-                </div>
-
-                <div class="modal-body">
-                    <div class="modal-alert-div"></div>
-                    <input type="hidden" name="loanID" id="loanID">
-                    <div class="form-group">
-                        <label for="loanDate" class="col-sm-2 control-label">放款日期</label>
-                        <div class="col-sm-5">
-                            <?php
-                            $showLoanStartDate = date("Y-m-d", strtotime("+1 day", strtotime(date('Y-m-d'))));
-                            $noWorkDay = true;
-                            while ($noWorkDay) {
-                                $url = "http://api.goseek.cn/Tools/holiday?date=".$date = date("Ymd", strtotime($showLoanStartDate));
-                                $res = file_get_contents($url);
-                                $res = json_decode($res,true);
-                                if ($res['data'] != 1 && $res['data'] != 2) {
-                                    $noWorkDay = false;
-                                } else {
-                                    $showLoanStartDate = date("Y-m-d", strtotime("+1 day", strtotime($showLoanStartDate)));
-                                }
-                            }
-                            ?>
-                            <input type="text" class="form-control" name="loanDate" id="loanDate" placeholder="" value="<?php echo $showLoanStartDate;?>" >
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="loanAmount" class="col-sm-2 control-label">放款金额</label>
-                        <div class="col-sm-5">
-                            <div class="input-group">
-                                <div class="input-group-addon"><span class="loanCrnCodeSpan"></span></div>
-                                <input type="number" class="form-control" name="loanAmount" id="loanAmount" min="0" step="0.01">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" id="applyContractBtn"><?php echo $this->translate('submit'); ?></button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!--PDF预览-->
-<div id="signViewDiv" style="display: none; background-color: #F6F6F6;">
-    <div class="sign-button">企业签署</div>
-    <div class="person-sign-button">个人签署</div>
-    <div class="download-button">下载</div>
-    <div class="pdfDoc" style="padding-left:50px;">
-        <div id="pdfPageBox">
-        </div>
-    </div>
-</div>
-
-<!--非网签-->
-<div id="signViewNoEContractDiv" class="layui-form" style="display: none;">
-    <div class="et-auth-error" style="display: none;"></div>
-    <div class="et-auth-content">
-        <div style="margin-top: 20px;"></div>
-
-        <div class="layui-form-item" style="margin-left: 28px;">
-            <div style="text-align: left;">
-                <label class="layui-form-label" style="width: 400px;text-align: left;"><?php echo $this->translate('contractUPInfo'); ?></label>
-            </div>
-        </div>
-
-        <div class="layui-form-item" style="margin-bottom: -5px;margin-top: -15px;margin-left: 28px;margin-right: 28px;">
-            <div style="text-align: left;">
-                <table class="layui-table" id="demo" lay-filter="test">
-                    <colgroup>
-                        <col width="470">
-                        <col width="150">
-                        <col>
-                    </colgroup>
-                    <thead>
-                    <tr>
-                        <th>合同列表</th>
-                        <th>类型</th>
-                        <th style="text-align:center">操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="layui-form-item" style="margin-left: 28px; margin-top: 50px; width: 600px;">
-            <div class="layui-form-label" style="width: 420px;">
-                <div class="yyzz_box clearfix" style="width: 600px;">
-                    <p class="zzname" style="width: 600px; font-weight:bold;"><?php echo $this->translate('contractUP'); ?><!--合同相关附件上传--></p>
-                    <?php if ($this->vestut == 1) {
-                        echo $this->ShowWebuploader($this->goods['attachmentList'], $this->biz_Setting['ORDER'], $this->attach_Setting['CRIM'], "0", null);
-                    } ?>
-                </div>
-            </div>
-        </div>
-
-
-        <div style="height: 12px"></div>
-        <div class="et-auth-row">
-            <button class="layui-btn" id="signNoEContractConfirmBtn"><?php echo $this->translate('signing'); ?></button>
-        </div>
-    </div>
-</div>
-
-<!--签署-->
-<div id="doSignPDFLayDiv" class="layui-form" style="display: none;">
-    <div class="et-auth-error" style="display: none;"></div>
-    <div class="et-auth-content">
-        <div style="margin-top: 20px;"></div>
-
-        <div class="layui-form-item" style="margin-left: 28px;">
-            <div style="text-align: left;">
-                <label class="layui-form-label" style="width: 180px;text-align: left;"><?php echo $this->translate('signInfo'); ?></label>
-            </div>
-        </div>
-
-        <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
-            <div style="text-align: left;">
-                <label class="layui-form-label" style="width: 180px;text-align: left;"><b><?php echo $this->translate('signAuthType'); ?></b></label>
-            </div>
-        </div>
-
-        <div class="layui-form-item" style="margin-left: 28px;">
-            <div class="layui-form-label" style="width: 420px;">
-                <input type="text" id="signMobileInput" name="signMobileInput" lay-verify="signMobileInput" autocomplete="off" class="layui-input" readonly="readonly">
-            </div>
-        </div>
-
-        <div class="layui-form-item" style="margin-left: 28px;">
-            <div class="layui-form-label" style="width: 250px;">
-                <input type="text" id="signAuthCode" name="signAuthCode" lay-verify="signAuthCode" autocomplete="off" placeholder="<?php echo $this->translate('signInputAuthCode'); ?>" class="layui-input">
-            </div>
-
-            <div class="layui-form-label" style="width: 140px;">
-                <button class="layui-btn layui-btn-fluid" id="signSendAuthCodeBtn"><?php echo $this->translate('signSendAuthCode'); ?></button>
-            </div>
-        </div>
-
-        <div style="height: 12px"></div>
-        <div class="et-auth-row">
-            <button class="layui-btn layui-btn-fluid" id="singConfirmBtn" style="width: 85%;"><?php echo $this->translate('confirmed'); ?></button>
-        </div>
-    </div>
-</div>
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
-<!-- pdf -->
-<script type="text/javascript" src="/ky/pdf/pdf.js"></script>
-<script type="text/javascript" src="/ky/pdf/pdf.worker.js"></script>
-
-<script type="text/javascript" src="/ky/upload/img.js"></script>
 <script src="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.js"></script>
 <script src="/ky/bootstrap-table-1.12.1-dist/locale/bootstrap-table-zh-CN.min.js"></script>
-<script src="/ky/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.min.js"></script>
-<script src="/ky/bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
-<script src="/ky/js/base64.js"></script>
 
 <script type="text/javascript">
     var dataDict = {};
 
 	$().ready(function() {
-        var options = {
-            //target:        '#applyContractModal',   // target element(s) to be updated with server response
-            beforeSubmit:  showRequest,  // pre-submit callback
-            success:       showResponse,  // post-submit callback
 
-            // other available options:
-            url: '/user/finance/do-apply-loan-ajax',
-            //type:      type        // 'get' or 'post', override for form's 'method' attribute
-            dataType:  'json'        // 'xml', 'script', or 'json' (expected server response type)
-            //clearForm: true        // clear all form fields after successful submit
-            //resetForm: true        // reset the form after successful submit
-
-            // $.ajax options can be used here too, for example:
-            //timeout:   3000
-        };
-
-        $('#applyContractForm').submit(function() {
-            $(this).ajaxSubmit(options);
-            return false;
-        });
 	});
 
 	$(function () {
@@ -588,124 +345,7 @@
                 $.data(dataDict, 'dataDict', data);
             }
         });
-
-        $('#loanDate').datetimepicker({
-            minView: "month",
-            format: "yyyy-mm-dd",
-            language: "zh-CN",
-            daysOfWeekDisabled: "0,6",
-            daysOfWeekHighlighted: "0,6",
-            autoclose: true
-        });
 	});
-
-	function showRequest() {
-        $('#applyContractBtn').attr("disabled", "disabled");
-    }
-	function showResponse(data) {
-	    if (data.resultObject.status === 1) {
-            var contract = data.bizContract[0],
-                attachment = contract.attachmentList[0],
-                isESigned = true,
-                isPSigned = true,
-                accountID = '<?php echo $this->accountID ?>',
-                userID = '<?php echo $this->userID ?>',
-                loanStatus = '';
-
-            var dataResult = $.data(dataDict, 'dataDict');
-            $.each(dataResult, function (key, item) {
-                if (key === 'LOAN_STATUS') {
-                    $.each(item, function (i, dict) {
-                        if (dict.code === data.resultObject.result.loanStatus) {
-                            loanStatus = dict.name;
-                        }
-                    });
-                }
-            });
-
-            var pdfUrl = data.kyAttachUrl + '/doc/download.action?sid=' + '<?php echo  session_id(); ?>' + '&nid=' + attachment.attachID + '&vid=' + attachment.verifyID;
-            if (contract.firstParty !== null && contract.firstParty === accountID) {
-                // 企业
-                if (contract.firstPartySignMode === "E" || contract.firstPartySignMode === "B") {
-                    if (contract.firstPartySigningDate === undefined || contract.firstPartySigningDate === null) {
-                        isESigned = false;
-                    }
-                }
-
-                // 个人
-                if (contract.firstPartySignMode === "P" || contract.firstPartySignMode === "B") {
-                    // 签署人是否当前用户
-                    if (userID === contract.firstPartyPrincipal) {
-                        // 是否未签
-                        if (contract.firstPartyPrincipalSigningDate == undefined || contract.firstPartyPrincipalSigningDate === null) {
-                            isPSigned = false;
-                        }
-                    }
-                }
-            }
-            var resultHtml = '<a href="javascript:void(0)" id="' + data.resultObject.result.loanApplyContractID + '" onclick="initPdfView(\'' + pdfUrl + '\', this)" class="btn btn-warning order_contract_sign fr">签署</a>';
-            var eSignedValue = isESigned === true ? 1:'',
-                pSignedValue = isPSigned === true ? 1:'';
-            resultHtml += '<input type="hidden" id="isESigned_' + contract.contractID + '" value="' + eSignedValue + '" />';
-            resultHtml += '<input type="hidden" id="isPSigned_' + contract.contractID + '" value="' + pSignedValue + '" />';
-            resultHtml += '<input type="hidden" id="ext_' + contract.contractID + '" value="' + attachment.ext + '" />';
-            resultHtml += '<input type="hidden" id="contractName_' + contract.contractID + '" value="' + contract.contractName + '" />';
-            resultHtml += '<input type="hidden" id="contractID_' + contract.contractID + '" value="' + contract.contractID + '" />';
-            resultHtml += '<input type="hidden" id="contractAttachUrl_' + contract.contractID + '" value="' + pdfUrl + '" />';
-
-            $(".loan_" + data.resultObject.result.loanID).html(resultHtml);
-            $(".loanStatus_" + data.resultObject.result.loanID).html(loanStatus);
-            $('#applyContractModal').modal('hide');
-            setTimeout(function () {
-                $("#" + data.resultObject.result.loanApplyContractID).trigger("click");
-            }, 300);
-        } else {
-            console.log('error!');
-        }
-
-    }
-
-    $("#applyContractModal").on('show.bs.modal', function (e) {
-        var triggered = $(e.relatedTarget),
-            loanID = triggered.data("loan-id"),
-            loanAmount = triggered.data("loan-amount"),
-            loanCrnCode = triggered.data("crn-code"),
-            $loanCrnCodeSpan = $(".loanCrnCodeSpan"),
-            $loanAmountInput = $("#loanAmount"),
-            $loanDate = $('#loanDate'),
-            $loanDateVal = '<?php echo $showLoanStartDate; ?>';
-
-        $loanCrnCodeSpan.html(loanCrnCode);
-        $loanAmountInput.val(loanAmount);
-        $loanAmountInput.attr("max", loanAmount);
-        $("#loanID").val(loanID);
-
-
-        $loanDate.datetimepicker('setStartDate', $loanDateVal);
-
-        var hscodeQuery = '/user/finance/get-factoring-loan-ajax';
-        $.ajax({
-            type: "POST",
-            url: hscodeQuery,
-            data: {
-                loanID: loanID
-            },
-            dataType: "json",
-            success: function (data) {
-                if (data !== null) {
-                    if (data.loanStatus === '05') {
-                        var alertHtml = '<div class="alert alert-warning">拒绝原因：' + data.rejectReason + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + new Date(data.rejectDate).format("yyyy-MM-dd hh:mm:ss") + '</div>';
-                        var $modalAlertDiv = $(".modal-alert-div");
-                        $modalAlertDiv.html(alertHtml);
-                    }
-                }
-            }
-        });
-    });
-
-    $("#applyContractBtn").click(function () {
-
-    });
 
     $("#interestModal").on('show.bs.modal', function (e) {
         var triggered = $(e.relatedTarget),
@@ -835,356 +475,6 @@
             }]
         });
     });
-
-    // *************************** PDF Sign View ********************************
-    PDFJS.workerSrc = '/ky/pdf/pdf.worker.js';
-
-    var pdfDoc = null;
-    var pageNum = 1;
-    var pageRendering = false;
-    var pageNumPending = null;
-    var scale = 1.5;
-
-    function renderPage(num, id) {
-        var canvas = document.getElementById(id);
-        var ctx = canvas.getContext('2d');
-        pageRendering = true;
-        pdfDoc.getPage(num).then(function(page) {
-            var viewport = page.getViewport(scale);
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
-
-            var renderContext = {
-                canvasContext: ctx,
-                viewport: viewport
-            };
-            var renderTask = page.render(renderContext);
-
-            renderTask.promise.then(function() {
-                pageRendering = false;
-                if (pageNumPending !== null) {
-                    // New page rendering is pending
-                    renderPage(pageNumPending);
-                    pageNumPending = null;
-                }
-            });
-        });
-
-        //document.getElementById('page_num').textContent = pageNum;
-    }
-
-    function queueRenderPage(num) {
-        if (pageRendering) {
-            pageNumPending = num;
-        } else {
-            renderPage(num);
-        }
-    }
-
-    function onPrevPage() {
-        if (pageNum <= 1) {
-            return;
-        }
-        pageNum--;
-        queueRenderPage(pageNum);
-    }
-    //document.getElementById('prev').addEventListener('click', onPrevPage);
-
-    function onNextPage() {
-        if (pageNum >= pdfDoc.numPages) {
-            return;
-        }
-        pageNum++;
-        queueRenderPage(pageNum);
-    }
-    //document.getElementById('next').addEventListener('click', onNextPage);
-
-    function initPdfView(pdfUrl, obj) {
-        $("#pdfPageBox").html("");
-        PDFJS.getDocument(pdfUrl).then(function(pdfDoc_) {
-            pdfDoc = pdfDoc_;
-            //document.getElementById('page_count').textContent = pdfDoc.numPages;
-            for (var i=1;i<=pdfDoc.numPages;i++){
-                var canvasDiv = $("<div style=\"padding-top:10px;padding-bottom:10px;\"></div>");
-                var pageNum = $("<div style=\"background-color: #999999;position:absolute;float: left;height:30px;width:60px;text-align: center;line-height: 30px;color:#ffffff;opacity: 0.6;\">"+i+"/"+pdfDoc.numPages+"</div>");
-                var canvas = $("<canvas></canvas>").attr("id", "the-canvas_"+i);
-                canvasDiv.append(pageNum);
-                canvasDiv.append(canvas);
-                $("#pdfPageBox").append(canvasDiv);
-                renderPage(i, "the-canvas_"+i);
-            }
-        });
-
-        var signTitle = "<?php echo $this->translate('signTitle');?>";
-        layer.open({
-            type: 1,	//Page层类型
-            area: ['1150px', '100%'],
-            title: signTitle,
-            shadeClose: true,
-            shade: 0.6,	//遮罩透明度
-            // anim: 1,	//0-6的动画形式，-1不开启
-            scrollbar: false,
-            content: $("#signViewDiv")
-        });
-
-        $(".download-button").attr("contractID_", obj.id);
-
-        if ($("#isESigned_" + obj.id).val() == 1) {
-            $(".sign-button").hide();
-        } else {
-            $(".sign-button").show().attr("contractID_", obj.id);
-        }
-
-        if ($("#isPSigned_" + obj.id).val() == 1) {
-            $(".person-sign-button").hide();
-        } else {
-            $(".person-sign-button").show().attr("contractID_", obj.id);
-        }
-    }
-
-    //document.getElementById('prev').addEventListener('click', onPrevPage);
-
-    $(".download-button").bind("click",function(){
-        var contractID_ = $(this).attr("contractID_");
-        window.location.href = $("#contractAttachUrl_" + contractID_).val();
-    });
-
-    // ********************   获取验证手机号码 Start  *************************************
-    $(".sign-button").bind("click",function(){
-        var getSignMobile = '/user/pur/getsignmobile';
-        $.ajax({
-            type: "POST",
-            url: getSignMobile,
-            data: {
-
-            },
-            dataType: "json",
-            success: function (data) {
-                var mobileStr = "<?php echo $this->translate('mobile_phone');?>";
-                $("#signMobileInput").val(mobileStr + " " +data);
-            }
-        });
-
-        var signTitle = "<?php echo $this->translate('signTitle');?>";
-        layer.open({
-            type: 1,
-            title: signTitle,
-            shadeClose: true,
-            shade: 0.2,
-            area: ['500px', '420px'],
-            content: $('#doSignPDFLayDiv')
-        });
-    });
-
-    $(".person-sign-button").bind("click",function(){
-        var getSignMobile = '/user/pur/getpersonsignmobile';
-        $.ajax({
-            type: "POST",
-            url: getSignMobile,
-            data: {
-
-            },
-            dataType: "json",
-            success: function (data) {
-                var mobileStr = "<?php echo $this->translate('mobile_phone');?>";
-                $("#signMobileInput").val(mobileStr + " " +data);
-            }
-        });
-
-        var signTitle = "<?php echo $this->translate('signTitle');?>";
-        layer.open({
-            type: 1,
-            title: signTitle,
-            shadeClose: true,
-            shade: 0.2,
-            area: ['500px', '420px'],
-            content: $('#doSignPDFLayDiv')
-        });
-        $("#signSendAuthCodeBtn").attr("personSend", "true");
-        $("#singConfirmBtn").attr("personSend", "true");
-    });
-    // ********************   End  *************************************
-
-    // ********************   获取短信验证码 Start  *************************************
-    $("#signSendAuthCodeBtn").click(function () {
-        var sendSignAuthCode = '/user/pur/sendsignauthcode';
-        if ($(this).attr("personSend") == "true") {
-            sendSignAuthCode = '/user/pur/sendpersonsignauthcode';
-        }
-
-        $.ajax({
-            type: "POST",
-            url: sendSignAuthCode,
-            data: {
-
-            },
-            dataType: "json",
-            success: function (data) {
-                var sendingStr = "<?php echo $this->translate('signAuthCodeSending');?>";
-                $("#signSendAuthCodeBtn").text(sendingStr);
-                sendSignAuthCodeCountDown();
-            }
-        });
-    });
-
-    var countdown=120;
-    function sendSignAuthCodeCountDown() {
-        var obj = $("#signSendAuthCodeBtn");
-        settime(obj);
-    }
-
-    function settime(obj) { //发送验证码倒计时
-        if (countdown == 0) {
-            obj.attr('disabled',false);
-            //obj.removeattr("disabled");
-            obj.removeClass('layui-btn-disabled');
-            var btnStr = "<?php echo $this->translate('signSendAuthCode'); ?>";
-            obj.text(btnStr);
-            countdown = 120;
-            return;
-        } else {
-            console.log(countdown);
-            obj.attr('disabled',true);
-            obj.addClass('layui-btn-disabled');
-            var btnStr = "<?php echo $this->translate('signAuthCodeSending'); ?>";
-            obj.text(btnStr + "(" + countdown + ")");
-            countdown--;
-        }
-        setTimeout(function() {
-                settime(obj) }
-            ,1000)
-    }
-    // ********************   获取短信验证码 End  *************************************
-
-
-
-    // ********************   获取短信验证码 Start  *************************************
-    $("#singConfirmBtn").click(function () {
-        var doSignPDF = '/user/pur/dosignpdf';
-        var contractID = $(".sign-button").attr("contractID_");
-        if ($(this).attr("personSend") == "true") {
-            doSignPDF = '/user/pur/dopersonsignpdf';
-            contractID = $(".person-sign-button").attr("contractID_");
-        }
-
-        $.ajax({
-            type: "POST",
-            url: doSignPDF,
-            data: {
-                contractID: contractID,
-                signAuthCode: $("#signAuthCode").val()
-            },
-            dataType: "json",
-            success: function (data) {
-                var signMsg = "<?php echo $this->translate('signFail');?>";
-                if (data != null && data != '') {
-                    signMsg = "<?php echo $this->translate('signSuccess');?>";
-                    layer.msg(signMsg);
-                    window.location.reload();
-                } else {
-                    $("#signAuthCode").val('');
-                    layer.msg(signMsg);
-                }
-            }
-        });
-    });
-    // ********************   获取短信验证码 End  *************************************
-
-
-    // ********************   显示非网签上传合同层 Start  *************************************
-    function initSignViewNoEContract(obj) {
-
-        var signTitle = "<?php echo $this->translate('signTitle');?>";
-        layer.open({
-            type: 1,	//Page层类型
-            area: ['800px', '550px'],
-            title: signTitle,
-            // shadeClose: true,
-            shade: 0.6,	//遮罩透明度
-            // anim: 1,	//0-6的动画形式，-1不开启
-            scrollbar: false,
-            content: $("#signViewNoEContractDiv")
-        });
-
-
-        $("#signViewNoEContractDiv tr:not(:first)").empty();
-        //获取最后一行的data-id(标识行)
-        var rowIndex = $("#signViewNoEContractDiv tr:last").attr("data-row");
-        if (rowIndex == "" || rowIndex == null) {
-            rowIndex = parseInt(1);
-        } else {
-            rowIndex = parseInt(rowIndex) + 1;
-        }
-
-        var htmlList = '<tr data-row=' + rowIndex + '>';
-
-        htmlList += '<td><a href="#" id="" onclick="doDownload(\''+obj.id+'\')">' + $("#contractName_" + obj.id).val() + '</a></td>';
-
-        htmlList += '<td>' + $("#ext_" + obj.id).val() + '</td>';
-
-        htmlList += '<td><a href="#" id="" onclick="doDownload(\''+obj.id+'\')" class="order_contract_sign fr">下载</a></td>';
-
-        htmlList += '</td></tr>';
-        //在行最后添加数据
-        $("#signViewNoEContractDiv tr:last").after(htmlList);
-
-        $("#signNoEContractConfirmBtn").attr("contractID_", obj.id);
-        // alert(obj.id);
-        // alert($("#contractName_" + obj.id).val());
-    }
-
-    function doDownload(objID) {
-        window.location.href = $("#contractAttachUrl_" + objID).val();
-    }
-    // ********************   显示非网签上传合同层 End  *************************************
-
-
-    // ********************   非网签签署合同提交按钮 Start  *************************************
-    $("#signNoEContractConfirmBtn").click(function () {
-        var contractID = $(this).attr("contractID_");
-
-        var nidArr = "";
-        var nid = document.getElementsByName("attachNid[]");
-        for (var i = 0, j = nid.length; i < j; i++) {
-            nidArr += nid[i].value + "|";
-        }
-        var nameArr = "";
-        var name = document.getElementsByName("attachName[]");
-        for (var i = 0, j = name.length; i < j; i++) {
-            nameArr += name[i].value + "|";
-        }
-        var sizeArr = "";
-        var size = document.getElementsByName("attachSize[]");
-        for (var i = 0, j = size.length; i < j; i++) {
-            sizeArr += size[i].value + "|";
-        }
-        var attachTypeArr = "";
-        var attachType = document.getElementsByName("attachType[]");
-        for (var i = 0, j = attachType.length; i < j; i++) {
-            attachTypeArr += attachType[i].value + "|";
-        }
-
-        $.ajax({
-            type: "POST",
-            url: '<?php echo $this->BaseUrl();?>/sale/agree',
-            data: {
-                contractID: contractID,
-                name: nameArr,
-                nid: nidArr,
-                size: sizeArr,
-                attachType: attachTypeArr
-            },
-            dataType: "json",
-            success: function (data) {
-                if (data === '1') {
-                    document.location.reload();
-                } else {
-                    alert(data + 'failed,please try again!');
-                }
-            }
-        });
-    });
-    // ********************   非网签签署合同提交按钮 End  *************************************
 </script>
 </body>
 </html>
