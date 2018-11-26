@@ -288,8 +288,8 @@
 
                                     <div class="orderItemDiv">
                                         <?php if (is_array($this->orders['orderItemList']) && count($this->orders['orderItemList']) > 0): ?>
-                                            <?php foreach ($this->orders['orderItemList'] as $k=>$goods):?>
-                                                <div class="alert alert-info alert-dismissible" role="alert">
+                                            <?php foreach ($this->orders['orderItemList'] as $k => $goods): ?>
+                                                <div class="alert alert-info alert-dismissible orderItemAlert <?php if ($k > 0) {echo "hidden";}?>" <?php if ($k == 0) {echo "id='orderItemTop'";}?> role="alert">
                                                     <div class="row">
                                                         <div class="col-xs-2"><?php echo $this->translate("productNAME"); ?></div>
                                                         <div class="col-sm-4"><?php echo $goods['productName'];?></div>
@@ -383,6 +383,14 @@
                                                     <?php endif; ?>
                                                 </div>
                                             <?php endforeach; ?>
+
+                                            <?php if (count($this->orders['orderItemList']) > 0): ?>
+                                            <div class="row">
+                                                <div class="col-sm-3 col-sm-offset-5 padding-bottom-15">
+                                                    <button type="button" class="btn btn-default btn-xs showAll" data-type="down">展开全部 <i class="fas fa-chevron-down"></i></button>
+                                                </div>
+                                            </div>
+                                            <?php endif; ?>
 
                                             <div class="alert alert-success alert-dismissible" role="alert">
                                                 <div class="row">
@@ -895,6 +903,26 @@
                     }
                 }
             });
+        });
+
+        // 展开/收起按钮
+        $(".showAll").click(function () {
+            var dataType = $(this).attr("data-type");
+            if (dataType === 'down') {
+                $(".orderItemAlert").removeClass("hidden");
+                $(this).html('收起 <i class="fas fa-chevron-up"></i>');
+                $(this).attr("data-type", "up");
+                var target_top = $("#orderItemTop").offset().top;
+                $("html,body").animate({scrollTop: target_top}, 1000);
+            } else {
+                $.each($(".orderItemAlert"), function (i, val) {
+                    if (i > 0) {
+                        $(val).addClass("hidden");
+                    }
+                });
+                $(this).html('展开全部 <i class="fas fa-chevron-down"></i>');
+                $(this).attr("data-type", "down");
+            }
         });
 	});
 

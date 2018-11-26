@@ -67,8 +67,15 @@ if (isset($_POST)) {
         )
     );
     curl_error($ch);  //查看报错信息
+
+    // 此处提交了两次
     $tmpInfo = curl_exec($ch);
-    $res = json_decode(curl_exec($ch), true);
+    // $res = json_decode(curl_exec($ch), true);
+
+    $res = json_decode($tmpInfo, true);
+
+
+
 //    echo json_encode(array("res"=>$res,"post"=>$post_data));
 //    exit;
     if ($typeDD == "1") {

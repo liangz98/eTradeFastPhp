@@ -66,7 +66,7 @@
                                         <dd>
                                             <?php echo $this->e['email']; ?>
                                             <?php if (!empty($this->e['email']) && $this->e['ecommstatus'] == "IN" && $this->CompAdmin == true): ?>
-                                                <a href="javascript:void(0)" id="acEmail"><?php echo $this->translate('invitation'); ?></a>
+                                                <button type="button" id="acEmail" class="btn btn-warning btn-xs"><?php echo $this->translate('invitation'); ?></button>
                                             <?php endif; ?>
                                         </dd>
 
@@ -140,6 +140,26 @@
             } else {
                 $(this).removeClass('nav-selected');
             }
+        });
+
+        $('#acEmail').click(function () {
+            //询问框
+            layer.confirm('<?php echo $this->translate('tip_active_00')?>', {
+                title: false,
+                btn: ['<?php echo $this->translate('yes');?>', '<?php echo $this->translate('no');?>'] //按钮
+            }, function () {
+                $.post('<?php echo $this->BaseUrl();?>/check/contactinviteemailnotice',
+                    {'contactID': '<?php echo $this->e['contactID'];?>'},
+                    function (data) {
+
+                        layer.msg(data, {icon: 1});
+                        location.href = '<?php echo $this->BaseUrl();?>/account/view?<?php echo base64_encode($this->e['contactID']);?>';
+
+                    }, "json");
+
+            }, function () {
+                layer.closeAll();
+            });
         });
 	});
 </script>

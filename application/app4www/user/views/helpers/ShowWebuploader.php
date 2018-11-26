@@ -13,7 +13,7 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
         $indata = "";
         $indata .= '<input type="hidden" id="bizType" value="' . $bizType . '" />';
         $indata .= '<input type="hidden" id="bizID" value="' . $bizID . '" />';
-        // $indata .= '<input type="hidden" id="attachType" value="' . $attachType . '" />';
+        $indata .= '<input type="hidden" id="attachType" value="' . $attachType . '" />';
         $indata .= '<input type="hidden" id="uploadURL" value="' . $this->view->seed_Setting['KyUrlex'] . '" />';
         $indata .= '<input type="hidden" id="typeURL" value="' . $type . '" />';
 

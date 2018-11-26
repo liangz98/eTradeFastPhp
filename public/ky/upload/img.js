@@ -51,13 +51,18 @@ function webupload_pic() {
 
         //上传时
         uploader.on('fileQueued', function(file) {
-            console.log(file);
+            console.log(file.length);
             var item_progress = "<img style='margin-top: 30px;' id='" + file['id'] + "' src='/ky/images/loading.gif'></li>";
-            $(".webupload_current").parent().parent().find('.img-view').prepend(item_progress);
+            $(".webupload_current").parent().parent().find('.img-view').append(item_progress);
 
         });
         //上传中
         uploader.on('uploadProgress', function(file, percentage) {
+            var $li = $( '#'+file.id ),
+                $percent = $li.find('.progress span');
+
+
+            console.log($percent.length);
             //var percent = parseFloat(percentage * 100);
             //$("#" + file.id).find('.bar').css({"width": percent + "%"});
             //$("#" + file.id).find(".percent").text(percent + "%");
@@ -109,7 +114,7 @@ function webupload_pic() {
             }
 
             if (type != "jpeg" && type != "png" && type != "jpg" && type != "gif" && type != "GIF" && type != "JPG" && type != "PNG") {
-                $(".webupload_current").parent().parent().find('.img-view').prepend("<li><img width='125px' height='125px' class='img_common' src='/ky/ico/" + type + ".png' alt=" + name + "></a><span class='del_to' >" + name + "<br><a href=" + response.doc + " download>下载</a>|<a onclick='delete_pic(this)'>删除</a></span>" +
+                $(".webupload_current").parent().parent().find('.img-view').append("<li><img width='125px' height='125px' class='img_common' src='/ky/ico/" + type + ".png' alt=" + name + "></a><span class='del_to' >" + name + "<br><a href=" + response.doc + " download>下载</a>|<a onclick='delete_pic(this)'>删除</a></span>" +
                     "<input type='hidden' name='attachNid[]' value=" + nid + "><input type='hidden'  name='attachName[]' value=" + name + "><input type='hidden'  name='attachSize[]' value=" + size + "><input type='hidden'  name='attachType[]' value=" + atach_new + "><input type='hidden'  name='bizType[]' value=" + bizTT + "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
                 if (atach_new == "CRSE" || atach_new == "ODSE") {
                     if ($('#KEY_CRCT').length > 0) {
@@ -126,7 +131,7 @@ function webupload_pic() {
                     }
                 }
             } else {
-                $(".webupload_current").parent().parent().find('.img-view').prepend("<li><img width='125px' height='125px' class='img_common' src="  + response.pic + " data-pic=" + response.pic + " alt=''/><span class='del_to' >"+name+"<br><a onclick='view_pic(this)'>查看</a>|<a onclick='delete_pic(this)'>删除</a></span>" +
+                $(".webupload_current").parent().parent().find('.img-view').append("<li><img width='125px' height='125px' class='img_common' src="  + response.pic + " data-pic=" + response.pic + " alt=''/><span class='del_to' >"+name+"<br><a onclick='view_pic(this)'>查看</a>|<a onclick='delete_pic(this)'>删除</a></span>" +
                 "<input type='hidden' name='attachNid[]' value=" +nid+ "><input type='hidden'  name='attachName[]' value="+name+ "><input type='hidden'  name='attachSize[]' value="+size+ "><input type='hidden'  name='attachType[]' value="+atach_new+ "><input type='hidden'  name='bizType[]' value="+bizTT+ "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
                 if(atach_new=="CRSE"||atach_new=="ODSE"){
                     if ($('#KEY_CRCT').length>0) {
