@@ -390,7 +390,7 @@ class AccountController extends Kyapi_Controller_Action
     public function sendMobileAuthCodeAction() {
         $requestObject = $this->_requestObject;
 
-        $resultObject = $this->json->changeSigningAgent($requestObject);
+        $resultObject = $this->json->sendMobileAuthCode($requestObject);
         $msg = json_decode($resultObject)->result;
 
         echo json_encode($msg);
