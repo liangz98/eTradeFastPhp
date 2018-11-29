@@ -2194,5 +2194,35 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         $resultObject = $this->vpost($_url, $_params); //输出目标地址源码
         return $resultObject;
     }
+
+    /**
+     * 修改企业签署人 获取短信验证码
+     * @param $requestObject
+     * @return mixed
+     */
+    public function sendMobileAuthCode($requestObject) {
+        $_url = $this->url . '/contactapi/contactApi!sendMobileAuthCode.action';
+        $_params = json_encode(array("requestObject" => $requestObject));
+        $resultObject = $this->vpost($_url, $_params);
+        return $resultObject;
+    }
+
+    /**
+     * 修改企业签署人
+     * @param $requestObject
+     * @param $authCode
+     * @param $contactID
+     * @return mixed
+     */
+    public function changeSigningAgent($requestObject, $authCode, $contactID) {
+        $_url = $this->url . '/contactapi/contactApi!sendMobileAuthCode.action';
+        $_params = json_encode(array(
+            "requestObject" => $requestObject,
+            "authCode"      => $authCode,
+            "contactID"     => $contactID
+        ));
+        $resultObject = $this->vpost($_url, $_params);
+        return $resultObject;
+    }
 }
 ?>

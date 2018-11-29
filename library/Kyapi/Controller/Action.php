@@ -258,6 +258,7 @@ class Kyapi_Controller_Action extends Zend_Controller_Action{
             $this->view->userLoginName = $userLoginName = $_SESSION['rev_session']['userName'];
             $this->view->isPersonAccount = $isPersonAccount = $_SESSION['rev_session']['isPersonAccount'];
             $this->view->ecommloginname = $ecommloginname = $_SESSION['rev_session']['userLoginName'];
+            $this->view->mobilePhone = $mobilePhone =  $_SESSION['rev_session']['mobilePhone'];
             $this->view->userRole = $userRole = $_SESSION['rev_session']['ecommrole'];
             $this->view->submenus = $_SESSION['rev_session']['menus'];//会员中心左侧菜单
             $submenus = $_SESSION['rev_session']['role_nav'];

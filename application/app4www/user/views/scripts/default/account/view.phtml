@@ -85,6 +85,21 @@
                                         <dt><?php echo $this->translate('userP'); ?></dt>
                                         <dd><?php echo $this->ShowDictionaryTo('datatest_setting', $this->userLangCode, $this->dic_Setting['ECOMM_STATUS'], $this->e['ecommstatus']); ?></dd>
 
+                                        <dt><?php echo $this->translate('企业签署人'); ?></dt>
+                                        <dd>
+                                            <?php
+                                            if ($this->e['isDefaultPublic'] == true) {
+                                                echo $this->translate('yes');
+                                            } else {
+                                                echo $this->translate('no');
+                                            }
+                                            ?>
+                                            &nbsp;&nbsp;
+                                            <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#changeSigningAgent">
+                                                <i class="fas fa-signature"></i> 设为签署人
+                                            </button>
+                                        </dd>
+
                                         <dt><?php echo $this->translate('Df_Contact'); ?></dt>
                                         <dd>
                                             <?php
@@ -124,6 +139,51 @@
 	</div>
 </div>
 
+<!-- 修改签署人 -->
+<div class="modal fade" id="changeSigningAgent" tabindex="-1" role="dialog" aria-labelledby="changeSigningAgentLabel">
+    <div class="modal-dialog modal-sm" role="document" style="width: 550px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><?php echo $this->translate('变更企业签署人'); ?></h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="layui-form-item table-responsive">
+                    <form>
+                        <div class="form-group">
+                            <label for="signMobileInput"><?php echo $this->translate('signAuthType'); ?></label>
+                            <input type="text" class="form-control" id="signMobileInput" name="signMobileInput" value="<?php echo $this->translate('mobile_phone').' '.$this->mobilePhone;?>" readonly="readonly">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label sr-only" for="authCode">authCode</label>
+                            <div class="row" style="margin-right: 0;">
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" id="authCode" name="authCode" placeholder="<?php echo $this->translate('signInputAuthCode'); ?>">
+                                </div>
+                                <div class="col-sm-5">
+                                    <button type="button" id="signSendAuthCodeBtn" class="btn btn-primary"><?php echo $this->translate('signSendAuthCode'); ?></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row" style="margin-right: 0;">
+                                <div class="col-sm-10">
+                                    <button type="submit" id="singConfirmBtn" class="btn btn-primary btn-block" data-content-id="<?php echo $this->e['contactID']; ?>">
+                                        <?php echo $this->translate('confirmed'); ?>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
@@ -161,7 +221,78 @@
                 layer.closeAll();
             });
         });
+
+        // 修改企业签署人 获取短信验证码
+        $("#signSendAuthCodeBtn").click(function () {
+            var sendSignAuthCode = '/user/account/send-mobile-auth-code';
+
+            $.ajax({
+                type: "POST",
+                url: sendSignAuthCode,
+                data: {
+
+                },
+                dataType: "json",
+                success: function () {
+                    var sendingStr = "<?php echo $this->translate('signAuthCodeSending');?>";
+                    $("#signSendAuthCodeBtn").text(sendingStr);
+                    sendSignAuthCodeCountDown();
+                }
+            });
+        });
+
+        // 修改企业签署人
+        $("#singConfirmBtn").click(function () {
+            var doSignPDF = '/user/account/change-signing-agent';
+            var contractID = $(this).attr("data-contact-id");
+
+            $.ajax({
+                type: "POST",
+                url: doSignPDF,
+                data: {
+                    contractID: contractID,
+                    authCode: $("#authCode").val()
+                },
+                dataType: "json",
+                success: function (data) {
+                    var signMsg = "<?php echo $this->translate('signFail');?>";
+                    if (data !== null && data !== '') {
+                        signMsg = "<?php echo $this->translate('signSuccess');?>";
+                        // layer.msg(signMsg);
+                        window.location.reload();
+                    } else {
+                        $("#signAuthCode").val('');
+                        // layer.msg(signMsg);
+                    }
+                }
+            });
+        });
 	});
+
+    var countdown=120;
+    function sendSignAuthCodeCountDown() {
+        var obj = $("#signSendAuthCodeBtn");
+        setTimeTxt(obj);
+    }
+
+    function setTimeTxt(obj) { //发送验证码倒计时
+        if (countdown === 0) {
+            obj.attr('disabled',false);
+            var authCodeStr = "<?php echo $this->translate('signSendAuthCode'); ?>";
+            obj.text(authCodeStr);
+            countdown = 120;
+            return;
+        } else {
+            console.log(countdown);
+            obj.attr('disabled',true);
+            var btnStr = "<?php echo $this->translate('signAuthCodeSending'); ?>";
+            obj.text(btnStr + "(" + countdown + ")");
+            countdown--;
+        }
+        setTimeout(function() {
+                setTimeTxt(obj) }
+            ,1000);
+    }
 </script>
 </body>
 </html>

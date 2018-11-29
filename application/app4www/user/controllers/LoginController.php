@@ -66,13 +66,14 @@ class LoginController extends Kyapi_Controller_Action {
                 $userDetail['accountName'] = $existData['account']['accountName'];//公司名称
                 $userDetail['accountStatus'] = $existData['account']['accountStatus'];  // 公司状态
                 $userDetail['accountType'] = $existData['account']['accountType'];      // 公司类型
-                $userDetail['crnCode'] = $existData['account']['crnCode'];  //公司默认货币
-                $userDetail['regdCountryCode'] = $existData['account']['regdCountryCode'];  //公司国籍
+                $userDetail['crnCode'] = $existData['account']['crnCode'];  // 公司默认货币
+                $userDetail['regdCountryCode'] = $existData['account']['regdCountryCode'];  // 公司国籍
                 $userDetail['user_name'] = $existData['name'];
-                $userDetail['ecommloginname'] = $existData['ecommloginname'];//登陆名
+                $userDetail['ecommloginname'] = $existData['ecommloginname'];// 登陆名
+                $userDetail['mobilePhone'] = $existData['mobilePhone']; // 手机号码
                 $userDetail['isPersonAccount'] = $existData['isPersonAccount']; // 是否个人用户
-                $userDetail['ecommrole'] = $existData['ecommrole'];//用户权限
-                $contactPreference = $existData['contactPreference'];//个性化
+                $userDetail['ecommrole'] = $existData['ecommrole']; // 用户权限
+                $contactPreference = $existData['contactPreference'];   // 个性化
                 $userDetail['contactPreference']['contactID'] = $contactPreference['contactID'];
                 $userDetail['contactPreference']['timeZone'] = $contactPreference['timeZone'];
                 //   $userDetail['contactPreference']['themeCode']=$contactPreference['themeCode'];
@@ -155,6 +156,7 @@ class LoginController extends Kyapi_Controller_Action {
                     'crnCode'           => $userDetail['crnCode'],
                     'regdCountryCode'   => $userDetail['regdCountryCode'],
                     'userName'          => $userDetail['user_name'],
+                    'mobilePhone'       => $userDetail['mobilePhone'],
                     'userLoginName'     => $userDetail['ecommloginname'],
                     'isPersonAccount'   => $userDetail['isPersonAccount'],
                     'contactPreference' => $userDetail['contactPreference'],
@@ -221,6 +223,7 @@ class LoginController extends Kyapi_Controller_Action {
             $userDetail['crnCode'] = $existData['account']['crnCode'];  //公司默认货币
             $userDetail['regdCountryCode'] = $existData['account']['regdCountryCode'];  //公司国籍
             $userDetail['user_name'] = $existData['name'];
+            $userDetail['mobilePhone'] = $existData['mobilePhone']; // 手机号码
             $userDetail['ecommloginname'] = $existData['ecommloginname'];//登陆名
             $userDetail['isPersonAccount'] = $existData['isPersonAccount']; // 是否个人用户
             $userDetail['ecommrole'] = $existData['ecommrole'];//用户权限
@@ -313,6 +316,7 @@ class LoginController extends Kyapi_Controller_Action {
                 'crnCode'           => $userDetail['crnCode'],
                 'regdCountryCode'   => $userDetail['regdCountryCode'],
                 'userName'          => $userDetail['user_name'],
+                'mobilePhone'       => $userDetail['mobilePhone'],
                 'userLoginName'     => $userDetail['ecommloginname'],
                 'isPersonAccount'   => $userDetail['isPersonAccount'],
                 'contactPreference' => $userDetail['contactPreference'],

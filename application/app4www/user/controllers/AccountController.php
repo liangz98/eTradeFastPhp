@@ -375,17 +375,37 @@ class AccountController extends Kyapi_Controller_Action
     }
 
     /*人员账号新增 启用账号*/
-    public  function validAction()
-    {
-
+    public function validAction() {
         if ($this->_request->isPost()) {
             //设为默认
             // 请求Hessian服务端方法bankAcctID
             $_objID = $this->_request->getPost('delID');
-            $_requestOb=$this->_requestObject;
-            $opData= $this->json->editContactValidApi($_requestOb,$_objID);
+            $_requestOb = $this->_requestObject;
+            $opData = $this->json->editContactValidApi($_requestOb, $_objID);
             echo $opData;
         }
+        exit;
+    }
+
+    public function sendMobileAuthCodeAction() {
+        $requestObject = $this->_requestObject;
+
+        $resultObject = $this->json->changeSigningAgent($requestObject);
+        $msg = json_decode($resultObject)->result;
+
+        echo json_encode($msg);
+        exit;
+    }
+
+    public function changeSigningAgentAction() {
+        $requestObject = $this->_requestObject;
+
+        $authCode = $this->_request->getParam('authCode');
+        $contactID = $this->_request->getParam('contactID');
+        $resultObject = $this->json->changeSigningAgent($requestObject, $authCode, $contactID);
+        $msg = json_decode($resultObject)->result;
+
+        echo json_encode($msg);
         exit;
     }
 }
