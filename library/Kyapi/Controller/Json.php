@@ -2215,7 +2215,7 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
      * @return mixed
      */
     public function changeSigningAgent($requestObject, $authCode, $contactID) {
-        $_url = $this->url . '/contactapi/contactApi!changeSigningAgent.action';
+        $_url = $this->url . '/accountapi/accountApi!changeSigningAgent.action';
         $_params = json_encode(array(
             "requestObject" => $requestObject,
             "authCode"      => $authCode,
