@@ -121,20 +121,25 @@ class AccountController extends Kyapi_Controller_Action
         exit;
     }
 
-    public function viewAction()
-    {
+    public function viewAction() {
         // 设置请求数据
-        $_requestOb=$this->_requestObject;
-        $contactId=$_SERVER['QUERY_STRING'];
-        $_contactID =base64_decode($contactId);
+        $requestObject = $this->_requestObject;
+        $contactId = $_SERVER['QUERY_STRING'];
+        $_contactID = base64_decode($contactId);
         // 请求Hessian服务端方法
 
-        $userKY= $this->json->getContactApi($_requestOb,$_contactID);
-        $userData= $this->objectToArray(json_decode($userKY));
-        $this->view->e=$userData['result'];
+        $userKY = $this->json->getContactApi($requestObject, $_contactID);
+        $userData = $this->objectToArray(json_decode($userKY));
+        $this->view->e = $userData['result'];
 
-        if(defined('SEED_WWW_TPL')){
-            $content = $this->view->render(SEED_WWW_TPL."/account/view.phtml");
+        // 取加公司签署人信息
+        $accountResultObject = $this->json->getAccountApi($requestObject);
+        $this->view->hasIDCertificate = json_decode($accountResultObject)->result->hasIDCertificate;
+        $this->view->agentName = json_decode(json_decode($accountResultObject)->result->idcertificateinfo)->agentName;
+        $this->view->agentIdNo = json_decode(json_decode($accountResultObject)->result->idcertificateinfo)->agentIdNo;
+
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/account/view.phtml");
             echo $content;
             exit;
         }
@@ -403,7 +408,12 @@ class AccountController extends Kyapi_Controller_Action
         $authCode = $this->_request->getParam('authCode');
         $contactID = $this->_request->getParam('contactID');
         $resultObject = $this->json->changeSigningAgent($requestObject, $authCode, $contactID);
-        $msg = json_decode($resultObject)->result;
+
+        $msg['status'] = json_decode($resultObject)->status;
+        $msg['result'] = json_decode($resultObject)->result;
+        if (json_decode($resultObject)->status <= 0) {
+            $msg['error'] = json_decode($resultObject)->error;
+        }
 
         echo json_encode($msg);
         exit;

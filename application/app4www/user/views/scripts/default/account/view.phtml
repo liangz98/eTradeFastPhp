@@ -29,6 +29,11 @@
                     <div class="panel-heading"><?php echo $this->translate('personNO'); ?></div>
                     <div class="panel-body">
                         <div class="tab-content">
+                            <div class="alert alert-success alert-dismissible fade in hidden infoAlert" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <p><?php echo base64_decode($this->resultMsg); ?>!</p>
+                            </div>
+
                             <div role="tabpanel" class="tab-pane active row" id="info">
                                 <div class="col-md-12">
                                     <h3>
@@ -88,16 +93,36 @@
                                         <dt><?php echo $this->translate('企业签署人'); ?></dt>
                                         <dd>
                                             <?php
-                                            if ($this->e['isDefaultPublic'] == true) {
-                                                echo $this->translate('yes');
-                                            } else {
-                                                echo $this->translate('no');
-                                            }
+                                                // 1.判断公司是否已经有实名认证信息
+                                                // 2.判断当前用户是否已经做了实名认证
+                                                if ($this->hasIDCertificate) {
+                                                    if ($this->agentName == $this->e['name'] && $this->agentIdNo == $this->e['identityNo']) {
+                                                        echo $this->translate('yes');
+                                                    } else {
+                                                        echo $this->translate('no');
+                                                    }
+                                                } else {
+                                                    echo $this->translate('no');
+                                                }
                                             ?>
-                                            &nbsp;&nbsp;
-                                            <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#changeSigningAgent">
-                                                <i class="fas fa-signature"></i> 设为签署人
-                                            </button>
+
+                                            <?php
+                                                if ($this->CompAdmin):
+                                                    if ($this->hasIDCertificate):
+                                                        if ($this->agentName != null && $this->agentName != '' && $this->agentIdNo != null && $this->agentIdNo != ''):
+                                                            if ($this->agentName != $this->e['name'] && $this->agentIdNo != $this->e['identityNo']):
+                                                                if ($this->e['realAuthStatus'] == 2):
+                                                ?>
+                                                                    <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#changeSigningAgent">
+                                                                        <i class="fas fa-signature"></i> 设为签署人
+                                                                    </button>
+                                                <?php
+                                                                endif;
+                                                            endif;
+                                                        endif;
+                                                    endif;
+                                                endif;
+                                            ?>
                                         </dd>
 
                                         <dt><?php echo $this->translate('Df_Contact'); ?></dt>
@@ -150,32 +175,36 @@
 
             <div class="modal-body">
                 <div class="layui-form-item table-responsive">
-                        <div class="form-group">
-                            <label for="signMobileInput"><?php echo $this->translate('signAuthType'); ?></label>
-                            <input type="text" class="form-control" id="signMobileInput" name="signMobileInput" value="<?php echo $this->translate('mobile_phone').' '. substr($this->mobilePhone, 0, 3) . '*****' . substr($this->mobilePhone, 8, strlen($this->mobilePhone));?>" readonly="readonly">
-                        </div>
+                    <div class="alert alert-danger alert-dismissible fade in hidden changeSigningAlert" role="alert">
+                        <p><?php echo base64_decode($this->resultMsg); ?>!</p>
+                    </div>
 
-                        <div class="form-group has-error has-feedback">
-                            <label class="control-label sr-only" for="authCode">authCode</label>
-                            <div class="row" style="margin-right: 0;">
-                                <div class="col-sm-7">
-                                    <input type="text" class="form-control" id="authCode" name="authCode" placeholder="<?php echo $this->translate('signInputAuthCode'); ?>">
-                                </div>
-                                <div class="col-sm-5">
-                                    <button type="button" id="signSendAuthCodeBtn" class="btn btn-primary"><?php echo $this->translate('signSendAuthCode'); ?></button>
-                                </div>
+                    <div class="form-group">
+                        <label for="signMobileInput"><?php echo $this->translate('signAuthType'); ?></label>
+                        <input type="text" class="form-control" id="signMobileInput" name="signMobileInput" value="<?php echo $this->translate('mobile_phone').' '. substr($this->mobilePhone, 0, 3) . '*****' . substr($this->mobilePhone, 8, strlen($this->mobilePhone));?>" readonly="readonly">
+                    </div>
+
+                    <div class="form-group authCodeGroup">
+                        <label class="control-label sr-only" for="authCode">authCode</label>
+                        <div class="row" style="margin-right: 0;">
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="authCode" name="authCode" placeholder="<?php echo $this->translate('signInputAuthCode'); ?>">
+                            </div>
+                            <div class="col-sm-5">
+                                <button type="button" id="signSendAuthCodeBtn" class="btn btn-primary"><?php echo $this->translate('signSendAuthCode'); ?></button>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <div class="row" style="margin-right: 0;">
-                                <div class="col-sm-10">
-                                    <button id="singConfirmBtn" class="btn btn-primary btn-block" data-contact-id="<?php echo $this->e['contactID']; ?>">
-                                        <?php echo $this->translate('confirmed'); ?>
-                                    </button>
-                                </div>
+                    <div class="form-group">
+                        <div class="row" style="margin-right: 0;">
+                            <div class="col-sm-10">
+                                <button id="singConfirmBtn" class="btn btn-primary btn-block" data-contact-id="<?php echo $this->e['contactID']; ?>">
+                                    <?php echo $this->translate('confirmed'); ?>
+                                </button>
                             </div>
                         </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -231,6 +260,10 @@
 
                 },
                 dataType: "json",
+                beforeSend: function() {
+                    $("#authCode").val("");
+                    $(".changeSigningAlert").addClass("hidden");
+                },
                 success: function () {
                     var sendingStr = "<?php echo $this->translate('signAuthCodeSending');?>";
                     $("#signSendAuthCodeBtn").text(sendingStr);
@@ -246,6 +279,7 @@
                 authCode = $("#authCode").val();
 
             if (authCode === '') {
+                $(".authCodeGroup").addClass("has-error");
                 return false;
             }
 
@@ -259,23 +293,25 @@
                 dataType: "json",
                 beforeSend: function() {
                     $("#singConfirmBtn").attr({ disabled: "disabled" });
+                    $(".changeSigningAlert").addClass("hidden");
+                    $(".authCodeGroup").removeClass("has-error");
                 },
                 success: function (data) {
-                    var signMsg = "<?php echo $this->translate('signFail');?>";
-                    if (data !== null && data !== '') {
-                        signMsg = "<?php echo $this->translate('signSuccess');?>";
-                        // layer.msg(signMsg);
-                        // window.location.reload();
+                    if (data.status === 1) {
+                        window.location.reload();
                     } else {
-                        $("#signAuthCode").val('');
-                        // layer.msg(signMsg);
+                        var changeSigningAlert = $(".changeSigningAlert");
+
+                        $(".changeSigningAlert > p").html(data.error);
+                        $(changeSigningAlert).removeClass("hidden");
+                        $("#singConfirmBtn").attr("disabled", false);
                     }
                 }
             });
         });
 	});
 
-    var countdown=120;
+    var countdown = 60;
     function sendSignAuthCodeCountDown() {
         var obj = $("#signSendAuthCodeBtn");
         setTimeTxt(obj);
@@ -286,7 +322,7 @@
             obj.attr('disabled',false);
             var authCodeStr = "<?php echo $this->translate('signSendAuthCode'); ?>";
             obj.text(authCodeStr);
-            countdown = 120;
+            countdown = 60;
             return;
         } else {
             console.log(countdown);
@@ -296,8 +332,8 @@
             countdown--;
         }
         setTimeout(function() {
-                setTimeTxt(obj) }
-            ,1000);
+                setTimeTxt(obj)
+            }, 1000);
     }
 </script>
 </body>

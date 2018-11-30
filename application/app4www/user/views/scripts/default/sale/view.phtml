@@ -64,7 +64,9 @@
                                         <p><?php echo $this->orders["orderNo"];?></p>
                                     </div>
                                     <div class="col-xs-2 news-title"><?php echo $this->translate('Prities');?></div>
-                                    <div class="col-xs-4"></div>
+                                    <div class="col-xs-4">
+                                        <p></p>
+                                    </div>
                                 </div>
 
                                 <div class="row">
@@ -101,7 +103,13 @@
                                         <p><?php echo $this->orders["orderNo"];?></p>
                                     </div>
                                     <div class="col-xs-2 news-title"><?php echo $this->translate('Prities');?></div>
-                                    <div class="col-xs-4"></div>
+                                    <div class="col-xs-4">
+                                        <p>
+                                            <?php foreach ($this->exchangeRateList as $exchangeRate) {
+                                                echo $exchangeRate->contraCrn . '-->' . $exchangeRate->baseCrn . ' ' . $exchangeRate->actualRate . '; ';
+                                            }?>
+                                        </p>
+                                    </div>
                                 </div>
 
                                 <div class="row">

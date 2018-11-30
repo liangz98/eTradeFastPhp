@@ -698,7 +698,6 @@ class SaleController extends Kyapi_Controller_Action
         // 订单商品
         $this->view->orderItem = $order['orderItemList'];
 
-
         // 取回当前公司的企业认证状态
         $_accountID = $this->view->accountID;
         $account = $this->json->getAccountApi($requestObject, $_accountID);
@@ -735,6 +734,10 @@ class SaleController extends Kyapi_Controller_Action
                 break;
             }
         }
+
+        // 订单汇率
+        $rateResultObject = $this->json->listExchangeRateApi($requestObject, $bizType, $_orderID);
+        $this->view->exchangeRateList = json_decode($rateResultObject)->result;
 
         // 物流相关附件
         $this->view->DLPG = array();    // 备货相关附件
