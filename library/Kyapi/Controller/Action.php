@@ -107,7 +107,6 @@ class Kyapi_Controller_Action extends Zend_Controller_Action{
 
     public function IsAuth($e){
         if($e){
-
             //销毁绑定sessionID的key
             $config=array();
             $config['server'] = $this->view->seed_Setting['KyUrlRedis'];

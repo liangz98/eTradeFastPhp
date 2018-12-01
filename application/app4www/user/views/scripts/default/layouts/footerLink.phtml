@@ -29,5 +29,24 @@
                 // console.log($(this));
             }
         });
+
+        setInterval(function(){
+            updateRedisExpire();
+        }, 3500000);
     });
+
+    var updateExpireUrl = '/user/common/update-redis-expire-ajax';
+    function updateRedisExpire() {
+        $.ajax({
+            type: "GET",
+            url: updateExpireUrl,
+            data: {
+
+            },
+            dataType: "json",
+            success: function (data) {
+
+            }
+        });
+    }
 </script>

@@ -5,10 +5,11 @@ class CompanyController extends Kyapi_Controller_Action
     public function preDispatch()
     {
         $this->view->cur_pos = 'company';
-        //清除 免登陆session
+        // 清除 免登陆session
         $this->IsAuth($this->view->visitor);
 
         if (empty($this->view->userID)) {
+
             // 提示：请先登录系统
             Mobile_Browser::redirect($this->view->translate('tip_login_please'), $this->view->seed_Setting['user_app_server'] . "/login");
         }

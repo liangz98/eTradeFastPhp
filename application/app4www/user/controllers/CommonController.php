@@ -145,4 +145,23 @@ class CommonController extends Kyapi_Controller_Action {
         echo json_encode($msg);
         exit;
     }
+
+    /**
+     * 更新Redis失效时间
+     */
+    public function updateRedisExpireAjaxAction() {
+        // redis写入对应键值对
+        $config = array();
+        $config['server'] = $this->view->seed_Setting['KyUrlRedis'];
+        $config['port'] = $this->view->seed_Setting['KyUrlRedisPort'];
+        $redis = new Kyapi_Model_redisInit();
+        $redis->connect($config);
+        $redis->set('PHPREDIS_ACTIVE_USERS:' . $this->view->userID, 'PHPREDIS_SESSION:' . session_id(), 3600);
+        $redis->set('PHPREDIS_ACTIVE_SESSION:' . session_id(), $this->view->userID, 3600);
+
+        $msg["userID"] = $this->view->userID;
+
+        echo json_encode($msg);
+        exit;
+    }
 }
