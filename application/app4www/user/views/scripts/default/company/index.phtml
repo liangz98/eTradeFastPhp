@@ -146,6 +146,7 @@
                                         <div class="btns">
                                             <div id="picker">选择文件</div>
                                             <button id="ctlBtn" class="btn btn-default">开始上传</button>
+                                            <button id="goBack" class="btn btn-default">返回</button>
                                         </div>
                                     </div>
                                 </div>
@@ -172,7 +173,7 @@
 <!--<script type="text/javascript" src="/ky/upload/img.js"></script>-->
 
 <!-- Web Uploader -->
-<script type="text/javascript" src="/ky/webuploader-0.1.5-dist/webuploader.min.js"></script>
+<script type="text/javascript" src="/ky/webuploader-0.1.5-dist/webuploader.js"></script>
 
 <script type="text/javascript">
 	$().ready(function() {
@@ -213,23 +214,72 @@
             });
         });
 
-        // Web Uploader
-        var uploader = WebUploader.create({
-
-            // swf文件路径
-            swf: BASE_URL + '/ky/webuploader-0.1.5-dist/Uploader.swf',
-
-            // 文件接收服务端。
-            server: '/ky/upload/ajax.php',
-
-            // 选择文件的按钮。可选。
-            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-            pick: '#picker',
-
-            // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
-            resize: false
-        });
+        $('#pickerdiv:eq(1)').attr('style','position:absolute;top:0px;left:0px;width:82px;height:39px;overflow:hidden;bottom:auto;right:auto;');
 	});
+
+    var uploader = WebUploader.create({
+
+        // swf文件路径
+        swf:  '/ky/webuploader-0.1.5-dist/Uploader.swf',
+        formData:{"dn":$("#requestDn").val()},//参数列表
+        // 文件接收服务端。
+        server: '/ky/upload/ajax.php',
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: '#picker',
+        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+        resize: false,
+        // 只允许选择图片文件。
+        accept: {
+            title: 'file',
+            extensions: 'cer'
+//                mimeTypes: '.cer,'
+        }
+    });
+    var $list = $("#thelist");
+    uploader.on( 'fileQueued', function( file ) {
+        $list.append( '<div id="' + file.id + '" class="item">' +
+            '<h4 class="info">' + file.name + '</h4>' +
+            '<p class="state">等待上传...</p>' +
+            '<p class="progress progress-bar">上传进度...</p>' +
+            '</div>' );
+    });
+
+    uploader.on( 'uploadSuccess', function( file ) {
+        $( '#'+file.id ).find('p.state').text('已上传');
+    });
+    // 文件上传过程中创建进度条实时显示。
+    uploader.on( 'uploadProgress', function( file, percentage ) {
+        var $li = $( '#'+file.id ),
+            $percent = $li.find('.progress .progress-bar');
+
+        // 避免重复创建
+        if ( !$percent.length ) {
+            $percent = $('<div class="progress progress-striped active">' +
+                '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                '</div>' +
+                '</div>').appendTo( $li ).find('.progress-bar');
+        }
+
+        $li.find('p.state').text('上传中');
+
+        $percent.css( 'width', percentage * 100 + '%' );
+    });
+    uploader.on( 'uploadError', function( file ) {
+        $( '#'+file.id ).find('p.state').text('上传出错');
+    });
+
+    uploader.on( 'uploadComplete', function( file ) {
+        $( '#'+file.id ).find('.progress').fadeOut();
+    });
+
+    $("#ctlBtn").on('click', function() {
+        uploader.upload();
+    });
+    $("#goBack").on('click', function() {
+        $("#uploadFileDiv").empty();
+        $("#uploadFile").removeClass("hidden");
+    });
 </script>
 </body>
 </html>
