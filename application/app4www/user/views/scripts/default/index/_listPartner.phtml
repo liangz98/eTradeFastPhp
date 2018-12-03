@@ -10,7 +10,7 @@
     <tbody>
     <?php if (count($this->partnerList) > 0): ?>
         <?php foreach ($this->partnerList as $partner): ?>
-            <tr>
+            <tr style="cursor: pointer;" data-type="<?php echo $this->dataType; ?>" data-id="<?php echo $partner->toID; ?>">
                 <td>
                     <?php if ($this->userrgCode == 'CN') {
                         echo $partner->toName;
@@ -36,5 +36,24 @@
             <td colspan="5"><?php echo $this->translate('noData'); ?></td>
         </tr>
     <?php endif;?>
+    <tr>
+        <td colspan="5" class="text-right"><a href="<?php echo $this->listUrl; ?>">更 多 >></a></td>
+    </tr>
     </tbody>
 </table>
+<script src="/ky/js/base64.js"></script>
+<script>
+    // 行点击
+    $("tr").slice(1, -1).click(function () {
+        var dataID = $(this).attr("data-id");
+        if (dataID !== undefined && dataID !== '') {
+            var base = new Base64();
+            var resultEnCode = base.encode($(this).attr("data-id"));
+            if ($(this).attr("data-type") === 'buyer') {
+                window.location.href = "/user/buyer/view?" + resultEnCode;
+            } else if ($(this).attr("data-type") === 'vendor') {
+                window.location.href = "/user/vendor/view?" + resultEnCode;
+            }
+        }
+    });
+</script>

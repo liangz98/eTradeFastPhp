@@ -422,6 +422,8 @@ class IndexController extends Kyapi_Controller_Action {
         $orderStatus = "04";
         $resultObject = $this->json->listSaleOrderApi($_requestOb, $orderStatus, null, null, 0, 5);
         $this->view->orderList = json_decode($resultObject)->result;
+        $this->view->dataType = 'sale';
+        $this->view->listUrl = '/user/sale';
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/index/_listOrder.phtml");
@@ -436,6 +438,8 @@ class IndexController extends Kyapi_Controller_Action {
         $orderStatus = "04";
         $resultObject = $this->json->listPurOrderApi($_requestOb, $orderStatus, null, null, 0, 5);
         $this->view->orderList = json_decode($resultObject)->result;
+        $this->view->dataType = 'pur';
+        $this->view->listUrl = '/user/pur';
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/index/_listOrder.phtml");
@@ -449,6 +453,8 @@ class IndexController extends Kyapi_Controller_Action {
         $_requestOb = $this->_requestObject;
         $resultObject = $this->json->listSaleProductApi($_requestOb, null, null, null, 0, 5);
         $this->view->productList = json_decode($resultObject)->result;
+        $this->view->dataType = 'goods';
+        $this->view->listUrl = '/user/goods';
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/index/_listProduct.phtml");
@@ -462,6 +468,8 @@ class IndexController extends Kyapi_Controller_Action {
         $_requestOb = $this->_requestObject;
         $resultObject = $this->json->listPurProductApi($_requestOb, null, null, null, 0, 5);
         $this->view->productList = json_decode($resultObject)->result;
+        $this->view->dataType = 'purchase';
+        $this->view->listUrl = '/user/purchase';
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/index/_listProduct.phtml");
@@ -475,6 +483,8 @@ class IndexController extends Kyapi_Controller_Action {
         $_requestOb = $this->_requestObject;
         $resultObject = $this->json->listBuyerPartnerApi($_requestOb, null, null, null, 0, 5);
         $this->view->partnerList = json_decode($resultObject)->result;
+        $this->view->dataType = 'buyer';
+        $this->view->listUrl = '/user/buyer';
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/index/_listPartner.phtml");
@@ -488,6 +498,8 @@ class IndexController extends Kyapi_Controller_Action {
         $_requestOb = $this->_requestObject;
         $resultObject = $this->json->listVendorPartnerApi($_requestOb, null, null, null, 0, 5);
         $this->view->partnerList = json_decode($resultObject)->result;
+        $this->view->dataType = 'vendor';
+        $this->view->listUrl = '/user/vendor';
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/index/_listPartner.phtml");

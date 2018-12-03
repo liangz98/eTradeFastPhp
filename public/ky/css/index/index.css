@@ -1,9 +1,3 @@
-
-.purOrderListBtn, .saleOrderListBtn, .purProductListBtn, .saleProductListBtn, .vendorPartnerListBtn, .buyerPartnerListBtn {
-    cursor: pointer;
-    font-size: 12px;
-}
-
 body {
 	color: #666;
 }
@@ -37,11 +31,6 @@ body {
 	width: 100.3%;
 }
 
-/*.ent-img {
-	width: 140px !important;
-	padding: 0;
-}*/
-
 div.index-info .col-md-3 {
 	height: 140px;
 	font-size: 14px;
@@ -64,21 +53,62 @@ div.index-info .col-md-3 {
 	background-color: #fff;
 }
 
+#_orderList tr:last-of-type:hover{
+    background-color: #f5f8fa;
+}
+
+#_productList tr:last-of-type:hover{
+    background-color: #f8f8ff;
+}
+
+#_partnerList tr:last-of-type:hover{
+    background-color: #fffafa;
+}
+
+
 .etf-heading + div table thead {
 	border: 1px solid #ccc;
 	background-color: #f6f6f6;
 }
 
-/*.index-info .col-md-3:nth-child(2){
-	width: 30%;
-}*/
+.etf-heading-select {
+    height: 41px;
+    margin-top: -10px;
+    padding-top: 10px;
+    width: 90px;
+    cursor: pointer;
+}
 
-div.etf-heading li.selected:before {
-	height: 100%;
-	width: 48px;
-	border-top: 2px solid #d9534f;
-	position:absolute;
-	content: "";
+.etf-heading-select p {
+    font-size: 15px;
+    padding-left: 10px;
+    color: #666;
+}
+
+.change {
+    background-color: #f6f6f6;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+}
+
+.change:before {
+    height: 100%;
+    width: 88px;
+    top: 0;
+    border-top: 2px solid #d9534f;
+    position:absolute;
+    content: "";
+}
+
+div.etf-heading ul {
+    margin-top: -10px;
+    height: 30px;
+}
+
+div.etf-heading ul li {
+    padding-top: 8px;
+    height: 40px;
+    background-color: #f6f6f6;
 }
 
 .et-ico {

@@ -30,8 +30,8 @@
                             <div class="row">
                                 <div class="col-md-12 col-xs-12"></div>
                             </div>
-
                         </div>
+
                         <div class="col-xs-12 col-md-3">
                             <div class="row order-header-info">
                                 <div class="col-xs-12 col-md-6">
@@ -101,15 +101,17 @@
 
                 <div class="panel">
                     <!-- Default panel contents -->
-                    <div class="panel-heading etf-heading">
-                        <ul class="list-inline">
-                            <li>
-                                <i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;
-                                <?php echo $this->translate('order'); ?>
-                            </li>
-                            <li class="pull-right purOrderListBtn"><?php echo $this->translate('orderBUY'); ?></li>
-                            <li class="pull-right saleOrderListBtn"><?php echo $this->translate('orderSALLE'); ?></li>
-                        </ul>
+                    <div class="panel-heading etf-heading" style="height: 41px;">
+                        <div class="pull-left">
+                            <i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;
+                            <?php echo $this->translate('order'); ?>
+                        </div>
+                        <div class="pull-right etf-heading-select purOrderListBtn">
+                            <p><?php echo $this->translate('orderBUY'); ?></p>
+                        </div>
+                        <div class="pull-right etf-heading-select change saleOrderListBtn">
+                            <p><?php echo $this->translate('orderSALLE'); ?></p>
+                        </div>
                     </div>
                     <!-- Table -->
                     <div class="table-responsive" id="_orderList"></div>
@@ -117,15 +119,17 @@
 
                 <div class="panel panel-warning">
                     <!-- Default panel contents -->
-                    <div class="panel-heading etf-heading">
-                        <ul class="list-inline">
-                            <li>
-                                <i class="fas fa-boxes"></i>&nbsp;&nbsp;
-                                <?php echo $this->translate('goods_4_index'); ?>
-                            </li>
-                            <li class="pull-right purProductListBtn"><?php echo $this->translate('purProduct'); ?></li>
-                            <li class="pull-right saleProductListBtn"><?php echo $this->translate('goodsME'); ?></li>
-                        </ul>
+                    <div class="panel-heading etf-heading" style="height: 41px;">
+                        <div class="pull-left">
+                            <i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;
+                            <?php echo $this->translate('goods_4_index'); ?>
+                        </div>
+                        <div class="pull-right etf-heading-select purProductListBtn">
+                            <p><?php echo $this->translate('purProduct'); ?></p>
+                        </div>
+                        <div class="pull-right etf-heading-select change saleProductListBtn">
+                            <p><?php echo $this->translate('goodsME'); ?></p>
+                        </div>
                     </div>
                     <!-- Table -->
                     <div class="table-responsive" id="_productList"></div>
@@ -133,16 +137,17 @@
 
                 <div class="panel panel-info">
                     <!-- Default panel contents -->
-                    <div class="panel-heading etf-heading">
-                        <ul class="list-inline">
-                            <li>
-                                <i class="fas fa-users"></i>&nbsp;&nbsp;
-                                <?php echo $this->translate('partners'); ?>
-                            </li>
-                            <li class="pull-right vendorPartnerListBtn"><?php echo $this->translate('partners_vendors'); ?></li>
-                            <li class="pull-right buyerPartnerListBtn"><?php echo $this->translate('partners_buyers'); ?></li>
-                        </ul>
-
+                    <div class="panel-heading etf-heading" style="height: 41px;">
+                        <div class="pull-left">
+                            <i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;
+                            <?php echo $this->translate('partners'); ?>
+                        </div>
+                        <div class="pull-right etf-heading-select vendorPartnerListBtn">
+                            <p><?php echo $this->translate('partners_vendors'); ?></p>
+                        </div>
+                        <div class="pull-right etf-heading-select change buyerPartnerListBtn">
+                            <p><?php echo $this->translate('partners_buyers'); ?></p>
+                        </div>
                     </div>
                     <!-- Table -->
                     <div class="table-responsive" id="_partnerList"></div>
@@ -183,29 +188,37 @@
 
         // 订单
 	    $(".saleOrderListBtn").click(function () {
-            $(".saleOrderListBtn").addClass("selected");
-            $(".purOrderListBtn").removeClass("selected");
+            $(".saleOrderListBtn").addClass("change");
+            $(".purOrderListBtn").removeClass("change");
             initList("_orderList", "listsaleorder");
         });
         $(".purOrderListBtn").click(function () {
-            $(".purOrderListBtn").addClass("selected");
-            $(".saleOrderListBtn").removeClass("selected");
+            $(".purOrderListBtn").addClass("change");
+            $(".saleOrderListBtn").removeClass("change");
             initList("_orderList", "listpurorder");
         });
 
         // 商品
         $(".saleProductListBtn").click(function () {
+            $(".saleProductListBtn").addClass("change");
+            $(".purProductListBtn").removeClass("change");
             initList("_productList", "listsaleproduct");
         });
         $(".purProductListBtn").click(function () {
+            $(".purProductListBtn").addClass("change");
+            $(".saleProductListBtn").removeClass("change");
             initList("_productList", "listpurproduct");
         });
 
         // 合作伙伴
         $(".buyerPartnerListBtn").click(function () {
+            $(".buyerPartnerListBtn").addClass("change");
+            $(".vendorPartnerListBtn").removeClass("change");
             initList("_partnerList", "listbuyerpartner");
         });
         $(".vendorPartnerListBtn").click(function () {
+            $(".vendorPartnerListBtn").addClass("change");
+            $(".buyerPartnerListBtn").removeClass("change");
             initList("_partnerList", "listvendorpartner");
         });
 	});

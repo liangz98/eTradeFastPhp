@@ -11,7 +11,7 @@
     <tbody>
     <?php if (count($this->productList) > 0): ?>
         <?php foreach ($this->productList as $product): ?>
-            <tr>
+            <tr style="cursor: pointer;" data-type="<?php echo $this->dataType; ?>" data-id="<?php echo $product->productID; ?>">
                 <td><?php echo $product->productName; ?></td>
                 <td><?php echo $product->productBrand; ?></td>
                 <td>
@@ -30,5 +30,24 @@
         <td colspan="5"><?php echo $this->translate('noData'); ?></td>
     </tr>
     <?php endif;?>
+    <tr>
+        <td colspan="5" class="text-right"><a href="<?php echo $this->listUrl; ?>">更 多 >></a></td>
+    </tr>
     </tbody>
 </table>
+<script src="/ky/js/base64.js"></script>
+<script>
+    // 行点击
+    $("tr").slice(1, -1).click(function () {
+        var dataID = $(this).attr("data-id");
+        if (dataID !== undefined && dataID !== '') {
+            var base = new Base64();
+            var resultEnCode = base.encode($(this).attr("data-id"));
+            if ($(this).attr("data-type") === 'goods') {
+                window.location.href = "/user/goods/view?" + resultEnCode;
+            } else if ($(this).attr("data-type") === 'purchase') {
+                window.location.href = "/user/purchase/view?" + resultEnCode;
+            }
+        }
+    });
+</script>
