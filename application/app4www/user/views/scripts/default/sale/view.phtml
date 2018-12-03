@@ -33,7 +33,7 @@
                                 <span class="<?php if ($this->vestut == 0) { echo 'order-activated'; } elseif ($this->vestut > 0) { echo 'order-finished'; } ?>"><?php echo $this->translate('confirming'); ?></span>
                             </div>
 
-                            <a href="#sign" aria-controls="info" role="tab" data-toggle="tab">
+                            <a href="#sign" aria-controls="info" role="tab" <?php if ($this->vestut != 0) { echo 'data-toggle="tab"'; } ?>>
                                 <div class="col-xs-6 col-sm-3">
                                     <span class="<?php if ($this->vestut == 1 || $this->vestut == 3) { echo 'order-activated'; } elseif ($this->vestut > 1) { echo 'order-finished'; } else { echo 'order-no-start';} ?>"><?php echo $this->translate('sign'); ?></span>
                                 </div>
@@ -41,13 +41,13 @@
 
                             <div class="clearfix visible-xs-block"></div>
 
-                            <a href="#delivery" aria-controls="info" role="tab" data-toggle="tab">
+                            <a href="#delivery" aria-controls="info" role="tab" <?php if ($this->vestut != 0) { echo 'data-toggle="tab"'; } ?>>
                                 <div class="col-xs-6 col-sm-3">
                                     <span class="<?php if ($this->vestut > 3) { echo 'order-activated'; } elseif ($this->vestut > 7) { echo 'order-finished'; } else { echo 'order-no-start';} ?>"><?php echo $this->translate('delivery'); ?></span>
                                 </div>
                             </a>
 
-                            <a href="#calculate" aria-controls="info" role="tab" data-toggle="tab">
+                            <a href="#calculate" aria-controls="info" role="tab" <?php if ($this->vestut != 0) { echo 'data-toggle="tab"'; } ?>>
                                 <div class="col-xs-6 col-sm-3">
                                     <span class="<?php if ($this->vestut > 3) { echo 'order-activated'; } elseif ($this->vestut > 7) { echo 'order-finished'; } else { echo 'order-no-start';} ?>"><?php echo $this->translate('calculate'); ?></span>
                                 </div>
@@ -65,7 +65,11 @@
                                     </div>
                                     <div class="col-xs-2 news-title"><?php echo $this->translate('Prities');?></div>
                                     <div class="col-xs-4">
-                                        <p></p>
+                                        <p>
+                                            <?php foreach ($this->exchangeRateList as $exchangeRate) {
+                                                echo $exchangeRate->contraCrn . '-->' . $exchangeRate->baseCrn . ' ' . $exchangeRate->actualRate . '; ';
+                                            }?>
+                                        </p>
                                     </div>
                                 </div>
 
@@ -392,7 +396,7 @@
                                                 </div>
                                             <?php endforeach; ?>
 
-                                            <?php if (count($this->orders['orderItemList']) > 0): ?>
+                                            <?php if (count($this->orders['orderItemList']) > 1): ?>
                                             <div class="row">
                                                 <div class="col-sm-3 col-sm-offset-5 padding-bottom-15">
                                                     <button type="button" class="btn btn-default btn-xs showAll" data-type="down">展开全部 <i class="fas fa-chevron-down"></i></button>

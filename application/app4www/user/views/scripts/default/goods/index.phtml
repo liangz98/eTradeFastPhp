@@ -70,18 +70,18 @@
                                 <form class="form-horizontal" action="javascript:void(0)" onsubmit="goodsSearch()" id="goods_search_form">
                                     <div class="form-group" style="margin-bottom: 0 !important;">
                                         <label for="keyword" class="sr-only">keyword</label>
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-6 col-xs-7">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fas fa-search"></i></span>
                                                 <input type="text" class="form-control" name="keyword" id="keyword" placeholder="<?php echo $this->translate('INPkw_goods');?>">
                                                 <input type="hidden" name="productStatus" id="productStatus" value="<?php echo $this->productStatus?>">
                                             </div>
                                         </div>
-                                        <div class="col-sm-1">
+                                        <div class="col-sm-1 col-xs-2">
                                             <button type="submit" class="btn btn-primary"> Go </button>
                                         </div>
                                         <?php if ($this->CompAdmin == true): ?>
-                                        <div class="col-sm-1 col-sm-offset-4">
+                                        <div class="col-sm-1 col-xs-2 col-sm-offset-4">
                                             <a title="<?php echo $this->translate('add');?>" href="/user/goods/add" class="btn btn-default">
                                                 <i class="fas fa-plus"></i>
                                             </a>

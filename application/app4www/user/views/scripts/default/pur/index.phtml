@@ -67,18 +67,18 @@
                                 <form class="form-horizontal" action="javascript:void(0)" onsubmit="search()" id="search_form">
                                     <div class="form-group" style="margin-bottom: 0 !important;">
                                         <label for="keyword" class="sr-only">keyword</label>
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-6 col-xs-7">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fas fa-search"></i></span>
                                                 <input type="text" class="form-control" name="keyword" id="keyword" placeholder="<?php echo $this->translate('INPkw_order_xs');?>">
                                                 <input type="hidden" name="orderStatus" id="orderStatus" value="<?php echo $this->orderStatus; ?>" >
                                             </div>
                                         </div>
-                                        <div class="col-sm-1">
+                                        <div class="col-sm-1 col-xs-2">
                                             <button type="submit" class="btn btn-primary"> Go </button>
                                         </div>
                                         <?php if ($this->CompPartnerAdmin == true): ?>
-                                        <div class="col-sm-1 col-sm-offset-4">
+                                        <div class="col-sm-1 col-xs-2 col-sm-offset-4">
                                             <a title="<?php echo $this->translate('add');?>" href="/user/pur/add" class="btn btn-default">
                                                 <i class="fas fa-plus"></i>
                                             </a>
