@@ -40,6 +40,9 @@ class BankController extends Kyapi_Controller_Action
             Mobile_Browser::redirect('没有找到相关信息！', $this->view->seed_BaseUrl . "/");
 
         }
+
+        // 更新session时间
+        $this->updateRedisExpire();
     }
 
     public function indexAction() {

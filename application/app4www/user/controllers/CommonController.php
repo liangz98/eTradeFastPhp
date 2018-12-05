@@ -10,6 +10,9 @@ class CommonController extends Kyapi_Controller_Action {
             Mobile_Browser::redirect($this->view->translate('tip_login_please'), $this->view->seed_Setting['user_app_server'] . "/login");
         }
         $this->view->cur_pos = $this->_request->getParam('controller');
+
+        // 更新session时间
+        $this->updateRedisExpire();
     }
 
     // 取数据字典缓存

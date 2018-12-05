@@ -13,6 +13,9 @@ class CompanyController extends Kyapi_Controller_Action
             // 提示：请先登录系统
             Mobile_Browser::redirect($this->view->translate('tip_login_please'), $this->view->seed_Setting['user_app_server'] . "/login");
         }
+
+        // 更新session时间
+        $this->updateRedisExpire();
     }
 
     public function indexAction() {

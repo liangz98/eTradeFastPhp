@@ -35,6 +35,8 @@ class FinanceController extends Kyapi_Controller_Action
 
         }
 
+        // 更新session时间
+        $this->updateRedisExpire();
     }
 
     /**列表页**/

@@ -52,6 +52,9 @@ class SettleController extends Kyapi_Controller_Action
             Mobile_Browser::redirect($this->view->translate('tip_find_no'), $this->view->seed_BaseUrl . "/");
 
         }
+
+        // 更新session时间
+        $this->updateRedisExpire();
     }
 
 

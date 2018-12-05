@@ -7,6 +7,8 @@ class ContactController extends Kyapi_Controller_Action
 		if(empty($this->view->userID)&&($this->view->visitor)){
 			Mobile_Browser::redirect('请先登录系统！',$this->view->seed_Setting['user_app_server']."/login");
 		}
+        // 更新session时间
+        $this->updateRedisExpire();
 	}
 	public function indexAction()
 	{

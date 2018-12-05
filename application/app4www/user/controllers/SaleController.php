@@ -33,6 +33,9 @@ class SaleController extends Kyapi_Controller_Action
             //没有找到相关信息！
             Mobile_Browser::redirect($this->view->translate('tip_find_no'), $this->view->seed_BaseUrl . "/");
         }
+
+        // 更新session时间
+        $this->updateRedisExpire();
     }
 
     public function indexAction() {
