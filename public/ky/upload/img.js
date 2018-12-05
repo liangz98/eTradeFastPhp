@@ -90,40 +90,40 @@ function webupload_pic() {
             var i="1";
             i++;
 
-            if (type == undefined || type == '') {
+            if (type === undefined || type === '') {
                 type = file.ext;
             }
-            if (type == "docx" || type == "wps") {
+            if (type === "docx" || type === "wps") {
                 type = "doc";
             }
-            if (type == "xlsx") {
+            if (type === "xlsx") {
                 type = "xls";
             }
-            if (type == "pptx") {
+            if (type === "pptx") {
                 type = "ppt";
             }
             $("#" + file.id).remove();
             var CROD = $(".webupload_current").parent().find('#CROD').val();
-            var atach_new = "";
-            if (CROD == "CRSE") {
-                atach_new = "CRSE";
-            } else if (CROD == "ODSE") {
-                atach_new = "ODSE"
+            var attach_new = "";
+            if (CROD === "CRSE") {
+                attach_new = "CRSE";
+            } else if (CROD === "ODSE") {
+                attach_new = "ODSE"
             } else {
-                atach_new = attachTT;
+                attach_new = attachTT;
             }
 
-            if (type != "jpeg" && type != "png" && type != "jpg" && type != "gif" && type != "GIF" && type != "JPG" && type != "PNG") {
+            if (type !== "jpeg" && type !== "png" && type !== "jpg" && type !== "gif" && type !== "GIF" && type !== "JPG" && type !== "PNG") {
                 $(".webupload_current").parent().parent().find('.img-view').append("<li><img width='125px' height='125px' class='img_common' src='/ky/ico/" + type + ".png' alt=" + name + "></a><span class='del_to' >" + name + "<br><a href=" + response.doc + " download>下载</a>|<a onclick='delete_pic(this)'>删除</a></span>" +
-                    "<input type='hidden' name='attachNid[]' value=" + nid + "><input type='hidden'  name='attachName[]' value=" + name + "><input type='hidden'  name='attachSize[]' value=" + size + "><input type='hidden'  name='attachType[]' value=" + atach_new + "><input type='hidden'  name='bizType[]' value=" + bizTT + "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
-                if (atach_new == "CRSE" || atach_new == "ODSE") {
+                    "<input type='hidden' name='attachNid[]' value=" + nid + "><input type='hidden'  name='attachName[]' value=" + name + "><input type='hidden'  name='attachSize[]' value=" + size + "><input type='hidden'  name='attachType[]' value=" + attach_new + "><input type='hidden'  name='bizType[]' value=" + bizTT + "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
+                if (attach_new === "CRSE" || attach_new === "ODSE") {
                     if ($('#KEY_CRCT').length > 0) {
-                        var k = $(".webupload_current").parent().parent().parent().find('#KEY_CRCT').val();
-                        if (k == null && k == "") {
+                        var k = $(this).parent().parent().parent().find('#KEY_CRCT').val();
+                        if (k == null && k === "") {
                             k = 0;
                         }
                         var g = Number(k) + 1;
-                        $(".webupload_current").parent().parent().parent().find('#KEY_CRCT').val(g);
+                        $(this).parent().parent().parent().find('#KEY_CRCT').val(g);
                     }
                     if (typeof isCRCT === 'function') {
                         //存在且是function
@@ -132,15 +132,17 @@ function webupload_pic() {
                 }
             } else {
                 $(".webupload_current").parent().parent().find('.img-view').append("<li><img width='125px' height='125px' class='img_common' src="  + response.pic + " data-pic=" + response.pic + " alt=''/><span class='del_to' >"+name+"<br><a onclick='view_pic(this)'>查看</a>|<a onclick='delete_pic(this)'>删除</a></span>" +
-                "<input type='hidden' name='attachNid[]' value=" +nid+ "><input type='hidden'  name='attachName[]' value="+name+ "><input type='hidden'  name='attachSize[]' value="+size+ "><input type='hidden'  name='attachType[]' value="+atach_new+ "><input type='hidden'  name='bizType[]' value="+bizTT+ "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
-                if(atach_new=="CRSE"||atach_new=="ODSE"){
-                    if ($('#KEY_CRCT').length>0) {
-                        var k=$(".webupload_current").parent().parent().parent().find('#KEY_CRCT').val();
-                        if(k==null&&k==""){k=0;}
-                        var g=Number(k)+1;
-                        $(".webupload_current").parent().parent().parent().find('#KEY_CRCT').val(g);
+                "<input type='hidden' name='attachNid[]' value=" +nid+ "><input type='hidden'  name='attachName[]' value="+name+ "><input type='hidden'  name='attachSize[]' value="+size+ "><input type='hidden'  name='attachType[]' value="+attach_new+ "><input type='hidden'  name='bizType[]' value="+bizTT+ "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
+                if (attach_new === "CRSE" || attach_new === "ODSE") {
+                    if ($('#KEY_CRCT').length > 0) {
+                        var k = $(this).parent().parent().parent().find('#KEY_CRCT').val();
+                        if (k == null && k === "") {
+                            k = 0;
+                        }
+                        var g = Number(k) + 1;
+                        $("this").parent().parent().parent().find('#KEY_CRCT').val(g);
                     }
-                    if( typeof isCRCT === 'function' ){
+                    if (typeof isCRCT === 'function') {
                         //存在且是function
                         isCRCT();
                     }
@@ -155,9 +157,9 @@ function webupload_pic() {
          * 验证文件格式以及文件大小
          */
         uploader.on("error", function (type) {
-            if (type == "Q_TYPE_DENIED") {
+            if (type === "Q_TYPE_DENIED") {
                 layer.msg("请上传JPG、PNG、GIF、BMP格式文件");
-            } else if (type == "Q_EXCEED_SIZE_LIMIT") {
+            } else if (type === "Q_EXCEED_SIZE_LIMIT") {
                 layer.msg("文件大小不能超过2M");
             }else {
                 layer.msg("上传出错！请检查后重新上传！错误代码"+type);
