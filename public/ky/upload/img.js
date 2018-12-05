@@ -114,7 +114,7 @@ function webupload_pic() {
             }
 
             if (type !== "jpeg" && type !== "png" && type !== "jpg" && type !== "gif" && type !== "GIF" && type !== "JPG" && type !== "PNG") {
-                $(".webupload_current").parent().parent().find('.img-view').append("<li><img width='125px' height='125px' class='img_common' src='/ky/ico/" + type + ".png' alt=" + name + "></a><span class='del_to' >" + name + "<br><a href=" + response.doc + " download>下载</a>|<a onclick='delete_pic(this)'>删除</a></span>" +
+                $(".webupload_current").parent().parent().find('.img-view').append("<li><img width='125px' height='125px' class='img_common' src='/ky/ico/" + type + ".png' alt=" + name.substr(0,7) + "></a><span class='del_to' >" + name + "<br><a href=" + response.doc + " download>下载</a>|<a onclick='delete_pic(this)'>删除</a></span>" +
                     "<input type='hidden' name='attachNid[]' value=" + nid + "><input type='hidden'  name='attachName[]' value=" + name + "><input type='hidden'  name='attachSize[]' value=" + size + "><input type='hidden'  name='attachType[]' value=" + attach_new + "><input type='hidden'  name='bizType[]' value=" + bizTT + "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
                 if (attach_new === "CRSE" || attach_new === "ODSE") {
                     if ($('#KEY_CRCT').length > 0) {
@@ -131,7 +131,7 @@ function webupload_pic() {
                     }
                 }
             } else {
-                $(".webupload_current").parent().parent().find('.img-view').append("<li><img width='125px' height='125px' class='img_common' src="  + response.pic + " data-pic=" + response.pic + " alt=''/><span class='del_to' >"+name+"<br><a onclick='view_pic(this)'>查看</a>|<a onclick='delete_pic(this)'>删除</a></span>" +
+                $(".webupload_current").parent().parent().find('.img-view').append("<li><img width='125px' height='125px' class='img_common' src="  + response.pic + " data-original=" + response.fullPic + " alt=''/><span class='del_to' >" + name.substr(0, 7) + "..." + "<br><a onclick='delete_pic(this)'><i class=\"far fa-trash-alt\"></i></a></span>" +
                 "<input type='hidden' name='attachNid[]' value=" +nid+ "><input type='hidden'  name='attachName[]' value="+name+ "><input type='hidden'  name='attachSize[]' value="+size+ "><input type='hidden'  name='attachType[]' value="+attach_new+ "><input type='hidden'  name='bizType[]' value="+bizTT+ "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
                 if (attach_new === "CRSE" || attach_new === "ODSE") {
                     if ($('#KEY_CRCT').length > 0) {
@@ -148,6 +148,8 @@ function webupload_pic() {
                     }
                 }
             }
+
+            $(".img-view").viewer('update');
         });
 
         uploader.on('uploadError', function(file, reason) {
@@ -168,11 +170,14 @@ function webupload_pic() {
         });
     });
 }
- function delete_pic(obj){
-    $(obj).parent().parent().remove();
-     isCRCT();
 
- }
+function delete_pic(obj) {
+    $(obj).parent().parent().remove();
+    // isCRCT();
+    $(".img-view").viewer('update');
+}
+
+ /*
  function view_pic(obj){
     $(obj).parent().parent().find('.img_common').addClass('a_par');
     var srcID= $(obj).parent().parent().find('img').attr("src");
@@ -188,7 +193,7 @@ function webupload_pic() {
         content: '\<\img style="max-width:720px;max-height:620px;margin:0 auto;padding:15px;" src='+keyword+'>'
     });
 
-}
+}*/
 
 function addWebuploadCurrent(obj) {
     $(".webupload_current").removeClass("webupload_current");

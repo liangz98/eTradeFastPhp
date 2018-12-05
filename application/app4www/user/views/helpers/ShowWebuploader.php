@@ -62,7 +62,7 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
                 $downloadURL = '/doc/download.action';
 
                 if ($ext == "jpeg" || $ext == "png" || $ext == "jpg" || $ext == "gif" || $ext == "GIF" || $ext == "JPG" || $ext == "PNG" || $ext == "JPEG") {
-                    $str .= '<li><img width="125px" height="125px"  layer-src="' . $this->view->seed_Setting['KyUrlex'];
+                    $str .= '<li><img width="125px" height="125px"  data-original="' . $this->view->seed_Setting['KyUrlex'];
                     $str .= $downloadURL . '?sid=' . session_id();
                     $str .= '&nid=' . $attachID;
                     $str .= '&vid=' . $verifyID;
@@ -74,16 +74,22 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
                     // }
                     $str .= '&vid=' . $verifyID;
                     $str .= '&size=MIDDLE" name="' . $name. '" ';
-                    $str .= 'alt="' . $attachType_ . '"><span class="del_to">' . $name . '<br><a onclick="view_pic(this)">查看</a>';
+                    $str .= 'alt="' . $name . '">';
+
+                    $str .= '<span class="del_to">';
                     if ($type != '1') {
-                        $str .= '|<a onclick="delete_pic(this)">删除</a></span>';
+                        $str .= mb_substr($name,0,7, 'utf-8') . '...'  . '<br>';
+                        $str .= '<a onclick="delete_pic(this)"><i class="far fa-trash-alt"></i></a>';
+                    } else {
+                        $str .= $name;
                     }
+                    $str .= '</span>';
                 } else {
                     $str .= '<li>';
                     $str .= '<img width="125px" height="125px" src="/ky/ico/' . strtolower($ext) . '.png" alt=' . $attachType_ . ' />';
                     $str .= '<span class="del_to">' . $name . '<br>';
-                    $str .= '<a href="'.$this->view->seed_Setting['KyUrlex'] . '/doc/download.action?sid=' . session_id() . '&nid=' . $attachID. '&vid=' . $verifyID . '" download>下载</a>&nbsp;&nbsp;';
-                    $str .= '<a onclick="delete_pic(this)">删除</a>';
+                    $str .= '<a href="'.$this->view->seed_Setting['KyUrlex'] . '/doc/download.action?sid=' . session_id() . '&nid=' . $attachID. '&vid=' . $verifyID . '" download><i class="fas fa-download"></i></a>&nbsp;&nbsp;&nbsp;';
+                    $str .= '<a onclick="delete_pic(this)"><i class="far fa-trash-alt"></i></a>';
                     $str .= '</span>';
                 }
 

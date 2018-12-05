@@ -66,7 +66,9 @@ ul, li {
 .upload-image-list {
     width: 125px;
     height: 125px;
-    float: left; /*margin-left: 15px;*/
+    float: left;
+    /*margin-left: 15px;*/
+    margin-top: 10px;
 }
 
 .fileinput-button {
@@ -139,7 +141,8 @@ ul, li {
 
 .del_to {
     width: 125px;
-    height: 80px;
+    /*height: 80px;*/
+    height: 40px;
     display: none;
     word-break: break-all;
     color: #fff;
@@ -147,7 +150,8 @@ ul, li {
     background: #000;
     float: left;
     margin-left: -125px;
-    margin-top: 55px;
+    /*margin-top: 55px;*/
+    margin-top: 95px;
     opacity: 0.6;
 }
 

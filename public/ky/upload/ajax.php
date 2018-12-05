@@ -92,8 +92,10 @@ if (isset($_POST)) {
     }
 
 
-    $pic_url=$urlRQ.'?sid='.$sid.'&size=MIDDLE&'.$nd.$vd;
-    $doc_url=$urlRQ.'?sid='.$sid.'&'.$nd.$vd;
+    $pic_url = $urlRQ . '?sid=' . $sid . '&size=MIDDLE&' . $nd . $vd;
+    $fullPicUrl = $urlRQ . '?sid=' . $sid . $nd . $vd;
+    $doc_url = $urlRQ . '?sid=' . $sid . '&' . $nd . $vd;
+
     $pic_name = $name; //图片名称
 
     $logData='【'.date('Y-m-d  H:i:s').'】'."\r\n".$url."\r\n".json_encode($post_data)."\r\n".$tmpInfo."\r\n"."\r\n";
@@ -109,22 +111,25 @@ if (isset($_POST)) {
     
     //返回结果
     if ($res['responseCode'] == 'success') {
-        echo json_encode(array("res"      => $res,
-                               "error"    => "0",
-                               "type"     => $type,
-                               "wt"       => $wt,
-                               "pic"      => $pic_url,
-                               "doc"      => $doc_url,
-                               "name"     => $pic_name,
-                               "nid"      => $nid,
-                               "size"     => $size,
-                               "attachTT" => $attachType,
-                               "bizTT"    => $bizType
+        echo json_encode(array(
+            "res"      => $res,
+            "error"    => "0",
+            "type"     => $type,
+            "wt"       => $wt,
+            "pic"      => $pic_url,
+            "fullPic"  => $fullPicUrl,
+            "doc"      => $doc_url,
+            "name"     => $pic_name,
+            "nid"      => $nid,
+            "size"     => $size,
+            "attachTT" => $attachType,
+            "bizTT"    => $bizType
         ));
     } else {
-        echo json_encode(array("res"  => $res,
-                               "data" => $post_data,
-                               "url"  => $url
+        echo json_encode(array(
+            "res"  => $res,
+            "data" => $post_data,
+            "url"  => $url
         ));
     }
     exit();
