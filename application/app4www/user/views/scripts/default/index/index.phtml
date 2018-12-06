@@ -109,7 +109,7 @@
                         <div class="pull-right etf-heading-select purOrderListBtn">
                             <p><?php echo $this->translate('orderBUY'); ?></p>
                         </div>
-                        <div class="pull-right etf-heading-select change saleOrderListBtn">
+                        <div class="pull-right etf-heading-select change saleOrderListBtn orderListBtnBackground">
                             <p><?php echo $this->translate('orderSALLE'); ?></p>
                         </div>
                     </div>
@@ -127,7 +127,7 @@
                         <div class="pull-right etf-heading-select purProductListBtn">
                             <p><?php echo $this->translate('purProduct'); ?></p>
                         </div>
-                        <div class="pull-right etf-heading-select change saleProductListBtn">
+                        <div class="pull-right etf-heading-select change saleProductListBtn productListBtnBackground">
                             <p><?php echo $this->translate('goodsME'); ?></p>
                         </div>
                     </div>
@@ -145,7 +145,7 @@
                         <div class="pull-right etf-heading-select vendorPartnerListBtn">
                             <p><?php echo $this->translate('partners_vendors'); ?></p>
                         </div>
-                        <div class="pull-right etf-heading-select change buyerPartnerListBtn">
+                        <div class="pull-right etf-heading-select change buyerPartnerListBtn partnerListBtnBackground">
                             <p><?php echo $this->translate('partners_buyers'); ?></p>
                         </div>
                     </div>
@@ -188,37 +188,37 @@
 
         // 订单
 	    $(".saleOrderListBtn").click(function () {
-            $(".saleOrderListBtn").addClass("change");
-            $(".purOrderListBtn").removeClass("change");
+            $(".saleOrderListBtn").addClass("change orderListBtnBackground");
+            $(".purOrderListBtn").removeClass("change orderListBtnBackground");
             initList("_orderList", "listsaleorder");
         });
         $(".purOrderListBtn").click(function () {
-            $(".purOrderListBtn").addClass("change");
-            $(".saleOrderListBtn").removeClass("change");
+            $(".purOrderListBtn").addClass("change orderListBtnBackground");
+            $(".saleOrderListBtn").removeClass("change orderListBtnBackground");
             initList("_orderList", "listpurorder");
         });
 
         // 商品
         $(".saleProductListBtn").click(function () {
-            $(".saleProductListBtn").addClass("change");
-            $(".purProductListBtn").removeClass("change");
+            $(".saleProductListBtn").addClass("change productListBtnBackground");
+            $(".purProductListBtn").removeClass("change productListBtnBackground");
             initList("_productList", "listsaleproduct");
         });
         $(".purProductListBtn").click(function () {
-            $(".purProductListBtn").addClass("change");
-            $(".saleProductListBtn").removeClass("change");
+            $(".purProductListBtn").addClass("change productListBtnBackground");
+            $(".saleProductListBtn").removeClass("change productListBtnBackground");
             initList("_productList", "listpurproduct");
         });
 
         // 合作伙伴
         $(".buyerPartnerListBtn").click(function () {
-            $(".buyerPartnerListBtn").addClass("change");
-            $(".vendorPartnerListBtn").removeClass("change");
+            $(".buyerPartnerListBtn").addClass("change partnerListBtnBackground");
+            $(".vendorPartnerListBtn").removeClass("change partnerListBtnBackground");
             initList("_partnerList", "listbuyerpartner");
         });
         $(".vendorPartnerListBtn").click(function () {
-            $(".vendorPartnerListBtn").addClass("change");
-            $(".buyerPartnerListBtn").removeClass("change");
+            $(".vendorPartnerListBtn").addClass("change partnerListBtnBackground");
+            $(".buyerPartnerListBtn").removeClass("change partnerListBtnBackground");
             initList("_partnerList", "listvendorpartner");
         });
 	});

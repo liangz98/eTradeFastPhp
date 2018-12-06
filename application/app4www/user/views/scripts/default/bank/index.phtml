@@ -177,7 +177,7 @@
                         field: 'isDefault',
                         title: '<?php echo $this->translate("accountDF"); ?>',
                         formatter: function (value) {
-                            return (value === '1') ? '<?php echo $this->translate('yes') ?>' : '<?php echo $this->translate('no'); ?>';
+                            return (value === true) ? '<?php echo $this->translate('yes') ?>' : '<?php echo $this->translate('no'); ?>';
                         }
                     }, {
                         field: 'bankAcctStatus',

@@ -28,7 +28,7 @@ body {
 	position: relative;
 	left: -1px;
 	top: -1px;
-	width: 100.3%;
+	width: 100.2%;
 }
 
 div.index-info .col-md-3 {
@@ -85,8 +85,19 @@ div.index-info .col-md-3 {
     color: #666;
 }
 
+.orderListBtnBackground {
+    background-color: #f5f8fa;
+}
+
+.productListBtnBackground {
+    background-color: #f8f8ff;
+}
+
+.partnerListBtnBackground {
+    background-color: #fffafa;
+}
+
 .change {
-    background-color: #f6f6f6;
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
 }
