@@ -6,6 +6,7 @@ return array(
     'language'    => 'English',
     //语言
     'chinese'     => 'Chinese',
+    'english'     => 'English',
     //语言
     //订单顶部进度说明
 

@@ -33,6 +33,27 @@
         setInterval(function(){
             updateRedisExpire();
         }, 3500000);
+
+        $("#changeLanguage").click(function () {
+            var langCodeChange = '/user/system/lang-code',
+                langCode = $(this).attr("data-code");
+            $.ajax({
+                type: "POST",
+                url: langCodeChange,
+                data: {
+                    langCode: langCode
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data) {
+                        location.reload();
+                    }
+                    else {
+                        return false;
+                    }
+                }
+            });
+        });
     });
 
     var updateExpireUrl = '/user/common/update-redis-expire-ajax';

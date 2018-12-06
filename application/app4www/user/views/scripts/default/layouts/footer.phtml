@@ -27,7 +27,7 @@
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
 				<div class="pull-right">
-                    <a href=""><img src="/ky/images/language/<?php echo $this->userLangCode; ?>.png" style="margin-top: -5px;" /> {{ trans('commons.'.$language) }}</a
+                    <a href="javascript:void(0)" id="changeLanguage" data-code="<?php if ($this->userLangCode == "en_US") echo "zh_CN"; else echo "en_US"; ?>"><img src="/ky/images/language/<?php if ($this->userLangCode == "en_US") echo "zh_CN"; else echo "en_US"; ?>.png" style="margin-top: -5px;" /> <?php if ($this->userLangCode == "en_US") echo $this->translate('chinese'); else echo $this->translate('english'); ?></a>
 				</div>
 			</div>
 		</div>

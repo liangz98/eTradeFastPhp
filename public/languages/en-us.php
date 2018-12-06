@@ -4,7 +4,8 @@ return array(
     //语言编码
     'language'    => 'English',
     //语言
-    'chinese'     => 'Chinese',
+    'chinese'     => '中文',
+    'english'     => 'English',
     //语言
 
     // 错误代码

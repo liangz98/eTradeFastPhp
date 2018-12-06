@@ -78,24 +78,17 @@ class SystemController extends Kyapi_Controller_Action
         }
     }
 
-    public function langcodeAction()
-    {
-        //本方法 用于网站heard语言切换
-       $langcode=$this->_request->getParam('langcode');
-       $_langcode=trim($langcode);
-     //   $_langcode=trim("en_US");
+    public function langCodeAction() {
+        $langCode = $this->_request->getParam('langCode');
+        $langCode = trim($langCode);
 
-        if($_langcode){
-            $_SESSION['rev_session']['contactPreference']['langCode']=$_langcode;
+        if ($langCode) {
+            $_SESSION['rev_session']['contactPreference']['langCode'] = $langCode;
             echo json_encode($_SESSION['rev_session']['contactPreference']['langCode']);
-
             exit;
-
-        }else{
+        } else {
             return false;
-
         }
-
     }
 
     function checkloginpwdAction(){
