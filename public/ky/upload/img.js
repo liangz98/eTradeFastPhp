@@ -131,8 +131,14 @@ function webupload_pic() {
                     }
                 }
             } else {
-                $(".webupload_current").parent().parent().find('.img-view').append("<li><img width='125px' height='125px' class='img_common' src="  + response.pic + " data-original=" + response.fullPic + " alt=''/><span class='del_to' >" + name.substr(0, 7) + "..." + "<br><a onclick='delete_pic(this)'><i class=\"far fa-trash-alt\"></i></a></span>" +
-                "<input type='hidden' name='attachNid[]' value=" +nid+ "><input type='hidden'  name='attachName[]' value="+name+ "><input type='hidden'  name='attachSize[]' value="+size+ "><input type='hidden'  name='attachType[]' value="+attach_new+ "><input type='hidden'  name='bizType[]' value="+bizTT+ "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
+                if (response.uploadType === '1') {
+                    $(".webupload_current").parent().parent().find('.img-view').append("<li><img width='125px' height='125px' class='img_common' src="  + response.pic + " data-original=" + response.fullPic + " alt=''/><span class='del_to' >" + name + "</span>" +
+                        "<input type='hidden' name='attachNid[]' value=" +nid+ "><input type='hidden'  name='attachName[]' value="+name+ "><input type='hidden'  name='attachSize[]' value="+size+ "><input type='hidden'  name='attachType[]' value="+attach_new+ "><input type='hidden'  name='bizType[]' value="+bizTT+ "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
+                } else {
+                    $(".webupload_current").parent().parent().find('.img-view').append("<li><img width='125px' height='125px' class='img_common' src="  + response.pic + " data-original=" + response.fullPic + " alt=''/><span class='del_to' >" + name.substr(0, 7) + "..." + "<br><a onclick='delete_pic(this)'><i class=\"far fa-trash-alt\"></i></a></span>" +
+                        "<input type='hidden' name='attachNid[]' value=" +nid+ "><input type='hidden'  name='attachName[]' value="+name+ "><input type='hidden'  name='attachSize[]' value="+size+ "><input type='hidden'  name='attachType[]' value="+attach_new+ "><input type='hidden'  name='bizType[]' value="+bizTT+ "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
+                }
+
                 if (attach_new === "CRSE" || attach_new === "ODSE") {
                     if ($('#KEY_CRCT').length > 0) {
                         var k = $(this).parent().parent().parent().find('#KEY_CRCT').val();
@@ -149,7 +155,13 @@ function webupload_pic() {
                 }
             }
 
-            $(".img-view").viewer('update');
+            // 新增/编辑页需要在第一次实例的时候初始化
+            var $imgView = $(".img-view");
+            $imgView.viewer({
+                url: "data-original"
+            });
+            // 已存在的实例需要更新
+            $imgView.viewer('update');
         });
 
         uploader.on('uploadError', function(file, reason) {

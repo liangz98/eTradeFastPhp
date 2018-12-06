@@ -112,18 +112,19 @@ if (isset($_POST)) {
     //返回结果
     if ($res['responseCode'] == 'success') {
         echo json_encode(array(
-            "res"      => $res,
-            "error"    => "0",
-            "type"     => $type,
-            "wt"       => $wt,
-            "pic"      => $pic_url,
-            "fullPic"  => $fullPicUrl,
-            "doc"      => $doc_url,
-            "name"     => $pic_name,
-            "nid"      => $nid,
-            "size"     => $size,
-            "attachTT" => $attachType,
-            "bizTT"    => $bizType
+            "res"        => $res,
+            "error"      => "0",
+            "type"       => $type,
+            "wt"         => $wt,
+            "pic"        => $pic_url,
+            "fullPic"    => $fullPicUrl,
+            "doc"        => $doc_url,
+            "name"       => $pic_name,
+            "nid"        => $nid,
+            "size"       => $size,
+            "attachTT"   => $attachType,
+            "bizTT"      => $bizType,
+            "uploadType" => $typeDD
         ));
     } else {
         echo json_encode(array(

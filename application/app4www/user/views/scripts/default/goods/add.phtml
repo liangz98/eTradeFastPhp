@@ -305,9 +305,12 @@
         });
 
         // viewer
-        $(".img-view").viewer({
-            url: "data-original"
-        });
+        // 先判断是否有图片, 再初始化viewer
+        if ($(".img-view > li").length > 0) {
+            $(".img-view").viewer({
+                url: "data-original"
+            });
+        }
 
         $("#goods_edit_form").validate({
             rules: {

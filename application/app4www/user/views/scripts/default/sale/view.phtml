@@ -437,19 +437,35 @@
                                         <?php endif; ?>
                                     </div>
 
-                                    <div class="row">
-                                        <div class="col-xs-2 view-title"><?php echo $this->translate('portSHIP'); ?></div>
-                                        <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->orders['shippingMethod'], $this->orders['loadingPort']); ?></div>
-                                        <div class="col-xs-2 view-title"><?php echo $this->translate('portDSCG'); ?></div>
-                                        <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->orders['shippingMethod'], $this->orders['dischargePort']); ?></div>
-                                    </div>
+                                    <?php if ($this->orders['shippingMethod'] == 'SEA' || $this->orders['shippingMethod'] == 'AIR'): ?>
+                                        <div class="row">
+                                            <div class="col-xs-2 view-title"><?php echo $this->translate('portSHIP'); ?></div>
+                                            <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->orders['shippingMethod'], $this->orders['loadingPort']); ?></div>
+                                            <div class="col-xs-2 view-title"><?php echo $this->translate('portDSCG'); ?></div>
+                                            <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->orders['shippingMethod'], $this->orders['dischargePort']); ?></div>
+                                        </div>
 
-                                    <div class="row">
-                                        <div class="col-xs-2 view-title"><?php echo $this->translate('portDLVY'); ?></div>
-                                        <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->orders['shippingMethod'], $this->orders['deliveryPort']); ?></div>
-                                        <div class="col-xs-2 view-title"><?php echo $this->translate('mabyDATE'); ?></div>
-                                        <div class="col-xs-4"><?php echo date('Y-m-d', strtotime($this->orders['deliveryDate'])); ?></div>
-                                    </div>
+                                        <div class="row">
+                                            <div class="col-xs-2 view-title"><?php echo $this->translate('portDLVY'); ?></div>
+                                            <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->orders['shippingMethod'], $this->orders['deliveryPort']); ?></div>
+                                            <div class="col-xs-2 view-title"><?php echo $this->translate('mabyDATE'); ?></div>
+                                            <div class="col-xs-4"><?php echo date('Y-m-d', strtotime($this->orders['deliveryDate'])); ?></div>
+                                        </div>
+                                    <?php else: ?>
+                                        <div class="row">
+                                            <div class="col-xs-2 view-title"><?php echo $this->translate('citypost1'); ?></div>
+                                            <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->orders['shippingMethod'], $this->orders['loadingPort']); ?></div>
+                                            <div class="col-xs-2 view-title"><?php echo $this->translate('citypost2'); ?></div>
+                                            <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->orders['shippingMethod'], $this->orders['dischargePort']); ?></div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-xs-2 view-title"><?php echo $this->translate('citypost3'); ?></div>
+                                            <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->orders['shippingMethod'], $this->orders['deliveryPort']); ?></div>
+                                            <div class="col-xs-2 view-title"><?php echo $this->translate('mabyDATE'); ?></div>
+                                            <div class="col-xs-4"><?php echo date('Y-m-d', strtotime($this->orders['deliveryDate'])); ?></div>
+                                        </div>
+                                    <?php endif; ?>
 
                                     <?php if ($this->orders['needShipping'] == true || $this->orders['needTrucking'] == true): ?>
                                         <div class="row">
@@ -860,9 +876,12 @@
         });
 
         // viewer
-        $(".img-view").viewer({
-            url: "data-original"
-        });
+        // 先判断是否有图片, 再初始化viewer
+        if ($(".img-view > li").length > 0) {
+            $(".img-view").viewer({
+                url: "data-original"
+            });
+        }
 
         var $trackTimeBtn = $(".trackTimeBtn"),
             $trackEventBtn = $(".trackEventBtn"),
