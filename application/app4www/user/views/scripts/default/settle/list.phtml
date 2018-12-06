@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
-	<title>快移</title>
+	<title><?php echo $this->translate('etradefast'); ?></title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/settle/settle.css" rel="stylesheet">
 
@@ -17,19 +17,19 @@
 	<div class="container">
         <ol class="breadcrumb">
             <li><a href="/"><?php echo $this->translate('nav_index'); ?></a></li>
-            <li><a href="/user/settle"><?php echo $this->translate('Saltter_IN'); ?></a></li>
-            <li class="active"><?php echo $this->translate('Saltter_List'); ?></li>
+            <li><a href="/user/settle"><?php echo $this->translate('settle_IN'); ?></a></li>
+            <li class="active"><?php echo $this->translate('settle_List'); ?></li>
         </ol>
 
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="page-header">
-                    <h3><?php echo $this->translate('Saltter_List'); ?><small>&nbsp;&nbsp;&nbsp;<a href="/user/settle/lslist" class="btn btn-warning"><?php echo $this->translate('Saltter_Run');?></a></small></h3>
+                    <h3><?php echo $this->translate('settle_List'); ?><small>&nbsp;&nbsp;&nbsp;<a href="/user/settle/lslist" class="btn btn-warning"><?php echo $this->translate('settle_Run');?></a></small></h3>
                 </div>
 
                 <form class="form-horizontal" action="javascript:void(0)" onsubmit="search()" id="search_form">
                     <div class="form-group">
-                        <label for="paymentStatus" class="col-sm-1 control-label"><?php echo $this->translate('Saltter_Status'); ?></label>
+                        <label for="paymentStatus" class="col-sm-1 control-label"><?php echo $this->translate('settle_Status'); ?></label>
                         <div class="col-sm-4">
                             <select class="selectpicker form-control" name="paymentStatus" id="paymentStatus" data-live-search="true">
                                 <option value=""><?php echo $this->translate('et_select'); ?></option>
@@ -37,19 +37,19 @@
                             </select>
                         </div>
 
-                        <label for="keyword" class="col-sm-2 control-label"><?php echo $this->translate('Saltter_Forname'); ?></label>
+                        <label for="keyword" class="col-sm-2 control-label"><?php echo $this->translate('settle_Forname'); ?></label>
                         <div class="col-sm-4">
                             <input type="text" class="form-control" name="keyword" id="keyword" placeholder="" >
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="transNo" class="col-sm-1 control-label"><?php echo $this->translate('Saltter_TradeID'); ?></label>
+                        <label for="transNo" class="col-sm-1 control-label"><?php echo $this->translate('settle_TradeID'); ?></label>
                         <div class="col-sm-4">
                             <input type="text" class="form-control" name="transNo" id="transNo" placeholder="" >
                         </div>
 
-                        <label for="tradingType" class="col-sm-2 control-label"><?php echo $this->translate('Saltter_Class'); ?></label>
+                        <label for="tradingType" class="col-sm-2 control-label"><?php echo $this->translate('settle_Class'); ?></label>
                         <div class="col-sm-4">
                             <select class="selectpicker form-control" name="tradingType" id="tradingType" data-live-search="true">
                                 <option value=""><?php echo $this->translate('et_select'); ?></option>
@@ -84,7 +84,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="startDate" class="col-sm-1 control-label"><?php echo $this->translate('Saltter_Time'); ?></label>
+                        <label for="startDate" class="col-sm-1 control-label"><?php echo $this->translate('settle_Time'); ?></label>
                         <div class="col-sm-3">
                             <input type="date" class="form-control" name="startDate" id="startDate">
                         </div>
@@ -297,17 +297,17 @@
                             var result = '';
                             if (row.allowPayment) {
                                 var href = "/user/settle/payment?"+resultEnCode;
-                                var str = "<?php echo $this->translate('Saltter_payment');?>";
+                                var str = "<?php echo $this->translate('settle_payment');?>";
                                 result += '<a href="' + href + '">' + str + '</a>|';
                             }
                             if (row.allowTransfer) {
                                 var href = "/user/settle/transfer?"+resultEnCode;
-                                var str = "<?php echo $this->translate('Saltter_transfer');?>";
+                                var str = "<?php echo $this->translate('settle_transfer');?>";
                                 result += '<a href="' + href + '">' + str + '</a>|';
                             }
 
                             var infoHref = "/user/settle/listview?"+resultEnCode;
-                            var infoStr = "<?php echo $this->translate('Saltter_INF');?>";
+                            var infoStr = "<?php echo $this->translate('settle_INF');?>";
                             result += '<a href="' + infoHref + '">' + infoStr + '</a>';
 
                             return result;

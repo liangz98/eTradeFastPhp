@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>快移</title>
+    <title><?php echo $this->translate('etradefast'); ?></title>
     <meta name="description" content="">
     <meta name="keywords" content="">
     <link href="/ky/css/base.css" rel="stylesheet">
@@ -17,16 +17,16 @@
 <?php echo $this->render(SEED_WWW_TPL . '/header.phtml'); ?>
 <div class="o_content_wrap w1200 m0a clearfix">
     <div class="st_tit mt20 mb2 pb10" style="border-bottom: 2px solid #ccc;">
-        <p class="f18"><!--记录详情--><?php echo $this->translate('Saltter_Record'); ?></p>
+        <p class="f18"><!--记录详情--><?php echo $this->translate('settle_Record'); ?></p>
     </div>
 
     <div class="st_jl_view clearfix" style="margin-left: 75px;">
         <div class="st_box">
-            <label class="st_lab2"><!--交易号--><?php echo $this->translate('Saltter_TradeID'); ?>：</label>
+            <label class="st_lab2"><!--交易号--><?php echo $this->translate('settle_TradeID'); ?>：</label>
             <span><?php echo $this->e['transNo']; ?></span>
         </div>
         <div class="st_box">
-            <label class="st_lab2"><!--记录名称--><?php echo $this->translate('Saltter_wtname'); ?>：</label>
+            <label class="st_lab2"><!--记录名称--><?php echo $this->translate('settle_wtname'); ?>：</label>
             <span><?php echo $this->e['subject']; ?></span>
         </div>
         <div class="st_box">
@@ -36,15 +36,15 @@
             <span><?php echo $this->e['crnCode'] . '+' . $this->ShowToPrice($this->e['totalAmount']); ?></span>
         </div>
         <div class="st_box">
-            <label class="st_lab2"><!--未结算金额--><?php echo $this->translate('Saltter_Unsettle'); ?>：</label>
+            <label class="st_lab2"><!--未结算金额--><?php echo $this->translate('settle_Unsettle'); ?>：</label>
             <span><?php echo $this->e['crnCode'] . '+' . $this->ShowToPrice($this->e['balanceAmount']); ?></span>
         </div>
         <div class="st_box">
-            <label class="st_lab2"><!--合同号--><?php echo $this->translate('Saltter_contartNo'); ?>：</label>
+            <label class="st_lab2"><!--合同号--><?php echo $this->translate('settle_contartNo'); ?>：</label>
             <span><?php echo $this->e['contractNo']; ?></span>
         </div>
         <div class="st_box">
-            <label class="st_lab2"><!--发生时间--><?php echo $this->translate('Saltter_GTime'); ?>：</label>
+            <label class="st_lab2"><!--发生时间--><?php echo $this->translate('settle_GTime'); ?>：</label>
             <span><?php echo empty($this->e['recordDate']) ? null : date('Y-m-d H:i:s', strtotime($this->e['recordDate'])); ?></span>
         </div>
         <div class="st_box">
@@ -60,7 +60,7 @@
             <span><?php echo empty($this->e['actualDate']) ? null : date('Y-m-d H:i:s', strtotime($this->e['actualDate'])); ?></span>
         </div>
         <div class="st_box">
-            <label class="st_lab2"><!--交易状态--><?php echo $this->translate('Saltter_Status'); ?>：</label>
+            <label class="st_lab2"><!--交易状态--><?php echo $this->translate('settle_Status'); ?>：</label>
             <span><?php echo $this->ShowDictionaryTo("", $this->userLangCode, $this->dic_Setting['PAYMENT_TRADING_STATUS'], $this->e['tradingStatus']); ?>
                  </span>
         </div>
@@ -73,13 +73,13 @@
         </div>
     </div>
     <div class="st_jl_view mb30 clearfix" style="margin-left: 75px;">
-        <label class="st_lab2"><!--摘要--><?php echo $this->translate('Saltter_DEC'); ?></label>
+        <label class="st_lab2"><!--摘要--><?php echo $this->translate('settle_DEC'); ?></label>
         <span><?php echo $this->e['remarks']; ?></span>
     </div>
     <div id="st_tab_button">
         <ul class="fr st_tab_button">
          <!--  <!-- <li class="on"><!--记录明细-Saltter_wtlist-->
-            <li class=""><!--支付申请--><a href="#"><?php echo $this->translate('Saltter_paylist'); ?></a> </li>
+            <li class=""><!--支付申请--><a href="#"><?php echo $this->translate('settle_paylist'); ?></a> </li>
         </ul>
     </div>
     <div id="st_tab_check">
@@ -87,11 +87,11 @@
             <table id="tb1" class="st_table bt2px">
                 <thead>
                 <tr>
-                    <th><!--时间--><?php echo $this->translate('Saltter_Time'); ?></th>
-                    <th><!--对方--><?php echo $this->translate('Saltter_For'); ?></th>
-                    <th><!--金额--><?php echo $this->translate('Saltter_amount'); ?></th>
-                    <th><!--余额--><?php echo $this->translate('Saltter_able'); ?></th>
-                    <th><!--状态--><?php echo $this->translate('Saltter_Status'); ?></th>
+                    <th><!--时间--><?php echo $this->translate('settle_Time'); ?></th>
+                    <th><!--对方--><?php echo $this->translate('settle_For'); ?></th>
+                    <th><!--金额--><?php echo $this->translate('settle_amount'); ?></th>
+                    <th><!--余额--><?php echo $this->translate('settle_able'); ?></th>
+                    <th><!--状态--><?php echo $this->translate('settle_Status'); ?></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -113,11 +113,11 @@
             <table  id="tb2" class="st_table bt2px">
                 <thead>
                 <tr>
-                    <th><!--时间--><?php echo $this->translate('Saltter_Time'); ?></th>
-                    <th><!--摘要--><?php echo $this->translate('Saltter_DEC'); ?></th>
-                    <th><!--初始金额--><?php echo $this->translate('Saltter_InitMount'); ?></th>
-                    <th><!--支付金额--><?php echo $this->translate('Saltter_TradeMount'); ?></th>
-                    <th><!--状态--><?php echo $this->translate('Saltter_Status'); ?></th>
+                    <th><!--时间--><?php echo $this->translate('settle_Time'); ?></th>
+                    <th><!--摘要--><?php echo $this->translate('settle_DEC'); ?></th>
+                    <th><!--初始金额--><?php echo $this->translate('settle_InitMount'); ?></th>
+                    <th><!--支付金额--><?php echo $this->translate('settle_TradeMount'); ?></th>
+                    <th><!--状态--><?php echo $this->translate('settle_Status'); ?></th>
                 </tr>
                 </thead>
                 <tbody>

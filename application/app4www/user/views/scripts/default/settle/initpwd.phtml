@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
-	<title>快移</title>
+	<title><?php echo $this->translate('etradefast'); ?></title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
 
     <link href="/ky/css/settle/base.css" rel="stylesheet">
@@ -16,7 +16,7 @@
 		<div class="row">
 
             <div class="page-header">
-                <h3><?php echo $this->translate('Saltter_init_pwd'); ?></h3>
+                <h3><?php echo $this->translate('settle_init_pwd'); ?></h3>
             </div>
 
             <form action="#" method="post" id="register_form" class="form-horizontal">

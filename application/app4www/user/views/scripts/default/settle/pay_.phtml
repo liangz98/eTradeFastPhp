@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>快移</title>
+    <title><?php echo $this->translate('etradefast'); ?></title>
     <meta name="description" content="">
     <meta name="keywords" content="">
     <link href="/ky/css/base.css" rel="stylesheet">
@@ -18,34 +18,34 @@
 <body>
 <?php echo $this->render(SEED_WWW_TPL . '/header.phtml'); ?>
 <div class="o_content_wrap w1000 m0a clearfix">
-    <h2 class="w"><!--充值--><?php echo $this->translate('Saltter_recharge');?></h2>
+    <h2 class="w"><!--充值--><?php echo $this->translate('settle_recharge');?></h2>
     <div class="pay">
-        <label><!--充值货币--><?php echo $this->translate('Saltter_recharge').$this->translate('Saltter_currency');?></label>
+        <label><!--充值货币--><?php echo $this->translate('settle_recharge').$this->translate('settle_currency');?></label>
         <span class="pay_slt"><?php echo $this->crnCode;?></span>
     </div>
     <div class="pay">
-        <label><!--账户余额--><?php echo $this->translate('Saltter_Balance');?></label>
+        <label><!--账户余额--><?php echo $this->translate('settle_Balance');?></label>
         <em><?php echo $this->crnCode;?></em>
         <span class="pay_yu"><?php echo $this->ShowToPrice($this->totalAmount);?></span>
     </div>
     <div class="pay_tip">
-     <h3><!--温馨提示--><?php echo $this->translate('Saltter_prompt');?></h3>
-        <p><!--1、目前仅支持--><?php echo $this->translate('Saltter_prompt_r1');?>
-       <br> <?php echo $this->translate('Saltter_prompt_r2');?></p>
+     <h3><!--温馨提示--><?php echo $this->translate('settle_prompt');?></h3>
+        <p><!--1、目前仅支持--><?php echo $this->translate('settle_prompt_r1');?>
+       <br> <?php echo $this->translate('settle_prompt_r2');?></p>
     </div>
     <div class="pay_list">
-        <h3 class="w"><?php echo $this->translate('Saltter_prompt_r3');?></h3>
+        <h3 class="w"><?php echo $this->translate('settle_prompt_r3');?></h3>
         <p>
-            <label><!--开户名称--><?php echo $this->translate('Saltter_bankactname');?>：</label>
+            <label><!--开户名称--><?php echo $this->translate('settle_bankactname');?>：</label>
             <span><?php echo $this->paybank['bankAcctName'];?></span></p>
         <p>
-            <label><!--开户银行--><?php echo $this->translate('Saltter_bankname');?>：</label>
+            <label><!--开户银行--><?php echo $this->translate('settle_bankname');?>：</label>
             <span><?php echo $this->paybank['bankName'];?></span></p>
         <p>
-            <label><!--银行账号--><?php echo $this->translate('Saltter_bankactno');?>：</label>
+            <label><!--银行账号--><?php echo $this->translate('settle_bankactno');?>：</label>
             <span><?php echo $this->paybank['bankAcctNo'];?></span></p>
         <p>
-            <label><!--银行地址--><?php echo $this->translate('Saltter_bankaddress');?>：</label>
+            <label><!--银行地址--><?php echo $this->translate('settle_bankaddress');?>：</label>
             <span><?php echo $this->paybank['bankAddress'];?></span></p>
         <p>
             <label><b>SWIFT CODE：</b></label>
@@ -54,15 +54,15 @@
     </div>
     <form action="#" method="post">
     <div class="pay">
-        <label><!--充值金额--><?php echo $this->translate('Saltter_recharge').$this->translate('ordertotal');?></label>
+        <label><!--充值金额--><?php echo $this->translate('settle_recharge').$this->translate('ordertotal');?></label>
         <em><?php echo $this->crnCode;?></em>&nbsp;<input class="pay_inpt" type="text" name="paymentAmount" value="">
     </div>
     <div class="pay">
-       <h3><!--银行凭证--><?php echo $this->translate('Saltter_bankact');?></h3>
+       <h3><!--银行凭证--><?php echo $this->translate('settle_bankact');?></h3>
         <div style="width: 100%;height: 150px;margin-left: -30px;">  <?php echo $this->ShowWebuploader('', 'PR', 'PRSP', '0'); ?></div>
    </div>
     <div class="pay">
-        <label><!--支付密码--><?php echo $this->translate('Saltter_pay_pwd');?></label>
+        <label><!--支付密码--><?php echo $this->translate('settle_pay_pwd');?></label>
         <input class="pay_inp" type="password" name="paymentPwd" value="">
         <input class="pay_btn" type="submit" value="<?php echo $this->translate('confirmed');?>">
     </div>

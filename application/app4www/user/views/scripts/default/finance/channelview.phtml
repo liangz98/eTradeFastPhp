@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
-	<title>快移</title>
+	<title><?php echo $this->translate('etradefast'); ?></title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/finance/finance.css" rel="stylesheet">
     <link href="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.css" rel="stylesheet">
@@ -197,7 +197,7 @@
                                 <th class="text-right">逾期利息</th>
                                 <th class="text-right">合计利息</th>
                                 <th class="text-right">未还本息</th>
-                                <th><?php echo $this->translate('Saltter_Status'); ?></th>
+                                <th><?php echo $this->translate('settle_Status'); ?></th>
                             </tr>
                             </thead>
                             <tbody>

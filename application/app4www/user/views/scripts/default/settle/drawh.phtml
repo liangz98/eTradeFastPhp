@@ -1,21 +1,21 @@
 <div class="pay">
-<label><!--提取金额--><?php echo $this->translate('Saltter_draw_amount');?></label>
+<label><!--提取金额--><?php echo $this->translate('settle_draw_amount');?></label>
 <em><?php echo $this->draw_crnCode;?></em>
 <input onchange="multiply2()" id="pay_ind" class="pay_inpt" type="text" value="">
 <span class="pay_transfer_sp">
-   <!--剩余--><?php echo $this->translate('Saltter_surplus');?>
+   <!--剩余--><?php echo $this->translate('settle_surplus');?>
     <em><?php echo $this->draw_crnCode;?></em>
     <?php echo $this->draw_amount;?><!--可用-->
-    <?php echo $this->translate('Saltter_usable');?>
+    <?php echo $this->translate('settle_usable');?>
 </span>
 </div>
 <div class="pay">
-    <label><!--当前汇率--><?php echo $this->translate('Saltter_huilv');?></label>
+    <label><!--当前汇率--><?php echo $this->translate('settle_huilv');?></label>
     <em><?php echo $this->draw_crnCode.'->'.$this->crnCode;?>  &nbsp;&nbsp;
         <span id="pay_huilv"></span></em>
 </div>
 <div class="pay">
-    <label><!--结汇金额--><?php echo $this->translate('Saltter_exg_amt');?></label>
+    <label><!--结汇金额--><?php echo $this->translate('settle_exg_amt');?></label>
     <em><?php echo $this->crnCode;?></em>
     <span id="pay_huilvs" class="pay_transfer_sp"></span>
     <input type="hidden" name="paymentAmount" id="pay_huilvst" value="">

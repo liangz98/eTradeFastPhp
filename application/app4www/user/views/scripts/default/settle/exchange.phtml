@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>快移</title>
+    <title><?php echo $this->translate('etradefast'); ?></title>
     <meta name="description" content="">
     <meta name="keywords" content="">
     <link href="/ky/css/base.css" rel="stylesheet">
@@ -18,15 +18,15 @@
 <?php echo $this->render(SEED_WWW_TPL . '/header.phtml'); ?>
 <div class="o_content_wrap w1000 m0a clearfix">
     <div style="height: 60px;">
-    <h2 class="w"><!--结汇--><?php echo $this->translate('Saltter_exg');?></h2></div>
+    <h2 class="w"><!--结汇--><?php echo $this->translate('settle_exg');?></h2></div>
     <div class="pay_tip">
-     <h3><!--温馨提示--><?php echo $this->translate('Saltter_prompt');?></h3>
-        <p><!--1、结汇功能仅支持--><?php echo $this->translate('Saltter_prompt_e1');?>
-       <br> <!--2、结汇后金额--><?php echo $this->translate('Saltter_prompt_e2');?></p>
+     <h3><!--温馨提示--><?php echo $this->translate('settle_prompt');?></h3>
+        <p><!--1、结汇功能仅支持--><?php echo $this->translate('settle_prompt_e1');?>
+       <br> <!--2、结汇后金额--><?php echo $this->translate('settle_prompt_e2');?></p>
     </div>
 <form action="" method="post">
     <div class="pay" id="pay_box1">
-        <label><!--结汇账户--><?php echo $this->translate('Saltter_exg_act');?></label>
+        <label><!--结汇账户--><?php echo $this->translate('settle_exg_act');?></label>
         <?php if(is_array($this->paybal_cny)&&count($this->paybal_cny)>0):?>
         <?php foreach ($this->paybal_cny as $k=>$v):?>
             <?php if($this->crnCode!=$k):?>
@@ -40,31 +40,31 @@
     </div>
 
     <div class="pay">
-        <label><!--结汇金额--><?php echo $this->translate('Saltter_exg_amt');?></label>
+        <label><!--结汇金额--><?php echo $this->translate('settle_exg_amt');?></label>
         <em id="pay_crnCode_ba1"><?php echo current(array_keys($this->paybal_cny));?></em>
         <input  onchange="multiply2(this)"  class="pay_inpt" id="pay_ind" type="text" value="">
         <span class="pay_transfer_sp"><!--剩余-->
-            <?php echo $this->translate('Saltter_surplus');?>
+            <?php echo $this->translate('settle_surplus');?>
             <em id="pay_crnCode_ba2"><?php echo $this->df_crnCode[0];?></em>
             <em id="pay_amount_free"><?php echo  $this->ShowToPrice($this->paybal_cny[$this->df_crnCode[0]]['balAmount']);?></em><!--可用-->
-            <?php echo $this->translate('Saltter_usable');?>
+            <?php echo $this->translate('settle_usable');?>
         </span>
         <input type="hidden" id="pay_crnCode_ba3" name="JhcrnCode" value="<?php echo $this->df_crnCode[0];?>">
     </div>
 
     <div class="pay">
-        <label><!--当前汇率--><?php echo $this->translate('Saltter_huilv');?></label>
+        <label><!--当前汇率--><?php echo $this->translate('settle_huilv');?></label>
         <div id="pay_huilv_em"></div>
     </div>
 
     <div class="pay">
-        <label><!--结汇金额--><?php echo $this->translate('Saltter_exg_amt');?></label>
+        <label><!--结汇金额--><?php echo $this->translate('settle_exg_amt');?></label>
         <em><?php echo $this->crnCode;?></em>
         <span id="pay_huilvs" class="pay_transfer_sp"></span>
         <input type="hidden" name="paymount" id="pay_huilvst" value="">
     </div>
     <div class="pay">
-        <label><!--支付密码--><?php echo $this->translate('Saltter_pay_pwd');?></label>
+        <label><!--支付密码--><?php echo $this->translate('settle_pay_pwd');?></label>
         <input class="pay_inp" type="password" name="paymentPwd" value="">
         <input class="pay_btn" type="submit" value="<?php echo $this->translate('confirmed');?>">
     </div>

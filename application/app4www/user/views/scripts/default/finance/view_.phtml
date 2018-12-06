@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>快移</title>
+    <title><?php echo $this->translate('etradefast'); ?></title>
     <meta name="description" content="">
     <meta name="keywords" content="">
     <link href="/ky/css/base.css" rel="stylesheet">
@@ -65,7 +65,7 @@
                 <div class="entry-trangle-top"></div>
                 <h3><?php echo $this->LoanView['companyName']; ?></h3>
                 <label><!--银行账号--><?php echo $this->translate('bankNO'); ?></label><p><?php echo $this->LoanView['companyBankAcctNo']; ?></p>
-                <label><!--开户名称--><?php echo $this->translate('Saltter_bankactname'); ?></label><p><?php echo $this->LoanView['companyName']; ?></p>
+                <label><!--开户名称--><?php echo $this->translate('settle_bankactname'); ?></label><p><?php echo $this->LoanView['companyName']; ?></p>
                 <label><!--银行名称--><?php echo $this->translate('accountBKname'); ?></label><p><?php echo $this->LoanView['companyBankName']; ?></p>
             </div></span>
             </div>
@@ -143,7 +143,7 @@
                 <input class="st_btn"
                        style="margin:10px;float: right; border-radius:0;<?php if ($this->LoanView['allowShowPaymentBtn'] == false) {
                            echo 'background:#ccc;';
-                       } ?>" type="submit" value="<?php echo $this->translate('Saltter_payment'); ?>"></div>
+                       } ?>" type="submit" value="<?php echo $this->translate('settle_payment'); ?>"></div>
         </div>
 
         <p class="ifcp_tit mb20"><!--确权及费用--><?php echo $this->translate('Finance_doc_title'); ?></p>

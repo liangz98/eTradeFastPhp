@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<title>快移</title>
+<title><?php echo $this->translate('etradefast'); ?></title>
 <meta name="description" content="">
 <meta name="keywords" content="">
 <link href="/ky/css/base.css" rel="stylesheet">
@@ -294,7 +294,7 @@
                                 <p><!--状态--><?php echo $this->translate('tradingStatus');?><span>
                                     <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['CHANNEL_STATUS'], $v['channelStatus']); ?></span></p>
                                 <a style="margin-left: -50px;" href="/user/finance/channelview/id/<?php echo $v['channelID']?>">
-                                    <span><!--详情--><?php echo $this->translate('Saltter_INF');?></span></a>
+                                    <span><!--详情--><?php echo $this->translate('settle_INF');?></span></a>
                             </div>
                             <div class="cn_cont_b">
                                 <p><!--支付期限--><?php echo $this->translate('diffTime');?><span><?php echo $v['period']?>&nbsp;DAYS</span></p>

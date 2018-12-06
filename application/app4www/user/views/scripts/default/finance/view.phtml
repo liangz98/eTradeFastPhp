@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
-	<title>快移</title>
+	<title><?php echo $this->translate('etradefast'); ?></title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/finance/finance.css" rel="stylesheet">
     <link href="/ky/css/img-upload.css" rel="stylesheet">
@@ -178,7 +178,7 @@
                                 <th width="140">放款编号</th>
                                 <th class="text-right">费用</th>
                                 <th>说明</th>
-                                <th width="140"><?php echo $this->translate('Saltter_Status'); ?></th>
+                                <th width="140"><?php echo $this->translate('settle_Status'); ?></th>
                                 <th width="140">操作</th>
                             </tr>
                             </thead>
@@ -196,7 +196,7 @@
                                 <td style="vertical-align: middle; "><?php echo $this->ShowDictionaryTo("LOAN_STATUS", $this->userLangCode, $this->dic_Setting['LOAN_STATUS'], $serviceCharge['serviceChargeTradingStatus']); ?></td>
                                 <td style="vertical-align: middle; ">
                                     <?php if ($serviceCharge['serviceChargeTradingStatus'] == '0'):?>
-                                        <a class="btn btn-warning btn-sm" href="/user/settle/payment?<?php echo base64_encode($serviceCharge['serviceChargeTradingID']);?>"><?php echo $this->translate('Saltter_payment');?></a>
+                                        <a class="btn btn-warning btn-sm" href="/user/settle/payment?<?php echo base64_encode($serviceCharge['serviceChargeTradingID']);?>"><?php echo $this->translate('settle_payment');?></a>
                                     <?php endif;?>
                                 </td>
                             </tr>
@@ -238,7 +238,7 @@
                                 <th class="text-right">逾期利息</th>
                                 <th class="text-right">合计利息</th>
                                 <th class="text-right">未还本息</th>
-                                <th><?php echo $this->translate('Saltter_Status'); ?></th>
+                                <th><?php echo $this->translate('settle_Status'); ?></th>
                                 <th>操作</th>
                             </tr>
                             </thead>

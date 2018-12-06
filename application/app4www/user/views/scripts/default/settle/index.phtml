@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
-	<title>快移</title>
+	<title><?php echo $this->translate('etradefast'); ?></title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/settle/settle.css" rel="stylesheet">
 </head>
@@ -13,8 +13,8 @@
 <div class="container-fluid index-body">
 	<div class="container">
         <div class="page-header">
-            <h3><?php echo $this->translate('Saltter_IN'); ?>
-                <small class="pull-right"><a href="/user/settle/changepwd"  target="_blank" class="btn btn-warning btn-xs"><?php echo $this->translate('Saltter_setting');?></a></small>
+            <h3><?php echo $this->translate('settle_IN'); ?>
+                <small class="pull-right"><a href="/user/settle/changepwd"  target="_blank" class="btn btn-warning btn-xs"><?php echo $this->translate('settle_setting');?></a></small>
             </h3>
         </div>
 
@@ -27,14 +27,14 @@
                                 <h3><?php echo $this->e['accountName'];?></h3>
                             </div>
                             <div class="col-md-5">
-                                <a href="/user/bank" class="btn btn-warning" target="_blank"><?php echo $this->translate('Saltter_Bank');?></a>
+                                <a href="/user/bank" class="btn btn-warning" target="_blank"><?php echo $this->translate('settle_Bank');?></a>
                                 &nbsp;&nbsp;
-                                <a href="/user/settle/pay" class="btn btn-warning"><?php echo $this->translate('Saltter_recharge');?></a>
+                                <a href="/user/settle/pay" class="btn btn-warning"><?php echo $this->translate('settle_recharge');?></a>
                             </div>
                         </div>
                         <div class="row info-balAmount">
                             <div class="col-md-7 text-primary">
-                                <h3><?php echo $this->translate('Saltter_Balance');?></h3>
+                                <h3><?php echo $this->translate('settle_Balance');?></h3>
                             </div>
                             <div class="col-md-5">
                                 <?php foreach($this->paymentAccountBalList as $k =>$v): ?>
@@ -58,7 +58,7 @@
                     <div class="col-sm-12 col-md-6 info-company">
                         <div class="row">
                             <div class="col-md-4">
-                                <h3><?php echo $this->translate('Saltter_IFO'); ?></h3>
+                                <h3><?php echo $this->translate('settle_IFO'); ?></h3>
                             </div>
                             <div class="col-md-4 col-md-offset-4">
                                 <button type="button" class="btn btn-warning crn-btn" data-type="amount-cny">CNY</button>&nbsp;&nbsp;<button type="button" class="btn btn-default crn-btn" data-type="amount-usd">USD</button>
@@ -77,7 +77,7 @@
                                 <div class="amount-cny">
                                     <div class="row margin-top-15">
                                         <div class="col-md-6">
-                                            <?php echo $this->translate('Saltter_CIFO');?>
+                                            <?php echo $this->translate('settle_CIFO');?>
                                         </div>
                                         <div class="col-md-4 text-right">
                                             <b>
@@ -87,7 +87,7 @@
                                     </div>
                                     <div class="row margin-top-15">
                                         <div class="col-md-6">
-                                            <?php echo $this->translate('Saltter_DIFO');?>
+                                            <?php echo $this->translate('settle_DIFO');?>
                                         </div>
                                         <div class="col-md-4 text-right">
                                             <b>
@@ -97,7 +97,7 @@
                                     </div>
                                     <div class="row margin-top-15">
                                         <div class="col-md-6">
-                                            <?php echo $this->translate('Saltter_FIFO');?>
+                                            <?php echo $this->translate('settle_FIFO');?>
                                         </div>
                                         <div class="col-md-4 text-right">
                                             <b>
@@ -110,7 +110,7 @@
                                 <div class="amount-usd" style="display: none;">
                                     <div class="row margin-top-15">
                                         <div class="col-md-6">
-                                            <?php echo $this->translate('Saltter_CIFO');?>
+                                            <?php echo $this->translate('settle_CIFO');?>
                                         </div>
                                         <div class="col-md-4 text-right">
                                             <b>
@@ -120,7 +120,7 @@
                                     </div>
                                     <div class="row margin-top-15">
                                         <div class="col-md-6">
-                                            <?php echo $this->translate('Saltter_DIFO');?>
+                                            <?php echo $this->translate('settle_DIFO');?>
                                         </div>
                                         <div class="col-md-4 text-right">
                                             <b>
@@ -130,7 +130,7 @@
                                     </div>
                                     <div class="row margin-top-15">
                                         <div class="col-md-6">
-                                            <?php echo $this->translate('Saltter_FIFO');?>
+                                            <?php echo $this->translate('settle_FIFO');?>
                                         </div>
                                         <div class="col-md-4 text-right">
                                             <b>
@@ -154,7 +154,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <p class="text-center text-primary span-font-size-18">
-                                                        <?php echo $this->translate('Saltter_recive').$this->translate('Saltter_able');?>
+                                                        <?php echo $this->translate('settle_recive').$this->translate('settle_able');?>
                                                     </p>
                                                 </div>
                                             </div>
@@ -182,7 +182,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <p class="text-center text-primary span-font-size-18">
-                                                        <?php echo $this->translate('Saltter_pay') . $this->translate('Saltter_able'); ?>
+                                                        <?php echo $this->translate('settle_pay') . $this->translate('settle_able'); ?>
                                                     </p>
                                                 </div>
                                             </div>
@@ -211,10 +211,10 @@
 
                 <div class="row">
                     <div class="col-md-10">
-                        <p class="span-font-size-18 text-primary margin-top-15"><?php echo $this->translate('Saltter_Lastlist'); ?></p>
+                        <p class="span-font-size-18 text-primary margin-top-15"><?php echo $this->translate('settle_Lastlist'); ?></p>
                     </div>
                     <div class="col-md-2 text-right">
-                        <a href="/user/settle/list" class="btn btn-warning"><?php echo $this->translate('Saltter_VALL');?></a>
+                        <a href="/user/settle/list" class="btn btn-warning"><?php echo $this->translate('settle_VALL');?></a>
                     </div>
                 </div>
 
@@ -230,12 +230,12 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th><?php echo $this->translate('Saltter_Time'); ?></th>
+                                <th><?php echo $this->translate('settle_Time'); ?></th>
                                 <th><?php echo $this->translate('type'); ?></th>
-                                <th style="width: 350px;"><?php echo $this->translate('Saltter_TradeID'); ?></th>
-                                <th><?php echo $this->translate('Saltter_For'); ?></th>
+                                <th style="width: 350px;"><?php echo $this->translate('settle_TradeID'); ?></th>
+                                <th><?php echo $this->translate('settle_For'); ?></th>
                                 <th class="text-center"><?php echo $this->translate('ordertotal'); ?></th>
-                                <th class="text-center"><?php echo $this->translate('Saltter_Status'); ?></th>
+                                <th class="text-center"><?php echo $this->translate('settle_Status'); ?></th>
                                 <th><?php echo $this->translate('madeTT'); ?></th>
                             </tr>
                             </thead>
@@ -285,12 +285,12 @@
                                             </td>
                                             <td style="vertical-align: middle; ">
                                                 <?php if ($paymentTrading['allowPayment']): ?>
-                                                    <a href="/user/settle/payment?<?php echo base64_encode($paymentTrading['tradingID']); ?>"><?php echo $this->translate('Saltter_payment'); ?></a>|
+                                                    <a href="/user/settle/payment?<?php echo base64_encode($paymentTrading['tradingID']); ?>"><?php echo $this->translate('settle_payment'); ?></a>|
                                                 <?php endif; ?>
                                                 <?php if ($paymentTrading['allowTransfer']): ?>
-                                                    <a href="/user/settle/transfer?<?php echo base64_encode($paymentTrading['tradingID']); ?>"><?php echo $this->translate('Saltter_transfer'); ?></a>|
+                                                    <a href="/user/settle/transfer?<?php echo base64_encode($paymentTrading['tradingID']); ?>"><?php echo $this->translate('settle_transfer'); ?></a>|
                                                 <?php endif; ?>
-                                                <a href="/user/settle/listview?<?php echo base64_encode($paymentTrading['tradingID']); ?>"><?php echo $this->translate('Saltter_INF'); ?></a>
+                                                <a href="/user/settle/listview?<?php echo base64_encode($paymentTrading['tradingID']); ?>"><?php echo $this->translate('settle_INF'); ?></a>
                                             </td>
                                         </tr>
                                     <?php endforeach;?>
@@ -378,9 +378,9 @@
                     }
                 },
                 data:[
-                    {value:zp, name:'<?php echo $this->translate('Saltter_CIFO');?>'},//可支配
-                    {value:dx, name:'<?php echo $this->translate('Saltter_DIFO');?>'},//定向
-                    {value:dj, name:'<?php echo $this->translate('Saltter_FIFO');?>'}  //冻结
+                    {value:zp, name:'<?php echo $this->translate('settle_CIFO');?>'},//可支配
+                    {value:dx, name:'<?php echo $this->translate('settle_DIFO');?>'},//定向
+                    {value:dj, name:'<?php echo $this->translate('settle_FIFO');?>'}  //冻结
                 ]
             }
         ]
@@ -425,9 +425,9 @@
                     }
                 },
                 data:[
-                    {value:zp2, name:'<?php echo $this->translate('Saltter_CIFO');?>'},//可支配
-                    {value:dx2, name:'<?php echo $this->translate('Saltter_DIFO');?>'},//定向
-                    {value:dj2, name:'<?php echo $this->translate('Saltter_FIFO');?>'}  //冻结
+                    {value:zp2, name:'<?php echo $this->translate('settle_CIFO');?>'},//可支配
+                    {value:dx2, name:'<?php echo $this->translate('settle_DIFO');?>'},//定向
+                    {value:dj2, name:'<?php echo $this->translate('settle_FIFO');?>'}  //冻结
                 ]
             }
         ]

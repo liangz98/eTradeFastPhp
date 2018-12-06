@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>快移</title>
+    <title><?php echo $this->translate('etradefast'); ?></title>
     <meta name="description" content="">
     <meta name="keywords" content="">
     <link href="/ky/css/base.css" rel="stylesheet">
@@ -18,9 +18,9 @@
 <?php echo $this->render(SEED_WWW_TPL . '/header.phtml'); ?>
 <div class="o_content_wrap w1000 m0a clearfix">
     <form action="#" method="post">
-    <h2 class="w"><!--提现--><?php echo $this->translate('Saltter_draw');?></h2>
+    <h2 class="w"><!--提现--><?php echo $this->translate('settle_draw');?></h2>
     <div class="pay">
-        <label><!--提现账户--><?php echo $this->translate('Saltter_draw_name');?></label>
+        <label><!--提现账户--><?php echo $this->translate('settle_draw_name');?></label>
         <?php if(is_array($this->paybal_cny)&&count($this->paybal_cny)>0):?>
         <?php foreach ($this->paybal_cny as $k=>$v):?>
         <a class="pay_slt2" <?php if($this->crnCode==$k){echo 'id="pay_on"';}?> data-key="<?php echo $k;?>" onclick="tixian(this)"><?php echo $k;?></a>
@@ -31,14 +31,14 @@
     </div>
     <div id="draw_pay">
         <div class="pay">
-            <label><!--提取金额--><?php echo $this->translate('Saltter_draw_amount');?></label>
+            <label><!--提取金额--><?php echo $this->translate('settle_draw_amount');?></label>
             <em><?php echo $this->crnCode;?></em>
             <input  onchange="multiply()"  class="pay_inpt" id="pay_ind" type="text" value="">
             <span class="pay_transfer_sp">
-   <!--剩余--><?php echo $this->translate('Saltter_surplus');?>
+   <!--剩余--><?php echo $this->translate('settle_surplus');?>
                 <em><?php echo $this->crnCode;?></em>
                 <?php echo $this->ShowToPrice($this->paybal_cny[$this->crnCode]['balAmount']);?><!--可用-->
-                <?php echo $this->translate('Saltter_usable');?>
+                <?php echo $this->translate('settle_usable');?>
 </span>
             <input type="hidden" name="paymentAmount" id="pay_huilvst" value="">
         </div>
@@ -49,26 +49,26 @@
 
         </select>
         <a id="pay_bank_no" target="_blank" href="/user/bank/add">
-            <!--添加账号--><?php echo $this->translate('Saltter_bank_add');?></a>
+            <!--添加账号--><?php echo $this->translate('settle_bank_add');?></a>
     </div>
 
-    <h2 class="w f14"><!--发票信息--><?php echo $this->translate('Saltter_bill_info');?></h2>
+    <h2 class="w f14"><!--发票信息--><?php echo $this->translate('settle_bill_info');?></h2>
     <div class="pay_ticket">
-        <label><!--发票号码--><?php echo $this->translate('Saltter_bill_no');?></label>
+        <label><!--发票号码--><?php echo $this->translate('settle_bill_no');?></label>
         <input class="pay_inpt2" type="text" value="">
     </div>
     <div class="pay_ticket">
-        <label><!--开票日期--><?php echo $this->translate('Saltter_bill_date');?></label>
+        <label><!--开票日期--><?php echo $this->translate('settle_bill_date');?></label>
         <script language="javascript" type="text/javascript" src="/ky/My97DatePicker/WdatePicker.js"></script>
         <input class="pay_inpt2" type="text" value="" onfocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'2100-01-01'})">
     </div>
 
     <div class="pay_ticket">
-        <h3 class="f14"><!--发票影像--><?php echo $this->translate('Saltter_tracking_up');?></h3>
+        <h3 class="f14"><!--发票影像--><?php echo $this->translate('settle_tracking_up');?></h3>
         <div style="width: 100%;height: 150px;margin-left: -30px;">  <?php echo $this->ShowWebuploader('', 'PR', 'PRIV', '0'); ?></div>
     </div>
     <div class="pay">
-        <label><!--支付密码--><?php echo $this->translate('Saltter_pay_pwd');?></label>
+        <label><!--支付密码--><?php echo $this->translate('settle_pay_pwd');?></label>
         <input class="pay_inp" type="password" value="" name="paymentPwd">
         <input class="pay_btn" type="submit" value="<?php echo $this->translate('confirmed');?>">
     </div>

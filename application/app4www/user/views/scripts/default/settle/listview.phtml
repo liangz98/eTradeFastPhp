@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
-	<title>快移</title>
+	<title><?php echo $this->translate('etradefast'); ?></title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/settle/settle.css" rel="stylesheet">
     <link href="/ky/css/img-upload.css" rel="stylesheet">
@@ -15,21 +15,21 @@
 	<div class="container">
         <ol class="breadcrumb">
             <li><a href="/"><?php echo $this->translate('nav_index'); ?></a></li>
-            <li><a href="/user/settle"><?php echo $this->translate('Saltter_IN'); ?></a></li>
-            <li><a href="/user/settle/list"><?php echo $this->translate('Saltter_List'); ?></a></li>
-            <li><a href="/user/settle/lslist"><?php echo $this->translate('Saltter_Run'); ?></a></li>
-            <li class="active"><?php echo $this->translate('Saltter_INF'); ?></li>
+            <li><a href="/user/settle"><?php echo $this->translate('settle_IN'); ?></a></li>
+            <li><a href="/user/settle/list"><?php echo $this->translate('settle_List'); ?></a></li>
+            <li><a href="/user/settle/lslist"><?php echo $this->translate('settle_Run'); ?></a></li>
+            <li class="active"><?php echo $this->translate('settle_INF'); ?></li>
         </ol>
 
         <div class="page-header">
-            <h3><?php echo $this->translate('Saltter_Record'); ?></h3>
+            <h3><?php echo $this->translate('settle_Record'); ?></h3>
         </div>
 
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-2">
-                        <p class="form-control-static text-999"><?php echo $this->translate('Saltter_TradeID'); ?></p>
+                        <p class="form-control-static text-999"><?php echo $this->translate('settle_TradeID'); ?></p>
                     </div>
                     <div class="col-md-4">
                         <p class="form-control-static text-666">
@@ -37,7 +37,7 @@
                         </p>
                     </div>
                     <div class="col-md-2">
-                        <p class="form-control-static text-999"><?php echo $this->translate('Saltter_wtname'); ?></p>
+                        <p class="form-control-static text-999"><?php echo $this->translate('settle_wtname'); ?></p>
                     </div>
                     <div class="col-md-4">
                         <p class="form-control-static text-666">
@@ -58,13 +58,13 @@
                         </p>
                     </div>
                     <div class="col-md-2">
-                        <p class="form-control-static text-999"><?php echo $this->translate('Saltter_Unsettle'); ?></p>
+                        <p class="form-control-static text-999"><?php echo $this->translate('settle_Unsettle'); ?></p>
                     </div>
                     <div class="col-md-4">
                         <p class="form-control-static text-666">
                             <?php echo $this->e['crnCode'] . ' ' . $this->ShowToPrice($this->e['balanceAmount']); ?> &nbsp;&nbsp;
                             <?php if ($this->e['allowPayment']): ?>
-                                <a class="btn btn-warning btn-sm" href="/user/settle/payment?<?php echo base64_encode($this->e['tradingID']); ?>"><?php echo $this->translate('Saltter_payment'); ?></a>
+                                <a class="btn btn-warning btn-sm" href="/user/settle/payment?<?php echo base64_encode($this->e['tradingID']); ?>"><?php echo $this->translate('settle_payment'); ?></a>
                             <?php endif; ?>
                         </p>
                     </div>
@@ -88,7 +88,7 @@
                 <div class="row">
                     <div class="col-md-2">
                         <p class="form-control-static text-999">
-                            <?php echo $this->translate('Saltter_contartNo'); ?>
+                            <?php echo $this->translate('settle_contartNo'); ?>
                         </p>
                     </div>
                     <div class="col-md-4">
@@ -97,7 +97,7 @@
                         </p>
                     </div>
                     <div class="col-md-2">
-                        <p class="form-control-static text-999"><?php echo $this->translate('Saltter_GTime'); ?></p>
+                        <p class="form-control-static text-999"><?php echo $this->translate('settle_GTime'); ?></p>
                     </div>
                     <div class="col-md-4">
                         <p class="form-control-static text-666">
@@ -141,7 +141,7 @@
                 <div class="row">
                     <div class="col-md-2">
                         <p class="form-control-static text-999">
-                            <?php echo $this->translate('Saltter_DEC'); ?>
+                            <?php echo $this->translate('settle_DEC'); ?>
                         </p>
                     </div>
                     <div class="col-md-9">
@@ -167,7 +167,7 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <p class="span-font-size-18 text-primary margin-top-15"><?php echo $this->translate('Saltter_paylist'); ?></p>
+                        <p class="span-font-size-18 text-primary margin-top-15"><?php echo $this->translate('settle_paylist'); ?></p>
                     </div>
                 </div>
 
@@ -177,9 +177,9 @@
                             <thead>
                             <tr>
                                 <th>记录编号</th>
-                                <th><?php echo $this->translate('Saltter_Time'); ?></th>
-                                <th class="text-right"><?php echo $this->translate('Saltter_TradeMount'); ?></th>
-                                <th class="text-center"><?php echo $this->translate('Saltter_Status'); ?></th>
+                                <th><?php echo $this->translate('settle_Time'); ?></th>
+                                <th class="text-right"><?php echo $this->translate('settle_TradeMount'); ?></th>
+                                <th class="text-center"><?php echo $this->translate('settle_Status'); ?></th>
                             </tr>
                             </thead>
                             <tbody>

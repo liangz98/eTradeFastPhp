@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>快移</title>
+    <title><?php echo $this->translate('etradefast'); ?></title>
     <meta name="description" content="">
     <meta name="keywords" content="">
     <link href="/ky/css/base.css" rel="stylesheet">
@@ -17,7 +17,7 @@
 <?php echo $this->render(SEED_WWW_TPL.'/header.phtml');?>
 <div class="o_content_wrap w1200 m0a clearfix">
     <div class="st_tit mt20 mb2 pb10" style="border-bottom: 2px solid #ccc;">
-        <p class="f18"><!--修改支付密码--><?php echo $this->translate('Saltter_edit_pwd');?></p>
+        <p class="f18"><!--修改支付密码--><?php echo $this->translate('settle_edit_pwd');?></p>
     </div>
     <div class="st_wrap p30 mb20">
         <div class="st_box"></div>
@@ -31,7 +31,7 @@
             <input class="st_input" type="text" name="password2" id="" value="">
         </div>
         <div class="clearfix tc">
-            <input class="st_btn" type="button" value="<?php echo $this->translate('Saltter_confirmed');?>"><!--确认-->
+            <input class="st_btn" type="button" value="<?php echo $this->translate('settle_confirmed');?>"><!--确认-->
         </div>
     </div>
 

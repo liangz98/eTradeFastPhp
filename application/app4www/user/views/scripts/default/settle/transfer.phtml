@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
-	<title>快移</title>
+	<title><?php echo $this->translate('etradefast'); ?></title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/settle/settle.css" rel="stylesheet">
 
@@ -18,13 +18,13 @@
 	<div class="container">
         <ol class="breadcrumb">
             <li><a href="/"><?php echo $this->translate('nav_index'); ?></a></li>
-            <li><a href="/user/settle"><?php echo $this->translate('Saltter_IN'); ?></a></li>
-            <li><a href="/user/settle/list"><?php echo $this->translate('Saltter_List'); ?></a></li>
-            <li class="active"><?php echo $this->translate('Saltter_Turn'); ?></li>
+            <li><a href="/user/settle"><?php echo $this->translate('settle_IN'); ?></a></li>
+            <li><a href="/user/settle/list"><?php echo $this->translate('settle_List'); ?></a></li>
+            <li class="active"><?php echo $this->translate('settle_Turn'); ?></li>
         </ol>
 
         <div class="page-header">
-            <h3><?php echo $this->translate('Saltter_Turn'); ?></h3>
+            <h3><?php echo $this->translate('settle_Turn'); ?></h3>
         </div>
 
         <?php if (!empty($this->resultMsg)): ?>
@@ -38,49 +38,49 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="form-group">
-                        <label class="col-sm-2 control-label"><?php echo $this->translate('Saltter_Name'); ?></label>
+                        <label class="col-sm-2 control-label"><?php echo $this->translate('settle_Name'); ?></label>
                         <div class="col-sm-4">
                             <p class="form-control-static"><?php echo $this->paymentTrading['subject']; ?></p>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-2 control-label"><?php echo $this->translate('Saltter_amount'); ?></label>
+                        <label class="col-sm-2 control-label"><?php echo $this->translate('settle_amount'); ?></label>
                         <div class="col-sm-4">
                             <p class="form-control-static"><?php echo $this->paymentTrading['crnCode'] . ' ' . number_format($this->paymentTrading['totalAmount'], 2); ?></p>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-2 control-label"><?php echo $this->translate('Saltter_Unsettle'); ?></label>
+                        <label class="col-sm-2 control-label"><?php echo $this->translate('settle_Unsettle'); ?></label>
                         <div class="col-sm-4">
                             <p class="form-control-static"><?php echo $this->paymentTrading['crnCode'] . ' ' . number_format($this->paymentTrading['balanceAmount'], 2); ?></p>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-2 control-label"><?php echo $this->translate('Saltter_GTime'); ?></label>
+                        <label class="col-sm-2 control-label"><?php echo $this->translate('settle_GTime'); ?></label>
                         <div class="col-sm-4">
                             <p class="form-control-static"><?php echo date('Y-m-d', strtotime($this->paymentTrading['recordDate'])); ?></p>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-2 control-label"><?php echo $this->translate('Saltter_Time_ING'); ?></label>
+                        <label class="col-sm-2 control-label"><?php echo $this->translate('settle_Time_ING'); ?></label>
                         <div class="col-sm-4">
                             <p class="form-control-static"><?php echo date('Y-m-d', strtotime($this->paymentTrading['expectedDate'])); ?></p>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-2 control-label"><?php echo $this->translate('Saltter_DEC'); ?></label>
+                        <label class="col-sm-2 control-label"><?php echo $this->translate('settle_DEC'); ?></label>
                         <div class="col-sm-9">
                             <p class="form-control-static"><?php echo $this->paymentTrading['remarks']; ?></p>
                         </div>
                     </div>
 
                     <div class="form-group hide">
-                        <label class="col-sm-2 control-label"><?php echo $this->translate('Saltter_mark'); ?></label>
+                        <label class="col-sm-2 control-label"><?php echo $this->translate('settle_mark'); ?></label>
                         <div class="col-sm-9">
                             <p class="form-control-static">
                                 <?php if (is_array($this->paymentDetailList) && count($this->paymentDetailList) > 0): ?>
@@ -95,7 +95,7 @@
             </div>
 
             <div class="form-group">
-                <label for="directPaymentAmount" class="col-sm-2 control-label"><?php echo $this->translate('Saltter_out').$this->translate('Saltter_DIFO');?></label>
+                <label for="directPaymentAmount" class="col-sm-2 control-label"><?php echo $this->translate('settle_out').$this->translate('settle_DIFO');?></label>
                 <div class="col-sm-3">
                     <div class="input-group">
                         <div class="input-group-addon"><?php echo $this->payment['crnCode']; ?></div>
@@ -104,13 +104,13 @@
                 </div>
                 <div class="col-sm-offset-2 col-sm-10">
                     <p class="form-control-static text-999">
-                        <?php echo $this->translate('Saltter_Turn');?> <?php echo $this->payment['crnCode'];?> <?php echo $this->ShowToPrice($this->payment['directPaymentAmount']);?> <?php echo $this->translate('Saltter_usable');?>
+                        <?php echo $this->translate('settle_Turn');?> <?php echo $this->payment['crnCode'];?> <?php echo $this->ShowToPrice($this->payment['directPaymentAmount']);?> <?php echo $this->translate('settle_usable');?>
                     </p>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="balPaymentAmount" class="col-sm-2 control-label"><?php echo $this->translate('Saltter_out').$this->translate('Saltter_FREE');?></label>
+                <label for="balPaymentAmount" class="col-sm-2 control-label"><?php echo $this->translate('settle_out').$this->translate('settle_FREE');?></label>
                 <div class="col-sm-3">
                     <div class="input-group">
                         <div class="input-group-addon"><?php echo $this->payment['crnCode']; ?></div>
@@ -119,36 +119,36 @@
                 </div>
                 <div class="col-sm-offset-2 col-sm-10">
                     <p class="form-control-static text-999">
-                        <?php echo $this->translate('Saltter_Turn');?> <?php echo $this->payment['crnCode'];?> <?php echo $this->ShowToPrice($this->paybal_free);?> <?php echo $this->translate('Saltter_usable');?>
+                        <?php echo $this->translate('settle_Turn');?> <?php echo $this->payment['crnCode'];?> <?php echo $this->ShowToPrice($this->paybal_free);?> <?php echo $this->translate('settle_usable');?>
                     </p>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="bankList" class="col-sm-2 control-label"><?php echo $this->translate('Saltter_amount_bank'); ?></label>
+                <label for="bankList" class="col-sm-2 control-label"><?php echo $this->translate('settle_amount_bank'); ?></label>
                 <div class="col-sm-3">
                     <select class="selectpicker form-control" name="bankList" id="bankList" data-live-search="true" >
                         <option value=""><?php echo $this->translate('et_select'); ?></option>
                     </select>
                 </div>
                 <div class="col-sm-2">
-                    <a href="/user/bank/add" class="btn btn-default" target="_blank" ><?php echo $this->translate('Saltter_bank_add');?></a>
+                    <a href="/user/bank/add" class="btn btn-default" target="_blank" ><?php echo $this->translate('settle_bank_add');?></a>
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-sm-2 control-label" ><?php echo $this->translate('Saltter_bill_info'); ?></label>
+                <label class="col-sm-2 control-label" ><?php echo $this->translate('settle_bill_info'); ?></label>
             </div>
 
             <div class="form-group">
-                <label for="billNo" class="col-sm-2 control-label"><?php echo $this->translate('Saltter_bill_no'); ?></label>
+                <label for="billNo" class="col-sm-2 control-label"><?php echo $this->translate('settle_bill_no'); ?></label>
                 <div class="col-sm-3">
                     <input type="password" class="form-control" name="billNo" id="billNo">
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="paymentPwd" class="col-sm-2 control-label"><?php echo $this->translate('Saltter_pay_pwd'); ?></label>
+                <label for="paymentPwd" class="col-sm-2 control-label"><?php echo $this->translate('settle_pay_pwd'); ?></label>
                 <div class="col-sm-3">
                     <input type="password" class="form-control" name="paymentPwd" id="paymentPwd" required>
                 </div>

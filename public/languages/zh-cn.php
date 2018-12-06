@@ -1,19 +1,26 @@
 <?php
 return array(
-    //系统配置
-    'document'    => '文档',
-    //语言编码
-    'language'    => 'English',
-    //语言
-    'chinese'     => 'Chinese',
-    'english'     => 'English',
-    //语言
-    //订单顶部进度说明
+    // 系统配置
+    'document'   => '文档',
+    'etradefast' => '快移交易',
 
+    // 语言
+    'language' => 'English',
+    'chinese'  => 'Chinese',
+    'english'  => 'English',
+
+    // 登录页
+    'welcomeLogin' => '欢迎登录',
+    'welcomeReg'   => '欢迎注册',
+    'etrade'       => '快移平台',
+    'fair'         => '让交易更公平',
+    'speed'        => '更快捷',
+    'guarantee'    => '更有保障',
+    'qrLogin'      => '扫码登录',
+    'accountLogin' => '帐号密码登录',
 
     // 错误代码
     '111111'      => '提交失败，数据不完整或缺少必填项！',
-
 
     'going000'                 => '此订单状态暂未生成',
     //1.买家确认订单（同卖家确认订单）
@@ -50,7 +57,6 @@ return array(
     'going008b'                => '完成。',
     'going008v'                => '订单已经进入结算状态，请到结算分页或结算中心等待买方付款。',
 
-
     //头部主导航
     'nav_login'       => '登录',
     'nav_Mr'          => '先生',
@@ -83,7 +89,6 @@ return array(
     'CompClerk'                => '跟单员',
     'CompProductAdmin'         => '商品管理员',
     'CompPartnerAdmin'         => '合作伙伴管理员',
-
 
     //常用状态
     'last'                     => '上一步',
@@ -125,7 +130,7 @@ return array(
     'agree'                    => '同意',
     'close'                    => '关闭',
 
-    //注册页表单注释文字
+    // 注册页表单注释文字
     'is_name'                  => "请填写真实姓名",
     'is_emlog'                 => "name@example.com",
     'is_passwd'                => "请设置8-30位，包含数字、大小写字母的密码",
@@ -137,7 +142,6 @@ return array(
     'ps_email'                 => "name@example.com",
     'service_contract'         => "《快移交易云平台服务协议》",
     'check_service_contract'   => "已阅读并同意相关服务条款",
-    //登录/注册/表单/合作伙伴/我的卖家/买家/通讯录
     'alreadyRegistered'        => '已经注册，现在就',
     'companyRegister'          => '企业注册',
     'personRegister'           => '个人注册',
@@ -211,11 +215,10 @@ return array(
     'INPkw_par_buyer'          => '可输入买家名称',
     'INPkw_par_vendor'         => '可输入卖家名称',
     'INPfd_par'                => '可通过公司快移码、邓白氏搜索新合作伙伴',
-    'INPkw_goods'             => '可输入名称、HSCode、型号、品牌等关键字',
+    'INPkw_goods'              => '可输入名称、HSCode、型号、品牌等关键字',
     'INPkw_order_xs'           => '可输入订单号、买家名称',
     'INPkw_order_cg'           => '可输入订单号、卖家名称',
-
-    'CHK_account' => '呈现全部状态',
+    'CHK_account'              => '呈现全部状态',
 
     //友情链接
     'about_ef'    => '关于快移',
@@ -225,18 +228,18 @@ return array(
     'joinUS'      => '诚征英才',
     'siteMAP'     => '网站地图',
 
-    //底部链接
+    // 底部链接
     'findJOB'     => '查找职位',
     'about'       => '关于',
     'privacy'     => '隐私',
     'lawITEM'     => '法律条款',
 
-    //用户中心左侧导航
-    'order'       => '订单',
-    'orderIN'     => '订单中心',
-    'orderREQ'    => '退税申请',
-    'orderSALLE'  => '销售订单',
-    'orderBUY'    => '采购订单',
+    // 导航
+    'order'      => '订单',
+    'orderIN'    => '订单中心',
+    'orderREQ'   => '退税申请',
+    'orderSALLE' => '销售订单',
+    'orderBUY'   => '采购订单',
 
     'partners'         => '合作伙伴',
     'partners_buyers'  => '我的买家',
@@ -254,31 +257,31 @@ return array(
     'goodsINF'      => '商品详情',
     'purProduct'    => '采购的商品',
 
-
     'contract'     => '合同',
     'contractSALL' => '销售合同',
     'contractBUY'  => '采购合同',
 
-
-    'settle'    => '结算',
-    'overview'  => '总览',
-    'tradeLIST' => '交易记录',
-
+    'settle'      => '结算',
+    'overview'    => '总览',
+    'tradeLIST'   => '交易记录',
 
     // 个人信息右侧title
     'myINF'       => '个人信息',
     'myPHOTO'     => '头像上传',
     'editPWD'     => '修改密码',
     'editProfile' => '修改个人资料',
+    'guide'       => '操作指引',
     'myNO'        => '账户安全',
     'WebINF'      => '平台账号信息',
 
-    'basicINF'                   => '基本信息',
-    'company_info'               => '公司信息',
-    'personNO'                   => '员工信息',
-    'bankNO'                     => '银行账号',
-    'file'                       => '文档',
+    // 手机
+    'apps' => '手机快移',
 
+    'basicINF'     => '基本信息',
+    'company_info' => '公司信息',
+    'personNO'     => '员工信息',
+    'bankNO'       => '银行账号',
+    'file'         => '文档',
 
     // 附件部分
     'files'        => '文件',
@@ -376,7 +379,6 @@ return array(
     'orderGOODS'            => '订单商品',
     'imgGOODS'              => '商品图片',
 
-
     // 银行账户模块
     'bankAcctNo'            => '银行账号',
     'bankAcctType'          => '账号类型',
@@ -446,16 +448,11 @@ return array(
     'deliveryBillTips_F'    => '客服人员收到增值税发票原件并检验后，会尽快处理后续工作',
     'expressNo'             => '快递单号',
 
-
     // 订单信息预览
     'orderVINF'             => '订单信息预览',
     'orderID'               => '订单ID',
     'orderNo'               => '订单号',
     'orderItem'             => '商品',
-    'orderStatue'           => [
-        '01' => '有效',
-        '02' => '无效'
-    ],
     'orderTotal'            => '金额',
     'shopPrities'           => '订单汇率',
     'Prities'               => '订单汇率',
@@ -507,7 +504,6 @@ return array(
     'eventCLASS' => '按事件分类',
     'selectROLE' => '选择角色',
 
-
     //新增订单模块
     //流程start
     'orderINF01' => '填写订单基本资料',
@@ -551,7 +547,6 @@ return array(
     'shippost1'  => '起运港',
     'shippost2'  => '卸货港',
     'shippost3'  => '交货港',
-
 
     'customsINF' => '报关信息',
     'moveMD'     => '运输方式',
@@ -614,7 +609,6 @@ return array(
     'notice'    => '注意事项',
     'mandatory' => '必填项',
 
-
     'goodsPS01' => '*修改此参数后，商品需重新审核',
     'goodsPS02' => '*修改此参数后，商品需重新审核',
     'goodsPS03' => '*修改此参数后，商品需重新审核',
@@ -635,14 +629,12 @@ return array(
     'dataSN'       => '商检资料',
     'sourceCN'     => '境内货源地',
 
-
-    //订单退税服务
+    // 订单退税服务
     'serviceDBK'   => '退税服务',
     'ispayDBK'     => '是否需要垫付退税款',
     'needDBK'      => '退税要求',
 
-
-    //个人/订单中心
+    // 个人/订单中心
     'historyNO'    => '历史交易笔数',
     'performanceB' => '业绩余额',
     'confirmDD'    => '待确认',
@@ -688,7 +680,6 @@ return array(
 
     'informationDD' => '显示详细信息',
     'confirmORDER'  => '确认订单',
-
 
     'replace' => '回传',
     'invoice' => '发票',
@@ -800,7 +791,6 @@ return array(
     'tip_request_success' => '邀请成功',
     'tip_request_fail'    => '邀请失败',
 
-
     'tip_recharge_success' => '充值成功',
     'tip_recharge_fail'    => '充值失败',
 
@@ -813,147 +803,145 @@ return array(
     'tip_exchange_success'    => '结汇成功',
     'tip_exchange_fail'       => '结汇失败',
 
-
     // 结算
-    'Saltter_IN'              => '结算中心',
-    'Saltter_Bank'            => '银行账户管理',
-    'Saltter_Turn'            => '转账',
-    'Saltter_Balance'         => '账户余额',
-    'Saltter_Yuan'            => '元',
-    'Saltter_setting'         => '支付设置',
-    'Saltter_IFO'             => '金额详细',
-    'Saltter_CIFO'            => '可支配余额',
-    'Saltter_DIFO'            => '定向余额',
-    'Saltter_FIFO'            => '冻结余额',
-    'Saltter_FREE'            => '自由余额',
-    'Saltter_ETIFO'           => '金融额度',
-    'Saltter_VIFO'            => '查看金融详情',
-    'Saltter_credit'          => '信用等级',
-    'Saltter_Available'       => '可用额度',
-    'Saltter_recive'          => '应收',
-    'Saltter_pay'             => '应付',
-    'Saltter_payment'         => '支付',
-    'Saltter_transfer'        => '转账',
-    'Saltter_in_amount'       => '转入金额',
-    'Saltter_out_amount'      => '转出金额',
-    'Saltter_able'            => '余额',
-    'Saltter_Lastlist'        => '最近交易记录',
-    'Saltter_wtlist'          => '记录明细',
-    'Saltter_paylist'         => '支付申请',
-    'Saltter_VALL'            => '查看所有',
-    'Saltter_INF'             => '详情',
-    'Saltter_List'            => '交易记录',
-    'Saltter_Run'             => '流水账',
-    'Saltter_Status'          => '状态',
-    'Saltter_Forname'         => '对方名称',
-    'Saltter_Name'            => '名称',
-    'Saltter_For'             => '对方',
-    'Saltter_OrderID'         => '订单号',
-    'Saltter_RunID'           => '流水号',
-    'Saltter_TradeID'         => '交易号',
-    'Saltter_Class'           => '交易分类',
-    'Saltter_amount'          => '金额',
-    'Saltter_amount_rev'      => '收款余额',
-    'Saltter_amount_bank'     => '收款银行账号',
-    'Saltter_InitMount'       => '初始金额',
-    'Saltter_TradeMount'      => '支付金额',
-    'Saltter_Time'            => '时间',
-    'Saltter_Made'            => '操作详情',
-    'Saltter_Record'          => '记录详情',
-    'Saltter_Sucess'          => '交易成功',
-    'Saltter_DEC'             => '摘要',
-    'Saltter_mark'            => '明细',
-    'Saltter_Money'           => '款项',
-    'Saltter_wtname'          => '记录名称',
-    'Saltter_Unsettle'        => '未结算金额',
-    'Saltter_contartNo'       => '合同号',
-    'Saltter_FTO_R'           => '收方',
-    'Saltter_FTO_P'           => '付方',
-    'Saltter_Time_ING'        => '预计收付时间',
-    'Saltter_Time_ING_R'      => '预计收齐时间',
-    'Saltter_Time_ING_P'      => '预计付齐时间',
-    'Saltter_Time_Now_R'      => '实际收齐时间',
-    'Saltter_Time_Now_P'      => '实际付齐时间',
-    'Saltter_FTO_Status_R'    => '收款状态',
-    'Saltter_FTO_Status_P'    => '付款状态',
-    'Saltter_GTime'           => '发生时间',
-    'Saltter_DirectBalAmount' => '定向余额支付',
-    'Saltter_add_BankAmount'  => '添加银行支付',
-    'Saltter_BankAmount'      => '银行支付',
-    'Saltter_eAmount'         => '余额支付',
-    'Saltter_total'           => '支付合计',
+    'settle_IN'              => '结算中心',
+    'settle_Bank'            => '银行账户管理',
+    'settle_Turn'            => '转账',
+    'settle_Balance'         => '账户余额',
+    'settle_Yuan'            => '元',
+    'settle_setting'         => '支付设置',
+    'settle_IFO'             => '金额详细',
+    'settle_CIFO'            => '可支配余额',
+    'settle_DIFO'            => '定向余额',
+    'settle_FIFO'            => '冻结余额',
+    'settle_FREE'            => '自由余额',
+    'settle_ETIFO'           => '金融额度',
+    'settle_VIFO'            => '查看金融详情',
+    'settle_credit'          => '信用等级',
+    'settle_Available'       => '可用额度',
+    'settle_recive'          => '应收',
+    'settle_pay'             => '应付',
+    'settle_payment'         => '支付',
+    'settle_transfer'        => '转账',
+    'settle_in_amount'       => '转入金额',
+    'settle_out_amount'      => '转出金额',
+    'settle_able'            => '余额',
+    'settle_Lastlist'        => '最近交易记录',
+    'settle_wtlist'          => '记录明细',
+    'settle_paylist'         => '支付申请',
+    'settle_VALL'            => '查看所有',
+    'settle_INF'             => '详情',
+    'settle_List'            => '交易记录',
+    'settle_Run'             => '流水账',
+    'settle_Status'          => '状态',
+    'settle_Forname'         => '对方名称',
+    'settle_Name'            => '名称',
+    'settle_For'             => '对方',
+    'settle_OrderID'         => '订单号',
+    'settle_RunID'           => '流水号',
+    'settle_TradeID'         => '交易号',
+    'settle_Class'           => '交易分类',
+    'settle_amount'          => '金额',
+    'settle_amount_rev'      => '收款余额',
+    'settle_amount_bank'     => '收款银行账号',
+    'settle_InitMount'       => '初始金额',
+    'settle_TradeMount'      => '支付金额',
+    'settle_Time'            => '时间',
+    'settle_Made'            => '操作详情',
+    'settle_Record'          => '记录详情',
+    'settle_Sucess'          => '交易成功',
+    'settle_DEC'             => '摘要',
+    'settle_mark'            => '明细',
+    'settle_Money'           => '款项',
+    'settle_wtname'          => '记录名称',
+    'settle_Unsettle'        => '未结算金额',
+    'settle_contartNo'       => '合同号',
+    'settle_FTO_R'           => '收方',
+    'settle_FTO_P'           => '付方',
+    'settle_Time_ING'        => '预计收付时间',
+    'settle_Time_ING_R'      => '预计收齐时间',
+    'settle_Time_ING_P'      => '预计付齐时间',
+    'settle_Time_Now_R'      => '实际收齐时间',
+    'settle_Time_Now_P'      => '实际付齐时间',
+    'settle_FTO_Status_R'    => '收款状态',
+    'settle_FTO_Status_P'    => '付款状态',
+    'settle_GTime'           => '发生时间',
+    'settle_DirectBalAmount' => '定向余额支付',
+    'settle_add_BankAmount'  => '添加银行支付',
+    'settle_BankAmount'      => '银行支付',
+    'settle_eAmount'         => '余额支付',
+    'settle_total'           => '支付合计',
 
-    'Saltter_pay_pwd'     => '支付密码',
-    'Saltter_edit_pwd'    => '修改支付密码',
-    'Saltter_set_pwd'     => '设置支付密码',
-    'Saltter_init_pwd'    => '初始化支付密码',
-    'Saltter_forget_pwd'  => '初始化支付密码',
-    'Saltter_free'        => '可用剩余金额',
-    'Saltter_CNY_free'    => '人民币账户自由余额',
-    'Saltter_USD_free'    => '美元账户自由余额',
-    'Saltter_tips00'      => '当使用银行支付时，必须上传转账水单，填写金额必须和水单金额一致',
-    'Saltter_tips01'      => '该笔订单有定向资金，可用定向金额',
-    'Saltter_tips02'      => '自由余额支付金额不允许大于可用的自由余额',
-    'Saltter_tips03'      => '余额支付金额(含定向余额)不允许大于可申请余额的金额',
-    'Saltter_tips05'      => '本次支付合计大于应付金额，超出部分自动转入自由余额',
-    'Saltter_tips06'      => '首次使用支付功能需要设置支付密码',
-    'Saltter_tips07'      => '是否成功设置支付密码',
-    'Saltter_tips08'      => '连续输入5次错误密码，账户已冻结',
-    'Saltter_tips09'      => '输入登录密码，前往找回密码',
-    'Saltter_tips10'      => '好的,去设置',
-    'Saltter_tips11'      => '暂时不设置离开该页面',
-    'Saltter_tips12'      => '已完成，继续支付',
-    'Saltter_tips13'      => '登录密码错误',
-    'Saltter_tips14'      => '好的，稍后再试',
-    'Saltter_tips15'      => '是否成功设置修改密码',
-    'Saltter_tips16'      => '是的，继续支付',
-    'Saltter_tips17'      => '登录密码错误',
-    'Saltter_tips20'      => '请输入登录密码',
-    'Saltter_tips23'      => '输入金额不可以大于当前余额',
-    'Saltter_direction'   => '流向',
-    'Saltter_all'         => '全部',
-    'Saltter_into'        => '转入',
-    'Saltter_out'         => '转出',
+    'settle_pay_pwd'     => '支付密码',
+    'settle_edit_pwd'    => '修改支付密码',
+    'settle_set_pwd'     => '设置支付密码',
+    'settle_init_pwd'    => '初始化支付密码',
+    'settle_forget_pwd'  => '初始化支付密码',
+    'settle_free'        => '可用剩余金额',
+    'settle_CNY_free'    => '人民币账户自由余额',
+    'settle_USD_free'    => '美元账户自由余额',
+    'settle_tips00'      => '当使用银行支付时，必须上传转账水单，填写金额必须和水单金额一致',
+    'settle_tips01'      => '该笔订单有定向资金，可用定向金额',
+    'settle_tips02'      => '自由余额支付金额不允许大于可用的自由余额',
+    'settle_tips03'      => '余额支付金额(含定向余额)不允许大于可申请余额的金额',
+    'settle_tips05'      => '本次支付合计大于应付金额，超出部分自动转入自由余额',
+    'settle_tips06'      => '首次使用支付功能需要设置支付密码',
+    'settle_tips07'      => '是否成功设置支付密码',
+    'settle_tips08'      => '连续输入5次错误密码，账户已冻结',
+    'settle_tips09'      => '输入登录密码，前往找回密码',
+    'settle_tips10'      => '好的,去设置',
+    'settle_tips11'      => '暂时不设置离开该页面',
+    'settle_tips12'      => '已完成，继续支付',
+    'settle_tips13'      => '登录密码错误',
+    'settle_tips14'      => '好的，稍后再试',
+    'settle_tips15'      => '是否成功设置修改密码',
+    'settle_tips16'      => '是的，继续支付',
+    'settle_tips17'      => '登录密码错误',
+    'settle_tips20'      => '请输入登录密码',
+    'settle_tips23'      => '输入金额不可以大于当前余额',
+    'settle_direction'   => '流向',
+    'settle_all'         => '全部',
+    'settle_into'        => '转入',
+    'settle_out'         => '转出',
     'more'                => '更多',
-    //充值
-    'Saltter_recharge'    => '充值',
-    'Saltter_currency'    => '货币',
-    'Saltter_prompt'      => '温馨提示',
-    'Saltter_prompt_r1'   => '1、目前仅支持线下汇款，到账时间一般为2-3个工作日（具体到账时间以银行的实际到账时间为准）。',
-    'Saltter_prompt_r2'   => '2、线下汇款直接向快移平台的专属账户汇款，系统会将汇款直接匹配到您的快移账户。',
-    'Saltter_prompt_r3'   => '请您通过网银转账，或者直接到银行柜台汇款，汇款账号如下：',
-    'Saltter_bankactname' => '开户名称',
-    'Saltter_bankname'    => '开户银行',
-    'Saltter_bankactno'   => '银行账号',
-    'Saltter_bankaddress' => '银行地址',
-    //'Saltter_bankamount'=>'充值金额',
-    'Saltter_bankact'     => '银行凭证',
-    //提现
-    'Saltter_draw'        => '提现',
-    'Saltter_draw_name'   => '提现账户',
-    'Saltter_draw_amount' => '提取金额',
-    'Saltter_surplus'     => '剩余',
-    'Saltter_usable'      => '可用',
-    'Saltter_bank_add'    => '添加账号',
+    // 充值
+    'settle_recharge'    => '充值',
+    'settle_currency'    => '货币',
+    'settle_prompt'      => '温馨提示',
+    'settle_prompt_r1'   => '1、目前仅支持线下汇款，到账时间一般为2-3个工作日（具体到账时间以银行的实际到账时间为准）。',
+    'settle_prompt_r2'   => '2、线下汇款直接向快移平台的专属账户汇款，系统会将汇款直接匹配到您的快移账户。',
+    'settle_prompt_r3'   => '请您通过网银转账，或者直接到银行柜台汇款，汇款账号如下：',
+    'settle_bankactname' => '开户名称',
+    'settle_bankname'    => '开户银行',
+    'settle_bankactno'   => '银行账号',
+    'settle_bankaddress' => '银行地址',
+    'settle_bankact'     => '银行凭证',
+    // 提现
+    'settle_draw'        => '提现',
+    'settle_draw_name'   => '提现账户',
+    'settle_draw_amount' => '提取金额',
+    'settle_surplus'     => '剩余',
+    'settle_usable'      => '可用',
+    'settle_bank_add'    => '添加账号',
 
-    'Saltter_bill_info'           => '发票信息',
-    'Saltter_bill_no'             => '发票号码',
-    'Saltter_bill_amount'         => '发票金额',
-    'Saltter_bill_date'           => '开票日期',
-    'Saltter_tracking_is'         => '是否已邮寄',
-    'Saltter_tracking_no'         => '物流单号',
-    'Saltter_tracking_company'    => '物流公司',
-    'Saltter_tracking_up'         => '发票影像',
+    'settle_bill_info'           => '发票信息',
+    'settle_bill_no'             => '发票号码',
+    'settle_bill_amount'         => '发票金额',
+    'settle_bill_date'           => '开票日期',
+    'settle_tracking_is'         => '是否已邮寄',
+    'settle_tracking_no'         => '物流单号',
+    'settle_tracking_company'    => '物流公司',
+    'settle_tracking_up'         => '发票影像',
 
-    //结汇
-    'Saltter_exg'                 => '结汇',
-    'Saltter_exg_act'             => '结汇账户',
-    'Saltter_exg_amt'             => '结汇金额',
-    'Saltter_huilv'               => '当前汇率',
-    'Saltter_prompt_e1'           => '1、结汇功能仅支持兑换为公司默认货币。',
-    'Saltter_prompt_e2'           => '2、结汇后金额系统会自动转入公司快移账户自由余额。',
+    // 结汇
+    'settle_exg'                 => '结汇',
+    'settle_exg_act'             => '结汇账户',
+    'settle_exg_amt'             => '结汇金额',
+    'settle_huilv'               => '当前汇率',
+    'settle_prompt_e1'           => '1、结汇功能仅支持兑换为公司默认货币。',
+    'settle_prompt_e2'           => '2、结汇后金额系统会自动转入公司快移账户自由余额。',
 
-    //金融
+    // 金融
     'Finance_index'               => '金融中心',
     'Finance_info'                => '项目详情',
     'Finance_pamount'             => '批复金额',
@@ -1016,7 +1004,7 @@ return array(
     'Finance_overdueInterest'     => '逾期利息',
     'Finance_repayment_ok'        => '待还本金',
     'Finance_repayment_no'        => '已还本金',
-    //状态
+    // 状态
     'Finance_rstatus'             => '还款中',
     'Finance_dstatus'             => '已还款',
     'Finance_cstatus'             => '待确认',
@@ -1079,7 +1067,6 @@ return array(
     'replay_sid'            => '重新授权',
     'shouqi'                => '收起',
 
-
     'gains'                       => '累计收益',
     'invested'                    => '累计投资金额',
     'arr'                         => '收益率',
@@ -1133,13 +1120,14 @@ return array(
     '600002'                      => '责任人实名认证信息不匹配',
     '600012'                      => '企业实名认证信息不匹配',
 
-    /*企业认证验证码*/
+    // 企业认证验证码
     '100047'                      => '缺少 verify_code 参数',
     '140047'                      => 'verify_code 参数不能为空',
     '150037'                      => 'verify_code 参数过长，请控制在 6 个字符以内',
     '160007'                      => 'verify_code 不正确',
     '444444'                      => ' 实名认证每日只允许提交3次，请24小时后再尝试。',
-    /*个人认证码*/
+
+    // 个人认证码
     'user100002'                  => '缺少 name 参数',
     'user100004'                  => '缺少 mobilePhone参数',
     'user100029'                  => '缺少 identityNo参数',
@@ -1151,7 +1139,8 @@ return array(
     'user140029'                  => 'identityNo参数不能为空',
     'user600002'                  => '实名认证信息不匹配',
     'user444444'                  => '实名认证每日只允许提交3次，请24小时后再尝试。',
-    /*金融补充*/
+
+    // 金融补充
     'Finance_doc_title'           => '文档签署及放款',
     'Finance_doc_write'           => '文档签署',
 
