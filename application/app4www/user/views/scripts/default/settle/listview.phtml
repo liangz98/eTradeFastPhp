@@ -6,6 +6,8 @@
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/settle/settle.css" rel="stylesheet">
     <link href="/ky/css/img-upload.css" rel="stylesheet">
+    <!-- Viewer -->
+    <link href="/ky/viewer-1.0.0-dist/viewer.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -109,7 +111,7 @@
                 <div class="row">
                     <div class="col-md-2">
                         <p class="form-control-static text-999">
-                            <?php echo $this->ShowToRptypeTitle($this->e['rptype'], 'Saltter_Time_ING'); ?>
+                            <?php echo $this->ShowToRptypeTitle($this->e['rptype'], 'settle_Time_ING'); ?>
                         </p>
                     </div>
                     <div class="col-md-4">
@@ -118,7 +120,7 @@
                         </p>
                     </div>
                     <div class="col-md-2">
-                        <p class="form-control-static text-999"><?php echo $this->ShowToRptypeTitle($this->e['rptype'], 'Saltter_Time_Now'); ?></p>
+                        <p class="form-control-static text-999"><?php echo $this->ShowToRptypeTitle($this->e['rptype'], 'settle_Time_Now'); ?></p>
                     </div>
                     <div class="col-md-4">
                         <p class="form-control-static text-666">
@@ -129,7 +131,7 @@
 
                 <div class="row">
                     <div class="col-md-2">
-                        <p class="form-control-static text-999"><?php echo $this->ShowToRptypeTitle($this->e['rptype'], 'Saltter_FTO_Status'); ?></p>
+                        <p class="form-control-static text-999"><?php echo $this->ShowToRptypeTitle($this->e['rptype'], 'settle_FTO_Status'); ?></p>
                     </div>
                     <div class="col-md-4">
                         <p class="form-control-static text-666">
@@ -160,7 +162,7 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12 text-primary">
-                        <?php echo $this->ShowWebuploader($this->e['attachmentList'],$this->biz_Setting['PT'],$this->attach_Setting['PTDN'], "1", $this->e['tradingID']);?>
+                        <?php echo $this->ShowWebuploader($this->e['attachmentList'], 'PT', 'PTDN', "1", $this->e['tradingID']); ?>
                     </div>
                 </div>
                 <?php endif;?>
@@ -214,13 +216,22 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
 <script type="text/javascript" src="/ky/upload/img.js"></script>
+<!-- viewer -->
+<script type="text/javascript" src="/ky/viewer-1.0.0-dist/viewer.min.js"></script>
+
 <script type="text/javascript">
 	$().ready(function() {
 
 	});
 
 	$(function () {
-
+        // viewer
+        // 先判断是否有图片, 再初始化viewer
+        if ($(".img-view > li").length > 0) {
+            $(".img-view").viewer({
+                url: "data-original"
+            });
+        }
 	});
 </script>
 </body>

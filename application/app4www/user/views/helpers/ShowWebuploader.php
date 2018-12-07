@@ -87,7 +87,13 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
                 } else {
                     $str .= '<li>';
                     $str .= '<img width="125px" height="125px" src="/ky/ico/' . strtolower($ext) . '.png" alt=' . $attachType_ . ' />';
-                    $str .= '<span class="del_to">' . $name . '<br>';
+                    $str .= '<span class="del_to">';
+                    if (mb_strlen($name, 'utf-8') > 16) {
+                        $str .= mb_substr($name,0,7, 'utf-8') . '...';
+                    } else {
+                        $str .= $name;
+                    }
+                    $str .= '<br>';
                     $str .= '<a href="'.$this->view->seed_Setting['KyUrlex'] . '/doc/download.action?sid=' . session_id() . '&nid=' . $attachID. '&vid=' . $verifyID . '" download><i class="fas fa-download"></i></a>&nbsp;&nbsp;&nbsp;';
                     $str .= '<a onclick="delete_pic(this)"><i class="far fa-trash-alt"></i></a>';
                     $str .= '</span>';
