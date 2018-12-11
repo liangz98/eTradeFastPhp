@@ -122,13 +122,20 @@
 <script type="text/javascript" src="/ky/bootstrap-select-1.12.4-dist/js/bootstrap-select.min.js"></script>
 <script src="/ky/js/base64.js"></script>
 <script type="text/javascript">
-    var dataDict = {};
+    var dataDict = {},
+        userLangCode = '<?php echo $this->userLangCode; ?>';
 
 	$().ready(function() {
 
 	});
 
 	$(function () {
+        if (userLangCode === 'en_US') {
+            $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['en-US']);
+        } else {
+            $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['zh-CN']);
+        }
+
         var dataDictQuery = '/user/common/dict-ajax';
         var dictCode = ["PAYMENT_TRADING_TYPE", "PAYMENT_STATUS", "AR_AP_TYPE"];
         $.ajax({

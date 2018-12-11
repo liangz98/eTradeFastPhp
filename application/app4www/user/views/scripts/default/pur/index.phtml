@@ -104,16 +104,24 @@
 
 <script src="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.js"></script>
 <script src="/ky/bootstrap-table-1.12.1-dist/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="/ky/bootstrap-table-1.12.1-dist/locale/bootstrap-table-en-US.min.js"></script>
 <script src="/ky/js/base64.js"></script>
 
 <script type="text/javascript">
-    var dataDict = {};
+    var dataDict = {},
+        userLangCode = '<?php echo $this->userLangCode; ?>';
 
     $().ready(function() {
 
 	});
 
 	$(function () {
+        if (userLangCode === 'en_US') {
+            $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['en-US']);
+        } else {
+            $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['zh-CN']);
+        }
+
         $('.company-navigation').find('a').each(function () {
             if (this.href === document.location.href || document.location.href.search(this.href) >= 0) {
                 $(this).addClass('nav-selected');

@@ -101,7 +101,7 @@
             </div>
 
             <div class="form-group">
-                <label for="paymentAmount" class="col-sm-2 control-label"><?php echo $this->translate('settle_recharge').$this->translate('ordertotal');?></label>
+                <label for="paymentAmount" class="col-sm-2 control-label"><?php echo $this->translate('settle_payment_amount');?></label>
                 <div class="col-sm-3">
                     <div class="input-group">
                         <div class="input-group-addon"><?php echo $this->crnCode; ?></div>
@@ -122,7 +122,7 @@
                 <div class="col-sm-3">
                     <input type="password" class="form-control" name="paymentPwd" id="paymentPwd" required>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                     <button type="submit" class="btn btn-warning"><?php echo $this->translate('confirmed'); ?></button>&nbsp;&nbsp;<a href="javascript:void(0)"><?php echo $this->translate('forgetPSD');?></a>
                 </div>
             </div>

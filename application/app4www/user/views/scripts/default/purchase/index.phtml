@@ -110,7 +110,8 @@
 <script src="/ky/js/base64.js"></script>
 
 <script type="text/javascript">
-    var dataDict = {};
+    var dataDict = {},
+        userLangCode = '<?php echo $this->userLangCode; ?>';
 
     $().ready(function() {
 
@@ -124,6 +125,12 @@
                 $(this).removeClass('nav-selected');
             }
         });
+
+        if (userLangCode === 'en_US') {
+            $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['en-US']);
+        } else {
+            $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['zh-CN']);
+        }
 
         $("#goodsTabs a").click(function () {
             $("#productStatus").val($(this).attr("data-productStatus"));

@@ -88,7 +88,7 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
                     $str .= '<li>';
                     $str .= '<img width="125px" height="125px" src="/ky/ico/' . strtolower($ext) . '.png" alt=' . $attachType_ . ' />';
                     $str .= '<span class="del_to">';
-                    if (mb_strlen($name, 'utf-8') > 16) {
+                    if (mb_strlen($name, 'utf-8') > 8) {
                         $str .= mb_substr($name,0,7, 'utf-8') . '...';
                     } else {
                         $str .= $name;

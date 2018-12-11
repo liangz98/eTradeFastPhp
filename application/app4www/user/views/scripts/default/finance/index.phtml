@@ -36,22 +36,22 @@
                     <div class="col-sm-11">
                         <div class="row">
                             <div class="col-sm-1">
-                                <p class="form-control-static">项目模式</p>
+                                <p class="form-control-static"><?php echo $this->translate('factoring_mode'); ?></p>
                             </div>
                             <div class="col-sm-9">
-                                <button type="button" class="btn btn-warning" data-type="factoringMode" data-value="all">全部</button>&nbsp;&nbsp;
-                                <button type="button" class="btn btn-default" data-type="factoringMode" data-value="RF">应收账款融资</button>&nbsp;&nbsp;
-                                <button type="button" class="btn btn-default" data-type="factoringMode" data-value="PF">生产融资</button>
+                                <button type="button" class="btn btn-warning" data-type="factoringMode" data-value="all"><?php echo $this->translate('factoring_all'); ?></button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringMode" data-value="RF"><?php echo $this->translate('factoring_mode_rf'); ?></button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringMode" data-value="PF"><?php echo $this->translate('factoring_mode_pf'); ?></button>
                                 <input type="hidden" name="factoringMode" id="factoringMode" value="all">
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-sm-1">
-                                <p class="form-control-static">债权货币</p>
+                                <p class="form-control-static"><?php echo $this->translate('factoring_crnCode'); ?></p>
                             </div>
                             <div class="col-sm-9">
-                                <button type="button" class="btn btn-warning" data-type="crnCode" data-value="all">全部</button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-warning" data-type="crnCode" data-value="all"><?php echo $this->translate('factoring_all'); ?></button>&nbsp;&nbsp;
                                 <button type="button" class="btn btn-default" data-type="crnCode" data-value="USD">USD</button>&nbsp;&nbsp;
                                 <button type="button" class="btn btn-default" data-type="crnCode" data-value="CNY">CNY</button>
                                 <input type="hidden" name="crnCode" id="crnCode" value="all">
@@ -60,16 +60,16 @@
 
                         <div class="row">
                             <div class="col-sm-1">
-                                <p class="form-control-static">金额</p>
+                                <p class="form-control-static"><?php echo $this->translate('factoring_amount'); ?></p>
                             </div>
                             <div class="col-sm-9">
-                                <button type="button" class="btn btn-warning" data-type="factoringAmount" data-value="all">全部</button>&nbsp;&nbsp;
-                                <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A1">5000以下</button>&nbsp;&nbsp;
-                                <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A2">5000 至 2万</button>&nbsp;&nbsp;
-                                <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A3">2万 至 5万</button>&nbsp;&nbsp;
-                                <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A4">5万 至 10万</button>&nbsp;&nbsp;
-                                <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A5">10万 至 20万</button>&nbsp;&nbsp;
-                                <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A6">20万以上</button>
+                                <button type="button" class="btn btn-warning" data-type="factoringAmount" data-value="all"><?php echo $this->translate('factoring_all'); ?></button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A1"><?php echo $this->translate('factoring_amount_a1'); ?></button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A2"><?php echo $this->translate('factoring_amount_a2'); ?></button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A3"><?php echo $this->translate('factoring_amount_a3'); ?></button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A4"><?php echo $this->translate('factoring_amount_a4'); ?></button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A5"><?php echo $this->translate('factoring_amount_a5'); ?></button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A6"><?php echo $this->translate('factoring_amount_a6'); ?></button>
                                 <input type="hidden" name="factoringAmount" id="factoringAmount" value="all">
                             </div>
                         </div>
@@ -89,28 +89,28 @@
                         </div>
                     </div>
                     <div class="col-sm-1 creditRating">
-                        <p class="creditTitle">快移信用</p>
+                        <p class="creditTitle"><?php echo $this->translate('factoring_credit'); ?></p>
                         <?php if (!empty($this->level)): ?>
                             <?php
                             $nowDate = strtotime(date("Y-m-d"));
                             $expiryDate = strtotime(date("Y-m-d", strtotime($this->expiryDate)));
                             ?>
                             <?php if ($nowDate > $expiryDate): ?>
-                                <p class="text-center creditInfo"><?php echo "过期"; ?></p>
+                                <p class="text-center creditInfo"><?php echo $this->translate('factoring_credit_expiry'); ?></p>
                             <?php else: ?>
                                 <p class="text-center creditInfo"><?php echo $this->level; ?></p>
                             <?php endif; ?>
                         <?php elseif (!empty($this->instance)): ?>
                             <?php if ($this->applyStatus == 0): ?>
                                 <p class="text-center creditInfo-unApply" style="cursor: pointer;" data-type="instance">
-                                    提交资料<br >申请评核
+                                    <?php echo $this->translate('factoring_credit_apply'); ?><br ><?php echo $this->translate('factoring_credit_evaluation'); ?>
                                 </p>
                             <?php else: ?>
-                                <p class="text-center creditInfo" style="font-size: 20px;"><?php echo "评估中"; ?></p>
+                                <p class="text-center creditInfo" style="font-size: 20px;"><?php echo $this->translate('factoring_credit_forCheck'); ?></p>
                             <?php endif; ?>
                         <?php else: ?>
                             <p class="text-center creditInfo-unApply" style="cursor: pointer;" data-type="init">
-                                提交资料<br >申请评核
+                                <?php echo $this->translate('factoring_credit_apply'); ?><br ><?php echo $this->translate('factoring_credit_evaluation'); ?>
                             </p>
                         <?php endif; ?>
                     </div>
@@ -195,7 +195,8 @@
             dataType: "json",
             success: function (data) {
                 var contents = '',
-                    $resultList = $(".resultList");
+                    $resultList = $(".resultList"),
+                    noResult = '<?php echo $this->translate("noData"); ?>';
 
                 if (data.rows.length === 0) {
                     contents += '<li>'
@@ -211,7 +212,7 @@
                         + '  <div class="panel-body">'
                         + '   <div class="row">'
                         + '    <div class="col-sm-12">'
-                        + '     <p>没有找到匹配的记录</p>'
+                        + '     <p>' + noResult + '</p>'
                         + '    </div>'
                         + '   </div>'
                         + '  </div>'
@@ -233,22 +234,33 @@
                                 });
                             }
                         });
+
+                        var factoringNoStr = '<?php echo $this->translate("factoringListNo"); ?>',
+                            orderNoStr = '<?php echo $this->translate("factoringListOrderNo"); ?>',
+                            debtorCustomerNameStr = '<?php echo $this->translate("factoringDebtor"); ?>',
+                            factoringStatusStr = '<?php echo $this->translate("factoringStatus"); ?>',
+                            receivableTotalAmountStr = '<?php echo $this->translate("factoringReceivableTotalAmount"); ?>',
+                            financingTotalAmountStr = '<?php echo $this->translate("factoringFinancingTotalAmount"); ?>',
+                            periodStr = '<?php echo $this->translate("factoringPeriod"); ?>',
+                            expiryDateStr = '<?php echo $this->translate("factoringExpiryDate"); ?>',
+                            daysStr = '<?php echo $this->translate("factoringDays"); ?>',
+                            infoStr = '<?php echo $this->translate("factoringInfo"); ?>';
                         contents += '<li style="cursor: pointer;" data-resultEnCode="' + resultEnCode + '">'
                             + ' <div class="panel panel-success">'
                             + '  <div class="panel-heading">'
                             + '   <div class="row">'
                             + '    <div class="col-sm-11">'
-                            + '     <span>项目编号</span>&nbsp;&nbsp;'
+                            + '     <span>' + factoringNoStr + '</span>&nbsp;&nbsp;'
                             + '     <span>' + item.factoringNo + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
-                            + '     <span>订单编号</span>&nbsp;&nbsp;'
-                            + '     <span>' + item.factoringNo + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
-                            + '     <span>债务方</span>&nbsp;&nbsp;'
+                            + '     <span>' + orderNoStr + '</span>&nbsp;&nbsp;'
+                            + '     <span>' + item.factoringItem.orderNo + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+                            + '     <span>' + debtorCustomerNameStr + '</span>&nbsp;&nbsp;'
                             + '     <span>' + item.debtorCustomerName + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
-                            + '     <span>项目进度</span>&nbsp;&nbsp;'
+                            + '     <span>' + factoringStatusStr + '</span>&nbsp;&nbsp;'
                             + '     <span>' + factoringStatus + '</span>'
                             + '    </div>'
                             + '    <div class="col-sm-1">'
-                            + '     <p class="text-right"><a href="/user/finance/view?' + resultEnCode + '">详情</a></p>'
+                            + '     <p class="text-right"><a href="/user/finance/view?' + resultEnCode + '">' + infoStr + '</a></p>'
                             + '    </div>'
                             + '   </div>'
                             + '  </div>'
@@ -256,19 +268,19 @@
                             + '  <div class="panel-body">'
                             + '   <div class="row">'
                             + '    <div class="col-sm-3">'
-                            + '     <span>应收帐款</span>&nbsp;&nbsp;'
+                            + '     <span>' + receivableTotalAmountStr + '</span>&nbsp;&nbsp;'
                             + '     <span>' + item.crnCode + ' ' + item.receivableTotalAmount  +'</span>'
                             + '    </div>'
                             + '    <div class="col-sm-4">'
-                            + '     <span>计划融资</span>&nbsp;&nbsp;'
+                            + '     <span>' + financingTotalAmountStr + '</span>&nbsp;&nbsp;'
                             + '     <span>' + item.crnCode + ' ' + item.financingTotalAmount + ' ( ' + item.financingCrnCode + ' ' + item.tgtFinancingTotalAmount  + ')</span>'
                             + '    </div>'
                             + '    <div class="col-sm-2">'
-                            + '     <span>保理期</span>&nbsp;&nbsp;'
-                            + '     <span>' + item.period + ' 天</span>'
+                            + '     <span>' + periodStr + '</span>&nbsp;&nbsp;'
+                            + '     <span>' + item.period + ' ' + daysStr + '</span>'
                             + '    </div>'
                             + '    <div class="col-sm-3">'
-                            + '     <span>计划回款日</span>&nbsp;&nbsp;'
+                            + '     <span>' + expiryDateStr + '</span>&nbsp;&nbsp;'
                             + '     <span>' + new Date(item.expiryDate).format("yyyy-MM-dd") + '</span>'
                             + '    </div>'
                             + '   </div>'

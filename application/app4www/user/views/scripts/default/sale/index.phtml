@@ -107,7 +107,8 @@
 <script src="/ky/js/base64.js"></script>
 
 <script type="text/javascript">
-    var dataDict = {};
+    var dataDict = {},
+        userLangCode = '<?php echo $this->userLangCode; ?>';
 
     $().ready(function() {
 
@@ -121,6 +122,12 @@
                 $(this).removeClass('nav-selected');
             }
         });
+
+        if (userLangCode === 'en_US') {
+            $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['en-US']);
+        } else {
+            $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['zh-CN']);
+        }
 
         $("#optionTabs a").click(function () {
             $("#orderStatus").val($(this).attr("data-orderStatus"));

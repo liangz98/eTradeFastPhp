@@ -90,7 +90,7 @@
                                         <dt><?php echo $this->translate('userP'); ?></dt>
                                         <dd><?php echo $this->ShowDictionaryTo('datatest_setting', $this->userLangCode, $this->dic_Setting['ECOMM_STATUS'], $this->e['ecommstatus']); ?></dd>
 
-                                        <dt><?php echo $this->translate('企业签署人'); ?></dt>
+                                        <dt><?php echo $this->translate('signature'); ?></dt>
                                         <dd>
                                             <?php
                                                 // 1.判断公司是否已经有实名认证信息
@@ -114,7 +114,7 @@
                                                                 if ($this->e['realAuthStatus'] == 2):
                                                 ?>
                                                                     <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#changeSigningAgent">
-                                                                        <i class="fas fa-signature"></i> 设为签署人
+                                                                        <i class="fas fa-signature"></i> <?php echo $this->translate('setSignature'); ?>
                                                                     </button>
                                                 <?php
                                                                 endif;

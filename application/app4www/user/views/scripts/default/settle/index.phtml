@@ -273,11 +273,11 @@
                                             <td style="vertical-align: middle; ">
                                                 <?php if ($paymentTrading['paymentStatus'] == 0):?>
                                                     <?php if ($paymentTrading['rptype'] == 'P'): ?>
-                                                        待付
+                                                        <?php echo $this->translate('settle_status_payment'); ?>
                                                     <?php elseif ($paymentTrading['rptype'] == 'R'):?>
-                                                        待收
+                                                        <?php echo $this->translate('settle_status_receivable'); ?>
                                                     <?php elseif ($paymentTrading['rptype'] == 'O'):?>
-                                                        申请中
+                                                        <?php echo $this->translate('settle_status_forCheck'); ?>
                                                     <?php endif;?>
                                                 <?php else: ?>
                                                     <?php echo $this->ShowDictionaryTo("PAYMENT_STATUS", $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'], $paymentTrading['paymentStatus']); ?>

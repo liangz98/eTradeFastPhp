@@ -156,7 +156,7 @@
                 <?php if ($this->e['rptype'] == 'P' && $this->e['isOriented'] == false): ?>
                 <div class="row">
                     <div class="col-md-2">
-                        <p class="form-control-static text-999">文件</p>
+                        <p class="form-control-static text-999"><?php echo $this->translate('files'); ?></p>
                     </div>
                     <div class="col-md-10"></div>
                 </div>
@@ -178,7 +178,7 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th>记录编号</th>
+                                <th><?php echo $this->translate('settle_requestNo'); ?></th>
                                 <th><?php echo $this->translate('settle_Time'); ?></th>
                                 <th class="text-right"><?php echo $this->translate('settle_TradeMount'); ?></th>
                                 <th class="text-center"><?php echo $this->translate('settle_Status'); ?></th>
@@ -188,7 +188,7 @@
 
                             <?php if (empty($this->e['paymentRequestList'])):?>
                                 <tr>
-                                    <td colspan="4">暂无记录</td>
+                                    <td colspan="4"><?php echo $this->translate('noData'); ?></td>
                                 </tr>
                             <?php else:?>
                                 <?php foreach ($this->e['paymentRequestList'] as $paymentRequest):?>
