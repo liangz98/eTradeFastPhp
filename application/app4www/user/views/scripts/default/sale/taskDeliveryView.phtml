@@ -1,0 +1,73 @@
+<div class="row">
+    <div class="col-md-2">
+        <p class="form-control-static text-999"><?php echo $this->translate("factoringCompany"); ?></p>
+    </div>
+    <div class="col-md-10">
+        <p class="form-control-static text-666">
+            <?php echo $this->orderTask->contents; ?>
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-2">
+        <p class="form-control-static text-999"><?php echo $this->translate("factoringCompany"); ?></p>
+    </div>
+    <div class="col-md-4">
+        <p class="form-control-static text-666">
+            <?php echo empty($this->orderTask->planBeginTime) ? null : date('Y-m-d H:i:s', strtotime($this->orderTask->planBeginTime)); ?>
+        </p>
+    </div>
+    <div class="col-md-2">
+        <p class="form-control-static text-999"><?php echo $this->translate("factoringCompany"); ?></p>
+    </div>
+    <div class="col-md-4">
+        <p class="form-control-static text-666">
+            <?php echo empty($this->orderTask->planEndTime) ? null : date('Y-m-d H:i:s', strtotime($this->orderTask->planEndTime)); ?>
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-2">
+        <p class="form-control-static text-999"><?php echo $this->translate("factoringCompany"); ?></p>
+    </div>'
+    <div class="col-md-8">
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo $this->orderTask->progress; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $this->orderTask->progress; ?>%;">
+                <?php echo $this->orderTask->progress; ?>%
+            </div>
+        </div>'
+    </div>'
+</div>
+
+<div class="row">
+    <div class="col-md-2">
+        <p class="form-control-static text-999"><?php echo $this->translate("factoringCompany"); ?></p>
+    </div>
+    <div class="col-md-10">
+        <p class="form-control-static text-666">
+            <?php foreach ($this->orderTask->taskPrincipalList as $index => $principal):?>
+                <?php echo $principal->displayName; ?>,
+            <?php endforeach; ?>
+        </p>
+    </div>
+</div>
+
+<?php foreach ($this->orderTask->taskDeliveryList as $index => $taskDelivery):?>
+    <div class="alert alert-info alert-dismissible taskDeliveryAlert" role="alert">
+        <div class="row">
+            <div class="col-xs-2"><?php echo $this->translate("productNAME"); ?></div>
+            <div class="col-sm-4"><?php echo $taskDelivery->subject; ?></div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8"><?php echo $taskDelivery->contents; ?></div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <?php echo $this->ShowWebuploader($taskDelivery->attachmentList, $this->biz_Setting['ORDER'], $this->attach_Setting['DLPG'], '0', null); ?>
+            </div>
+        </div>
+    </div>
+<?php endforeach; ?>

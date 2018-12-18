@@ -1864,4 +1864,24 @@ class SaleController extends Kyapi_Controller_Action
             exit;
         }
     }
+
+    public function getOrderTaskViewAjaxAction() {
+        $requestObject = $this->_requestObject;
+
+        $orderID = $this->_request->getParam('orderID');
+        $taskID = $this->_request->getParam('taskID');
+
+        $resultObject = $this->json->getOrderTaskView($requestObject, $orderID, $taskID);
+        $this->view->orderTask = json_decode($resultObject)->result;
+
+        // $msg = json_decode($resultObject)->result;
+        // echo json_encode($msg);
+        // exit;
+
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/sale/taskDeliveryView.phtml");
+            echo $content;
+            exit;
+        }
+    }
 }

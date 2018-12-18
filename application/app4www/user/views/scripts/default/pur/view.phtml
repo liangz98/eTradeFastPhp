@@ -911,9 +911,9 @@
                         var data = $.data(dataDict, 'dataDict'),
                             result = '';
                         $.each(data, function (key, item) {
-                            if (key === 'BIZ_TYPE') {
+                            if (key === 'ACTION_LOG_EVENT_TYPE') {
                                 $.each(item, function (i, dict) {
-                                    if (dict.code === track.bizType) {
+                                    if (dict.code === track.eventType) {
                                         result = dict.name;
                                     }
                                 });
@@ -929,7 +929,6 @@
                         + '</li>';
                 });
 
-                console.log(trackContent);
                 $trackTimeLine.html(trackContent);
             }
         });

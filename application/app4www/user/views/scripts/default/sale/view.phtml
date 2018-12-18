@@ -841,6 +841,28 @@
     </div>
 </div>
 
+<!-- Modal QC明细 -->
+<div class="modal fade" id="qcDetailModal" tabindex="-1" role="dialog" aria-labelledby="qcDetailLabel">
+    <div class="modal-dialog modal-lg" role="document" style="width: 1080px !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title qcSummary"></h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="qcContent">
+                    info Content
+                </div>
+
+                <div class="row" id="mapContainer" style="height:500px; margin: 0; padding: 0;">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- 物流编辑 -->
 <div id="deliveryViewDiv" style="display: none;"></div>
 
@@ -858,6 +880,8 @@
 <script type="text/javascript" src="/ky/pdf/pdf.worker.js"></script>
 <!-- viewer -->
 <script type="text/javascript" src="/ky/viewer-1.0.0-dist/viewer.min.js"></script>
+<!-- baidu Map -->
+<!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=4XHAGdv8ZKf9mY8cpLApvwkNcihKW3NF"></script>-->
 
 <script type="text/javascript">
     var dataDict = {};
@@ -888,7 +912,7 @@
             $calculateContent = $(".calculateContent");
 
         var dataDictQuery = '/user/common/dict-ajax';
-        var dictCode = ["BIZ_TYPE", "ACTION_LOG_EVENT_TYPE"];
+        var dictCode = ["BIZ_TYPE", "ACTION_LOG_EVENT_TYPE", "TASK_STATUS"];
         $.ajax({
             type: "POST",
             url: dataDictQuery,
@@ -986,7 +1010,7 @@
                         var data = $.data(dataDict, 'dataDict'),
                             result = '';
                         $.each(data, function (key, item) {
-                            if (key === 'ACTION_LOG_EVENT_TYPE  ') {
+                            if (key === 'ACTION_LOG_EVENT_TYPE') {
                                 $.each(item, function (i, dict) {
                                     if (dict.code === index) {
                                         result = dict.name;
@@ -1008,33 +1032,108 @@
                         var data = $.data(dataDict, 'dataDict'),
                             result = '';
                         $.each(data, function (key, item) {
-                            if (key === 'BIZ_TYPE') {
+                            if (key === 'ACTION_LOG_EVENT_TYPE') {
                                 $.each(item, function (i, dict) {
-                                    if (dict.code === track.bizType) {
+                                    if (dict.code === track.eventType) {
                                         result = dict.name;
                                     }
                                 });
                             }
                         });
 
-                        trackContent += '<div class="col-sm-1"><b>' + result + '</b></div>'
-                            + '<div class="col-sm-8">' + track.summary + '</div>'
-                            + '<div class="col-sm-3">' + new Date(track.operateTime).format("yyyy-MM-dd hh:mm:ss") + '</div><br>';
+                        if (track.eventType === 'QC') {
+                            var taskStatusResult = '';
+                            $.each(data, function (key, item) {
+                                if (key === 'TASK_STATUS') {
+                                    $.each(item, function (i, dict) {
+                                        if (dict.code === track.bizObj.taskStatus) {
+                                            taskStatusResult = dict.name;
+                                        }
+                                    });
+                                }
+                            });
 
-                        // trackContent += result
-                        //     + track.summary
-                        //     + new Date(track.operateTime).format("yyyy-MM-dd hh:mm:ss") + '<br>';
+
+                            trackContent += '<div class="row" data-toggle="modal" data-target="#qcDetailModal" data-order-id="' + track.projectID + '" data-task-id="' + track.bizObj.taskID + '" style="cursor: pointer;">';
+                            trackContent += '<div class="col-sm-2"><b>' + result + '</b></div>'
+                                + '<div class="col-sm-7">'
+                                + track.summary
+                                + ' <i class="layui-icon layui-icon-about text-primary"></i>'
+                                + '<br>'
+                                + '<span style="color: #ccc;">'
+                                + '责任人：' + track.operator + '&nbsp;&nbsp;&nbsp;&nbsp;状态：' + taskStatusResult
+                                + '</span>'
+                                + '</div>'
+                                + '<div class="col-sm-3">' + new Date(track.operateTime).format("yyyy-MM-dd hh:mm:ss") + '</div>';
+
+                            trackContent += '</div>';
+                        } else {
+                            trackContent += '<div class="row">';
+                            trackContent += '<div class="col-sm-2"><b>' + result + '</b></div>'
+                                + '<div class="col-sm-7">'
+                                + track.summary
+                                + '<br>'
+                                + '<span style="color: #ccc;">'
+                                + '责任人：' + track.operator
+                                + '</span>'
+                                + '</div>'
+                                + '<div class="col-sm-3">' + new Date(track.operateTime).format("yyyy-MM-dd hh:mm:ss") + '</div>';
+                            trackContent += '</div>';
+                        }
                     });
-                    // trackContent += '</p>';
-
                     trackContent += '</div>'
                         + '</li>';
                 });
 
-                console.log(trackContent);
+                // console.log(trackContent);
                 $trackTimeLine.html(trackContent);
             }
         });
+    }
+
+    $("#qcDetailModal").on('show.bs.modal', function (e) {
+        var triggered = $(e.relatedTarget),
+            taskID = triggered.data("task-id"),
+            orderID = triggered.data("order-id");
+
+        var getOrderTask = '/user/sale/get-order-task-view-ajax';
+        $(".qcContent").html("").load(getOrderTask, {
+            orderID: orderID,
+            taskID: taskID
+        }, function (data) {
+            $(".qcSummary").html(data.subject);
+        });
+
+
+        /*
+        $.ajax({
+            type: "POST",
+            url: track,
+            data: {
+                orderID: orderID,
+                taskID: taskID
+            },
+            dataType: "json",
+            success: function (data) {
+                $(".qcSummary").html(data.subject);
+
+
+
+                var script = document.createElement("script");
+                script.src = "http://api.map.baidu.com/api?v=2.0&ak=8P5e0fcLzr2U3MfSB282xuaK8TcHh46g&callback=initialize(4.9E-324, 4.9E-324)";
+                document.body.appendChild(script);
+            }
+        });
+        */
+    });
+
+    function initialize(pointx, pinty) {
+        var map = new BMap.Map("mapContainer");         // 创建地图实例
+        var point = new BMap.Point(pointx, pinty);      // 创建点坐标
+        map.centerAndZoom(point, 15);                   // 初始化地图，设置中心点坐标和地图级别
+        map.enableScrollWheelZoom(true);                // 开启鼠标滚轮缩放
+        var marker = new BMap.Marker(point);            // 创建点
+        map.addOverlay(marker);
     }
 
     // *************************** PDF Sign View ********************************

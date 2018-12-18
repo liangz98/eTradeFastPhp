@@ -2224,5 +2224,23 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         $resultObject = $this->vpost($_url, $_params);
         return $resultObject;
     }
+
+    /**
+     * 查获QC明细
+     * @param $requestObject
+     * @param $orderID
+     * @param $taskID
+     * @return mixed
+     */
+    public function getOrderTaskView($requestObject, $orderID, $taskID) {
+        $_url = $this->url . '/orderapi/orderApi!getOrderTaskView.action';
+        $_params = json_encode(array(
+            "requestObject" => $requestObject,
+            "orderID"       => $orderID,
+            "taskID"        => $taskID
+        ));
+        $resultObject = $this->vpost($_url, $_params);
+        return $resultObject;
+    }
 }
 ?>

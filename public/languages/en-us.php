@@ -449,9 +449,9 @@ return array(
     'bankAccount'           => '银行帐户',
     'deliveryBillTips_A'    => '若有两个或以上供应商，请点击选项框查看各自开票资料，各供应商须按以下资料开具真实的增值税发票',
     'deliveryBillTips_B'    => '请将开具后的增值税发票原件邮寄至以下地址',
-    'deliveryBillTips_C'    => '地址：深圳市罗湖区嘉宾路2034号深化商业大厦1005室',
+    'deliveryBillTips_C'    => '地址：深圳市罗湖区嘉宾路2018号深华商业大厦1502室',
     'deliveryBillTips_D'    => '收件人：付先生',
-    'deliveryBillTips_E'    => '联系电话：0755-83687432',
+    'deliveryBillTips_E'    => '联系电话：0755-82383764',
     'deliveryBillTips_F'    => '客服人员收到增值税发票原件并检验后，会尽快处理后续工作',
     'expressNo'             => '快递单号',
 
