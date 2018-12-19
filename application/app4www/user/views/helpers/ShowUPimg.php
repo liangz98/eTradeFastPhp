@@ -4,6 +4,7 @@ class Zend_View_Helper_ShowUPimg extends Shop_View_Helper {
     function ShowUPimg($attArr) {
         //$attArr 服务端返回附件信息数组；
         $str = "";
+        $hasHide = 0;
         if (is_array($attArr) && count($attArr) > 0) {
             foreach ($attArr as $k => $attlist) {
                 $ext = "";
@@ -41,12 +42,18 @@ class Zend_View_Helper_ShowUPimg extends Shop_View_Helper {
 
                 $downloadURL = $this->view->seed_Setting['KyUrlex'] . '/doc/download.action';
 
-                $str .= '<li style="cursor: pointer;">';
+                if ($k < 7) {
+                    $str .= '<li style="cursor: pointer;">';
+                } else {
+                    $hasHide = 1;
+                    $str .= '<li class="imgLi hidden" style="cursor: pointer;">';
+                }
+
                 if ($ext == "jpeg" || $ext == "png" || $ext == "jpg" || $ext == "gif" || $ext == "GIF" || $ext == "JPG" || $ext == "PNG" || $ext == "JPEG") {
                     $str .= '<img width="125px" height="125px" ';
                     $str .= 'data-original="' . $downloadURL . '?sid=' . session_id().'&nid=' . $attachID.'&vid=' . $verifyID.'" ';
                     $str .= 'src="' . $downloadURL . '?sid=' . session_id(). '&nid=' . $attachID . '&vid=' . $verifyID . '&size=MIDDLE" ';
-                    $str .= 'name="' . $name . '" alt="' . $attachType_ . '" >';
+                    $str .= 'name="' . $name . '_'.$k.'" alt="' . $attachType_ . '" >';
                 } elseif ($ext == "doc" || $ext == "xls" || $ext == "ppt") {
                     $str .= '<img width="125px" height="125px" ';
                     $str .= 'src="/ky/ico/' . strtolower($ext) . '.png" ';
@@ -60,7 +67,11 @@ class Zend_View_Helper_ShowUPimg extends Shop_View_Helper {
             }
         }
 
-        $resultImg = '<ul class="showImgView">' . $str . '</ul>';
+        $resultImg = '<ul class="img-view">' . $str . '</ul>';
+
+        if ($hasHide) {
+            $resultImg .= '<div class="col-sm-3 col-sm-offset-5"><button type="button" class="btn btn-default btn-xs showImgAll" data-type="down">展开全部 <i class="fas fa-chevron-down"></i></button></div>';
+        }
 
         return $resultImg;
     }

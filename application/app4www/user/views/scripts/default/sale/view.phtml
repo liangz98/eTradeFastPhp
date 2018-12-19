@@ -865,7 +865,7 @@
 
 <!-- QC明细 -->
 <div id="qcDetailLayDiv" class="layui-form" style="display: none;">
-    <div class="et-auth-content qcContent">
+    <div class="container-fluid qcContent">
 
     </div>
 </div>
@@ -1072,6 +1072,10 @@
                                 + '<span style="color: #ccc;">'
                                 + '责任人：' + track.operator + '&nbsp;&nbsp;&nbsp;&nbsp;状态：' + taskStatusResult
                                 + '</span>'
+                                + '<br>'
+                                + '<div class="layui-progress">'
+                                + ' <div class="layui-progress-bar layui-bg-green" lay-percent="' + track.bizObj.progress + '%"></div>'
+                                + '</div>'
                                 + '</div>'
                                 + '<div class="col-sm-3">' + new Date(track.operateTime).format("yyyy-MM-dd hh:mm:ss") + '</div>';
 
@@ -1096,6 +1100,10 @@
 
                 // console.log(trackContent);
                 $trackTimeLine.html(trackContent);
+
+                layui.use('element', function(){
+                    var element = layui.element;
+                });
                 
                 $(".qcDetailDiv").click(function () {
                     var taskID = $(this).attr("data-task-id"),
@@ -1110,21 +1118,37 @@
 
                         // viewer
                         // 先判断是否有图片, 再初始化viewer
-                        // if ($(".showImgView > li").length > 0) {
-                        //     // 新增/编辑页需要在第一次实例的时候初始化
-                        //     var $imgView = $(".showImgView");
-                        //     $imgView.viewer({
-                        //         url: "data-original",
-                        //     });
-                        //     // 已存在的实例需要更新
-                        //     // $imgView.viewer('update');
-                        // }
+                        if ($(".img-view > li").length > 0) {
+                            // 新增/编辑页需要在第一次实例的时候初始化
+                            var $imgView = $(".img-view");
+                            $imgView.viewer({
+                                url: "data-original"
+                            });
+                            // 已存在的实例需要更新
+                            // $imgView.viewer('update');
+                        }
 
-                        BigPicture({
-                            el: this,
-                            gallery: '.showImgView'
-                        })
+                        // 展开/收起按钮
+                        $(".showImgAll").unbind('click').click(function () {
+                            var dataType = $(this).attr("data-type");
+                            if (dataType === 'down') {
+                                $(".imgLi").removeClass("hidden");
+                                $(this).html('收起 <i class="fas fa-chevron-up"></i>');
+                                $(this).attr("data-type", "up");
+                                // var target_top = $("#orderItemTop").offset().top;
+                                // $("html,body").animate({scrollTop: target_top}, 1000);
+                            } else {
+                                $.each($(".imgLi"), function (i, val) {
+                                    if (i > 0) {
+                                        $(val).addClass("hidden");
+                                    }
+                                });
+                                $(this).html('展开全部 <i class="fas fa-chevron-down"></i>');
+                                $(this).attr("data-type", "down");
+                            }
+                        });
                     });
+
 
                     layer.open({
                         type: 1,
