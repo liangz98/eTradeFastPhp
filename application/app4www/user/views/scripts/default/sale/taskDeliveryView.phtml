@@ -31,14 +31,14 @@
 <div class="row">
     <div class="col-md-2">
         <p class="form-control-static text-999"><?php echo $this->translate("factoringCompany"); ?></p>
-    </div>'
+    </div>
     <div class="col-md-8">
         <div class="progress">
             <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo $this->orderTask->progress; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $this->orderTask->progress; ?>%;">
                 <?php echo $this->orderTask->progress; ?>%
             </div>
-        </div>'
-    </div>'
+        </div>
+    </div>
 </div>
 
 <div class="row">
@@ -66,7 +66,7 @@
 
         <div class="row">
             <div class="col-sm-12">
-                <?php echo $this->ShowWebuploader($taskDelivery->attachmentList, $this->biz_Setting['ORDER'], $this->attach_Setting['DLPG'], '0', null); ?>
+                <?php echo $this->ShowUPimg($taskDelivery->attachmentList); ?>
             </div>
         </div>
     </div>

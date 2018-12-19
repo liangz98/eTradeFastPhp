@@ -863,6 +863,13 @@
     </div>
 </div>
 
+<!-- QC明细 -->
+<div id="qcDetailLayDiv" class="layui-form" style="display: none;">
+    <div class="et-auth-content qcContent">
+
+    </div>
+</div>
+
 <!-- 物流编辑 -->
 <div id="deliveryViewDiv" style="display: none;"></div>
 
@@ -880,6 +887,8 @@
 <script type="text/javascript" src="/ky/pdf/pdf.worker.js"></script>
 <!-- viewer -->
 <script type="text/javascript" src="/ky/viewer-1.0.0-dist/viewer.min.js"></script>
+<!-- BigPicture -->
+<script type="text/javascript" src="/ky/bigpicture-1.4.0-dist/BigPicture.min.js"></script>
 <!-- baidu Map -->
 <!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=4XHAGdv8ZKf9mY8cpLApvwkNcihKW3NF"></script>-->
 
@@ -1054,7 +1063,7 @@
                             });
 
 
-                            trackContent += '<div class="row" data-toggle="modal" data-target="#qcDetailModal" data-order-id="' + track.projectID + '" data-task-id="' + track.bizObj.taskID + '" style="cursor: pointer;">';
+                            trackContent += '<div class="row qcDetailDiv" data-order-id="' + track.projectID + '" data-task-id="' + track.bizObj.taskID + '" style="cursor: pointer;">';
                             trackContent += '<div class="col-sm-2"><b>' + result + '</b></div>'
                                 + '<div class="col-sm-7">'
                                 + track.summary
@@ -1087,6 +1096,47 @@
 
                 // console.log(trackContent);
                 $trackTimeLine.html(trackContent);
+                
+                $(".qcDetailDiv").click(function () {
+                    var taskID = $(this).attr("data-task-id"),
+                        orderID = $(this).attr("data-order-id");
+
+                    var getOrderTask = '/user/sale/get-order-task-view-ajax';
+                    $(".qcContent").html("").load(getOrderTask, {
+                        orderID: orderID,
+                        taskID: taskID
+                    }, function (data) {
+                        // $(".qcSummary").html(data.subject);
+
+                        // viewer
+                        // 先判断是否有图片, 再初始化viewer
+                        // if ($(".showImgView > li").length > 0) {
+                        //     // 新增/编辑页需要在第一次实例的时候初始化
+                        //     var $imgView = $(".showImgView");
+                        //     $imgView.viewer({
+                        //         url: "data-original",
+                        //     });
+                        //     // 已存在的实例需要更新
+                        //     // $imgView.viewer('update');
+                        // }
+
+                        BigPicture({
+                            el: this,
+                            gallery: '.showImgView'
+                        })
+                    });
+
+                    layer.open({
+                        type: 1,
+                        title: '111',
+                        shadeClose: true,
+                        shade: 0.2,
+                        area: ['1150px', '100%'],
+                        scrollbar: false,
+                        zIndex: 10,
+                        content: $('#qcDetailLayDiv')
+                    });
+                });
             }
         });
     }
@@ -1102,6 +1152,40 @@
             taskID: taskID
         }, function (data) {
             $(".qcSummary").html(data.subject);
+
+            // viewer
+            // 先判断是否有图片, 再初始化viewer
+            if ($(".showImgView > li").length > 0) {
+                // 新增/编辑页需要在第一次实例的时候初始化
+                var $imgView = $(".showImgView");
+                $imgView.viewer({
+                    url: "data-original",
+                    build: function() {
+                        console.log("in0");
+                    },
+                    built: function() {
+                        console.log("in-1");
+                    },
+                    shown: function() {
+                        console.log("in-2");
+                    },
+                    show: function() {
+                        console.log("in");
+                        $('#qcDetailModal').modal('hide');
+                    },
+                    hide: function() {
+                        console.log("in2");
+                    },
+                    hidden: function () {
+                        console.log("in3");
+                        $('#qcDetailModal').modal('show');
+                    }
+                });
+                // 已存在的实例需要更新
+                // $imgView.viewer('update');
+
+
+            }
         });
 
 
