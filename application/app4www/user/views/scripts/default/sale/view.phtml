@@ -1147,6 +1147,16 @@
                                 $(this).attr("data-type", "down");
                             }
                         });
+
+                        var Media = document.getElementById("media");
+
+                        var eventTester = function(e){
+                            Media.addEventListener(e,function(){
+                                console.log((new Date()).getTime(),e)
+                            },false);
+                        };
+
+                        eventTester("play");
                     });
 
 
@@ -1160,6 +1170,11 @@
                         zIndex: 10,
                         content: $('#qcDetailLayDiv')
                     });
+
+                    $(".videoCls").bind('play', function () {
+                        console.log("正在播放视频");
+                    });
+
                 });
             }
         });
