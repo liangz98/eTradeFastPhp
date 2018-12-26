@@ -59,7 +59,15 @@ ul, li {
 
 .img-view img {
     float: left;
-    margin-left: 15px;
+    /*margin-left: 15px;*/
+    margin-right: 15px;
+    margin-top: 10px;
+}
+
+.img-view video {
+    float: left;
+    margin-left: -15px;
+    margin-right: 35px;
     margin-top: 10px;
 }
 
@@ -149,7 +157,7 @@ ul, li {
     text-align: center;
     background: #000;
     float: left;
-    margin-left: -125px;
+    margin-left: -140px;
     /*margin-top: 55px;*/
     margin-top: 95px;
     opacity: 0.6;

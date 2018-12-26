@@ -887,10 +887,8 @@
 <script type="text/javascript" src="/ky/pdf/pdf.worker.js"></script>
 <!-- viewer -->
 <script type="text/javascript" src="/ky/viewer-1.0.0-dist/viewer.min.js"></script>
-<!-- BigPicture -->
-<script type="text/javascript" src="/ky/bigpicture-1.4.0-dist/BigPicture.min.js"></script>
 <!-- baidu Map -->
-<!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=4XHAGdv8ZKf9mY8cpLApvwkNcihKW3NF"></script>-->
+<!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=8P5e0fcLzr2U3MfSB282xuaK8TcHh46g"></script>-->
 
 <script type="text/javascript">
     var dataDict = {};
@@ -1063,7 +1061,9 @@
                             });
 
 
-                            trackContent += '<div class="row qcDetailDiv" data-order-id="' + track.projectID + '" data-task-id="' + track.bizObj.taskID + '" style="cursor: pointer;">';
+
+                            trackContent += '<div class="row" data-toggle="modal" data-target="#qcDetailModal" data-order-id="' + track.projectID + '" data-task-id="' + track.bizObj.taskID + '" data-summary="' + track.summary + '" style="cursor: pointer;">';
+                            // trackContent += '<div class="row qcDetailDiv" data-order-id="' + track.projectID + '" data-task-id="' + track.bizObj.taskID + '" data-summary="' + track.summary + '" style="cursor: pointer;">';
                             trackContent += '<div class="col-sm-2"><b>' + result + '</b></div>'
                                 + '<div class="col-sm-7">'
                                 + track.summary
@@ -1107,7 +1107,8 @@
                 
                 $(".qcDetailDiv").click(function () {
                     var taskID = $(this).attr("data-task-id"),
-                        orderID = $(this).attr("data-order-id");
+                        orderID = $(this).attr("data-order-id"),
+                        summary = $(this).attr("data-summary");
 
                     var getOrderTask = '/user/sale/get-order-task-view-ajax';
                     $(".qcContent").html("").load(getOrderTask, {
@@ -1147,33 +1148,25 @@
                                 $(this).attr("data-type", "down");
                             }
                         });
-
-                        var Media = document.getElementById("media");
-
-                        var eventTester = function(e){
-                            Media.addEventListener(e,function(){
-                                console.log((new Date()).getTime(),e)
-                            },false);
-                        };
-
-                        eventTester("play");
                     });
-
 
                     layer.open({
                         type: 1,
-                        title: '111',
+                        title: summary,
                         shadeClose: true,
                         shade: 0.2,
                         area: ['1150px', '100%'],
                         scrollbar: false,
                         zIndex: 10,
-                        content: $('#qcDetailLayDiv')
+                        content: $('#qcDetailLayDiv'),
+                        success: function(layero, index){
+                            console.log(layero, index);
+                            var script = document.createElement("script");
+                            script.src = "http://api.map.baidu.com/api?v=2.0&ak=8P5e0fcLzr2U3MfSB282xuaK8TcHh46g&callback=initialize(4.9E-324, 4.9E-324)";
+                            document.body.appendChild(script);
+                        }
                     });
 
-                    $(".videoCls").bind('play', function () {
-                        console.log("正在播放视频");
-                    });
 
                 });
             }
@@ -1194,31 +1187,11 @@
 
             // viewer
             // 先判断是否有图片, 再初始化viewer
-            if ($(".showImgView > li").length > 0) {
+            if ($(".img-view > li").length > 0) {
                 // 新增/编辑页需要在第一次实例的时候初始化
-                var $imgView = $(".showImgView");
+                var $imgView = $(".img-view");
                 $imgView.viewer({
-                    url: "data-original",
-                    build: function() {
-                        console.log("in0");
-                    },
-                    built: function() {
-                        console.log("in-1");
-                    },
-                    shown: function() {
-                        console.log("in-2");
-                    },
-                    show: function() {
-                        console.log("in");
-                        $('#qcDetailModal').modal('hide');
-                    },
-                    hide: function() {
-                        console.log("in2");
-                    },
-                    hidden: function () {
-                        console.log("in3");
-                        $('#qcDetailModal').modal('show');
-                    }
+                    url: "data-original"
                 });
                 // 已存在的实例需要更新
                 // $imgView.viewer('update');
@@ -1251,12 +1224,13 @@
     });
 
     function initialize(pointx, pinty) {
-        var map = new BMap.Map("mapContainer");         // 创建地图实例
-        var point = new BMap.Point(pointx, pinty);      // 创建点坐标
-        map.centerAndZoom(point, 15);                   // 初始化地图，设置中心点坐标和地图级别
-        map.enableScrollWheelZoom(true);                // 开启鼠标滚轮缩放
-        var marker = new BMap.Marker(point);            // 创建点
-        map.addOverlay(marker);
+        console.log("in");
+        // var map = new BMap.Map("mapContainerTest");         // 创建地图实例
+        // var point = new BMap.Point(pointx, pinty);      // 创建点坐标
+        // map.centerAndZoom(point, 15);                   // 初始化地图，设置中心点坐标和地图级别
+        // map.enableScrollWheelZoom(true);                // 开启鼠标滚轮缩放
+        // var marker = new BMap.Marker(point);            // 创建点
+        // map.addOverlay(marker);
     }
 
     // *************************** PDF Sign View ********************************

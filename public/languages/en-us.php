@@ -1237,4 +1237,12 @@ return array(
     'QUALITY_AGREE_FORMAL'        => '质量保证函正本',
     'RECEIPT_CONFIRMATION_TEMPL'  => '收货确认函模板',
     'RECEIPT_CONFIRMATION_FORMAL' => '收货确认函正本',
+
+    'taskContents'       => '任务内容',
+    'taskBeginTime'      => '开始时间',
+    'taskEndTime'        => '结束时间',
+    'taskProgress'       => '任务进度',
+    'taskPrincipal'      => '责任人',
+    'taskDelivery'       => '交付物',
+    'deliveryCreateTime' => '创建时间',
 );
