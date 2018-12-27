@@ -62,9 +62,6 @@ class Zend_View_Helper_ShowUPimg extends Shop_View_Helper {
                     $str .= 'src="/ky/ico/' . strtolower($ext) . '.png" ';
                     $str .= 'name="' . $name . '" alt="' . $attachType_ . '" >';
                 } else {
-                    // $videoStr .= '<li>';
-                    // $videoStr .= '<video width="480px" height="360px" controls poster="video-background-image" src="' . $downloadURL . '?sid=' . session_id().'&nid=' . $attachID.'&vid=' . $verifyID. '" data-overlay="1" data-title="' . $name . '"></video>';
-                    // $videoStr .= '</li>';
                     $str .= '<div class="vid htmlvid" style="background-image:url(/ky/images/video-circle.png); background-size: 64px 64px; background-repeat: no-repeat; background-position-x:center; background-position-y:center;" vidSrc="' . $downloadURL . '?sid=' . session_id().'&nid=' . $attachID.'&vid=' . $verifyID. '"></div>';
 
 
