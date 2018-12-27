@@ -76,20 +76,20 @@
             </div>
         </div>
 
-        <div class="row map-<?php echo $taskDelivery->taskDeliveryID; ?>">
-            <div class="col-sm-10 text-999 mapContainer-<?php echo $taskDelivery->taskDeliveryID; ?>" id="mapContainer_<?php echo $index; ?>" style="height:500px; margin: 0; padding: 0;">11</div>
+        <div class="row map-<?php echo $taskDelivery->taskDeliveryID; ?> hidden">
+            <div class="col-sm-12">
+                <div class="mapContainer-<?php echo $taskDelivery->taskDeliveryID; ?>" id="mapContainer_<?php echo $index; ?>" style="height:500px;"></div>
+            </div>
         </div>
         <?php endif; ?>
 
         <div class="row">
             <div class="col-sm-12">
-                <?php echo $this->ShowUPimg($taskDelivery->attachmentList); ?>
+                <?php echo $this->ShowUPimg($taskDelivery->attachmentList, $taskDelivery->taskDeliveryID); ?>
             </div>
         </div>
     </div>
 <?php endforeach; ?>
-
-<div class="row" id="mapTestDiv" style="height:500px; margin: 0; padding: 0;">11</div>
 
 <script type="text/javascript">
     $(".mapMarked").click(function () {
@@ -101,31 +101,59 @@
             $mapContainer = $(".mapContainer-" + deliveryID),
             mapContainerID = $mapContainer.attr("id");
 
-        console.log($mapContainer.html());
-        $(".text-999").append("<b>Hello world!</b>");
-        $mapContainer.append("<b>Hello world1111!</b>");
-        document.getElementById("mapContainer_0").innerHTML="your str";
-        console.log($mapContainer.html());
+        if ($map.hasClass("hidden")) {
+            $map.removeClass("hidden");
 
-
-        var script = document.createElement("script");
-        script.src = "http://api.map.baidu.com/api?v=2.0&ak=8P5e0fcLzr2U3MfSB282xuaK8TcHh46g&callback=initialize(4.9E-324, 4.9E-324)";
-        document.body.appendChild(script);
-
-        // if ($map.hasClass("hidden")) {
-        //     $map.removeClass("hidden");
-        // } else {
-        //     $map.addClass("hidden");
-        // }
+            var script = document.createElement("script");
+            script.src = "http://api.map.baidu.com/api?v=2.0&ak=8P5e0fcLzr2U3MfSB282xuaK8TcHh46g&callback=initialize('" + mapContainerID + "', " + longitude + ", " + latitude + ")";
+            document.body.appendChild(script);
+        } else {
+            $map.addClass("hidden");
+        }
     });
 
-    function initialize(pointx, pinty) {
-        // console.log("in");
-        var map = new BMap.Map("mapContainer_0");         // 创建地图实例
+    function initialize(mapContainer, pointx, pinty) {
+        var map = new BMap.Map(mapContainer);         // 创建地图实例
         var point = new BMap.Point(pointx, pinty);      // 创建点坐标
         map.centerAndZoom(point, 15);                   // 初始化地图，设置中心点坐标和地图级别
         map.enableScrollWheelZoom(true);                // 开启鼠标滚轮缩放
         var marker = new BMap.Marker(point);            // 创建点
         map.addOverlay(marker);
     }
+
+    (function () {
+        // function setClickHandler(id, fn) {
+        //     document.getElementById(id).onclick = fn;
+        // }
+        //
+        // setClickHandler('local_image_container', function (e) {
+        //     (e.target.tagName === 'IMG' || e.target.className === 'background-image') &&
+        //     BigPicture({
+        //         el: e.target
+        //     });
+        // });
+
+        function setClickHandlerByClass(className, fn) {
+            var elements = document.getElementsByClassName(className);
+            for(var i = 0;i < elements.length;i++){
+                elements[i].onclick = fn;
+            }
+        }
+
+        setClickHandlerByClass('img-view', function (e) {
+            var className = e.target.className;
+            console.log(e.target.parentElement.parentElement.getAttribute("data-cls-name"));
+            var galleryName = e.target.parentElement.parentElement.getAttribute("data-cls-name");
+            (e.target.tagName === 'IMG' || e.target.className === 'background-image') &&
+            BigPicture({
+                el: e.target,
+                gallery: '.'+galleryName
+            });
+            ~className.indexOf('htmlvid') &&
+            BigPicture({
+                el: e.target,
+                vidSrc: e.target.getAttribute('vidSrc')
+            });
+        });
+    })();
 </script>

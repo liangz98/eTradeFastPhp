@@ -1051,7 +1051,7 @@ return array(
     'factoringPeriod'                    => '保理期',
     'factoringExpiryDate'                => '计划回款日',
     'factoringDays'                      => 'Days',
-    'factoringInfo'                      => 'Info',
+    'factoringInfo'                      => '详情',
     'factoringInterestPercent'           => '融资(日)利率',
     'factoringOverdueInterestPercent'    => '逾期(日)利率',
     'factoringGraceInterestPercent'      => '宽限期(日)利率',

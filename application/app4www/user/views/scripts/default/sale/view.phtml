@@ -8,6 +8,8 @@
     <link href="/ky/css/img-upload.css" rel="stylesheet">
     <!-- Viewer -->
     <link href="/ky/viewer-1.0.0-dist/viewer.min.css" rel="stylesheet">
+    <!-- magnify -->
+    <!--<link href="/ky/magnify-1.4.0-dist/jquery.magnify.min.css" rel="stylesheet">-->
 </head>
 <body>
 
@@ -854,19 +856,8 @@
                 <div class="qcContent">
                     info Content
                 </div>
-
-                <div class="row" id="mapContainer" style="height:500px; margin: 0; padding: 0;">
-
-                </div>
             </div>
         </div>
-    </div>
-</div>
-
-<!-- QC明细 -->
-<div id="qcDetailLayDiv" class="layui-form" style="display: none;">
-    <div class="container-fluid qcContent">
-
     </div>
 </div>
 
@@ -887,6 +878,9 @@
 <script type="text/javascript" src="/ky/pdf/pdf.worker.js"></script>
 <!-- viewer -->
 <script type="text/javascript" src="/ky/viewer-1.0.0-dist/viewer.min.js"></script>
+<!-- magnify -->
+<!--<script type="text/javascript" src="/ky/magnify-1.4.0-dist/jquery.magnify.min.js"></script>-->
+<script type="text/javascript" src="/ky/bigpicture-1.4.0-dist/BigPicture.min.js"></script>
 <!-- baidu Map -->
 <!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=8P5e0fcLzr2U3MfSB282xuaK8TcHh46g"></script>-->
 
@@ -1104,71 +1098,6 @@
                 layui.use('element', function(){
                     var element = layui.element;
                 });
-                
-                $(".qcDetailDiv").click(function () {
-                    var taskID = $(this).attr("data-task-id"),
-                        orderID = $(this).attr("data-order-id"),
-                        summary = $(this).attr("data-summary");
-
-                    var getOrderTask = '/user/sale/get-order-task-view-ajax';
-                    $(".qcContent").html("").load(getOrderTask, {
-                        orderID: orderID,
-                        taskID: taskID
-                    }, function (data) {
-                        // $(".qcSummary").html(data.subject);
-
-                        // viewer
-                        // 先判断是否有图片, 再初始化viewer
-                        if ($(".img-view > li").length > 0) {
-                            // 新增/编辑页需要在第一次实例的时候初始化
-                            var $imgView = $(".img-view");
-                            $imgView.viewer({
-                                url: "data-original"
-                            });
-                            // 已存在的实例需要更新
-                            // $imgView.viewer('update');
-                        }
-
-                        // 展开/收起按钮
-                        $(".showImgAll").unbind('click').click(function () {
-                            var dataType = $(this).attr("data-type");
-                            if (dataType === 'down') {
-                                $(".imgLi").removeClass("hidden");
-                                $(this).html('收起 <i class="fas fa-chevron-up"></i>');
-                                $(this).attr("data-type", "up");
-                                // var target_top = $("#orderItemTop").offset().top;
-                                // $("html,body").animate({scrollTop: target_top}, 1000);
-                            } else {
-                                $.each($(".imgLi"), function (i, val) {
-                                    if (i > 0) {
-                                        $(val).addClass("hidden");
-                                    }
-                                });
-                                $(this).html('展开全部 <i class="fas fa-chevron-down"></i>');
-                                $(this).attr("data-type", "down");
-                            }
-                        });
-                    });
-
-                    layer.open({
-                        type: 1,
-                        title: summary,
-                        shadeClose: true,
-                        shade: 0.2,
-                        area: ['1150px', '100%'],
-                        scrollbar: false,
-                        zIndex: 10,
-                        content: $('#qcDetailLayDiv'),
-                        success: function(layero, index){
-                            console.log(layero, index);
-                            var script = document.createElement("script");
-                            script.src = "http://api.map.baidu.com/api?v=2.0&ak=8P5e0fcLzr2U3MfSB282xuaK8TcHh46g&callback=initialize(4.9E-324, 4.9E-324)";
-                            document.body.appendChild(script);
-                        }
-                    });
-
-
-                });
             }
         });
     }
@@ -1176,62 +1105,47 @@
     $("#qcDetailModal").on('show.bs.modal', function (e) {
         var triggered = $(e.relatedTarget),
             taskID = triggered.data("task-id"),
-            orderID = triggered.data("order-id");
+            orderID = triggered.data("order-id"),
+            summary = triggered.data("summary");
 
         var getOrderTask = '/user/sale/get-order-task-view-ajax';
         $(".qcContent").html("").load(getOrderTask, {
             orderID: orderID,
             taskID: taskID
         }, function (data) {
-            $(".qcSummary").html(data.subject);
+            $(".qcSummary").html(summary);
 
-            // viewer
-            // 先判断是否有图片, 再初始化viewer
-            if ($(".img-view > li").length > 0) {
-                // 新增/编辑页需要在第一次实例的时候初始化
-                var $imgView = $(".img-view");
-                $imgView.viewer({
-                    url: "data-original"
-                });
-                // 已存在的实例需要更新
-                // $imgView.viewer('update');
+            /*
+            $("[data-magnify=gallery]").magnify({
+                initMaximized: true
+            });
+            */
 
 
-            }
+
+            // 展开/收起按钮
+            $(".showImgAll").unbind('click').click(function () {
+                var dataType = $(this).attr("data-type");
+                if (dataType === 'down') {
+                    $(".imgLi").removeClass("hidden");
+                    $(this).html('收起 <i class="fas fa-chevron-up"></i>');
+                    $(this).attr("data-type", "up");
+                    // var target_top = $("#orderItemTop").offset().top;
+                    // $("html,body").animate({scrollTop: target_top}, 1000);
+                } else {
+                    $.each($(".imgLi"), function (i, val) {
+                        // if (i > 0) {
+                            $(val).addClass("hidden");
+                        // }
+                    });
+                    $(this).html('展开全部 <i class="fas fa-chevron-down"></i>');
+                    $(this).attr("data-type", "down");
+                }
+            });
         });
-
-
-        /*
-        $.ajax({
-            type: "POST",
-            url: track,
-            data: {
-                orderID: orderID,
-                taskID: taskID
-            },
-            dataType: "json",
-            success: function (data) {
-                $(".qcSummary").html(data.subject);
-
-
-
-                var script = document.createElement("script");
-                script.src = "http://api.map.baidu.com/api?v=2.0&ak=8P5e0fcLzr2U3MfSB282xuaK8TcHh46g&callback=initialize(4.9E-324, 4.9E-324)";
-                document.body.appendChild(script);
-            }
-        });
-        */
     });
 
-    function initialize(pointx, pinty) {
-        console.log("in");
-        // var map = new BMap.Map("mapContainerTest");         // 创建地图实例
-        // var point = new BMap.Point(pointx, pinty);      // 创建点坐标
-        // map.centerAndZoom(point, 15);                   // 初始化地图，设置中心点坐标和地图级别
-        // map.enableScrollWheelZoom(true);                // 开启鼠标滚轮缩放
-        // var marker = new BMap.Marker(point);            // 创建点
-        // map.addOverlay(marker);
-    }
+
 
     // *************************** PDF Sign View ********************************
     PDFJS.workerSrc = '/ky/pdf/pdf.worker.js';
