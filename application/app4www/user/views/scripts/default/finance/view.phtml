@@ -7,6 +7,7 @@
     <link href="/ky/css/finance/finance.css" rel="stylesheet">
     <link href="/ky/css/img-upload.css" rel="stylesheet">
     <link href="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.css" rel="stylesheet">
+    <link href="/ky/bootstrap-table-1.12.1-dist/extensions/group-by-v2/bootstrap-table-group-by.css" rel="stylesheet">
     <link href="/ky/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 </head>
 <body>
@@ -22,38 +23,38 @@
                         <div class="row span-margin-10">
                             <div class="col-md-5">
                                 <span><?php echo $this->translate('factoringViewNo'); ?></span>&nbsp;&nbsp;
-                                <b><span><?php echo $this->LoanView['factoringNo']; ?></span></b>
+                                <b><span><?php echo $this->factoring['factoringNo']; ?></span></b>
                             </div>
                             <div class="col-md-7">
                                 <span><?php echo $this->translate('factoringDebtor'); ?></span>&nbsp;&nbsp;
-                                <b><span><?php echo $this->LoanView['debtorCustomerName']; ?></span></b>
+                                <b><span><?php echo $this->factoring['debtorCustomerName']; ?></span></b>
                             </div>
                         </div>
                         <div class="row span-margin-10">
                             <div class="col-md-5">
-                                <span><?php echo $this->translate('factoringListOrderNo'); ?></span>&nbsp;&nbsp;
-                                <b><span><?php echo $this->LoanView['factoringItem']['orderNo']; ?></span></b>
+                                <!--<span><?php /*echo $this->translate('factoringListOrderNo'); */?></span>&nbsp;&nbsp;
+                                <b><span><?php /*echo $this->LoanView['factoringItem']['orderNo']; */?></span></b>-->
                             </div>
                             <div class="col-md-7">
                                 <span><?php echo $this->translate('factoringViewReceivableTotalAmount'); ?></span>&nbsp;&nbsp;
-                                <span><b><?php echo $this->LoanView['crnCode']; ?> <?php echo $this->LoanView['receivableTotalAmount'] != 0 ? number_format($this->LoanView['receivableTotalAmount'], 2) : '----'; ?></b></span>
+                                <span><b><?php echo $this->factoring['crnCode']; ?> <?php echo $this->factoring['receivableTotalAmount'] != 0 ? number_format($this->factoring['receivableTotalAmount'], 2) : '----'; ?></b></span>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-5">
                                 <span><?php echo $this->translate('factoring_view_mode'); ?></span>&nbsp;&nbsp;
-                                <b><span><?php echo $this->ShowDictionaryTo("FACTORING_MODE", $this->userLangCode, $this->dic_Setting['FACTORING_MODE'], $this->LoanView['factoringMode']); ?></span></b>
+                                <b><span><?php echo $this->ShowDictionaryTo("FACTORING_MODE", $this->userLangCode, $this->dic_Setting['FACTORING_MODE'], $this->factoring['factoringMode']); ?></span></b>
                             </div>
                             <div class="col-md-7">
                                 <span><?php echo $this->translate('factoringViewFinancingTotalAmount'); ?></span>&nbsp;&nbsp;
-                                <span><b><?php echo $this->LoanView['crnCode']; ?> <?php echo $this->LoanView['financingTotalAmount'] != 0 ? number_format($this->LoanView['financingTotalAmount'], 2) : '----'; ?></b> <?php echo $this->translate('factoringConversion'); ?> <b><?php echo $this->LoanView['financingCrnCode']; ?> <?php echo $this->LoanView['tgtFinancingTotalAmount'] != 0 ? number_format($this->LoanView['tgtFinancingTotalAmount'], 2) : '----'; ?></b></span>
+                                <span><b><?php echo $this->factoring['crnCode']; ?> <?php echo $this->factoring['financingTotalAmount'] != 0 ? number_format($this->factoring['financingTotalAmount'], 2) : '----'; ?></b> <?php echo $this->translate('factoringConversion'); ?> <b><?php echo $this->LoanView['financingCrnCode']; ?> <?php echo $this->LoanView['tgtFinancingTotalAmount'] != 0 ? number_format($this->LoanView['tgtFinancingTotalAmount'], 2) : '----'; ?></b></span>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-sm-12 col-md-5">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <div class="row span-margin">
                                     <div class="col-md-12">
                                         <p class="text-center"><?php echo $this->translate('factoringInterestPercent'); ?></p>
@@ -61,11 +62,17 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <p class="text-center span-font-size-30"><?php echo $this->LoanView['interestPercent'] * 100; ?> %</p>
+                                        <?php if ($this->factoring['minInterestPercent'] == $this->factoring['maxInterestPercent']): ?>
+                                            <p class="text-center span-font-size-28"><?php echo $this->factoring['minInterestPercent'] * 100; ?> %</p>
+                                        <?php else: ?>
+                                            <p class="text-center span-font-size-22" style="position: absolute; left: 18px; top: 4px;">
+                                                <?php echo $this->factoring['minInterestPercent'] * 100; ?> % ~ <?php echo $this->factoring['maxInterestPercent'] * 100; ?> %
+                                            </p>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="row span-margin">
                                     <div class="col-md-12">
                                         <p class="text-center"><?php echo $this->translate('factoringOverdueInterestPercent'); ?></p>
@@ -73,7 +80,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <p class="text-center span-font-size-30"><?php echo $this->LoanView['overdueInterestPercent'] * 100; ?> %</p>
+                                        <p class="text-center span-font-size-28"><?php echo $this->factoring['overdueInterestPercent'] * 100; ?> %</p>
                                     </div>
                                 </div>
                             </div>
@@ -85,7 +92,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <p class="text-center span-font-size-30"><?php echo $this->LoanView['graceInterestPercent'] * 100; ?> %</p>
+                                        <p class="text-center span-font-size-28"><?php echo $this->factoring['graceInterestPercent'] * 100; ?> %</p>
                                     </div>
                                 </div>
                             </div>
@@ -109,7 +116,7 @@
                     </div>
                     <div class="col-md-10">
                         <p class="form-control-static text-666">
-                            <?php echo $this->LoanView['companyName']; ?>
+                            <?php echo $this->factoring['companyName']; ?>
                         </p>
                     </div>
                 </div>
@@ -120,7 +127,7 @@
                     </div>
                     <div class="col-md-10">
                         <p class="form-control-static text-666">
-                            <?php echo date('Y-m-d', strtotime($this->LoanView['loanDate'])); ?>
+                            <?php echo date('Y-m-d', strtotime($this->factoring['loanDate'])); ?>
                         </p>
                     </div>
                 </div>
@@ -131,7 +138,7 @@
                     </div>
                     <div class="col-md-10">
                         <p class="form-control-static text-666">
-                            <?php echo date('Y-m-d', strtotime($this->LoanView['expiryDate'])); ?>
+                            <?php echo date('Y-m-d', strtotime($this->factoring['expiryDate'])); ?>
                         </p>
                     </div>
                 </div>
@@ -142,7 +149,7 @@
                     </div>
                     <div class="col-md-2">
                         <p class="form-control-static text-666">
-                            <?php echo $this->LoanView['financingCrnCode']; ?> <?php echo $this->LoanView['interest'] != 0 ? number_format($this->LoanView['interest'], 2) : '----'; ?>
+                            <?php echo $this->factoring['financingCrnCode']; ?> <?php echo $this->factoring['interest'] != 0 ? number_format($this->factoring['interest'], 2) : '----'; ?>
                         </p>
                     </div>
                     <div class="col-md-7">
@@ -159,8 +166,43 @@
                 <div class="row factoring-contract">
                     <div class="col-xs-12 text-primary">
                         <?php
-                        echo $this->ShowOrderContract4Factoring($this->contractList, $this->accountID, 'FTTA', $this->orders['client'], $this->hasIDCertificate);
+                        echo $this->ShowOrderContract4Factoring($this->contractList, $this->accountID);
                         ?>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <table data-toggle="table" data-show-columns="true" data-classes="table table-no-bordered">
+                            <thead>
+                            <tr>
+                                <th width="235"><?php echo $this->translate('factoringItemNo'); ?></th>
+                                <th width="164"><?php echo $this->translate('factoringOrderNo'); ?></th>
+                                <th class="text-right"><?php echo $this->translate('Finance_Receivable_amount'); ?></th>
+                                <th class="text-right"><?php echo $this->translate('factoringTgtFinancingAmount'); ?>/<?php echo $this->translate('factoringActualTgtFinancingAmount'); ?></th>
+                                <th class="text-right"><?php echo $this->translate('factoringInterest'); ?>/<?php echo $this->translate('factoringActualInterest'); ?></th>
+                                <th width="80"><?php echo $this->translate('factoringItemStatus'); ?></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php if (empty($this->factoring['factoringItemList'])):?>
+                                <tr>
+                                    <td colspan="5"><?php echo $this->translate('noData'); ?></td>
+                                </tr>
+                            <?php else:?>
+                            <?php foreach ($this->factoring['factoringItemList'] as $factoringItem):?>
+                            <tr>
+                                <td><?php echo $factoringItem['itemNo']; ?></td>
+                                <td><?php echo $factoringItem['orderNo']; ?></td>
+                                <td class="text-right"><?php echo $factoringItem['crnCode']; ?> <?php echo number_format($factoringItem['receivableAmount'], 2); ?></td>
+                                <td class="text-right"><?php echo $factoringItem['financingCrnCode']; ?> <?php echo number_format($factoringItem['tgtFinancingAmount'], 2); ?> / <?php echo number_format($factoringItem['actualTgtFinancingAmount'], 2); ?></td>
+                                <td class="text-right"><?php echo $factoringItem['financingCrnCode']; ?> <?php echo number_format($factoringItem['interest'], 2); ?> / <?php echo number_format($factoringItem['actualInterest'] + $factoringItem['graceInterest'] + $factoringItem['overdueInterest'], 2); ?></td>
+                                <td><?php echo $this->ShowDictionaryTo($this->dic_Setting["FACTORING_STATUS"], $this->userLangCode, $this->dic_Setting["FACTORING_STATUS"], $factoringItem['itemStatus']); ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                            <?php endif;?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -172,9 +214,10 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <table class="table table-striped">
+                        <table class="table table-striped" id="factoringServiceChargeTable" data-group-by="true" data-group-by-field="factoringLoanItemNo">
                             <thead>
                             <tr>
+                                <th data-field="factoringLoanItemNo" data-visible="false"><?php echo $this->translate('factoringItemNo'); ?></th>
                                 <th width="140"><?php echo $this->translate('factoringLoanNo'); ?></th>
                                 <th class="text-right"><?php echo $this->translate('factoringFee'); ?></th>
                                 <th><?php echo $this->translate('factoringLoanInfo'); ?></th>
@@ -183,25 +226,31 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <?php if (empty($this->serviceChargeList)):?>
+                            <?php foreach ($this->factoring['factoringItemList'] as $factoringItem):?>
+                                <?php if (empty($factoringItem['factoringLoanList'])): ?>
                                 <tr>
+                                    <td data-visible="false"><?php echo $factoringItem['itemNo']; ?></td>
                                     <td colspan="5"><?php echo $this->translate('noData'); ?></td>
                                 </tr>
-                            <?php else:?>
-                            <?php foreach ($this->serviceChargeList as $serviceCharge):?>
-                            <tr>
-                                <td style="vertical-align: middle; "><?php echo $serviceCharge['loanNo']; ?></td>
-                                <td class="text-right" style="vertical-align: middle; "><?php echo $serviceCharge['loanCrnCode']; ?> <?php echo number_format($serviceCharge['serviceCharge'], 2); ?></td>
-                                <td class="text-999" style="vertical-align: middle; "><?php echo number_format($serviceCharge['loanAmount'], 2); ?> x <?php echo $serviceCharge['serviceChargePercent'] * 100; ?> % = <?php echo number_format($serviceCharge['serviceCharge'], 2); ?>。发放融资款前，一次性收取。</td>
-                                <td style="vertical-align: middle; "><?php echo $this->ShowDictionaryTo("LOAN_STATUS", $this->userLangCode, $this->dic_Setting['LOAN_STATUS'], $serviceCharge['serviceChargeTradingStatus']); ?></td>
-                                <td style="vertical-align: middle; ">
-                                    <?php if ($serviceCharge['serviceChargeTradingStatus'] == '0'):?>
-                                        <a class="btn btn-warning btn-sm" href="/user/settle/payment?<?php echo base64_encode($serviceCharge['serviceChargeTradingID']);?>"><?php echo $this->translate('settle_payment');?></a>
-                                    <?php endif;?>
-                                </td>
-                            </tr>
+                                <?php else:?>
+                                    <?php foreach ($factoringItem['factoringLoanList'] as $serviceCharge):?>
+                                        <?php if (!empty($serviceCharge['serviceChargeTradingID']) && $serviceCharge['loanType'] == 'P'): ?>
+                                            <tr>
+                                                <td data-visible="false"><?php echo $factoringItem['itemNo']; ?></td>
+                                                <td style="vertical-align: middle; "><?php echo $serviceCharge['loanNo']; ?></td>
+                                                <td class="text-right" style="vertical-align: middle; "><?php echo $serviceCharge['loanCrnCode']; ?> <?php echo number_format($serviceCharge['serviceCharge'], 2); ?></td>
+                                                <td class="text-999" style="vertical-align: middle; "><?php echo number_format($serviceCharge['loanAmount'], 2); ?> x <?php echo $this->factoring['serviceChargePercent'] * 100; ?> % = <?php echo number_format($serviceCharge['serviceCharge'], 2); ?>。发放融资款前，一次性收取。</td>
+                                                <td style="vertical-align: middle; "><?php echo $this->ShowDictionaryTo("LOAN_STATUS", $this->userLangCode, $this->dic_Setting['LOAN_STATUS'], $serviceCharge['serviceChargeTradingStatus']); ?></td>
+                                                <td style="vertical-align: middle; ">
+                                                    <?php if ($serviceCharge['serviceChargeTradingStatus'] == '0'):?>
+                                                        <a class="btn btn-warning btn-sm" href="/user/settle/payment?<?php echo base64_encode($serviceCharge['serviceChargeTradingID']);?>"><?php echo $this->translate('settle_payment');?></a>
+                                                    <?php endif;?>
+                                                </td>
+                                            </tr>
+                                        <?php endif;?>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                             <?php endforeach; ?>
-                            <?php endif;?>
                             </tbody>
                         </table>
                     </div>
@@ -213,7 +262,7 @@
                     </div>
                     <div class="col-md-2">
                         <p class="form-control-static margin-left-25 text-666">
-                            <?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo number_format($this->serviceChargeTotalAmount, 2); ?>
+                            <?php echo $this->factoring['financingCrnCode']; ?> <?php echo number_format($this->serviceChargeTotalAmount, 2); ?>
                         </p>
                     </div>
                 </div>
@@ -226,9 +275,10 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <table class="table table-striped">
+                        <table class="table table-striped" id="factoringLoanTable" data-group-by="true" data-group-by-field="factoringLoanItemNo">
                             <thead>
                             <tr>
+                                <th data-field="factoringLoanItemNo" data-visible="false"><?php echo $this->translate('factoringItemNo'); ?></th>
                                 <th><?php echo $this->translate('factoringLoanNo'); ?></th>
                                 <th><?php echo $this->translate('factoringLoanDate'); ?></th>
                                 <th><?php echo $this->translate('crnCode'); ?></th>
@@ -244,45 +294,49 @@
                             </thead>
                             <tbody>
 
-                            <?php if (empty($this->LoanView['factoringItem']['factoringLoanList'])):?>
-                            <tr>
-                                <td colspan="11"><?php echo $this->translate('noData'); ?></td>
-                            </tr>
-                            <?php else:?>
-                            <?php foreach ($this->LoanView['factoringItem']['factoringLoanList'] as $factoringLoan):?>
-                            <tr>
-                                <td><?php echo $factoringLoan['loanNo']; ?></td>
-                                <td><?php echo date('Y-m-d', strtotime($factoringLoan['loanDate'])); ?></td>
-                                <td><?php echo $factoringLoan['loanCrnCode']; ?></td>
-                                <td class="text-right"><?php echo number_format($factoringLoan['loanAmount'], 2); ?></td>
-                                <td class="text-right"><?php echo $factoringLoan['totalGeneralInterest'] != 0 ? number_format($factoringLoan['totalGeneralInterest'], 2) : '----'; ?></td>
-                                <td class="text-right"><?php echo $factoringLoan['totalGraceInterest'] != 0 ? number_format($factoringLoan['totalGraceInterest'], 2) : '----'; ?></td>
-                                <td class="text-right"><?php echo $factoringLoan['totalOverdueInterest'] != 0 ? number_format($factoringLoan['totalOverdueInterest'], 2) : '----'; ?></td>
-                                <td class="text-right">
-                                    <?php echo $factoringLoan['totalInterest'] != 0 ? number_format($factoringLoan['totalInterest'], 2) : '----'; ?> <i class="layui-icon layui-icon-about" style="cursor: pointer;" data-toggle="modal" data-target="#interestModal" data-loan-id="<?php echo $factoringLoan['loanID']; ?>"></i>
-                                </td>
-                                <td class="text-right">
-                                    <?php echo number_format($factoringLoan['writeoffBalAmount'] + $factoringLoan['writeoffBalInterest'], 2); ?>
-                                </td>
-                                <td class="loanStatus_<?php echo $factoringLoan['loanID']; ?>">
-                                    <?php echo $this->ShowDictionaryTo("LOAN_STATUS", $this->userLangCode, $this->dic_Setting['LOAN_STATUS'], $factoringLoan['loanStatus']); ?>
-                                </td>
-                                <td class="loan_<?php echo $factoringLoan['loanID']; ?>">
-                                    <?php if ($factoringLoan['needLoanApplication'] == true): ?>
-                                        <?php if ($factoringLoan['loanStatus'] == '00'): ?>
-                                            <button class="btn btn-warning" data-toggle="modal" data-target="#applyContractModal" data-loan-amount="<?php echo $factoringLoan['loanAmount']; ?>" data-loan-id="<?php echo $factoringLoan['loanID']; ?>" data-crn-code="<?php echo $factoringLoan['loanCrnCode']; ?>"><?php echo $this->translate('factoringApplyLoan'); ?></button>
-                                        <?php elseif ($factoringLoan['loanStatus'] == '05'): ?>
-                                            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#applyContractModal" data-loan-amount="<?php echo $factoringLoan['loanAmount']; ?>" data-loan-id="<?php echo $factoringLoan['loanID']; ?>" data-crn-code="<?php echo $factoringLoan['loanCrnCode']; ?>"><?php echo $this->translate('factoringReApplyLoan'); ?></button>
-                                        <?php elseif ($factoringLoan['loanStatus'] == '04'): ?>
-                                            <?php echo $this->ShowSimpleOrderContract($factoringLoan['loanApplyContract'], $this->accountID, $factoringLoan['loanStatus']); ?>
-                                        <?php else: ?>
-                                            <?php echo $this->ShowSimpleOrderContract($factoringLoan['loanApplyContract'], $this->accountID, $factoringLoan['loanStatus']); ?>
-                                        <?php endif; ?>
-                                    <?php endif; ?>
-                                </td>
-                            </tr>
+                            <?php foreach ($this->factoring['factoringItemList'] as $factoringItem):?>
+                                <?php if (empty($factoringItem['factoringLoanList'])): ?>
+                                <tr>
+                                    <td data-visible="false"><?php echo $factoringItem['itemNo']; ?></td>
+                                    <td colspan="11"><?php echo $this->translate('noData'); ?></td>
+                                </tr>
+                                <?php else:?>
+                                    <?php foreach ($factoringItem['factoringLoanList'] as $factoringLoan):?>
+                                    <tr>
+                                        <td data-visible="false"><?php echo $factoringItem['itemNo']; ?></td>
+                                        <td><?php echo $factoringLoan['loanNo']; ?></td>
+                                        <td><?php echo date('Y-m-d', strtotime($factoringLoan['loanDate'])); ?></td>
+                                        <td><?php echo $factoringLoan['loanCrnCode']; ?></td>
+                                        <td class="text-right"><?php echo number_format($factoringLoan['loanAmount'], 2); ?></td>
+                                        <td class="text-right"><?php echo $factoringLoan['totalGeneralInterest'] != 0 ? number_format($factoringLoan['totalGeneralInterest'], 2) : '----'; ?></td>
+                                        <td class="text-right"><?php echo $factoringLoan['totalGraceInterest'] != 0 ? number_format($factoringLoan['totalGraceInterest'], 2) : '----'; ?></td>
+                                        <td class="text-right"><?php echo $factoringLoan['totalOverdueInterest'] != 0 ? number_format($factoringLoan['totalOverdueInterest'], 2) : '----'; ?></td>
+                                        <td class="text-right">
+                                            <?php echo $factoringLoan['totalInterest'] != 0 ? number_format($factoringLoan['totalInterest'], 2) : '----'; ?> <i class="layui-icon layui-icon-about" style="cursor: pointer;" data-toggle="modal" data-target="#interestModal" data-loan-id="<?php echo $factoringLoan['loanID']; ?>"></i>
+                                        </td>
+                                        <td class="text-right">
+                                            <?php echo number_format($factoringLoan['writeoffBalAmount'] + $factoringLoan['writeoffBalInterest'], 2); ?>
+                                        </td>
+                                        <td class="loanStatus_<?php echo $factoringLoan['loanID']; ?>">
+                                            <?php echo $this->ShowDictionaryTo("LOAN_STATUS", $this->userLangCode, $this->dic_Setting['LOAN_STATUS'], $factoringLoan['loanStatus']); ?>
+                                        </td>
+                                        <td class="loan_<?php echo $factoringLoan['loanID']; ?>">
+                                            <?php if ($factoringLoan['needLoanApplication'] == true): ?>
+                                                <?php if ($factoringLoan['loanStatus'] == '00'): ?>
+                                                    <button class="btn btn-warning" data-toggle="modal" data-target="#applyContractModal" data-loan-amount="<?php echo $factoringLoan['loanAmount']; ?>" data-loan-id="<?php echo $factoringLoan['loanID']; ?>" data-crn-code="<?php echo $factoringLoan['loanCrnCode']; ?>"><?php echo $this->translate('factoringApplyLoan'); ?></button>
+                                                <?php elseif ($factoringLoan['loanStatus'] == '05'): ?>
+                                                    <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#applyContractModal" data-loan-amount="<?php echo $factoringLoan['loanAmount']; ?>" data-loan-id="<?php echo $factoringLoan['loanID']; ?>" data-crn-code="<?php echo $factoringLoan['loanCrnCode']; ?>"><?php echo $this->translate('factoringReApplyLoan'); ?></button>
+                                                <?php elseif ($factoringLoan['loanStatus'] == '04'): ?>
+                                                    <?php echo $this->ShowSimpleOrderContract($factoringLoan['loanApplyContract'], $this->accountID, $factoringLoan['loanStatus']); ?>
+                                                <?php else: ?>
+                                                    <?php echo $this->ShowSimpleOrderContract($factoringLoan['loanApplyContract'], $this->accountID, $factoringLoan['loanStatus']); ?>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                    <?php endforeach;?>
+                                <?php endif; ?>
                             <?php endforeach;?>
-                            <?php endif;?>
                             </tbody>
                         </table>
                     </div>
@@ -291,15 +345,15 @@
                 <div class="row">
                     <div class="col-md-3">
                         <span class="margin-left-5 text-999"><?php echo $this->translate('factoringActualInterest'); ?></span>
-                        <span class="margin-left-25 text-666"><?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo number_format($this->LoanView['factoringItem']['actualInterest'], 2); ?></span>
+                        <span class="margin-left-25 text-666"><?php echo $this->factoring['financingCrnCode']; ?> <?php echo number_format($this->factoring['actualInterest'], 2); ?></span>
                     </div>
                     <div class="col-md-3">
                         <span class="margin-left-5 text-999"><?php echo $this->translate('factoringGraceInterest'); ?></span>
-                        <span class="margin-left-25 text-666"><?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo number_format($this->LoanView['factoringItem']['graceInterest'], 2); ?></span>
+                        <span class="margin-left-25 text-666"><?php echo $this->factoring['financingCrnCode']; ?> <?php echo number_format($this->factoring['graceInterest'], 2); ?></span>
                     </div>
                     <div class="col-md-3">
                         <span class="margin-left-5 text-999"><?php echo $this->translate('factoringOverdueInterest'); ?></span>
-                        <span class="margin-left-25 text-666"><?php echo $this->LoanView['factoringItem']['financingCrnCode']; ?> <?php echo number_format($this->LoanView['factoringItem']['overdueInterest'], 2); ?></span>
+                        <span class="margin-left-25 text-666"><?php echo $this->factoring['financingCrnCode']; ?> <?php echo number_format($this->factoring['overdueInterest'], 2); ?></span>
                     </div>
                 </div>
 
@@ -311,9 +365,10 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <table class="table table-striped">
+                        <table class="table table-striped" id="factoringRepaymentTable" data-group-by="true" data-group-by-field="factoringLoanItemNo">
                             <thead>
                             <tr>
+                                <th data-field="factoringLoanItemNo" data-visible="false"><?php echo $this->translate('factoringItemNo'); ?></th>
                                 <th><?php echo $this->translate('factoringRepaymentNo'); ?></th>
                                 <th><?php echo $this->translate('factoringRepaymentDate'); ?></th>
                                 <th class="text-right"><?php echo $this->translate('factoringRepaymentTotalAmount'); ?></th>
@@ -326,24 +381,28 @@
                             </thead>
                             <tbody>
 
-                            <?php if (empty($this->LoanView['factoringItem']['factoringRepaymentList'])):?>
-                                <tr>
-                                    <td colspan="11"><?php echo $this->translate('noData'); ?></td>
-                                </tr>
-                            <?php else:?>
-                            <?php foreach ($this->LoanView['factoringItem']['factoringRepaymentList'] as $factoringRepayment):?>
-                                <tr>
-                                    <td><?php echo $factoringRepayment['repaymentNo']; ?></td>
-                                    <td><?php echo date('Y-m-d', strtotime($factoringRepayment['repaymentDate'])); ?></td>
-                                    <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo number_format($factoringRepayment['totalAmount'], 2); ?></td>
-                                    <td class="text-right"><?php echo $factoringRepayment['exchangeRate']; ?></td>
-                                    <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo number_format($factoringRepayment['repaymentTotalAmount'], 2); ?></td>
-                                    <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo number_format($factoringRepayment['writeoffInterestAmount'], 2); ?></td>
-                                    <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo number_format($factoringRepayment['writeoffPrincipalAmount'], 2); ?></td>
-                                    <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo number_format($factoringRepayment['writeoffFinalAmount'], 2); ?></td>
-                                </tr>
+                            <?php foreach ($this->factoring['factoringItemList'] as $factoringItem):?>
+                                <?php if (empty($factoringItem['factoringRepaymentList'])): ?>
+                                    <tr>
+                                        <td data-visible="false"><?php echo $factoringItem['itemNo']; ?></td>
+                                        <td colspan="8"><?php echo $this->translate('noData'); ?></td>
+                                    </tr>
+                                <?php else:?>
+                                    <?php foreach ($factoringItem['factoringRepaymentList'] as $factoringRepayment):?>
+                                        <tr>
+                                            <td data-visible="false"><?php echo $factoringItem['itemNo']; ?></td>
+                                            <td><?php echo $factoringRepayment['repaymentNo']; ?></td>
+                                            <td><?php echo date('Y-m-d', strtotime($factoringRepayment['repaymentDate'])); ?></td>
+                                            <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo number_format($factoringRepayment['totalAmount'], 2); ?></td>
+                                            <td class="text-right"><?php echo $factoringRepayment['exchangeRate']; ?></td>
+                                            <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo number_format($factoringRepayment['repaymentTotalAmount'], 2); ?></td>
+                                            <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo number_format($factoringRepayment['writeoffInterestAmount'], 2); ?></td>
+                                            <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo number_format($factoringRepayment['writeoffPrincipalAmount'], 2); ?></td>
+                                            <td class="text-right"><?php echo $factoringRepayment['crnCode']; ?> <?php echo number_format($factoringRepayment['writeoffFinalAmount'], 2); ?></td>
+                                        </tr>
+                                    <?php endforeach;?>
+                                <?php endif;?>
                             <?php endforeach;?>
-                            <?php endif;?>
                             </tbody>
                         </table>
                     </div>
@@ -497,37 +556,69 @@
     <div class="et-auth-content">
         <div style="margin-top: 20px;"></div>
 
-        <div class="layui-form-item" style="margin-left: 28px;">
-            <div style="text-align: left;">
-                <label class="layui-form-label" style="width: 180px;text-align: left;"><?php echo $this->translate('signInfo'); ?></label>
+        <div class="signContent">
+            <div class="layui-form-item" style="margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label" style="width: 180px;text-align: left;"><?php echo $this->translate('signInfo'); ?></label>
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label" style="width: 180px;text-align: left;"><b><?php echo $this->translate('signAuthType'); ?></b></label>
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="margin-left: 28px;">
+                <div class="layui-form-label" style="width: 420px;">
+                    <input type="text" id="signMobileInput" name="signMobileInput" lay-verify="signMobileInput" autocomplete="off" class="layui-input" readonly="readonly">
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="margin-left: 28px;">
+                <div class="layui-form-label" style="width: 250px;">
+                    <input type="text" id="signAuthCode" name="signAuthCode" lay-verify="signAuthCode" autocomplete="off" placeholder="<?php echo $this->translate('signInputAuthCode'); ?>" class="layui-input">
+                </div>
+
+                <div class="layui-form-label" style="width: 140px;">
+                    <button class="layui-btn layui-btn-fluid" id="signSendAuthCodeBtn"><?php echo $this->translate('signSendAuthCode'); ?></button>
+                </div>
+            </div>
+
+            <div style="height: 12px"></div>
+            <div class="et-auth-row">
+                <button class="layui-btn layui-btn-fluid" id="singConfirmBtn" style="width: 85%;"><?php echo $this->translate('confirmed'); ?></button>
             </div>
         </div>
 
-        <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
-            <div style="text-align: left;">
-                <label class="layui-form-label" style="width: 180px;text-align: left;"><b><?php echo $this->translate('signAuthType'); ?></b></label>
+        <div class="jumpInfoContent hidden">
+            <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label text-danger" style="width: 320px;text-align: left;"><i class="fas fa-exclamation-triangle"></i> <?php echo $this->translate('企业实名认证未完成前不可签署合同。'); ?></label>
+                </div>
+            </div>
+            <div class="layui-form-item" style="margin-bottom: -5px; margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label" style="width: 280px;text-align: left;">
+                        <a href="/user/company"><u><strong><?php echo $this->translate('点击此处'); ?></strong></u></a> <?php echo $this->translate('进行实名认证。'); ?>
+                    </label>
+                </div>
             </div>
         </div>
 
-        <div class="layui-form-item" style="margin-left: 28px;">
-            <div class="layui-form-label" style="width: 420px;">
-                <input type="text" id="signMobileInput" name="signMobileInput" lay-verify="signMobileInput" autocomplete="off" class="layui-input" readonly="readonly">
+        <div class="jumpPersonInfoContent hidden">
+            <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label text-danger" style="width: 320px;text-align: left;"><i class="fas fa-exclamation-triangle"></i> <?php echo $this->translate('个人实名认证未完成前不可签署合同。'); ?></label>
+                </div>
             </div>
-        </div>
-
-        <div class="layui-form-item" style="margin-left: 28px;">
-            <div class="layui-form-label" style="width: 250px;">
-                <input type="text" id="signAuthCode" name="signAuthCode" lay-verify="signAuthCode" autocomplete="off" placeholder="<?php echo $this->translate('signInputAuthCode'); ?>" class="layui-input">
+            <div class="layui-form-item" style="margin-bottom: -5px; margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label" style="width: 280px;text-align: left;">
+                        <a href="/user/index/profile"><u><strong><?php echo $this->translate('点击此处'); ?></strong></u></a> <?php echo $this->translate('进行实名认证。'); ?>
+                    </label>
+                </div>
             </div>
-
-            <div class="layui-form-label" style="width: 140px;">
-                <button class="layui-btn layui-btn-fluid" id="signSendAuthCodeBtn"><?php echo $this->translate('signSendAuthCode'); ?></button>
-            </div>
-        </div>
-
-        <div style="height: 12px"></div>
-        <div class="et-auth-row">
-            <button class="layui-btn layui-btn-fluid" id="singConfirmBtn" style="width: 85%;"><?php echo $this->translate('confirmed'); ?></button>
         </div>
     </div>
 </div>
@@ -542,6 +633,7 @@
 
 <script type="text/javascript" src="/ky/upload/img.js"></script>
 <script src="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.js"></script>
+<script src="/ky/bootstrap-table-1.12.1-dist/extensions/group-by-v2/bootstrap-table-group-by.min.js"></script>
 <script src="/ky/bootstrap-table-1.12.1-dist/locale/bootstrap-table-zh-CN.min.js"></script>
 <script src="/ky/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.min.js"></script>
 <script src="/ky/bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
@@ -596,6 +688,21 @@
             daysOfWeekDisabled: "0,6",
             daysOfWeekHighlighted: "0,6",
             autoclose: true
+        });
+
+        // bootstrapTable 初始化服务费用表格
+        $("#factoringServiceChargeTable").bootstrapTable({
+            classes: 'table table-no-bordered'
+        });
+
+        // bootstrapTable 初始化放款情况表格
+        $("#factoringLoanTable").bootstrapTable({
+            classes: 'table table-no-bordered'
+        });
+
+        // bootstrapTable 初始化还款情况表格
+        $("#factoringRepaymentTable").bootstrapTable({
+            classes: 'table table-no-bordered'
         });
 	});
 
@@ -965,13 +1072,28 @@
             }
         });
 
+        // 企业实名认证
+        var hasIDCertificate = '<?php echo $this->hasIDCertificate;?>',
+            layerHeight = '420px';
+        if (hasIDCertificate === '1') {
+            $(".signContent").removeClass("hidden");
+            $(".jumpInfoContent").addClass("hidden");
+            $(".jumpPersonInfoContent").addClass("hidden");
+            layerHeight = '420px';
+        } else {
+            $(".signContent").addClass("hidden");
+            $(".jumpInfoContent").removeClass("hidden");
+            $(".jumpPersonInfoContent").addClass("hidden");
+            layerHeight = '220px';
+        }
+
         var signTitle = "<?php echo $this->translate('signTitle');?>";
         layer.open({
             type: 1,
             title: signTitle,
             shadeClose: true,
             shade: 0.2,
-            area: ['500px', '420px'],
+            area: ['500px', layerHeight],
             content: $('#doSignPDFLayDiv')
         });
     });
@@ -991,13 +1113,28 @@
             }
         });
 
+        // 个人实名认证
+        var contactHasIDCertificate = '<?php echo $this->contactHasIDCertificate;?>',
+            layerHeight = '420px';
+        if (contactHasIDCertificate === '1') {
+            $(".signContent").removeClass("hidden");
+            $(".jumpInfoContent").addClass("hidden");
+            $(".jumpPersonInfoContent").addClass("hidden");
+            layerHeight = '420px';
+        } else {
+            $(".signContent").addClass("hidden");
+            $(".jumpInfoContent").addClass("hidden");
+            $(".jumpPersonInfoContent").removeClass("hidden");
+            layerHeight = '220px';
+        }
+
         var signTitle = "<?php echo $this->translate('signTitle');?>";
         layer.open({
             type: 1,
             title: signTitle,
             shadeClose: true,
             shade: 0.2,
-            area: ['500px', '420px'],
+            area: ['500px', layerHeight],
             content: $('#doSignPDFLayDiv')
         });
         $("#signSendAuthCodeBtn").attr("personSend", "true");

@@ -8,7 +8,12 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
 		//$bizType 业务类型
 		//$attachType  附件类型
 		//$type  是否临时附件 1 正式  0临时
+
 		$str = "";
+
+		if (empty($type)) {
+            $type = 0;
+        }
 
         $indata = "";
         $indata .= '<input type="hidden" id="bizType" value="' . $bizType . '" />';
@@ -53,6 +58,7 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
                 if ($ext == "PPTX") {
                     $ext = "ppt";
                 }
+
                 // if ($type != '1') {
                 //     $downloadURL = '/doc/temporary.action';
                 // } else {

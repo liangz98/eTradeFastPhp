@@ -82,8 +82,14 @@
                                     <div class="col-xs-2 news-title">
                                         <p class="text-right"><?php echo $this->translate('stateING');?></p>
                                     </div>
-                                    <div class="col-xs-8">
+                                    <div class="col-xs-4">
                                         <p><?php echo $this->ShowDictionaryTo($this->dic_Setting['ORDER_STATUS'], $this->userLangCode, $this->dic_Setting['ORDER_STATUS'], $this->orders["orderStatus"]); ?></p>
+                                    </div>
+                                    <div class="col-xs-2 news-title"><?php echo $this->translate('operatING');?></div>
+                                    <div class="col-xs-4">
+                                        <?php if ($this->orders["allowBuyerConfirm"] == 1): ?>
+                                            <button type="button" class="btn btn-warning" id="buyerConfirmBtn" data-order-id="<?php echo $this->orders["orderID"];?>"><?php echo $this->translate('confirmed'); ?></button>
+                                        <?php endif;?>
                                     </div>
                                 </div>
                             </div>
@@ -118,7 +124,7 @@
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <?php
-                                        echo $this->ShowOrderContract($this->contractList, $this->accountID, 'ODTA', $this->orders['client'], $this->hasIDCertificate);
+                                        echo $this->ShowOrderContract($this->contractList, $this->accountID);
                                         ?>
                                     </div>
                                 </div>
@@ -526,13 +532,13 @@
                             </div>
 
                             <div role="tabpanel" class="tab-pane row" id="logistics">
-                                <div class="col-md-12">
+                                <div class="col-md-12" style="min-height: 250px;">
                                     <p>物流</p>
                                 </div>
                             </div>
 
                             <div role="tabpanel" class="tab-pane row" id="log">
-                                <div class="col-md-12 trackViewBtn">
+                                <div class="col-md-12 trackViewBtn" style="min-height: 250px;">
                                     <button type="button" class="btn btn-warning btn-sm trackTimeBtn" data-order-id="<?php echo $this->orders['orderID'] ?>" data-view="date"><?php echo $this->translate('timeCLASS'); ?></button>
 
                                     <button type="button" class="btn btn-sm trackEventBtn" data-order-id="<?php echo $this->orders['orderID'] ?>" data-view="event"><?php echo $this->translate('eventCLASS'); ?></button>
@@ -542,7 +548,7 @@
                             </div>
 
                             <div role="tabpanel" class="tab-pane row" id="profile">
-                                <div class="col-md-12">
+                                <div class="col-md-12" style="min-height: 250px;">
                                     <?php echo $this->ShowWebuploader($this->orders['attachmentList'], $this->biz_Setting['ORDER'], $this->attach_Setting['ODDG'], "1", $this->orders['orderID']); ?>
                                 </div>
                             </div>
@@ -623,37 +629,69 @@
     <div class="et-auth-content">
         <div style="margin-top: 20px;"></div>
 
-        <div class="layui-form-item" style="margin-left: 28px;">
-            <div style="text-align: left;">
-                <label class="layui-form-label" style="width: 180px;text-align: left;"><?php echo $this->translate('signInfo'); ?></label>
+        <div class="signContent">
+            <div class="layui-form-item" style="margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label" style="width: 180px;text-align: left;"><?php echo $this->translate('signInfo'); ?></label>
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label" style="width: 180px;text-align: left;"><b><?php echo $this->translate('signAuthType'); ?></b></label>
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="margin-left: 28px;">
+                <div class="layui-form-label" style="width: 420px;">
+                    <input type="text" id="signMobileInput" name="signMobileInput" lay-verify="signMobileInput" autocomplete="off" class="layui-input" readonly="readonly">
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="margin-left: 28px;">
+                <div class="layui-form-label" style="width: 250px;">
+                    <input type="text" id="signAuthCode" name="signAuthCode" lay-verify="signAuthCode" autocomplete="off" placeholder="<?php echo $this->translate('signInputAuthCode'); ?>" class="layui-input">
+                </div>
+
+                <div class="layui-form-label" style="width: 140px;">
+                    <button class="layui-btn layui-btn-fluid" id="signSendAuthCodeBtn"><?php echo $this->translate('signSendAuthCode'); ?></button>
+                </div>
+            </div>
+
+            <div style="height: 12px"></div>
+            <div class="et-auth-row">
+                <button class="layui-btn layui-btn-fluid" id="singConfirmBtn" style="width: 85%;"><?php echo $this->translate('confirmed'); ?></button>
             </div>
         </div>
 
-        <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
-            <div style="text-align: left;">
-                <label class="layui-form-label" style="width: 180px;text-align: left;"><b><?php echo $this->translate('signAuthType'); ?></b></label>
+        <div class="jumpInfoContent hidden">
+            <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label text-danger" style="width: 320px;text-align: left;"><i class="fas fa-exclamation-triangle"></i> <?php echo $this->translate('企业实名认证未完成前不可签署合同。'); ?></label>
+                </div>
+            </div>
+            <div class="layui-form-item" style="margin-bottom: -5px; margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label" style="width: 280px;text-align: left;">
+                        <a href="/user/company"><u><strong><?php echo $this->translate('点击此处'); ?></strong></u></a> <?php echo $this->translate('进行实名认证。'); ?>
+                    </label>
+                </div>
             </div>
         </div>
 
-        <div class="layui-form-item" style="margin-left: 28px;">
-            <div class="layui-form-label" style="width: 420px;">
-                <input type="text" id="signMobileInput" name="signMobileInput" lay-verify="signMobileInput" autocomplete="off" class="layui-input" readonly="readonly">
+        <div class="jumpPersonInfoContent hidden">
+            <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label text-danger" style="width: 320px;text-align: left;"><i class="fas fa-exclamation-triangle"></i> <?php echo $this->translate('个人实名认证未完成前不可签署合同。'); ?></label>
+                </div>
             </div>
-        </div>
-
-        <div class="layui-form-item" style="margin-left: 28px;">
-            <div class="layui-form-label" style="width: 250px;">
-                <input type="text" id="signAuthCode" name="signAuthCode" lay-verify="signAuthCode" autocomplete="off" placeholder="<?php echo $this->translate('signInputAuthCode'); ?>" class="layui-input">
+            <div class="layui-form-item" style="margin-bottom: -5px; margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label" style="width: 280px;text-align: left;">
+                        <a href="/user/index/profile"><u><strong><?php echo $this->translate('点击此处'); ?></strong></u></a> <?php echo $this->translate('进行实名认证。'); ?>
+                    </label>
+                </div>
             </div>
-
-            <div class="layui-form-label" style="width: 140px;">
-                <button class="layui-btn layui-btn-fluid" id="signSendAuthCodeBtn"><?php echo $this->translate('signSendAuthCode'); ?></button>
-            </div>
-        </div>
-
-        <div style="height: 12px"></div>
-        <div class="et-auth-row">
-            <button class="layui-btn layui-btn-fluid" id="singConfirmBtn" style="width: 85%;"><?php echo $this->translate('confirmed'); ?></button>
         </div>
     </div>
 </div>
@@ -707,7 +745,7 @@
                     <div class="col-sm-12">
                         <h4 style="color: #56859D; font-weight: bold;"><?php echo $this->translate('QUALITY_AGREE_FORMAL').$this->translate('upload'); ?></h4>
                         <?php
-                        echo $this->ShowWebuploader(null, $this->biz_Setting['ORDER'], $this->attach_Setting['DLQF'], "0", null);
+                        echo $this->ShowWebuploader(null, $this->biz_Setting['ORDER'], 'DLQF', "0", null);
                         ?>
                     </div>
                 </div>
@@ -715,7 +753,7 @@
                     <div class="col-sm-12">
                         <h4 style="color: #56859D; font-weight: bold;"><?php echo $this->translate('EXAMINE_GOODS').$this->translate('upload'); ?></h4>
                         <?php
-                        echo $this->ShowWebuploader(null, $this->biz_Setting['ORDER'], $this->attach_Setting['DLEG'], "0", null);
+                        echo $this->ShowWebuploader(null, $this->biz_Setting['ORDER'], 'DLEG', "0", null);
                         ?>
                     </div>
 
@@ -745,7 +783,7 @@
                     <div class="col-sm-12">
                         <h4 style="color: #56859D; font-weight: bold;"><?php echo $this->translate('RECEIPT_CONFIRMATION_FORMAL').$this->translate('upload'); ?></h4>
                         <?php
-                        echo $this->ShowWebuploader(null, $this->biz_Setting['ORDER'], $this->attach_Setting['DLCF'], "0", null);
+                        echo $this->ShowWebuploader(null, $this->biz_Setting['ORDER'], 'DLCF', "0", null);
                         ?>
                     </div>
                 </div>
@@ -753,7 +791,7 @@
                     <div class="col-sm-12">
                         <h4 style="color: #56859D; font-weight: bold;"><?php echo $this->translate('RECEIPT_GOODS').$this->translate('upload'); ?></h4>
                         <?php
-                        echo $this->ShowWebuploader(null, $this->biz_Setting['ORDER'], $this->attach_Setting['DLRG'], "0", null);
+                        echo $this->ShowWebuploader(null, $this->biz_Setting['ORDER'], 'DLRG', "0", null);
                         ?>
                     </div>
 
@@ -762,6 +800,24 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="deliveryReceiptGoodsBtn"><?php echo $this->translate('reGOODS'); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal QC明细 -->
+<div class="modal fade" id="qcDetailModal" tabindex="-1" role="dialog" aria-labelledby="qcDetailLabel">
+    <div class="modal-dialog modal-lg" role="document" style="width: 1080px !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title qcSummary"></h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="qcContent">
+                    info Content
+                </div>
             </div>
         </div>
     </div>
@@ -784,6 +840,8 @@
 <script type="text/javascript" src="/ky/pdf/pdf.worker.js"></script>
 <!-- viewer -->
 <script type="text/javascript" src="/ky/viewer-1.0.0-dist/viewer.min.js"></script>
+<!-- BigPicture -->
+<script type="text/javascript" src="/ky/bigpicture-1.4.0-dist/BigPicture.min.js"></script>
 
 <script type="text/javascript">
     var dataDict = {};
@@ -814,7 +872,7 @@
             $calculateContent = $(".calculateContent");
 
         var dataDictQuery = '/user/common/dict-ajax';
-        var dictCode = ["BIZ_TYPE", "ACTION_LOG_EVENT_TYPE"];
+        var dictCode = ["BIZ_TYPE", "ACTION_LOG_EVENT_TYPE", "TASK_STATUS"];
         $.ajax({
             type: "POST",
             url: dataDictQuery,
@@ -849,6 +907,27 @@
         });
 
         $calculateContent.load('/user/sale/trading', {'orderID': '<?php echo $this->orders['orderID'] ?>'});
+
+        /* 确认订单 */
+        $("#buyerConfirmBtn").click(function () {
+            var track = '/user/pur/confirm';
+            var orderID = $(this).attr("data-order-id");
+            $.ajax({
+                type: "POST",
+                url: track,
+                data: {
+                    orderID: orderID
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data === 1) {
+                        document.location.reload();
+                    } else {
+                        alert(data + 'failed, please try again!');
+                    }
+                }
+            });
+        });
 
         // 展开/收起按钮
         $(".showAll").click(function () {
@@ -891,7 +970,7 @@
                         var data = $.data(dataDict, 'dataDict'),
                             result = '';
                         $.each(data, function (key, item) {
-                            if (key === 'ACTION_LOG_EVENT_TYPE  ') {
+                            if (key === 'ACTION_LOG_EVENT_TYPE') {
                                 $.each(item, function (i, dict) {
                                     if (dict.code === index) {
                                         result = dict.name;
@@ -920,19 +999,94 @@
                             }
                         });
 
-                        trackContent += '<div class="col-sm-1"><b>' + result + '</b></div>'
-                            + '<div class="col-sm-8">' + track.summary + '</div>'
-                            + '<div class="col-sm-3">' + new Date(track.operateTime).format("yyyy-MM-dd hh:mm:ss") + '</div>';
+                        if (track.eventType === 'QC') {
+                            var taskStatusResult = '';
+                            $.each(data, function (key, item) {
+                                if (key === 'TASK_STATUS') {
+                                    $.each(item, function (i, dict) {
+                                        if (dict.code === track.bizObj.taskStatus) {
+                                            taskStatusResult = dict.name;
+                                        }
+                                    });
+                                }
+                            });
+
+                            trackContent += '<div class="row" data-toggle="modal" data-target="#qcDetailModal" data-order-id="' + track.projectID + '" data-task-id="' + track.bizObj.taskID + '" data-summary="' + track.summary + '" style="cursor: pointer;">';
+                            trackContent += '<div class="col-sm-2"><b>' + result + '</b></div>'
+                                + '<div class="col-sm-7">'
+                                + track.summary
+                                + ' <i class="layui-icon layui-icon-about text-primary"></i>'
+                                + '<br>'
+                                + '<span style="color: #ccc;">'
+                                + '责任人：' + track.operator + '&nbsp;&nbsp;&nbsp;&nbsp;状态：' + taskStatusResult
+                                + '</span>'
+                                + '<br>'
+                                + '<div class="layui-progress">'
+                                + ' <div class="layui-progress-bar layui-bg-green" lay-percent="' + track.bizObj.progress + '%"></div>'
+                                + '</div>'
+                                + '</div>'
+                                + '<div class="col-sm-3">' + new Date(track.operateTime).format("yyyy-MM-dd hh:mm:ss") + '</div>';
+
+                            trackContent += '</div>';
+                        } else {
+                            trackContent += '<div class="row">';
+                            trackContent += '<div class="col-sm-2"><b>' + result + '</b></div>'
+                                + '<div class="col-sm-7">'
+                                + track.summary
+                                + '<br>'
+                                + '<span style="color: #ccc;">'
+                                + '责任人：' + track.operator
+                                + '</span>'
+                                + '</div>'
+                                + '<div class="col-sm-3">' + new Date(track.operateTime).format("yyyy-MM-dd hh:mm:ss") + '</div>';
+                            trackContent += '</div>';
+                        }
                     });
-                    trackContent += '<br>'
-                        + '</div>'
+                    trackContent += '</div>'
                         + '</li>';
                 });
 
                 $trackTimeLine.html(trackContent);
+
+                // 初始化layui进度条
+                layui.use('element', function(){
+                    var element = layui.element;
+                    element.render();
+                });
             }
         });
     }
+
+    $("#qcDetailModal").on('show.bs.modal', function (e) {
+        var triggered = $(e.relatedTarget),
+            taskID = triggered.data("task-id"),
+            orderID = triggered.data("order-id"),
+            summary = triggered.data("summary");
+
+        var getOrderTask = '/user/sale/get-order-task-view-ajax';
+        $(".qcContent").html("").load(getOrderTask, {
+            orderID: orderID,
+            taskID: taskID
+        }, function (data) {
+            $(".qcSummary").html(summary);
+
+            // 展开/收起按钮
+            $(".showImgAll").unbind('click').click(function () {
+                var dataType = $(this).attr("data-type");
+                if (dataType === 'down') {
+                    $(".imgLi").removeClass("hidden");
+                    $(this).html('收起 <i class="fas fa-chevron-up"></i>');
+                    $(this).attr("data-type", "up");
+                } else {
+                    $.each($(".imgLi"), function (i, val) {
+                        $(val).addClass("hidden");
+                    });
+                    $(this).html('展开全部 <i class="fas fa-chevron-down"></i>');
+                    $(this).attr("data-type", "down");
+                }
+            });
+        });
+    });
 
     // *************************** PDF Sign View ********************************
     PDFJS.workerSrc = '/ky/pdf/pdf.worker.js';
@@ -1063,13 +1217,28 @@
             }
         });
 
+        // 企业实名认证
+        var hasIDCertificate = '<?php echo $this->hasIDCertificate;?>',
+            layerHeight = '420px';
+        if (hasIDCertificate === '1') {
+            $(".signContent").removeClass("hidden");
+            $(".jumpInfoContent").addClass("hidden");
+            $(".jumpPersonInfoContent").addClass("hidden");
+            layerHeight = '420px';
+        } else {
+            $(".signContent").addClass("hidden");
+            $(".jumpInfoContent").removeClass("hidden");
+            $(".jumpPersonInfoContent").addClass("hidden");
+            layerHeight = '220px';
+        }
+
         var signTitle = "<?php echo $this->translate('signTitle');?>";
         layer.open({
             type: 1,
             title: signTitle,
             shadeClose: true,
             shade: 0.2,
-            area: ['500px', '420px'],
+            area: ['500px', layerHeight],
             content: $('#doSignPDFLayDiv')
         });
     });
@@ -1089,13 +1258,28 @@
             }
         });
 
+        // 个人实名认证
+        var contactHasIDCertificate = '<?php echo $this->contactHasIDCertificate;?>',
+            layerHeight = '420px';
+        if (contactHasIDCertificate === '1') {
+            $(".signContent").removeClass("hidden");
+            $(".jumpInfoContent").addClass("hidden");
+            $(".jumpPersonInfoContent").addClass("hidden");
+            layerHeight = '420px';
+        } else {
+            $(".signContent").addClass("hidden");
+            $(".jumpInfoContent").addClass("hidden");
+            $(".jumpPersonInfoContent").removeClass("hidden");
+            layerHeight = '220px';
+        }
+
         var signTitle = "<?php echo $this->translate('signTitle');?>";
         layer.open({
             type: 1,
             title: signTitle,
             shadeClose: true,
             shade: 0.2,
-            area: ['500px', '420px'],
+            area: ['500px', layerHeight],
             content: $('#doSignPDFLayDiv')
         });
         $("#signSendAuthCodeBtn").attr("personSend", "true");

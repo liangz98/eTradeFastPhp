@@ -1245,4 +1245,10 @@ return array(
     'taskPrincipal'      => '责任人',
     'taskDelivery'       => '交付物',
     'deliveryCreateTime' => '创建时间',
+
+    'factoringItemNo'                   => '项目编号',
+    'factoringOrderNo'                  => '订单编号',
+    'factoringTgtFinancingAmount'       => '计划放款',
+    'factoringActualTgtFinancingAmount' => '已放款',
+    'factoringItemStatus'               => '项目状态'
 );

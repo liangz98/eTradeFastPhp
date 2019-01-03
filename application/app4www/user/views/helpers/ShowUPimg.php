@@ -63,8 +63,6 @@ class Zend_View_Helper_ShowUPimg extends Shop_View_Helper {
                     $str .= 'name="' . $name . '" alt="' . $attachType_ . '" >';
                 } else {
                     $str .= '<div class="vid htmlvid" style="background-image:url(/ky/images/video-circle.png); background-size: 64px 64px; background-repeat: no-repeat; background-position-x:center; background-position-y:center;" vidSrc="' . $downloadURL . '?sid=' . session_id().'&nid=' . $attachID.'&vid=' . $verifyID. '"></div>';
-
-
                 }
                 $str .= '</li>';
             }
@@ -75,8 +73,6 @@ class Zend_View_Helper_ShowUPimg extends Shop_View_Helper {
             $classNameStr = $objID;
         }
         $resultImg = '<ul class="img-view imgContainerCls_'.$classNameStr.'" id="local_image_container" data-cls-name="imgContainerCls_' . $classNameStr . '">' . $str . '</ul>';
-
-        $resultImg .= '<div class="col-sm-12"><ul class="img-view">' . $videoStr . '</ul></div>';
 
         if ($hasHide) {
             $resultImg .= '<div class="col-sm-3 col-sm-offset-5"><button type="button" class="btn btn-default btn-xs showImgAll" data-type="down">展开全部 <i class="fas fa-chevron-down"></i></button></div>';

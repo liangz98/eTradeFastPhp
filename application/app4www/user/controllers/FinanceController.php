@@ -391,6 +391,7 @@ class FinanceController extends Kyapi_Controller_Action
 
         $LoanView = $this->json->getFactoringView($requestObject, $factoringID);
         $existData = $this->objectToArray(json_decode($LoanView));
+        $this->view->factoring = $this->objectToArray(json_decode($LoanView)->result);
         $this->view->LoanView = $LoanView = $existData['result'];
         $this->view->mathDate = ($LoanView['expiryDate'] == 0) ? 0 : date('Y-m-d', strtotime($LoanView['expiryDate'])) - date('Y-m-d', time());
 
@@ -411,93 +412,16 @@ class FinanceController extends Kyapi_Controller_Action
             $this->view->contractList = [];
         }
 
-        // 封装费用集合
-        $serviceChargeList = array();
+        // 合计服务费用
         $serviceChargeTotalAmount = 0;
-        foreach ($LoanView['factoringItem']['factoringLoanList'] as $loanKey => $factoringLoan) {
-            if ($factoringLoan['loanType'] == 'P' && $factoringLoan['serviceChargeTradingID'] != null) {
-                $serviceCharge['loanNo'] = $factoringLoan['loanNo'];
-                $serviceCharge['loanAmount'] = $factoringLoan['loanAmount'];
-                $serviceCharge['serviceChargePercent'] = $LoanView['serviceChargePercent'];
-                $serviceCharge['loanCrnCode'] = $factoringLoan['loanCrnCode'];
-                $serviceCharge['serviceCharge'] = $factoringLoan['serviceCharge'];
-                $serviceCharge['serviceChargeTradingID'] = $factoringLoan['serviceChargeTradingID'];
-                $serviceCharge['serviceChargeTradingStatus'] = $factoringLoan['serviceChargeTradingStatus'];
-                $serviceChargeTotalAmount += $factoringLoan['serviceCharge'];
-                array_push($serviceChargeList, $serviceCharge);
+        foreach ($LoanView['factoringItemList'] as $factoringitem) {
+            foreach ($factoringitem['factoringLoanList'] as $factoringLoan) {
+                if ($factoringLoan['loanType'] == 'P' && $factoringLoan['serviceChargeTradingID'] != null) {
+                    $serviceChargeTotalAmount += $factoringLoan['serviceCharge'];
+                }
             }
         }
-        $this->view->serviceChargeList = $serviceChargeList;
         $this->view->serviceChargeTotalAmount = $serviceChargeTotalAmount;
-
-        /*组装项目列表*/
-        $this->view->planAmount = [];
-
-        /*判断服务收费 和利息 是否显示*/
-        $this->view->planService = [];
-        $this->view->planInterest = [];
-        $this->view->planRepayment = [];
-        if ($LoanView['appCustomerID'] == $this->view->accountID) {
-            $j = 0;
-            /*基础保理服务费*/
-            if ($LoanView['serviceCharge'] > 0) {
-                $this->view->planService[$j]['amount'] = $LoanView['serviceCharge'];
-                $this->view->planService[$j]['title'] = $this->view->translate('Finance_serviceCharge');/*基础保理服务费*/
-                $this->view->planService[$j]['tips'] = $LoanView['serviceChargeDesc'];
-                $j = $j + 1;
-            }
-            /*担保保理服务费*/
-            if ($LoanView['hasGuaranteeService']) {
-                if ($LoanView['guaranteeServiceFee'] > 0) {
-                    $this->view->planService[$j]['amount'] = $LoanView['guaranteeServiceFee'];
-                    $this->view->planService[$j]['title'] = $this->view->translate('Finance_guaranteeServiceFee');/*担保保理服务费*/
-                    $this->view->planService[$j]['tips'] = $LoanView['guaranteeServiceFeeDesc'];
-                    $j = $j + 1;
-                }
-            }
-            /*判断利息 是否显示*/
-
-            $h = 0;
-            /*融资保理利息*/
-            if ($LoanView['hasLoanService']) {
-                if ($LoanView['interest'] > 0) {
-                    $this->view->planInterest[$j]['amount'] = $LoanView['interest'] + $LoanView['graceInterest '] + $LoanView['overdueInterest'];
-                    $this->view->planInterest[$j]['title'] = $this->view->translate('Finance_interest');/*融资保理利息*/
-                    $this->view->planInterest[$j]['tips'] = $LoanView['interestDesc'];
-                    $h = $h + 1;
-                }
-            }
-            /*逾期利息*/
-            if ($LoanView['overdueInterest'] > 0) {
-                $this->view->planInterest[$j]['amount'] = $LoanView['overdueInterest'];
-                $this->view->planInterest[$j]['title'] = $this->view->translate('Finance_overdueInterest');/*逾期利息*/
-                $this->view->planInterest[$j]['tips'] = $LoanView['overdueInterestDesc'];
-                $h = $h + 1;
-            }
-        }
-        /*还款计划*/
-
-        $h = 0;
-        if (is_array($LoanView['factoringRepaymentPlanList']) && count($LoanView['factoringRepaymentPlanList']) > 0) {
-            foreach ($LoanView['factoringRepaymentPlanList'] as $k => $v) {
-                $this->view->planRepayment[$k]['amount'] = $v['repaymentTotalAmount'];
-                $this->view->planRepayment[$k]['tips'] = date('Y-m-d', strtotime($v['actualDate']));
-                if ($v['repaymentStatus'] == '01') {
-                    $this->view->planRepayment[$k]['title'] = $this->view->translate('Finance_repayment_ok');/*待还本金*/
-                } else {
-                    $this->view->planRepayment[$k]['titles'] = $this->view->translate('Finance_repayment_no');/*已还本金*/
-                }
-
-            }
-        }
-        /*repaymentTotalAmount*/
-        //判断当前用户是债权还是债务方
-        if ($this->view->accountID == $existData['result']['creditorCustomerID']) {
-            $this->view->customer = 'creditor';
-        } else {
-            $this->view->customer = 'debtor';
-        }
-
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/finance/view.phtml");

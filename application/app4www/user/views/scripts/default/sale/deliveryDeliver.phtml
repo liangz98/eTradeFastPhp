@@ -23,17 +23,25 @@
                     <td style="text-align: left"><?php echo $value->productName;?></td>
                     <td style="text-align: left"><?php echo $value->productModel;?></td>
                     <td style="text-align: left"><?php echo $this->delivery->crnCode;?>&nbsp;
-                        <label class="buyerUnitPrice_"></label>
-                        <script type="text/javascript">$(".buyerUnitPrice_").html(formatCurrency(<?php echo $value->buyerUnitPrice;?>, 2));</script>
+                        <label class="buyerUnitPrice_">
+                            <?php echo $value->buyerUnitPrice != 0 ? number_format($value->buyerUnitPrice, 2) : '----'; ?>
+                        </label>
                     </td>
                     <td style="text-align: left"><?php echo $value->deliveryQuantity;?></td>
                     <td style="text-align: left"><?php echo $this->delivery->crnCode?>&nbsp;
-                        <label class="buyerTotalAmount_"></label>
-                        <script type="text/javascript">$(".buyerTotalAmount_").html(formatCurrency(<?php echo $value->buyerTotalAmount;?>, 2));</script>
+                        <label class="buyerTotalAmount_">
+                            <?php echo $value->buyerTotalAmount != 0 ? number_format($value->buyerTotalAmount, 2) : '----'; ?>
+                        </label>
                     </td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
         </table>
+    </div>
+
+    <div class="col-sm-12 deliveryContract">
+        <?php
+        echo $this->ShowOrderContract4Factoring($this->deliveryContractList, $this->accountID);
+        ?>
     </div>
 </div>

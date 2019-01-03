@@ -38,7 +38,7 @@
 
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane fade in active" id="info">
-                                <div class="col-md-12">
+                                <div class="col-md-12" style="min-height: 500px;">
                                     <h3>
                                         <?php if (($this->CompPartnerAdmin == true || $this->CompOrderAdmin == true) && $this->partner['accountStatus'] != 01): ?>
                                             <a class="profile-heading-edit pull-right btn btn-xs" data-type="base" href="<?php echo '/user/vendor/edit?' . base64_encode($this->toID); ?>">
@@ -98,7 +98,7 @@
                                 </div>
                             </div>
 
-                            <div role="tabpanel" class="tab-pane fade" id="profile">
+                            <div role="tabpanel" class="tab-pane fade" id="profile" style="min-height: 500px;">
                                 <form class="form-horizontal" action="javascript:void(0)" onsubmit="contactSearch()" id="contact_search_form">
                                     <div class="form-group" style="margin-bottom: 0 !important;">
                                         <label for="keyword" class="sr-only">keyword</label>

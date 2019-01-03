@@ -42,7 +42,7 @@
 
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active row" id="info">
-                                <div class="col-md-12">
+                                <div class="col-md-12" style="min-height: 500px;">
                                     <h3>
                                         <?php if ($this->CompAdmin == true && ($this->bank['bankAcctStatus'] == '04' || $this->bank['bankAcctStatus'] == '03')): ?>
                                             <a class="profile-heading-edit pull-right btn btn-xs" data-type="base" href="<?php echo '/user/bank/edit?' . base64_encode($this->bank['bankAcctID']); ?>">
@@ -85,7 +85,7 @@
                             </div>
 
                             <div role="tabpanel" class="tab-pane row" id="profile">
-                                <div class="col-md-12">
+                                <div class="col-md-12" style="min-height: 500px;">
                                     <?php echo $this->ShowWebuploader($this->bank['attachmentList'], $this->biz_Setting['BANK_ACCOUNT'], '0000', "1", $this->bank['bankAcctID']); ?>
                                 </div>
                             </div>

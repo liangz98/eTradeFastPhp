@@ -20,18 +20,22 @@ class CompanyController extends Kyapi_Controller_Action
 
     public function indexAction() {
         // 设置请求数据
-        $_accountID = $this->view->accountID;
-        $_requestOb = $this->_requestObject;
+        $accountID = $this->view->accountID;
+        $requestObject = $this->_requestObject;
 
         // 请求Hessian服务端方法
-        $userKY = $this->json->getAccountApi($_requestOb, $_accountID);
+        $userKY = $this->json->getAccountApi($requestObject, $accountID);
         $existData = $this->objectToArray(json_decode($userKY));
         $existDatt = $existData['result'];
         $this->view->e = $existDatt;
 
-        $this->view->accountID = $_accountID;
+        $this->view->accountID = $accountID;
 
-        // echo $existDatt['legalPersonName'];exit;
+        // 合作协议
+        $bizType = '36';
+        $listBizContractResultObject = $this->json->listBizContract($requestObject, $bizType, $accountID);
+        $listBizContract = json_decode($listBizContractResultObject)->result;
+        $this->view->contractList = empty($listBizContract) ? null : $this->objectToArray($listBizContract);
 
 
         if (!empty($existDatt['incorporationDate']['date'])) {

@@ -706,6 +706,11 @@ class SaleController extends Kyapi_Controller_Action
         $account = $this->json->getAccountApi($requestObject, $_accountID);
         $this->view->hasIDCertificate = json_decode($account)->result->hasIDCertificate;
 
+        // 取回当前登录用户的实名认证状态
+        $contactID = $this->view->userID;
+        $contact = $this->json->getContactApi($requestObject, $contactID);
+        $this->view->contactHasIDCertificate = json_decode($contact)->result->hasIDCertificate;
+
         $accountData = $this->objectToArray(json_decode($account)->result);
         $this->view->account = $accountData;
 
@@ -1394,8 +1399,8 @@ class SaleController extends Kyapi_Controller_Action
     // 发货 - view
     public function deliverAction() {
         $deliveryID = $this->_request->getParam('deliveryID');
-        $_requestOb = $this->_requestObject;
-        $resultObject = $this->json->getDeliveryView($_requestOb, $deliveryID);
+        $requestObject = $this->_requestObject;
+        $resultObject = $this->json->getDeliveryView($requestObject, $deliveryID);
 
         $delivery = json_decode($resultObject)->result;
         $this->view->delivery = json_decode($resultObject)->result;
@@ -1407,6 +1412,30 @@ class SaleController extends Kyapi_Controller_Action
                 $this->view->attachmentList[] = $v;
             }
         }
+
+        // 发货合同列表
+        $deliveryContractList = array();
+        $bizType = 'DS';
+        foreach ($delivery->deliverySupplierList as $deliverySupplier) {
+            $listBizContractResultObject = $this->json->listBizContract($requestObject, $bizType, $deliverySupplier->deliverySupplierID);
+            $listBizContract = json_decode($listBizContractResultObject)->result;
+
+            if (count($deliveryContractList) == 0) {
+                $deliveryContractList = empty($listBizContract) ? null : $this->objectToArray($listBizContract);
+            } else {
+                foreach ($listBizContract as $contract) {
+                    $deliveryContractList[] = $contract;
+                }
+            }
+        }
+        $this->view->deliveryContractList = $deliveryContractList;
+
+
+        // 取回当前公司的企业认证状态
+        $accountID = $this->view->accountID;
+        $account = $this->json->getAccountApi($requestObject, $accountID);
+        $this->view->hasIDCertificate = json_decode($account)->result->hasIDCertificate;
+
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/sale/deliveryDeliver.phtml");

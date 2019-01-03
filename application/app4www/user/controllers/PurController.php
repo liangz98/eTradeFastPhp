@@ -797,22 +797,15 @@ class PurController extends Kyapi_Controller_Action
 	}
 
 	//确认订单
-	public function confirmAction()
-	{
-		// 请求Hessian服务端方法
-		$_orderID =$this->_request->getParam('orderID');
-		$_requestOb=$this->_requestObject;
-		$_resultData= $this->json->doConfirmOrderApi($_requestOb,$_orderID);
-		$existData=json_decode($_resultData);
+    public function confirmAction() {
+        // 请求Hessian服务端方法
+        $_orderID = $this->_request->getParam('orderID');
+        $_requestOb = $this->_requestObject;
+        $_resultData = $this->json->doConfirmOrderApi($_requestOb, $_orderID);
+        $existData = json_decode($_resultData);
         echo json_encode($existData->status);
-
-//		if ($existData->status != 1) {
-//			echo $existData->error;
-//		} else {
-//			echo $existData->status;
-//		}
-		exit;
-	}
+        exit;
+    }
 
 	public function confirmsAction()
 	{

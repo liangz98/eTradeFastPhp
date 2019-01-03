@@ -2,18 +2,16 @@
 
 class Zend_View_Helper_ShowOrderContract extends Shop_View_Helper {
 
-    function ShowOrderContract($Arr, $accountID, $key, $client, $hasIDCertificate) {
-        //$accountID;
-        //$client;
-        //$Arr; 附件数组
-        //$key; 查询key
-        // $hasIDCertificate 当前企业是否已经获取到电子证书
+    /**
+     * @param $contractList // 合同列表
+     * @param $accountID    // 公司id
+     * @return string
+     */
+    function ShowOrderContract($contractList, $accountID) {
         $IMG = '';
-        // $type = 'PDF';
-
         $hasNoEContract = "False";
 
-        foreach ($Arr as $k => $v) {
+        foreach ($contractList as $k => $v) {
             if (is_object($v)) {
                 $v = $this->objectToArray($v);
             }

@@ -13,6 +13,8 @@ if (isset($_POST)) {
     $attachType = $_REQUEST['attachType'];
     $typeDD = $_REQUEST['typeDD'];
 
+    // echo $typeDD. '|1'; exit;
+
     if (empty($name)) {
         echo json_encode(array("error" => "您还未选择图片"));
         exit;

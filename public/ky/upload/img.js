@@ -1,8 +1,14 @@
-var bizID = $('#bizID').val();
+// var bizID = $('#bizID').val();
+// var attachType = '';
+// var bizType = $('#bizType').val();
+// var urlVal = $('#uploadURL').val();
+// var typeVal = $('#typeURL').val();
+
+var bizID = '';
 var attachType = '';
-var bizType = $('#bizType').val();
-var urlVal = $('#uploadURL').val();
-var typeVal = $('#typeURL').val();
+var bizType = '';
+var urlVal = '';
+var typeVal = '';
 
 $(function() {
     webupload_pic();
@@ -14,6 +20,8 @@ function webupload_pic() {
         if (!WebUploader.Uploader.support()) {
             alert('您的浏览器不支持上传功能！如果你使用的是IE浏览器，请尝试升级 flash 播放器');
         }
+
+        // console.log('create:'+ typeVal);
         var uploader = WebUploader.create({
             multiple: false,
             compress: false,
@@ -50,8 +58,16 @@ function webupload_pic() {
         });
 
         //上传时
-        uploader.on('fileQueued', function(file) {
-            console.log(file.length);
+        uploader.on('fileQueued', function (file) {
+            // console.log('fileQueued:' + typeVal);
+            uploader.option('formData', {
+                code: 'identity',
+                bizID: bizID,
+                attachType: attachType,
+                bizType: bizType,
+                urlDD: urlVal,
+                typeDD: typeVal
+            });
             var item_progress = "<img style='margin-top: 30px;' id='" + file['id'] + "' src='/ky/images/loading.gif'></li>";
             $(".webupload_current").parent().parent().find('.img-view').append(item_progress);
 
@@ -60,15 +76,6 @@ function webupload_pic() {
         uploader.on('uploadProgress', function(file, percentage) {
             var $li = $( '#'+file.id ),
                 $percent = $li.find('.progress span');
-
-
-            console.log($percent.length);
-            //var percent = parseFloat(percentage * 100);
-            //$("#" + file.id).find('.bar').css({"width": percent + "%"});
-            //$("#" + file.id).find(".percent").text(percent + "%");
-            //var item_progress = "<div class='progress' id='" + file['id'] + "'><img src='/ky/images/loading.gif'></div></li>";
-            //$(".img-view").append(item_progress);
-
         });
 
 		// 上传前
@@ -210,7 +217,14 @@ function delete_pic(obj) {
 function addWebuploadCurrent(obj) {
     $(".webupload_current").removeClass("webupload_current");
     obj.addClass("webupload_current");
-    console.log($(obj).attr("data-biz-id"));
+    // console.log($(obj).attr("data-biz-id"));
+    // console.log(typeVal);
+    // console.log($(obj).children(".webuploader-pick").children("#typeURL").val());
+
     bizID = $(obj).attr("data-biz-id");
+    attachType = $(obj).children(".webuploader-pick").children("#attachType").val();
+    bizType = $(obj).children(".webuploader-pick").children("#bizType").val();
+    urlVal = $(obj).children(".webuploader-pick").children("#uploadURL").val();
+    typeVal = $(obj).children(".webuploader-pick").children("#typeURL").val();
 }
 

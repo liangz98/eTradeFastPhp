@@ -138,7 +138,7 @@
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <?php
-                                        echo $this->ShowOrderContract($this->contractList, $this->accountID, 'ODTA', $this->orders['client'], $this->hasIDCertificate);
+                                        echo $this->ShowOrderContract($this->contractList, $this->accountID);
                                         ?>
                                     </div>
                                 </div>
@@ -554,13 +554,13 @@
                             </div>
 
                             <div role="tabpanel" class="tab-pane row" id="logistics">
-                                <div class="col-md-12">
+                                <div class="col-md-12" style="min-height: 250px;">
                                     <p>物流</p>
                                 </div>
                             </div>
 
                             <div role="tabpanel" class="tab-pane row" id="log">
-                                <div class="col-md-12 trackViewBtn">
+                                <div class="col-md-12 trackViewBtn" style="min-height: 250px;">
                                     <button type="button" class="btn btn-warning btn-sm trackTimeBtn" data-order-id="<?php echo $this->orders['orderID'] ?>" data-view="date"><?php echo $this->translate('timeCLASS'); ?></button>
 
                                     <button type="button" class="btn btn-sm trackEventBtn" data-order-id="<?php echo $this->orders['orderID'] ?>" data-view="event"><?php echo $this->translate('eventCLASS'); ?></button>
@@ -570,7 +570,7 @@
                             </div>
 
                             <div role="tabpanel" class="tab-pane row" id="profile">
-                                <div class="col-md-12">
+                                <div class="col-md-12" style="min-height: 250px;">
                                     <?php echo $this->ShowWebuploader($this->orders['attachmentList'], $this->biz_Setting['ORDER'], 'ODOD', "1", $this->orders['orderID']); ?>
                                 </div>
                             </div>
@@ -651,37 +651,69 @@
     <div class="et-auth-content">
         <div style="margin-top: 20px;"></div>
 
-        <div class="layui-form-item" style="margin-left: 28px;">
-            <div style="text-align: left;">
-                <label class="layui-form-label" style="width: 180px;text-align: left;"><?php echo $this->translate('signInfo'); ?></label>
+        <div class="signContent">
+            <div class="layui-form-item" style="margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label" style="width: 180px;text-align: left;"><?php echo $this->translate('signInfo'); ?></label>
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label" style="width: 180px;text-align: left;"><b><?php echo $this->translate('signAuthType'); ?></b></label>
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="margin-left: 28px;">
+                <div class="layui-form-label" style="width: 420px;">
+                    <input type="text" id="signMobileInput" name="signMobileInput" lay-verify="signMobileInput" autocomplete="off" class="layui-input" readonly="readonly">
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="margin-left: 28px;">
+                <div class="layui-form-label" style="width: 250px;">
+                    <input type="text" id="signAuthCode" name="signAuthCode" lay-verify="signAuthCode" autocomplete="off" placeholder="<?php echo $this->translate('signInputAuthCode'); ?>" class="layui-input">
+                </div>
+
+                <div class="layui-form-label" style="width: 140px;">
+                    <button class="layui-btn layui-btn-fluid" id="signSendAuthCodeBtn"><?php echo $this->translate('signSendAuthCode'); ?></button>
+                </div>
+            </div>
+
+            <div style="height: 12px"></div>
+            <div class="et-auth-row">
+                <button class="layui-btn layui-btn-fluid" id="singConfirmBtn" style="width: 85%;"><?php echo $this->translate('confirmed'); ?></button>
             </div>
         </div>
 
-        <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
-            <div style="text-align: left;">
-                <label class="layui-form-label" style="width: 180px;text-align: left;"><b><?php echo $this->translate('signAuthType'); ?></b></label>
+        <div class="jumpInfoContent hidden">
+            <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label text-danger" style="width: 320px;text-align: left;"><i class="fas fa-exclamation-triangle"></i> <?php echo $this->translate('企业实名认证未完成前不可签署合同。'); ?></label>
+                </div>
+            </div>
+            <div class="layui-form-item" style="margin-bottom: -5px; margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label" style="width: 280px;text-align: left;">
+                        <a href="/user/company"><u><strong><?php echo $this->translate('点击此处'); ?></strong></u></a> <?php echo $this->translate('进行实名认证。'); ?>
+                    </label>
+                </div>
             </div>
         </div>
 
-        <div class="layui-form-item" style="margin-left: 28px;">
-            <div class="layui-form-label" style="width: 420px;">
-                <input type="text" id="signMobileInput" name="signMobileInput" lay-verify="signMobileInput" autocomplete="off" class="layui-input" readonly="readonly">
+        <div class="jumpPersonInfoContent hidden">
+            <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label text-danger" style="width: 320px;text-align: left;"><i class="fas fa-exclamation-triangle"></i> <?php echo $this->translate('个人实名认证未完成前不可签署合同。'); ?></label>
+                </div>
             </div>
-        </div>
-
-        <div class="layui-form-item" style="margin-left: 28px;">
-            <div class="layui-form-label" style="width: 250px;">
-                <input type="text" id="signAuthCode" name="signAuthCode" lay-verify="signAuthCode" autocomplete="off" placeholder="<?php echo $this->translate('signInputAuthCode'); ?>" class="layui-input">
+            <div class="layui-form-item" style="margin-bottom: -5px; margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label" style="width: 280px;text-align: left;">
+                        <a href="/user/index/profile"><u><strong><?php echo $this->translate('点击此处'); ?></strong></u></a> <?php echo $this->translate('进行实名认证。'); ?>
+                    </label>
+                </div>
             </div>
-
-            <div class="layui-form-label" style="width: 140px;">
-                <button class="layui-btn layui-btn-fluid" id="signSendAuthCodeBtn"><?php echo $this->translate('signSendAuthCode'); ?></button>
-            </div>
-        </div>
-
-        <div style="height: 12px"></div>
-        <div class="et-auth-row">
-            <button class="layui-btn layui-btn-fluid" id="singConfirmBtn" style="width: 85%;"><?php echo $this->translate('confirmed'); ?></button>
         </div>
     </div>
 </div>
@@ -762,7 +794,7 @@
 
                 <div class="row">
                     <div class="col-sm-12">
-                        <?php echo $this->ShowWebuploader($this->attachmentList, $this->biz_Setting['ORDER'], $this->attach_Setting['DLPG'], null); ?>
+                        <?php echo $this->ShowWebuploader($this->attachmentList, $this->biz_Setting['ORDER'], 'DLPG', null); ?>
                     </div>
                 </div>
             </div>
@@ -826,6 +858,7 @@
             <div class="modal-body">
                 <div class="row deliveryDeliverContent">
                 </div>
+
                 <div class="row" style="margin-top: 15px;">
                     <div class="col-sm-12">
                         <h4 style="color: #56859D; font-weight: bold;"><?php echo $this->translate('DELIVER_GOODS').$this->translate('upload'); ?></h4>
@@ -878,11 +911,8 @@
 <script type="text/javascript" src="/ky/pdf/pdf.worker.js"></script>
 <!-- viewer -->
 <script type="text/javascript" src="/ky/viewer-1.0.0-dist/viewer.min.js"></script>
-<!-- magnify -->
-<!--<script type="text/javascript" src="/ky/magnify-1.4.0-dist/jquery.magnify.min.js"></script>-->
+<!-- BigPicture -->
 <script type="text/javascript" src="/ky/bigpicture-1.4.0-dist/BigPicture.min.js"></script>
-<!-- baidu Map -->
-<!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=8P5e0fcLzr2U3MfSB282xuaK8TcHh46g"></script>-->
 
 <script type="text/javascript">
     var dataDict = {};
@@ -1027,8 +1057,6 @@
                         + '<div class="layui-timeline-content layui-text">'
                         + '<h3 class="layui-timeline-title">' + index + '</h3>';
 
-
-                    // trackContent += '<p>';
                     $.each(trackList, function (tackIndex, track) {
                         var data = $.data(dataDict, 'dataDict'),
                             result = '';
@@ -1054,10 +1082,7 @@
                                 }
                             });
 
-
-
                             trackContent += '<div class="row" data-toggle="modal" data-target="#qcDetailModal" data-order-id="' + track.projectID + '" data-task-id="' + track.bizObj.taskID + '" data-summary="' + track.summary + '" style="cursor: pointer;">';
-                            // trackContent += '<div class="row qcDetailDiv" data-order-id="' + track.projectID + '" data-task-id="' + track.bizObj.taskID + '" data-summary="' + track.summary + '" style="cursor: pointer;">';
                             trackContent += '<div class="col-sm-2"><b>' + result + '</b></div>'
                                 + '<div class="col-sm-7">'
                                 + track.summary
@@ -1092,11 +1117,12 @@
                         + '</li>';
                 });
 
-                // console.log(trackContent);
                 $trackTimeLine.html(trackContent);
 
+                // 初始化layui进度条
                 layui.use('element', function(){
                     var element = layui.element;
+                    element.render();
                 });
             }
         });
@@ -1115,14 +1141,6 @@
         }, function (data) {
             $(".qcSummary").html(summary);
 
-            /*
-            $("[data-magnify=gallery]").magnify({
-                initMaximized: true
-            });
-            */
-
-
-
             // 展开/收起按钮
             $(".showImgAll").unbind('click').click(function () {
                 var dataType = $(this).attr("data-type");
@@ -1130,13 +1148,9 @@
                     $(".imgLi").removeClass("hidden");
                     $(this).html('收起 <i class="fas fa-chevron-up"></i>');
                     $(this).attr("data-type", "up");
-                    // var target_top = $("#orderItemTop").offset().top;
-                    // $("html,body").animate({scrollTop: target_top}, 1000);
                 } else {
                     $.each($(".imgLi"), function (i, val) {
-                        // if (i > 0) {
                             $(val).addClass("hidden");
-                        // }
                     });
                     $(this).html('展开全部 <i class="fas fa-chevron-down"></i>');
                     $(this).attr("data-type", "down");
@@ -1240,13 +1254,13 @@
 
         $(".download-button").attr("contractID_", obj.id);
 
-        if ($("#isESigned_" + obj.id).val() == 1) {
+        if ($("#isESigned_" + obj.id).val() === 1) {
             $(".sign-button").hide();
         } else {
             $(".sign-button").show().attr("contractID_", obj.id);
         }
 
-        if ($("#isPSigned_" + obj.id).val() == 1) {
+        if ($("#isPSigned_" + obj.id).val() === 1) {
             $(".person-sign-button").hide();
         } else {
             $(".person-sign-button").show().attr("contractID_", obj.id);
@@ -1276,13 +1290,28 @@
             }
         });
 
+        // 企业实名认证
+        var hasIDCertificate = '<?php echo $this->hasIDCertificate;?>',
+            layerHeight = '420px';
+        if (hasIDCertificate === '1') {
+            $(".signContent").removeClass("hidden");
+            $(".jumpInfoContent").addClass("hidden");
+            $(".jumpPersonInfoContent").addClass("hidden");
+            layerHeight = '420px';
+        } else {
+            $(".signContent").addClass("hidden");
+            $(".jumpInfoContent").removeClass("hidden");
+            $(".jumpPersonInfoContent").addClass("hidden");
+            layerHeight = '220px';
+        }
+
         var signTitle = "<?php echo $this->translate('signTitle');?>";
         layer.open({
             type: 1,
             title: signTitle,
             shadeClose: true,
             shade: 0.2,
-            area: ['500px', '420px'],
+            area: ['500px', layerHeight],
             content: $('#doSignPDFLayDiv')
         });
     });
@@ -1302,13 +1331,28 @@
             }
         });
 
+        // 个人实名认证
+        var contactHasIDCertificate = '<?php echo $this->contactHasIDCertificate;?>',
+            layerHeight = '420px';
+        if (contactHasIDCertificate === '1') {
+            $(".signContent").removeClass("hidden");
+            $(".jumpInfoContent").addClass("hidden");
+            $(".jumpPersonInfoContent").addClass("hidden");
+            layerHeight = '420px';
+        } else {
+            $(".signContent").addClass("hidden");
+            $(".jumpInfoContent").addClass("hidden");
+            $(".jumpPersonInfoContent").removeClass("hidden");
+            layerHeight = '220px';
+        }
+
         var signTitle = "<?php echo $this->translate('signTitle');?>";
         layer.open({
             type: 1,
             title: signTitle,
             shadeClose: true,
             shade: 0.2,
-            area: ['500px', '420px'],
+            area: ['500px', layerHeight],
             content: $('#doSignPDFLayDiv')
         });
         $("#signSendAuthCodeBtn").attr("personSend", "true");

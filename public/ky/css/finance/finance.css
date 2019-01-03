@@ -38,6 +38,14 @@ body {
     font-size: 18px;
 }
 
+.span-font-size-22 {
+    font-size: 22px;
+}
+
+.span-font-size-28 {
+    font-size: 28px;
+}
+
 .span-font-size-30 {
     font-weight: 400;
     font-size: 30px;
