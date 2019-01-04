@@ -59,7 +59,7 @@ function webupload_pic() {
 
         //上传时
         uploader.on('fileQueued', function (file) {
-            // console.log('fileQueued:' + typeVal);
+            console.log('fileQueued:' + typeVal);
             uploader.option('formData', {
                 code: 'identity',
                 bizID: bizID,
@@ -101,7 +101,7 @@ function webupload_pic() {
                 type = file.ext;
             }
             if (type === "docx" || type === "wps") {
-                type = "doc";
+                type = "word";
             }
             if (type === "xlsx") {
                 type = "xls";
@@ -121,7 +121,7 @@ function webupload_pic() {
             }
 
             if (type !== "jpeg" && type !== "png" && type !== "jpg" && type !== "gif" && type !== "GIF" && type !== "JPG" && type !== "PNG") {
-                $(".webupload_current").parent().parent().find('.img-view').append("<li><img width='125px' height='125px' class='img_common' src='/ky/ico/" + type + ".png' alt=" + name.substr(0,7) + "></a><span class='del_to' >" + name + "<br><a href=" + response.doc + " download>下载</a>|<a onclick='delete_pic(this)'>删除</a></span>" +
+                $(".webupload_current").parent().parent().find('.img-view').append("<li><img width='125px' height='125px' class='img_common' src='/ky/ico/" + type + ".png' data-type='" + type + "' alt=" + name.substr(0,7) + "></a><span class='del_to' >" + name.substr(0, 7) + "..." + "<br><a href=" + response.doc + " data-type='download' download><i class='fas fa-download'></i></a>&nbsp;&nbsp;&nbsp;<a onclick='delete_pic(this)' data-type='del'><i class='far fa-trash-alt'></i></a></span>" +
                     "<input type='hidden' name='attachNid[]' value=" + nid + "><input type='hidden'  name='attachName[]' value=" + name + "><input type='hidden'  name='attachSize[]' value=" + size + "><input type='hidden'  name='attachType[]' value=" + attach_new + "><input type='hidden'  name='bizType[]' value=" + bizTT + "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
                 if (attach_new === "CRSE" || attach_new === "ODSE") {
                     if ($('#KEY_CRCT').length > 0) {
@@ -139,10 +139,10 @@ function webupload_pic() {
                 }
             } else {
                 if (response.uploadType === '1') {
-                    $(".webupload_current").parent().parent().find('.img-view').append("<li><img width='125px' height='125px' class='img_common' src="  + response.pic + " data-original=" + response.fullPic + " alt=''/><span class='del_to' >" + name + "</span>" +
+                    $(".webupload_current").parent().parent().find('.img-view').append("<li><img width='125px' height='125px' class='img_common' src="  + response.pic + " data-bp=" + response.fullPic + " alt=''/><span class='del_to' >" + name + "</span>" +
                         "<input type='hidden' name='attachNid[]' value=" +nid+ "><input type='hidden'  name='attachName[]' value="+name+ "><input type='hidden'  name='attachSize[]' value="+size+ "><input type='hidden'  name='attachType[]' value="+attach_new+ "><input type='hidden'  name='bizType[]' value="+bizTT+ "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
                 } else {
-                    $(".webupload_current").parent().parent().find('.img-view').append("<li><img width='125px' height='125px' class='img_common' src="  + response.pic + " data-original=" + response.fullPic + " alt=''/><span class='del_to' >" + name.substr(0, 7) + "..." + "<br><a onclick='delete_pic(this)'><i class=\"far fa-trash-alt\"></i></a></span>" +
+                    $(".webupload_current").parent().parent().find('.img-view').append("<li><img width='125px' height='125px' class='img_common' src="  + response.pic + " data-bp=" + response.fullPic + " alt=''/><span class='del_to' >" + name.substr(0, 7) + "..." + "<br><a onclick='delete_pic(this)'><i class=\"far fa-trash-alt\"></i></a></span>" +
                         "<input type='hidden' name='attachNid[]' value=" +nid+ "><input type='hidden'  name='attachName[]' value="+name+ "><input type='hidden'  name='attachSize[]' value="+size+ "><input type='hidden'  name='attachType[]' value="+attach_new+ "><input type='hidden'  name='bizType[]' value="+bizTT+ "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
                 }
 
@@ -161,14 +161,6 @@ function webupload_pic() {
                     }
                 }
             }
-
-            // 新增/编辑页需要在第一次实例的时候初始化
-            var $imgView = $(".img-view");
-            $imgView.viewer({
-                url: "data-original"
-            });
-            // 已存在的实例需要更新
-            $imgView.viewer('update');
         });
 
         uploader.on('uploadError', function(file, reason) {
@@ -193,7 +185,6 @@ function webupload_pic() {
 function delete_pic(obj) {
     $(obj).parent().parent().remove();
     // isCRCT();
-    $(".img-view").viewer('update');
 }
 
  /*

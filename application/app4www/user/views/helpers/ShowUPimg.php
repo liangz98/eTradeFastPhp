@@ -32,7 +32,7 @@ class Zend_View_Helper_ShowUPimg extends Shop_View_Helper {
                 }
 
                 if ($ext == "DOCX" || $ext == "WPS") {
-                    $ext = "doc";
+                    $ext = "word";
                 }
                 if ($ext == "XLSX") {
                     $ext = "xls";

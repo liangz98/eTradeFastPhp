@@ -6,9 +6,6 @@
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/bank/bank.css" rel="stylesheet">
     <link href="/ky/css/img-upload.css" rel="stylesheet">
-    <!-- Viewer -->
-    <link href="/ky/viewer-1.0.0-dist/viewer.min.css" rel="stylesheet">
-
 </head>
 <body>
 
@@ -102,8 +99,9 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
 <script type="text/javascript" src="/ky/upload/img.js"></script>
-<!-- viewer -->
-<script type="text/javascript" src="/ky/viewer-1.0.0-dist/viewer.min.js"></script>
+<!-- BigPicture -->
+<script type="text/javascript" src="/ky/bigpicture-1.4.0-dist/BigPicture.min.js"></script>
+<script type="text/javascript" src="/ky/bigpicture-1.4.0-dist/BigPictureInit.js"></script>
 
 <script type="text/javascript">
 	$().ready(function() {
@@ -118,14 +116,6 @@
                 $(this).removeClass('nav-selected');
             }
         });
-
-        // viewer
-        // 先判断是否有图片, 再初始化viewer
-        if ($(".img-view > li").length > 0) {
-            $(".img-view").viewer({
-                url: "data-original"
-            });
-        }
 	});
 </script>
 </body>
