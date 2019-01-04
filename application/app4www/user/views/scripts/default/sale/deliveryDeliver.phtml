@@ -10,11 +10,11 @@
             </colgroup>
             <thead>
             <tr>
-                <th>名称</th>
-                <th>型号</th>
-                <th>单价</th>
-                <th>数量</th>
-                <th>总价</th>
+                <th><?php echo $this->translate('productNAME'); ?></th>
+                <th><?php echo $this->translate('model'); ?></th>
+                <th><?php echo $this->translate('uprice'); ?></th>
+                <th><?php echo $this->translate('number'); ?></th>
+                <th><?php echo $this->translate('ordertotal'); ?></th>
             </tr>
             </thead>
             <tbody>
@@ -40,8 +40,19 @@
     </div>
 
     <div class="col-sm-12 deliveryContract">
-        <?php
-        echo $this->ShowOrderContract4Factoring($this->deliveryContractList, $this->accountID);
-        ?>
+        <?php foreach ($this->deliveryContractList as $deliveryContract): ?>
+            <?php if (!empty($deliveryContract['contractList'])): ?>
+                <div class="row">
+                    <div class="col-xs-1">
+                        <p class="form-control-static text-999"><?php echo $this->translate('supplierName'); ?></p>
+                    </div>
+                    <div class="col-md-10">
+                        <p class="form-control-static text-666"><?php echo $deliveryContract['supplierName']; ?></p>
+                    </div>
+                </div>
+
+                <?php echo $this->ShowOrderContract4Factoring($deliveryContract['contractList'], $this->accountID); ?>
+            <?php endif; ?>
+        <?php endforeach; ?>
     </div>
 </div>

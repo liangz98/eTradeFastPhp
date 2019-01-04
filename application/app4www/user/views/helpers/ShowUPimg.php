@@ -40,6 +40,9 @@ class Zend_View_Helper_ShowUPimg extends Shop_View_Helper {
                 if ($ext == "PPTX") {
                     $ext = "ppt";
                 }
+                if ($ext == "PDF") {
+                    $ext = "pdf";
+                }
 
                 $downloadURL = $this->view->seed_Setting['KyUrlex'] . '/doc/download.action';
 
@@ -57,7 +60,7 @@ class Zend_View_Helper_ShowUPimg extends Shop_View_Helper {
                     $str .= 'src="' . $downloadURL . '?sid=' . session_id(). '&nid=' . $attachID . '&vid=' . $verifyID . '&size=MIDDLE" ';
                     $str .= 'data-caption='. $name . ' ';
                     $str .= 'name="' . $name . '_'.$k.'" alt="' . $attachType_ . '" >';
-                } elseif ($ext == "doc" || $ext == "xls" || $ext == "ppt") {
+                } elseif ($ext == "doc" || $ext == "xls" || $ext == "ppt" || $ext == "pdf") {
                     $str .= '<img width="125px" height="125px" ';
                     $str .= 'src="/ky/ico/' . strtolower($ext) . '.png" ';
                     $str .= 'name="' . $name . '" alt="' . $attachType_ . '" >';

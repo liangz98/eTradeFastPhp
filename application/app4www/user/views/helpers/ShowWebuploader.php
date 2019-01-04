@@ -65,22 +65,17 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
                 //     $downloadURL = '/doc/download.action';
                 // }
 
-                $downloadURL = '/doc/download.action';
+                $downloadURL = $this->view->seed_Setting['KyUrlex'] . '/doc/download.action';
+
+                $str .= '<li>';
 
                 if ($ext == "jpeg" || $ext == "png" || $ext == "jpg" || $ext == "gif" || $ext == "GIF" || $ext == "JPG" || $ext == "PNG" || $ext == "JPEG") {
-                    $str .= '<li><img width="125px" height="125px"  data-original="' . $this->view->seed_Setting['KyUrlex'];
-                    $str .= $downloadURL . '?sid=' . session_id();
-                    $str .= '&nid=' . $attachID;
-                    $str .= '&vid=' . $verifyID;
-                    $str .= '" src="' . $this->view->seed_Setting['KyUrlex'];
-                    $str .= $downloadURL . '?sid=' . session_id();
-                    $str .= '&nid=' . $attachID;
-                    // if ($type == '1') {
-                    //     $str .= '&vid=' . $verifyID;
-                    // }
-                    $str .= '&vid=' . $verifyID;
-                    $str .= '&size=MIDDLE" name="' . $name. '" ';
-                    $str .= 'alt="' . $name . '">';
+                    $str .= '<img width="125px" height="125px" ';
+                    // $str .= 'data-original="' . $downloadURL . '?sid=' . session_id() . '&nid=' . $attachID. '&vid=' . $verifyID.'" ';
+                    $str .= 'data-bp="' . $downloadURL . '?sid=' . session_id().'&nid=' . $attachID.'&vid=' . $verifyID.'" ';
+                    $str .= 'src="' . $downloadURL . '?sid=' . session_id(). '&nid=' . $attachID . '&vid=' . $verifyID . '&size=MIDDLE" ';
+                    $str .= 'data-caption='. $name . ' ';
+                    $str .= 'name="' . $name . '_'.$k.'" alt="' . $attachType_ . '" >';
 
                     $str .= '<span class="del_to">';
                     if ($type != '1') {
@@ -91,8 +86,7 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
                     }
                     $str .= '</span>';
                 } else {
-                    $str .= '<li>';
-                    $str .= '<img width="125px" height="125px" src="/ky/ico/' . strtolower($ext) . '.png" alt=' . $attachType_ . ' />';
+                    $str .= '<img width="125px" height="125px" src="/ky/ico/' . strtolower($ext) . '.png" alt=' . $attachType_ . ' data-type="' . strtolower($ext) . '" />';
                     $str .= '<span class="del_to">';
                     if (mb_strlen($name, 'utf-8') > 8) {
                         $str .= mb_substr($name,0,7, 'utf-8') . '...';
@@ -100,8 +94,8 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
                         $str .= $name;
                     }
                     $str .= '<br>';
-                    $str .= '<a href="'.$this->view->seed_Setting['KyUrlex'] . '/doc/download.action?sid=' . session_id() . '&nid=' . $attachID. '&vid=' . $verifyID . '" download><i class="fas fa-download"></i></a>&nbsp;&nbsp;&nbsp;';
-                    $str .= '<a onclick="delete_pic(this)"><i class="far fa-trash-alt"></i></a>';
+                    $str .= '<a href="'.$this->view->seed_Setting['KyUrlex'] . '/doc/download.action?sid=' . session_id() . '&nid=' . $attachID. '&vid=' . $verifyID . '" data-type="download" download><i class="fas fa-download"></i></a>&nbsp;&nbsp;&nbsp;';
+                    $str .= '<a onclick="delete_pic(this)" data-type="del"><i class="far fa-trash-alt"></i></a>';
                     $str .= '</span>';
                 }
 
@@ -125,10 +119,15 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
         // $showView .= '<script type="text/javascript" src="/ky/layer-v3.1.1/layer.js"></script>';
         // $showView .= '<link href="/ky/css/img-upload.css" rel="stylesheet">';
 
+        $classNameStr = '';
+        if (!empty($objID)) {
+            $classNameStr = $objID;
+        }
+
         $showimg = "";
         $showimg .= '<div class="img-read" id="img-read"></div>';
         $showimg .= '<div class="demo">';
-        $showimg .= '<ul class="img-view">' . $str . '</ul>';
+        $showimg .= '<ul class="img-view imgContainerCls_'.$classNameStr.'" data-cls-name="imgContainerCls_' . $classNameStr . '">' . $str . '</ul>';
 
         $showimg .= '<ul class="upload-image-list clearfix">';
         $showimg .= '<div class="fileinput-button js-add-image" onclick="addWebuploadCurrent($(this))" attachType_="'.$attachType.'" data-biz-id="'. $bizID .'">' . $indata;

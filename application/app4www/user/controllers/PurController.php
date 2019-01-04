@@ -673,69 +673,78 @@ class PurController extends Kyapi_Controller_Action
 
     public function viewAction() {
 		//读取数据字典
-		$cacheM = new Seed_Model_Cache2File();
-		$DATAlist=$cacheM->get("datatest_setting");
-		$this->view->Datalist=$DATAlist;
-		// 请求Hessian服务端方法
-		$orderID = $_SERVER['QUERY_STRING'];
-		$_orderID = base64_decode($orderID);
-		$this->view->orderid=$_orderID;
+        $cacheM = new Seed_Model_Cache2File();
+        $DATAlist = $cacheM->get("datatest_setting");
+        $this->view->Datalist = $DATAlist;
+        // 请求Hessian服务端方法
+        $orderID = $_SERVER['QUERY_STRING'];
+        $_orderID = base64_decode($orderID);
+        $this->view->orderid = $_orderID;
 
-		$_requestOb=$this->_requestObject;
-		$_resultKY=$this->json->getOrderApi($_requestOb,$_orderID);
-		$userKY=json_decode($_resultKY);
+        $requestObject = $this->_requestObject;
+        $_resultKY = $this->json->getOrderApi($requestObject, $_orderID);
+        $userKY = json_decode($_resultKY);
 
-		// 取回当前公司的企业认证状态
+        // 取回当前公司的企业认证状态
         $_accountID = $this->view->accountID;
-        $account = $this->json->getAccountApi($_requestOb, $_accountID);
+        $account = $this->json->getAccountApi($requestObject, $_accountID);
         // echo "11: ".json_decode($account)->result->isECommAccount;
         $this->view->hasIDCertificate = json_decode($account)->result->hasIDCertificate;
 
-		$existData =$userKY->result;
-		$existDatt=$this->objectToArray($existData);
-        //当前返回数据为空时 前端显示为无
-        if(!isset($existDatt['packingDesc']))$existDatt['packingDesc']=$this->view->translate('noData');  //包装描述
-        if(!isset($existDatt['financingRequest']))$existDatt['financingRequest']=$this->view->translate('noData');  //金融要求
-        if(!isset($existDatt['customClearanceRequest']))$existDatt['customClearanceRequest']=$this->view->translate('noData'); //报关要求
-        if(!isset($existDatt['shippingRequest']))$existDatt['shippingRequest']=$this->view->translate('noData');   //物流要求
+        // 取回当前登录用户的实名认证状态
+        $contactID = $this->view->userID;
+        $contact = $this->json->getContactApi($requestObject, $contactID);
+        $this->view->contactHasIDCertificate = json_decode($contact)->result->hasIDCertificate;
 
-        $this->view->orders=$existDatt;
+        $existData = $userKY->result;
+        $existDatt = $this->objectToArray($existData);
+        //当前返回数据为空时 前端显示为无
+        if (!isset($existDatt['packingDesc']))
+            $existDatt['packingDesc'] = $this->view->translate('noData');  //包装描述
+        if (!isset($existDatt['financingRequest']))
+            $existDatt['financingRequest'] = $this->view->translate('noData');  //金融要求
+        if (!isset($existDatt['customClearanceRequest']))
+            $existDatt['customClearanceRequest'] = $this->view->translate('noData'); //报关要求
+        if (!isset($existDatt['shippingRequest']))
+            $existDatt['shippingRequest'] = $this->view->translate('noData');   //物流要求
+
+        $this->view->orders = $existDatt;
         //判断是否请求合同签订
 
-        $bizType='OD';
-        $listBizContractResultKY = $this->json->listBizContract($_requestOb, $bizType,$_orderID);
-        $res_contract= json_decode($listBizContractResultKY);
-        if($res_contract->result){
-            $contractList=$this->objectToArray($res_contract->result);
+        $bizType = 'OD';
+        $listBizContractResultKY = $this->json->listBizContract($requestObject, $bizType, $_orderID);
+        $res_contract = json_decode($listBizContractResultKY);
+        if ($res_contract->result) {
+            $contractList = $this->objectToArray($res_contract->result);
         }
 
-        $this->view->contractList=empty($contractList)?null:$contractList;
+        $this->view->contractList = empty($contractList) ? null : $contractList;
 
 
-		//处理根据返回的运输方式来判断 起运|卸货|交货查询的缓存目录名称
-		if ($existDatt['shippingMethod'] == 'SEA') {
-			$this->view->port = "SEA_PORT";
-            $this->view->loadingPort=$existDatt['loadingPort'];
-            $this->view->dischargePort=$existDatt['dischargePort'];
-            $this->view->deliveryPort=$existDatt['deliveryPort'];
+        //处理根据返回的运输方式来判断 起运|卸货|交货查询的缓存目录名称
+        if ($existDatt['shippingMethod'] == 'SEA') {
+            $this->view->port = "SEA_PORT";
+            $this->view->loadingPort = $existDatt['loadingPort'];
+            $this->view->dischargePort = $existDatt['dischargePort'];
+            $this->view->deliveryPort = $existDatt['deliveryPort'];
 
-		} elseif ($existDatt['shippingMethod'] == 'AIR') {
-			$this->view->port = "AIR_PORT";
-            $this->view->loadingPort=$existDatt['loadingPort'];
-            $this->view->dischargePort=$existDatt['dischargePort'];
-            $this->view->deliveryPort=$existDatt['deliveryPort'];
-		} else {
-			$this->view->port = "CITY_ISO_CODE";
-            $this->view->loadingPort=$existDatt['loadingCity'];
-            $this->view->dischargePort=$existDatt['dischargeCity'];
-            $this->view->deliveryPort=$existDatt['deliveryCity'];
-		};
+        } else if ($existDatt['shippingMethod'] == 'AIR') {
+            $this->view->port = "AIR_PORT";
+            $this->view->loadingPort = $existDatt['loadingPort'];
+            $this->view->dischargePort = $existDatt['dischargePort'];
+            $this->view->deliveryPort = $existDatt['deliveryPort'];
+        } else {
+            $this->view->port = "CITY_ISO_CODE";
+            $this->view->loadingPort = $existDatt['loadingCity'];
+            $this->view->dischargePort = $existDatt['dischargeCity'];
+            $this->view->deliveryPort = $existDatt['deliveryCity'];
+        };
 
-		$this->view->vestut=$existDatt['buyerExecStatus'];
-		$this->view->veorderID=$existDatt['orderID'];
+        $this->view->vestut = $existDatt['buyerExecStatus'];
+        $this->view->veorderID = $existDatt['orderID'];
 
         // 取回物流信息
-        $deliveryList = $this->json->listDelivery($_requestOb, $_orderID);
+        $deliveryList = $this->json->listDelivery($requestObject, $_orderID);
         $this->view->deliveryList = json_decode($deliveryList)->result;
 
 		//判断当前订单是否可以更改

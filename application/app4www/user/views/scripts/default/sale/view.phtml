@@ -689,14 +689,7 @@
         <div class="jumpInfoContent hidden">
             <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
                 <div style="text-align: left;">
-                    <label class="layui-form-label text-danger" style="width: 320px;text-align: left;"><i class="fas fa-exclamation-triangle"></i> <?php echo $this->translate('企业实名认证未完成前不可签署合同。'); ?></label>
-                </div>
-            </div>
-            <div class="layui-form-item" style="margin-bottom: -5px; margin-left: 28px;">
-                <div style="text-align: left;">
-                    <label class="layui-form-label" style="width: 280px;text-align: left;">
-                        <a href="/user/company"><u><strong><?php echo $this->translate('点击此处'); ?></strong></u></a> <?php echo $this->translate('进行实名认证。'); ?>
-                    </label>
+                    <label class="layui-form-label text-danger" style="width: 450px;text-align: left;"><i class="fas fa-exclamation-triangle"></i> <?php echo $this->translate('未生成有效的企业签署证书，请先完成企业及管理员实名认证。'); ?></label>
                 </div>
             </div>
         </div>
@@ -710,7 +703,7 @@
             <div class="layui-form-item" style="margin-bottom: -5px; margin-left: 28px;">
                 <div style="text-align: left;">
                     <label class="layui-form-label" style="width: 280px;text-align: left;">
-                        <a href="/user/index/profile"><u><strong><?php echo $this->translate('点击此处'); ?></strong></u></a> <?php echo $this->translate('进行实名认证。'); ?>
+                        <a href="/user/index/profile"><u><strong><?php echo $this->translate('点击此处'); ?></strong></u></a> <?php echo $this->translate('完成个人实名认证。'); ?>
                     </label>
                 </div>
             </div>
@@ -728,8 +721,7 @@
             </div>
 
             <div class="modal-body">
-                <div class="layui-form-item table-responsive viewDeliveryTable">
-                </div>
+                <div class="row viewDeliveryTable"></div>
 
                 <div class="row">
                     <div class="col-sm-12 deliveryItemAttachment"></div>
@@ -765,11 +757,11 @@
                         </colgroup>
                         <thead>
                         <tr>
-                            <th>名称</th>
-                            <th>型号</th>
-                            <th>单价</th>
-                            <th>数量</th>
-                            <th>总价</th>
+                            <th><?php echo $this->translate('productNAME'); ?></th>
+                            <th><?php echo $this->translate('model'); ?></th>
+                            <th><?php echo $this->translate('uprice'); ?></th>
+                            <th><?php echo $this->translate('number'); ?></th>
+                            <th><?php echo $this->translate('ordertotal'); ?></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -1568,88 +1560,14 @@
         }
 
         $(".deliveryNo").html(deliveryNo);
-        var deliveryUrl = "/user/sale/delivery-ajax";
-        $.ajax({
-            type: "POST",
-            url: deliveryUrl,
-            data: {
-                deliveryID: deliveryID
-            },
-            dataType: "json",
-            success: function (data) {
-                var attachUrl = '<?php echo $this->seed_Setting['KyUrlex'] ?>';
-                $viewDeliveryTable.html("");
-                var content = '';
-                content += '<table class="layui-table" lay-skin="line" id="deliveryEditTable">'
-                    + '<colgroup>'
-                    + ' <col>'
-                    + ' <col width="140">'
-                    + ' <col width="120">'
-                    + ' <col width="80">'
-                    + ' <col width="160">'
-                    + '</colgroup>'
-                    + '<thead>'
-                    + '<tr>'
-                    + ' <th>名称</th>'
-                    + ' <th>型号</th>'
-                    + ' <th>单价</th>'
-                    + ' <th>数量</th>'
-                    + ' <th>总价</th>'
-                    + '</thead>'
-                    + '<tbody>';
 
-                $.each(data.delivery.deliveryItemList, function (index, deliveryItem) {
-                    content += '<tr>'
-                        + '<td style="text-align: left">' + deliveryItem.productName + '</td>'
-                        + '<td style="text-align: left">' + deliveryItem.productModel + '</td>'
-                        + '<td style="text-align: left">' + data.delivery.crnCode + '&nbsp;' + formatCurrency(deliveryItem.buyerUnitPrice, 2) + '</td>'
-                        + '<td style="text-align: left">' + deliveryItem.deliveryQuantity + '</td>'
-                        + '<td style="text-align: left">' + data.delivery.crnCode + '&nbsp;' + formatCurrency(deliveryItem.buyerTotalAmount, 2) + '</td>'
-                        + '</tr>';
-                });
-
-                content += '</tbody>'
-                    + '</table>';
-
-                $viewDeliveryTable.html(content);
-
-                // 附件
-                $deliveryItemAttachment.html("");
-                var attachmentContent = '';
-
-                // 备货
-                if (data.prepareAttachmentList.length > 0) {
-                    attachmentContent += genAttachContent(data.prepareAttachmentList, '<?php echo $this->translate('PREPARE_GOODS').$this->translate('download'); ?>', attachUrl);
-                }
-
-                // 验货
-                if (data.examineAttachmentList.length > 0) {
-                    attachmentContent += genAttachContent(data.examineAttachmentList, '<?php echo $this->translate('EXAMINE_GOODS').$this->translate('download'); ?>', attachUrl);
-                }
-
-                // 质量保证函正本
-                if (data.qualityAttachmentList.length > 0) {
-                    attachmentContent += genAttachContent(data.qualityAttachmentList, '<?php echo $this->translate('QUALITY_AGREE_FORMAL').$this->translate('download'); ?>', attachUrl);
-                }
-
-                // 发货
-                if (data.deliverAttachmentList.length > 0) {
-                    attachmentContent += genAttachContent(data.deliverAttachmentList, '<?php echo $this->translate('DELIVER_GOODS').$this->translate('download'); ?>', attachUrl);
-                }
-
-                // 收货
-                if (data.receiptAttachmentList.length > 0) {
-                    attachmentContent += genAttachContent(data.receiptAttachmentList, '<?php echo $this->translate('RECEIPT_GOODS').$this->translate('download'); ?>', attachUrl);
-                }
-
-                // 收货确认函正本
-                if (data.receiptConfirmationAttachmentList.length > 0) {
-                    attachmentContent += genAttachContent(data.receiptConfirmationAttachmentList, '<?php echo $this->translate('RECEIPT_CONFIRMATION_FORMAL').$this->translate('download'); ?>', attachUrl);
-                }
-
-                $deliveryItemAttachment.html(attachmentContent);
-            }
+        $viewDeliveryTable.html("").load("/user/sale/delivery-view", {
+            deliveryID: deliveryID
+        }, function () {
+            // $(".deliverDeliveryNo").html(deliveryNo);
+            // $("#deliveryDeliverGoodsBtn").attr("data-delivery-ID", deliveryID);
         });
+
     });
 
     function genAttachContent(data, title, attachUrl) {
@@ -1746,11 +1664,11 @@
                         + '</colgroup>'
                         + '<thead>'
                         + '<tr>'
-                        + ' <th>名称</th>'
-                        + ' <th>型号</th>'
-                        + ' <th>单价</th>'
-                        + ' <th>数量</th>'
-                        + ' <th>总价</th>'
+                        + ' <th><?php echo $this->translate("productNAME"); ?></th>'
+                        + ' <th><?php echo $this->translate("model"); ?></th>'
+                        + ' <th><?php echo $this->translate("uprice"); ?></th>'
+                        + ' <th><?php echo $this->translate("number"); ?></th>'
+                        + ' <th><?php echo $this->translate("ordertotal"); ?></th>'
                         + '</thead>'
                         + '<tbody>';
 

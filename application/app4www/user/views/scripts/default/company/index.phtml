@@ -152,11 +152,7 @@
                                     <p class="span-font-size-18 text-primary margin-top-15"><?php echo $this->translate('合作协议'); ?></p>
                                 </div>
 
-                                <div class="col-md-12" style="min-height: 500px;">
-                                    <?php echo $this->ShowWebuploader($this->attlist, '36', '36BL', "1", $this->accountID); ?>
-                                </div>
-
-                                <div class="col-sm-12" style="min-height: 500px;">
+                                <div class="col-sm-12" style="min-height: 500px; margin-top: 15px;">
                                     <?php echo $this->ShowOrderContract4Factoring($this->contractList, $this->accountID); ?>
                                 </div>
                             </div>
@@ -175,15 +171,150 @@
 	</div>
 </div>
 
+<!--PDF预览-->
+<div id="signViewDiv" style="display: none; background-color: #F6F6F6;">
+    <div class="sign-button">企业签署</div>
+    <div class="person-sign-button">个人签署</div>
+    <div class="download-button">下载</div>
+    <div class="pdfDoc" style="padding-left:50px;">
+        <div id="pdfPageBox">
+        </div>
+    </div>
+</div>
+
+<!--非网签-->
+<div id="signViewNoEContractDiv" class="layui-form" style="display: none;">
+    <div class="et-auth-error" style="display: none;"></div>
+    <div class="et-auth-content">
+        <div style="margin-top: 20px;"></div>
+
+        <div class="layui-form-item" style="margin-left: 28px;">
+            <div style="text-align: left;">
+                <label class="layui-form-label" style="width: 400px;text-align: left;"><?php echo $this->translate('contractUPInfo'); ?></label>
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-bottom: -5px;margin-top: -15px;margin-left: 28px;margin-right: 28px;">
+            <div style="text-align: left;">
+                <table class="layui-table" id="demo" lay-filter="test">
+                    <colgroup>
+                        <col width="470">
+                        <col width="150">
+                        <col>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>合同列表</th>
+                        <th>类型</th>
+                        <th style="text-align:center">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-left: 28px; margin-top: 50px; width: 600px;">
+            <div class="layui-form-label" style="width: 420px;">
+                <div class="yyzz_box clearfix" style="width: 600px;">
+                    <p class="zzname" style="width: 600px; font-weight:bold;"><?php echo $this->translate('contractUP'); ?><!--合同相关附件上传--></p>
+                    <?php if ($this->vestut == 1) {
+                        echo $this->ShowWebuploader($this->goods['attachmentList'], $this->biz_Setting['ORDER'], $this->attach_Setting['CRIM'], "0", null);
+                    } ?>
+                </div>
+            </div>
+        </div>
+
+
+        <div style="height: 12px"></div>
+        <div class="et-auth-row">
+            <button class="layui-btn" id="signNoEContractConfirmBtn"><?php echo $this->translate('signing'); ?></button>
+        </div>
+    </div>
+</div>
+
+<!--签署-->
+<div id="doSignPDFLayDiv" class="layui-form" style="display: none;">
+    <div class="et-auth-error" style="display: none;"></div>
+    <div class="et-auth-content">
+        <div style="margin-top: 20px;"></div>
+
+        <div class="signContent">
+            <div class="layui-form-item" style="margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label" style="width: 180px;text-align: left;"><?php echo $this->translate('signInfo'); ?></label>
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label" style="width: 180px;text-align: left;"><b><?php echo $this->translate('signAuthType'); ?></b></label>
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="margin-left: 28px;">
+                <div class="layui-form-label" style="width: 420px;">
+                    <input type="text" id="signMobileInput" name="signMobileInput" lay-verify="signMobileInput" autocomplete="off" class="layui-input" readonly="readonly">
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="margin-left: 28px;">
+                <div class="layui-form-label" style="width: 250px;">
+                    <input type="text" id="signAuthCode" name="signAuthCode" lay-verify="signAuthCode" autocomplete="off" placeholder="<?php echo $this->translate('signInputAuthCode'); ?>" class="layui-input">
+                </div>
+
+                <div class="layui-form-label" style="width: 140px;">
+                    <button class="layui-btn layui-btn-fluid" id="signSendAuthCodeBtn"><?php echo $this->translate('signSendAuthCode'); ?></button>
+                </div>
+            </div>
+
+            <div style="height: 12px"></div>
+            <div class="et-auth-row">
+                <button class="layui-btn layui-btn-fluid" id="singConfirmBtn" style="width: 85%;"><?php echo $this->translate('confirmed'); ?></button>
+            </div>
+        </div>
+
+        <div class="jumpInfoContent hidden">
+            <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label text-danger" style="width: 450px;text-align: left;"><i class="fas fa-exclamation-triangle"></i> <?php echo $this->translate('未生成有效的企业签署证书，请先完成企业及管理员实名认证。'); ?></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="jumpPersonInfoContent hidden">
+            <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label text-danger" style="width: 320px;text-align: left;"><i class="fas fa-exclamation-triangle"></i> <?php echo $this->translate('个人实名认证未完成前不可签署合同。'); ?></label>
+                </div>
+            </div>
+            <div class="layui-form-item" style="margin-bottom: -5px; margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label" style="width: 280px;text-align: left;">
+                        <a href="/user/index/profile"><u><strong><?php echo $this->translate('点击此处'); ?></strong></u></a> <?php echo $this->translate('完成个人实名认证。'); ?>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
 <script type="text/javascript" src="/ky/upload/img.js"></script>
+<!-- pdf -->
+<script type="text/javascript" src="/ky/pdf/pdf.js"></script>
+<script type="text/javascript" src="/ky/pdf/pdf.worker.js"></script>
 <!-- Web Uploader -->
 <!--<script type="text/javascript" src="/ky/webuploader-0.1.8-dist/webuploader.js"></script>-->
 <!-- viewer -->
-<script type="text/javascript" src="/ky/viewer-1.0.0-dist/viewer.min.js"></script>
+<!--<script type="text/javascript" src="/ky/viewer-1.0.0-dist/viewer.min.js"></script>-->
+<!-- BigPicture -->
+<script type="text/javascript" src="/ky/bigpicture-1.4.0-dist/BigPicture.min.js"></script>
+<script type="text/javascript" src="/ky/bigpicture-1.4.0-dist/BigPictureInit.js"></script>
 
 <script type="text/javascript">
 	$().ready(function() {
@@ -226,29 +357,437 @@
 
         // viewer
         // 先判断是否有图片, 再初始化viewer
+        /*
         if ($(".img-view > li").length > 0) {
             $(".img-view").viewer({
                 url: "data-original"
             });
+        }*/
+/*
+        // 初始化 BigPicture
+        function setClickHandlerByClass(className, fn) {
+            var elements = document.getElementsByClassName(className);
+            for(var i = 0;i < elements.length;i++){
+                elements[i].onclick = fn;
+            }
         }
-        /*
-        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-            // 获取已激活的标签页的名称
-            var activeTab = $(e.target).text();
-            // 获取前一个激活的标签页的名称
-            // var previousTab = $(e.relatedTarget).text();
+        // 初始化 BigPicture
+        setClickHandlerByClass('img-view', function (e) {
+            var className = e.target.className,
+                eDataTypeImg = true;
 
-            console.log(activeTab);
-            console.log($(e.target).attr("id"));
+            // console.log("className: " + className);
+            // console.log("tagName: " + e.target.tagName);
+            // console.log(e.target.parentElement.parentElement.getAttribute("data-cls-name"));
 
-            if ($(e.target).attr("id") === 'profileTab') {
-                uploader.refresh();
+            // 判断PDF的时候, 触发下载事件
+            if (e.target.getAttribute("data-type") && e.target.getAttribute("data-type") === 'pdf') {
+                eDataTypeImg = false;
+                var elem_child = e.target.nextSibling.childNodes;
+                for (var i = 0; i < elem_child.length; i++) {
+                    if (elem_child[i].nodeName === "A" && elem_child[i].getAttribute("data-type") === 'download') {
+                        // console.log(elem_child[i]);
+                        elem_child[i].click();
+                    }
+                }
             }
 
+            // 定义图片列表
+            var galleryName = e.target.parentElement.parentElement.getAttribute("data-cls-name");
+            (e.target.tagName === 'IMG' || e.target.className === 'background-image') && eDataTypeImg &&
+            BigPicture({
+                el: e.target,
+                gallery: '.'+galleryName
+            });
+            // 视频
+            ~className.indexOf('htmlvid') &&
+            BigPicture({
+                el: e.target,
+                vidSrc: e.target.getAttribute('vidSrc')
+            });
         });
         */
 	});
 
+    // *************************** PDF Sign View ********************************
+    PDFJS.workerSrc = '/ky/pdf/pdf.worker.js';
+
+    var pdfDoc = null;
+    var pageNum = 1;
+    var pageRendering = false;
+    var pageNumPending = null;
+    var scale = 1.5;
+
+    function renderPage(num, id) {
+        var canvas = document.getElementById(id);
+        var ctx = canvas.getContext('2d');
+        pageRendering = true;
+        pdfDoc.getPage(num).then(function(page) {
+            var viewport = page.getViewport(scale);
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            var renderContext = {
+                canvasContext: ctx,
+                viewport: viewport
+            };
+            var renderTask = page.render(renderContext);
+
+            renderTask.promise.then(function() {
+                pageRendering = false;
+                if (pageNumPending !== null) {
+                    // New page rendering is pending
+                    renderPage(pageNumPending);
+                    pageNumPending = null;
+                }
+            });
+        });
+
+        //document.getElementById('page_num').textContent = pageNum;
+    }
+
+    function queueRenderPage(num) {
+        if (pageRendering) {
+            pageNumPending = num;
+        } else {
+            renderPage(num);
+        }
+    }
+
+    function onPrevPage() {
+        if (pageNum <= 1) {
+            return;
+        }
+        pageNum--;
+        queueRenderPage(pageNum);
+    }
+    //document.getElementById('prev').addEventListener('click', onPrevPage);
+
+    function onNextPage() {
+        if (pageNum >= pdfDoc.numPages) {
+            return;
+        }
+        pageNum++;
+        queueRenderPage(pageNum);
+    }
+    //document.getElementById('next').addEventListener('click', onNextPage);
+
+    function initPdfView(pdfUrl, obj) {
+        $("#pdfPageBox").html("");
+        PDFJS.getDocument(pdfUrl).then(function(pdfDoc_) {
+            pdfDoc = pdfDoc_;
+            //document.getElementById('page_count').textContent = pdfDoc.numPages;
+            for (var i=1;i<=pdfDoc.numPages;i++){
+                var canvasDiv = $("<div style=\"padding-top:10px;padding-bottom:10px;\"></div>");
+                var pageNum = $("<div style=\"background-color: #999999;position:absolute;float: left;height:30px;width:60px;text-align: center;line-height: 30px;color:#ffffff;opacity: 0.6;\">"+i+"/"+pdfDoc.numPages+"</div>");
+                var canvas = $("<canvas></canvas>").attr("id", "the-canvas_"+i);
+                canvasDiv.append(pageNum);
+                canvasDiv.append(canvas);
+                $("#pdfPageBox").append(canvasDiv);
+                renderPage(i, "the-canvas_"+i);
+            }
+        });
+
+        var signTitle = "<?php echo $this->translate('signTitle');?>";
+        layer.open({
+            type: 1,	//Page层类型
+            area: ['1150px', '100%'],
+            title: signTitle,
+            shadeClose: true,
+            shade: 0.6,	//遮罩透明度
+            // anim: 1,	//0-6的动画形式，-1不开启
+            scrollbar: false,
+            content: $("#signViewDiv")
+        });
+
+        $(".download-button").attr("contractID_", obj.id);
+
+        if ($("#isESigned_" + obj.id).val() === 1) {
+            $(".sign-button").hide();
+        } else {
+            $(".sign-button").show().attr("contractID_", obj.id);
+        }
+
+        if ($("#isPSigned_" + obj.id).val() === 1) {
+            $(".person-sign-button").hide();
+        } else {
+            $(".person-sign-button").show().attr("contractID_", obj.id);
+        }
+    }
+
+    //document.getElementById('prev').addEventListener('click', onPrevPage);
+
+    $(".download-button").bind("click",function(){
+        var contractID_ = $(this).attr("contractID_");
+        window.location.href = $("#contractAttachUrl_" + contractID_).val();
+    });
+
+    // ********************   获取验证手机号码 Start  *************************************
+    $(".sign-button").bind("click",function(){
+        var getSignMobile = '/user/pur/getsignmobile';
+        $.ajax({
+            type: "POST",
+            url: getSignMobile,
+            data: {
+
+            },
+            dataType: "json",
+            success: function (data) {
+                var mobileStr = "<?php echo $this->translate('mobile_phone');?>";
+                $("#signMobileInput").val(mobileStr + " " +data);
+            }
+        });
+
+        // 企业实名认证
+        var hasIDCertificate = '<?php echo $this->hasIDCertificate;?>',
+            layerHeight = '420px';
+        if (hasIDCertificate === '1') {
+            $(".signContent").removeClass("hidden");
+            $(".jumpInfoContent").addClass("hidden");
+            $(".jumpPersonInfoContent").addClass("hidden");
+            layerHeight = '420px';
+        } else {
+            $(".signContent").addClass("hidden");
+            $(".jumpInfoContent").removeClass("hidden");
+            $(".jumpPersonInfoContent").addClass("hidden");
+            layerHeight = '220px';
+        }
+
+        var signTitle = "<?php echo $this->translate('signTitle');?>";
+        layer.open({
+            type: 1,
+            title: signTitle,
+            shadeClose: true,
+            shade: 0.2,
+            area: ['500px', layerHeight],
+            content: $('#doSignPDFLayDiv')
+        });
+    });
+
+    $(".person-sign-button").bind("click",function(){
+        var getSignMobile = '/user/pur/getpersonsignmobile';
+        $.ajax({
+            type: "POST",
+            url: getSignMobile,
+            data: {
+
+            },
+            dataType: "json",
+            success: function (data) {
+                var mobileStr = "<?php echo $this->translate('mobile_phone');?>";
+                $("#signMobileInput").val(mobileStr + " " +data);
+            }
+        });
+
+        // 个人实名认证
+        var contactHasIDCertificate = '<?php echo $this->contactHasIDCertificate;?>',
+            layerHeight = '420px';
+        if (contactHasIDCertificate === '1') {
+            $(".signContent").removeClass("hidden");
+            $(".jumpInfoContent").addClass("hidden");
+            $(".jumpPersonInfoContent").addClass("hidden");
+            layerHeight = '420px';
+        } else {
+            $(".signContent").addClass("hidden");
+            $(".jumpInfoContent").addClass("hidden");
+            $(".jumpPersonInfoContent").removeClass("hidden");
+            layerHeight = '220px';
+        }
+
+        var signTitle = "<?php echo $this->translate('signTitle');?>";
+        layer.open({
+            type: 1,
+            title: signTitle,
+            shadeClose: true,
+            shade: 0.2,
+            area: ['500px', layerHeight],
+            content: $('#doSignPDFLayDiv')
+        });
+        $("#signSendAuthCodeBtn").attr("personSend", "true");
+        $("#singConfirmBtn").attr("personSend", "true");
+    });
+    // ********************   End  *************************************
+
+    // ********************   获取短信验证码 Start  *************************************
+    $("#signSendAuthCodeBtn").click(function () {
+        var sendSignAuthCode = '/user/pur/sendsignauthcode';
+        if ($(this).attr("personSend") == "true") {
+            sendSignAuthCode = '/user/pur/sendpersonsignauthcode';
+        }
+
+        $.ajax({
+            type: "POST",
+            url: sendSignAuthCode,
+            data: {
+
+            },
+            dataType: "json",
+            success: function (data) {
+                var sendingStr = "<?php echo $this->translate('signAuthCodeSending');?>";
+                $("#signSendAuthCodeBtn").text(sendingStr);
+                sendSignAuthCodeCountDown();
+            }
+        });
+    });
+
+    var countdown=120;
+    function sendSignAuthCodeCountDown() {
+        var obj = $("#signSendAuthCodeBtn");
+        settime(obj);
+    }
+
+    function settime(obj) { //发送验证码倒计时
+        if (countdown == 0) {
+            obj.attr('disabled',false);
+            //obj.removeattr("disabled");
+            obj.removeClass('layui-btn-disabled');
+            var btnStr = "<?php echo $this->translate('signSendAuthCode'); ?>";
+            obj.text(btnStr);
+            countdown = 120;
+            return;
+        } else {
+            console.log(countdown);
+            obj.attr('disabled',true);
+            obj.addClass('layui-btn-disabled');
+            var btnStr = "<?php echo $this->translate('signAuthCodeSending'); ?>";
+            obj.text(btnStr + "(" + countdown + ")");
+            countdown--;
+        }
+        setTimeout(function() {
+                settime(obj) }
+            ,1000)
+    }
+    // ********************   获取短信验证码 End  *************************************
+
+
+
+    // ********************   获取短信验证码 Start  *************************************
+    $("#singConfirmBtn").click(function () {
+        var doSignPDF = '/user/pur/dosignpdf';
+        var contractID = $(".sign-button").attr("contractID_");
+        if ($(this).attr("personSend") === "true") {
+            doSignPDF = '/user/pur/dopersonsignpdf';
+            contractID = $(".person-sign-button").attr("contractID_");
+        }
+
+        $.ajax({
+            type: "POST",
+            url: doSignPDF,
+            data: {
+                contractID: contractID,
+                signAuthCode: $("#signAuthCode").val()
+            },
+            dataType: "json",
+            success: function (data) {
+                var signMsg = "<?php echo $this->translate('signFail');?>";
+                if (data != null && data !== '') {
+                    signMsg = "<?php echo $this->translate('signSuccess');?>";
+                    layer.msg(signMsg);
+                    window.location.reload();
+                } else {
+                    $("#signAuthCode").val('');
+                    layer.msg(signMsg);
+                }
+            }
+        });
+    });
+    // ********************   获取短信验证码 End  *************************************
+
+
+    // ********************   显示非网签上传合同层 Start  *************************************
+    function initSignViewNoEContract(obj) {
+
+        var signTitle = "<?php echo $this->translate('signTitle');?>";
+        layer.open({
+            type: 1,	//Page层类型
+            area: ['800px', '550px'],
+            title: signTitle,
+            // shadeClose: true,
+            shade: 0.6,	//遮罩透明度
+            // anim: 1,	//0-6的动画形式，-1不开启
+            scrollbar: false,
+            content: $("#signViewNoEContractDiv")
+        });
+
+
+        $("#signViewNoEContractDiv tr:not(:first)").empty();
+        //获取最后一行的data-id(标识行)
+        var rowIndex = $("#signViewNoEContractDiv tr:last").attr("data-row");
+        if (rowIndex === "" || rowIndex == null) {
+            rowIndex = parseInt(1);
+        } else {
+            rowIndex = parseInt(rowIndex) + 1;
+        }
+
+        var htmlList = '<tr data-row=' + rowIndex + '>';
+
+        htmlList += '<td><a href="#" id="" onclick="doDownload(\''+obj.id+'\')">' + $("#contractName_" + obj.id).val() + '</a></td>';
+
+        htmlList += '<td>' + $("#ext_" + obj.id).val() + '</td>';
+
+        htmlList += '<td><a href="#" id="" onclick="doDownload(\''+obj.id+'\')" class="order_contract_sign fr">下载</a></td>';
+
+        htmlList += '</td></tr>';
+        //在行最后添加数据
+        $("#signViewNoEContractDiv tr:last").after(htmlList);
+
+        $("#signNoEContractConfirmBtn").attr("contractID_", obj.id);
+        // alert(obj.id);
+        // alert($("#contractName_" + obj.id).val());
+    }
+
+    function doDownload(objID) {
+        window.location.href = $("#contractAttachUrl_" + objID).val();
+    }
+    // ********************   显示非网签上传合同层 End  *************************************
+
+
+    // ********************   非网签签署合同提交按钮 Start  *************************************
+    $("#signNoEContractConfirmBtn").click(function () {
+        var contractID = $(this).attr("contractID_");
+
+        var nidArr = "";
+        var nid = document.getElementsByName("attachNid[]");
+        for (var i = 0, j = nid.length; i < j; i++) {
+            nidArr += nid[i].value + "|";
+        }
+        var nameArr = "";
+        var name = document.getElementsByName("attachName[]");
+        for (var i = 0, j = name.length; i < j; i++) {
+            nameArr += name[i].value + "|";
+        }
+        var sizeArr = "";
+        var size = document.getElementsByName("attachSize[]");
+        for (var i = 0, j = size.length; i < j; i++) {
+            sizeArr += size[i].value + "|";
+        }
+        var attachTypeArr = "";
+        var attachType = document.getElementsByName("attachType[]");
+        for (var i = 0, j = attachType.length; i < j; i++) {
+            attachTypeArr += attachType[i].value + "|";
+        }
+
+        $.ajax({
+            type: "POST",
+            url: '<?php echo $this->BaseUrl();?>/sale/agree',
+            data: {
+                contractID: contractID,
+                name: nameArr,
+                nid: nidArr,
+                size: sizeArr,
+                attachType: attachTypeArr
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data === '1') {
+                    document.location.reload();
+                } else {
+                    alert(data + 'failed,please try again!');
+                }
+            }
+        });
+    });
+    // ********************   非网签签署合同提交按钮 End  *************************************
 </script>
 </body>
 </html>

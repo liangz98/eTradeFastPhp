@@ -37,6 +37,15 @@ class CompanyController extends Kyapi_Controller_Action
         $listBizContract = json_decode($listBizContractResultObject)->result;
         $this->view->contractList = empty($listBizContract) ? null : $this->objectToArray($listBizContract);
 
+        // 取回当前公司的企业认证状态
+        $account = $this->json->getAccountApi($requestObject, $accountID);
+        $this->view->hasIDCertificate = json_decode($account)->result->hasIDCertificate;
+
+        // 取回当前登录用户的实名认证状态
+        $contactID = $this->view->userID;
+        $contact = $this->json->getContactApi($requestObject, $contactID);
+        $this->view->contactHasIDCertificate = json_decode($contact)->result->hasIDCertificate;
+
 
         if (!empty($existDatt['incorporationDate']['date'])) {
             $creatDate = date('Y-m-d', strtotime($existDatt['incorporationDate']['date']));
