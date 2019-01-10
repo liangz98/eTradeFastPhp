@@ -1250,5 +1250,9 @@ return array(
     'factoringOrderNo'                  => '订单编号',
     'factoringTgtFinancingAmount'       => '计划放款',
     'factoringActualTgtFinancingAmount' => '已放款',
-    'factoringItemStatus'               => '项目状态'
+    'factoringItemStatus'               => '项目状态',
+
+    'shippingOrderNo' => 'ShippingNo',
+    'truckingOrderNo' => 'TruckingNo',
+    'orderLogKeyword' => 'Keyword'
 );

@@ -1215,11 +1215,12 @@ class PurController extends Kyapi_Controller_Action
         $requestObject = $this->_requestObject;
         $orderID = $this->_request->getParam('orderID');
         $viewType = $this->_request->getParam('viewType');
+        $keyword = $this->_request->getParam('keyword');
         if (empty($viewType)) {
             $viewType = 'date';
         }
 
-        $resultObject = $this->json->getOrderEventLogApi($requestObject, $orderID, $viewType);
+        $resultObject = $this->json->getOrderEventLogApi($requestObject, $orderID, $viewType, $keyword);
         $msg = json_decode($resultObject)->result;
 
         echo json_encode($msg);

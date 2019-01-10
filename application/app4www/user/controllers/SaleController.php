@@ -759,6 +759,17 @@ class SaleController extends Kyapi_Controller_Action
         $deliveryAttachDataList = $deliveryData['result'];
 
 
+        // 报关单列表
+        $listDeclarationResultObject = $this->json->listDeclarationApi($requestObject, $_orderID);
+        $this->view->listDeclaration = json_decode($listDeclarationResultObject)->result;
+
+        // 订舱单列表
+        $listShippingOrderResultObject = $this->json->listShippingOrderApi($requestObject, $_orderID);
+        $this->view->listShippingOrder = json_decode($listShippingOrderResultObject)->result;
+
+        // 派车单列表
+        $listTruckingOrderResultObject = $this->json->listTruckingOrderApi($requestObject, $_orderID);
+        $this->view->listTruckingOrder = json_decode($listTruckingOrderResultObject)->result;
 
         // 不可删,但未查出用在哪里
         if ($this->view->accountID == $existDatt['client']) {

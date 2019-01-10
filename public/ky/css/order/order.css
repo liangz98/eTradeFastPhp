@@ -306,3 +306,10 @@ input[type=number]{
 .deliveryContract .row {
     margin-bottom: 5px;
 }
+
+/* 订单View页面, 物流 */
+.declarationDiv, .truckingDiv, .shippingDiv {
+    margin-top: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+}

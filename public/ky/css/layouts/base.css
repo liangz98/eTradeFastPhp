@@ -82,3 +82,19 @@ input[type=number]{
 .text-666 {
     color: #666;
 }
+
+.span-font-size-18 {
+    font-size: 18px;
+}
+
+.margin-top-15 {
+    margin-top: 15px;
+}
+
+.margin-bottom-15 {
+    margin-bottom: 15px;
+}
+
+.margin-bottom-20 {
+    margin-bottom: 20px;
+}

@@ -1446,13 +1446,18 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
      * @param $_requestObject
      * @param $_orderID
      * @param $_view
+     * @param $keyword
      * @return mixed
      */
-    public function getOrderEventLogApi($_requestObject, $_orderID,$_view)
-    {
-        $_url=$this->url.'/orderapi/orderApi!getOrderEventLog.action';
-        $_params =json_encode(array("requestObject"=>$_requestObject,"orderID"=> $_orderID,"view"=>$_view));
-        $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
+    public function getOrderEventLogApi($_requestObject, $_orderID, $_view, $keyword) {
+        $_url = $this->url . '/orderapi/orderApi!getOrderEventLog.action';
+        $_params = json_encode(array(
+            "requestObject" => $_requestObject,
+            "orderID"       => $_orderID,
+            "view"          => $_view,
+            "keyword"       => $keyword
+        ));
+        $resultObject = $this->vpost($_url, $_params); //输出目标地址源码
         return $resultObject;
     }
 

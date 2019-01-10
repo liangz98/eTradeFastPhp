@@ -36,7 +36,7 @@ class Zend_View_Helper_ShowOrderContract extends Shop_View_Helper {
                 $isESigned = True;  // 企业是否已经签了
                 $isPSigned = True;  // 个人是否已经签了
 
-                if ($v['firstParty'] != null && $v['firstParty'] == $accountID) {
+                if (!empty($v['firstParty']) && $v['firstParty'] == $accountID) {
                     // 企业
                     if ($v['firstPartySignMode'] == "E" || $v['firstPartySignMode'] == "B") {
                         if (empty($v['firstPartySigningDate'])) {
@@ -56,7 +56,7 @@ class Zend_View_Helper_ShowOrderContract extends Shop_View_Helper {
                     }
                 }
 
-                if ($v['secondParty'] != null && $v['secondParty'] == $accountID) {
+                if (!empty($v['secondParty']) && $v['secondParty'] == $accountID) {
                     // 企业
                     if ($v['secondPartySignMode'] == "E" || $v['secondPartySignMode'] == "B") {
                         if (empty($v['secondPartySigningDate'])) {
@@ -76,7 +76,7 @@ class Zend_View_Helper_ShowOrderContract extends Shop_View_Helper {
                     }
                 }
 
-                if ($v['thirdParty'] != null && $v['thirdParty'] == $accountID) {
+                if (!empty($v['thirdParty']) && $v['thirdParty'] == $accountID) {
                     // 企业
                     if ($v['thirdPartySignMode'] == "E" || $v['thirdPartySignMode'] == "B") {
                         if (empty($v['thirdPartySigningDate'])) {
