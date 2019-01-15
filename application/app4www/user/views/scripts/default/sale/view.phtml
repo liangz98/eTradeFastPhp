@@ -796,6 +796,10 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class="col-md-1">
+                                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#logEventRiverModal"><i class="fas fa-chart-area"></i></button>
+                                        </div>
                                     </form>
                                 </div>
 
@@ -1110,6 +1114,24 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title qcSummary"></h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="qcContent">
+                    info Content
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 日志-事件河流图 -->
+<div class="modal fade" id="logEventRiverModal" tabindex="-1" role="dialog" aria-labelledby="logEventRiverLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><?php echo $this->translate('orderLogEventRiver'); ?></h4>
             </div>
 
             <div class="modal-body">

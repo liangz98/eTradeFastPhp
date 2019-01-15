@@ -758,6 +758,18 @@ class PurController extends Kyapi_Controller_Action
 			$this->view->allowEdit=0;
 		}
 
+        // 报关单列表
+        $listDeclarationResultObject = $this->json->listDeclarationApi($requestObject, $_orderID);
+        $this->view->listDeclaration = json_decode($listDeclarationResultObject)->result;
+
+        // 订舱单列表
+        $listShippingOrderResultObject = $this->json->listShippingOrderApi($requestObject, $_orderID);
+        $this->view->listShippingOrder = json_decode($listShippingOrderResultObject)->result;
+
+        // 派车单列表
+        $listTruckingOrderResultObject = $this->json->listTruckingOrderApi($requestObject, $_orderID);
+        $this->view->listTruckingOrder = json_decode($listTruckingOrderResultObject)->result;
+
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/pur/view.phtml");
             echo $content;

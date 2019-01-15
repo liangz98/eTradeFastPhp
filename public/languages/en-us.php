@@ -1254,5 +1254,6 @@ return array(
 
     'shippingOrderNo' => 'ShippingNo',
     'truckingOrderNo' => 'TruckingNo',
-    'orderLogKeyword' => 'Keyword'
+    'orderLogKeyword' => 'Keyword',
+    'orderLogEventRiver' => 'Event River'
 );

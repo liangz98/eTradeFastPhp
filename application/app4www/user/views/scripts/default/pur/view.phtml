@@ -533,7 +533,220 @@
 
                             <div role="tabpanel" class="tab-pane row" id="logistics">
                                 <div class="col-md-12" style="min-height: 250px;">
-                                    <p>物流</p>
+                                    <div class="row">
+                                        <div class="col-md-12 margin-bottom-15">
+                                            <p class="span-font-size-18 text-primary margin-top-15"><?php echo $this->translate('customs'); ?></p>
+                                        </div>
+                                    </div>
+
+                                    <?php if (!empty($this->listDeclaration)): ?>
+                                        <?php foreach ($this->listDeclaration as $declaration): ?>
+                                            <div class="alert alert-info alert-dismissible taskDeliveryAlert" role="alert">
+                                                <div class="row">
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('manCHB'); ?></div>
+                                                    <div class="col-xs-4"><?php echo $declaration->clientName; ?></div>
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('companyCHB'); ?></div>
+                                                    <div class="col-xs-4"><?php echo $declaration->operator; ?></div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('registerCHB'); ?></div>
+                                                    <div class="col-xs-4"><?php echo $declaration->declarer; ?></div>
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('adressCHB'); ?></div>
+                                                    <div class="col-xs-4">
+                                                        <?php echo $this->ShowDictionaryTo('EXPORT_POINTS', $this->userLangCode, $this->dic_Setting['EXPORT_POINTS'], $declaration->declarationLocation); ?>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('cityCHB'); ?></div>
+                                                    <div class="col-xs-4">
+                                                        <?php echo $this->ShowDictionaryTo('SEA_PORT', $this->userLangCode, $this->dic_Setting['EXPORT_POINTS'], $declaration->destinationPort); ?>
+                                                        <?php echo $this->ShowDictionaryTo('CITY_ISO_CODE', $this->userLangCode, $this->dic_Setting['EXPORT_POINTS'], $declaration->destinationCity); ?>
+                                                    </div>
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('state'); ?></div>
+                                                    <div class="col-xs-4 text-warning"><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['EXPORT_DECLARATION_STATUS'], $declaration->declarationStatus); ?></div>
+                                                </div>
+
+                                                <!-- 报关相关附件 -->
+                                                <?php if (!empty($declaration->attachmentList)): ?>
+                                                    <?php foreach ($declaration->attachmentList as $k => $attach): ?>
+                                                        <div class="row">
+                                                            <div class="col-xs-6">
+                                                                <em class="new_upicon" style="background:url('/ky/ico/<?php echo strtolower($attach->ext); ?>.png') no-repeat;background-size: 20px;"></em>
+                                                                <a class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'] . '/doc/download.action?sid=' . session_id() . '&nid=' . $attach->attachID . '&vid=' . $attach->verifyID; ?>" download>
+                                                                    <p class="new_uptitle"><?php echo $attach->name; ?></p>
+                                                                </a>
+                                                            </div>
+                                                            <div class="col-xs-2 text-muted"><?php echo $this->translate('creatdate'); ?></div>
+                                                            <div class="col-xs-4">
+                                                                <?php echo date('Y-m-d H:i:s', strtotime($attach->createTime)); ?>
+                                                            </div>
+                                                        </div>
+                                                    <?php endforeach; ?>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endforeach;?>
+                                    <?php else:?>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <?php echo $this->translate('noData'); ?>
+                                            </div>
+                                        </div>
+                                    <?php endif;?>
+
+
+                                    <div class="row">
+                                        <div class="col-md-12 margin-bottom-15">
+                                            <p class="span-font-size-18 text-primary margin-top-15"><?php echo $this->translate('shipping'); ?></p>
+                                        </div>
+                                    </div>
+
+                                    <?php if (!empty($this->listShippingOrder)): ?>
+                                        <?php foreach ($this->listShippingOrder as $key=>$shippingOrder): ?>
+                                            <div class="alert alert-info alert-dismissible taskDeliveryAlert" role="alert">
+                                                <div class="row">
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('shippingOrderNo'); ?></div>
+                                                    <div class="col-xs-4"><?php echo $shippingOrder->shippingOrderNo; ?></div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('companySPP'); ?></div>
+                                                    <div class="col-xs-4"><?php echo $shippingOrder->carrierName; ?></div>
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('poxySPP'); ?></div>
+                                                    <div class="col-xs-4"><?php echo $shippingOrder->forwarderName; ?></div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('moveMD'); ?></div>
+                                                    <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->dic_Setting['SHIPPING_METHOD'], $shippingOrder->shippingMethod); ?></div>
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('saveSPP'); ?></div>
+                                                    <div class="col-xs-4">
+                                                        <?php echo $shippingOrder->releaseWay; ?>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('shippingNo'); ?></div>
+                                                    <div class="col-xs-10">
+                                                        <?php
+                                                        $containerStr = array();
+                                                        foreach ($shippingOrder->containerList as $container) {
+                                                            if (array_key_exists($container->containerSize, $containerStr)) {
+                                                                $containerStr[$container->containerSize] = $containerStr[$container->containerSize] + 1;
+                                                            } else {
+                                                                $containerStr[$container->containerSize] = 1;
+                                                            }
+                                                        }
+
+                                                        foreach ($containerStr as $containerSize=>$containerCount) {
+                                                            echo $containerSize . ' * ' . $containerCount . "  ";
+                                                        }
+                                                        ?>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('isbatchSPP'); ?></div>
+                                                    <div class="col-xs-4">
+                                                        <?php $canPartialShipment = 'false'; if ($shippingOrder->$canPartialShipment) $canPartialShipment = 'true'; ?>
+                                                        <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['TRUE_OR_FALSE'], $canPartialShipment); ?>
+                                                    </div>
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('state'); ?></div>
+                                                    <div class="col-xs-4 text-warning"><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['SHIPPING_ORDER_STATUS'], $shippingOrder->orderStatus); ?></div>
+                                                </div>
+
+                                                <!-- 订舱单相关附件 -->
+                                                <?php if (!empty($shippingOrder->attachmentList)): ?>
+                                                    <div class="row"><div class="col-xs-12">&nbsp;</div></div>
+                                                    <?php foreach ($shippingOrder->attachmentList as $k => $attach): ?>
+                                                        <div class="row">
+                                                            <div class="col-xs-6">
+                                                                <em class="new_upicon" style="background:url('/ky/ico/<?php echo strtolower($attach->ext); ?>.png') no-repeat;background-size: 20px;"></em>
+                                                                <a class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'] . '/doc/download.action?sid=' . session_id() . '&nid=' . $attach->attachID . '&vid=' . $attach->verifyID; ?>" download>
+                                                                    <p class="new_uptitle"><?php echo $attach->name; ?></p>
+                                                                </a>
+                                                            </div>
+                                                            <div class="col-xs-2 text-muted"><?php echo $this->translate('creatdate'); ?></div>
+                                                            <div class="col-xs-4">
+                                                                <?php echo date('Y-m-d H:i:s', strtotime($attach->createTime)); ?>
+                                                            </div>
+                                                        </div>
+                                                    <?php endforeach; ?>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endforeach;?>
+                                    <?php else:?>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <?php echo $this->translate('noData'); ?>
+                                            </div>
+                                        </div>
+                                    <?php endif;?>
+
+                                    <div class="row">
+                                        <div class="col-md-12 margin-bottom-15">
+                                            <p class="span-font-size-18 text-primary margin-top-15"><?php echo $this->translate('carsbook'); ?></p>
+                                        </div>
+                                    </div>
+
+                                    <?php if (!empty($this->listTruckingOrder)): ?>
+                                        <?php foreach ($this->listTruckingOrder as $truckingOrder): ?>
+                                            <div class="alert alert-info alert-dismissible taskDeliveryAlert" role="alert">
+                                                <div class="row">
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('truckingOrderNo'); ?></div>
+                                                    <div class="col-xs-4"><?php echo $truckingOrder->truckingOrderNo; ?></div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('carsCOM'); ?></div>
+                                                    <div class="col-xs-4"><?php echo $truckingOrder->truckerName; ?></div>
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('carsNo'); ?></div>
+                                                    <div class="col-xs-4"><?php echo $truckingOrder->plateNo; ?></div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('shippingNo'); ?></div>
+                                                    <div class="col-xs-10"><?php //echo $truckingOrder->declarer; ?></div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('carsPrice'); ?></div>
+                                                    <div class="col-xs-4">
+                                                        <?php echo $this->orders['buyerCrnCode']?> <?php echo number_format($truckingOrder->totalPrice, 2); ?>
+                                                        <?php //echo $this->ShowDictionaryTo('SEA_PORT', $this->userLangCode, $this->dic_Setting['EXPORT_POINTS'], $ShippingOrder->destinationPort); ?>
+                                                        <?php //echo $this->ShowDictionaryTo('CITY_ISO_CODE', $this->userLangCode, $this->dic_Setting['EXPORT_POINTS'], $ShippingOrder->destinationCity); ?>
+                                                    </div>
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('state'); ?></div>
+                                                    <div class="col-xs-4 text-warning"><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['TRUCKING_ORDER_STATUS'], $truckingOrder->orderStatus); ?></div>
+                                                </div>
+
+                                                <!-- 订舱单相关附件 -->
+                                                <?php if (!empty($truckingOrder->attachmentList)): ?>
+                                                    <?php foreach ($truckingOrder->attachmentList as $k => $attach): ?>
+                                                        <div class="row">
+                                                            <div class="col-xs-6">
+                                                                <em class="new_upicon" style="background:url('/ky/ico/<?php echo strtolower($attach->ext); ?>.png') no-repeat;background-size: 20px;"></em>
+                                                                <a class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'] . '/doc/download.action?sid=' . session_id() . '&nid=' . $attach->attachID . '&vid=' . $attach->verifyID; ?>" download>
+                                                                    <p class="new_uptitle"><?php echo $attach->name; ?></p>
+                                                                </a>
+                                                            </div>
+                                                            <div class="col-xs-2 text-muted"><?php echo $this->translate('creatdate'); ?></div>
+                                                            <div class="col-xs-4">
+                                                                <?php echo date('Y-m-d H:i:s', strtotime($attach->createTime)); ?>
+                                                            </div>
+                                                        </div>
+                                                    <?php endforeach; ?>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endforeach;?>
+                                    <?php else:?>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <?php echo $this->translate('noData'); ?>
+                                            </div>
+                                        </div>
+                                    <?php endif;?>
                                 </div>
                             </div>
 
@@ -1011,12 +1224,8 @@
                                 + ' <i class="layui-icon layui-icon-about text-primary"></i>'
                                 + '<br>'
                                 + '<span style="color: #ccc;">'
-                                + '责任人：' + track.operator + '&nbsp;&nbsp;&nbsp;&nbsp;状态：' + taskStatusResult
+                                + '责任人：' + track.operator + '&nbsp;&nbsp;&nbsp;&nbsp;状态：' + taskStatusResult + '&nbsp;&nbsp;&nbsp;&nbsp;' + track.bizObj.progress + '%'
                                 + '</span>'
-                                + '<br>'
-                                + '<div class="layui-progress">'
-                                + ' <div class="layui-progress-bar layui-bg-green" lay-percent="' + track.bizObj.progress + '%"></div>'
-                                + '</div>'
                                 + '</div>'
                                 + '<div class="col-sm-3">' + new Date(track.operateTime).format("yyyy-MM-dd hh:mm:ss") + '</div>';
 
