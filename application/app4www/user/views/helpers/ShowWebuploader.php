@@ -70,12 +70,18 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
                 $str .= '<li>';
 
                 if ($ext == "jpeg" || $ext == "png" || $ext == "jpg" || $ext == "gif" || $ext == "GIF" || $ext == "JPG" || $ext == "PNG" || $ext == "JPEG") {
-                    $str .= '<img width="125px" height="125px" ';
-                    // $str .= 'data-original="' . $downloadURL . '?sid=' . session_id() . '&nid=' . $attachID. '&vid=' . $verifyID.'" ';
-                    $str .= 'data-bp="' . $downloadURL . '?sid=' . session_id().'&nid=' . $attachID.'&vid=' . $verifyID.'" ';
-                    $str .= 'src="' . $downloadURL . '?sid=' . session_id(). '&nid=' . $attachID . '&vid=' . $verifyID . '&size=MIDDLE" ';
-                    $str .= 'data-caption='. $name . ' ';
-                    $str .= 'name="' . $name . '_'.$k.'" alt="' . $attachType_ . '" >';
+                    //
+                    $str .= '<a href="' . $downloadURL . '?sid=' . session_id().'&nid=' . $attachID.'&vid=' . $verifyID.'" ';
+                    $str .= 'data-fancybox="' . $bizID . '" ';
+                    $str .= 'data-caption="'. $name . '"> ';
+                    $str .= '<img width="125px" height="125px" src="' . $downloadURL . '?sid=' . session_id(). '&nid=' . $attachID . '&vid=' . $verifyID . '&size=MIDDLE" alt="" />';
+                    $str .= '</a>';
+
+                    // $str .= '<img width="125px" height="125px" ';
+                    // $str .= 'data-bp="' . $downloadURL . '?sid=' . session_id().'&nid=' . $attachID.'&vid=' . $verifyID.'" ';
+                    // $str .= 'src="' . $downloadURL . '?sid=' . session_id(). '&nid=' . $attachID . '&vid=' . $verifyID . '&size=MIDDLE" ';
+                    // $str .= 'data-caption='. $name . ' ';
+                    // $str .= 'name="' . $name . '_'.$k.'" alt="' . $attachType_ . '" >';
 
                     $str .= '<span class="del_to">';
                     if ($type != '1') {
@@ -85,8 +91,10 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
                         $str .= $name;
                     }
                     $str .= '</span>';
-                } else {
-                    $str .= '<img width="125px" height="125px" src="/ky/ico/' . strtolower($ext) . '.png" alt=' . $attachType_ . ' data-type="' . strtolower($ext) . '" />';
+                } elseif (strtolower($ext) == "pdf") {
+                    $pdfUrl = $downloadURL. '?sid=' . session_id() . '&nid=' . $attachID . '&vid=' . $verifyID;
+
+                    $str .= '<img width="125px" height="125px" src="/ky/ico/' . strtolower($ext) . '.png" alt=' . $attachType_ . ' data-type="' . strtolower($ext) . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" />';
                     $str .= '<span class="del_to">';
                     if (mb_strlen($name, 'utf-8') > 8) {
                         $str .= mb_substr($name,0,7, 'utf-8') . '...';
@@ -95,6 +103,19 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
                     }
                     $str .= '<br>';
                     $str .= '<a href="'.$this->view->seed_Setting['KyUrlex'] . '/doc/download.action?sid=' . session_id() . '&nid=' . $attachID. '&vid=' . $verifyID . '" data-type="download" download><i class="fas fa-download"></i></a>&nbsp;&nbsp;&nbsp;';
+                    $str .= '<a onclick="delete_pic(this)" data-type="del"><i class="far fa-trash-alt"></i></a>';
+                    $str .= '</span>';
+                } else {
+                    $attachUrl = $downloadURL. '?sid=' . session_id() . '&nid=' . $attachID . '&vid=' . $verifyID;
+                    $str .= '<img width="125px" height="125px" src="/ky/ico/' . strtolower($ext) . '.png" alt=' . $attachType_ . ' data-type="' . strtolower($ext) . '" />';
+                    $str .= '<span class="del_to">';
+                    if (mb_strlen($name, 'utf-8') > 8) {
+                        $str .= mb_substr($name,0,7, 'utf-8') . '...';
+                    } else {
+                        $str .= $name;
+                    }
+                    $str .= '<br>';
+                    $str .= '<a href="'. $attachUrl . '" data-type="download" download><i class="fas fa-download"></i></a>&nbsp;&nbsp;&nbsp;';
                     $str .= '<a onclick="delete_pic(this)" data-type="del"><i class="far fa-trash-alt"></i></a>';
                     $str .= '</span>';
                 }
