@@ -758,6 +758,10 @@ class PurController extends Kyapi_Controller_Action
 			$this->view->allowEdit=0;
 		}
 
+        // 订单汇率
+        $rateResultObject = $this->json->listExchangeRateApi($requestObject, $bizType, $_orderID);
+        $this->view->exchangeRateList = json_decode($rateResultObject)->result;
+
         // 报关单列表
         $listDeclarationResultObject = $this->json->listDeclarationApi($requestObject, $_orderID);
         $this->view->listDeclaration = json_decode($listDeclarationResultObject)->result;

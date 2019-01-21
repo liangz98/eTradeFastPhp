@@ -420,7 +420,13 @@
                                                     <div class="col-xs-2"><?php echo $this->translate("shopTotal"); ?></div>
                                                     <div class="col-sm-3"><b><?php echo $this->orders['buyerCrnCode']; ?></b>&nbsp;<?php echo $this->orders['totalAmount'];?></div>
                                                     <div class="col-xs-2"><?php echo $this->translate("shopPrities"); ?></div>
-                                                    <div class="col-sm-4"></div>
+                                                    <div class="col-sm-4">
+                                                        <p>
+                                                            <?php foreach ($this->exchangeRateList as $exchangeRate) {
+                                                                echo $exchangeRate->contraCrn . '-->' . $exchangeRate->baseCrn . ' ' . $exchangeRate->actualRate . '; ';
+                                                            }?>
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         <?php endif; ?>
@@ -1131,13 +1137,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title"><?php echo $this->translate('orderLogEventRiver'); ?></h4>
+                <h4 class="modal-title"><?php echo $this->translate('DERIL_log'); ?></h4>
             </div>
 
             <div class="modal-body">
-                <div class="qcContent">
-                    info Content
-                </div>
+                <div id="eventRiverContent" style="height: 400px;"></div>
             </div>
         </div>
     </div>
@@ -1162,9 +1166,12 @@
 <script type="text/javascript" src="/ky/viewer-1.0.0-dist/viewer.min.js"></script>
 <!-- BigPicture -->
 <script type="text/javascript" src="/ky/bigpicture-1.4.0-dist/BigPicture.min.js"></script>
+<!-- echarts-4.2.0 -->
+<script type="text/javascript" src="/ky/echarts-4.2.0/echarts.min.js"></script>
 
 <script type="text/javascript">
-    var dataDict = {};
+    var dataDict = {},
+        trackData = {}; // 日志
 
 	$().ready(function() {
 
@@ -1294,6 +1301,7 @@
             },
             dataType: "json",
             success: function (data) {
+                trackData = data;
                 var $trackTimeLine = $(".trackTimeLine"),
                     trackContent = '';
 
@@ -2357,6 +2365,58 @@
         });
     });
     // ********************   开票资料 End  *************************************
+
+
+
+    $('#logEventRiverModal').on('shown.bs.modal',function(){
+        // 初始化echarts实例
+        var myChart = echarts.init(document.getElementById('eventRiverContent'));
+
+        var data = [];
+        $.each(trackData, function (index, trackList) {
+            $.each(trackList, function (tackIndex, track) {
+                console.log(track);
+                data.push([new Date(track.operateTime).format("yyyy-MM-dd hh:mm"), Math.ceil(Math.random() * 50)])
+            })
+        });
+
+        console.log(data);
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '日志事件发展'
+            },
+            grid: {
+                show: false
+            },
+            tooltip: {},
+            legend: {
+                data:['事件']
+            },
+            xAxis: {
+                type: 'time'
+            },
+            yAxis: {
+                show: false
+            },
+            series: [{
+                name: '事件',
+                symbol: 'pin',
+                symbolSize: 30,
+                label: {
+                    show: true,
+                    position: 'bottom',
+                    formatter: 'label Info'
+                },
+                data: data,
+                type: 'scatter'
+            }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    });
 </script>
 </body>
 </html>

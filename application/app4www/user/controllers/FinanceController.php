@@ -421,7 +421,7 @@ class FinanceController extends Kyapi_Controller_Action
         $serviceChargeTotalAmount = 0;
         foreach ($LoanView['factoringItemList'] as $factoringitem) {
             foreach ($factoringitem['factoringLoanList'] as $factoringLoan) {
-                if ($factoringLoan['loanType'] == 'P' && $factoringLoan['serviceChargeTradingID'] != null) {
+                if ($factoringLoan['serviceCharge'] > 0 && $factoringLoan['serviceChargeTradingID'] != null) {
                     $serviceChargeTotalAmount += $factoringLoan['serviceCharge'];
                 }
             }
@@ -732,7 +732,7 @@ class FinanceController extends Kyapi_Controller_Action
         $channelRow = $this->objectToArray(json_decode($channelInfo));
         $list = $channelRow['result'];
 
-        $list['diffTime'] = $this->diffBetweenTwoDays(date("Y-m-d", time()), $list['expiryDate']);
+        $list['diffTime'] = $this->diffBetweenTwoDays(date("Y-m-d", time()), $list['expiryDate'], $list['factoring']['gracePeriod']);
         $list['companyName'] = trim($list['companyName']);
         $this->view->channelRow = $list;
 
@@ -743,7 +743,7 @@ class FinanceController extends Kyapi_Controller_Action
         }
     }
 
-    function diffBetweenTwoDays($day1, $day2) {
+    function diffBetweenTwoDays($day1, $day2, $gracePeriod) {
         $second1 = strtotime($day1);
         $second2 = strtotime($day2);
 
@@ -751,6 +751,14 @@ class FinanceController extends Kyapi_Controller_Action
             $tmp = $second2;
             $second2 = $second1;
             $second1 = $tmp;
+        } else {
+            $second2 = $second2 + $gracePeriod * 86400;
+
+            if ($second1 < $second2) {
+                $tmp = $second2;
+                $second2 = $second1;
+                $second1 = $tmp;
+            }
         }
         return ($second1 - $second2) / 86400;
     }

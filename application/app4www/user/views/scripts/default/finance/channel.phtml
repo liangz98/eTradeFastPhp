@@ -437,12 +437,14 @@
             dataType: "json",
             success: function (data) {
                 // console.log(JSON.stringify(data.options));
+                // console.log(data.options.length);
 
                 // 填入数据
                 myChart.setOption({
                     baseOption: {
                         timeline: {
-                            data: data.totalYear
+                            data: data.totalYear,
+                            currentIndex: data.options.length - 1
                         }
                     },
                     options: data.options

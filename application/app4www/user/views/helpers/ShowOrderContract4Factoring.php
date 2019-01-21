@@ -59,7 +59,7 @@ class Zend_View_Helper_ShowOrderContract4Factoring extends Shop_View_Helper {
                 if (!empty($v['secondParty']) && $v['secondParty'] == $accountID) {
                     // 企业
                     if ($v['secondPartySignMode'] == "E" || $v['secondPartySignMode'] == "B") {
-                        if (empty($v['secondPartySigningDate'])) {
+                        if (empty($v['secondPartySignedDate'])) {
                             $isESigned = false;
                         }
                     }
@@ -79,7 +79,7 @@ class Zend_View_Helper_ShowOrderContract4Factoring extends Shop_View_Helper {
                 if (!empty($v['thirdParty']) && $v['thirdParty'] == $accountID) {
                     // 企业
                     if ($v['thirdPartySignMode'] == "E" || $v['thirdPartySignMode'] == "B") {
-                        if (empty($v['thirdPartySigningDate'])) {
+                        if (empty($v['thirdPartySignedDate'])) {
                             $isESigned = false;
                         }
                     }

@@ -234,7 +234,7 @@
                                 </tr>
                                 <?php else:?>
                                     <?php foreach ($factoringItem['factoringLoanList'] as $serviceCharge):?>
-                                        <?php if (!empty($serviceCharge['serviceChargeTradingID']) && $serviceCharge['loanType'] == 'P'): ?>
+                                        <?php if (!empty($serviceCharge['serviceChargeTradingID']) && $serviceCharge['serviceCharge'] > 0): ?>
                                             <tr>
                                                 <td data-visible="false"><?php echo $factoringItem['itemNo']; ?></td>
                                                 <td style="vertical-align: middle; "><?php echo $serviceCharge['loanNo']; ?></td>

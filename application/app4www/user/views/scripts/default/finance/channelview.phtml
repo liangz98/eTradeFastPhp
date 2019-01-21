@@ -19,34 +19,45 @@
                 <div class="row text-white">
                     <div class="col-sm-12 col-md-8 border-right-solid-white">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="row span-margin">
                                     <div class="col-md-12">
-                                        <p class="text-center"><?php echo $this->translate('financingAmountview'); ?></p>
+                                        <p class="text-center">计划<?php echo $this->translate('financingAmountview'); ?></p>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <p class="text-center span-font-size-30"><?php echo $this->channelRow['financingCrnCode'] ?> <?php echo $this->channelRow['financingAmount'] ?></p>
+                                        <p class="text-center span-font-size-30"><?php echo $this->channelRow['financingCrnCode'] ?> <?php echo number_format($this->channelRow['tgtFinancingAmount'], 2) ?></p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="row span-margin">
                                     <div class="col-md-12">
-                                        <p class="text-center"><?php echo $this->translate('arr'); ?></p>
+                                        <p class="text-center"><abbr title="预计利息收入 / 计划投入资金 = 计划收效率">计划<?php echo $this->translate('arr'); ?></abbr></p>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <p class="text-center span-font-size-30"><?php echo number_format($this->channelRow['interest'] / $this->channelRow['financingAmount'] * 100, 2); ?> %</p>
+                                        <p class="text-center span-font-size-30"><?php echo number_format($this->channelRow['interest'] / $this->channelRow['tgtFinancingAmount'] * 100, 2); ?> %</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="row span-margin">
                                     <div class="col-md-12">
-                                        <p class="text-center"><?php echo $this->translate('diffTimes'); ?></p>
+                                        <?php
+                                        $dateNow = strtotime(date("Y-m-d", time()));
+                                        $expiryDate = strtotime($this->channelRow['expiryDate']);
+                                        $graceDate = $expiryDate + $this->channelRow['factoring']['gracePeriod'] * 86400;
+                                        ?>
+                                        <?php if ($dateNow < $expiryDate): ?>
+                                            <p class="text-center"><?php echo $this->translate('diffTimes'); ?></p>
+                                        <?php elseif ($dateNow < $graceDate):?>
+                                            <p class="text-center"><?php echo $this->translate('距宽限日'); ?></p>
+                                        <?php else: ?>
+                                            <p class="text-center"><?php echo $this->translate('逾期'); ?></p>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -146,33 +157,33 @@
 
                 <div class="row">
                     <div class="col-md-2">
-                        <p class="form-control-static text-999"><?php echo $this->translate('financingAmountview'); ?></p>
+                        <p class="form-control-static text-999"><?php echo $this->translate('当前投入'); ?></p>
                     </div>
                     <div class="col-md-10">
                         <p class="form-control-static text-666">
-                            <?php echo $this->channelRow['factoring']['financingCrnCode'] . '&nbsp;' . $this->ShowToPrice($this->channelRow['financingAmount']); ?>
+                            <?php echo $this->channelRow['financingCrnCode'] . '&nbsp;' . $this->ShowToPrice($this->channelRow['actualTgtFinancingAmount']); ?>
                         </p>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-2">
-                        <p class="form-control-static text-999"><?php echo $this->translate('yjsy'); ?></p>
+                        <p class="form-control-static text-999"><?php echo $this->translate('当前收益'); ?></p>
                     </div>
                     <div class="col-md-10">
                         <p class="form-control-static text-666">
-                            <?php echo $this->channelRow['factoring']['financingCrnCode'] . '&nbsp;' . $this->ShowToPrice($this->channelRow['interest']); ?>
+                            <?php echo $this->channelRow['financingCrnCode'] . '&nbsp;' . $this->ShowToPrice($this->channelRow['actualInterest']); ?>
                         </p>
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row hidden">
                     <div class="col-md-2">
                         <p class="form-control-static text-999"><?php echo $this->translate('Finance_project_total'); ?></p>
                     </div>
                     <div class="col-md-10">
                         <p class="form-control-static text-666">
-                            <?php echo $this->channelRow['crnCode'] . '&nbsp;' . $this->ShowToPrice($this->channelRow['financingAmount'] + $this->channelRow['interest']); ?>
+                            <?php echo $this->channelRow['financingCrnCode'] . '&nbsp;' . $this->ShowToPrice($this->channelRow['actualTgtFinancingAmount'] + $this->channelRow['actualInterest']); ?>
                         </p>
                     </div>
                 </div>

@@ -50,7 +50,7 @@
 						<div class="layui-input-block">
 							<div class="layui-form-mid layui-word-aux">
 								<?php echo $deliverySupplier->supplier->regdAddress ?>
-								<a href="tel:<?php echo $deliverySupplier->supplier->phone ?>" class="text-white"><?php echo $deliverySupplier->supplier->phone ?></a>
+								<a href="tel:<?php echo $deliverySupplier->supplier->phone ?>" class="text-muted"><?php echo $deliverySupplier->supplier->phone ?></a>
 							</div>
 						</div>
 					</div>
@@ -73,7 +73,7 @@
 							<div class="layui-form-mid layui-word-aux">
 								<label class="expressName_"><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['EXPRESS_TYPE'], $deliverySupplier->expressType); ?></label>&nbsp;&nbsp;
 								<label class="expressNo_"><?php echo $deliverySupplier->expressNo ?></label>&nbsp;&nbsp;
-								<a href='javascript:void(0)' class="billingExpressEdit link-hover"><?php echo $this->translate('edit'); ?></a>
+								<a href='javascript:void(0)' class="billingExpressEdit btn btn-warning"><?php echo $this->translate('edit'); ?></a>
 							</div>
 						</div>
 						<div class="layui-input-inline expressEdit" style="width: 180px; <?php if ($deliverySupplier->expressNo != null || $deliverySupplier->expressNo != '') { echo 'display: none;';} ?>">
@@ -87,7 +87,7 @@
 							<input type="text" id="expressNo" name="expressNo" lay-verify="" autocomplete="off" value="<?php echo $deliverySupplier->expressNo ?>" placeholder="请填写<?php echo $this->translate('expressNo'); ?>" class="layui-input">
 						</div>
 						<div class="layui-input-inline expressEdit" style="width: 80px; <?php if ($deliverySupplier->expressNo != null || $deliverySupplier->expressNo != '') { echo 'display: none;';} ?>">
-							<a href='javascript:void(0)' class="billingExpressEditSave line-height-35 link-hover" data-delivery-supplier-id="<?php echo $deliverySupplier->deliverySupplierID; ?>" >
+							<a href='javascript:void(0)' class="billingExpressEditSave btn btn-warning" data-delivery-supplier-id="<?php echo $deliverySupplier->deliverySupplierID; ?>" >
 								<?php echo $this->translate('save'); ?>
 							</a>
 						</div>
@@ -109,11 +109,19 @@
 					<div class="layui-form-item margin-bottom-1">
 						<label class="layui-form-label width-100 text-align-left billingInfoFont font-blue">开票指引</label>
                         <div class="col-xs-12">
-                            <?php
-                            $supplierList = array();
-                            $supplierList[] = $deliverySupplier->supplier;
-                            echo $this->ShowTopContract($supplierList, $this->accountID, 'DLIG', null, $this->hasIDCertificate);
-                            ?>
+                            <?php //echo $this->ShowUPimg($deliverySupplier->attachmentList, $deliverySupplier->deliverySupplierID); ?>
+
+                            <?php foreach ($deliverySupplier->attachmentList as $k => $attach): ?>
+                                <div class="col-xs-8">
+                                    <em class="new_upicon" style="background:url('/ky/ico/<?php echo strtolower($attach->ext); ?>.png') no-repeat;background-size: 20px;"></em>
+                                    <a class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'] . '/doc/download.action?sid=' . session_id() . '&nid=' . $attach->attachID . '&vid=' . $attach->verifyID; ?>" download>
+                                        <p class="new_uptitle"><?php echo $attach->name; ?></p>
+                                    </a>
+                                </div>
+                                <div class="col-xs-4">
+                                    <?php echo $this->translate('creatdate') . " " . date('Y-m-d H:i:s', strtotime($attach->createTime)); ?>
+                                </div>
+                            <?php endforeach; ?>
 						</div>
 					</div>
 				</div>
