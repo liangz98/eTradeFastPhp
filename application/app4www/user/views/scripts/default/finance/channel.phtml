@@ -220,7 +220,7 @@
                     }
                 },
                 legend: {
-                    data:['收益', '应收收益']
+                    data:['实际收益', '应计收益']
                 },
                 xAxis: {
                     type: 'category',
@@ -230,7 +230,11 @@
                     type: 'value'
                 },
                 series: [{
-                    name: '收益',
+                    name: '实际收益',
+                    type: 'bar',
+                    data: [220, 182, 191, 234, 290]
+                }, {
+                    name: '应计收益',
                     data: [1, 2, 15, 20, 8, 20, 32, 7],
                     type: 'line',
                     itemStyle: {
@@ -238,10 +242,6 @@
                             label: {show: true}
                         }
                     }
-                },{
-                    name: '应收收益',
-                    type: 'bar',
-                    data: [220, 182, 191, 234, 290]
                 }]
             },
             options: [

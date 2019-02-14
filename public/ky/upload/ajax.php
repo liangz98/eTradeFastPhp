@@ -126,7 +126,8 @@ if (isset($_POST)) {
             "size"       => $size,
             "attachTT"   => $attachType,
             "bizTT"      => $bizType,
-            "uploadType" => $typeDD
+            "uploadType" => $typeDD,
+            "bizID"      => $bizID
         ));
     } else {
         echo json_encode(array(

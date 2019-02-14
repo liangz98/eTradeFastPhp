@@ -92,6 +92,7 @@ function webupload_pic() {
             var type = response.type;
             var attachTT = response.attachTT;
             var bizTT = response.bizTT;
+            var bizID = response.bizID;
 
           //  str={"nid":nid,"name":name,"size":size,"attachType":attachType};
             var i="1";
@@ -121,7 +122,7 @@ function webupload_pic() {
             }
 
             if (type !== "jpeg" && type !== "png" && type !== "jpg" && type !== "gif" && type !== "GIF" && type !== "JPG" && type !== "PNG") {
-                $(".webupload_current").parent().parent().find('.img-view').append("<li><img width='125px' height='125px' class='img_common' src='/ky/ico/" + type + ".png' data-type='" + type + "' alt=" + name.substr(0,7) + "></a><span class='del_to' >" + name.substr(0, 7) + "..." + "<br><a href=" + response.doc + " data-type='download' download><i class='fas fa-download'></i></a>&nbsp;&nbsp;&nbsp;<a onclick='delete_pic(this)' data-type='del'><i class='far fa-trash-alt'></i></a></span>" +
+                $(".webupload_current").parent().parent().find('.img-view').append("<li><img width='125px' height='125px' class='img_common' src='/ky/ico/" + type + ".png' data-type='" + type + "' alt=" + name.substr(0,7) + "><span class='del_to' >" + name.substr(0, 7) + "..." + "<br><a href=" + response.doc + " data-type='download' download><i class='fas fa-download'></i></a>&nbsp;&nbsp;&nbsp;<a onclick='delete_pic(this)' data-type='del'><i class='far fa-trash-alt'></i></a></span>" +
                     "<input type='hidden' name='attachNid[]' value=" + nid + "><input type='hidden'  name='attachName[]' value=" + name + "><input type='hidden'  name='attachSize[]' value=" + size + "><input type='hidden'  name='attachType[]' value=" + attach_new + "><input type='hidden'  name='bizType[]' value=" + bizTT + "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
                 if (attach_new === "CRSE" || attach_new === "ODSE") {
                     if ($('#KEY_CRCT').length > 0) {
@@ -139,10 +140,10 @@ function webupload_pic() {
                 }
             } else {
                 if (response.uploadType === '1') {
-                    $(".webupload_current").parent().parent().find('.img-view').append("<li><img width='125px' height='125px' class='img_common' src="  + response.pic + " data-bp=" + response.fullPic + " alt=''/><span class='del_to' >" + name + "</span>" +
+                    $(".webupload_current").parent().parent().find('.img-view').append("<li><a href=" + response.fullPic + " data-fancybox-class='gallery' data-caption=" + name + " data-fancybox=" + bizID + "><img width='125px' height='125px' class='img_common' src="  + response.pic + " alt=''/></a><span class='del_to' >" + name + "</span>" +
                         "<input type='hidden' name='attachNid[]' value=" +nid+ "><input type='hidden'  name='attachName[]' value="+name+ "><input type='hidden'  name='attachSize[]' value="+size+ "><input type='hidden'  name='attachType[]' value="+attach_new+ "><input type='hidden'  name='bizType[]' value="+bizTT+ "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
                 } else {
-                    $(".webupload_current").parent().parent().find('.img-view').append("<li><img width='125px' height='125px' class='img_common' src="  + response.pic + " data-bp=" + response.fullPic + " alt=''/><span class='del_to' >" + name.substr(0, 7) + "..." + "<br><a onclick='delete_pic(this)'><i class=\"far fa-trash-alt\"></i></a></span>" +
+                    $(".webupload_current").parent().parent().find('.img-view').append("<li><a href=" + response.fullPic + " data-fancybox-class='gallery' data-caption=" + name + " data-fancybox=" + bizID + "><img width='125px' height='125px' class='img_common' src="  + response.pic + " alt=''/></a><span class='del_to' >" + name.substr(0, 7) + "..." + "<br><a onclick='delete_pic(this)'><i class=\"far fa-trash-alt\"></i></a></span>" +
                         "<input type='hidden' name='attachNid[]' value=" +nid+ "><input type='hidden'  name='attachName[]' value="+name+ "><input type='hidden'  name='attachSize[]' value="+size+ "><input type='hidden'  name='attachType[]' value="+attach_new+ "><input type='hidden'  name='bizType[]' value="+bizTT+ "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
                 }
 
@@ -161,6 +162,9 @@ function webupload_pic() {
                     }
                 }
             }
+
+            // 上传成功后, 重新初始化fancybox3
+            $("[data-fancybox-class^='gallery']").fancybox();
         });
 
         uploader.on('uploadError', function(file, reason) {

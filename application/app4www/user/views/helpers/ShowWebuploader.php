@@ -71,7 +71,8 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
 
                 if ($ext == "jpeg" || $ext == "png" || $ext == "jpg" || $ext == "gif" || $ext == "GIF" || $ext == "JPG" || $ext == "PNG" || $ext == "JPEG") {
                     //
-                    $str .= '<a href="' . $downloadURL . '?sid=' . session_id().'&nid=' . $attachID.'&vid=' . $verifyID.'" ';
+                    $str .= '<a class="grouped_elements" href="' . $downloadURL . '?sid=' . session_id().'&nid=' . $attachID.'&vid=' . $verifyID.'" ';
+                    $str .= 'data-fancybox-class="gallery" ';
                     $str .= 'data-fancybox="' . $bizID . '" ';
                     $str .= 'data-caption="'. $name . '"> ';
                     $str .= '<img width="125px" height="125px" src="' . $downloadURL . '?sid=' . session_id(). '&nid=' . $attachID . '&vid=' . $verifyID . '&size=MIDDLE" alt="" />';
@@ -91,7 +92,7 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
                         $str .= $name;
                     }
                     $str .= '</span>';
-                } elseif (strtolower($ext) == "pdf") {
+                } elseif ($ext == "doc" || $ext == "xls" || $ext == "ppt" || strtolower($ext) == "pdf") {
                     $pdfUrl = $downloadURL. '?sid=' . session_id() . '&nid=' . $attachID . '&vid=' . $verifyID;
 
                     $str .= '<img width="125px" height="125px" src="/ky/ico/' . strtolower($ext) . '.png" alt=' . $attachType_ . ' data-type="' . strtolower($ext) . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" />';

@@ -6,8 +6,8 @@
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/order/order.css" rel="stylesheet">
     <link href="/ky/css/img-upload.css" rel="stylesheet">
-    <!-- Viewer -->
-    <link href="/ky/viewer-1.0.0-dist/viewer.min.css" rel="stylesheet">
+    <!-- fancybox -->
+    <link href="/ky/fancybox-3.5.6-dist/jquery.fancybox.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -1056,10 +1056,9 @@
 <!-- pdf -->
 <script type="text/javascript" src="/ky/pdf/pdf.js"></script>
 <script type="text/javascript" src="/ky/pdf/pdf.worker.js"></script>
-<!-- viewer -->
-<script type="text/javascript" src="/ky/viewer-1.0.0-dist/viewer.min.js"></script>
-<!-- BigPicture -->
-<script type="text/javascript" src="/ky/bigpicture-1.4.0-dist/BigPicture.min.js"></script>
+<!-- fancybox -->
+<script type="text/javascript" src="/ky/fancybox-3.5.6-dist/jquery.fancybox.min.js"></script>
+<script type="text/javascript" src="/ky/fancybox-3.5.6-dist/fancyboxInit.js"></script>
 
 <script type="text/javascript">
     var dataDict = {};
@@ -1076,14 +1075,6 @@
                 $(this).removeClass('nav-selected');
             }
         });
-
-        // viewer
-        // 先判断是否有图片, 再初始化viewer
-        if ($(".img-view > li").length > 0) {
-            $(".img-view").viewer({
-                url: "data-original"
-            });
-        }
 
         var $trackTimeBtn = $(".trackTimeBtn"),
             $trackEventBtn = $(".trackEventBtn"),
