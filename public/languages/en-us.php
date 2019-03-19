@@ -279,6 +279,8 @@ return array(
     'WebINF'       => 'Account Info.',
     'signature'    => '企业签署人',
     'setSignature' => '设为签署人',
+    'compAdmin'    => '公司管理员',
+    'setCompAdmin' => '设为公司管理员',
 
     // 手机
     'apps'         => 'Apps',
@@ -378,6 +380,11 @@ return array(
     'packINF'               => 'Packing Info.',
     'netWeight'             => 'Net Weight',
     'grossWeight'           => 'Gross Weight',
+    'packingNetWeight'      => '每件净重',
+    'packingGrossWeight'    => '每件毛重',
+    'totalNetWeight'        => '总净重',
+    'totalGrossWeight'      => '总毛重',
+    'totalVolume'           => '总体积',
     'needInspection'        => 'Required Inspection',
     'productionMode'        => 'Production Method',
     'image'                 => 'Image',
@@ -1255,5 +1262,7 @@ return array(
     'shippingOrderNo' => 'ShippingNo',
     'truckingOrderNo' => 'TruckingNo',
     'orderLogKeyword' => 'Keyword',
-    'orderLogEventRiver' => 'Event River'
+    'orderLogEventRiver' => 'Event River',
+
+    'remind'    =>  'Remind'
 );

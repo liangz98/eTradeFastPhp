@@ -353,23 +353,33 @@
                                                     </div>
 
                                                     <div class="row">
-                                                        <div class="col-xs-2"><?php echo $this->translate("netWeight"); ?></div>
-                                                        <div class="col-sm-1"><?php echo $goods['netWeight'];?></div>
+                                                        <div class="col-xs-2"><?php echo $this->translate("packingNetWeight"); ?></div>
+                                                        <div class="col-sm-1"><?php echo $goods['packingNetWeight'];?></div>
                                                         <div class="col-xs-1">x</div>
-                                                        <div class="col-sm-1"><?php echo $goods['quantity'];?></div>
+                                                        <div class="col-sm-1"><?php echo $goods['totalPackage'];?></div>
                                                         <div class="col-xs-1">=</div>
                                                         <div class="col-sm-1"><?php echo $goods['totalNetWeight'];?></div>
                                                         <div class="col-sm-1">KGS</div>
                                                     </div>
 
                                                     <div class="row">
-                                                        <div class="col-xs-2"><?php echo $this->translate("grossWeight"); ?></div>
-                                                        <div class="col-sm-1"><?php echo $goods['grossWeight'];?></div>
+                                                        <div class="col-xs-2"><?php echo $this->translate("packingGrossWeight"); ?></div>
+                                                        <div class="col-sm-1"><?php echo $goods['packingGrossWeight'];?></div>
                                                         <div class="col-xs-1">x</div>
-                                                        <div class="col-sm-1"><?php echo $goods['quantity'];?></div>
+                                                        <div class="col-sm-1"><?php echo $goods['totalPackage'];?></div>
                                                         <div class="col-xs-1">=</div>
                                                         <div class="col-sm-1"><?php echo $goods['totalGrossWeight'];?></div>
                                                         <div class="col-sm-1">KGS</div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-xs-2"><?php echo $this->translate("packingVolume"); ?></div>
+                                                        <div class="col-sm-1"><?php echo $goods['packingVolume'];?></div>
+                                                        <div class="col-xs-1">x</div>
+                                                        <div class="col-sm-1"><?php echo $goods['totalPackage'];?></div>
+                                                        <div class="col-xs-1">=</div>
+                                                        <div class="col-sm-1"><?php echo $goods['totalVolume'];?></div>
+                                                        <div class="col-sm-1">CBM</div>
                                                     </div>
 
                                                     <?php if ($this->orders['quotationMode'] === 'IV'): ?>
@@ -956,7 +966,7 @@
 
 <!-- Modal 查看发货记录 -->
 <div class="modal fade" id="viewDelivery" tabindex="-1" role="dialog" aria-labelledby="viewDeliveryLabel">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg" role="document" style="width: 1080px !important;">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -981,7 +991,7 @@
 
 <!-- Modal 添加发货记录 -->
 <div class="modal fade" id="addDelivery" tabindex="-1" role="dialog" aria-labelledby="addDeliveryLabel">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg" role="document" style="width: 1080px !important;">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -992,8 +1002,12 @@
                 <div class="layui-form-item table-responsive">
                     <table class="table layui-table" lay-skin="line">
                         <colgroup>
-                            <col>
                             <col width="140">
+                            <col width="140">
+                            <col width="60">
+                            <col width="100">
+                            <col width="100">
+                            <col width="100">
                             <col width="100">
                             <col width="100">
                             <col width="160">
@@ -1004,23 +1018,67 @@
                             <th><?php echo $this->translate('model'); ?></th>
                             <th><?php echo $this->translate('uprice'); ?></th>
                             <th><?php echo $this->translate('number'); ?></th>
+                            <th><?php echo $this->translate('quantity'); ?></th>
+                            <th><?php echo $this->translate('totalNetWeight'); ?>(KGS)</th>
+                            <th><?php echo $this->translate('totalGrossWeight'); ?>(KGS)</th>
+                            <th><?php echo $this->translate('totalVolume'); ?>(CBM)</th>
                             <th><?php echo $this->translate('ordertotal'); ?></th>
                         </tr>
                         </thead>
                         <tbody>
                         <?php foreach ($this->orderItemList as $index => $value):?>
                             <tr>
-                                <td style="text-align: left"><?php echo $value->productName;?></td>
-                                <td style="text-align: left"><?php echo $value->productModel;?></td>
-                                <td style="text-align: left"><?php echo $this->deliveryCrnCode;?><label><?php echo $value->unitPrice;?></label></td>
-                                <td style="text-align: left">
+                                <td style="text-align: left; vertical-align: middle;"><?php echo $value->productName;?></td>
+                                <td style="text-align: left; vertical-align: middle;"><?php echo $value->productModel;?></td>
+                                <td style="text-align: left; vertical-align: middle;">
+                                    <?php echo $this->deliveryCrnCode;?> <?php echo $value->unitPrice;?>
+                                    <input type="hidden" id="unitPrice_<?php echo $value->itemID;?>" value="<?php echo $value->unitPrice;?>">
+                                </td>
+                                <td style="text-align: left; vertical-align: middle;">
                                     <?php
                                     $quantity = $value->quantity - $value->deliveryQuantity <= 0  ? 0 : $value->quantity - $value->deliveryQuantity;
                                     ?>
-                                    <input name="deliveryQuantity_add" class="layui-input" value="<?php echo $quantity;?>" />
+                                    <input name="deliveryQuantity_add" data-item-id="<?php echo $value->itemID;?>" class="layui-input" value="<?php echo $quantity;?>" />
                                     <input type="hidden" name="orderItemID_add" value="<?php echo $value->itemID;?>" />
                                 </td>
-                                <td style="text-align: left"><?php echo $this->orders['buyerCrnCode']?>&nbsp;<label id="itemID_<?php echo $value->itemID;?>"></label></td>
+                                <td>
+                                    <?php
+                                    $packingQuantity = $value->packingQuantity <= 0  ? 1 : $value->packingQuantity;
+                                    $totalPackage = ceil($quantity / $packingQuantity);
+                                    ?>
+                                    <input name="deliveryTotalPackage_add" id="deliveryTotalPackage_<?php echo $value->itemID;?>" data-item-id="<?php echo $value->itemID;?>" class="layui-input" value="<?php echo $totalPackage;?>" />
+                                    <input type="hidden" id="packingQuantity_<?php echo $value->itemID;?>" value="<?php echo $packingQuantity;?>">
+                                </td>
+                                <td>
+                                    <?php
+                                    $packingNetWeight = $value->packingNetWeight <= 0  ? 0 : $value->packingNetWeight;
+                                    $totalNetWeight = $totalPackage * $packingNetWeight;
+                                    ?>
+                                    <input name="deliveryTotalNetWeight_add" id="deliveryTotalNetWeight_<?php echo $value->itemID;?>" data-item-id="<?php echo $value->itemID;?>" class="layui-input" value="<?php echo $totalNetWeight;?>" />
+                                    <input type="hidden" id="packingNetWeight_<?php echo $value->itemID;?>" value="<?php echo $packingNetWeight;?>">
+                                </td>
+                                <td>
+                                    <?php
+                                    $packingGrossWeight = $value->packingGrossWeight <= 0  ? 0 : $value->packingGrossWeight;
+                                    $totalGrossWeight = $totalPackage * $packingGrossWeight;
+                                    ?>
+                                    <input name="deliveryTotalGrossWeight_add" id="deliveryTotalGrossWeight_<?php echo $value->itemID;?>" data-item-id="<?php echo $value->itemID;?>" class="layui-input" value="<?php echo $totalGrossWeight;?>" />
+                                    <input type="hidden" id="packingGrossWeight_<?php echo $value->itemID;?>" value="<?php echo $packingGrossWeight;?>">
+                                </td>
+                                <td>
+                                    <?php
+                                    $packingVolume = $value->packingVolume <= 0  ? 0 : $value->packingVolume;
+                                    $totalVolume = $totalPackage * $packingNetWeight;
+                                    ?>
+                                    <input name="deliveryTotalVolume_add" id="deliveryTotalVolume_<?php echo $value->itemID;?>" data-item-id="<?php echo $value->itemID;?>" class="layui-input" value="<?php echo $totalVolume;?>" />
+                                    <input type="hidden" id="packingVolume_<?php echo $value->itemID;?>" value="<?php echo $packingVolume;?>">
+                                </td>
+                                <td style="text-align: left; vertical-align: middle;">
+                                    <?php
+                                    $totalAmount = $value->unitPrice * $quantity;
+                                    ?>
+                                    <?php echo $this->orders['buyerCrnCode']?>&nbsp;<label id="itemID_<?php echo $value->itemID;?>"><?php echo number_format($totalAmount, 2); ?></label>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                         </tbody>
@@ -1043,7 +1101,7 @@
 
 <!-- Modal 编辑发货记录 -->
 <div class="modal fade" id="editDelivery" tabindex="-1" role="dialog" aria-labelledby="editDeliveryLabel">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg" role="document" style="width: 1080px !important;">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -1519,6 +1577,9 @@
         } else {
             $(".person-sign-button").show().attr("contractID_", obj.id);
         }
+
+        // 在物流详情页签署的时候, 如果有弹出层, 会影响到input框无法输入
+        $("#viewDelivery").modal('hide');
     }
 
     //document.getElementById('prev').addEventListener('click', onPrevPage);
@@ -1860,6 +1921,7 @@
             time: 0 //不自动关闭
             ,btn: ['确定', '取消']
             ,yes: function(index){
+                layer.close(layer.index);
                 $.ajax({
                     type: "POST",
                     url: delDelivery,
@@ -1918,10 +1980,14 @@
                 } else {
                     content += '<table class="layui-table" lay-skin="line" id="deliveryEditTable">'
                         + '<colgroup>'
-                        + ' <col>'
                         + ' <col width="140">'
-                        + ' <col width="120">'
-                        + ' <col width="80">'
+                        + ' <col width="140">'
+                        + ' <col width="60">'
+                        + ' <col width="100">'
+                        + ' <col width="100">'
+                        + ' <col width="100">'
+                        + ' <col width="100">'
+                        + ' <col width="100">'
                         + ' <col width="160">'
                         + '</colgroup>'
                         + '<thead>'
@@ -1930,6 +1996,10 @@
                         + ' <th><?php echo $this->translate("model"); ?></th>'
                         + ' <th><?php echo $this->translate("uprice"); ?></th>'
                         + ' <th><?php echo $this->translate("number"); ?></th>'
+                        + ' <th><?php echo $this->translate("quantity"); ?></th>'
+                        + ' <th><?php echo $this->translate("totalNetWeight"); ?>(KGS)</th>'
+                        + ' <th><?php echo $this->translate("totalGrossWeight"); ?>(KGS)</th>'
+                        + ' <th><?php echo $this->translate("totalVolume"); ?>(CBM)</th>'
                         + ' <th><?php echo $this->translate("ordertotal"); ?></th>'
                         + '</thead>'
                         + '<tbody>';
@@ -1940,10 +2010,27 @@
                             + '<td style="text-align: left">' + deliveryItem.productModel + '</td>'
                             + '<td style="text-align: left">' + data.delivery.crnCode + '&nbsp;<label>' + formatCurrency(deliveryItem.buyerUnitPrice, 2) + '</label></td>'
                             + '<td style="text-align: left">'
-                            + '<input name="deliveryQuantity_edit" class="layui-input" value="' + deliveryItem.deliveryQuantity + '" />'
+                            + '<input name="deliveryQuantity_edit" data-item-id="' + deliveryItem.itemID + '" class="layui-input" value="' + deliveryItem.deliveryQuantity + '" />'
+                            + '<input type="hidden" id="unitPriceEdit_' + deliveryItem.itemID + '" value="' + deliveryItem.buyerUnitPrice + '" />'
+                            + '<input type="hidden" id="packingQuantityEdit_' + deliveryItem.itemID + '" value="' + deliveryItem.packingQuantity + '" />'
+                            + '<input type="hidden" id="packingNetWeightEdit_' + deliveryItem.itemID + '" value="' + deliveryItem.packingNetWeight + '" />'
+                            + '<input type="hidden" id="packingGrossWeightEdit_' + deliveryItem.itemID + '" value="' + deliveryItem.packingGrossWeight + '" />'
+                            + '<input type="hidden" id="packingVolumeEdit_' + deliveryItem.itemID + '" value="' + deliveryItem.packingVolume + '" />'
                             + '<input type="hidden" name="orderItemID_edit" value="' + deliveryItem.itemID + '" />'
                             + '</td>'
-                            + '<td style="text-align: left">' + data.delivery.crnCode + '&nbsp;<label id="itemID_' + deliveryItem.itemID + '">' + formatCurrency(deliveryItem.buyerTotalAmount, 2) + '</label></td>'
+                            + '<td style="text-align: left">'
+                            + '<input name="deliveryTotalPackage_edit" id="deliveryTotalPackageEdit_' + deliveryItem.itemID + '" data-item-id="' + deliveryItem.itemID + '" class="layui-input" value="' + deliveryItem.totalPackages + '" />'
+                            + '</td>'
+                            + '<td style="text-align: left">'
+                            + '<input name="deliveryTotalNetWeight_edit" id="deliveryTotalNetWeightEdit_' + deliveryItem.itemID + '" data-item-id="' + deliveryItem.itemID + '" class="layui-input" value="' + deliveryItem.totalNetWeight + '" />'
+                            + '</td>'
+                            + '<td style="text-align: left">'
+                            + '<input name="deliveryTotalGrossWeight_edit" id="deliveryTotalGrossWeightEdit_' + deliveryItem.itemID + '" data-item-id="' + deliveryItem.itemID + '" class="layui-input" value="' + deliveryItem.totalGrossWeight + '" />'
+                            + '</td>'
+                            + '<td style="text-align: left">'
+                            + '<input name="deliveryTotalVolume_edit" id="deliveryTotalVolumeEdit_' + deliveryItem.itemID + '" data-item-id="' + deliveryItem.itemID + '" class="layui-input" value="' + deliveryItem.totalVolume + '" />'
+                            + '</td>'
+                            + '<td style="text-align: left">' + data.delivery.crnCode + '&nbsp;<label id="itemIDEdit_' + deliveryItem.itemID + '">' + formatCurrency(deliveryItem.buyerTotalAmount, 2) + '</label></td>'
                             + '</tr>';
                     });
 
@@ -1985,18 +2072,57 @@
                 $attachView.html(attachmentContent);
 
                 $("input[name='deliveryQuantity_edit']").keyup(function () {
-                    var unitPrice = $(this).parent().prev().find("label").html();
-                    var quantity = $(this).val();
+                    var itemID = $(this).attr("data-item-id"),
+                        unitPrice = $("#unitPriceEdit_" + itemID).val(),
+                        quantity = $(this).val(),
+                        packingQuantity = $("#packingQuantityEdit_" + itemID).val(),
+                        totalPackage = Math.ceil(quantity / packingQuantity);
                     if (isNaN(quantity)) {
                         quantity = 0;
                     }
-                    var totalAmount = arithMul(unitPrice, quantity);
+                    // 修改总件数
+                    $("#deliveryTotalPackageEdit_" + itemID).val(totalPackage);
 
-                    totalAmount = formatCurrency(totalAmount, 2);
-                    $(this).parent().next().find("label").html(totalAmount);
+                    // 修改净重
+                    var packingNetWeight = $("#packingNetWeightEdit_" + itemID).val();
+                    $("#deliveryTotalNetWeightEdit_" + itemID).val((packingNetWeight * totalPackage).toFixed(2));
+
+                    // 修改毛重
+                    var packingGrossWeight = $("#packingGrossWeightEdit_" + itemID).val();
+                    $("#deliveryTotalGrossWeightEdit_" + itemID).val((packingGrossWeight * totalPackage).toFixed(2));
+
+                    // 修改体积
+                    var packingVolume = $("#packingVolumeEdit_" + itemID).val();
+                    $("#deliveryTotalVolumeEdit_" + itemID).val((packingVolume * totalPackage).toFixed(2));
+
+                    // 修改总价
+                    var totalAmount = arithMul(unitPrice, quantity);
+                    $("#itemIDEdit_" + itemID).html(formatCurrency(totalAmount, 2));
+                });
+                // 修改件数
+                $("input[name='deliveryTotalPackage_edit']").keyup(function () {
+                    var itemID = $(this).attr("data-item-id"),
+                        totalPackage = $(this).val();
+                    if (isNaN(totalPackage)) {
+                        totalPackage = 0;
+                    }
+
+                    console.log(itemID);
+                    // 修改净重
+                    var packingNetWeight = $("#packingNetWeightEdit_" + itemID).val();
+                    $("#deliveryTotalNetWeightEdit_" + itemID).val((packingNetWeight * totalPackage).toFixed(2));
+
+                    // 修改毛重
+                    var packingGrossWeight = $("#packingGrossWeightEdit_" + itemID).val();
+                    $("#deliveryTotalGrossWeightEdit_" + itemID).val((packingGrossWeight * totalPackage).toFixed(2));
+
+                    // 修改体积
+                    var packingVolume = $("#packingVolumeEdit_" + itemID).val();
+                    $("#deliveryTotalVolumeEdit_" + itemID).val((packingVolume * totalPackage).toFixed(2));
                 });
 
                 $("#deliveryEditConfirmBtn").click(function () {
+                    $(this).attr("disabled", true);
                     var nidArr = "";
                     var nid = $("#editDelivery input[name='attachNid[]']");
                     for (var i = 0, j = nid.length; i < j; i++) {
@@ -2030,6 +2156,30 @@
                         deliveryQuantityArr += deliveryQuantity_add[i].value + "|";
                     }
 
+                    var deliveryTotalPackageArr = "";
+                    var deliveryTotalPackage_add = $("#editDelivery input[name='deliveryTotalPackage_edit']");
+                    for (var i = 0, j = deliveryTotalPackage_add.length; i < j; i++) {
+                        deliveryTotalPackageArr += deliveryTotalPackage_add[i].value + "|";
+                    }
+
+                    var deliveryTotalNetWeightArr = "";
+                    var deliveryTotalNetWeight_add = $("#editDelivery input[name='deliveryTotalNetWeight_edit']");
+                    for (var i = 0, j = deliveryTotalNetWeight_add.length; i < j; i++) {
+                        deliveryTotalNetWeightArr += deliveryTotalNetWeight_add[i].value + "|";
+                    }
+
+                    var deliveryTotalGrossWeightArr = "";
+                    var deliveryTotalGrossWeight_add = $("#editDelivery input[name='deliveryTotalGrossWeight_edit']");
+                    for (var i = 0, j = deliveryTotalGrossWeight_add.length; i < j; i++) {
+                        deliveryTotalGrossWeightArr += deliveryTotalGrossWeight_add[i].value + "|";
+                    }
+
+                    var deliveryTotalVolumeArr = "";
+                    var deliveryTotalVolume_add = $("#editDelivery input[name='deliveryTotalVolume_edit']");
+                    for (var i = 0, j = deliveryTotalVolume_add.length; i < j; i++) {
+                        deliveryTotalVolumeArr += deliveryTotalVolume_add[i].value + "|";
+                    }
+
                     var editDelivery = '/user/sale/editdeliverysave';
                     $.ajax({
                         type: "POST",
@@ -2041,7 +2191,11 @@
                             size: sizeArr,
                             attachType: attachTypeArr,
                             orderItemID: orderItemIDArr,
-                            deliveryQuantity: deliveryQuantityArr
+                            deliveryQuantity: deliveryQuantityArr,
+                            deliveryTotalPackage: deliveryTotalPackageArr,
+                            deliveryTotalNetWeight: deliveryTotalNetWeightArr,
+                            deliveryTotalGrossWeight: deliveryTotalGrossWeightArr,
+                            deliveryTotalVolume: deliveryTotalVolumeArr
                         },
                         dataType: "json",
                         success: function (data) {
@@ -2050,6 +2204,8 @@
                             } else {
                                 alert(data + 'failed,please try again!');
                             }
+
+                            $(this).attr("disabled", false);
                         }
                     });
                 });
@@ -2061,6 +2217,7 @@
                         btn: ['确定', '取消'],
                         zIndex: 99991014,
                         yes: function(index){
+                            layer.close(layer.index);
                             $.ajax({
                                 type: "POST",
                                 url: delDelivery,
@@ -2085,6 +2242,7 @@
 
     /* 添加发货记录 */
     $("#deliveryAddConfirmBtn").click(function () {
+        $(this).attr("disabled", true);
         var auth_error = $('#deliveryAddDiv').find('.et-auth-error');
 
         var nidArr = "";
@@ -2121,6 +2279,30 @@
             deliveryQuantityArr += deliveryQuantity_add[i].value + "|";
         }
 
+        var deliveryTotalPackageArr = "";
+        var deliveryTotalPackage_add = $("#addDelivery input[name='deliveryTotalPackage_add']");
+        for (var i = 0, j = deliveryTotalPackage_add.length; i < j; i++) {
+            deliveryTotalPackageArr += deliveryTotalPackage_add[i].value + "|";
+        }
+
+        var deliveryTotalNetWeightArr = "";
+        var deliveryTotalNetWeight_add = $("#addDelivery input[name='deliveryTotalNetWeight_add']");
+        for (var i = 0, j = deliveryTotalNetWeight_add.length; i < j; i++) {
+            deliveryTotalNetWeightArr += deliveryTotalNetWeight_add[i].value + "|";
+        }
+
+        var deliveryTotalGrossWeightArr = "";
+        var deliveryTotalGrossWeight_add = $("#addDelivery input[name='deliveryTotalGrossWeight_add']");
+        for (var i = 0, j = deliveryTotalGrossWeight_add.length; i < j; i++) {
+            deliveryTotalGrossWeightArr += deliveryTotalGrossWeight_add[i].value + "|";
+        }
+
+        var deliveryTotalVolumeArr = "";
+        var deliveryTotalVolume_add = $("#addDelivery input[name='deliveryTotalVolume_add']");
+        for (var i = 0, j = deliveryTotalVolume_add.length; i < j; i++) {
+            deliveryTotalVolumeArr += deliveryTotalVolume_add[i].value + "|";
+        }
+
         var doPrepareGoods = '/user/sale/prepare-save';
         $.ajax({
             type: "POST",
@@ -2132,7 +2314,11 @@
                 size: sizeArr,
                 attachType: attachTypeArr,
                 orderItemID: orderItemIDArr,
-                deliveryQuantity: deliveryQuantityArr
+                deliveryQuantity: deliveryQuantityArr,
+                deliveryTotalPackage: deliveryTotalPackageArr,
+                deliveryTotalNetWeight: deliveryTotalNetWeightArr,
+                deliveryTotalGrossWeight: deliveryTotalGrossWeightArr,
+                deliveryTotalVolume: deliveryTotalVolumeArr
             },
             dataType: "json",
             success: function (data) {
@@ -2141,21 +2327,62 @@
                 } else {
                     alert(data + 'failed,please try again!');
                 }
+
+                $(this).attr("disabled", false);
             }
         });
     });
 
     /* 添加发货记录 */
+    // 修改数量
     $("input[name='deliveryQuantity_add']").keyup(function () {
-        var unitPrice = $(this).parent().prev().find("label").html();
-        var quantity = $(this).val();
+        var itemID = $(this).attr("data-item-id"),
+            unitPrice = $("#unitPrice_" + itemID).val(),
+            quantity = $(this).val(),
+            packingQuantity = $("#packingQuantity_" + itemID).val(),
+            totalPackage = Math.ceil(quantity / packingQuantity);
         if (isNaN(quantity)) {
             quantity = 0;
         }
-        var totalAmount = arithMul(unitPrice, quantity);
 
-        totalAmount = formatCurrency(totalAmount, 2);
-        $(this).parent().next().find("label").html(totalAmount);
+        // 修改总件数
+        $("#deliveryTotalPackage_" + itemID).val(totalPackage);
+
+        // 修改净重
+        var packingNetWeight = $("#packingNetWeight_" + itemID).val();
+        $("#deliveryTotalNetWeight_" + itemID).val(packingNetWeight * totalPackage);
+
+        // 修改毛重
+        var packingGrossWeight = $("#packingGrossWeight_" + itemID).val();
+        $("#deliveryTotalGrossWeight_" + itemID).val(packingGrossWeight * totalPackage);
+
+        // 修改体积
+        var packingVolume = $("#packingVolume_" + itemID).val();
+        $("#deliveryTotalVolume_" + itemID).val(packingVolume * totalPackage);
+
+        // 修改总价
+        var totalAmount = arithMul(unitPrice, quantity);
+        $("#itemID_" + itemID).html(formatCurrency(totalAmount, 2));
+    });
+    // 修改件数
+    $("input[name='deliveryTotalPackge_add']").keyup(function () {
+        var itemID = $(this).attr("data-item-id"),
+            totalPackage = $(this).val();
+        if (isNaN(totalPackage)) {
+            totalPackage = 0;
+        }
+
+        // 修改净重
+        var packingNetWeight = $("#packingNetWeight_" + itemID).val();
+        $("#deliveryTotalNetWeight_" + itemID).val(packingNetWeight * totalPackage);
+
+        // 修改毛重
+        var packingGrossWeight = $("#packingGrossWeight_" + itemID).val();
+        $("#deliveryTotalGrossWeight_" + itemID).val(packingGrossWeight * totalPackage);
+
+        // 修改体积
+        var packingVolume = $("#packingVolume_" + itemID).val();
+        $("#deliveryTotalVolume_" + itemID).val(packingVolume * totalPackage);
     });
 
     // 发货

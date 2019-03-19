@@ -30,7 +30,7 @@ class Zend_View_Helper_ShowOrderContract extends Shop_View_Helper {
                 $IMG .= '<input type="hidden" id="contractAttachUrl_'.$v['contractID'].'" value="' . $pdfUrl . '">';
                 $IMG .= '<input type="hidden" id="contractID_'.$v['contractID'].'" value="'.$v['contractID'].'" />';
                 $IMG .= '<input type="hidden" id="contractName_'.$v['contractID'].'" value="'.$v['contractName'].'" />';
-                $IMG .= '<input type="hidden" id="ext_'.$v['contractID'].'" value="'.$v['ext'].'" />';
+                $IMG .= '<input type="hidden" id="ext_'.$v['contractID'].'" value="'.$attachmentList[0]['ext'].'" />';
 
                 // 是否企业签
                 $isESigned = True;  // 企业是否已经签了

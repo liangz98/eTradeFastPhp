@@ -133,7 +133,8 @@
                             <div class="form-group">
                                 <label for="quotationMode" class="col-sm-2 control-label"><?php echo $this->translate('payJJ'); ?></label>
                                 <div class="col-sm-8">
-                                    <select class="selectpicker form-control" name="quotationMode" id="quotationMode" data-live-search="true">
+                                    <!-- 小周提出此处暂时固定为只能选择PO/PI报价, 2019.3.12 -->
+                                    <select class="selectpicker form-control" name="quotationMode" id="quotationMode" data-live-search="true" onfocus="this.defaultIndex=this.selectedIndedx;" onchange="this.selectedIndex=this.defaultIndex;">
                                         <?php echo $this->ShowDictionaryList($this->dic_Setting['ORDER_QUOTATION_MODE'], $this->userLangCode, $this->dic_Setting['ORDER_QUOTATION_MODE'], $this->orders['quotationMode']); ?>
                                     </select>
                                 </div>
@@ -1200,7 +1201,7 @@
 
                     '       <label for="totalPackage" class="col-sm-2 control-label"><?php echo $this->translate("quantity"); ?></label>' +
                     '       <div class="col-sm-3">' +
-                    '           <input type="text" class="form-control" name="totalPackage[]" id="totalPackage_' + item.productID + '" data-productID="' + item.productID + '" value="' + (item.packingQuantity <= 0 ? 1 : item.packingQuantity) + '">' +
+                    '           <input type="text" class="form-control" name="totalPackage[]" id="totalPackage_' + item.productID + '" data-productID="' + item.productID + '" data-type="packing" value="' + (item.packingQuantity <= 0 ? 1 : item.packingQuantity) + '">' +
                     '           <input type="hidden" name="packingQuantity_' + item.productID + '" value="' + item.packingQuantity + '">' +
                     '       </div>' +
                     '   </div>' +
@@ -1228,21 +1229,21 @@
                     '   </div>' +
 
                     '   <div class="form-group">' +
-                    '       <label for="totalNetWeight" class="col-sm-2 control-label"><?php echo $this->translate("netWeight"); ?></label>' +
+                    '       <label for="totalNetWeight" class="col-sm-2 control-label"><?php echo $this->translate("packingNetWeight"); ?></label>' +
                     '       <div class="col-sm-2">' +
-                    '           <input type="text" class="form-control" name="netWeight[]" id="netWeight_' + item.productID + '" data-productID="' + item.productID + '" value="' + (item.netWeight === undefined ? 0 : item.netWeight) + '">' +
+                    '           <input type="text" class="form-control" name="packingNetWeight[]" id="packingNetWeight_' + item.productID + '" data-productID="' + item.productID + '" data-type="packing" value="' + (item.packingNetWeight === undefined ? 0 : item.packingNetWeight) + '">' +
                     '       </div>' +
                     '       <div class="col-sm-1">' +
                     '           <p class="form-control-static">x</p>' +
                     '       </div>' +
                     '       <div class="col-sm-1">' +
-                    '           <b><p class="form-control-static quantityMul_' + item.productID + '" data-productID="' + item.productID + '">' + (item.quantity === undefined ? 1 : item.quantity) + '</p></b>' +
+                    '           <b><p class="form-control-static packingMul_' + item.productID + '" data-productID="' + item.productID + '">' + (item.totalPackage === undefined ? 1 : item.totalPackage) + '</p></b>' +
                     '       </div>' +
                     '       <div class="col-sm-1">' +
                     '           <p class="form-control-static">=</p>' +
                     '       </div>' +
                     '       <div class="col-sm-2">' +
-                    '           <input type="text" class="form-control" name="totalNetWeight[]" id="totalNetWeight_' + item.productID + '" data-productID="' + item.productID + '" data-type="totalNetWeight" value="' + (item.netWeight === undefined ? 0 : item.netWeight) + '">' +
+                    '           <input type="text" class="form-control" name="totalNetWeight[]" id="totalNetWeight_' + item.productID + '" data-productID="' + item.productID + '" data-type="totalNetWeight" value="' + (item.packingNetWeight === undefined ? 0 : item.packingNetWeight) + '">' +
                     '       </div>' +
                     '       <div class="col-sm-1">' +
                     '           <p class="form-control-static">KGS</p>' +
@@ -1250,24 +1251,46 @@
                     '   </div>' +
 
                     '   <div class="form-group">' +
-                    '       <label for="totalNetWeight" class="col-sm-2 control-label"><?php echo $this->translate("grossWeight"); ?></label>' +
+                    '       <label for="totalNetWeight" class="col-sm-2 control-label"><?php echo $this->translate("packingGrossWeight"); ?></label>' +
                     '       <div class="col-sm-2">' +
-                    '           <input type="text" class="form-control" name="grossWeight[]" id="grossWeight_' + item.productID + '" data-productID="' + item.productID + '" value="' + (item.grossWeight === undefined ? 0 : item.grossWeight) + '">' +
+                    '           <input type="text" class="form-control" name="packingGrossWeight[]" id="packingGrossWeight_' + item.productID + '" data-productID="' + item.productID + '" data-type="packing" value="' + (item.packingGrossWeight === undefined ? 0 : item.packingGrossWeight) + '">' +
                     '       </div>' +
                     '       <div class="col-sm-1">' +
                     '           <p class="form-control-static">x</p>' +
                     '       </div>' +
                     '       <div class="col-sm-1">' +
-                    '           <b><p class="form-control-static quantityMul_' + item.productID + '" data-productID="' + item.productID + '">' + (item.quantity === undefined ? 1 : item.quantity) + '</p></b>' +
+                    '           <b><p class="form-control-static packingMul_' + item.productID + '" data-productID="' + item.productID + '">' + (item.totalPackage === undefined ? 1 : item.totalPackage) + '</p></b>' +
                     '       </div>' +
                     '       <div class="col-sm-1">' +
                     '           <p class="form-control-static">=</p>' +
                     '       </div>' +
                     '       <div class="col-sm-2">' +
-                    '           <input type="text" class="form-control" name="totalGrossWeight[]" id="totalGrossWeight_' + item.productID + '" data-productID="' + item.productID + '" data-type="totalGrossWeight" value="' + (item.grossWeight === undefined ? 0 : item.grossWeight) + '">' +
+                    '           <input type="text" class="form-control" name="totalGrossWeight[]" id="totalGrossWeight_' + item.productID + '" data-productID="' + item.productID + '" data-type="totalGrossWeight" value="' + (item.packingGrossWeight === undefined ? 0 : item.packingGrossWeight) + '">' +
                     '       </div>' +
                     '       <div class="col-sm-1">' +
                     '           <p class="form-control-static">KGS</p>' +
+                    '       </div>' +
+                    '   </div>' +
+
+                    '   <div class="form-group">' +
+                    '       <label for="totalNetWeight" class="col-sm-2 control-label"><?php echo $this->translate("packingVolume"); ?></label>' +
+                    '       <div class="col-sm-2">' +
+                    '           <input type="text" class="form-control" name="packingVolume[]" id="packingVolume_' + item.productID + '" data-productID="' + item.productID + '" data-type="packing" value="' + (item.packingVolume === undefined ? 0 : item.packingVolume) + '">' +
+                    '       </div>' +
+                    '       <div class="col-sm-1">' +
+                    '           <p class="form-control-static">x</p>' +
+                    '       </div>' +
+                    '       <div class="col-sm-1">' +
+                    '           <b><p class="form-control-static packingMul_' + item.productID + '" data-productID="' + item.productID + '">' + (item.totalPackage === undefined ? 1 : item.totalPackage) + '</p></b>' +
+                    '       </div>' +
+                    '       <div class="col-sm-1">' +
+                    '           <p class="form-control-static">=</p>' +
+                    '       </div>' +
+                    '       <div class="col-sm-2">' +
+                    '           <input type="text" class="form-control" name="totalVolume[]" id="totalVolume_' + item.productID + '" data-productID="' + item.productID + '" data-type="totalVolume" value="' + (item.packingVolume === undefined ? 0 : item.packingVolume) + '">' +
+                    '       </div>' +
+                    '       <div class="col-sm-1">' +
+                    '           <p class="form-control-static">CBM</p>' +
                     '       </div>' +
                     '   </div>';
 
@@ -1330,23 +1353,31 @@
                 $packingType.val(item.packingType);
                 $packingType.selectpicker('render');
 
-                $("input[name='quantity[]'], input[name='unitPrice[]'], input[name='totalPrice[]'], input[name='purUnitPrice[]'], input[name='totalPurPrice[]'], input[name='netWeight[]'], input[name='grossWeight[]'], input[name='totalNetWeight[]'], input[name='totalGrossWeight[]']").keyup(function () {
+                $("input[name='quantity[]'], input[name='totalPackage[]'], input[name='unitPrice[]'], input[name='totalPrice[]'], input[name='purUnitPrice[]'], input[name='totalPurPrice[]'], input[name='packingNetWeight[]'], input[name='packingGrossWeight[]'], input[name='packingVolume[]'], input[name='totalNetWeight[]'], input[name='totalGrossWeight[]'], input[name='totalVolume[]']").keyup(function () {
                     var productID = $(this).attr("data-productID"),     // ID
                         $quantity = $("#quantity_" + productID),        // 数量
+                        $totalPackage = $("#totalPackage_" + productID),    // 件数
                         quantityMul = $(".quantityMul_" + productID),   // 数量Label
+                        packingMul = $(".packingMul_" + productID),     // 件数Label
                         $unitPrice = $("#unitPrice_" + productID),      // 价格
                         $totalPrice = $("#totalPrice_" + productID),    // 金额
                         $purchaseUnitPrice = $("#purchaseUnitPrice_" + productID),      // 采购价格
                         $totalPurPrice = $("#totalPurPrice_" + productID),              // 采购金额
-                        $netWeight = $("#netWeight_" + productID),                      // 净重
-                        $grossWeight = $("#grossWeight_" + productID),                  // 毛重
+                        $packingNetWeight = $("#packingNetWeight_" + productID),        // 每件净重
+                        $packingGrossWeight = $("#packingGrossWeight_" + productID),    // 每件毛重
+                        $packingVolume = $("#packingVolume_" + productID),              // 每件体积
                         $totalNetWeight = $("#totalNetWeight_" + productID),            // 总净重
-                        $totalGrossWeight = $("#totalGrossWeight_" + productID);        // 总毛重
+                        $totalGrossWeight = $("#totalGrossWeight_" + productID),        // 总毛重
+                        $totalVolume = $("#totalVolume_" + productID);                  // 总体积
 
                     console.log();
                     if ($quantity.val() !== "" && !$.isNumeric($quantity.val())) {
                         alert("数量必须是数值");
                         $quantity.val(1);
+                    }
+                    if ($totalPackage.val() !== "" && !$.isNumeric($totalPackage.val())) {
+                        alert("件数必须是数值");
+                        $totalPackage.val(1);
                     }
                     if ($unitPrice.val() !== "" && !$.isNumeric($unitPrice.val())) {
                         alert("价格必须是数值");
@@ -1358,6 +1389,14 @@
                         return false;
                     }
 
+                    $.each(quantityMul, function () {
+                        $(this).html($quantity.val());
+                    });
+
+                    $.each(packingMul, function () {
+                        $(this).html($totalPackage.val());
+                    });
+
                     var dataType = $(this).attr("data-type");
                     if (dataType === "totalPrice") {
                         // 计算价格
@@ -1367,25 +1406,33 @@
                         $purchaseUnitPrice.val(arithRound(arithDiv($totalPurPrice.val(), $quantity.val()), 2));
                     } else if (dataType === "totalNetWeight") {
                         // 计算净重
-                        $netWeight.val(arithRound(arithDiv($totalNetWeight.val(), $quantity.val()), 4));
+                        $packingNetWeight.val(arithRound(arithDiv($totalNetWeight.val(), $totalPackage.val()), 4));
                     } else if (dataType === "totalGrossWeight") {
                         // 计算毛重
-                        $grossWeight.val(arithRound(arithDiv($totalGrossWeight.val(), $quantity.val()), 4));
-                    } else {
+                        $packingGrossWeight.val(arithRound(arithDiv($totalGrossWeight.val(), $totalPackage.val()), 4));
+                    } else if (dataType === "totalVolume") {
+                        // 计算体积
+                        $packingVolume.val(arithRound(arithDiv($totalVolume.val(), $totalPackage.val()), 4));
+                    } else if (dataType === "quantity") {
                         // 计算金额
                         $totalPrice.val(arithRound(arithMul($unitPrice.val(), $quantity.val()), 2));
                         // 计算采购价格
                         if ($purchaseUnitPrice !== undefined && $purchaseUnitPrice.length > 0 && $totalPurPrice !== undefined && $totalPurPrice.length > 0) {
                             $totalPurPrice.val(arithRound(arithMul($purchaseUnitPrice.val(), $quantity.val()), 2));
                         }
-                        // 计算净重, 毛重
-                        $totalNetWeight.val(arithRound(arithMul($netWeight.val(), $quantity.val()), 2));
-                        $totalGrossWeight.val(arithRound(arithMul($grossWeight.val(), $quantity.val()), 2));
+                    } else if (dataType === "unitPrice") {
+                        // 计算金额
+                        $totalPrice.val(arithRound(arithMul($unitPrice.val(), $quantity.val()), 2));
+                        // 计算采购价格
+                        if ($purchaseUnitPrice !== undefined && $purchaseUnitPrice.length > 0 && $totalPurPrice !== undefined && $totalPurPrice.length > 0) {
+                            $totalPurPrice.val(arithRound(arithMul($purchaseUnitPrice.val(), $quantity.val()), 2));
+                        }
+                    } else if (dataType === "packing") {
+                        // 计算净重, 毛重, 体积
+                        $totalNetWeight.val(arithRound(arithMul($packingNetWeight.val(), $totalPackage.val()), 2));
+                        $totalGrossWeight.val(arithRound(arithMul($packingGrossWeight.val(), $totalPackage.val()), 2));
+                        $totalVolume.val(arithRound(arithMul($packingVolume.val(), $totalPackage.val()), 2));
                     }
-
-                    $.each(quantityMul, function () {
-                       $(this).html($quantity.val());
-                    });
                 });
             });
 

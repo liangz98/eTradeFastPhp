@@ -30,10 +30,10 @@ class Zend_View_Helper_ShowSimpleOrderContract extends Shop_View_Helper {
                 $isESigned = True;  // 企业是否已经签了
                 $isPSigned = True;  // 个人是否已经签了
 
-                if ($contract['firstParty'] != null && $contract['firstParty'] == $accountID) {
+                if (!empty($v['firstParty']) && $contract['firstParty'] == $accountID) {
                     // 企业
                     if ($contract['firstPartySignMode'] == "E" || $contract['firstPartySignMode'] == "B") {
-                        if ($contract['firstPartySigningDate'] == null) {
+                        if (empty($v['firstPartySigningDate'])) {
                             $isESigned = false;
                         }
                     }
@@ -43,7 +43,7 @@ class Zend_View_Helper_ShowSimpleOrderContract extends Shop_View_Helper {
                         // 签署人是否当前用户
                         if ($this->view->userID == $contract['firstPartyPrincipal']) {
                             // 是否未签
-                            if ($contract['firstPartyPrincipalSigningDate'] == null) {
+                            if (empty($v['firstPartyPrincipalSigningDate'])) {
                                 $isPSigned = false;
                             }
                         }
@@ -58,7 +58,7 @@ class Zend_View_Helper_ShowSimpleOrderContract extends Shop_View_Helper {
                     if (!$isESigned || !$isPSigned) {
                         $result .= '<a href="javascript:void(0)" id="' . $contract['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="btn btn-warning btn-sm order_contract_sign fr">签署</a>';
                     } else {
-                        if ($contract['firstParty'] != null && $contract['firstParty'] == $accountID) {
+                        if (!empty($contract['firstParty']) && $contract['firstParty'] == $accountID) {
                             // 个人
                             if ($contract['firstPartySignMode'] == "P" || $contract['firstPartySignMode'] == "B") {
                                 if ($this->view->userID == $contract['firstPartyPrincipal']) {
@@ -73,7 +73,7 @@ class Zend_View_Helper_ShowSimpleOrderContract extends Shop_View_Helper {
                 } else {
                     $hasNoEContract = "True";
                     // 非网签未签署
-                    if ($contract['firstParty'] != null && $contract['firstParty'] == $accountID && $contract['firstPartySigningDate'] == null) {
+                    if (!empty($contract['firstParty']) && $contract['firstParty'] == $accountID && empty($contract['firstPartySigningDate'])) {
                         $hasNoEContract = "True";
                         $result .= '<a href="javascript:void(0)" id="' . $contract['contractID'] . '" onclick="initSignViewNoEContract(this)" class="btn btn-warning order_contract_sign fr">下载</a>';
                     } else {

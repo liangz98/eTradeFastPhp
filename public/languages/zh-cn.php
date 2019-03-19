@@ -279,6 +279,8 @@ return array(
     'WebINF'       => '平台账号信息',
     'signature'    => '企业签署人',
     'setSignature' => '设为签署人',
+    'compAdmin'    => '公司管理员',
+    'setCompAdmin' => '设为公司管理员',
 
     // 手机
     'apps'         => '手机快移',
@@ -366,25 +368,30 @@ return array(
     'ordertotal'        => '金额',
     'quantity'          => '件数',
 
-    'rebateRate'            => '退税率',
-    'taxRate'               => '增值税率',
-    'declareElements'       => '申报要素',
-    'productSize'           => '规格尺寸',
-    'functionUsage'         => '功能用途',
-    'productMaterial'       => '材质',
-    'supplierName'          => '供应商',
-    'packingVolume'         => '包装体积',
-    'packageTYPE'           => '包装类型',
-    'packINF'               => '包装说明',
-    'netWeight'             => '净重',
-    'grossWeight'           => '毛重',
-    'needInspection'        => '是否商检',
-    'productionMode'        => '生产方式',
-    'image'                 => '图片',
-    'RLCT'                  => '监管条件',
+    'rebateRate'         => '退税率',
+    'taxRate'            => '增值税率',
+    'declareElements'    => '申报要素',
+    'productSize'        => '规格尺寸',
+    'functionUsage'      => '功能用途',
+    'productMaterial'    => '材质',
+    'supplierName'       => '供应商',
+    'packingVolume'      => '包装体积',
+    'packageTYPE'        => '包装类型',
+    'packINF'            => '包装说明',
+    'netWeight'          => '净重',
+    'grossWeight'        => '毛重',
+    'packingNetWeight'   => '每件净重',
+    'packingGrossWeight' => '每件毛重',
+    'totalNetWeight'     => '总净重',
+    'totalGrossWeight'   => '总毛重',
+    'totalVolume'        => '总体积',
+    'needInspection'     => '是否商检',
+    'productionMode'     => '生产方式',
+    'image'              => '图片',
+    'RLCT'               => '监管条件',
     // 新增商品页面
-    'orderGOODS'            => '订单商品',
-    'imgGOODS'              => '商品图片',
+    'orderGOODS'         => '订单商品',
+    'imgGOODS'           => '商品图片',
 
     // 银行账户模块
     'bankAcctNo'            => '银行账号',
@@ -1255,5 +1262,8 @@ return array(
     'shippingOrderNo'    => '订舱单号',
     'truckingOrderNo'    => '派车单号',
     'orderLogKeyword'    => '输入关键字查找',
-    'orderLogEventRiver' => '事件河流图'
+    'orderLogEventRiver' => '事件河流图',
+
+    'remind'    =>  '提醒'
+
 );

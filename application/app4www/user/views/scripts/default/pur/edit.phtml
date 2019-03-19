@@ -134,7 +134,7 @@
                             <div class="form-group">
                                 <label for="quotationMode" class="col-sm-2 control-label"><?php echo $this->translate('payJJ'); ?></label>
                                 <div class="col-sm-8">
-                                    <select class="selectpicker form-control" name="quotationMode" id="quotationMode" data-live-search="true">
+                                    <select class="selectpicker form-control" name="quotationMode" id="quotationMode" data-live-search="true" onfocus="this.defaultIndex=this.selectedIndedx;" onchange="this.selectedIndex=this.defaultIndex;">
                                         <?php echo $this->ShowDictionaryList($this->dic_Setting['ORDER_QUOTATION_MODE'], $this->userLangCode, $this->dic_Setting['ORDER_QUOTATION_MODE'], $this->orders['quotationMode']); ?>
                                     </select>
                                 </div>

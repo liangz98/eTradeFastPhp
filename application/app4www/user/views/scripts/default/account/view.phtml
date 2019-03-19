@@ -95,12 +95,8 @@
                                             <?php
                                                 // 1.判断公司是否已经有实名认证信息
                                                 // 2.判断当前用户是否已经做了实名认证
-                                                if ($this->hasIDCertificate) {
-                                                    if ($this->agentName == $this->e['name'] && $this->agentIdNo == $this->e['identityNo']) {
-                                                        echo $this->translate('yes');
-                                                    } else {
-                                                        echo $this->translate('no');
-                                                    }
+                                                if ($this->agentName == $this->e['name'] && $this->agentIdNo == $this->e['identityNo']) {
+                                                    echo $this->translate('yes');
                                                 } else {
                                                     echo $this->translate('no');
                                                 }
@@ -122,6 +118,35 @@
                                                         endif;
                                                     endif;
                                                 endif;
+                                            ?>
+                                        </dd>
+
+                                        <dt><?php echo $this->translate('compAdmin'); ?></dt>
+                                        <dd>
+                                            <?php
+                                            if (stripos($this->e['ecommrole'], 'compAdmin')) {
+                                                echo $this->translate('yes');
+                                            } else {
+                                                echo $this->translate('no');
+                                            }
+                                            ?>
+
+                                            <?php
+                                            // 1.判断公司是否已经有实名认证信息
+                                            // 2.判断当前用户是否已经做了实名认证
+                                            if ($this->CompAdmin):
+                                                if ($this->hasIDCertificate):
+                                                    if (stripos($this->e['ecommrole'], 'compAdmin') == false):
+                                                        if ($this->e['realAuthStatus'] == 2):
+                                                            ?>
+                                                            <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#changeCompAdmin">
+                                                                <i class="fas fa-user-cog"></i> <?php echo $this->translate('setCompAdmin'); ?>
+                                                            </button>
+                                                        <?php
+                                                        endif;
+                                                    endif;
+                                                endif;
+                                            endif;
                                             ?>
                                         </dd>
 
@@ -211,6 +236,47 @@
     </div>
 </div>
 
+<!-- 修改公司管理员 -->
+<div class="modal fade" id="changeCompAdmin" tabindex="-1" role="dialog" aria-labelledby="changeCompAdminLabel">
+    <div class="modal-dialog modal-sm" role="document" style="width: 550px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><?php echo $this->translate('修改公司管理员'); ?></h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="layui-form-item table-responsive">
+                    <div class="alert alert-danger alert-dismissible fade in hidden changeCompAdminAlert" role="alert">
+                        <p><?php echo base64_decode($this->resultMsg); ?>!</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signMobileInput"><?php echo $this->translate('signAuthType'); ?></label>
+                        <p class="help-block"><?php echo $this->translate('设置此用户为公司唯一管理员？'); ?></p>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row" style="margin-right: 0;">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button id="changeCompAdminConfirmBtn" class="btn btn-primary btn-block" data-contact-id="<?php echo $this->e['contactID']; ?>">
+                                    <?php echo $this->translate('confirmed'); ?>
+                                </button>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <button id="cancelBtn" class="btn btn-default btn-block" data-dismiss="modal">
+                                    <?php echo $this->translate('cancel'); ?>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
@@ -274,7 +340,7 @@
 
         // 修改企业签署人
         $("#singConfirmBtn").click(function () {
-            var doSignPDF = '/user/account/change-signing-agent',
+            var changeSigningAgentUrl = '/user/account/change-signing-agent',
                 contactID = $(this).attr("data-contact-id"),
                 authCode = $("#authCode").val();
 
@@ -285,7 +351,7 @@
 
             $.ajax({
                 type: "POST",
-                url: doSignPDF,
+                url: changeSigningAgentUrl,
                 data: {
                     contactID: contactID,
                     authCode: authCode
@@ -305,6 +371,35 @@
                         $(".changeSigningAlert > p").html(data.error);
                         $(changeSigningAlert).removeClass("hidden");
                         $("#singConfirmBtn").attr("disabled", false);
+                    }
+                }
+            });
+        });
+
+        // 修改公司管理员
+        $("#changeCompAdminConfirmBtn").click(function () {
+            var changeCompAdminUrl = '/user/account/change-comp-admin',
+                contactID = $(this).attr("data-contact-id");
+
+            $.ajax({
+                type: "POST",
+                url: changeCompAdminUrl,
+                data: {
+                    contactID: contactID
+                },
+                dataType: "json",
+                beforeSend: function() {
+                    $("#changeCompAdminConfirmBtn").attr({ disabled: "disabled" });
+                },
+                success: function (data) {
+                    if (data.status === 1) {
+                        window.location.reload();
+                    } else {
+                        var changeCompAdminAlert = $(".changeCompAdminAlert");
+
+                        $(".changeCompAdminAlert > p").html(data.error);
+                        $(changeCompAdminAlert).removeClass("hidden");
+                        $("#changeCompAdminConfirmBtn").attr("disabled", false);
                     }
                 }
             });

@@ -421,4 +421,25 @@ class AccountController extends Kyapi_Controller_Action
         echo json_encode($msg);
         exit;
     }
+
+    public function changeCompAdminAction() {
+        $requestObject = $this->_requestObject;
+
+        $contactID = $this->_request->getParam('contactID');
+        $resultObject = $this->json->changeCompAdmin($requestObject, $contactID);
+
+        $msg['status'] = json_decode($resultObject)->status;
+        $msg['result'] = json_decode($resultObject)->result;
+        if (json_decode($resultObject)->status <= 0) {
+            $msg['error'] = json_decode($resultObject)->error;
+        } else {
+            $contactResultObject = $this->json->getContactApi($requestObject, $_SESSION['rev_session']['userID']);
+
+            $_SESSION['rev_session']['ecommrole'] = json_decode($contactResultObject)->result->ecommrole;
+            $this->view->CompAdmin = strstr($_SESSION['rev_session']['ecommrole'], 'CompAdmin') ? true : false;//公司管理员
+        }
+
+        echo json_encode($msg);
+        exit;
+    }
 }

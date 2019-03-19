@@ -187,10 +187,14 @@ class SaleController extends Kyapi_Controller_Action
             $iterm["productSize"] = $this->_request->getParam("productSize");
             $iterm["pricingUnit"] = $this->_request->getParam("pricingUnit");
             $iterm["quantity"] = $this->_request->getParam("quantity");
-            $iterm["grossWeight"] = $this->_request->getParam("grossWeight");
-            $iterm["netWeight"] = $this->_request->getParam("netWeight");
+            // $iterm["grossWeight"] = $this->_request->getParam("grossWeight");
+            // $iterm["netWeight"] = $this->_request->getParam("netWeight");
+            $iterm["packingGrossWeight"] = $this->_request->getParam("packingGrossWeight");
+            $iterm["packingNetWeight"] = $this->_request->getParam("packingNetWeight");
+            $iterm["packingVolume"] = $this->_request->getParam("packingVolume");
             $iterm["totalGrossWeight"] = $this->_request->getParam("totalGrossWeight");
             $iterm["totalNetWeight"] = $this->_request->getParam("totalNetWeight");
+            $iterm["totalVolume"] = $this->_request->getParam("totalVolume");
             $iterm["totalPackage"] = $this->_request->getParam("totalPackage");
             $iterm["totalPrice"] = $this->_request->getParam("totalPrice");
             $iterm["unitPrice"] = $this->_request->getParam("unitPrice");
@@ -219,10 +223,14 @@ class SaleController extends Kyapi_Controller_Action
                     $it3[$k]->itemID = $it2[$k]['itemID'];
                     $it3[$k]->supplierID = $it2[$k]['supplierID'];
                     $it3[$k]->quantity = (double)$it2[$k]['quantity'];
-                    $it3[$k]->grossWeight = (double)$it2[$k]['grossWeight'];
-                    $it3[$k]->netWeight = (double)$it2[$k]['netWeight'];
+                    // $it3[$k]->grossWeight = (double)$it2[$k]['grossWeight'];
+                    // $it3[$k]->netWeight = (double)$it2[$k]['netWeight'];
+                    $it3[$k]->packingGrossWeight = (double)$it2[$k]['packingGrossWeight'];
+                    $it3[$k]->packingNetWeight = (double)$it2[$k]['packingNetWeight'];
+                    $it3[$k]->packingVolume = (double)$it2[$k]['packingVolume'];
                     $it3[$k]->totalGrossWeight = (double)$it2[$k]['totalGrossWeight'];
                     $it3[$k]->totalNetWeight = (double)$it2[$k]['totalNetWeight'];
+                    $it3[$k]->totalVolume = (double)$it2[$k]['totalVolume'];
                     $it3[$k]->totalPackage = (int)$it2[$k]['totalPackage'];
                     $it3[$k]->totalPrice = (double)$it2[$k]['totalPrice'];
                     $it3[$k]->totalPurPrice = (double)$it2[$k]['totalPurPrice'];
@@ -1259,6 +1267,10 @@ class SaleController extends Kyapi_Controller_Action
 
         $orderItemID = explode("|", $_POST['orderItemID']);
         $deliveryQuantity = explode("|", $_POST['deliveryQuantity']);
+        $deliveryTotalPackage = explode("|", $_POST['deliveryTotalPackage']);
+        $deliveryTotalNetWeight = explode("|", $_POST['deliveryTotalNetWeight']);
+        $deliveryTotalGrossWeight = explode("|", $_POST['deliveryTotalGrossWeight']);
+        $deliveryTotalVolume = explode("|", $_POST['deliveryTotalVolume']);
 
         foreach ($orderItemID as $k => $v) {
             if (!$v)
@@ -1268,12 +1280,32 @@ class SaleController extends Kyapi_Controller_Action
             if (!$v)
                 unset($deliveryQuantity[$k]);
         }
+        foreach ($deliveryTotalPackage as $k => $v) {
+            if (!$v)
+                unset($deliveryTotalPackage[$k]);
+        }
+        foreach ($deliveryTotalNetWeight as $k => $v) {
+            if (!$v)
+                unset($deliveryTotalNetWeight[$k]);
+        }
+        foreach ($deliveryTotalGrossWeight as $k => $v) {
+            if (!$v)
+                unset($deliveryTotalGrossWeight[$k]);
+        }
+        foreach ($deliveryTotalVolume as $k => $v) {
+            if (!$v)
+                unset($deliveryTotalVolume[$k]);
+        }
 
         $deliveryItemList = array();
         foreach ($orderItemID as $index => $value) {
             $deliveryItemList[$index] = new Kyapi_Model_DeliveryItem();
             $deliveryItemList[$index]->orderItemID = $value;
             $deliveryItemList[$index]->deliveryQuantity = (int)$deliveryQuantity[$index];
+            $deliveryItemList[$index]->totalPackages = (int)$deliveryTotalPackage[$index];
+            $deliveryItemList[$index]->totalNetWeight = (int)$deliveryTotalNetWeight[$index];
+            $deliveryItemList[$index]->totalGrossWeight = (int)$deliveryTotalGrossWeight[$index];
+            $deliveryItemList[$index]->totalVolume = (int)$deliveryTotalVolume[$index];
         }
 
         if (count($_attachList) == 0) {
@@ -1392,6 +1424,10 @@ class SaleController extends Kyapi_Controller_Action
 
         $orderItemID = explode("|", $_POST['orderItemID']);
         $deliveryQuantity = explode("|", $_POST['deliveryQuantity']);
+        $deliveryTotalPackage = explode("|", $_POST['deliveryTotalPackage']);
+        $deliveryTotalNetWeight = explode("|", $_POST['deliveryTotalNetWeight']);
+        $deliveryTotalGrossWeight = explode("|", $_POST['deliveryTotalGrossWeight']);
+        $deliveryTotalVolume = explode("|", $_POST['deliveryTotalVolume']);
 
         foreach ($orderItemID as $k => $v) {
             if (!$v)
@@ -1401,12 +1437,32 @@ class SaleController extends Kyapi_Controller_Action
             if (!$v)
                 unset($deliveryQuantity[$k]);
         }
+        foreach ($deliveryTotalPackage as $k => $v) {
+            if (!$v)
+                unset($deliveryTotalPackage[$k]);
+        }
+        foreach ($deliveryTotalNetWeight as $k => $v) {
+            if (!$v)
+                unset($deliveryTotalNetWeight[$k]);
+        }
+        foreach ($deliveryTotalGrossWeight as $k => $v) {
+            if (!$v)
+                unset($deliveryTotalGrossWeight[$k]);
+        }
+        foreach ($deliveryTotalVolume as $k => $v) {
+            if (!$v)
+                unset($deliveryTotalVolume[$k]);
+        }
 
         $deliveryItemList = array();
         foreach ($orderItemID as $index => $value) {
             $deliveryItemList[$index] = new Kyapi_Model_DeliveryItem();
             $deliveryItemList[$index]->itemID = $value;
             $deliveryItemList[$index]->deliveryQuantity = $deliveryQuantity[$index];
+            $deliveryItemList[$index]->totalPackages = (int)$deliveryTotalPackage[$index];
+            $deliveryItemList[$index]->totalNetWeight = (int)$deliveryTotalNetWeight[$index];
+            $deliveryItemList[$index]->totalGrossWeight = (int)$deliveryTotalGrossWeight[$index];
+            $deliveryItemList[$index]->totalVolume = (int)$deliveryTotalVolume[$index];
         }
 
         if (count($_attachList) == 0) {

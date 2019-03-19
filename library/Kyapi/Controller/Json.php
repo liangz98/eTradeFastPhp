@@ -256,6 +256,7 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         $resultObject= $this->vpost($_url,$_params); //输出目标地址源码
         return $resultObject;
     }
+
     /*用户新增*/
     public function addContactApi( $_requestObject , $_contact )
     {
@@ -2227,6 +2228,23 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
             "contactID"     => $contactID
         ));
         $resultObject = $this->vpost($_url, $_params);
+        return $resultObject;
+    }
+
+    /**
+     * 修改公司管理员
+     * @param $requestObject
+     * @param $contactID
+     * @return mixed
+     */
+    public function changeCompAdmin($requestObject, $contactID) {
+        $_url = $this->url . '/accountapi/accountApi!changeCompAdmin.action';
+        $_params = json_encode(array(
+            "requestObject" => $requestObject,
+            "authCode"      => '111',
+            'contactID'     => $contactID
+        ));
+        $resultObject = $this->vpost($_url, $_params); //输出目标地址源码
         return $resultObject;
     }
 
