@@ -2592,7 +2592,7 @@
         $.each(trackData, function (index, trackList) {
             $.each(trackList, function (tackIndex, track) {
                 console.log(track);
-                data.push([new Date(track.operateTime).format("yyyy-MM-dd hh:mm"), Math.ceil(Math.random() * 50)])
+                data.push([new Date(track.operateTime).format("yyyy-MM-dd hh:mm"), Math.ceil(Math.random() * 50), track.summary.replace('&nbsp;', ' ')])
             })
         });
 
@@ -2623,7 +2623,9 @@
                 label: {
                     show: true,
                     position: 'bottom',
-                    formatter: 'label Info'
+                    formatter: function (param) {
+                        return param.data[2];
+                    }
                 },
                 data: data,
                 type: 'scatter'
