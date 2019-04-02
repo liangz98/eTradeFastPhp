@@ -17,7 +17,11 @@ class QrcodeController extends Zend_Controller_Action {
     }
 
     public function appAction() {
+        // dev
         $appURL = "http://" . $_SERVER['HTTP_HOST'] . '/app/etradefast-release.apk';
+
+        // prod
+        //$appURL = "http://" . $_SERVER['HTTP_HOST'] . '/app/etradefast_v_0.1.apk';
 
         $level = "M";
         $size = 8;
