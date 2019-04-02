@@ -25,7 +25,10 @@ class Zend_View_Helper_ShowOrderContract extends Shop_View_Helper {
                 $IMG .= '<em class="new_upicon" style="background:url(\'/ky/ico/pdf.png\') no-repeat;background-size: 20px;"></em>';
                 $IMG .= '<p class="new_uptitle">' . $v['contractName'] . '</p>';
                 $IMG .= '</div>';
-                $IMG .= '<input type="hidden" value="' . $v['attachType'] . '" />';
+
+                // 暂时注释
+                //$IMG .= '<input type="hidden" value="' . $v['attachType'] . '" />';
+                //$IMG .= '<input type="hidden" value="' . $attachmentList[0]['attachType'] . '" />';
 
                 $IMG .= '<input type="hidden" id="contractAttachUrl_'.$v['contractID'].'" value="' . $pdfUrl . '">';
                 $IMG .= '<input type="hidden" id="contractID_'.$v['contractID'].'" value="'.$v['contractID'].'" />';

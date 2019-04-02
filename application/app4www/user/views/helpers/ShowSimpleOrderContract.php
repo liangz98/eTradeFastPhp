@@ -30,10 +30,10 @@ class Zend_View_Helper_ShowSimpleOrderContract extends Shop_View_Helper {
                 $isESigned = True;  // 企业是否已经签了
                 $isPSigned = True;  // 个人是否已经签了
 
-                if (!empty($v['firstParty']) && $contract['firstParty'] == $accountID) {
+                if (!empty($contract['firstParty']) && $contract['firstParty'] == $accountID) {
                     // 企业
                     if ($contract['firstPartySignMode'] == "E" || $contract['firstPartySignMode'] == "B") {
-                        if (empty($v['firstPartySigningDate'])) {
+                        if (empty($contract['firstPartySigningDate'])) {
                             $isESigned = false;
                         }
                     }
@@ -43,7 +43,7 @@ class Zend_View_Helper_ShowSimpleOrderContract extends Shop_View_Helper {
                         // 签署人是否当前用户
                         if ($this->view->userID == $contract['firstPartyPrincipal']) {
                             // 是否未签
-                            if (empty($v['firstPartyPrincipalSigningDate'])) {
+                            if (empty($contract['firstPartyPrincipalSigningDate'])) {
                                 $isPSigned = false;
                             }
                         }

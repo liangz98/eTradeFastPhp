@@ -648,6 +648,12 @@ class SettleController extends Kyapi_Controller_Action
         $_initPWD = $this->json->paymentgetAccountUserApi($this->_requestObject);
         $_initData = $this->objectToArray(json_decode($_initPWD));
         $this->view->init = $_initData['result'];
+
+        // 验证支付密码是否已经设置
+        if ($_initData['result']['userStatus'] == '00') {
+            Shop_Browser::redirect($this->view->translate('tip_payment_pwd'), $this->view->seed_BaseUrl . "/settle/initpwd");
+        }
+
         //获取订单支付信息
         $tradingID = $_SERVER['QUERY_STRING'];
         $_tradingID = base64_decode($tradingID);

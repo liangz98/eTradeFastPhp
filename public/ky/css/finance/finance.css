@@ -89,7 +89,7 @@ body {
 /* 网签 */
 .order_contract_sign {
     border: none;
-    background: #EF8200;
+    /*background: #EF8200;*/
     color: #fff;
     padding: 5px 15px;
     border-radius: 5px;

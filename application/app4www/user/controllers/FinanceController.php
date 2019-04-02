@@ -651,7 +651,7 @@ class FinanceController extends Kyapi_Controller_Action
             $querySorts = $this->arrayToObject($querySorts);
         }
 
-        $itemStatus = $this->_request->getParam('itemStatus');
+        $itemStatus = $this->_request->getParam('factoringStatus');
         if (empty($itemStatus)) {
             $itemStatus = null;
         } else {

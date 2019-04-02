@@ -105,7 +105,7 @@
             $map.removeClass("hidden");
 
             var script = document.createElement("script");
-            script.src = "http://api.map.baidu.com/api?v=2.0&ak=8P5e0fcLzr2U3MfSB282xuaK8TcHh46g&callback=initialize('" + mapContainerID + "', " + longitude + ", " + latitude + ")";
+            script.src = "https://api.map.baidu.com/api?v=2.0&ak=8P5e0fcLzr2U3MfSB282xuaK8TcHh46g&callback=initialize('" + mapContainerID + "', " + longitude + ", " + latitude + ")";
             document.body.appendChild(script);
         } else {
             $map.addClass("hidden");
