@@ -29,6 +29,7 @@
             wxurl = "http://mp.weixin.qq.com/mp/redirect?url=";
         }
         function hello() { //修复图片偶尔不能加载
+            alert(document.location.href);
             var appUrl = "/app/etradefast-release.apk";
             if (!isPC && !iswx) {
                 if (appUrl) {
