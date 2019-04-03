@@ -6,98 +6,8 @@
     <meta name="viewport" content="width=320.1, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta content="telephone=no" name="format-detection" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <!--link href="css/main.css" rel="stylesheet" type="text/css"-->
+    <script src="/ky/jquery-3.3.1/jquery-3.3.1.min.js"></script>
     <style type="text/css">
-        body {height: 100%;}
-        .container {padding:0 20px;background-image: url(images/bg.jpg);background-position: center center;background-size: 100% 100%;height: 100%;}
-
-        .dl-step {padding-top: 58px;}
-        .dl-step .step {clear: both;}
-        .dl-step .index {float: left;height: 36px;width: 36px;border: 2px solid #fff;background-color: #ffba26;border-radius: 50%;text-align: center;line-height: 36px;position: relative;background-clip: padding-box;color: #fff;}
-        .dl-step .content {margin-left: 70px;border-radius: 4px;padding:8px 13px 13px;position: relative;}
-
-        .dl-step-1 {margin-bottom: 60px;position: relative;}
-        .dl-step-1 .content {background-color: #ffba26;box-shadow: 0 1px 2px rgba(0,0,0,0.5);font-size: 15px;color: #fff;padding: 0 13px;height: 38px;line-height: 38px;}
-        .dl-step-1:before {
-            content: "";
-            display: block;
-            width: 89px;
-            height: 75px;
-            position: absolute;
-            right: 0;
-            top: -56px;
-            background-image: url(images/icons.png);
-            background-size: auto 213px;
-            background-repeat: no-repeat;
-            background-position: 0 0;
-            z-index: 10;
-        }
-        .dl-step-1 .index:before {
-            content: "";
-            display: block;
-            height: 45px;
-            width: 2px;
-            background-color: #fff;
-            position: absolute;
-            top: 45px;
-            left: 17px;
-            border-radius: 2px;
-        }
-
-        .dl-step-2 {margin-bottom: 58px;}
-        .dl-step-2 .index, .dl-step-3 .index {background-color: rgba(39,41,57,0.2);}
-        .dl-step-2 .content, .dl-step-3 .content {background-color: rgba(255,255,255,0.9);box-shadow: 0 1px 2px rgba(0,0,0,0.3);}
-        .dl-step-2 .content .tip, .dl-step-3 .content .tip {margin-bottom: 2px;font-size: 15px;color: #333;font-family: Microsoft Yahei;}
-
-        .dl-step-2 .index:before {
-            content: "";
-            display: block;
-            height: 128px;
-            width: 2px;
-            background-color: #fff;
-            position: absolute;
-            top: 45px;
-            left: 17px;
-            border-radius: 2px;
-        }
-
-        .dl-devices {overflow: hidden;}
-        .dl-devices .item {background-color: #ceecfb;width: 49%;float: left;padding: 5px 0;}
-        .dl-devices .android {margin-left: 1px;}
-        .dl-devices .name {float: left;background-color: #fff;padding: 0 4px;color: #666;line-height: 14px;font-size: 12px;font-family: Microsoft Yahei;}
-        .dl-devices .icon {height: 40px;clear: left;background-image: url(images/icons1.png);background-size: auto 213px;background-repeat: no-repeat;}
-        .dl-devices .desc {color:#666;font-size: 10px;text-align: center;font-family: Microsoft Yahei;}
-        .dl-devices .ios .icon {background-position: center -85px;}
-        .dl-devices .android .icon {background-position: center -131px;}
-
-        .dl-step-3 .app {background-color: #ceecfb;padding: 8px 25px;}
-        .dl-step-3 .app .icon {padding-left: 38px;height:31px;line-height:31px;background-image: url(images/icons2.png);background-repeat: no-repeat;background-position: -29px -182px;background-size: auto 213px;font-size: 10px;color: #666;font-family: Microsoft Yahei;}
-
-        .dl-step .content:before {
-            content: "";
-            display: block;
-            height: 0;
-            width: 0;
-            border: 5px solid transparent;
-            border-right-color: rgba(0,0,0,0.1);
-            position: absolute;
-            top: 14px;
-            left: -11px;
-        }
-        .dl-step .content:after {
-            content: "";
-            display: block;
-            height: 0;
-            width: 0;
-            border: 5px solid transparent;
-            position: absolute;
-            top: 13px;
-            left: -10px;
-        }
-        .dl-step-1 .content:after {border-right-color: #ffba26;}
-        .dl-step-2 .content:after, .dl-step-3 .content:after {border-right-color: rgba(255,255,255,0.9);}
-
-
         *{margin:0; padding:0;}
         a{text-decoration: none;}
         img{max-width: 100%; height: auto;}
@@ -110,15 +20,6 @@
         var isPC = !/(iphone|ios|android|mini|mobile|mobi|Nokia|Symbian|iPod|iPad|Windows\s+Phone|MQQBrowser|wp7|wp8|UCBrowser7|UCWEB|360\s+Aphone\s+Browser)/i.test(u);
         if (isPC) { location.href = "/app/etradefast-release.apk"; }
     </script>
-    <script src="js/require.min.js"></script>
-    <!--script type="text/javascript">
-        var libs = 'libs_r_3.js';
-        if (!('__proto__' in {})) {
-            libs = 'libs_jq_r_1.1.js';
-        }
-        document.write('<script type="text/javascript" src="js/' + libs + '"></' + 'script>');
-    </script-->
-    <!--script src="js/m.ctrip.com.core.min.js"></script-->
     <script>
         var isPC = false;
         var e = navigator.userAgent ? navigator.userAgent.toLowerCase() : '';
@@ -127,14 +28,12 @@
         if (iswx) {
             wxurl = "http://mp.weixin.qq.com/mp/redirect?url=";
         }
-        //    window.onload = function () { //修复图片偶尔不能加载
         function hello() { //修复图片偶尔不能加载
             var appUrl = "/app/etradefast-release.apk";
-
             if (!isPC && !iswx) {
-                if(appUrl){
+                if (appUrl) {
                     location.href = appUrl;
-                }else if(sid){
+                } else if (sid) {
                     location.href = "/m/" + sid;
                 }
             }
@@ -145,7 +44,7 @@
 <body onload="hello()">
 <div class="weixin-tip">
     <p>
-        <img src="live_weixin.png" alt="微信打开"/>
+        <img src="/app/live_weixin.png" alt="微信打开"/>
     </p>
 </div>
 <script type="text/javascript">
@@ -160,9 +59,11 @@
             }
         }
         var isWeixin = is_weixin();
-        if(isWeixin){
-            $(".weixin-tip").css("height",winHeight);
-            $(".weixin-tip").show();
+
+        var $weixinTip = $(".weixin-tip");
+        if (isWeixin) {
+            $weixinTip.css("height", winHeight);
+            $weixinTip.show();
         }
     })
 </script>
