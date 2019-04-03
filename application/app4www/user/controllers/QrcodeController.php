@@ -29,4 +29,12 @@ class QrcodeController extends Zend_Controller_Action {
         QRcode::png($appURL, false, $level, $size, 2);
         exit;
     }
+
+    public function androidAction() {
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/app/index.phtml");
+            echo $content;
+            exit;
+        }
+    }
 }
