@@ -1,71 +1,171 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Welcome</title>
-    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-    <meta content="yes" name="apple-mobile-web-app-capable"/>
-    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
-    <meta name="format-detection" content="telephone=no"/>
-    <meta content="false" name="twcClient" id="twcClient"/>
-    <style>
-body,html{width:100%;height:100%}
-*{margin:0;padding:0}
-body{background-color:#fff}
-.top-bar-guidance{font-size:15px;color:#fff;height:40%;line-height:1.8;padding-left:20px;padding-top:20px;background:url(//gw.alicdn.com/tfs/TB1eSZaNFXXXXb.XXXXXXXXXXXX-750-234.png) center top/contain no-repeat}
-.top-bar-guidance .icon-safari{width:25px;height:25px;vertical-align:middle;margin:0 .2em}
-.app-download-btn{display:block;width:214px;height:40px;line-height:40px;margin:18px auto 0 auto;text-align:center;font-size:18px;color:#2466f4;border-radius:20px;border:.5px #2466f4 solid;text-decoration:none}
+    <meta charset="utf-8" />
+    <title>下载App</title>
+    <meta name="viewport" content="width=320.1, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta content="telephone=no" name="format-detection" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!--link href="css/main.css" rel="stylesheet" type="text/css"-->
+    <style type="text/css">
+        body {height: 100%;}
+        .container {padding:0 20px;background-image: url(images/bg.jpg);background-position: center center;background-size: 100% 100%;height: 100%;}
+
+        .dl-step {padding-top: 58px;}
+        .dl-step .step {clear: both;}
+        .dl-step .index {float: left;height: 36px;width: 36px;border: 2px solid #fff;background-color: #ffba26;border-radius: 50%;text-align: center;line-height: 36px;position: relative;background-clip: padding-box;color: #fff;}
+        .dl-step .content {margin-left: 70px;border-radius: 4px;padding:8px 13px 13px;position: relative;}
+
+        .dl-step-1 {margin-bottom: 60px;position: relative;}
+        .dl-step-1 .content {background-color: #ffba26;box-shadow: 0 1px 2px rgba(0,0,0,0.5);font-size: 15px;color: #fff;padding: 0 13px;height: 38px;line-height: 38px;}
+        .dl-step-1:before {
+            content: "";
+            display: block;
+            width: 89px;
+            height: 75px;
+            position: absolute;
+            right: 0;
+            top: -56px;
+            background-image: url(images/icons.png);
+            background-size: auto 213px;
+            background-repeat: no-repeat;
+            background-position: 0 0;
+            z-index: 10;
+        }
+        .dl-step-1 .index:before {
+            content: "";
+            display: block;
+            height: 45px;
+            width: 2px;
+            background-color: #fff;
+            position: absolute;
+            top: 45px;
+            left: 17px;
+            border-radius: 2px;
+        }
+
+        .dl-step-2 {margin-bottom: 58px;}
+        .dl-step-2 .index, .dl-step-3 .index {background-color: rgba(39,41,57,0.2);}
+        .dl-step-2 .content, .dl-step-3 .content {background-color: rgba(255,255,255,0.9);box-shadow: 0 1px 2px rgba(0,0,0,0.3);}
+        .dl-step-2 .content .tip, .dl-step-3 .content .tip {margin-bottom: 2px;font-size: 15px;color: #333;font-family: Microsoft Yahei;}
+
+        .dl-step-2 .index:before {
+            content: "";
+            display: block;
+            height: 128px;
+            width: 2px;
+            background-color: #fff;
+            position: absolute;
+            top: 45px;
+            left: 17px;
+            border-radius: 2px;
+        }
+
+        .dl-devices {overflow: hidden;}
+        .dl-devices .item {background-color: #ceecfb;width: 49%;float: left;padding: 5px 0;}
+        .dl-devices .android {margin-left: 1px;}
+        .dl-devices .name {float: left;background-color: #fff;padding: 0 4px;color: #666;line-height: 14px;font-size: 12px;font-family: Microsoft Yahei;}
+        .dl-devices .icon {height: 40px;clear: left;background-image: url(images/icons1.png);background-size: auto 213px;background-repeat: no-repeat;}
+        .dl-devices .desc {color:#666;font-size: 10px;text-align: center;font-family: Microsoft Yahei;}
+        .dl-devices .ios .icon {background-position: center -85px;}
+        .dl-devices .android .icon {background-position: center -131px;}
+
+        .dl-step-3 .app {background-color: #ceecfb;padding: 8px 25px;}
+        .dl-step-3 .app .icon {padding-left: 38px;height:31px;line-height:31px;background-image: url(images/icons2.png);background-repeat: no-repeat;background-position: -29px -182px;background-size: auto 213px;font-size: 10px;color: #666;font-family: Microsoft Yahei;}
+
+        .dl-step .content:before {
+            content: "";
+            display: block;
+            height: 0;
+            width: 0;
+            border: 5px solid transparent;
+            border-right-color: rgba(0,0,0,0.1);
+            position: absolute;
+            top: 14px;
+            left: -11px;
+        }
+        .dl-step .content:after {
+            content: "";
+            display: block;
+            height: 0;
+            width: 0;
+            border: 5px solid transparent;
+            position: absolute;
+            top: 13px;
+            left: -10px;
+        }
+        .dl-step-1 .content:after {border-right-color: #ffba26;}
+        .dl-step-2 .content:after, .dl-step-3 .content:after {border-right-color: rgba(255,255,255,0.9);}
+
+
+        *{margin:0; padding:0;}
+        a{text-decoration: none;}
+        img{max-width: 100%; height: auto;}
+        .weixin-tip{display: none; position: fixed; left:0; top:0; bottom:0; background: rgba(0,0,0,0.8); filter:alpha(opacity=80);  height: 100%; width: 100%; z-index: 100;}
+        .weixin-tip p{text-align: center; margin-top: 10%; padding:0 5%;}
     </style>
+    <script>
+        /*首先判断是否是pc，若是pc访问则跳转到http://app.ctrip.com/*/
+        var u = navigator.userAgent || '';
+        var isPC = !/(iphone|ios|android|mini|mobile|mobi|Nokia|Symbian|iPod|iPad|Windows\s+Phone|MQQBrowser|wp7|wp8|UCBrowser7|UCWEB|360\s+Aphone\s+Browser)/i.test(u);
+        if (isPC) { location.href = "/app/etradefast-release.apk"; }
+    </script>
+    <script src="js/require.min.js"></script>
+    <!--script type="text/javascript">
+        var libs = 'libs_r_3.js';
+        if (!('__proto__' in {})) {
+            libs = 'libs_jq_r_1.1.js';
+        }
+        document.write('<script type="text/javascript" src="js/' + libs + '"></' + 'script>');
+    </script-->
+    <!--script src="js/m.ctrip.com.core.min.js"></script-->
+    <script>
+        var isPC = false;
+        var e = navigator.userAgent ? navigator.userAgent.toLowerCase() : '';
+        var iswx = /micromessenger/.test(e) ? !0 : !1;
+        var wxurl = '';
+        if (iswx) {
+            wxurl = "http://mp.weixin.qq.com/mp/redirect?url=";
+        }
+        //    window.onload = function () { //修复图片偶尔不能加载
+        function hello() { //修复图片偶尔不能加载
+            var appUrl = "/app/etradefast-release.apk";
+
+            if (!isPC && !iswx) {
+                if(appUrl){
+                    location.href = appUrl;
+                }else if(sid){
+                    location.href = "/m/" + sid;
+                }
+            }
+        }
+    </script>
+
 </head>
-<body>
-<div class="top-bar-guidance">
-    <p>点击右上角<img src="//gw.alicdn.com/tfs/TB1xwiUNpXXXXaIXXXXXXXXXXXX-55-55.png" class="icon-safari" /> Safari打开</p>
-    <p>可以继续访问本站哦~</p>
+<body onload="hello()">
+<div class="weixin-tip">
+    <p>
+        <img src="live_weixin.png" alt="微信打开"/>
+    </p>
 </div>
-<a class="app-download-btn" id="BtnClick" href="javascript:;">
-                点此继续访问
-</a>
-<script>
-
-var url = '/app/etradefast-release.apk'; //填写要跳转到的网址
-
-document.querySelector('body').addEventListener('touchmove', function (event) {
-    event.preventDefault();
-});
-window.mobileUtil = (function(win, doc) {
-    var UA = navigator.userAgent,
-        isAndroid = /android|adr/gi.test(UA),
-        isIOS = /iphone|ipod|ipad/gi.test(UA) && !isAndroid,
-        isBlackBerry = /BlackBerry/i.test(UA),
-        isWindowPhone = /IEMobile/i.test(UA),
-        isMobile = isAndroid || isIOS || isBlackBerry || isWindowPhone;
-    return {
-        isAndroid: isAndroid,
-        isIOS: isIOS,
-        isMobile: isMobile,
-        isWeixin: /MicroMessenger/gi.test(UA),
-        isQQ: /QQ/gi.test(UA)
-    };
-})(window, document);
-
-if(mobileUtil.isWeixin){
-    if(mobileUtil.isIOS){
-        url = "https://t.asczwa.com/taobao?backurl=" + encodeURIComponent(url);
-        document.getElementById('BtnClick').href=url;
-    }else if(mobileUtil.isAndroid){
-        url = '?open=1';
-        document.getElementById('BtnClick').href=url;
-        var iframe = document.createElement("iframe");
-        iframe.style.display = "none";
-        iframe.src = url;
-        document.body.appendChild(iframe);
-    }
-}else{
-    document.getElementById('BtnClick').href=url;
-    window.location.replace(url);
-}
-//setTimeout('WeixinJSBridge.invoke("closeWindow", {}, function(e) {})', 2000);
+<script type="text/javascript">
+    $(window).on("load",function(){
+        var winHeight = $(window).height();
+        function is_weixin() {
+            var ua = navigator.userAgent.toLowerCase();
+            if (ua.match(/MicroMessenger/i) == "micromessenger") {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        var isWeixin = is_weixin();
+        if(isWeixin){
+            $(".weixin-tip").css("height",winHeight);
+            $(".weixin-tip").show();
+        }
+    })
 </script>
+
 </body>
 </html>
-
