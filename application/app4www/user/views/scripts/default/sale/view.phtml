@@ -1735,7 +1735,7 @@
     $("#singConfirmBtn").click(function () {
         var doSignPDF = '/user/pur/dosignpdf';
         var contractID = $(".sign-button").attr("contractID_");
-        if ($(this).attr("personSend") == "true") {
+        if ($(this).attr("personsend") == "true") {
             doSignPDF = '/user/pur/dopersonsignpdf';
             contractID = $(".person-sign-button").attr("contractID_");
         }
