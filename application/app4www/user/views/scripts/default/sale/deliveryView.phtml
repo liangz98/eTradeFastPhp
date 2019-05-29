@@ -31,8 +31,9 @@
                     <td style="text-align: left; vertical-align: middle;"><?php echo $value->productName; ?></td>
                     <td style="text-align: left; vertical-align: middle;"><?php echo $value->productModel; ?></td>
                     <td style="text-align: left; vertical-align: middle;"><?php echo $this->delivery->crnCode; ?>&nbsp;
-                        <label class="buyerUnitPrice_"></label>
-                        <script type="text/javascript">$(".buyerUnitPrice_").html(formatCurrency(<?php echo $value->buyerUnitPrice;?>, 2));</script>
+                        <label class="buyerUnitPrice_">
+                            <?php echo number_format($value->buyerUnitPrice, 2);?>
+                        </label>
                     </td>
                     <td style="text-align: left; vertical-align: middle;"><?php echo $value->deliveryQuantity; ?></td>
                     <td style="text-align: left; vertical-align: middle;"><?php echo $value->totalPackages; ?></td>
@@ -40,8 +41,9 @@
                     <td style="text-align: left; vertical-align: middle;"><?php echo $value->totalGrossWeight; ?></td>
                     <td style="text-align: left; vertical-align: middle;"><?php echo $value->totalVolume; ?></td>
                     <td style="text-align: left; vertical-align: middle;"><?php echo $this->delivery->crnCode ?>&nbsp;
-                        <label class="buyerTotalAmount_"></label>
-                        <script type="text/javascript">$(".buyerTotalAmount_").html(formatCurrency(<?php echo $value->buyerTotalAmount;?>, 2));</script>
+                        <label class="buyerTotalAmount_">
+                            <?php echo number_format($value->buyerTotalAmount, 2);?>
+                        </label>
                     </td>
                 </tr>
             <?php endforeach; ?>

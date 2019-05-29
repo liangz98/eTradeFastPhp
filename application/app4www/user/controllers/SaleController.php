@@ -1301,11 +1301,11 @@ class SaleController extends Kyapi_Controller_Action
         foreach ($orderItemID as $index => $value) {
             $deliveryItemList[$index] = new Kyapi_Model_DeliveryItem();
             $deliveryItemList[$index]->orderItemID = $value;
-            $deliveryItemList[$index]->deliveryQuantity = (int)$deliveryQuantity[$index];
+            $deliveryItemList[$index]->deliveryQuantity = $deliveryQuantity[$index];
             $deliveryItemList[$index]->totalPackages = (int)$deliveryTotalPackage[$index];
-            $deliveryItemList[$index]->totalNetWeight = (int)$deliveryTotalNetWeight[$index];
-            $deliveryItemList[$index]->totalGrossWeight = (int)$deliveryTotalGrossWeight[$index];
-            $deliveryItemList[$index]->totalVolume = (int)$deliveryTotalVolume[$index];
+            $deliveryItemList[$index]->totalNetWeight = $deliveryTotalNetWeight[$index];
+            $deliveryItemList[$index]->totalGrossWeight = $deliveryTotalGrossWeight[$index];
+            $deliveryItemList[$index]->totalVolume = $deliveryTotalVolume[$index];
         }
 
         if (count($_attachList) == 0) {
@@ -1460,9 +1460,9 @@ class SaleController extends Kyapi_Controller_Action
             $deliveryItemList[$index]->itemID = $value;
             $deliveryItemList[$index]->deliveryQuantity = $deliveryQuantity[$index];
             $deliveryItemList[$index]->totalPackages = (int)$deliveryTotalPackage[$index];
-            $deliveryItemList[$index]->totalNetWeight = (int)$deliveryTotalNetWeight[$index];
-            $deliveryItemList[$index]->totalGrossWeight = (int)$deliveryTotalGrossWeight[$index];
-            $deliveryItemList[$index]->totalVolume = (int)$deliveryTotalVolume[$index];
+            $deliveryItemList[$index]->totalNetWeight = $deliveryTotalNetWeight[$index];
+            $deliveryItemList[$index]->totalGrossWeight = $deliveryTotalGrossWeight[$index];
+            $deliveryItemList[$index]->totalVolume = $deliveryTotalVolume[$index];
         }
 
         if (count($_attachList) == 0) {

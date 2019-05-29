@@ -151,6 +151,7 @@
                                 </div>
                             </div>
 
+                            <!-- 物流 -->
                             <div role="tabpanel" class="tab-pane row <?php if ($this->vestut > 3) { echo 'in active'; } ?>" id="delivery">
                                 <div class="col-md-12">
                                     <table class="layui-table" lay-skin="line" id="deliveryTable" lay-filter="demoEvent">
@@ -167,9 +168,9 @@
                                             <th>批次</th>
                                             <th>收发货单编号</th>
                                             <th>批次状态</th>
-                                            <th style="text-align: center">日期</th>
-                                            <th style="text-align: center">摘要</th>
-                                            <th style="text-align: center">操作</th>
+                                            <th style="text-align: center"><?php echo $this->translate('date'); ?></th>
+                                            <th style="text-align: center"><?php echo $this->translate('settle_DEC'); ?></th>
+                                            <th style="text-align: center"><?php echo $this->translate('madeTT'); ?></th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -189,11 +190,12 @@
                                                         <?php elseif ($v->deliveryStatus == 2): ?>
                                                             <a class="layui-btn layui-btn-warm" data-toggle="modal" data-target="#deliveryDeliver" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>" >发货</a>
                                                         <?php elseif ($v->deliveryStatus == 3): ?>
-                                                            <?php if (!$this->orders->isSelfSupport): ?>
+                                                            <!-- 外贸订单, 并且不是自营的, 才可以开票 -->
+                                                            <?php if ($this->orders['orderType'] == 'IT' && !$this->orders['isSelfSupport']): ?>
                                                                 <a href='javascript:void(0)' data-toggle="modal" data-target="#billingInfo" data-delivery-id="<?php echo $v->deliveryID; ?>">开票资料</a>
                                                             <?php endif; ?>
                                                         <?php elseif ($v->deliveryStatus == 4): ?>
-                                                            <?php if (!$this->orders->isSelfSupport): ?>
+                                                            <?php if ($this->orders['orderType'] == 'IT' && !$this->orders['isSelfSupport']): ?>
                                                                 <a href='javascript:void(0)' data-toggle="modal" data-target="#billingInfo" data-delivery-id="<?php echo $v->deliveryID; ?>">开票资料</a>
                                                             <?php endif; ?>
                                                         <?php endif; ?>
@@ -217,6 +219,7 @@
                                 </div>
                             </div>
 
+                            <!-- 结算 -->
                             <div role="tabpanel" class="tab-pane row" id="calculate">
                                 <div class="col-md-12 calculateContent"></div>
                             </div>
@@ -2589,14 +2592,49 @@
         var myChart = echarts.init(document.getElementById('eventRiverContent'));
 
         var data = [];
+
         $.each(trackData, function (index, trackList) {
             $.each(trackList, function (tackIndex, track) {
-                console.log(track);
-                data.push([new Date(track.operateTime).format("yyyy-MM-dd hh:mm"), Math.ceil(Math.random() * 50), track.summary.replace('&nbsp;', ' ')])
+                //console.log(track);
+                var dataDict_ = $.data(dataDict, 'dataDict'),
+                    result = '';
+                $.each(dataDict_, function (key, item) {
+                    if (key === 'ACTION_LOG_EVENT_TYPE') {
+                        var eventTypeCode = track.eventType;
+                        $.each(item, function (i, dict) {
+                            if (dict.code === eventTypeCode) {
+                                result = dict.name;
+                            }
+                        });
+                    }
+                });
+
+                data.push([new Date(track.operateTime).format("yyyy-MM-dd hh:mm"), Math.ceil(Math.random() * 50), track.summary.replace('&nbsp;', ' '), track.eventType, result])
             })
         });
-
         console.log(data);
+
+        // 将相同的数据重排成二维数组
+        var refreshTrackList = Object.values(data.reduce(function (res, item) {
+            res[item[3]] ? res[item[3]].push(item) : res[item[3]] = [item];
+            return res;
+        }, {}));
+        console.log(refreshTrackList);
+
+        // 将相同的数据去重
+        var arr = [];//用来存放合并列数
+        //var data = ["煤","石油","纸","纸","煤","煤","石油"];
+        data.sort();
+        for (var i = 0; i < data.length;) {//按照属性判断属性合并列数
+            var count = 0;
+            for (var j = i; j < data.length; j++) {
+                if (data[i][3] === data[j][3]) {
+                    count++;
+                }
+            }
+            arr.push(data[i][4]);
+            i += count;
+        }
 
         // 指定图表的配置项和数据
         var option = {
@@ -2608,7 +2646,8 @@
             },
             tooltip: {},
             legend: {
-                data:['事件']
+                // data: JSON.stringify(arr)
+                data: ["质量控制","订单处理"]
             },
             xAxis: {
                 type: 'time'
@@ -2617,7 +2656,7 @@
                 show: false
             },
             series: [{
-                name: '事件',
+                name: '订单处理',
                 symbol: 'pin',
                 symbolSize: 30,
                 label: {
@@ -2627,7 +2666,21 @@
                         return param.data[2];
                     }
                 },
-                data: data,
+                data: refreshTrackList[0],
+                type: 'scatter'
+            }, {
+                // name: arrayTwo[1][0][4],
+                name: '质量控制',
+                symbol: 'pin',
+                symbolSize: 30,
+                label: {
+                    show: true,
+                    position: 'bottom',
+                    formatter: function (param) {
+                        return param.data[2];
+                    }
+                },
+                data: refreshTrackList[1],
                 type: 'scatter'
             }]
         };

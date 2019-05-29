@@ -1,81 +1,140 @@
-<div class="modal-header et-auth-bg-ok">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" ><?php echo $this->translate('companySignh32'); ?></h4>
-    <p><?php echo $this->translate('companySignp03'); ?></p>
-</div>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+    <title><?php echo $this->translate('etradefast'); ?></title>
+    <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <link href="/ky/css/company/company.css" rel="stylesheet">
+    <link href="/ky/css/img-upload.css" rel="stylesheet">
 
-<div class="modal-body">
-    <div class="alert alert-danger hidden" role="alert">
-        <strong>Warning!</strong> <p></p>
+    <!-- Web Uploader -->
+    <!--<link href="/ky/webuploader-0.1.8-dist/webuploader.css" rel="stylesheet">-->
+    <!-- fancybox -->
+    <link href="/ky/fancybox-3.5.6-dist/jquery.fancybox.min.css" rel="stylesheet">
+</head>
+<body>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
+
+<div class="container-fluid index-body">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 company-navigation hidden-xs">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><?php echo $this->translate('companyMNG'); ?></div>
+                    <div class="list-group">
+                        <a href="/user/company" class="list-group-item"><?php echo $this->translate('company_info'); ?></a>
+                        <a href="/user/company/authview" class="list-group-item"><?php echo $this->translate('companyAuth'); ?></a>
+                        <a href="/user/account" class="list-group-item"><?php echo $this->translate('personNO'); ?></a>
+                        <a href="/user/bank" class="list-group-item"><?php echo $this->translate('bankNO'); ?></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9 company-main">
+                <div class="panel panel-default">
+                    <div class="modal-header et-auth-bg-ok">
+                        <h4 class="modal-title" ><?php echo $this->translate('companySignh32'); ?></h4>
+                        <p><?php echo $this->translate('companySignp03'); ?></p>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="alert alert-danger hidden" role="alert">
+                            <strong>Warning!</strong> <p></p>
+                        </div>
+                        <div class="row">
+                            <form class="form-horizontal layui-form">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"><?php echo $this->translate('et_auth_name'); ?></label>
+                                    <div class="col-sm-9">
+                                        <p class="form-control-static"><?php echo json_decode($this->account->entRealAuthInfo)->accountName; ?></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"><?php echo $this->translate('et_auth_code'); ?></label>
+                                    <div class="col-sm-9">
+                                        <p class="form-control-static"><?php echo json_decode($this->account->entRealAuthInfo)->businessLicenseNo; ?></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"><?php echo $this->translate('et_auth_mg_name'); ?></label>
+                                    <div class="col-sm-9">
+                                        <p class="form-control-static"><?php echo json_decode($this->account->entRealAuthInfo)->legalPersonName; ?></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"><?php echo $this->translate('et_auth_mg_id'); ?></label>
+                                    <div class="col-sm-9">
+                                        <p class="form-control-static"><?php echo json_decode($this->account->entRealAuthInfo)->legalPersonIdentityNo; ?></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"><?php echo $this->translate('et_auth_acctNo'); ?></label>
+                                    <div class="col-sm-9">
+                                        <p class="form-control-static"><?php echo json_decode($this->account->entRealAuthInfo)->cardno; ?></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"><?php echo $this->translate('et_auth_bankName'); ?></label>
+                                    <div class="col-sm-9">
+                                        <p class="form-control-static"><?php echo json_decode($this->account->entRealAuthInfo)->bank; ?></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"><?php echo $this->translate('et_auth_bankName'); ?></label>
+                                    <div class="col-sm-9">
+                                        <p class="form-control-static">
+                                            <?php echo json_decode($this->account->entRealAuthInfo)->provice; ?> / <?php echo json_decode($this->account->entRealAuthInfo)->city; ?>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"><?php echo $this->translate('et_auth_subbranchName'); ?></label>
+                                    <div class="col-sm-9">
+                                        <p class="form-control-static"><?php echo json_decode($this->account->entRealAuthInfo)->subbranch; ?></p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="row">
-        <form class="form-horizontal layui-form">
-            <div class="form-group">
-                <label class="col-sm-3 control-label"><?php echo $this->translate('et_auth_name'); ?></label>
-                <div class="col-sm-9">
-                    <p class="form-control-static"><?php echo json_decode($this->account->entRealAuthInfo)->accountName; ?></p>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-3 control-label"><?php echo $this->translate('et_auth_code'); ?></label>
-                <div class="col-sm-9">
-                    <p class="form-control-static"><?php echo json_decode($this->account->entRealAuthInfo)->businessLicenseNo; ?></p>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-3 control-label"><?php echo $this->translate('et_auth_mg_name'); ?></label>
-                <div class="col-sm-9">
-                    <p class="form-control-static"><?php echo json_decode($this->account->entRealAuthInfo)->legalPersonName; ?></p>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-3 control-label"><?php echo $this->translate('et_auth_mg_id'); ?></label>
-                <div class="col-sm-9">
-                    <p class="form-control-static"><?php echo json_decode($this->account->entRealAuthInfo)->legalPersonIdentityNo; ?></p>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-3 control-label"><?php echo $this->translate('et_auth_acctNo'); ?></label>
-                <div class="col-sm-9">
-                    <p class="form-control-static"><?php echo json_decode($this->account->entRealAuthInfo)->cardno; ?></p>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-3 control-label"><?php echo $this->translate('et_auth_bankName'); ?></label>
-                <div class="col-sm-9">
-                    <p class="form-control-static"><?php echo json_decode($this->account->entRealAuthInfo)->bank; ?></p>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-3 control-label"><?php echo $this->translate('et_auth_bankName'); ?></label>
-                <div class="col-sm-9">
-                    <p class="form-control-static">
-                        <?php echo json_decode($this->account->entRealAuthInfo)->provice; ?> / <?php echo json_decode($this->account->entRealAuthInfo)->city; ?>
-                    </p>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-3 control-label"><?php echo $this->translate('et_auth_subbranchName'); ?></label>
-                <div class="col-sm-9">
-                    <p class="form-control-static"><?php echo json_decode($this->account->entRealAuthInfo)->subbranch; ?></p>
-                </div>
-            </div>
-        </form>
-    </div>
 </div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $this->translate('close'); ?></button>
-</div>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<!-- Web Uploader -->
+<!--<script type="text/javascript" src="/ky/webuploader-0.1.8-dist/webuploader.js"></script>-->
+<!-- fancybox -->
+<script type="text/javascript" src="/ky/fancybox-3.5.6-dist/jquery.fancybox.min.js"></script>
+<script type="text/javascript" src="/ky/fancybox-3.5.6-dist/fancyboxInit.js"></script>
 
 <script type="text/javascript">
+    $().ready(function() {
+
+    });
+
     $(function () {
+        $('.company-navigation').find('a').each(function () {
+            if (this.href === document.location.href) {
+                $(this).addClass('nav-selected');
+            } else {
+                $(this).removeClass('nav-selected');
+            }
+        });
 
     });
 </script>
+</body>
+</html>

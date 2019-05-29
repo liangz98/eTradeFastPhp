@@ -40,7 +40,7 @@
                             <div class="form-group">
                                 <label for="name" class="col-sm-2 control-label"><?php echo $this->translate('name'); ?></label>
                                 <div class="col-sm-9">
-                                    <?php if ($this->e['realAuthStatus']!=0&&$this->e['realAuthStatus']!=-1):?>
+                                    <?php if ($this->e['realAuthStatus'] != 0 && $this->e['realAuthStatus'] != -1): ?>
                                     <p class="form-control-static"><?php echo $this->e['name']; ?></p>
                                     <?php else:?>
                                     <input type="text" class="form-control" name="name" id="name" placeholder="<?php echo $this->translate('is_name');?>" value="<?php echo $this->e['name']; ?>" required>
@@ -52,23 +52,43 @@
                             <div class="form-group">
                                 <label for="salutation" class="col-sm-2 control-label"><?php echo $this->translate('title'); ?></label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="salutation" id="salutation" placeholder="<?php echo $this->translate('title');?>" value="<?php echo $this->e['salutation']; ?>" >
+                                    <?php if ($this->e['ecommstatus'] == 'AT'): ?>
+                                        <p class="form-control-static"><?php echo $this->e['salutation']; ?></p>
+                                    <?php else: ?>
+                                        <input type="text" class="form-control" name="salutation" id="salutation" placeholder="<?php echo $this->translate('title');?>" value="<?php echo $this->e['salutation']; ?>" >
+                                    <?php endif; ?>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="sex" class="col-sm-2 control-label"><?php echo $this->translate('sex'); ?></label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" name="sex" id="sex">
-                                        <?php echo $this->ShowDictionaryList($this->dic_Setting['SEX'], $this->userLangCode, $this->dic_Setting['SEX'], $this->e['sex']); ?>
-                                    </select>
+                                    <?php if ($this->e['ecommstatus'] == 'AT'): ?>
+                                        <p class="form-control-static">
+                                            <?php echo $this->ShowDictionaryTo($this->dic_Setting['SEX'], $this->userLangCode, $this->dic_Setting['SEX'], $this->e['sex']); ?>
+                                        </p>
+                                    <?php else: ?>
+                                        <select class="form-control" name="sex" id="sex">
+                                            <?php echo $this->ShowDictionaryList($this->dic_Setting['SEX'], $this->userLangCode, $this->dic_Setting['SEX'], $this->e['sex']); ?>
+                                        </select>
+                                    <?php endif; ?>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="birthdate" class="col-sm-2 control-label"><?php echo $this->translate('birthday'); ?></label>
                                 <div class="col-sm-9">
-                                    <input type="date" class="form-control" name="birthdate" id="birthdate" placeholder="<?php echo $this->translate('title');?>" <?php if (!empty($this->e['birthdate'])) { echo "value='". date('Y-m-d', strtotime($this->e['birthdate']) )."'"; }; ?> >
+                                    <?php if ($this->e['ecommstatus'] == 'AT'): ?>
+                                        <p class="form-control-static">
+                                            <?php if ($this->e['birthdate']) {
+                                                echo date('Y-m-d', strtotime($this->e['birthdate']));
+                                            } else {
+                                                echo null;
+                                            } ?>
+                                        </p>
+                                    <?php else: ?>
+                                        <input type="date" class="form-control" name="birthdate" id="birthdate" placeholder="<?php echo $this->translate('title');?>" <?php if (!empty($this->e['birthdate'])) { echo "value='". date('Y-m-d', strtotime($this->e['birthdate']) )."'"; }; ?> >
+                                    <?php endif; ?>
                                 </div>
                             </div>
 
@@ -76,16 +96,28 @@
                             <div class="form-group">
                                 <label for="identityType" class="col-sm-2 control-label"><?php echo $this->translate('certificateType'); ?></label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" name="identityType" id="identityType">
-                                        <?php echo $this->ShowDictionaryList($this->dic_Setting['ID_TYPE'], $this->userLangCode, $this->dic_Setting['ID_TYPE'], $this->e['identityType']); ?>
-                                    </select>
+                                    <?php if ($this->e['ecommstatus'] == 'AT'): ?>
+                                        <p class="form-control-static">
+                                            <?php echo $this->ShowDictionaryTo($this->dic_Setting['ID_TYPE'], $this->userLangCode, $this->dic_Setting['ID_TYPE'], $this->e['identityType']); ?>
+                                        </p>
+                                    <?php else: ?>
+                                        <select class="form-control" name="identityType" id="identityType">
+                                            <?php echo $this->ShowDictionaryList($this->dic_Setting['ID_TYPE'], $this->userLangCode, $this->dic_Setting['ID_TYPE'], $this->e['identityType']); ?>
+                                        </select>
+                                    <?php endif; ?>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="identityNo" class="col-sm-2 control-label"><?php echo $this->translate('certificateNo'); ?></label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="identityNo" id="identityNo" placeholder="<?php echo $this->translate('certificateNo');?>" value="<?php echo $this->e['identityNo'];?>" >
+                                    <?php if ($this->e['ecommstatus'] == 'AT'): ?>
+                                        <p class="form-control-static">
+                                            <?php echo $this->e['identityNo']; ?>
+                                        </p>
+                                    <?php else: ?>
+                                        <input type="text" class="form-control" name="identityNo" id="identityNo" placeholder="<?php echo $this->translate('certificateNo');?>" value="<?php echo $this->e['identityNo'];?>" >
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <?php endif;?>
@@ -93,42 +125,78 @@
                             <div class="form-group">
                                 <label for="department" class="col-sm-2 control-label"><?php echo $this->translate('division'); ?></label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="department" id="department" placeholder="<?php echo $this->translate('division');?>" value="<?php echo $this->e['department']; ?>" >
+                                    <?php if ($this->e['ecommstatus'] == 'AT'): ?>
+                                        <p class="form-control-static">
+                                            <?php echo $this->e['department']; ?>
+                                        </p>
+                                    <?php else: ?>
+                                        <input type="text" class="form-control" name="department" id="department" placeholder="<?php echo $this->translate('division');?>" value="<?php echo $this->e['department']; ?>" >
+                                    <?php endif; ?>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="title" class="col-sm-2 control-label"><?php echo $this->translate('job'); ?></label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="title" id="title" placeholder="<?php echo $this->translate('job');?>" value="<?php echo $this->e['title']; ?>" >
+                                    <?php if ($this->e['ecommstatus'] == 'AT'): ?>
+                                        <p class="form-control-static">
+                                            <?php echo $this->e['title']; ?>
+                                        </p>
+                                    <?php else: ?>
+                                        <input type="text" class="form-control" name="title" id="title" placeholder="<?php echo $this->translate('job');?>" value="<?php echo $this->e['title']; ?>" >
+                                    <?php endif; ?>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="email" class="col-sm-2 control-label"><?php echo $this->translate('email'); ?></label>
                                 <div class="col-sm-9">
-                                    <input type="email" class="form-control" name="email" id="email" placeholder="<?php echo $this->translate('is_emails');?>" value="<?php echo $this->e['email']; ?>" required>
+                                    <?php if ($this->e['ecommstatus'] == 'AT'): ?>
+                                        <p class="form-control-static">
+                                            <?php echo $this->e['email']; ?>
+                                        </p>
+                                    <?php else: ?>
+                                        <input type="email" class="form-control" name="email" id="email" placeholder="<?php echo $this->translate('is_emails');?>" value="<?php echo $this->e['email']; ?>" required>
+                                    <?php endif; ?>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="mobilePhone" class="col-sm-2 control-label"><?php echo $this->translate('mobile'); ?></label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="mobilePhone" id="mobilePhone" placeholder="<?php echo $this->translate('is_phone');?>" value="<?php echo $this->e['mobilePhone']; ?>" >
+                                    <?php if ($this->e['ecommstatus'] == 'AT'): ?>
+                                        <p class="form-control-static">
+                                            <?php echo $this->e['mobilePhone']; ?>
+                                        </p>
+                                    <?php else: ?>
+                                        <input type="text" class="form-control" name="mobilePhone" id="mobilePhone" placeholder="<?php echo $this->translate('is_phone');?>" value="<?php echo $this->e['mobilePhone']; ?>" >
+                                    <?php endif; ?>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="phone" class="col-sm-2 control-label"><?php echo $this->translate('telephone'); ?></label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="phone" id="phone" placeholder="<?php echo $this->translate('is_tel');?>" value="<?php echo $this->e['phone']; ?>" >
+                                    <?php if ($this->e['ecommstatus'] == 'AT'): ?>
+                                        <p class="form-control-static">
+                                            <?php echo $this->e['phone']; ?>
+                                        </p>
+                                    <?php else: ?>
+                                        <input type="text" class="form-control" name="phone" id="phone" placeholder="<?php echo $this->translate('is_tel');?>" value="<?php echo $this->e['phone']; ?>" >
+                                    <?php endif; ?>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="fax" class="col-sm-2 control-label"><?php echo $this->translate('fax'); ?></label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="fax" id="fax" placeholder="<?php echo $this->translate('fax');?>" value="<?php echo $this->e['fax']; ?>" >
+                                    <?php if ($this->e['ecommstatus'] == 'AT'): ?>
+                                        <p class="form-control-static">
+                                            <?php echo $this->e['fax']; ?>
+                                        </p>
+                                    <?php else: ?>
+                                        <input type="text" class="form-control" name="fax" id="fax" placeholder="<?php echo $this->translate('fax');?>" value="<?php echo $this->e['fax']; ?>" >
+                                    <?php endif; ?>
                                 </div>
                             </div>
 

@@ -108,12 +108,18 @@
                                                         if ($this->agentName != null && $this->agentName != '' && $this->agentIdNo != null && $this->agentIdNo != ''):
                                                             if ($this->agentName != $this->e['name'] && $this->agentIdNo != $this->e['identityNo']):
                                                                 if ($this->e['realAuthStatus'] == 2):
-                                                ?>
+                                            ?>
                                                                     <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#changeSigningAgent">
                                                                         <i class="fas fa-signature"></i> <?php echo $this->translate('setSignature'); ?>
                                                                     </button>
-                                                <?php
+                                            <?php
                                                                 endif;
+                                                            elseif (true):
+                                            ?>
+                                                                <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#changeSigningAgent">
+                                                                    <i class="fas fa-signature"></i> <?php echo $this->translate('resetSignature'); ?>
+                                                                </button>
+                                            <?php
                                                             endif;
                                                         endif;
                                                     endif;
@@ -124,7 +130,7 @@
                                         <dt><?php echo $this->translate('compAdmin'); ?></dt>
                                         <dd>
                                             <?php
-                                            if (stripos($this->e['ecommrole'], 'compAdmin')) {
+                                            if (stristr($this->e['ecommrole'], 'compAdmin')) {
                                                 echo $this->translate('yes');
                                             } else {
                                                 echo $this->translate('no');
@@ -136,7 +142,7 @@
                                             // 2.判断当前用户是否已经做了实名认证
                                             if ($this->CompAdmin):
                                                 if ($this->hasIDCertificate):
-                                                    if (stripos($this->e['ecommrole'], 'compAdmin') == false):
+                                                    if (stristr($this->e['ecommrole'], 'compAdmin') == false):
                                                         if ($this->e['realAuthStatus'] == 2):
                                                             ?>
                                                             <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#changeCompAdmin">

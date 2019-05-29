@@ -139,6 +139,7 @@
                     columns: [{
                         field: 'bankAcctNo',
                         title: '<?php echo $this->translate("bankAcctNo"); ?>',
+                        valign: 'middle',
                         formatter: function (value, row) {
                             var base = new Base64();
                             var resultEnCode = base.encode(row.bankAcctID);
@@ -148,6 +149,7 @@
                     }, {
                         field: 'bankAcctName',
                         title: '<?php echo $this->translate("bankAcctName"); ?>',
+                        align: 'middle',
                         formatter: function (value, row) {
                             if (value === undefined || value === '' || value === null) {
                                 value = "-";
@@ -160,6 +162,7 @@
                     }, {
                         field: 'bankAcctType',
                         title: '<?php echo $this->translate("bankAcctType"); ?>',
+                        align: 'middle',
                         formatter: function (value) {
                             var result ="";
                             var data = $.data(dataDict, 'dataDict');
@@ -176,19 +179,23 @@
                         }
                     }, {
                         field: 'bankName',
-                        title: '<?php echo $this->translate("bankName"); ?>'
+                        title: '<?php echo $this->translate("bankName"); ?>',
+                        align: 'middle'
                     }, {
                         field: 'swiftcode',
-                        title: '<?php echo $this->translate("SWIFTCode"); ?>'
+                        title: '<?php echo $this->translate("SWIFTCode"); ?>',
+                        align: 'middle'
                     }, {
                         field: 'isDefault',
                         title: '<?php echo $this->translate("accountDF"); ?>',
+                        align: 'middle',
                         formatter: function (value) {
                             return (value === true) ? '<?php echo $this->translate('yes') ?>' : '<?php echo $this->translate('no'); ?>';
                         }
                     }, {
                         field: 'bankAcctStatus',
                         title: '<?php echo $this->translate("state"); ?>',
+                        align: 'middle',
                         formatter: function (value) {
                             var result = "-";
                             var data = $.data(dataDict, 'dataDict');
@@ -205,6 +212,7 @@
                         }
                     }, {
                         title: '<?php echo $this->translate("madeTT"); ?>',
+                        align: 'middle',
                         formatter: function (value, row, index) {
                             var editTitle = "<?php echo $this->translate("edit");?>";
                             var delTitle = "<?php echo $this->translate('delete');?>";

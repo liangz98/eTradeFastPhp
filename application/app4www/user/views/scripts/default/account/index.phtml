@@ -211,11 +211,13 @@
                             var resultEnCode = base.encode(row.contactID);
                             var href = "/user/account/edit?"+resultEnCode;
 
-                            var result = '<a title="' + editTitle+ '" href="' + href + '">'
+                            var result;
+                            <?php if ($this->CompAdmin == true): ?>
+                            result = '<a title="' + editTitle+ '" href="' + href + '">'
                                 + '<i class="far fa-edit"></i>'
                                 + '</a>&nbsp;';
-                            <?php if ($this->CompAdmin == true): ?>
-                            if (row.contactStatus === '01') {
+
+                            if (row.contactStatus === '01' && row.contactID !== '<?php echo $this->userID; ?>') {
                                 result += '<a href="javascript:void(0)" title="' + disableTitle + '" id="' + row.contactID + '" data-url="/user/account/invalid" data-msg1="<?php echo $this->translate("is_invalid");?>" '
                                     + 'data-msg2="<?php echo $this->translate("tip_invalid_success");?>" '
                                     + 'data-msg3="<?php echo $this->translate("tip_invalid_fail");?>" '

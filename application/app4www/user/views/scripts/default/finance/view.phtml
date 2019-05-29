@@ -452,20 +452,21 @@
                         <label for="loanDate" class="col-sm-2 control-label"><?php echo $this->translate('factoringLoanDate'); ?></label>
                         <div class="col-sm-5">
                             <?php
-                            $showLoanStartDate = date("Y-m-d", strtotime("+1 day", strtotime(date('Y-m-d'))));
-                            $noWorkDay = true;
-                            while ($noWorkDay) {
-                                $url = "http://api.goseek.cn/Tools/holiday?date=".$date = date("Ymd", strtotime($showLoanStartDate));
-                                $res = file_get_contents($url);
-                                $res = json_decode($res,true);
-                                if ($res['data'] != 1 && $res['data'] != 2) {
-                                    $noWorkDay = false;
-                                } else {
-                                    $showLoanStartDate = date("Y-m-d", strtotime("+1 day", strtotime($showLoanStartDate)));
-                                }
-                            }
+                            // $showLoanStartDate = date("Y-m-d", strtotime("+1 day", strtotime(date('Y-m-d'))));
+                            // $noWorkDay = true;
+                            // while ($noWorkDay) {
+                            //     $url = "http://api.goseek.cn/Tools/holiday?date=".$date = date("Ymd", strtotime($showLoanStartDate));
+                            //     $res = file_get_contents($url);
+                            //     $res = json_decode($res,true);
+                            //     if ($res['data'] != 1 && $res['data'] != 2) {
+                            //         $noWorkDay = false;
+                            //     } else {
+                            //         $showLoanStartDate = date("Y-m-d", strtotime("+1 day", strtotime($showLoanStartDate)));
+                            //     }
+                            //     $noWorkDay = false;
+                            // }
                             ?>
-                            <input type="text" class="form-control" name="loanDate" id="loanDate" placeholder="" value="<?php echo $showLoanStartDate;?>" >
+                            <input type="text" class="form-control" name="loanDate" id="loanDate" placeholder="" value="" >
                         </div>
                     </div>
                     <div class="form-group">
@@ -772,16 +773,40 @@
             loanCrnCode = triggered.data("crn-code"),
             $loanCrnCodeSpan = $(".loanCrnCodeSpan"),
             $loanAmountInput = $("#loanAmount"),
-            $loanDate = $('#loanDate'),
-            $loanDateVal = '<?php echo $showLoanStartDate; ?>';
+            $loanDate = $('#loanDate');
 
         $loanCrnCodeSpan.html(loanCrnCode);
         $loanAmountInput.val(loanAmount);
         $loanAmountInput.attr("max", loanAmount);
         $("#loanID").val(loanID);
 
+        var dateVal = new Date().format("yyyy-MM-dd");
+        var noWorkDay = true;
+        while (noWorkDay) {
+            var getHolidayApiUrl = 'https://timor.tech/api/holiday/info/' + dateVal;
+            $.ajax({
+                type: "GET",
+                url: getHolidayApiUrl,
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    if (data.code === 0) {
+                        if (data.holiday === null) {
+                            noWorkDay = false;
+                        } else {
+                            var dateTime = new Date(dateVal);
+                            dateTime = dateTime.setDate(dateTime.getDate() + 1);
+                            dateVal = new Date(dateTime).format("yyyy-MM-dd");
+                        }
+                    } else {
+                        noWorkDay = false;
+                    }
+                }
+            });
+        }
 
-        $loanDate.datetimepicker('setStartDate', $loanDateVal);
+        $loanDate.val(dateVal);
+        $loanDate.datetimepicker('setStartDate', dateVal);
 
         var hscodeQuery = '/user/finance/get-factoring-loan-ajax';
         $.ajax({
@@ -1029,13 +1054,13 @@
 
         $(".download-button").attr("contractID_", obj.id);
 
-        if ($("#isESigned_" + obj.id).val() === 1) {
+        if ($("#isESigned_" + obj.id).val() === '1') {
             $(".sign-button").hide();
         } else {
             $(".sign-button").show().attr("contractID_", obj.id);
         }
 
-        if ($("#isPSigned_" + obj.id).val() === 1) {
+        if ($("#isPSigned_" + obj.id).val() === '1') {
             $(".person-sign-button").hide();
         } else {
             $(".person-sign-button").show().attr("contractID_", obj.id);

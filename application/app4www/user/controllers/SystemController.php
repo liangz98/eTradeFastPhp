@@ -84,7 +84,10 @@ class SystemController extends Kyapi_Controller_Action
 
         if ($langCode) {
             $_SESSION['rev_session']['contactPreference']['langCode'] = $langCode;
-            echo json_encode($_SESSION['rev_session']['contactPreference']['langCode']);
+            $msg['status'] = 'success';
+            $msg['result'] = $langCode;
+            $msg['langCode'] = $_SESSION['rev_session']['contactPreference']['langCode'];
+            echo json_encode($msg);
             exit;
         } else {
             return false;

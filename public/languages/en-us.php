@@ -279,6 +279,7 @@ return array(
     'WebINF'       => 'Account Info.',
     'signature'    => '企业签署人',
     'setSignature' => '设为签署人',
+    'resetSignature' => '刷新签署信息',
     'compAdmin'    => '公司管理员',
     'setCompAdmin' => '设为公司管理员',
 
@@ -287,6 +288,7 @@ return array(
 
     'basicINF'                   => 'Info.',
     'company_info'               => 'Company Info.',
+    'companyAuth'                => 'Company Auth',
     'personNO'                   => 'Staff Info.',
     'bankNO'                     => 'Bank Account',
     'file'                       => 'Files',
