@@ -406,17 +406,17 @@ class SaleController extends Kyapi_Controller_Action
         $Viewlist = $this->objectToArray($viewData);
         //当前返回数据为空时 前端显示为无
         if (!isset($Viewlist['packingDesc']))
-            $Viewlist['packingDesc'] = $this->view->translate('NoData');  //包装描述
+            $Viewlist['packingDesc'] = $this->view->translate('noData');  //包装描述
         if (!isset($Viewlist['financingRequest']))
             $Viewlist['financingRequest'] = $this->view->translate('noData');  //金融要求
         if (!isset($Viewlist['customClearanceRequest']))
             $Viewlist['customClearanceRequest'] = $this->view->translate('noData'); //报关要求
         // 物流要求
         if (!isset($Viewlist['shippingRequest'])) {
-            if (isset($Viewlist['truckingRequest'])) {
+            if (isset($Viewlist['truckingRequest']) && !empty($Viewlist['truckingRequest'])) {
                 $Viewlist['shippingRequest'] = $Viewlist['truckingRequest'];
             } else {
-                $Viewlist['shippingRequest'] = "";
+                $Viewlist['shippingRequest'] = '';
             }
         }
 
@@ -528,6 +528,7 @@ class SaleController extends Kyapi_Controller_Action
                     $it3[$k]->functionUsage = $it2[$k]['functionUsage'];
                 }
             }
+
             //获取附件ID
             $Atachlist = array();
             $Atachlist["attachID"] = $this->_request->getParam('attachNid');
@@ -541,17 +542,22 @@ class SaleController extends Kyapi_Controller_Action
                     $_attach2[$k1][$k] = $v1;
                 }
             }
-            $_attachList = array();
-            foreach ($_attach2 as $k => $v) {
-                foreach ($v as $k1 => $v1) {
-                    $_attachList[$k] = new Kyapi_Model_Attachment();
-                    $_attachList[$k]->attachID = $_attach2[$k]['attachID'];
-                    $_attachList[$k]->attachType = 'ODOD';
-                    $_attachList[$k]->bizType = 'OD';
-                    $_attachList[$k]->name = $_attach2[$k]['attachName'];
-                    $_attachList[$k]->size = (int)$_attach2[$k]['attachSize'];
+
+            //  ---------------- start
+            if (count($_attach2) > 0) {
+                $attachmentList = array();
+                foreach ($_attach2 as $k => $v) {
+                    foreach ($v as $k1 => $v1) {
+                        $attachmentList[$k] = new Kyapi_Model_Attachment();
+                        $attachmentList[$k]->attachID = $_attach2[$k]['attachID'];
+                        $attachmentList[$k]->attachType = 'ODOD';
+                        $attachmentList[$k]->bizType = 'OD';
+                        $attachmentList[$k]->name = $_attach2[$k]['attachName'];
+                        $attachmentList[$k]->size = (int)$_attach2[$k]['attachSize'];
+                    }
                 }
             }
+            // -------------------- end
 
             //装柜数量
             $orderMM = array();
@@ -648,12 +654,11 @@ class SaleController extends Kyapi_Controller_Action
             //				$_order->saleContractNo = (boolean)$this->_request->getParam("saleContractNo");// 销售合同号码
             //				$_order->saleContractID = (boolean)$this->_request->getParam("saleContractID");// 销售合同号码
             $_order->orderItemList = $it3;//订单商品集合
-            $_order->attachmentList = $_attachList;//附件集合
+            $_order->attachmentList = $attachmentList;//附件集合
 
             $requestObject = $this->_requestObject;
             $_resultData = $this->json->editOrderApi($requestObject, $_order);
             $resultObject = json_decode($_resultData);
-
 
             // 页面跳转
             if ($resultObject->status != 1) {

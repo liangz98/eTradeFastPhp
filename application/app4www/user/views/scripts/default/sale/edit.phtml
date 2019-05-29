@@ -47,21 +47,16 @@
                             <div class="form-group">
                                 <label for="buyerName" class="col-sm-2 control-label"><?php echo $this->translate('buyers'); ?></label>
                                 <div class="col-sm-4">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" name="buyerName" id="buyerName" placeholder="" value="<?php echo $this->orders['buyerName']; ?>" required >
-                                        <input type="hidden" name="buyer" id="buyer">
-                                        <input type="hidden" name="buyerRegdCountryCode" id="buyerRegdCountryCode">
-                                        <a class="input-group-addon" href="javascript:void(0)" data-toggle="modal" data-target="#myModal">
-                                            <i class="fas fa-plus"></i>
-                                        </a>
-                                    </div>
+                                    <p class="form-control-static"><?php echo $this->orders['buyerName'];?></p>
+                                    <input type="hidden" name="buyer" id="buyer" value="<?php echo $this->orders['buyer']; ?>">
+                                    <input type="hidden" name="buyerRegdCountryCode" id="buyerRegdCountryCode">
                                 </div>
 
                                 <label for="buyerContactName" class="col-sm-2 control-label"><?php echo $this->translate('buyerATTN'); ?></label>
                                 <div class="col-sm-4">
                                     <div class="input-group">
                                         <input type="text" class="form-control" name="buyerContactName" id="buyerContactName" placeholder="" value="<?php echo $this->orders['buyerContactName']; ?>" >
-                                        <input type="hidden" name="buyerContactID" id="buyerContactID">
+                                        <input type="hidden" name="buyerContactID" id="buyerContactID" value="<?php echo $this->orders['buyerContactID']; ?>">
                                         <a class="input-group-addon" href="javascript:void(0)" data-toggle="modal" data-target="#buyerContactModal">
                                             <i class="fas fa-plus"></i>
                                         </a>
@@ -80,8 +75,8 @@
                                 <label for="buyerContactName" class="col-sm-2 control-label"><?php echo $this->translate('thisATTN'); ?></label>
                                 <div class="col-sm-4">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" name="vendorContactName" id="vendorContactName" placeholder="" value="<?php echo $this->dfContactName; ?>" required >
-                                        <input type="hidden" name="vendorContactID" id="vendorContactID" value="<?php echo $this->dfContactID;?>">
+                                        <input type="text" class="form-control" name="vendorContactName" id="vendorContactName" placeholder="" value="<?php echo $this->orders['vendorContactName']; ?>" required >
+                                        <input type="hidden" name="vendorContactID" id="vendorContactID" value="<?php echo $this->orders['vendorContactID']; ?>">
                                         <a class="input-group-addon" href="javascript:void(0)" data-toggle="modal" data-target="#contactModal">
                                             <i class="fas fa-plus"></i>
                                         </a>
@@ -1074,6 +1069,33 @@
             $(deliveryPortSelect).append(optionString);
             $(deliveryPortSelect).selectpicker('refresh');
         });
+
+        var shippingMethodStr = $shippingMethod.val();
+        if (shippingMethodStr === 'SEA') {
+            $(loadingPortSelect).attr("data-dict-code", "SEA_PORT");
+            $(dischargePortSelect).attr("data-dict-code", "SEA_PORT");
+            $(deliveryPortSelect).attr("data-dict-code", "SEA_PORT");
+
+            $(".portSHIP").html("<?php echo $this->translate('portSHIP'); ?>");
+            $(".portDSCG").html("<?php echo $this->translate('portDSCG'); ?>");
+            $(".portDLVY").html("<?php echo $this->translate('portDLVY'); ?>");
+        } else if (shippingMethodStr === 'AIR') {
+            $(loadingPortSelect).attr("data-dict-code", "AIR_PORT");
+            $(dischargePortSelect).attr("data-dict-code", "AIR_PORT");
+            $(deliveryPortSelect).attr("data-dict-code", "AIR_PORT");
+
+            $(".portSHIP").html("<?php echo $this->translate('portSHIP'); ?>");
+            $(".portDSCG").html("<?php echo $this->translate('portDSCG'); ?>");
+            $(".portDLVY").html("<?php echo $this->translate('portDLVY'); ?>");
+        } else if (shippingMethodStr === 'EXPRESS' || shippingMethodStr === 'LAND') {
+            $(loadingPortSelect).attr("data-dict-code", "CITY_ISO_CODE");
+            $(dischargePortSelect).attr("data-dict-code", "CITY_ISO_CODE");
+            $(deliveryPortSelect).attr("data-dict-code", "CITY_ISO_CODE");
+
+            $(".portSHIP").html("<?php echo $this->translate('citypost1'); ?>");
+            $(".portDSCG").html("<?php echo $this->translate('citypost2'); ?>");
+            $(".portDLVY").html("<?php echo $this->translate('citypost3'); ?>");
+        }
 
         // 起运港
         var timeOut = "";

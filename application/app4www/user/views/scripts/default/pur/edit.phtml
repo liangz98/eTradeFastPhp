@@ -48,12 +48,9 @@
                                 <label for="vendorName" class="col-sm-2 control-label"><?php echo $this->translate('seller'); ?></label>
                                 <div class="col-sm-4">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" name="vendorName" id="vendorName" placeholder="" value="<?php echo $this->orders['vendorName']; ?>" required >
+                                        <p class="form-control-static"><?php echo $this->orders['vendorName'];?></p>
                                         <input type="hidden" name="vendor" id="vendor" value="<?php echo $this->orders['vendor']; ?>">
-                                        <input type="hidden" name="vendorRegdCountryCode" id="vendorRegdCountryCode" value="<?php echo $this->orders['vendorRegdCountryCode']; ?>">
-                                        <a class="input-group-addon" href="javascript:void(0)" data-toggle="modal" data-target="#myModal">
-                                            <i class="fas fa-plus"></i>
-                                        </a>
+                                        <input type="hidden" name="vendorRegdCountryCode" id="vendorRegdCountryCode">
                                     </div>
                                 </div>
 
@@ -1059,6 +1056,33 @@
             $(deliveryPortSelect).append(optionString);
             $(deliveryPortSelect).selectpicker('refresh');
         });
+
+        var shippingMethodStr = $shippingMethod.val();
+        if (shippingMethodStr === 'SEA') {
+            $(loadingPortSelect).attr("data-dict-code", "SEA_PORT");
+            $(dischargePortSelect).attr("data-dict-code", "SEA_PORT");
+            $(deliveryPortSelect).attr("data-dict-code", "SEA_PORT");
+
+            $(".portSHIP").html("<?php echo $this->translate('portSHIP'); ?>");
+            $(".portDSCG").html("<?php echo $this->translate('portDSCG'); ?>");
+            $(".portDLVY").html("<?php echo $this->translate('portDLVY'); ?>");
+        } else if (shippingMethodStr === 'AIR') {
+            $(loadingPortSelect).attr("data-dict-code", "AIR_PORT");
+            $(dischargePortSelect).attr("data-dict-code", "AIR_PORT");
+            $(deliveryPortSelect).attr("data-dict-code", "AIR_PORT");
+
+            $(".portSHIP").html("<?php echo $this->translate('portSHIP'); ?>");
+            $(".portDSCG").html("<?php echo $this->translate('portDSCG'); ?>");
+            $(".portDLVY").html("<?php echo $this->translate('portDLVY'); ?>");
+        } else if (shippingMethodStr === 'EXPRESS' || shippingMethodStr === 'LAND') {
+            $(loadingPortSelect).attr("data-dict-code", "CITY_ISO_CODE");
+            $(dischargePortSelect).attr("data-dict-code", "CITY_ISO_CODE");
+            $(deliveryPortSelect).attr("data-dict-code", "CITY_ISO_CODE");
+
+            $(".portSHIP").html("<?php echo $this->translate('citypost1'); ?>");
+            $(".portDSCG").html("<?php echo $this->translate('citypost2'); ?>");
+            $(".portDLVY").html("<?php echo $this->translate('citypost3'); ?>");
+        }
 
         // 起运港
         var timeOut = "";

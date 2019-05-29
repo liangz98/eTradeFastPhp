@@ -394,7 +394,7 @@ class PurController extends Kyapi_Controller_Action
             $Viewlist['customClearanceRequest'] = $this->view->translate('noData'); //报关要求
         // 物流要求
         if (!isset($Viewlist['shippingRequest'])) {
-            if (isset($Viewlist['truckingRequest'])) {
+            if (isset($Viewlist['truckingRequest']) && !empty($Viewlist['truckingRequest'])) {
                 $Viewlist['shippingRequest'] = $Viewlist['truckingRequest'];
             } else {
                 $Viewlist['shippingRequest'] = "";
@@ -524,15 +524,17 @@ class PurController extends Kyapi_Controller_Action
                     $_attach2[$k1][$k] = $v1;
                 }
             }
-            $_attachList = array();
-            foreach ($_attach2 as $k => $v) {
-                foreach ($v as $k1 => $v1) {
-                    $_attachList[$k] = new Kyapi_Model_Attachment();
-                    $_attachList[$k]->attachID = $_attach2[$k]['attachID'];
-                    $_attachList[$k]->attachType = 'ODOD';
-                    $_attachList[$k]->bizType = 'OD';
-                    $_attachList[$k]->name = $_attach2[$k]['attachName'];
-                    $_attachList[$k]->size = (int)$_attach2[$k]['attachSize'];
+            if (count($_attach2) > 0) {
+                $_attachList = array();
+                foreach ($_attach2 as $k => $v) {
+                    foreach ($v as $k1 => $v1) {
+                        $_attachList[$k] = new Kyapi_Model_Attachment();
+                        $_attachList[$k]->attachID = $_attach2[$k]['attachID'];
+                        $_attachList[$k]->attachType = 'ODOD';
+                        $_attachList[$k]->bizType = 'OD';
+                        $_attachList[$k]->name = $_attach2[$k]['attachName'];
+                        $_attachList[$k]->size = (int)$_attach2[$k]['attachSize'];
+                    }
                 }
             }
 

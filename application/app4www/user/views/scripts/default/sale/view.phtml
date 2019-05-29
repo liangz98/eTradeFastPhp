@@ -473,14 +473,14 @@
                                     <?php else: ?>
                                         <div class="row">
                                             <div class="col-xs-2 view-title"><?php echo $this->translate('citypost1'); ?></div>
-                                            <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->orders['shippingMethod'], $this->orders['loadingPort']); ?></div>
+                                            <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->orders['shippingMethod'], $this->orders['loadingCity']); ?></div>
                                             <div class="col-xs-2 view-title"><?php echo $this->translate('citypost2'); ?></div>
-                                            <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->orders['shippingMethod'], $this->orders['dischargePort']); ?></div>
+                                            <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->orders['shippingMethod'], $this->orders['dischargeCity']); ?></div>
                                         </div>
 
                                         <div class="row">
                                             <div class="col-xs-2 view-title"><?php echo $this->translate('citypost3'); ?></div>
-                                            <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->orders['shippingMethod'], $this->orders['deliveryPort']); ?></div>
+                                            <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->orders['shippingMethod'], $this->orders['deliveryCity']); ?></div>
                                             <div class="col-xs-2 view-title"><?php echo $this->translate('mabyDATE'); ?></div>
                                             <div class="col-xs-4"><?php echo date('Y-m-d', strtotime($this->orders['deliveryDate'])); ?></div>
                                         </div>
