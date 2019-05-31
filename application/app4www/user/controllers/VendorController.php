@@ -440,7 +440,10 @@ class VendorController extends Kyapi_Controller_Action
         if ($this->_request->isPost()) {
             //设为默认
             // 请求Hessian服务端方法
-            $_roleCode = 'Vendor';
+            // 原接口删除合作伙伴时, 传的是对方的角色
+            // 20190530修改为删除时传自己的角色
+            // $_roleCode = 'Vendor';
+            $_roleCode = 'Buyer';
             $_objID = $this->_request->getPost('delID');
             $_requestOb = $this->_requestObject;
             $opData = $this->json->delPartnerApi($_requestOb, $_objID, $_roleCode);

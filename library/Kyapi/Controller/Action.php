@@ -42,7 +42,14 @@ class Kyapi_Controller_Action extends Zend_Controller_Action{
     public $lang;
     public $userID;
     public $sessionID;
+    /**
+     * @var Kyapi_Controller_Json
+     */
     public $json;
+    /**
+     * @var Kyapi_Model_requestObject
+     */
+    public $_requestObject;
 
     public function init() {
         $this->checkSystem();

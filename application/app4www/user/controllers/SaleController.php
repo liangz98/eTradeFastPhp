@@ -699,15 +699,20 @@ class SaleController extends Kyapi_Controller_Action
         $orderResultObject = $this->json->getOrderApi($requestObject, $_orderID);
         $order = $this->objectToArray(json_decode($orderResultObject)->result);
 
-        //当前返回数据为空时 前端显示为无
-        if (!isset($existDatt['packingDesc']))
-            $existDatt['packingDesc'] = $this->view->translate('noData');  //包装描述
-        if (!isset($existDatt['financingRequest']))
-            $existDatt['financingRequest'] = $this->view->translate('noData');  //金融要求
-        if (!isset($existDatt['customClearanceRequest']))
-            $existDatt['customClearanceRequest'] = $this->view->translate('noData'); //报关要求
-        if (!isset($existDatt['shippingRequest']))
-            $existDatt['shippingRequest']=$this->view->translate('noData');   //物流要求
+        // 当前返回数据为空时 前端显示为无
+        if (!isset($order['packingDesc']))
+            $order['packingDesc'] = $this->view->translate('noData');  //包装描述
+        if (!isset($order['financingRequest']))
+            $order['financingRequest'] = $this->view->translate('noData');  //金融要求
+        if (!isset($order['customClearanceRequest']))
+            $order['customClearanceRequest'] = $this->view->translate('noData'); //报关要求
+        if (!isset($order['shippingRequest'])) {
+            if (isset($order['truckingRequest']) && !empty($order['truckingRequest'])) {
+                $order['shippingRequest'] = $order['truckingRequest'];
+            } else {
+                $order['shippingRequest'] = $this->view->translate('noData');
+            }
+        }
 
         $this->view->orders = $order;
 
