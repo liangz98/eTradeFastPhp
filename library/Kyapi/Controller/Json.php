@@ -503,7 +503,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**买家合作伙伴*
+    /**
+     * 买家合作伙伴
      * @param $_requestObject
      * @param $_queryParams
      * @param $_querySorts
@@ -520,7 +521,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**卖家合作伙伴*
+    /**
+     * 卖家合作伙伴
      * @param $_requestObject
      * @param $_queryParams
      * @param $_querySorts
@@ -537,7 +539,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**模糊查询已存在合作伙伴*
+    /**
+     * 模糊查询已存在合作伙伴
      * @param $_requestObject
      * @param $_queryParams
      * @param $_querySorts
@@ -554,7 +557,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**新增全新合作伙伴*
+    /**
+     * 新增全新合作伙伴
      * @param $_requestObject
      * @param $_account
      * @return mixed
@@ -567,7 +571,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**新增已有合作伙伴*
+    /**
+     * 新增已有合作伙伴
      * @param $_requestObject
      * @param $_accountID
      * @param $_roleCode
@@ -581,7 +586,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**接受申请*
+    /**
+     * 接受申请
      * @param $_requestObject
      * @param $_accountID
      * @param $_roleCode
@@ -595,7 +601,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**拒绝申请*
+    /**
+     * 拒绝申请
      * @param $_requestObject
      * @param $_accountID
      * @param $_roleCode
@@ -609,7 +616,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**查看合作伙伴*
+    /**
+     * 查看合作伙伴
      * @param $_requestObject
      * @param $_accountID
      * @return mixed
@@ -622,7 +630,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**编辑合作伙伴*
+    /**
+     * 编辑合作伙伴
      * @param $_requestObject
      * @param $_account
      * @return mixed
@@ -635,7 +644,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**删除合作伙伴*
+    /**
+     * 删除合作伙伴
      * @param $_requestObject
      * @param $_accountID
      * @param $_roleCode
@@ -648,7 +658,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**合作伙伴角色列表*
+    /**
+     * 合作伙伴角色列表
      * @param $_requestObject
      * @param $_queryParams
      * @param $_querySorts
@@ -663,7 +674,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**合作伙伴统计BUYER*
+    /**
+     * 合作伙伴统计BUYER
      * @param $_requestObject
      * @return mixed
      */
@@ -675,7 +687,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**合作伙伴统计vendor*
+    /**
+     * 合作伙伴统计vendor
      * @param $_requestObject
      * @return mixed
      */
@@ -693,7 +706,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
      * 商品列表（自有、采购）、添加、查看、提交审核、数量统计
      * 调用JAVA服务端文件中的
      */
-    /**自有商品列表*
+    /**
+     * 自有商品列表
      * @param $_requestObject
      * @param $_queryParams
      * @param $_querySorts
@@ -711,7 +725,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**新增自有商品*
+    /**
+     * 新增自有商品
      * @param $_requestObject
      * @param $_product
      * @return mixed
@@ -724,7 +739,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**编辑自有商品*
+    /**
+     * 编辑自有商品
      * @param $_requestObject
      * @param $_product
      * @return mixed
@@ -737,7 +753,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**采购商品列表*
+    /**
+     * 采购商品列表
      * @param $_requestObject
      * @param $_queryParams
      * @param $_querySorts
@@ -754,7 +771,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**新增采购商品*
+    /**
+     * 新增采购商品
      * @param $_requestObject
      * @param $_product
      * @return mixed
@@ -767,7 +785,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**编辑采购商品*
+    /**
+     * 编辑采购商品
      * @param $_requestObject
      * @param $_product
      * @return mixed
@@ -780,7 +799,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**商品信息*
+    /**
+     * 商品信息
      * @param $_requestObject
      * @param $_productID
      * @return mixed
@@ -793,7 +813,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**提交商品审核*
+    /**
+     * 提交商品审核
      * @param $_requestObject
      * @param $_productID
      * @return mixed
@@ -806,7 +827,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**确认商品商品*
+    /**
+     * 确认商品商品
      * @param $_requestObject
      * @param $_productID
      * @return mixed
@@ -819,7 +841,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**禁用商品*
+    /**
+     * 禁用商品
      * @param $_requestObject
      * @param $_productID
      * @return mixed
@@ -832,7 +855,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**启用商品*
+    /**
+     * 启用商品
      * @param $_requestObject
      * @param $_productID
      * @return mixed
@@ -845,7 +869,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**删除商品*
+    /**
+     * 删除商品
      * @param $_requestObject
      * @param $_productID
      * @return mixed
@@ -858,7 +883,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**自有商品数量统计*
+    /**
+     * 自有商品数量统计
      * @param $_requestObject
      * @return mixed
      */
@@ -870,7 +896,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**采购商品数量统计*
+    /**
+     * 采购商品数量统计
      * @param $_requestObject
      * @return mixed
      */
@@ -882,7 +909,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /****HSCODE列表*****
+    /**
+     * HSCODE列表
      * @param $_requestObject
      * @param $_queryParams
      * @param $_querySorts
@@ -899,7 +927,8 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /****HSCODE详细信息*****
+    /**
+     * HSCODE详细信息
      * @param $_requestObject
      * @param $_hscode
      * @return mixed
@@ -912,11 +941,13 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**通用接口**/
-    /**系统参数方法获取*
+    // --------- 通用接口 Start ---------
+
+    /**
+     * 系统参数方法获取
      * @param $_requestObject
      * @param $_paramCode
-     * @return
+     * @return mixed
      */
     public function getSysParamApi($_requestObject, $_paramCode)
     {
@@ -924,13 +955,14 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**数据字典列表方法获取*
+    /**
+     * 数据字典列表方法获取
      * @param $_requestObject
      * @param $_dataDictCode
      * @param $_args
      * @param $_parentCode
      * @param $_langCode
-     * @return
+     * @return mixed
      */
     public function getStaticDataListApi($_requestObject, $_dataDictCode, $_args, $_parentCode, $_langCode)
     {
@@ -938,13 +970,14 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**数据字典方法获取*
+    /**
+     * 数据字典方法获取
      * @param $_requestObject
      * @param $_dataDictCode
      * @param $_valueCode
      * @param $_args
      * @param $_langCode
-     * @return
+     * @return mixed
      */
     public function getStaticDataApi($_requestObject, $_dataDictCode, $_valueCode, $_args, $_langCode)
     {
@@ -952,13 +985,14 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**数据字典映射方法获取*
+    /**
+     * 数据字典映射方法获取
      * @param $_requestObject
      * @param $_dataDictCode
      * @param $_valueCode
      * @param $_args
      * @param $_langCode
-     * @return
+     * @return mixed
      */
     public function getStaticDataMapApi($_requestObject, $_dataDictCode, $_valueCode, $_args, $_langCode)
     {
@@ -966,10 +1000,11 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**语言包列表方法获取*
+    /**
+     * 语言包列表方法获取
      * @param $_requestObject
      * @param $_langPacksID
-     * @return
+     * @return mixed
      */
     public function getSysLangPacksApi($_requestObject, $_langPacksID)
     {
@@ -977,11 +1012,12 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**语言包方法获取*
+    /**
+     * 语言包方法获取
      * @param $_requestObject
      * @param $_langPacksID
      * @param $_lang
-     * @return
+     * @return mixed
      */
     public function getLangPacksApi($_requestObject, $_langPacksID, $_lang)
     {
@@ -989,11 +1025,12 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 
-    /**语言包方法获取*
+    /**
+     * 语言包方法获取
      * @param $_sid
      * @param $_file
      * @param $_name
-     * @return
+     * @return mixed
      */
     public function uploadApi($_sid, $_file, $_name)
     {
@@ -2266,4 +2303,3 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         return $resultObject;
     }
 }
-?>
