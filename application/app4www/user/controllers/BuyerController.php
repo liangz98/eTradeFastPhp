@@ -412,34 +412,37 @@ class BuyerController extends Kyapi_Controller_Action
         exit;
     }
 
-	/**接受合作伙伴信息**/
-	public function acceptAction()
-	{
+    /**
+     * 接受合作伙伴信息
+     */
+    public function acceptAction() {
         if ($this->_request->isPost()) {
             //设为默认
             // 请求Hessian服务端方法
-            $_roleCode='Vendor';
+            $_roleCode = 'Vendor';
             $_objID = $this->_request->getPost('delID');
-            $_requestOb=$this->_requestObject;
-            $opData= $this->json->editPartnerAcceptApi($_requestOb,$_objID,$_roleCode);
+            $_requestOb = $this->_requestObject;
+            $opData = $this->json->editPartnerAcceptApi($_requestOb, $_objID, $_roleCode);
             echo $opData;
         }
         exit;
-	}
-	/**拒绝合作伙伴信息**/
-	public function rejectAction()
-	{
+    }
+
+    /**
+     * 拒绝合作伙伴信息
+     */
+    public function rejectAction() {
         if ($this->_request->isPost()) {
             //设为默认
             // 请求Hessian服务端方法
-            $_roleCode='Buyer';
+            $_roleCode = 'Buyer';
             $_objID = $this->_request->getPost('delID');
-            $_requestOb=$this->_requestObject;
-            $opData= $this->json->editPartnerRejectApi($_requestOb,$_objID,$_roleCode);
+            $_requestOb = $this->_requestObject;
+            $opData = $this->json->editPartnerRejectApi($_requestOb, $_objID, $_roleCode);
             echo $opData;
         }
         exit;
-	}
+    }
 
     public function contactListAjaxAction() {
         $msg = array();
