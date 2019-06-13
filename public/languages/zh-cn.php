@@ -1078,6 +1078,7 @@ return array(
     'factoringLoanDetail'                => '放款情况',
     'factoringLoanDate'                  => '放款日期',
     'factoringLoanAmount'                => '放款金额',
+    'factoringMaxLoanAmount'             => '最大可融资金额',
     'factoringInterest'                  => '利息',
     'factoringInterestDetail'            => '利息明细',
     'factoringGraceInterest'             => '宽限期利息',

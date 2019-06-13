@@ -323,9 +323,9 @@
                                         <td class="loan_<?php echo $factoringLoan['loanID']; ?>">
                                             <?php if ($factoringLoan['needLoanApplication'] == true): ?>
                                                 <?php if ($factoringLoan['loanStatus'] == '00'): ?>
-                                                    <button class="btn btn-warning" data-toggle="modal" data-target="#applyContractModal" data-loan-amount="<?php echo $factoringLoan['loanAmount']; ?>" data-loan-id="<?php echo $factoringLoan['loanID']; ?>" data-crn-code="<?php echo $factoringLoan['loanCrnCode']; ?>"><?php echo $this->translate('factoringApplyLoan'); ?></button>
+                                                    <button class="btn btn-warning" data-toggle="modal" data-target="#applyContractModal" data-loan-amount="<?php echo $factoringLoan['loanAmount']; ?>" data-loan-id="<?php echo $factoringLoan['loanID']; ?>" data-crn-code="<?php echo $factoringLoan['loanCrnCode']; ?>" ><?php echo $this->translate('factoringApplyLoan'); ?></button>
                                                 <?php elseif ($factoringLoan['loanStatus'] == '05'): ?>
-                                                    <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#applyContractModal" data-loan-amount="<?php echo $factoringLoan['loanAmount']; ?>" data-loan-id="<?php echo $factoringLoan['loanID']; ?>" data-crn-code="<?php echo $factoringLoan['loanCrnCode']; ?>"><?php echo $this->translate('factoringReApplyLoan'); ?></button>
+                                                    <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#applyContractModal" data-loan-amount="<?php echo $factoringLoan['loanAmount']; ?>" data-loan-id="<?php echo $factoringLoan['loanID']; ?>" data-crn-code="<?php echo $factoringLoan['loanCrnCode']; ?>" ><?php echo $this->translate('factoringReApplyLoan'); ?></button>
                                                 <?php elseif ($factoringLoan['loanStatus'] == '04'): ?>
                                                     <?php echo $this->ShowSimpleOrderContract($factoringLoan['loanApplyContract'], $this->accountID, $factoringLoan['loanStatus']); ?>
                                                 <?php else: ?>
@@ -451,22 +451,7 @@
                     <div class="form-group">
                         <label for="loanDate" class="col-sm-2 control-label"><?php echo $this->translate('factoringLoanDate'); ?></label>
                         <div class="col-sm-5">
-                            <?php
-                            // $showLoanStartDate = date("Y-m-d", strtotime("+1 day", strtotime(date('Y-m-d'))));
-                            // $noWorkDay = true;
-                            // while ($noWorkDay) {
-                            //     $url = "http://api.goseek.cn/Tools/holiday?date=".$date = date("Ymd", strtotime($showLoanStartDate));
-                            //     $res = file_get_contents($url);
-                            //     $res = json_decode($res,true);
-                            //     if ($res['data'] != 1 && $res['data'] != 2) {
-                            //         $noWorkDay = false;
-                            //     } else {
-                            //         $showLoanStartDate = date("Y-m-d", strtotime("+1 day", strtotime($showLoanStartDate)));
-                            //     }
-                            //     $noWorkDay = false;
-                            // }
-                            ?>
-                            <input type="text" class="form-control" name="loanDate" id="loanDate" placeholder="" value="" >
+                            <input type="text" class="form-control" name="loanDate" id="loanDate" placeholder="yyyy-MM-dd" value="" >
                         </div>
                     </div>
                     <div class="form-group">
@@ -476,6 +461,9 @@
                                 <div class="input-group-addon"><span class="loanCrnCodeSpan"></span></div>
                                 <input type="number" class="form-control" name="loanAmount" id="loanAmount" min="0" step="0.01">
                             </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <p class="form-control-static"><?php echo $this->translate('factoringMaxLoanAmount'); ?>：<label class="applyContractModalMaxLoanAmount"></label></p>
                         </div>
                     </div>
                 </div>
@@ -675,14 +663,15 @@
             }
         });
 
-        $('#loanDate').datetimepicker({
-            minView: "month",
-            format: "yyyy-mm-dd",
-            language: "zh-CN",
-            daysOfWeekDisabled: "0,6",
-            daysOfWeekHighlighted: "0,6",
-            autoclose: true
-        });
+        // $('#loanDate').datetimepicker({
+        // $("[name='loanDate']").datetimepicker({
+        //     minView: "month",
+        //     format: "yyyy-mm-dd",
+        //     language: "zh-CN",
+        //     daysOfWeekDisabled: "0,6",
+        //     daysOfWeekHighlighted: "0,6",
+        //     autoclose: true
+        // });
 
         // bootstrapTable 初始化服务费用表格
         $("#factoringServiceChargeTable").bootstrapTable({
@@ -772,8 +761,8 @@
             loanAmount = triggered.data("loan-amount"),
             loanCrnCode = triggered.data("crn-code"),
             $loanCrnCodeSpan = $(".loanCrnCodeSpan"),
-            $loanAmountInput = $("#loanAmount"),
-            $loanDate = $('#loanDate');
+            $applyContractModalMaxLoanAmount = $(".applyContractModalMaxLoanAmount"),
+            $loanAmountInput = $("#loanAmount");
 
         $loanCrnCodeSpan.html(loanCrnCode);
         $loanAmountInput.val(loanAmount);
@@ -805,8 +794,71 @@
             });
         }
 
-        $loanDate.val(dateVal);
-        $loanDate.datetimepicker('setStartDate', dateVal);
+        var layDateLang = 'cn',
+            localLang = '<?php if ($this->userLangCode == "en_US") echo "en";?>';
+
+        if (localLang !== '' && localLang === 'en') {
+            layDateLang = 'en';
+        }
+
+        layui.use('laydate', function(){
+            var laydate = layui.laydate;
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#loanDate' //指定元素
+                ,value: dateVal
+                ,isInitValue: true
+                ,min: dateVal
+                ,showBottom: false
+                ,lang: layDateLang
+                ,trigger: 'click'
+                ,change: function (value, date, endDate) {
+                    // 这个在点击上面的上个月下个月之后都会换到另外一页，所以需要跟ready一样处理哪些不可选哪些可选，实际应用中可以将处理逻辑封装一下调用就可以了。
+
+                    // 切换会调用
+                    var elem = $(this.elemCont);
+                    layui.each(elem.find('tr'), function (trIndex, trElem) {
+                        layui.each($(trElem).find('td'), function (tdIndex, tdElem) {
+                            var tdTemp = $(tdElem);
+                            if (tdTemp.hasClass('laydate-day-next') || tdTemp.hasClass('laydate-day-prev')) {
+                                return;
+                            }
+                            // 星期六、日不可选
+                            if (tdIndex === 6 || tdIndex === 0) {
+                                tdTemp.addClass('laydate-disabled');
+                            }
+                        });
+                    });
+                    if (elem.find('.layui-this').hasClass('laydate-disabled')) {
+                        // debugger;
+                        elem.find('.layui-this').removeClass('layui-this');
+                    }
+                    $(this.footer).find('.laydate-btns-confirm, .laydate-btns-now').addClass('laydate-disabled');
+                }
+                ,ready: function (date) {
+                    // 初始会调用
+                    var elem = $(this.elemCont);
+                    layui.each(elem.find('tr'), function (trIndex, trElem) {
+                        layui.each($(trElem).find('td'), function (tdIndex, tdElem) {
+                            var tdTemp = $(tdElem);
+                            if (tdTemp.hasClass('laydate-day-next') || tdTemp.hasClass('laydate-day-prev')) {
+                                return;
+                            }
+                            // 星期六、日不可选
+                            if (tdIndex === 6 || tdIndex === 0) {
+                                tdTemp.addClass('laydate-disabled');
+                            }
+                        });
+                    });
+                    if (elem.find('.layui-this').hasClass('laydate-disabled')) {
+                        elem.find('.layui-this').removeClass('layui-this');
+                    }
+                    // 既然只有周一能选，那么就把现在还有确定按钮干掉
+                    $(this.footer).find('.laydate-btns-confirm, .laydate-btns-now').addClass('laydate-disabled');
+                }
+            });
+        });
 
         var hscodeQuery = '/user/finance/get-factoring-loan-ajax';
         $.ajax({
@@ -823,13 +875,12 @@
                         var $modalAlertDiv = $(".modal-alert-div");
                         $modalAlertDiv.html(alertHtml);
                     }
+
+                    // 呈现最大可融资金额
+                    $applyContractModalMaxLoanAmount.html(data.maxLoanAmount);
                 }
             }
         });
-    });
-
-    $("#applyContractBtn").click(function () {
-
     });
 
     $("#interestModal").on('show.bs.modal', function (e) {

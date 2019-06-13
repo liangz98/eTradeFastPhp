@@ -932,7 +932,7 @@ class PurController extends Kyapi_Controller_Action
 	}
 
     // 详情 - view
-    public function deliveryviewAction() {
+    public function deliveryViewAction() {
         $deliveryID = $this->_request->getParam('deliveryID');
         $_requestOb = $this->_requestObject;
         $resultObject = $this->json->getDeliveryView($_requestOb, $deliveryID);
@@ -963,6 +963,30 @@ class PurController extends Kyapi_Controller_Action
                 $this->view->receiptConfirmationAttachmentList[] = $v;
             }
         }
+
+        // 发货合同列表
+        $deliveryContractList = array();
+        $bizType = 'DS';
+        foreach ($delivery->deliverySupplierList as $deliverySupplier) {
+            $deliveryContract = array();
+
+            $listBizContractResultObject = $this->json->listBizContract($requestObject, $bizType, $deliverySupplier->deliverySupplierID);
+            $listBizContract = json_decode($listBizContractResultObject)->result;
+            $deliveryContract['supplierName'] = $deliverySupplier->supplierName;
+            $deliveryContract['contractList'] = empty($listBizContract) ? null : $this->objectToArray($listBizContract);
+            $deliveryContractList[] = $deliveryContract;
+        }
+        $this->view->deliveryContractList = $deliveryContractList;
+
+        // 取回当前公司的企业认证状态
+        $accountID = $this->view->accountID;
+        $account = $this->json->getAccountApi($requestObject, $accountID);
+        $this->view->hasIDCertificate = json_decode($account)->result->hasIDCertificate;
+
+        // 取回当前登录用户的实名认证状态
+        $contactID = $this->view->userID;
+        $contact = $this->json->getContactApi($requestObject, $contactID);
+        $this->view->contactHasIDCertificate = json_decode($contact)->result->hasIDCertificate;
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/pur/deliveryView.phtml");

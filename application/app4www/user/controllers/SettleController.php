@@ -542,23 +542,17 @@ class SettleController extends Kyapi_Controller_Action
             $upperAmount = null;
         }
 
-        $paymentStatus = strval($this->_request->getParam('paymentStatus'));
-        if (empty($paymentStatus)) {
-            $paymentStatus = null;
-        }
-
         $tradingType = strval($this->_request->getParam('tradingType'));
         if (empty($tradingType)) {
             $tradingType = null;
         }
 
-        $transNo = strval($this->_request->getParam('transNo'));
-        if (empty($transNo)) {
-            $transNo = null;
+        $debitCredit = strval($this->_request->getParam('debitCredit'));
+        if (empty($debitCredit)) {
+            $debitCredit = null;
         }
 
-        $resultObject = $this->json->listPaymentFlowApi($requestObject, $queryParams, $querySorts, $keyword, $skip, $limit, $startDate, $endDate,
-            $lowerAmount, $upperAmount, $paymentStatus, $tradingType, $transNo);
+        $resultObject = $this->json->listPaymentFlowApi($requestObject, $queryParams, $querySorts, $keyword, $skip, $limit, $startDate, $endDate, $lowerAmount, $upperAmount, $tradingType, $debitCredit);
         $msg["total"] = json_decode($resultObject)->extData->totalSize;
         $msg["rows"] = json_decode($resultObject)->result;
 

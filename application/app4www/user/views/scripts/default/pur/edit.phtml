@@ -50,7 +50,8 @@
                                     <div class="input-group">
                                         <p class="form-control-static"><?php echo $this->orders['vendorName'];?></p>
                                         <input type="hidden" name="vendor" id="vendor" value="<?php echo $this->orders['vendor']; ?>">
-                                        <input type="hidden" name="vendorRegdCountryCode" id="vendorRegdCountryCode">
+                                        <input type="hidden" name="orderType" id="orderType" value="<?php echo $this->orders['orderType']; ?>">
+                                        <input type="hidden" name="vendorRegdCountryCode" id="vendorRegdCountryCode" value="">
                                     </div>
                                 </div>
 
@@ -507,7 +508,9 @@
             $orderItemModal = $("#orderItemModal"),
             $selectOrderItemBtn = $("#selectOrderItemBtn"),
             $orderItemListTable = $('#orderItemListTable'),
-            $orderItemDiv = $(".orderItemDiv");
+            $orderItemDiv = $(".orderItemDiv"),
+            $regdCountryCode_ = $("#regdCountryCode"),
+            $vendorRegdCountryCode_ = $("#vendorRegdCountryCode");
 
         var dataDictQuery = '/user/common/dict-ajax';
         var dictCode = ["ISIC_INDUSTRY_TYPE", "COUNTRY_ISO_CODE", "PARTNER_STATUS", "PRODUCT_PRICING_UNIT"];
@@ -937,6 +940,20 @@
                 updateCrnCode($buyerCrnCode.val());
             }
         });
+
+        // 内贸订单隐藏出口方式, 报关口岸, 报关行
+        if ($("#orderType").val() === 'DT') {
+            // $(".isSelfSupport").hide();
+            // $(".clearancePlace").hide();
+            $(".agency").hide();
+        } else {
+            // $(".isSelfSupport").show();
+            // $(".clearancePlace").show();
+            $(".agency").show();
+            if ($("input[name='isAssignCustomsAgency']:checked").val() === '0') {
+                $(".agencyInfo").hide();
+            }
+        }
 
         // 订单商品
         $orderItemModal.on('show.bs.modal', function () {

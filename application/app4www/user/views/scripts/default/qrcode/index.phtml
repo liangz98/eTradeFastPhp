@@ -18,7 +18,14 @@
         /*首先判断是否是pc，若是pc访问则跳转到http://app.ctrip.com/*/
         var u = navigator.userAgent || '';
         var isPC = !/(iphone|ios|android|mini|mobile|mobi|Nokia|Symbian|iPod|iPad|Windows\s+Phone|MQQBrowser|wp7|wp8|UCBrowser7|UCWEB|360\s+Aphone\s+Browser)/i.test(u);
-        if (isPC) { location.href = "/app/etradefast-release.apk"; }
+        if (isPC) {
+            var prodStr = 'https://www.etradefast.com';
+            if (document.location.href.search(prodStr) >= 0) {
+                location.href = "/app/etradefast.apk";
+            } else {
+                location.href = "/app/app-debug.apk";
+            }
+        }
     </script>
     <script>
         var isPC = false;
