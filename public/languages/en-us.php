@@ -1267,5 +1267,8 @@ return array(
     'orderLogKeyword' => 'Keyword',
     'orderLogEventRiver' => 'Event River',
 
-    'remind'    =>  'Remind'
+    'remind'                => 'Remind',
+    // 结算中心列表
+    'keyword'               => '关键字',
+    'settleListPlaceholder' => '交易号/订单号/合同号/公司名/备注'
 );

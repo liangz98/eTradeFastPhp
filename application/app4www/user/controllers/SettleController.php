@@ -162,95 +162,13 @@ class SettleController extends Kyapi_Controller_Action
         }
     }
 
-
-	/**结算列表**/
+	/**
+     * 结算列表
+     */
     public function listAction() {
-        $f1 = new Seed_Filter_Alnum();
-        $mod = $f1->filter($this->_request->getParam('mod'));
-        if (empty($mod)) {
-            $mod = "list";
-        }
-
-        $_PStatus = strval($this->_request->getParam('status'));
-        if (empty($_PStatus)) {
-            $_PStatus = '03';
-        }
-
-        $_querySorts = $this->_request->getParam('querySorts');
-        if (empty($_querySorts)) {
-            $_querySorts = null;
-        }
-
-        $_keyword = $this->_request->getParam('keyword');
-        if (empty($_keyword)) {
-            $_keyword = null;
-        }
-        $this->view->keyword = $_keyword;
-
-        $page = intval($this->_request->getParam('page'));
-        if ($page < 1)
-            $page = 1;
-        $_limit = 8;
-        $_skip = $_limit * ($page - 1);
-        /*起始时间*/
-        $_startTime = empty($this->_request->getParam('startDate')) ? null : $this->_request->getParam('startDate');
-        if (!empty($_startTime)) {
-            $_startDate = date("Y-m-d\TH:i:s", strtotime($_startTime));
-        }
-
-        $this->view->startDate = $_startTime;
-        $_endTime = empty($this->_request->getParam('endDate')) ? null : $this->_request->getParam('endDate');
-        if (!empty($_endTime)) {
-            $_endDate = date("Y-m-d\TH:i:s", strtotime($_endTime));
-        }
-        $this->view->endDate = $_endTime;
-        /*起始时间Ending*/
-        $_lowerAmount = empty($this->_request->getParam('lowerAmount')) ? null : $this->_request->getParam('lowerAmount');
-        $this->view->lowerAmount = $_lowerAmount;
-        $_upperAmount = empty($this->_request->getParam('upperAmount')) ? null : $this->_request->getParam('upperAmount');
-        $this->view->upperAmount = $_upperAmount;
-        $_paymentStatus = empty($this->_request->getParam('paymentStatus')) ? null : $this->_request->getParam('paymentStatus');
-        $this->view->paymentStatus = $_paymentStatus;
-        $_tradingType = empty($this->_request->getParam('tradingType')) ? null : $this->_request->getParam('tradingType');
-        $this->view->tradingType = $_tradingType;
-        $_transNo = empty($this->_request->getParam('transNo')) ? null : $this->_request->getParam('transNo');
-        $this->view->transNo = $_transNo;
-        $_oppCustomerNames = empty($this->_request->getParam('oppCustomerNames')) ? null : $this->_request->getParam('oppCustomerNames');
-        $this->view->oppCustomerNames = $_oppCustomerNames;
-        /*币种*/
-        $_crnstring = empty($this->_request->getParam('crnArray')) ? null : $this->_request->getParam('crnArray');
+        // 币种
         $_crnCodes = empty($this->_request->getParam('crnCode')) ? null : $this->_request->getParam('crnCode');
-        $this->view->dfcrnCode = $_crnCode = ($_crnCodes) ? $_crnCodes : $this->view->crnCode;
-
-        $flolist = array();
-        if ($_crnCodes) {
-            $flolist['crnCode'] = $_crnCodes;
-        }
-        if ($_oppCustomerNames) {
-            $flolist['oppCustomerDesc'] = $_oppCustomerNames;
-        }
-
-        $Flowlist = $this->arrayToObject($flolist);
-
-
-        //获取交易记录列表
-        $_resultData = $this->json->listpaymentTradApi($this->_requestObject, $Flowlist, null, $_keyword, $_skip, $_limit, $_startDate, $_endDate, $_lowerAmount, $_upperAmount, $_paymentStatus, $_tradingType, $_transNo);
-        $existData = json_decode($_resultData);
-        $existDatt = $this->objectToArray($existData);
-        $this->view->e = $existDatt['result'];
-
-        //获取货币集合
-        if ($_crnstring) {
-            $this->view->crnArr = explode('|', $_crnstring);
-            $this->view->crnString = $_crnstring;
-        } else {
-            $crnArr = array();
-            foreach ($existDatt['result'] as $k => $v) {
-                $crnArr[] = $v['crnCode'];
-            }
-            $this->view->crnArr = array_unique($crnArr);
-            $this->view->crnString = implode('|', $this->view->crnArr);
-        }
+        $this->view->defaultCrnCode = $_crnCode = ($_crnCodes) ? $_crnCodes : $this->view->crnCode;
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/settle/list.phtml");
@@ -264,6 +182,10 @@ class SettleController extends Kyapi_Controller_Action
         $requestObject = $this->_requestObject;
 
         $queryParams = array();
+        $crnCode = $this->_request->getParam('crnCode');
+        if (!empty($crnCode)) {
+            $queryParams['crnCode'] = $crnCode;
+        }
 
         $querySorts = array();
         $querySorts['createTime'] = "DESC";

@@ -77,12 +77,12 @@
                     <div class="form-group">
                         <label for="startDate" class="col-sm-1 control-label"><?php echo $this->translate('settle_Time'); ?></label>
                         <div class="col-sm-3">
-                            <input type="date" class="form-control" name="startDate" id="startDate">
+                            <input type="text" class="form-control layDateUI" name="startDate" id="startDate">
                         </div>
                         <div class="layui-form-mid">-</div>
                         <label for="endDate" class="sr-only">endDate</label>
                         <div class="col-sm-3">
-                            <input type="date" class="form-control" name="endDate" id="endDate">
+                            <input type="text" class="form-control layDateUI" name="endDate" id="endDate">
                         </div>
                     </div>
 
@@ -278,6 +278,24 @@
                     }]
                 });
             }
+        });
+
+        // 初始化日期控件, 绑定多个
+        var layDateLang = 'cn',
+            localLang = '<?php if ($this->userLangCode == "en_US") echo "en";?>';
+
+        if (localLang !== '' && localLang === 'en') {
+            layDateLang = 'en';
+        }
+        layui.use('laydate', function() {
+            var laydate = layui.laydate;
+            lay('.layDateUI').each(function(){
+                laydate.render({
+                    elem: this
+                    ,trigger: 'click'
+                    ,lang: layDateLang
+                });
+            });
         });
     });
 
