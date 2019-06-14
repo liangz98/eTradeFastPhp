@@ -168,7 +168,7 @@
                         return {
                             limit: params.limit,
                             skip: params.offset,
-                            keyword: params.search,
+                            keyword: $("#keyword").val(),
                             productStatus: $("#productStatus").val()
                         };
                     },
@@ -352,9 +352,11 @@
         var goodsListTable = $('#goodsListTable');
         var options = {
             query:{
+                skip: 0,
                 keyword: $("#keyword").val(),
                 productStatus: $("#productStatus").val()
-            }
+            },
+            pageNumber: 1
         };
         $(goodsListTable).bootstrapTable('refresh', options);
     }

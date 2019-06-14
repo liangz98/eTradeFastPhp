@@ -166,7 +166,7 @@
                         return {
                             limit: params.limit,
                             skip: params.offset,
-                            keyword: params.search,
+                            keyword: $("#keyword").val(),
                             orderStatus: $("#orderStatus").val()
                         };
                     },
@@ -287,9 +287,11 @@
         var listTable = $('#resultListTable');
         var options = {
             query:{
+                skip: 0,
                 keyword: $("#keyword").val(),
                 orderStatus: $("#orderStatus").val()
-            }
+            },
+            pageNumber: 1
         };
         $(listTable).bootstrapTable('refresh', options);
     }

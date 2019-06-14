@@ -135,7 +135,7 @@
                         return {
                             limit: params.limit,
                             skip: params.offset,
-                            keyword: params.search
+                            keyword: $("#keyword").val()
                         };
                     },
                     columns: [{
@@ -269,8 +269,10 @@
         var contactListTable = $('#contactListTable');
         var options = {
             query:{
+                skip: 0,
                 keyword: $("#keyword").val()
-            }
+            },
+            pageNumber: 1
         };
         $(contactListTable).bootstrapTable('refresh', options);
     }

@@ -164,7 +164,14 @@
                         return {
                             limit: params.limit,
                             skip: params.offset,
-                            keyword: params.search
+                            keyword: $("#keyword").val(),
+                            startDate: $("#startDate").val(),
+                            endDate: $("#endDate").val(),
+                            lowerAmount: $("#lowerAmount").val(),
+                            upperAmount: $("#upperAmount").val(),
+                            tradingType: $("#tradingType").val(),
+                            transNo: $("#transNo").val(),
+                            paymentStatus: $("#paymentStatus").val()
                         };
                     },
                     columns: [{
@@ -329,6 +336,7 @@
         var listTable = $('#resultListTable');
         var options = {
             query:{
+                skip: 0,
                 keyword: $("#keyword").val(),
                 startDate: $("#startDate").val(),
                 endDate: $("#endDate").val(),
@@ -337,7 +345,8 @@
                 tradingType: $("#tradingType").val(),
                 transNo: $("#transNo").val(),
                 paymentStatus: $("#paymentStatus").val()
-            }
+            },
+            pageNumber: 1
         };
         $(listTable).bootstrapTable('refresh', options);
     }
