@@ -145,24 +145,23 @@ class BankController extends Kyapi_Controller_Action
             $_bank->remarks = $this->_request->getParam('remarks');
             $_bank->attachmentList = $_attachList;
 
-            if (empty($_attachList)) {
-                $this->view->bank = $this->objectToArray($_bank);
-                $this->view->errMsg = $this->view->translate('tip_add_fail') . $this->view->translate('tip_bank_no');
-                //银行附件不能为空
-                // Shop_Browser::redirect($this->view->translate('tip_add_fail') . $this->view->translate('tip_bank_no'), $this->view->seed_Setting['user_app_server'] . '/bank');
-            } else {
-                $addBank = $this->json->addBankAccountApi($_requestOb, $_bank);
-                $resultBank = $this->objectToArray(json_decode($addBank));
-                $this->view->e = $resultBank['result'];
+            // 20190614, 小周提出:新增银行时附件不再是必填项
+            // if (empty($_attachList)) {
+            //     $this->view->bank = $this->objectToArray($_bank);
+            //     $this->view->errMsg = $this->view->translate('tip_add_fail') . $this->view->translate('tip_bank_no');
+            // }
+            $addBank = $this->json->addBankAccountApi($_requestOb, $_bank);
+            $resultBank = $this->objectToArray(json_decode($addBank));
+            $this->view->e = $resultBank['result'];
 
-                if ($resultBank['status'] != 1) {
-                    $this->view->bank = $this->objectToArray($_bank);
-                    $this->view->errMsg = $this->view->translate('tip_add_fail') . $resultBank['error'];
-                } else {
-                    $resultMsg = base64_encode($this->view->translate('tip_add_success'));
-                    $this->redirect("/bank/index?resultMsg=".$resultMsg);
-                }
+            if ($resultBank['status'] != 1) {
+                $this->view->bank = $this->objectToArray($_bank);
+                $this->view->errMsg = $this->view->translate('tip_add_fail') . $resultBank['error'];
+            } else {
+                $resultMsg = base64_encode($this->view->translate('tip_add_success'));
+                $this->redirect("/bank/index?resultMsg=".$resultMsg);
             }
+
         }
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/bank/add.phtml");
@@ -234,22 +233,21 @@ class BankController extends Kyapi_Controller_Action
             $_bank->remarks = $this->_request->getParam('remarks');
             $_bank->attachmentList = $_attachList;
 
-            if (empty($_attachList)) {
-                $this->view->bank = $this->objectToArray($_bank);
-                $this->view->errMsg = $this->view->translate('tip_edit_fail') . $this->view->translate('tip_bank_no');
-                //银行附件不能为空
-                // Shop_Browser::redirect($this->view->translate('tip_edit_fail').$this->view->translate('tip_bank_no'),$this->view->seed_Setting['user_app_server'].'/bank');
-            } else {
-                $editBank = $this->json->editBankAccountApi($_requestOb, $_bank);
-                $resultBank = $this->objectToArray(json_decode($editBank));
+            // 20190614, 小周提出:新增银行时附件不再是必填项
+            // if (empty($_attachList)) {
+            //     $this->view->bank = $this->objectToArray($_bank);
+            //     $this->view->errMsg = $this->view->translate('tip_edit_fail') . $this->view->translate('tip_bank_no');
+            // }
 
-                if ($resultBank['status'] != 1) {
-                    $this->view->bank = $this->objectToArray($_bank);
-                    $this->view->errMsg = $this->view->translate('tip_edit_fail'). $resultBank['error'];
-                } else {
-                    $resultMsg = base64_encode($this->view->translate('tip_edit_success'));
-                    $this->redirect("/bank/index?resultMsg=".$resultMsg);
-                }
+            $editBank = $this->json->editBankAccountApi($_requestOb, $_bank);
+            $resultBank = $this->objectToArray(json_decode($editBank));
+
+            if ($resultBank['status'] != 1) {
+                $this->view->bank = $this->objectToArray($_bank);
+                $this->view->errMsg = $this->view->translate('tip_edit_fail'). $resultBank['error'];
+            } else {
+                $resultMsg = base64_encode($this->view->translate('tip_edit_success'));
+                $this->redirect("/bank/index?resultMsg=".$resultMsg);
             }
         }
 
