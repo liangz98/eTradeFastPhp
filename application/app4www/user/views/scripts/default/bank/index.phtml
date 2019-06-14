@@ -128,7 +128,7 @@
                     contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                     pageNumber: 1,
                     pageSize: 10,
-                    height: 489,
+                    height: 520,
                     queryParams: function(params) {
                         return {
                             limit: params.limit,
@@ -196,6 +196,7 @@
                         field: 'bankAcctStatus',
                         title: '<?php echo $this->translate("state"); ?>',
                         align: 'middle',
+                        width: '60px',
                         formatter: function (value) {
                             var result = "-";
                             var data = $.data(dataDict, 'dataDict');
@@ -213,6 +214,7 @@
                     }, {
                         title: '<?php echo $this->translate("madeTT"); ?>',
                         align: 'middle',
+                        width: '50px',
                         formatter: function (value, row, index) {
                             var editTitle = "<?php echo $this->translate("edit");?>";
                             var delTitle = "<?php echo $this->translate('delete');?>";
