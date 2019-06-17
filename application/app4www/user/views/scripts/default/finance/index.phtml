@@ -42,6 +42,7 @@
                                 <button type="button" class="btn btn-warning" data-type="factoringMode" data-value="all"><?php echo $this->translate('factoring_all'); ?></button>&nbsp;&nbsp;
                                 <button type="button" class="btn btn-default" data-type="factoringMode" data-value="RF"><?php echo $this->translate('factoring_mode_rf'); ?></button>&nbsp;&nbsp;
                                 <button type="button" class="btn btn-default" data-type="factoringMode" data-value="PF"><?php echo $this->translate('factoring_mode_pf'); ?></button>
+                                <button type="button" class="btn btn-default" data-type="factoringMode" data-value="EF"><?php echo $this->translate('factoring_mode_ef'); ?></button>
                                 <input type="hidden" name="factoringMode" id="factoringMode" value="all">
                             </div>
                         </div>
@@ -79,10 +80,10 @@
                                 <p class="form-control-static">进度</p>
                             </div>
                             <div class="col-sm-9">
-                                <button type="button" class="btn btn-warning" data-type="factoringStatus" data-value="all">全部</button>&nbsp;&nbsp;
-                                <button type="button" class="btn btn-default" data-type="factoringStatus" data-value="01">待确权</button>&nbsp;&nbsp;
-                                <button type="button" class="btn btn-default" data-type="factoringStatus" data-value="03">进行中</button>&nbsp;&nbsp;
-                                <button type="button" class="btn btn-default" data-type="factoringStatus" data-value="05">已完成</button>
+                                <button type="button" class="btn btn-warning" data-type="factoringStatus" data-value="all"><?php echo $this->translate('factoring_all'); ?></button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringStatus" data-value="01"><?php echo $this->translate('factoring_for_check'); ?></button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringStatus" data-value="03"><?php echo $this->translate('factoring_activated'); ?></button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringStatus" data-value="05"><?php echo $this->translate('factoring_done'); ?></button>
                                 <input type="hidden" name="factoringStatus" id="factoringStatus" value="all">
                             </div>
                         </div>

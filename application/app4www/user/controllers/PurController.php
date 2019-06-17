@@ -674,7 +674,7 @@ class PurController extends Kyapi_Controller_Action
     }
 
     public function viewAction() {
-		//读取数据字典
+        // 读取数据字典
         $cacheM = new Seed_Model_Cache2File();
         $DATAlist = $cacheM->get("datatest_setting");
         $this->view->Datalist = $DATAlist;
@@ -723,7 +723,7 @@ class PurController extends Kyapi_Controller_Action
         $this->view->contractList = empty($contractList) ? null : $contractList;
 
 
-        //处理根据返回的运输方式来判断 起运|卸货|交货查询的缓存目录名称
+        // 处理根据返回的运输方式来判断 起运|卸货|交货查询的缓存目录名称
         if ($existDatt['shippingMethod'] == 'SEA') {
             $this->view->port = "SEA_PORT";
             $this->view->loadingPort = $existDatt['loadingPort'];
@@ -749,16 +749,16 @@ class PurController extends Kyapi_Controller_Action
         $deliveryList = $this->json->listDelivery($requestObject, $_orderID);
         $this->view->deliveryList = json_decode($deliveryList)->result;
 
-		//判断当前订单是否可以更改
-		if($this->view->accountID==$existDatt['client']){
-			if ($existDatt['orderStatus']==05||$existDatt['orderStatus']==00||$existDatt['orderStatus']==02){
-				$this->view->allowEdit=1;
-			}else{
-				$this->view->allowEdit=0;
-			}
-		}else{
-			$this->view->allowEdit=0;
-		}
+        // 判断当前订单是否可以更改
+        if ($this->view->accountID == $existDatt['client']) {
+            if ($existDatt['orderStatus'] == 05 || $existDatt['orderStatus'] == 00 || $existDatt['orderStatus'] == 02) {
+                $this->view->allowEdit = 1;
+            } else {
+                $this->view->allowEdit = 0;
+            }
+        } else {
+            $this->view->allowEdit = 0;
+        }
 
         // 订单汇率
         $rateResultObject = $this->json->listExchangeRateApi($requestObject, $bizType, $_orderID);
@@ -781,7 +781,7 @@ class PurController extends Kyapi_Controller_Action
             echo $content;
             exit;
         }
-	}
+    }
 
 	//删除草稿订单
 	public function delAction()
@@ -853,14 +853,13 @@ class PurController extends Kyapi_Controller_Action
         exit;
 	}
 
-	//签订协议
-	public function agreeAction()
-	{
-		// 请求Hessian服务端方法
+    //签订协议
+    public function agreeAction() {
+        // 请求Hessian服务端方法
         $name = $_POST['name'];
         $nid = $_POST['nid'];
         $size = $_POST['size'];
-        $attachType=$_POST['attachType'];
+        $attachType = $_POST['attachType'];
         $_orderID = $_POST['orderID'];
 
         $_nid = explode("|", $nid);
@@ -889,7 +888,7 @@ class PurController extends Kyapi_Controller_Action
         $attach['attachID'] = $_nid;
         $attach['name'] = $_name;
         $attach['size'] = $_size;
-        $attach['attachType']=$_attachType;
+        $attach['attachType'] = $_attachType;
         $_attach2 = array();
 
         foreach ($attach as $k => $v) {
@@ -900,18 +899,14 @@ class PurController extends Kyapi_Controller_Action
         $_attachList = array();
         foreach ($_attach2 as $k => $v) {
             foreach ($v as $k1 => $v1) {
-                $_attachList[$k] = new Kyapi_Model_Attachment();
-                $_attachList[$k]->attachID = $_attach2[$k]['attachID'];
-                $_attachList[$k]->name = $_attach2[$k]['name'];
-                $_attachList[$k]->size = (int)$_attach2[$k]['size'];
-                $_attachList[$k]->attachType = $_attach2[$k]['attachType'];
-                if($_attach2[$k]['attachType']=="CRSE"){
-                    $_attachList[$k]->bizType = "CR";
-                }else{
+                if ($_attach2[$k]['attachType'] == 'CRIM') {
+                    $_attachList[$k] = new Kyapi_Model_Attachment();
+                    $_attachList[$k]->attachID = $_attach2[$k]['attachID'];
+                    $_attachList[$k]->name = $_attach2[$k]['name'];
+                    $_attachList[$k]->size = (int)$_attach2[$k]['size'];
+                    $_attachList[$k]->attachType = $_attach2[$k]['attachType'];
                     $_attachList[$k]->bizType = "OD";
                 }
-
-//				$_attachList[$k]->bizID=$_attach2[$k]['bizID'];
             }
         }
 
@@ -919,17 +914,17 @@ class PurController extends Kyapi_Controller_Action
         if (count($_attachList) == 0) {
             $_attachList = null;
         }
-		$_resultData= $this->json->doAgreeContractApi($_requestOb,$_orderID,$_attachList);
-		$existData= json_decode($_resultData);
+        $_resultData = $this->json->doAgreeContractApi($_requestOb, $_orderID, $_attachList);
+        $existData = json_decode($_resultData);
         echo json_encode($existData->status);
 
-//		if ($existData->status != 1) {
-//			echo json_encode('未成功签订协议！');
-//		} else {
-//			echo json_encode('已成功签订协议！');
-//		}
-		exit;
-	}
+        //		if ($existData->status != 1) {
+        //			echo json_encode('未成功签订协议！');
+        //		} else {
+        //			echo json_encode('已成功签订协议！');
+        //		}
+        exit;
+    }
 
     // 详情 - view
     public function deliveryViewAction() {

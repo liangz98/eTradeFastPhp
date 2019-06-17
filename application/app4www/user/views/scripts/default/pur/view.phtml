@@ -797,20 +797,21 @@
 </div>
 
 <!--非网签-->
-<div id="signViewNoEContractDiv" class="layui-form" style="display: none;">
-    <div class="et-auth-error" style="display: none;"></div>
-    <div class="et-auth-content">
-        <div style="margin-top: 20px;"></div>
+<div id="signViewNoEContractDiv" style="display: none;">
+    <div class="container" style="width: 100%;">
+        <div class="alert alert-danger alert-dismissible fade in hidden signViewNoEContractAlert" role="alert">
+            <p></p>!
+        </div>
 
-        <div class="layui-form-item" style="margin-left: 28px;">
-            <div style="text-align: left;">
-                <label class="layui-form-label" style="width: 400px;text-align: left;"><?php echo $this->translate('contractUPInfo'); ?></label>
+        <div class="row">
+            <div class="col-sm-12" style="margin-top: 15px;">
+                <h4><?php echo $this->translate('contractUPInfo'); ?></h4>
             </div>
         </div>
 
-        <div class="layui-form-item" style="margin-bottom: -5px;margin-top: -15px;margin-left: 28px;margin-right: 28px;">
-            <div style="text-align: left;">
-                <table class="layui-table" id="demo" lay-filter="test">
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="layui-table" lay-skin="line">
                     <colgroup>
                         <col width="470">
                         <col width="150">
@@ -818,9 +819,9 @@
                     </colgroup>
                     <thead>
                     <tr>
-                        <th>合同列表</th>
-                        <th>类型</th>
-                        <th style="text-align:center">操作</th>
+                        <th><?php echo $this->translate('contractList'); ?></th>
+                        <th><?php echo $this->translate('ext'); ?></th>
+                        <th style="text-align:center"><?php echo $this->translate('madeTT'); ?></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -829,21 +830,17 @@
             </div>
         </div>
 
-        <div class="layui-form-item" style="margin-left: 28px; margin-top: 50px; width: 600px;">
-            <div class="layui-form-label" style="width: 420px;">
-                <div class="yyzz_box clearfix" style="width: 600px;">
-                    <p class="zzname" style="width: 600px; font-weight:bold;"><?php echo $this->translate('contractUP'); ?><!--合同相关附件上传--></p>
-                    <?php if ($this->vestut == 1) {
-                        echo $this->ShowWebuploader($this->goods['attachmentList'], $this->biz_Setting['ORDER'], $this->attach_Setting['CRIM'], "0", null);
-                    } ?>
-                </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <h4 style="color: #56859D; font-weight: bold;"><?php echo $this->translate('contractUP');?></h4>
+                <?php echo $this->ShowWebuploader($this->notEContractAttachmentList, $this->biz_Setting['ORDER'], 'CRIM', $this->notEContractBizID); ?>
             </div>
         </div>
 
-
-        <div style="height: 12px"></div>
-        <div class="et-auth-row">
-            <button class="layui-btn" id="signNoEContractConfirmBtn"><?php echo $this->translate('signing'); ?></button>
+        <div class="row">
+            <div class="col-sm-12" style="margin-top: 15px;">
+                <button class="order_contract_sign fr" id="signNoEContractConfirmBtn"><?php echo $this->translate('signing'); ?></button>
+            </div>
         </div>
     </div>
 </div>
@@ -1581,7 +1578,9 @@
     // ********************   显示非网签上传合同层 Start  *************************************
     function initSignViewNoEContract(obj) {
 
-        var signTitle = "<?php echo $this->translate('signTitle');?>";
+        var signTitle = "<?php echo $this->translate('signTitle');?>",
+            downloadTitle = "<?php echo $this->translate('download');?>";
+
         layer.open({
             type: 1,	//Page层类型
             area: ['800px', '550px'],
@@ -1590,6 +1589,7 @@
             shade: 0.6,	//遮罩透明度
             // anim: 1,	//0-6的动画形式，-1不开启
             scrollbar: false,
+            zIndex: 50,
             content: $("#signViewNoEContractDiv")
         });
 
@@ -1609,7 +1609,7 @@
 
         htmlList += '<td>' + $("#ext_" + obj.id).val() + '</td>';
 
-        htmlList += '<td><a href="#" id="" onclick="doDownload(\''+obj.id+'\')" class="order_contract_sign fr">下载</a></td>';
+        htmlList += '<td><a href="#" id="" onclick="doDownload(\''+obj.id+'\')" class="order_contract_sign fr">' + downloadTitle + '</a></td>';
 
         htmlList += '</td></tr>';
         //在行最后添加数据
@@ -1662,11 +1662,19 @@
                 attachType: attachTypeArr
             },
             dataType: "json",
+            beforeSend: function() {
+                $("#authCode").val("");
+                $("#signNoEContractConfirmBtn").addClass("hidden");
+            },
             success: function (data) {
-                if (data === '1') {
-                    document.location.reload();
+                if (data.status === 1) {
+                    window.location.reload();
                 } else {
-                    alert(data + 'failed,please try again!');
+                    var signViewNoEContractAlert = $(".signViewNoEContractAlert");
+
+                    $(".signViewNoEContractAlert > p").html(data.error);
+                    $(signViewNoEContractAlert).removeClass("hidden");
+                    $("#signNoEContractConfirmBtn").attr("disabled", false);
                 }
             }
         });

@@ -1029,11 +1029,12 @@ return array(
     'Finance_repayment_no'        => '已还本金',
 
     // 金融
-    'factoring_all'                      => 'All',
+    'factoring_all'                      => '全部',
     'factoring_mode'                     => '项目模式',
     'factoring_view_mode'                => '融资模式',
     'factoring_mode_rf'                  => '应收账款融资',
     'factoring_mode_pf'                  => '生产融资',
+    'factoring_mode_ef'                  => '出口退税融资',
     'factoring_crnCode'                  => '债权货币',
     'factoring_amount'                   => '金额',
     'factoring_amount_a1'                => '5000以下',
@@ -1042,6 +1043,9 @@ return array(
     'factoring_amount_a4'                => '5万 至 10万',
     'factoring_amount_a5'                => '10万 至 20万',
     'factoring_amount_a6'                => '20万以上',
+    'factoring_for_check'                => '待确权',
+    'factoring_activated'                => '进行中',
+    'factoring_done'                     => '已完成',
     'factoring_credit'                   => '快移信用',
     'factoring_credit_expiry'            => '过期',
     'factoring_credit_apply'             => '提交资料',
@@ -1270,6 +1274,10 @@ return array(
     'remind'                => '提醒',
     // 结算中心列表
     'keyword'               => '关键字',
-    'settleListPlaceholder' => '交易号/订单号/合同号/公司名/备注'
+    'settleListPlaceholder' => '交易号/订单号/合同号/公司名/备注',
+    'contractList'          => '合同列表',
+    'ext'                   => '文件类型',
+    'attachmentSign'        => '签署',
+    'attachmentSigned'      => '已签署'
 
 );

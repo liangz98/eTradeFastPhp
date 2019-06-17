@@ -887,7 +887,7 @@
                 <div class="yyzz_box clearfix" style="width: 600px;">
                     <p class="zzname" style="width: 600px; font-weight:bold;"><?php echo $this->translate('contractUP'); ?><!--合同相关附件上传--></p>
                     <?php if ($this->vestut == 1) {
-                        echo $this->ShowWebuploader($this->goods['attachmentList'], $this->biz_Setting['ORDER'], $this->attach_Setting['CRIM'], "0", null);
+                        echo $this->ShowWebuploader($this->attachmentList, $this->biz_Setting['ORDER'], 'CRIM', null);
                     } ?>
                 </div>
             </div>

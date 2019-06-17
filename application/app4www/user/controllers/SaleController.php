@@ -1019,13 +1019,12 @@ class SaleController extends Kyapi_Controller_Action
     }
 
     //签订协议
-    public function agreeAction()
-    {
+    public function agreeAction() {
         // 请求Hessian服务端方法
         $name = $_POST['name'];
         $nid = $_POST['nid'];
         $size = $_POST['size'];
-		$attachType=$_POST['attachType'];
+        $attachType = $_POST['attachType'];
         $_contractID = $_POST['contractID'];
 
         $_nid = explode("|", $nid);
@@ -1054,7 +1053,7 @@ class SaleController extends Kyapi_Controller_Action
         $attach['attachID'] = $_nid;
         $attach['name'] = $_name;
         $attach['size'] = $_size;
-		$attach['attachType']=$_attachType;
+        $attach['attachType'] = $_attachType;
         $_attach2 = array();
 
         foreach ($attach as $k => $v) {
@@ -1064,30 +1063,35 @@ class SaleController extends Kyapi_Controller_Action
         }
         $_attachList = array();
         foreach ($_attach2 as $k => $v) {
-            foreach ($v as $k1 => $v1) {
-                $_attachList[$k] = new Kyapi_Model_Attachment();
-                $_attachList[$k]->attachID = $_attach2[$k]['attachID'];
-                $_attachList[$k]->name = $_attach2[$k]['name'];
-                $_attachList[$k]->size = (int)$_attach2[$k]['size'];
-                $_attachList[$k]->attachType = $_attach2[$k]['attachType'];
-                if($_attach2[$k]['attachType']=="CRSE"){
-                    $_attachList[$k]->bizType = "CR";
-                }else{
-                    $_attachList[$k]->bizType = "OD";
+            // 20190617 签定非网签合同,
+            if ($_attach2[$k]['attachType'] == 'CRIM') {
+                $attachment = new Kyapi_Model_Attachment();
+                $attachment->attachID = $_attach2[$k]['attachID'];
+                $attachment->name = $_attach2[$k]['name'];
+                $attachment->size = (int)$_attach2[$k]['size'];
+                $attachment->attachType = $_attach2[$k]['attachType'];
+                if ($_attach2[$k]['attachType'] == "CRSE") {
+                    $attachment->bizType = "CR";
+                } else {
+                    $attachment->bizType = "OD";
                 }
 
-//				$_attachList[$k]->bizID=$_attach2[$k]['bizID'];
+                $_attachList[] = $attachment;
             }
         }
-
 
         $_requestOb = $this->_requestObject;
         if (count($_attachList) == 0) {
             $_attachList = null;
         }
-        $_resultData = $this->json->doAgreeContractApi($_requestOb, $_contractID, $_attachList);
-        $existData = json_decode($_resultData);
-        echo json_encode($existData->status);
+        $resultObject = $this->json->doAgreeContractApi($_requestOb, $_contractID, $_attachList);
+        $msg['status'] = json_decode($resultObject)->status;
+        $msg['result'] = json_decode($resultObject)->result;
+        if (json_decode($resultObject)->status <= 0) {
+            $msg['error'] = json_decode($resultObject)->error;
+        }
+
+        echo json_encode($msg);
         exit;
     }
 

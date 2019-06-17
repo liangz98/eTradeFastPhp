@@ -106,46 +106,70 @@ class Zend_View_Helper_ShowOrderContract extends Shop_View_Helper {
                 // 电子签
                 if ($v['isEContract']) {
                     if (!$isESigned || !$isPSigned) {
-                        $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr">签署</a>';
+                        $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr">'. $this->view->translate('attachmentSign') .'</a>';
                     } else {
                         if (!empty($v['firstParty']) && $v['firstParty'] == $accountID) {
                             // 个人
                             if ($v['firstPartySignMode'] == "P") {
                                 if ($this->view->userID == $v['firstPartyPrincipal']) {
-                                    $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">已签署</a>';
+                                    $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">'. $this->view->translate('attachmentSigned') .'</a>';
                                 }
                             } else {
-                                $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">已签署</a>';
+                                $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">'. $this->view->translate('attachmentSigned') .'</a>';
                             }
                         }
                         if (!empty($v['secondParty']) && $v['secondParty'] == $accountID) {
                             if ($v['secondPartySignMode'] == "P") {
                                 if ($this->view->userID == $v['secondPartyPrincipal']) {
-                                    $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">已签署</a>';
+                                    $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">'. $this->view->translate('attachmentSigned') .'</a>';
                                 }
                             } else {
-                                $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">已签署</a>';
+                                $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">'. $this->view->translate('attachmentSigned') .'</a>';
                             }
                         }
                         if (!empty($v['thirdParty']) && $v['thirdParty'] == $accountID) {
                             if ($v['thirdPartySignMode'] == "P") {
                                 if ($this->view->userID == $v['thirdPartyPrincipal']) {
-                                    $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">已签署</a>';
+                                    $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">'. $this->view->translate('attachmentSigned') .'</a>';
                                 }
                             } else {
-                                $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">已签署</a>';
+                                $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">'. $this->view->translate('attachmentSigned') .'</a>';
                             }
                         }
                     }
                 } else {
                     $hasNoEContract = "True";
                     // 非网签未签署
-                    if ((!empty($v['firstParty']) && $v['firstParty'] == $accountID && empty($v['firstPartySigningDate'])) || (!empty($v['secondParty']) && $v['secondParty'] == $accountID && empty($v['secondPartySigningDate'])) || (!empty($v['thirdParty']) && $v['thirdParty'] == $accountID && empty($v['thirdPartySigningDate']))) {
+                    // 合同状态等于 '07' 的时间
+                    if (($v['contractStatus'] == '07') && ((!empty($v['firstParty']) && $v['firstParty'] == $accountID && empty($v['firstPartySigningDate'])) || (!empty($v['secondParty']) && $v['secondParty'] == $accountID && empty($v['secondPartySigningDate'])) || (!empty($v['thirdParty']) && $v['thirdParty'] == $accountID && empty($v['thirdPartySigningDate'])))) {
                         $hasNoEContract = "True";
-                        $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initSignViewNoEContract(this)" class="order_contract_sign fr">下载</a>';
+                        $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initSignViewNoEContract(this)" class="order_contract_sign fr">'. $this->view->translate('download') .'</a>';
+                        if (!empty($v['attachmentList'])) {
+                            $notEContractAttachmentList = array();
+                            foreach ($v['attachmentList'] as $notEContractKey => $contractAttachment) {
+                                if ($contractAttachment['attachType'] == 'CRIM') {
+                                    $attachment = array();
+                                    $attachment['attachID'] = $contractAttachment['attachID'];
+                                    $attachment['attachType'] = $contractAttachment['attachType'];
+                                    $attachment['bizID'] = $contractAttachment['bizID'];
+                                    $attachment['bizType'] = $contractAttachment['bizType'];
+                                    $attachment['ext'] = $contractAttachment['ext'];
+                                    $attachment['name'] = $contractAttachment['name'];
+                                    $attachment['size'] = (int)$contractAttachment['size'];
+                                    $attachment['verifyID'] = $contractAttachment['verifyID'];
+
+                                    $notEContractAttachmentList[] = $attachment;
+                                }
+                            }
+                            $this->view->notEContractAttachmentList = $notEContractAttachmentList;
+                            $this->view->notEContractBizID = $v['bizID'];
+                        } else {
+                            $this->view->notEContractAttachmentList = null;
+                        }
+
                     } else {
                         $IMG .= '<input type="hidden" id="isSign_' . $v['contractID'] . '" value="true">';
-                        $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">已签署</a>';
+                        $IMG .= '<a href="javascript:void(0)" id="' . $v['contractID'] . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" class="order_contract_sign fr" style="background: #ccc;">'. $this->view->translate('attachmentSigned') .'</a>';
                     }
                 }
                 $IMG .= '</div>';
