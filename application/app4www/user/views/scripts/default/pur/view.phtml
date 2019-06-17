@@ -1577,7 +1577,6 @@
 
     // ********************   显示非网签上传合同层 Start  *************************************
     function initSignViewNoEContract(obj) {
-
         var signTitle = "<?php echo $this->translate('signTitle');?>",
             downloadTitle = "<?php echo $this->translate('download');?>";
 
@@ -1585,14 +1584,13 @@
             type: 1,	//Page层类型
             area: ['800px', '550px'],
             title: signTitle,
-            // shadeClose: true,
-            shade: 0.6,	//遮罩透明度
-            // anim: 1,	//0-6的动画形式，-1不开启
+            // shadeClose: true,    // 是否点击遮罩关闭, 默认：false
+            shade: 0.6,	// 遮罩透明度
+            // anim: 1,	// 0-6的动画形式，-1不开启
             scrollbar: false,
             zIndex: 50,
             content: $("#signViewNoEContractDiv")
         });
-
 
         $("#signViewNoEContractDiv tr:not(:first)").empty();
         //获取最后一行的data-id(标识行)
@@ -1616,8 +1614,6 @@
         $("#signViewNoEContractDiv tr:last").after(htmlList);
 
         $("#signNoEContractConfirmBtn").attr("contractID_", obj.id);
-        // alert(obj.id);
-        // alert($("#contractName_" + obj.id).val());
     }
 
     function doDownload(objID) {
