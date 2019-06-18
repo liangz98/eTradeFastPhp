@@ -88,6 +88,7 @@
                             </div>
                         </div>
                     </div>
+                    <?php if ($this->regdCountryCode == 'CN'): ?>
                     <div class="col-sm-1 creditRating">
                         <p class="creditTitle"><?php echo $this->translate('factoring_credit'); ?></p>
                         <?php if (!empty($this->level)): ?>
@@ -114,6 +115,7 @@
                             </p>
                         <?php endif; ?>
                     </div>
+                    <?php endif;?>
                 </div>
             </div>
         </div>
