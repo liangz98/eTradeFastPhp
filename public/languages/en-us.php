@@ -239,21 +239,20 @@ return array(
     'aboutInfo_3'              => 'IFG members make full use of global experience to help Chinese trade partners to accelerate internationalization.',
 
     // 导航
-    'order'                    => 'Order',
-    'orderIN'                  => 'Order Center',
-    'orderREQ'                 => 'Tax Rebates Application',
-    'orderSALLE'               => 'Sales Order',
-    'orderBUY'                 => 'Purchase Order',
-
+    'order'            => 'Order',
+    'orderIN'          => 'Order Center',
+    'orderREQ'         => 'Tax Rebates Application',
+    'orderSALLE'       => 'Sales Order',
+    'orderBUY'         => 'Purchase Order',
+    'salesOrder'       => 'Sales Order',
+    'purchaseOrder'    => 'Purchase Order',
     'partners'         => 'Partners',
     'partners_buyers'  => 'Buyers',
     'partners_vendors' => 'Vendors',
-
-    'cooperationS'    => 'Service Providers',
-    'cooperationCALL' => 'Address book',
-
-    'sendBuyer'  => 'Invite to be Buyer',
-    'sendVendor' => 'Invite to be Vendor',
+    'cooperationS'     => 'Service Providers',
+    'cooperationCALL'  => 'Address book',
+    'sendBuyer'        => 'Invite to be Buyer',
+    'sendVendor'       => 'Invite to be Vendor',
 
     'goods'         => 'Products',
     'goods_4_index' => 'Products',
@@ -476,7 +475,6 @@ return array(
     'lastUpdate'            => 'Update Time',
     'date'                  => 'Date',
 
-    'contartNo'                   => 'Contract No.',
     'proxyNo'                     => 'Power of Attorney',
     'orderATCH'                   => 'Order Attachments',
     'delegation'                  => 'Sealed Instructions',

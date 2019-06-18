@@ -1,5 +1,8 @@
+/* 定义 panel 右侧按钮宽度及红线宽度变量 */
 body {
 	color: #666;
+    --heading-select-width: 90px;
+    --heading-select-change-width: 88px;
 }
 
 .index-info .row ul {
@@ -75,7 +78,7 @@ div.index-info .col-md-3 {
     height: 41px;
     margin-top: -10px;
     padding-top: 10px;
-    width: 90px;
+    width: var(--heading-select-width);
     cursor: pointer;
 }
 
@@ -104,7 +107,7 @@ div.index-info .col-md-3 {
 
 .change:before {
     height: 100%;
-    width: 88px;
+    width: var(--heading-select-change-width);
     top: 0;
     border-top: 2px solid #d9534f;
     position:absolute;

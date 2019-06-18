@@ -107,10 +107,10 @@
                             <?php echo $this->translate('order'); ?>
                         </div>
                         <div class="pull-right etf-heading-select purOrderListBtn">
-                            <p><?php echo $this->translate('orderBUY'); ?></p>
+                            <p><?php echo $this->translate('purchaseOrder'); ?></p>
                         </div>
                         <div class="pull-right etf-heading-select change saleOrderListBtn orderListBtnBackground">
-                            <p><?php echo $this->translate('orderSALLE'); ?></p>
+                            <p><?php echo $this->translate('salesOrder'); ?></p>
                         </div>
                     </div>
                     <!-- Table -->
@@ -186,6 +186,13 @@
         initList("_productList", "listsaleproduct");
         initList("_partnerList", "listbuyerpartner");
 
+        // 修改css变量
+        var localLang = '<?php if ($this->userLangCode == "en_US") echo "en";?>';
+        if (localLang !== '' && localLang === 'en') {
+            document.body.style.setProperty('--heading-select-width', '140px');
+            document.body.style.setProperty('--heading-select-change-width', '138px');
+        }
+
         // 订单
 	    $(".saleOrderListBtn").click(function () {
             $(".saleOrderListBtn").addClass("change orderListBtnBackground");
@@ -229,6 +236,13 @@
         });
     }
 
+    var layDateLang = 'cn',
+        localLang = '<?php if ($this->userLangCode == "en_US") echo "en";?>';
+
+    if (localLang !== '' && localLang === 'en') {
+        layDateLang = 'en';
+    }
+
     layui.use('laydate', function() {
         var laydate = layui.laydate;
 
@@ -236,7 +250,8 @@
         laydate.render({
             elem: '#test-n1',
             position: 'static',
-            btns: ['clear', 'now']
+            btns: ['clear', 'now'],
+            lang: layDateLang
         });
     });
 </script>

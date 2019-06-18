@@ -239,21 +239,20 @@ return array(
     'aboutInfo_3'              => 'IFG的成员，充分利用全球经验，助中国的贸易合作伙伴，以加快国际化。',
 
     // 导航
-    'order'                    => '订单',
-    'orderIN'                  => '订单中心',
-    'orderREQ'                 => '退税申请',
-    'orderSALLE'               => '销售订单',
-    'orderBUY'                 => '采购订单',
-
+    'order'            => '订单',
+    'orderIN'          => '订单中心',
+    'orderREQ'         => '退税申请',
+    'orderSALLE'       => '销售订单',
+    'orderBUY'         => '采购订单',
+    'salesOrder'       => '销售订单',
+    'purchaseOrder'    => '采购订单',
     'partners'         => '合作伙伴',
     'partners_buyers'  => '我的买家',
     'partners_vendors' => '我的卖家',
-
-    'cooperationS'    => '服务提供商',
-    'cooperationCALL' => '通讯录',
-
-    'sendBuyer'  => '邀请为买家',
-    'sendVendor' => '邀请为卖家',
+    'cooperationS'     => '服务提供商',
+    'cooperationCALL'  => '通讯录',
+    'sendBuyer'        => '邀请为买家',
+    'sendVendor'       => '邀请为卖家',
 
     'goods'         => '商品管理',
     'goods_4_index' => '商品',
@@ -476,7 +475,6 @@ return array(
     'lastUpdate'            => '更新时间',
     'date'                  => '日期',
 
-    'contartNo'                   => '合同号码',
     'proxyNo'                     => '委托书',
     'orderATCH'                   => '订单附件',
     'delegation'                  => '盖章委托书',
