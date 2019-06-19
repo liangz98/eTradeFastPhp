@@ -1276,5 +1276,8 @@ return array(
     'contractList'          => 'Contract List',
     'ext'                   => 'Ext',
     'attachmentSign'        => 'sign',
-    'attachmentSigned'      => 'Signed'
+    'attachmentSigned'      => 'Signed',
+
+    // 金融列表, 流加载底部文字
+    'noMore'    => 'No more'
 );

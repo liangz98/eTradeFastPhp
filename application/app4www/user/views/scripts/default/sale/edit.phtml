@@ -178,7 +178,7 @@
                             <div class="form-group">
                                 <label for="" class="col-sm-2 control-label"><?php echo $this->translate('attachUpload'); ?></label>
                                 <div class="col-sm-10">
-                                    <?php echo $this->ShowWebuploader($this->orders['attachmentList'], $this->biz_Setting['ORDER'], $this->attach_Setting['ODOD'], $this->orders['orderID']); ?>
+                                    <?php echo $this->ShowWebuploader($this->orders['attachmentList'], $this->biz_Setting['ORDER'], $this->attach_Setting['ODOD'], '0', $this->orders['orderID']); ?>
                                 </div>
                             </div>
                         </div>
@@ -248,7 +248,7 @@
 
                                 <label for="shippingServiceType" class="col-sm-2 control-label"><?php echo $this->translate('mabyDATE'); ?></label>
                                 <div class="col-sm-4">
-                                    <input type="date" class="form-control" name="deliveryDate" id="deliveryDate" placeholder="" value="<?php echo date('Y-m-d', strtotime($this->orders['deliveryDate']));?>" >
+                                    <input type="text" class="form-control" name="deliveryDate" id="deliveryDate" placeholder="yyyy-MM-dd" value="<?php echo date('Y-m-d', strtotime($this->orders['deliveryDate']));?>" >
                                 </div>
                             </div>
 
@@ -486,6 +486,18 @@
             } else {
                 $(this).removeClass('nav-selected');
             }
+        });
+
+        var layDateLang = '<?php if ($this->userLangCode == "en_US") echo "en"; else echo "cn";?>';
+        layui.use('laydate', function() {
+            var laydate = layui.laydate;
+
+            // 直接嵌套显示
+            laydate.render({
+                elem: '#deliveryDate'
+                ,trigger: 'click'
+                ,lang: layDateLang
+            });
         });
 
         var $buyerTable = $("#buyerListTable"),

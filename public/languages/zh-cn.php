@@ -1276,6 +1276,8 @@ return array(
     'contractList'          => '合同列表',
     'ext'                   => '文件类型',
     'attachmentSign'        => '签署',
-    'attachmentSigned'      => '已签署'
+    'attachmentSigned'      => '已签署',
 
+    // 金融列表, 流加载底部文字
+    'noMore'    => '没有更多了'
 );

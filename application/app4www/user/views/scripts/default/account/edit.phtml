@@ -87,7 +87,7 @@
                                             } ?>
                                         </p>
                                     <?php else: ?>
-                                        <input type="date" class="form-control" name="birthdate" id="birthdate" placeholder="<?php echo $this->translate('title');?>" <?php if (!empty($this->e['birthdate'])) { echo "value='". date('Y-m-d', strtotime($this->e['birthdate']) )."'"; }; ?> >
+                                        <input type="text" class="form-control" name="birthdate" id="birthdate" placeholder="yyyy-MM-dd" <?php if (!empty($this->e['birthdate'])) { echo "value='". date('Y-m-d', strtotime($this->e['birthdate']) )."'"; }; ?> >
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -337,6 +337,17 @@
             }
         });
 
+        var layDateLang = '<?php if ($this->userLangCode == "en_US") echo "en"; else echo "cn";?>';
+        layui.use('laydate', function() {
+            var laydate = layui.laydate;
+
+            // 直接嵌套显示
+            laydate.render({
+                elem: '#birthdate'
+                ,trigger: 'click'
+                ,lang: layDateLang
+            });
+        });
 	});
 </script>
 </body>

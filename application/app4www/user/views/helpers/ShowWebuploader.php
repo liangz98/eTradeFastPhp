@@ -141,15 +141,19 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
         // $showView .= '<script type="text/javascript" src="/ky/layer-v3.1.1/layer.js"></script>';
         // $showView .= '<link href="/ky/css/img-upload.css" rel="stylesheet">';
 
-        $classNameStr = '';
-        if (!empty($objID)) {
-            $classNameStr = $objID;
-        }
+        // 20190618 注释, 忘记做什么用的了
+        // $classNameStr = '';
+        // if (!empty($objID)) {
+        //     $classNameStr = $objID;
+        // }
 
         $showimg = "";
         $showimg .= '<div class="img-read" id="img-read"></div>';
         $showimg .= '<div class="demo">';
-        $showimg .= '<ul class="img-view imgContainerCls_'.$classNameStr.'" data-cls-name="imgContainerCls_' . $classNameStr . '">' . $str . '</ul>';
+
+        // 注释, 因为上面的 $classNameStr 暂时忘了用在哪里
+        // $showimg .= '<ul class="img-view imgContainerCls_'.$classNameStr.'" data-cls-name="imgContainerCls_' . $classNameStr . '">' . $str . '</ul>';
+        $showimg .= '<ul class="img-view">' . $str . '</ul>';
 
         $showimg .= '<ul class="upload-image-list clearfix">';
         $showimg .= '<div class="fileinput-button js-add-image" onclick="addWebuploadCurrent($(this))" attachType_="'.$attachType.'" data-biz-id="'. $bizID .'">' . $indata;
@@ -159,14 +163,6 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
         $showimg .= '</div></div></ul>';
 
         $showimg .= '</div>';
-        // $showimg .= '<script type="text/javascript" src="/ky/upload/img.js"></script>';
-        // $showimg .= '<link href="/ky/css/img-upload.css" rel="stylesheet">';
-
-        // if ($type == '1') {
-        //     return $showView;
-        // } else {
-        //     return $showimg;
-        // }
 
         return $showimg;
 	}
