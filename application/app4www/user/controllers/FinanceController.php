@@ -39,7 +39,7 @@ class FinanceController extends Kyapi_Controller_Action
         $this->updateRedisExpire();
     }
 
-    /**列表页**/
+    // 列表页
     public function indexAction() {
         $this->view->resultMsg = $this->_request->getParam('resultMsg');
 
@@ -54,6 +54,10 @@ class FinanceController extends Kyapi_Controller_Action
         $this->view->validDate = $creditRating->validDate;
         $this->view->expiryDate = $creditRating->expiryDate;
         $this->view->applyStatus = $creditRating->instance->applyStatus;
+
+        // 设置列表页分布配置
+        $this->view->limit = 4;
+        $this->view->offset = 0;
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/finance/index.phtml");

@@ -44,6 +44,8 @@
                                 <button type="button" class="btn btn-default" data-type="factoringMode" data-value="PF"><?php echo $this->translate('factoring_mode_pf'); ?></button>
                                 <button type="button" class="btn btn-default" data-type="factoringMode" data-value="EF"><?php echo $this->translate('factoring_mode_ef'); ?></button>
                                 <input type="hidden" name="factoringMode" id="factoringMode" value="all">
+                                <input type="hidden" name="limit" id="limit" value="<?php echo $this->limit; ?>">
+                                <input type="hidden" name="offset" id="offset" value="<?php echo $this->offset; ?>">
                             </div>
                         </div>
 
@@ -120,7 +122,7 @@
             </div>
         </div>
 
-        <ul class="list-unstyled resultList"></ul>
+        <ul class="list-unstyled resultList" id="flowResultList"></ul>
 	</div>
 </div>
 
@@ -162,7 +164,8 @@
                     refreshResultList();
                 });
 
-                refreshResultList();
+                // refreshResultList();
+                refreshFlowResultList();
             }
         });
 
@@ -301,6 +304,150 @@
                     }
                 });
             }
+        });
+    }
+    
+    function refreshFlowResultList() {
+	    var $limit = $("#limit"),
+            $offset = $("#offset"),
+            noMore = '<?php echo $this->translate("noMore"); ?>';
+        layui.use('flow', function(){
+            var $ = layui.jquery; //不用额外加载jQuery，flow模块本身是有依赖jQuery的，直接用即可。
+            var flow = layui.flow;
+            flow.load({
+                elem: '#flowResultList' //指定列表容器
+                ,end: noMore    // 用于显示末页内容
+                ,mb: 250    // 与底部的临界距离，即当滚动条与底部产生该距离时，触发加载。
+                ,done: function(page, next){ //到达临界点（默认滚动触发），触发下一页
+                    var lis = [];
+                    var factoringQuery = '/user/finance/factoring-list-ajax';
+                    $.ajax({
+                        type: "POST",
+                        url: factoringQuery,
+                        data: {
+                            limit: $limit.val(),
+                            skip: $("#offset").val(),
+                            factoringMode: $("#factoringMode").val(),
+                            crnCode: $("#crnCode").val(),
+                            factoringAmount: $("#factoringAmount").val(),
+                            factoringStatus: $("#factoringStatus").val()
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            var contents = '',
+                                noResult = '<?php echo $this->translate("noData"); ?>';
+
+                            if (data.rows.length === 0) {
+                                contents += '<li>'
+                                    + ' <div class="panel panel-success">'
+                                    + '  <div class="panel-heading">'
+                                    + '   <div class="row">'
+                                    + '    <div class="col-sm-12">'
+                                    + '     <p>&nbsp;</p>'
+                                    + '    </div>'
+                                    + '   </div>'
+                                    + '  </div>'
+
+                                    + '  <div class="panel-body">'
+                                    + '   <div class="row">'
+                                    + '    <div class="col-sm-12">'
+                                    + '     <p>' + noResult + '</p>'
+                                    + '    </div>'
+                                    + '   </div>'
+                                    + '  </div>'
+                                    + ' </div>'
+                                    + '</li>';
+                            } else {
+                                $.each(data.rows, function (i, item) {
+                                    var base = new Base64();
+                                    var resultEnCode = base.encode(item.factoringID);
+
+                                    var dataDictList = $.data(dataDict, 'dataDict');
+                                    var factoringStatus = '-';
+                                    $.each(dataDictList, function (key, itemDict) {
+                                        if (key === 'FACTORING_STATUS') {
+                                            $.each(itemDict, function (i, dict) {
+                                                if (dict.code === item.factoringStatus) {
+                                                    factoringStatus = dict.name;
+                                                }
+                                            });
+                                        }
+                                    });
+
+                                    var factoringNoStr = '<?php echo $this->translate("factoringListNo"); ?>',
+                                        orderNoStr = '<?php echo $this->translate("factoringListOrderNo"); ?>',
+                                        debtorCustomerNameStr = '<?php echo $this->translate("factoringDebtor"); ?>',
+                                        factoringStatusStr = '<?php echo $this->translate("factoringStatus"); ?>',
+                                        receivableTotalAmountStr = '<?php echo $this->translate("factoringReceivableTotalAmount"); ?>',
+                                        financingTotalAmountStr = '<?php echo $this->translate("factoringFinancingTotalAmount"); ?>',
+                                        periodStr = '<?php echo $this->translate("factoringPeriod"); ?>',
+                                        expiryDateStr = '<?php echo $this->translate("factoringExpiryDate"); ?>',
+                                        daysStr = '<?php echo $this->translate("factoringDays"); ?>',
+                                        infoStr = '<?php echo $this->translate("factoringInfo"); ?>';
+
+                                    contents += '<li style="cursor: pointer;" data-resultEnCode="' + resultEnCode + '">'
+                                        + ' <div class="panel panel-success">'
+                                        + '  <div class="panel-heading">'
+                                        + '   <div class="row">'
+                                        + '    <div class="col-sm-11">'
+                                        + '     <span>' + factoringNoStr + '</span>&nbsp;&nbsp;'
+                                        + '     <span>' + item.factoringNo + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+                                        // + '     <span>' + orderNoStr + '</span>&nbsp;&nbsp;'
+                                        // + '     <span>' + item.factoringNo + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+                                        + '     <span>' + debtorCustomerNameStr + '</span>&nbsp;&nbsp;'
+                                        + '     <span>' + item.debtorCustomerName + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+                                        + '     <span>' + factoringStatusStr + '</span>&nbsp;&nbsp;'
+                                        + '     <span>' + factoringStatus + '</span>'
+                                        + '    </div>'
+                                        + '    <div class="col-sm-1">'
+                                        + '     <p class="text-right"><a href="/user/finance/view?' + resultEnCode + '">' + infoStr + '</a></p>'
+                                        + '    </div>'
+                                        + '   </div>'
+                                        + '  </div>'
+
+                                        + '  <div class="panel-body">'
+                                        + '   <div class="row">'
+                                        + '    <div class="col-sm-3">'
+                                        + '     <span>' + receivableTotalAmountStr + '</span>&nbsp;&nbsp;'
+                                        + '     <span>' + item.crnCode + ' ' + item.receivableTotalAmount + '</span>'
+                                        + '    </div>'
+                                        + '    <div class="col-sm-4">'
+                                        + '     <span>' + financingTotalAmountStr + '</span>&nbsp;&nbsp;'
+                                        + '     <span>' + item.crnCode + ' ' + item.financingTotalAmount + ' ( ' + item.financingCrnCode + ' ' + item.tgtFinancingTotalAmount + ')</span>'
+                                        + '    </div>'
+                                        + '    <div class="col-sm-2">'
+                                        + '     <span>' + periodStr + '</span>&nbsp;&nbsp;'
+                                        + '     <span>' + item.period + ' ' + daysStr + '</span>'
+                                        + '    </div>'
+                                        + '    <div class="col-sm-3">'
+                                        + '     <span>' + expiryDateStr + '</span>&nbsp;&nbsp;'
+                                        + '     <span>' + new Date(item.expiryDate).format("yyyy-MM-dd") + '</span>'
+                                        + '    </div>'
+                                        + '   </div>'
+                                        + '  </div>'
+                                        + ' </div>'
+                                        + '</li>';
+                                });
+                            }
+
+                            lis.push(contents);
+
+                            // 执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
+                            // pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
+                            next(lis.join(''), page < data.totalPage);
+                            // 配置分页
+                            $offset.val(parseInt($offset.val()) + parseInt($limit.val()));
+
+                            $(".resultList li").click(function () {
+                                var resultEnCodeUrl = $(this).attr("data-resultEnCode");
+                                if (resultEnCodeUrl !== undefined && resultEnCodeUrl !== '') {
+                                    window.location.href = '/user/finance/view?' + resultEnCodeUrl;
+                                }
+                            });
+                        }
+                    });
+                }
+            });
         });
     }
 </script>
