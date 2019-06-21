@@ -400,9 +400,8 @@ class FinanceController extends Kyapi_Controller_Action
         $this->view->mathDate = ($LoanView['expiryDate'] == 0) ? 0 : date('Y-m-d', strtotime($LoanView['expiryDate'])) - date('Y-m-d', time());
 
         // 取回当前公司的企业认证状态
-        $_accountID = $this->view->accountID;
-        $account = $this->json->getAccountApi($requestObject, $_accountID);
-        $this->view->hasIDCertificate = json_decode($account)->result->hasIDCertificate;
+        $account = $this->json->getAccountApi($requestObject);
+        $this->refreshAccountCertificateByResult(json_decode($account)->result->hasIDCertificate);
 
         // 取回当前登录用户的实名认证状态
         $contactID = $this->view->userID;

@@ -688,10 +688,8 @@ class PurController extends Kyapi_Controller_Action
         $userKY = json_decode($_resultKY);
 
         // 取回当前公司的企业认证状态
-        $_accountID = $this->view->accountID;
-        $account = $this->json->getAccountApi($requestObject, $_accountID);
-        // echo "11: ".json_decode($account)->result->isECommAccount;
-        $this->view->hasIDCertificate = json_decode($account)->result->hasIDCertificate;
+        $account = $this->json->getAccountApi($requestObject);
+        $this->refreshAccountCertificateByResult(json_decode($account)->result->hasIDCertificate);
 
         // 取回当前登录用户的实名认证状态
         $contactID = $this->view->userID;
@@ -929,8 +927,8 @@ class PurController extends Kyapi_Controller_Action
     // 详情 - view
     public function deliveryViewAction() {
         $deliveryID = $this->_request->getParam('deliveryID');
-        $_requestOb = $this->_requestObject;
-        $resultObject = $this->json->getDeliveryView($_requestOb, $deliveryID);
+        $requestObject = $this->_requestObject;
+        $resultObject = $this->json->getDeliveryView($requestObject, $deliveryID);
 
         $delivery = json_decode($resultObject)->result;
         $this->view->delivery = json_decode($resultObject)->result;
@@ -974,9 +972,8 @@ class PurController extends Kyapi_Controller_Action
         $this->view->deliveryContractList = $deliveryContractList;
 
         // 取回当前公司的企业认证状态
-        $accountID = $this->view->accountID;
-        $account = $this->json->getAccountApi($requestObject, $accountID);
-        $this->view->hasIDCertificate = json_decode($account)->result->hasIDCertificate;
+        $account = $this->json->getAccountApi($requestObject);
+        $this->refreshAccountCertificateByResult(json_decode($account)->result->hasIDCertificate);
 
         // 取回当前登录用户的实名认证状态
         $contactID = $this->view->userID;

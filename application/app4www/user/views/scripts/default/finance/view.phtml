@@ -794,13 +794,7 @@
             });
         }
 
-        var layDateLang = 'cn',
-            localLang = '<?php if ($this->userLangCode == "en_US") echo "en";?>';
-
-        if (localLang !== '' && localLang === 'en') {
-            layDateLang = 'en';
-        }
-
+        var layDateLang = '<?php if ($this->userLangCode == "en_US") echo "en"; else echo "cn";?>';
         layui.use('laydate', function(){
             var laydate = layui.laydate;
 

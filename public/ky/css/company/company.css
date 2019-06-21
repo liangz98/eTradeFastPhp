@@ -130,6 +130,11 @@ body {
 .et-auth-bg-ing{background-color:#54c7fc; }/*状态栏背景色*/
 .et-auth-bg-no{background-color:#fc9d9a; }/*状态栏背景色*/
 
+/*状态栏背景色*/
+.et-auth-bg-warning {
+    background-color: var(--brand-warning);
+}
+
 #msForm {
     width: 500px;
     margin-top: 15px;

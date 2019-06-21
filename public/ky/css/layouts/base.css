@@ -1,6 +1,11 @@
 /* base */
 body {
     background: #f6f6f6;
+    --brand-primary: #337ab7;
+    --brand-success: #5cb85c;
+    --brand-info:    #5bc0de;
+    --brand-warning: #f0ad4e;
+    --brand-danger: #d9534f;
 }
 
 /* header */
@@ -64,7 +69,28 @@ input[type=number]{
 }
 
 .error {
-    color: #d9534f;
+    color: var(--brand-danger);
+}
+
+.makerDot {
+    display: inline-block;
+    background: var(--brand-danger);
+    border-radius:50%;
+    width: 10px;
+    height: 10px;
+    top: 11px;
+    left: 69px;
+    position: absolute;
+}
+
+.makerDot-menu {
+    display: inline-block;
+    background: var(--brand-danger);
+    border-radius:50%;
+    width: 10px;
+    height: 10px;
+    left: 72px;
+    position: absolute;
 }
 
 .shadow {

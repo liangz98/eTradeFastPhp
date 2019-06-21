@@ -24,11 +24,9 @@ class CompanyController extends Kyapi_Controller_Action
         $requestObject = $this->_requestObject;
 
         // 请求Hessian服务端方法
-        $userKY = $this->json->getAccountApi($requestObject, $accountID);
-        $existData = $this->objectToArray(json_decode($userKY));
-        $existDatt = $existData['result'];
-        $this->view->e = $existDatt;
-
+        $accountResultObject = $this->json->getAccountApi($requestObject);
+        $account = $this->objectToArray(json_decode($accountResultObject)->result);
+        $this->view->e = $account;
         $this->view->accountID = $accountID;
 
         // 合作协议
@@ -38,14 +36,13 @@ class CompanyController extends Kyapi_Controller_Action
         $this->view->contractList = empty($listBizContract) ? null : $this->objectToArray($listBizContract);
 
         // 取回当前公司的企业认证状态
-        $account = $this->json->getAccountApi($requestObject, $accountID);
-        $this->view->hasIDCertificate = json_decode($account)->result->hasIDCertificate;
+        $this->refreshAccountCertificateByResult($account['hasIDCertificate']);
+        // $this->view->hasIDCertificate = $account['hasIDCertificate'];
 
         // 取回当前登录用户的实名认证状态
         $contactID = $this->view->userID;
         $contact = $this->json->getContactApi($requestObject, $contactID);
         $this->view->contactHasIDCertificate = json_decode($contact)->result->hasIDCertificate;
-
 
         if (!empty($existDatt['incorporationDate']['date'])) {
             $creatDate = date('Y-m-d', strtotime($existDatt['incorporationDate']['date']));
@@ -64,11 +61,10 @@ class CompanyController extends Kyapi_Controller_Action
     public function orderlistAction()
     {
         // 设置请求数据
-        $_accountID = $this->view->accountID;
-        $_requestOb = $this->_requestObject;
+        $requestObject = $this->_requestObject;
 
         // 请求Hessian服务端方法
-        $userKY = $this->json->getAccountApi($_requestOb, $_accountID);
+        $userKY = $this->json->getAccountApi($requestObject);
         $existData = $this->objectToArray(json_decode($userKY));
         $existDatt = $existData['result'];
         $this->view->e = $existDatt;
@@ -78,34 +74,33 @@ class CompanyController extends Kyapi_Controller_Action
     }
 
     public function editAction() {
-        //获取信息
+        // 获取信息
         $_accountID = $this->view->accountID;
-        $_requestOb = $this->_requestObject;
-        $userKY = $this->json->getAccountApi($_requestOb, $_accountID);
+        $requestObject = $this->_requestObject;
+        $userKY = $this->json->getAccountApi($requestObject);
         $existData = $this->objectToArray(json_decode($userKY));
         $existDatt = $existData['result'];
         $this->view->e = $existDatt;
 
-        //时间处理
+        // 时间处理
         if (!empty($existDatt['incorporationDate']['date'])) {
-            $creatDate = date('Y-m-d', strtotime($existDatt['incorporationDate']['date']));
+            $incorporationDate = date('Y-m-d', strtotime($existDatt['incorporationDate']['date']));
         } else {
-            $creatDate = date('Y-m-d', time());
+            $incorporationDate = date('Y-m-d', time());
         }
-        $this->view->date = $creatDate;
+        $this->view->date = $incorporationDate;
         $this->view->attlist = $existDatt['attachmentList'];
 
         if ($this->_request->isPost()) {
             try {
                 //获取附件ID
-                $Atachlist = array();
-                $Atachlist["attachID"] = $this->_request->getParam('attachNid');
-                $Atachlist["attachType"] = $this->_request->getParam('attachType');
-                //                $Atachlist["bizType"] = $this->_request->getParam("bizType");
-                $Atachlist["attachName"] = $this->_request->getParam("attachName");
-                $Atachlist["attachSize"] = $this->_request->getParam("attachSize");
+                $attachmentList = array();
+                $attachmentList["attachID"] = $this->_request->getParam('attachNid');
+                $attachmentList["attachType"] = $this->_request->getParam('attachType');
+                $attachmentList["attachName"] = $this->_request->getParam("attachName");
+                $attachmentList["attachSize"] = $this->_request->getParam("attachSize");
                 $_attach2 = array();
-                foreach ($Atachlist as $k => $v) {
+                foreach ($attachmentList as $k => $v) {
                     foreach ($v as $k1 => $v1) {
                         $_attach2[$k1][$k] = $v1;
                     }
@@ -166,12 +161,13 @@ class CompanyController extends Kyapi_Controller_Action
                 }
                 $_company->attachmentList = $_attachList;//附件上传
 
-                $_requestOb = $this->_requestObject;
-
-                $resultObject = $this->json->editAccountApi($_requestOb, $_company);
+                $resultObject = $this->json->editAccountApi($requestObject, $_company);
                 $existData = $this->objectToArray(json_decode($resultObject));
                 $existDatt = $existData['result'];
                 $this->view->e = $existDatt;
+
+                // 取回最新的公司认证状态并更新缓存
+                $this->refreshAccountCertificate();
 
                 $this->redirect("/company");
             } catch (Exception $e) {
@@ -236,10 +232,8 @@ class CompanyController extends Kyapi_Controller_Action
 
     // 企业认证 - view
     public function authviewAction() {
-        // $accountID = $this->_request->getParam('accountID');
-        $accountID = $this->view->accountID;
-        $_requestOb = $this->_requestObject;
-        $resultObject = $this->json->getAccountApi($_requestOb, $accountID);
+        $requestObject = $this->_requestObject;
+        $resultObject = $this->json->getAccountApi($requestObject);
 
         $account = json_decode($resultObject)->result;
         $this->view->account = json_decode($resultObject)->result;
@@ -346,8 +340,8 @@ class CompanyController extends Kyapi_Controller_Action
             //获取account数据集合
             $verifyAmount = $this->_request->getParam('authVerifyAmount');
 
-            $_requestOb = $this->_requestObject;
-            $resultObject = $this->json->doEntRealNameVerify($_requestOb, $verifyAmount);
+            $requestObject = $this->_requestObject;
+            $resultObject = $this->json->doEntRealNameVerify($requestObject, $verifyAmount);
 
             // 取回接口请求状态
             $apiStatus = json_decode($resultObject)->status;
@@ -358,6 +352,7 @@ class CompanyController extends Kyapi_Controller_Action
                 } else if (json_decode($resultObject)->result->data->entRealAuthStatus == -4) {
                     $msg = -4;
                 } else {
+                    // 企业认证成功
                     $msg = json_decode($resultObject)->result->msg;
                 }
 
@@ -365,6 +360,9 @@ class CompanyController extends Kyapi_Controller_Action
                 // 接口请求错误的情况下, 将接口错误返回给页面
                 $msg = $this->view->translate(trim(json_decode($resultObject)->errorCode));
             }
+
+            // 取回最新的公司认证状态并更新缓存
+            $this->refreshAccountCertificate();
         }
         echo $msg;
         exit;

@@ -77,7 +77,7 @@
                         <span id="e_acname" class="f12"></span><em class="w10 fr0 h20"></em>
                     </p>
                     <p>
-                        <label class="lagin_lab3 pr10"><!--公司地址：--><?php echo $this->translate('regaddress'); ?></label>
+                        <label class="lagin_lab3 pr10"><!--公司地址：--><?php echo $this->translate('regdAddress'); ?></label>
                         <select class="login_txt3" id="COUNTRY_CODE" name="regdcountryCode"
                                 style="margin-bottom:20px;width:652px;height: 32px;">
                             <?php echo $this->ShowDictionaryList($this->dic_Setting['COUNTRY_ISO_CODE'], $this->userLangCode, $this->dic_Setting['COUNTRY_ISO_CODE']); ?>
@@ -295,7 +295,7 @@
         if (va == "") {
             $("#e_regd").css('color', 'red');
             $("#regdAddress").css('border-color', 'red');
-            document.getElementById("e_regd").innerHTML = "<?php echo $this->translate('regaddress') . $this->translate('de_null');?>";
+            document.getElementById("e_regd").innerHTML = "<?php echo $this->translate('regdAddress') . $this->translate('de_null');?>";
             /*密码不能为空*/
             document.register_form.sub.disabled = true;
         } else {

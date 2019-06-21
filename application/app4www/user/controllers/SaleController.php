@@ -720,9 +720,8 @@ class SaleController extends Kyapi_Controller_Action
         $this->view->orderItem = $order['orderItemList'];
 
         // 取回当前公司的企业认证状态
-        $_accountID = $this->view->accountID;
-        $account = $this->json->getAccountApi($requestObject, $_accountID);
-        $this->view->hasIDCertificate = json_decode($account)->result->hasIDCertificate;
+        $account = $this->json->getAccountApi($requestObject);
+        $this->refreshAccountCertificateByResult(json_decode($account)->result->hasIDCertificate);
 
         // 取回当前登录用户的实名认证状态
         $contactID = $this->view->userID;
@@ -1144,9 +1143,8 @@ class SaleController extends Kyapi_Controller_Action
 
 
         // 取回当前公司的企业认证状态
-        $accountID = $this->view->accountID;
-        $account = $this->json->getAccountApi($requestObject, $accountID);
-        $this->view->hasIDCertificate = json_decode($account)->result->hasIDCertificate;
+        $account = $this->json->getAccountApi($requestObject);
+        $this->refreshAccountCertificateByResult(json_decode($account)->result->hasIDCertificate);
 
         // 取回当前登录用户的实名认证状态
         $contactID = $this->view->userID;
@@ -1535,9 +1533,8 @@ class SaleController extends Kyapi_Controller_Action
 
 
         // 取回当前公司的企业认证状态
-        $accountID = $this->view->accountID;
-        $account = $this->json->getAccountApi($requestObject, $accountID);
-        $this->view->hasIDCertificate = json_decode($account)->result->hasIDCertificate;
+        $account = $this->json->getAccountApi($requestObject);
+        $this->refreshAccountCertificateByResult(json_decode($account)->result->hasIDCertificate);
 
         // 取回当前登录用户的实名认证状态
         $contactID = $this->view->userID;
@@ -1620,8 +1617,8 @@ class SaleController extends Kyapi_Controller_Action
     // 开票资料 - view
     public function deliverbillinginfoAction() {
         $deliveryID = $this->_request->getParam('deliveryID');
-        $_requestOb = $this->_requestObject;
-        $resultObject = $this->json->getDeliveryView($_requestOb, $deliveryID);
+        $requestObject = $this->_requestObject;
+        $resultObject = $this->json->getDeliveryView($requestObject, $deliveryID);
 
         $delivery = json_decode($resultObject)->result;
         $this->view->deliveryID = $deliveryID;
@@ -1629,9 +1626,8 @@ class SaleController extends Kyapi_Controller_Action
         $this->view->deliverySupplierList = $delivery->deliverySupplierList;
 
         // 取回当前公司的企业认证状态
-        $_accountID = $this->view->accountID;
-        $account = $this->json->getAccountApi($_requestOb, $_accountID);
-        $this->view->hasIDCertificate = json_decode($account)->result->hasIDCertificate;
+        $account = $this->json->getAccountApi($requestObject);
+        $this->refreshAccountCertificateByResult(json_decode($account)->result->hasIDCertificate);
 
         if (defined('SEED_WWW_TPL')) {
             if ($delivery->needTransfer && $delivery->transferRequestDate == null) {
@@ -1639,7 +1635,7 @@ class SaleController extends Kyapi_Controller_Action
                 echo $content;
                 exit;
             } else {
-                $billingInfoResultObject = $this->json->getBillingInfoApi($_requestOb, $deliveryID);
+                $billingInfoResultObject = $this->json->getBillingInfoApi($requestObject, $deliveryID);
                 $billingInfo = json_decode($billingInfoResultObject)->result;
                 $this->view->billingInfo = $billingInfo;
                 $this->view->deliverySupplierList = $billingInfo->deliverySupplierList;

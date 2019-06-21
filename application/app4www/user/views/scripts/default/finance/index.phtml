@@ -161,7 +161,11 @@
                     $(this).addClass("btn-warning");
 
                     $("#" + dataType).val($(this).attr("data-value"));
-                    refreshResultList();
+
+                    // 清空之前的结果
+                    $("#flowResultList").html('');
+                    $("#offset").val('0');
+                    refreshFlowResultList();
                 });
 
                 // refreshResultList();
@@ -310,13 +314,15 @@
     function refreshFlowResultList() {
 	    var $limit = $("#limit"),
             $offset = $("#offset"),
-            noMore = '<?php echo $this->translate("noMore"); ?>';
+            noMore = '<?php echo $this->translate("noMore"); ?>',
+            loadMore = '<?php echo $this->translate("loadMore"); ?>';
         layui.use('flow', function(){
             var $ = layui.jquery; //不用额外加载jQuery，flow模块本身是有依赖jQuery的，直接用即可。
             var flow = layui.flow;
             flow.load({
                 elem: '#flowResultList' //指定列表容器
                 ,end: noMore    // 用于显示末页内容
+                ,loadMore: '<cite>' + loadMore + '</cite>'  // 加载更多
                 ,mb: 250    // 与底部的临界距离，即当滚动条与底部产生该距离时，触发加载。
                 ,done: function(page, next){ //到达临界点（默认滚动触发），触发下一页
                     var lis = [];

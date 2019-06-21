@@ -1,44 +1,44 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: lenovo
  * Date: 2016/5/31
  * Time: 16:56
  */
-class queryPartner
-{
+class queryPartner {
     public $partnerStatus;
 }
-class queryProduct
-{
+
+class queryProduct {
     public $productStatus;
 }
-class queryProductPur
-{
+
+class queryProductPur {
     public $productStatus;
     public $supplierID;
 
 }
-class queryAccount
-{
+
+class queryAccount {
     //联系人列表查询条件
-   // public $accountID;
+    // public $accountID;
     public $contactStatus;
 }
-class Attachment
-{
+
+class Attachment {
     public $name;
     public $size;
     public $attachType;
     public $bizType;
     public $attachID;
 }
-class querySorts
-{
+
+class querySorts {
     public $createTime;
 }
 
-class Kyapi_Controller_Action extends Zend_Controller_Action{
+class Kyapi_Controller_Action extends Zend_Controller_Action {
     public $lang;
     public $userID;
     public $sessionID;
@@ -94,13 +94,13 @@ class Kyapi_Controller_Action extends Zend_Controller_Action{
         $languagesPath = '/languages/' . $lan . '.php';
         $locale = $this->getRequest()->getParam('locale');
         //语言选择模块
-//        if($locale=='zh-CN'){
-//            $datapath='/languages/zh-CN.php';
-//        }elseif($locale=='en-US'){
-//            $datapath='/languages/en-US.php';
-//        }else{
-//            $datapath='/languages/zh-CN.php';
-//        }
+        //        if($locale=='zh-CN'){
+        //            $datapath='/languages/zh-CN.php';
+        //        }elseif($locale=='en-US'){
+        //            $datapath='/languages/en-US.php';
+        //        }else{
+        //            $datapath='/languages/zh-CN.php';
+        //        }
         //加载注册语言模块
         try {
             $adapter = new Zend_Translate('array', (SEED_WWW_ROOT) . $languagesPath, $locale);
@@ -172,9 +172,9 @@ class Kyapi_Controller_Action extends Zend_Controller_Action{
      * 检查系统完整性
      * @throws Exception
      */
-    protected function checkSystem()
-    {
-        if(!defined('CURRENT_MODULE_NAME') || !defined('CURRENT_MODULE_TYPE'))throw new Exception("CURRENT_MODULE_NAME or CURRENT_MODULE_TYPE not defined");
+    protected function checkSystem() {
+        if (!defined('CURRENT_MODULE_NAME') || !defined('CURRENT_MODULE_TYPE'))
+            throw new Exception("CURRENT_MODULE_NAME or CURRENT_MODULE_TYPE not defined");
     }
 
     /**
@@ -182,8 +182,9 @@ class Kyapi_Controller_Action extends Zend_Controller_Action{
      * @throws Exception
      */
     protected function initUser() {
-        // print_r($_SESSION['rev_session']);
+        // print_r($_SESSION['rev_session']['hasIDCertificate']);
         if (!empty($_SESSION['rev_session'])) {
+
             if (!empty($_SESSION['rev_session']['contactPreference']['langCode'])) {
                 $this->view->userLangCode = $userLangCode = $_SESSION['rev_session']['contactPreference']['langCode'];
             }
@@ -201,6 +202,7 @@ class Kyapi_Controller_Action extends Zend_Controller_Action{
                 $this->view->isPersonAccount = $isPersonAccount = $_SESSION['rev_session']['isPersonAccount'];
                 $this->view->ecommloginname = $ecommloginname = $_SESSION['rev_session']['userLoginName'];
                 $this->view->mobilePhone = $mobilePhone = $_SESSION['rev_session']['mobilePhone'];
+                $this->view->hasIDCertificate = $hasIDCertificate = $_SESSION['rev_session']['hasIDCertificate'];
                 $this->view->userRole = $userRole = $_SESSION['rev_session']['ecommrole'];
                 $this->view->submenus = $_SESSION['rev_session']['menus'];//会员中心左侧菜单
                 $submenus = $_SESSION['rev_session']['role_nav'];
@@ -272,42 +274,41 @@ class Kyapi_Controller_Action extends Zend_Controller_Action{
      * 运行公用的一些代码
      * 注意：如果在Common里添加新文件务必把Autoload.php删掉
      */
-    protected function initCommon(){
-        $common_dir = SEED_LIB_ROOT.DIRECTORY_SEPARATOR.'Common';
-        if(is_dir($common_dir)){
-            $Autoload = $common_dir.DIRECTORY_SEPARATOR.'Autoload.php';
-            if(file_exists($Autoload)){
+    protected function initCommon() {
+        $common_dir = SEED_LIB_ROOT . DIRECTORY_SEPARATOR . 'Common';
+        if (is_dir($common_dir)) {
+            $Autoload = $common_dir . DIRECTORY_SEPARATOR . 'Autoload.php';
+            if (file_exists($Autoload)) {
                 $load_files = include_once $Autoload;
-                foreach($load_files as $load_file){
-                    include_once SEED_LIB_ROOT.$load_file;
+                foreach ($load_files as $load_file) {
+                    include_once SEED_LIB_ROOT . $load_file;
                 }
-            }else{//没有Autoload.php文件则生成
-                $files = Seed_Folder::read($common_dir,1);
+            } else {//没有Autoload.php文件则生成
+                $files = Seed_Folder::read($common_dir, 1);
                 $include_files = array();
-                foreach($files as $file){
-                    if($file != 'Autoload.php' && substr($file,strrpos($file,'.')) == '.php'){
-                        $include_files[$file] = $common_dir.DIRECTORY_SEPARATOR.$file;
+                foreach ($files as $file) {
+                    if ($file != 'Autoload.php' && substr($file, strrpos($file, '.')) == '.php') {
+                        $include_files[$file] = $common_dir . DIRECTORY_SEPARATOR . $file;
                     }
                 }
-                if($include_files){
+                if ($include_files) {
                     $data_files = array();
                     natsort($include_files);//自然排序
-                    foreach ($include_files as $key=>$include_file) {
+                    foreach ($include_files as $key => $include_file) {
                         include_once $include_file;
                         $data_files[$key] = str_replace(SEED_LIB_ROOT, '', $include_file);
                     }
-                    if($fp = @fopen($Autoload,"w")){//生成文件
-                        flock($fp,LOCK_EX);
-                        fwrite($fp, "<?php\r\nreturn ".var_export($data_files, true).';');
-                        flock($fp,LOCK_UN);
+                    if ($fp = @fopen($Autoload, "w")) {//生成文件
+                        flock($fp, LOCK_EX);
+                        fwrite($fp, "<?php\r\nreturn " . var_export($data_files, true) . ';');
+                        flock($fp, LOCK_UN);
                         fclose($fp);
-                        chmod($Autoload,0666);
+                        chmod($Autoload, 0666);
                     }
                 }
             }
         }
     }
-
 
     protected function initSetting() {
         // 获取系统设置
@@ -620,8 +621,9 @@ class Kyapi_Controller_Action extends Zend_Controller_Action{
      */
     protected function hasUserAction($action_mark, $user_id) {
         $userActionM = new Seed_Model_UserAction('system');
-        $userAction = $userActionM->fetchRow(array('user_id'     => $user_id,
-                                                   'action_mark' => $action_mark
+        $userAction = $userActionM->fetchRow(array(
+            'user_id'     => $user_id,
+            'action_mark' => $action_mark
         ));
         if ($userAction['action_id'] > 0)
             return true;
@@ -643,6 +645,158 @@ class Kyapi_Controller_Action extends Zend_Controller_Action{
         if ($userAction_id)
             return true;
         return false;
+    }
+
+    /**
+     * 更新缓存和redis
+     * @param $resultObject
+     */
+    protected function refreshUserSessionAndRedis($resultObject) {
+        $userDetail = array();
+        // 用户信息
+        $userDetail['user_id'] = $resultObject['contactID'];
+        $userDetail['user_name'] = $resultObject['name'];
+        $userDetail['ecommloginname'] = $resultObject['ecommloginname'];        // 登陆名
+        $userDetail['mobilePhone'] = $resultObject['mobilePhone'];              // 手机号码
+        $userDetail['isPersonAccount'] = $resultObject['isPersonAccount'];      // 是否个人用户
+        $userDetail['ecommrole'] = $resultObject['ecommrole'];      // 用户权限
+
+        // 公司信息
+        $userDetail['accountID'] = $resultObject['account']['accountID'];       // 公司ID
+        $userDetail['accountName'] = $resultObject['account']['accountName'];   // 公司名称
+        $userDetail['accountStatus'] = $resultObject['account']['accountStatus'];       // 公司状态
+        $userDetail['accountType'] = $resultObject['account']['accountType'];   // 公司类型
+        $userDetail['crnCode'] = $resultObject['account']['crnCode'];           // 公司默认货币
+        $userDetail['regdCountryCode'] = $resultObject['account']['regdCountryCode'];   // 公司国籍
+        $userDetail['hasIDCertificate'] = $resultObject['account']['hasIDCertificate']; // 企业证书
+
+        // 个性化
+        $contactPreference = $resultObject['contactPreference'];
+        $userDetail['contactPreference']['contactID'] = $contactPreference['contactID'];
+        $userDetail['contactPreference']['timeZone'] = $contactPreference['timeZone'];
+        $userDetail['contactPreference']['langCode'] = $contactPreference['langCode'];
+        $userDetail['contactPreference']['firstLoginTime'] = $contactPreference['firstLoginTime'];
+        $userDetail['contactPreference']['lastLoginTime'] = $contactPreference['lastLoginTime'];
+        $userDetail['contactPreference']['lastLoginIP'] = $contactPreference['lastLoginIP'];
+        $userDetail['contactPreference']['regdCountryCode'] = $resultObject['account']['regdCountryCode'];
+        $userDetail['contactPreference']['regdAddress'] = $resultObject['account']['regdAddress'];
+        // 个性化对象为空时, 赋予默认值
+        if (empty($userDetail['contactPreference'])) {
+            $userDetail['contactPreference']['contactID'] = $resultObject['contactID'];
+            $userDetail['contactPreference']['timeZone'] = "";
+            $userDetail['contactPreference']['themeCode'] = "";
+            $userDetail['contactPreference']['langCode'] = "zh_CN";
+            $userDetail['contactPreference']['firstLoginTime'] = "";
+            $userDetail['contactPreference']['lastLoginTime'] = date('Y-m-d', time());
+            $userDetail['contactPreference']['lastLoginIP'] = $_SERVER['REMOTE_ADDR'];
+            $userDetail['contactPreference']['regdCountryCode'] = 'CN';
+            $userDetail['contactPreference']['regdAddress'] = '';
+        }
+
+        // 将权限菜单更新入redis缓存 start
+        $menuM = new Seed_Model_Menu('system');
+        $rows = array();
+        $roleArray = explode(",", $resultObject['ecommrole']);
+        try {
+            foreach ($roleArray as $k => $v) {
+                //#code 根据角色查询菜单 排序
+                $rows[$k] = $menuM->fetchMenuList(null, array('role_name' => $v), array(
+                    'order_by ASC',
+                    't1.menu_id ASC'
+                ));
+            }
+        } catch (Exception $e) {
+
+        }
+
+        $rowsArr = array();
+        foreach ($rows as $k1 => $v1) {
+            foreach ($v1 as $k2 => $v2) {
+                if ($v2['menu_id'] != "737") {
+                    $rowsArr[$v2['menu_id']] = $v2;
+                }
+            }
+        }
+
+        $menus = array();
+        $nav = array();
+        foreach ($rowsArr as $k3 => $v3) {
+            if ($v3['parent'] == '737') {
+                $menus[$v3['menu_id']]['menu_id'] = $v3['menu_id'];
+                $menus[$v3['menu_id']]['menu_lang'] = $v3['menu_lang'];
+                $menus[$v3['menu_id']]['menu_name'] = $v3['menu_name'];
+                $menus[$v3['menu_id']]['link_url'] = $v3['link_url'];
+                $menus[$v3['menu_id']]['parent'] = $v3['parent'];
+                $menus[$v3['menu_id']]['order_by'] = $v3['order_by'];
+            } else {
+                $nav[$v3['parent']][$v3['order_by']] = $v3;
+            }
+        }
+        foreach ($menus as $k4 => $v4) {
+            if (empty($v4['menu_id'])) {
+                unset($menus[$k4]);
+            } else {
+                $menus[$v4['order_by']] = $v4;
+                if (is_array($nav[$v4['menu_id']])) {
+                    $menus[$v4['order_by']]['nav'] = $nav[$v4['menu_id']];
+                }
+                unset($menus[$k4]);
+            }
+        }
+        $_Menus = Kyapi_Common::multi_array_sort($menus, 'order_by');
+        // 将权限菜单更新入redis缓存 END
+
+        // 配置session
+        $_SESSION['rev_session'] = array(
+            'userID'            => $userDetail['user_id'],
+            'accountID'         => $userDetail['accountID'],
+            'accountName'       => $userDetail['accountName'],
+            'accountStatus'     => $userDetail['accountStatus'],
+            'accountType'       => $userDetail['accountType'],
+            'crnCode'           => $userDetail['crnCode'],
+            'regdCountryCode'   => $userDetail['regdCountryCode'],
+            'userName'          => $userDetail['user_name'],
+            'mobilePhone'       => $userDetail['mobilePhone'],
+            'userLoginName'     => $userDetail['ecommloginname'],
+            'isPersonAccount'   => $userDetail['isPersonAccount'],
+            'hasIDCertificate'  => $userDetail['hasIDCertificate'],
+            // 企业证书
+            'contactPreference' => $userDetail['contactPreference'],
+            'menus'             => $_Menus,
+            'role_nav'          => $rowsArr,
+            'ecommrole'         => $userDetail['ecommrole']
+        );
+
+        // redis写入对应键值对
+        $config = array();
+        $config['server'] = $this->view->seed_Setting['KyUrlRedis'];
+        $config['port'] = $this->view->seed_Setting['KyUrlRedisPort'];
+        $redis = new Kyapi_Model_redisInit();
+        $redis->connect($config);
+
+        // 有效期1个小时,
+        $redis->set('PHPREDIS_ACTIVE_USERS:' . $userDetail['user_id'], 'PHPREDIS_SESSION:' . session_id(), 3600);
+        $redis->set('PHPREDIS_ACTIVE_SESSION:' . session_id(), $userDetail['user_id'], 3600);
+    }
+
+    /**
+     * 取回最新的公司认证状态并更新缓存
+     */
+    protected function refreshAccountCertificate() {
+        $requestObject = $this->_requestObject;
+        $accountResultObject = $this->json->getAccountApi($requestObject);
+        $account = json_decode($accountResultObject)->result;
+        $_SESSION['rev_session']['hasIDCertificate'] = $account->hasIDCertificate;
+        $this->view->hasIDCertificate = $_SESSION['rev_session']['hasIDCertificate'];
+    }
+
+    /**
+     * 更新公司认证状态
+     * @param $hasIDCertificate
+     */
+    protected function refreshAccountCertificateByResult($hasIDCertificate) {
+        $_SESSION['rev_session']['hasIDCertificate'] = $hasIDCertificate;
+        $this->view->hasIDCertificate = $_SESSION['rev_session']['hasIDCertificate'];
     }
 }
 

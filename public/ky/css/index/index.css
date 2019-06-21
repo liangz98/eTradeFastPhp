@@ -109,7 +109,7 @@ div.index-info .col-md-3 {
     height: 100%;
     width: var(--heading-select-change-width);
     top: 0;
-    border-top: 2px solid #d9534f;
+    border-top: 2px solid var(--brand-danger);
     position:absolute;
     content: "";
 }

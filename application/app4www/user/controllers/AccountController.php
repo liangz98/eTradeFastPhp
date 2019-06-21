@@ -137,7 +137,7 @@ class AccountController extends Kyapi_Controller_Action
 
         // 取加公司签署人信息
         $accountResultObject = $this->json->getAccountApi($requestObject);
-        $this->view->hasIDCertificate = json_decode($accountResultObject)->result->hasIDCertificate;
+        $this->refreshAccountCertificateByResult(json_decode($accountResultObject)->result->hasIDCertificate);
         $this->view->agentName = json_decode(json_decode($accountResultObject)->result->idcertificateinfo)->agentName;
         $this->view->agentIdNo = json_decode(json_decode($accountResultObject)->result->idcertificateinfo)->agentIdNo;
 
@@ -215,11 +215,10 @@ class AccountController extends Kyapi_Controller_Action
                 $this->redirect("/account/index?resultMsg=".$resultMsg);
             }
         } else {
-            $accountID = $this->view->accountID;
             $requestObject = $this->_requestObject;
 
             // 请求Hessian服务端方法
-            $resultObject = $this->json->getAccountApi($requestObject, $accountID);
+            $resultObject = $this->json->getAccountApi($requestObject);
             $account = json_decode($resultObject)->result;
             $this->view->account = $account;
         }

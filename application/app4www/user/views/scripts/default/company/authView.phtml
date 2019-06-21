@@ -24,7 +24,7 @@
                     <div class="panel-heading"><?php echo $this->translate('companyMNG'); ?></div>
                     <div class="list-group">
                         <a href="/user/company" class="list-group-item"><?php echo $this->translate('company_info'); ?></a>
-                        <a href="/user/company/authview" class="list-group-item"><?php echo $this->translate('companyAuth'); ?></a>
+                        <a href="/user/company/authview" class="list-group-item"><?php if (!$this->hasIDCertificate): ?><i class="makerDot"></i><?php endif;?><?php echo $this->translate('companyAuth'); ?></a>
                         <a href="/user/account" class="list-group-item"><?php echo $this->translate('personNO'); ?></a>
                         <a href="/user/bank" class="list-group-item"><?php echo $this->translate('bankNO'); ?></a>
                     </div>
@@ -33,8 +33,91 @@
 
             <div class="col-md-9 company-main">
                 <div class="panel panel-default">
+                    <div class="modal-header <?php if (json_decode($this->account->hasIDCertificate) == 1) echo 'et-auth-bg-ok'; else echo 'et-auth-bg-warning';?>">
+                        <h4 class="modal-title" ><?php echo $this->translate('企业签署证书'); ?></h4>
+                        <?php if (json_decode($this->account->hasIDCertificate) != 1): ?>
+                            <p><?php echo $this->translate('证书异常，请查核签署人信息是否正确！'); ?></p>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="alert alert-danger hidden" role="alert">
+                            <strong>Warning!</strong> <p></p>
+                        </div>
+                        <div class="row">
+                            <form class="form-horizontal layui-form">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"><?php echo $this->translate('et_auth_name'); ?></label>
+                                    <div class="col-sm-9">
+                                        <p class="form-control-static"><?php echo json_decode($this->account->idcertificateinfo)->name; ?></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"><?php echo $this->translate('et_auth_code'); ?></label>
+                                    <div class="col-sm-9">
+                                        <p class="form-control-static"><?php echo json_decode($this->account->idcertificateinfo)->certificate; ?></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"><?php echo $this->translate('et_auth_mg_name'); ?></label>
+                                    <div class="col-sm-9">
+                                        <p class="form-control-static"><?php echo json_decode($this->account->idcertificateinfo)->legalName; ?></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"><?php echo $this->translate('et_auth_mg_id'); ?></label>
+                                    <div class="col-sm-9">
+                                        <p class="form-control-static"><?php echo json_decode($this->account->idcertificateinfo)->legalIdNo; ?></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"><?php echo $this->translate('email'); ?></label>
+                                    <div class="col-sm-9">
+                                        <p class="form-control-static"><?php echo json_decode($this->account->idcertificateinfo)->email; ?></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"><?php echo $this->translate('regdAddress'); ?></label>
+                                    <div class="col-sm-9">
+                                        <p class="form-control-static"><?php echo json_decode($this->account->idcertificateinfo)->address; ?></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"><?php echo $this->translate('signature'); ?></label>
+                                    <div class="col-sm-9">
+                                        <p class="form-control-static"><?php echo json_decode($this->account->idcertificateinfo)->agentName; ?></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"><?php echo $this->translate('ID_card'); ?></label>
+                                    <div class="col-sm-9">
+                                        <p class="form-control-static">
+                                            <?php echo json_decode($this->account->idcertificateinfo)->agentIdNo; ?>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"><?php echo $this->translate('mobile'); ?></label>
+                                    <div class="col-sm-9">
+                                        <p class="form-control-static"><?php echo json_decode($this->account->idcertificateinfo)->mobile; ?></p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-success">
                     <div class="modal-header et-auth-bg-ok">
-                        <h4 class="modal-title" ><?php echo $this->translate('companySignh32'); ?></h4>
+                        <h4 class="modal-title" ><?php echo $this->translate('企业认证信息'); ?></h4>
                         <p><?php echo $this->translate('companySignp03'); ?></p>
                     </div>
 

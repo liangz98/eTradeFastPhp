@@ -161,7 +161,7 @@ return array(
     'loginPSD'                 => 'Password',
     'companyFU'                => 'Full Enterprise Name',
     'regd_company_name'        => '营业执照公司名称',
-    'regaddress'               => 'Enterprise Address',
+    'regdAddress'              => 'Enterprise Address',
     'companyEM'                => 'Enterprise Email',
     'address'                  => 'Address',
     'contacts'                 => 'Contacts',
@@ -1279,5 +1279,6 @@ return array(
     'attachmentSigned'      => 'Signed',
 
     // 金融列表, 流加载底部文字
-    'noMore'    => 'No more'
+    'noMore'    => 'No more',
+    'loadMore'  => 'Load more'
 );
