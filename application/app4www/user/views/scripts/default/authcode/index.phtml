@@ -33,17 +33,17 @@
                     </p>
                     <p>
                         <label class="lagin_lab3 pr10"><!--用户名：--><?php echo $this->translate('elogname');?></label>
-                        <input class="login_txt3 must"  name="ecommloginname" id="ecommloginname" onblur="docheckName(this.value)" value="<?php echo $this->account['email']?>" type="text" placeholder="<?php echo $this->translate('is_emlog');?>" /><!--例：zhangsan@etradfast.com-->
+                        <input class="login_txt3 must"  name="ecommloginname" id="ecommloginname" onblur="docheckName(this.value)" value="<?php echo $this->account['email']?>" type="text" placeholder="<?php echo $this->translate('ps_email');?>" /><!--例：zhangsan@etradfast.com-->
                         <span id="e_login" class="f12"></span><em class="w10 fr0 h20"></em>
                     </p>
                     <p>
                         <label class="lagin_lab3 pr10"><!--密码：--><?php echo $this->translate('password');?></label>
-                        <input class="login_txt3 must"  name="ecommpasswsd" id="ecommpasswsd" onblur="checkpwd(this.value)" value="" placeholder="<?php echo $this->translate('is_passwd');?>" type="password" /><!--请提供8-30位数字、大小写字母-->
+                        <input class="login_txt3 must"  name="ecommpasswsd" id="ecommpasswsd" onblur="checkpwd(this.value)" value="" placeholder="<?php echo $this->translate('is_password');?>" type="password" /><!--请提供8-30位数字、大小写字母-->
                         <span id="e_pwd" class="f12"></span><em class="w10 fr0 h20"></em>
                     </p>
                     <p>
                         <label class="lagin_lab3 pr10"><!--确认密码：--><?php echo $this->translate('confirmPSD');?></label>
-                        <input class="login_txt3 must"  name="ecommpasswsd" id="ecommrpasswsd"  onblur="checkRpwd(this.value)" placeholder="<?php echo $this->translate('is_rpasswd');?>" value="" type="password"  /><!--请再次输入密码-->
+                        <input class="login_txt3 must"  name="ecommpasswsd" id="ecommrpasswsd"  onblur="checkRpwd(this.value)" placeholder="<?php echo $this->translate('is_re_password');?>" value="" type="password"  /><!--请再次输入密码-->
                         <span id="e_rpwd" class="f12"></span><em class="w10 fr0 h20"></em>
                     </p>
                     <p>

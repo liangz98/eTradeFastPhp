@@ -52,14 +52,14 @@
 				<div class="form-group">
 					<label for="ecommpasswsd" class="col-sm-3 control-label"><?php echo $this->translate('password'); ?></label>
 					<div class="col-sm-9">
-						<input type="password" class="form-control" name="ecommpasswsd" id="ecommpasswsd" required placeholder="<?php echo $this->translate('password').'('.$this->translate('is_passwd').')'; ?>">
+						<input type="password" class="form-control" name="ecommpasswsd" id="ecommpasswsd" required placeholder="<?php echo $this->translate('password').'('.$this->translate('is_password').')'; ?>">
 					</div>
 				</div>
 
 				<div class="form-group">
 					<label for="checkecommrpasswsd" class="col-sm-3 control-label"><?php echo $this->translate('confirmPSD'); ?></label>
 					<div class="col-sm-9">
-						<input type="password" class="form-control" name="checkecommrpasswsd" id="checkecommrpasswsd" required placeholder="<?php echo $this->translate('is_rpasswd'); ?>">
+						<input type="password" class="form-control" name="checkecommrpasswsd" id="checkecommrpasswsd" required placeholder="<?php echo $this->translate('is_re_password'); ?>">
 					</div>
 				</div>
 
@@ -86,14 +86,14 @@
 				<div class="form-group">
 					<label for="regdAddress" class="col-sm-3 control-label"></label>
 					<div class="col-sm-9">
-						<input type="text" class="form-control" name="regdAddress" id="regdAddress" required placeholder="<?php echo $this->translate('is_regadress'); ?>">
+						<input type="text" class="form-control" name="regdAddress" id="regdAddress" required placeholder="<?php echo $this->translate('is_regd_address'); ?>">
 					</div>
 				</div>
 
 				<div class="form-group">
 					<label for="accountName" class="col-sm-3 control-label"><?php echo $this->translate('regd_company_name'); ?></label>
 					<div class="col-sm-9">
-						<input type="text" class="form-control" name="accountName" id="accountName" required placeholder="<?php echo $this->translate('is_comname'); ?>">
+						<input type="text" class="form-control" name="accountName" id="accountName" required placeholder="<?php echo $this->translate('is_company_name'); ?>">
 					</div>
 				</div>
 
@@ -148,7 +148,7 @@
 				ecommpasswsd : {
 					required: "<?php echo $this->translate('de_null'); ?>",
 					minlength: "<?php echo $this->translate('mat_psd');?>",
-					maxlength: "<?php echo $this->translate('is_passwd');?>"
+					maxlength: "<?php echo $this->translate('is_password');?>"
 				},
 				serviceContract: {
 					required: "<?php echo $this->translate('check_service_contract'); ?>"
@@ -228,7 +228,7 @@
 	jQuery.validator.addMethod("isValidPassword", function(value, element) {
 		var regExp=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,30}$/;
 		return this.optional(element) || (regExp.test(value));
-	}, "<?php echo $this->translate('is_passwd');?>");
+	}, "<?php echo $this->translate('is_password');?>");
 
 	// 验证确认密码
 	jQuery.validator.addMethod("reCheckPassword", function(value, element) {

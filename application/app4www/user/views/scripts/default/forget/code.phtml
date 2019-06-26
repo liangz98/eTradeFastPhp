@@ -51,14 +51,14 @@
                 <div class="form-group phone">
                     <label for="ecommpasswsd" class="col-sm-3 control-label"><?php echo $this->translate('newPSD'); ?></label>
                     <div class="col-sm-7">
-                        <input type="password" class="form-control" name="ecommpasswsd" id="ecommpasswsd" required placeholder="<?php echo $this->translate('is_passwd'); ?>" >
+                        <input type="password" class="form-control" name="ecommpasswsd" id="ecommpasswsd" required placeholder="<?php echo $this->translate('is_password'); ?>" >
                     </div>
                 </div>
 
 				<div class="form-group">
 					<label for="checkECommPassword" class="col-sm-3 control-label"><?php echo $this->translate('confirmPSD'); ?></label>
 					<div class="col-sm-7">
-						<input type="password" class="form-control" name="checkECommPassword" id="checkECommPassword" required placeholder="<?php echo $this->translate('is_rpasswd'); ?>" >
+						<input type="password" class="form-control" name="checkECommPassword" id="checkECommPassword" required placeholder="<?php echo $this->translate('is_re_password'); ?>" >
 					</div>
 				</div>
 
@@ -95,7 +95,7 @@
 				ecommpasswsd : {
 					required: "<?php echo $this->translate('de_null'); ?>",
 					minlength: "<?php echo $this->translate('mat_psd');?>",
-					maxlength: "<?php echo $this->translate('is_passwd');?>"
+					maxlength: "<?php echo $this->translate('is_password');?>"
 				},
 				serviceContract: {
 					required: "<?php echo $this->translate('check_service_contract'); ?>"
@@ -203,7 +203,7 @@
 		// var regExp=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,30}$/;
         var regExp = /^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$/;
 		return this.optional(element) || (regExp.test(value));
-	}, "<?php echo $this->translate('is_passwd');?>");
+	}, "<?php echo $this->translate('is_password');?>");
 
 	// 验证确认密码
 	jQuery.validator.addMethod("reCheckPassword", function(value, element) {

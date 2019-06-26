@@ -64,21 +64,21 @@
 				<div class="form-group">
 					<label for="ecommloginname" class="col-sm-3 control-label"><?php echo $this->translate('elogname'); ?></label>
 					<div class="col-sm-7">
-						<input type="email" class="form-control" name="ecommloginname" id="ecommloginname" required placeholder="<?php echo $this->translate('is_emlog'); ?>" value="<?php echo $this->account['email']?>">
+						<input type="email" class="form-control" name="ecommloginname" id="ecommloginname" required placeholder="<?php echo $this->translate('ps_email'); ?>" value="<?php echo $this->account['email']?>">
 					</div>
 				</div>
 
 				<div class="form-group">
 					<label for="ecommpasswsd" class="col-sm-3 control-label"><?php echo $this->translate('password'); ?></label>
 					<div class="col-sm-7">
-						<input type="password" class="form-control" name="ecommpasswsd" id="ecommpasswsd" required placeholder="<?php echo $this->translate('is_passwd'); ?>">
+						<input type="password" class="form-control" name="ecommpasswsd" id="ecommpasswsd" required placeholder="<?php echo $this->translate('is_password'); ?>">
 					</div>
 				</div>
 
 				<div class="form-group">
 					<label for="checkecommrpasswsd" class="col-sm-3 control-label"><?php echo $this->translate('confirmPSD'); ?></label>
 					<div class="col-sm-7">
-						<input type="password" class="form-control" name="checkecommrpasswsd" id="checkecommrpasswsd" required placeholder="<?php echo $this->translate('is_rpasswd'); ?>">
+						<input type="password" class="form-control" name="checkecommrpasswsd" id="checkecommrpasswsd" required placeholder="<?php echo $this->translate('is_re_password'); ?>">
 					</div>
 				</div>
 
@@ -154,7 +154,7 @@
 				ecommpasswsd : {
 					required: "<?php echo $this->translate('de_null'); ?>",
 					minlength: "<?php echo $this->translate('mat_psd');?>",
-					maxlength: "<?php echo $this->translate('is_passwd');?>"
+					maxlength: "<?php echo $this->translate('is_password');?>"
 				},
 				serviceContract: {
 					required: "<?php echo $this->translate('check_service_contract'); ?>"
@@ -262,7 +262,7 @@
 		// var regExp=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,30}$/;
         var regExp = /^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$/;
 		return this.optional(element) || (regExp.test(value));
-	}, "<?php echo $this->translate('is_passwd');?>");
+	}, "<?php echo $this->translate('is_password');?>");
 
 	// 验证确认密码
 	jQuery.validator.addMethod("reCheckPassword", function(value, element) {

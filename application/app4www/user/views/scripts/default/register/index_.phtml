@@ -39,7 +39,7 @@
                         <label class="lagin_lab3 pr10"><!--用户名：--><?php echo $this->translate('elogname'); ?></label>
                         <input class="login_txt3 must" name="ecommloginname" id="ecommloginname"
                                onblur="docheckName(this.value)" value="" type="text"
-                               placeholder="<?php echo $this->translate('is_emlog'); ?>"/>
+                               placeholder="<?php echo $this->translate('ps_email'); ?>"/>
                         <!--例：zhangsan@etradfast.com-->
                         <span id="e_login" class="f12"></span><em class="w10 fr0 h20"></em>
                     </p>
@@ -47,7 +47,7 @@
                         <label class="lagin_lab3 pr10"><!--密码：--><?php echo $this->translate('password'); ?></label>
                         <input class="login_txt3 must" name="ecommpasswsd" id="ecommpasswsd"
                                onblur="checkpwd(this.value)" value=""
-                               placeholder="<?php echo $this->translate('is_passwd'); ?>" type="password"/>
+                               placeholder="<?php echo $this->translate('is_password'); ?>" type="password"/>
                         <!--请提供8-30位数字、大小写字母-->
                         <span id="e_pwd" class="f12"></span><em class="w10 fr0 h20"></em>
                     </p>
@@ -55,7 +55,7 @@
                         <label class="lagin_lab3 pr10"><!--确认密码：--><?php echo $this->translate('confirmPSD'); ?></label>
                         <input class="login_txt3 must" name="ecommpasswsd" id="ecommrpasswsd"
                                onblur="checkRpwd(this.value)"
-                               placeholder="<?php echo $this->translate('is_rpasswd'); ?>" value="" type="password"/>
+                               placeholder="<?php echo $this->translate('is_re_password'); ?>" value="" type="password"/>
                         <!--请再次输入密码-->
                         <span id="e_rpwd" class="f12"></span><em class="w10 fr0 h20"></em>
                     </p>
@@ -73,7 +73,7 @@
                         <label class="lagin_lab3 pr10"><!--公司名称：--><?php echo $this->translate('companyFU'); ?></label>
                         <input class="login_txt3 must" name="accountName" id="accountName"
                                onblur="checkacname(this.value)" value="" type="text"
-                               placeholder="<?php echo $this->translate('is_comname'); ?>"/><!--请填写真实的公司名称-->
+                               placeholder="<?php echo $this->translate('is_company_name'); ?>"/><!--请填写真实的公司名称-->
                         <span id="e_acname" class="f12"></span><em class="w10 fr0 h20"></em>
                     </p>
                     <p>
@@ -84,7 +84,7 @@
                         </select>
                         <input class="login_txt3 must" style="margin-left:120px;" name="regdAddress"
                                onblur="checkregd(this.value)" id="regdAddress" value="" type="text"
-                               placeholder="<?php echo $this->translate('is_regadress'); ?>"/><!--该内容同时作为公司的联系地址-->
+                               placeholder="<?php echo $this->translate('is_regd_address'); ?>"/><!--该内容同时作为公司的联系地址-->
                         <span id="e_regd" class="f12"></span><em class="w10 fr0 h20"></em>
                     </p>
                     <p>

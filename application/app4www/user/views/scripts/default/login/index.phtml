@@ -170,7 +170,7 @@
 				ecommpasswsd : {
 					required: "<?php echo $this->translate('de_null'); ?>",
 					minlength: "<?php echo $this->translate('mat_psd');?>",
-					maxlength: "<?php echo $this->translate('is_passwd');?>"
+					maxlength: "<?php echo $this->translate('is_password');?>"
 				}
 			},
 			errorPlacement: function(error, element) {
@@ -265,7 +265,7 @@
 		// var regExp=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,30}$/;
         var regExp = /^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$/;
 		return this.optional(element) || (regExp.test(value));
-	}, "<?php echo $this->translate('is_passwd');?>");
+	}, "<?php echo $this->translate('is_password');?>");
 </script>
 </body>
 </html>
