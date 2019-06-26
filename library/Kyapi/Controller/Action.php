@@ -51,6 +51,10 @@ class Kyapi_Controller_Action extends Zend_Controller_Action {
      */
     public $_requestObject;
 
+    /**
+     * @throws Exception
+     * @throws Zend_Controller_Exception
+     */
     public function init() {
         $this->checkSystem();
         $this->initView();
@@ -68,7 +72,11 @@ class Kyapi_Controller_Action extends Zend_Controller_Action {
         }
         // $this->json = new Kyapi_Controller_Json($this->view->seed_Setting['KyUrl']);
         $this->json = new Kyapi_Controller_Json($kyUrl);
+        // 加载多语言
+        $this->initLanguage();
+    }
 
+    protected function initLanguage() {
         // 语言判断
         $lan = 'zh-cn';
         $langCode = 'zh-CN';
