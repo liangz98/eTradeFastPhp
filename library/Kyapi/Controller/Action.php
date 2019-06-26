@@ -69,30 +69,32 @@ class Kyapi_Controller_Action extends Zend_Controller_Action {
         // $this->json = new Kyapi_Controller_Json($this->view->seed_Setting['KyUrl']);
         $this->json = new Kyapi_Controller_Json($kyUrl);
 
-        //语言判断
+        // 语言判断
         $lan = 'zh-cn';
-        // $lan = 'en-us';
+        $langCode = 'zh-CN';
         if (!empty($_SESSION['rev_session']['contactPreference']['langCode'])) {
             $langCode = $_SESSION['rev_session']['contactPreference']['langCode'];
             if ($langCode == 'en_US') {
                 $lan = 'en-us';
+                $langCode = 'en';
             } else if ($langCode == 'zh_CN') {
                 $lan = 'zh-cn';
+                $langCode = 'zh-CN';
             }
         }
         $languagesPath = '/languages/' . $lan . '.php';
         $locale = $this->getRequest()->getParam('locale');
 
+        $langFilesArray = array("commons", "order", "product", "partner", "account", "contact", "bank", "payment", "finance");
+        $langFilePath = (SEED_WWW_ROOT)."/languages/".$langCode."/";
         // 加载注册语言模块
         try {
             $adapter = new Zend_Translate('array', (SEED_WWW_ROOT) . $languagesPath, $locale);
-            if ($lan == 'zh-cn') {
-                $orderAdapter = new Zend_Translate('array', (SEED_WWW_ROOT) . '/languages/zh-CN/order.php', $locale);
-            } else {
-                $orderAdapter = new Zend_Translate('array', (SEED_WWW_ROOT) . '/languages/en/order.php', $locale);
-            }
 
-            $adapter->addTranslation($orderAdapter);
+            foreach ($langFilesArray as $value) {
+                $langAdapter = new Zend_Translate('array', $langFilePath. $value. '.php', $locale);
+                $adapter->addTranslation($langAdapter);
+            }
         } catch (Zend_Translate_Exception $e) {
 
         }
