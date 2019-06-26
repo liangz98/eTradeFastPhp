@@ -80,30 +80,19 @@ class Kyapi_Controller_Action extends Zend_Controller_Action {
                 $lan = 'zh-cn';
             }
         }
-
-        // echo $lan;exit;
-
-        // if ($_lang == 'en_US') {
-        //     $lan = 'en-us';
-        // } else if ($_lang == 'zh_CN') {
-        //     $lan = 'zh-cn';
-        // } else {
-        //     $lan = 'zh-cn';
-        // }
-
         $languagesPath = '/languages/' . $lan . '.php';
         $locale = $this->getRequest()->getParam('locale');
-        //语言选择模块
-        //        if($locale=='zh-CN'){
-        //            $datapath='/languages/zh-CN.php';
-        //        }elseif($locale=='en-US'){
-        //            $datapath='/languages/en-US.php';
-        //        }else{
-        //            $datapath='/languages/zh-CN.php';
-        //        }
-        //加载注册语言模块
+
+        // 加载注册语言模块
         try {
             $adapter = new Zend_Translate('array', (SEED_WWW_ROOT) . $languagesPath, $locale);
+            if ($lan == 'zh-cn') {
+                $orderAdapter = new Zend_Translate('array', (SEED_WWW_ROOT) . '/languages/zh-CN/order.php', $locale);
+            } else {
+                $orderAdapter = new Zend_Translate('array', (SEED_WWW_ROOT) . '/languages/en/order.php', $locale);
+            }
+
+            $adapter->addTranslation($orderAdapter);
         } catch (Zend_Translate_Exception $e) {
 
         }
