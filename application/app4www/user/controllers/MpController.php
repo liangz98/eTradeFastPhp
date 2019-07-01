@@ -13,27 +13,34 @@ class MpController extends Kyapi_Controller_Action {
 
     }
 
-    //获取用户的openid (基本授权)
-    function getBaseInfo() {
+    // 获取用户的openid (基本授权)
+    function getBaseInfoAction() {
         //1.获取到code
-        $redirect_uri = urlencode("https://www.etradefast.com/User/mp/getUserOpenId");
+        $redirect_uri = urlencode("https://www.etradefast.com/user/mp/get-user-open-id");
         $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" . $this->appID . "&redirect_uri=" . $redirect_uri . "&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
         header('location:' . $url);//引导关注者打开页面
     }
 
-    function getUserOpenId() {
+    function getUserOpenIdAction() {
         $code = $_GET['code'];
         $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" . $this->appID . "&secret=" . $this->appSecret . "&code=" . $code . "&grant_type=authorization_code";
 
         //3.拉取用的openid
         $res = $this->http_curl($url, 'get');
         var_dump($res);
-        // $openid = $res['openid'];
+
+        // echo "";
+
+        $this->view->openid = $res['openid'];
         //time();  1,2,3
         //用户访问次数统计和限制
 
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/mp/index.phtml");
+            echo $content;
+            exit;
+        }
     }
-
 
     public function http_curl($url, $type = 'get', $res = 'json', $arr = '') {
         /*
@@ -67,16 +74,16 @@ class MpController extends Kyapi_Controller_Action {
     }
 
     //（详细授权）
-    function getUserDetail() {
+    function getUserDetailAction() {
         //1.获取到code
-        $redirect_uri = urlencode("https://www.etradefast.com/User/mp/getUserInfo");
+        $redirect_uri = urlencode("https://www.etradefast.com/User/mp/get-user-info");
         $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" . $this->appID . "&redirect_uri=" . $redirect_uri . "&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
 
 
         header('location:' . $url);
     }
 
-    function getUserInfo() {
+    function getUserInfoAction() {
         //2.获取到网页授权的access_token
         $code = $_GET['code'];
         $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" . $this->appID . "&secret=" . $this->appSecret . "&code=" . $code . "&grant_type=authorization_code";
