@@ -46,54 +46,61 @@ class Seed_Model_User extends Seed_Model_Db
     /**
      * 检查后台用户是否有效
      *
-     * @param	string	$adm_name	用户名
-     * @param	string	$adm_pwd	用户密码
-     * @return	string
-     *
+     * @param $adm_name // 用户名
+     * @param $adm_pwd  // 用户密码
+     * @return array
+     * @throws Exception
      */
-    public function isAdminValid($adm_name,$adm_pwd)
-    {
+    public function isAdminValid($adm_name, $adm_pwd) {
         $select = $this->_db->select();
-        $select->from($this->_prefix.'users');
+        $select->from($this->_prefix . 'users');
         $select->where("user_name = ?", $adm_name);
         $select->where("is_admin = ?", '1');
         $select->where("is_actived = ?", '1');
-        
+
         $sql = $select->__toString();
         $row = $this->_db->fetchRow($sql);
-        
-        if($row['user_id']>0 && $row['login_error_cnt']>=5 && (time()-$row['login_error_time'])<3600){
-        	return array('msg'=>'登录错误超过5次，请'.date('H:i',($row['login_error_time']+3600)).'后再试！','detail'=>false);
+
+        if ($row['user_id'] > 0 && $row['login_error_cnt'] >= 5 && (time() - $row['login_error_time']) < 3600) {
+            return array('msg'    => '登录错误超过5次，请' . date('H:i', ($row['login_error_time'] + 3600)) . '后再试！',
+                         'detail' => false
+            );
         }
-        
-        if($row['user_id']>0 && $row['user_password']==md5($adm_name.md5($adm_pwd))){
+
+        if ($row['user_id'] > 0 && $row['user_password'] == md5($adm_name . md5($adm_pwd))) {
             //更新登录信息
             $updateData = array();
-            $updateData['login_cnt']=$row['login_cnt']+1;
-            $updateData['login_time']=time();
-            $updateData['action_time']=time();
-            $updateData['login_ip']=Seed_Browser::get_client_ip();
-            $token = md5($adm_name.Seed_Common::genRandomString(16));
-            $updateData['token']=$token;
-            $updateData['login_error_cnt']=0;
-            $updateData['login_error_time']=0;
-            $updateData['login_error_ip']='';
-            $this->updateRow($updateData,array('user_id'=>$row['user_id']));
-            $row['token']=$token;
-            return array('msg'=>'','token'=>Seed_Token::encode($row['user_id'],$row['token']));
+            $updateData['login_cnt'] = $row['login_cnt'] + 1;
+            $updateData['login_time'] = time();
+            $updateData['action_time'] = time();
+            $updateData['login_ip'] = Seed_Browser::get_client_ip();
+            $token = md5($adm_name . Seed_Common::genRandomString(16));
+            $updateData['token'] = $token;
+            $updateData['login_error_cnt'] = 0;
+            $updateData['login_error_time'] = 0;
+            $updateData['login_error_ip'] = '';
+            $this->updateRow($updateData, array('user_id' => $row['user_id']));
+            $row['token'] = $token;
+            return array('msg'   => '',
+                         'token' => Seed_Token::encode($row['user_id'], $row['token'])
+            );
         }
-        
-        if($row['user_id']>0 && $row['user_password']!=md5($adm_name.md5($adm_pwd))){
-        	$updateData = array();
-            $updateData['login_error_cnt']=$row['login_error_cnt']+1;
-            $updateData['login_error_time']=time();
-            $updateData['login_error_ip']=Seed_Browser::get_client_ip();
-            $this->updateRow($updateData,array('user_id'=>$row['user_id']));
-            
-        	return array('msg'=>'登录用户名/密码错误！你还有'.(5-$updateData['login_error_cnt']).'次机会！','token'=>'');
+
+        if ($row['user_id'] > 0 && $row['user_password'] != md5($adm_name . md5($adm_pwd))) {
+            $updateData = array();
+            $updateData['login_error_cnt'] = $row['login_error_cnt'] + 1;
+            $updateData['login_error_time'] = time();
+            $updateData['login_error_ip'] = Seed_Browser::get_client_ip();
+            $this->updateRow($updateData, array('user_id' => $row['user_id']));
+
+            return array('msg'   => '登录用户名/密码错误！你还有' . (5 - $updateData['login_error_cnt']) . '次机会！',
+                         'token' => ''
+            );
         }
-        
-        return array('msg'=>'登录用户名不存在或者不可用！','token'=>'');
+
+        return array('msg'   => '登录用户名不存在或者不可用！',
+                     'token' => ''
+        );
     }
 
     /**

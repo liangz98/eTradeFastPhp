@@ -15,7 +15,7 @@ define('SEED_WWW_ROOT', realpath(dirname(__FILE__) . '/../'));
 //库根目录
 define('SEED_LIB_ROOT', realpath('../../library'));
 //应用根目录
-define('SEED_APP_ROOT', realpath('../../application/app4www/user'));
+define('SEED_APP_ROOT', realpath('../../application/app4www/mp'));
 //配置根目录
 define('SEED_CONF_ROOT', realpath('../../config'));
 //缓存根目录
@@ -27,7 +27,7 @@ define('SEED_TEMP_ROOT', realpath('../../temp'));
 //图片目录
 define('SEED_IMAGE_ROOT', realpath('../upload_files/images'));
 //默认控制器
-define('SEED_CONTROLLER_DIRECTORY', realpath('../../application/app4www/user/controllers'));
+define('SEED_CONTROLLER_DIRECTORY', realpath('../../application/app4www/mp/controllers'));
 //授权目录
 define('SEED_LICENSE_ROOT', realpath('../../license'));
 if (file_exists(SEED_LICENSE_ROOT . "/auth.php")) {
