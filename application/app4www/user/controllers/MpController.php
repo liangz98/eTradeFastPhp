@@ -16,7 +16,7 @@ class MpController extends Kyapi_Controller_Action {
     // 获取用户的openid (基本授权)
     function getBaseInfoAction() {
         //1.获取到code
-        $redirect_uri = urlencode("https://www.etradefast.com/user/mp/get-user-open-id");
+        $redirect_uri = urlencode("https://dev.etradefast.com/user/mp/get-user-open-id");
         $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" . $this->appID . "&redirect_uri=" . $redirect_uri . "&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
         header('location:' . $url);//引导关注者打开页面
     }
@@ -76,9 +76,8 @@ class MpController extends Kyapi_Controller_Action {
     //（详细授权）
     function getUserDetailAction() {
         //1.获取到code
-        $redirect_uri = urlencode("https://www.etradefast.com/User/mp/get-user-info");
+        $redirect_uri = urlencode("https://dev.etradefast.com/user/mp/get-user-info");
         $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" . $this->appID . "&redirect_uri=" . $redirect_uri . "&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
-
 
         header('location:' . $url);
     }
@@ -95,6 +94,26 @@ class MpController extends Kyapi_Controller_Action {
         //3.拉取用户的详细信息
         $url = "https://api.weixin.qq.com/sns/userinfo?access_token=" . $access_token . "&openid=" . $openid . "&lang=zh_CN";
         $res = $this->http_curl($url);
-        var_dump($res);
+        // var_dump($res);
+
+        echo "123";
+        // Login
+        $requestObject = $this->_requestObject;
+        $resultObject = $this->json->loginByOpenid($requestObject, $openid);
+        $msg["status"] = json_decode($resultObject)->status;
+        if ($msg["status"] == '1') {
+            $msg["result"] = json_decode($resultObject)->result;
+
+            var_dump($msg);
+            // 个人信息页
+            $content = $this->view->render(SEED_WWW_TPL . "/mp/index.phtml");
+            echo $content;
+            exit;
+        } else {
+            // 登录页
+            $content = $this->view->render(SEED_WWW_TPL . "/mp/index.phtml");
+            echo $content;
+            exit;
+        }
     }
 }

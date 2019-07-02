@@ -2313,4 +2313,40 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         $resultObject = $this->vpost($_url, $_params);
         return $resultObject;
     }
+
+    /**
+     * @param $requestObject
+     * @param $openID
+     * @return mixed
+     */
+    public function loginByOpenid($requestObject, $openID) {
+        $_url = $this->url . '/contactapi/contactApi!loginByOpenid.action';
+        $_params = json_encode(array(
+            "requestObject" => $requestObject,
+            "openid"        => $openID
+        ));
+        $resultObject = $this->vpost($_url, $_params);
+        return $resultObject;
+    }
+
+    /**
+     * @param $requestObject
+     * @param $contactID
+     * @param $openID
+     * @param $unionID
+     * @param $wechatUserInfo
+     * @return mixed
+     */
+    public function syncUserWechatInfo($requestObject, $contactID, $openID, $unionID, $wechatUserInfo) {
+        $_url = $this->url . '/contactapi/contactApi!syncUserWechatInfo.action';
+        $_params = json_encode(array(
+            "requestObject"  => $requestObject,
+            "contactID"      => $contactID,
+            "openID"         => $openID,
+            "unionID"        => $unionID,
+            "wechatUserInfo" => $wechatUserInfo
+        ));
+        $resultObject = $this->vpost($_url, $_params);
+        return $resultObject;
+    }
 }
