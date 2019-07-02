@@ -2342,7 +2342,7 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl
         $_params = json_encode(array(
             "requestObject"  => $requestObject,
             "contactID"      => $contactID,
-            "openID"         => $openID,
+            "openid"         => $openID,
             "unionID"        => $unionID,
             "wechatUserInfo" => $wechatUserInfo
         ));

@@ -208,6 +208,18 @@ class Kyapi_Controller_Action extends Zend_Controller_Action {
                 $this->view->newUrl = $_SERVER['REQUEST_URI']; //当前 URL 决定菜单高亮
                 $this->view->userrgCode = $userrgCode = $_SESSION['rev_session']['contactPreference']['regdCountryCode'];
 
+                //
+                $this->view->wechatOpenid = $weChatNickname = $_SESSION['rev_session']['wechatOpenid'];
+                $this->view->wechatNickname = $weChatNickname = $_SESSION['rev_session']['weChatNickname'];
+                $this->view->wechatSex = $wechatSex = $_SESSION['rev_session']['wechatSex'];
+                $this->view->wechatProvince = $wechatProvince = $_SESSION['rev_session']['wechatProvince'];
+                $this->view->wechatCity = $wechatCity = $_SESSION['rev_session']['wechatCity'];
+                $this->view->wechatCountry = $wechatCountry = $_SESSION['rev_session']['wechatCountry'];
+                $this->view->wechatHeadimgurl = $wechatHeadimgurl = $_SESSION['rev_session']['wechatHeadimgurl'];
+                $this->view->wechatUnionid = $wechatUnionid = $_SESSION['rev_session']['wechatUnionid'];
+
+
+
                 // 判断登录状态是否authorder  免登陆，visitor==1 免登陆状态
                 if (!empty($_SESSION['rev_session']['visitor'])) {
                     $this->view->visitor = $_SESSION['rev_session']['visitor'];

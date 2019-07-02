@@ -9,6 +9,37 @@
 </head>
 <body>
 <!-- 使用 -->
-<a href="javascript:;" class="weui-btn weui-btn_primary"><?php echo $this->openid; ?></a>
+<form action="/user/mp/login" method="post" id="loginForm">
+    <div class="weui-cells__title">快移资金个人平台</div>
+    <div class="weui-cells weui-cells_form">
+        <?php echo $this->headimgurl; ?>
+        <?php echo $this->resultMsg; ?>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">登录名</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" id="loginName" name="loginName" placeholder="登录名"/>
+            </div>
+        </div>
+
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">密码</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="password" id="ecommpasswsd" name="ecommpasswsd" placeholder="密码"/>
+            </div>
+        </div>
+    </div>
+    <div class="button-sp-area">
+        <a href="javascript:;" class="weui-btn weui-btn_plain-primary" id="login">登录</a>
+    </div>
+</form>
+
+<script src="/ky/jquery-3.3.1/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#login").click(function () {
+            $("#loginForm").submit();
+        });
+    });
+</script>
 </body>
 </html>

@@ -10,7 +10,12 @@ class MpController extends Kyapi_Controller_Action {
     private $appSecret = "b9a6f6f5f2a0bb3c33db2e76e76c8aed";
 
     function indexAction() {
+        $this->view->headimgurl = $_SESSION['rev_session']['headimgurl'];
 
+        // 个人信息页
+        $content = $this->view->render(SEED_WWW_TPL . "/mp/index.phtml");
+        echo $content;
+        exit;
     }
 
     // 获取用户的openid (基本授权)
@@ -27,13 +32,7 @@ class MpController extends Kyapi_Controller_Action {
 
         //3.拉取用的openid
         $res = $this->http_curl($url, 'get');
-        var_dump($res);
-
-        // echo "";
-
         $this->view->openid = $res['openid'];
-        //time();  1,2,3
-        //用户访问次数统计和限制
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/mp/index.phtml");
@@ -83,7 +82,7 @@ class MpController extends Kyapi_Controller_Action {
     }
 
     function getUserInfoAction() {
-        //2.获取到网页授权的access_token
+        // 2.获取到网页授权的access_token
         $code = $_GET['code'];
         $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" . $this->appID . "&secret=" . $this->appSecret . "&code=" . $code . "&grant_type=authorization_code";
 
@@ -91,27 +90,113 @@ class MpController extends Kyapi_Controller_Action {
         $access_token = $res['access_token'];
         $openid = $res['openid'];
 
-        //3.拉取用户的详细信息
+        // 3.拉取用户的详细信息
         $url = "https://api.weixin.qq.com/sns/userinfo?access_token=" . $access_token . "&openid=" . $openid . "&lang=zh_CN";
-        $res = $this->http_curl($url);
-        // var_dump($res);
+        $wechatRes = $this->http_curl($url);
+        // 缓存用户详细信息
+        $_SESSION['rev_session'] = array();
+        $_SESSION['rev_session']['wechatRes'] = $wechatRes;
 
-        echo "123";
         // Login
         $requestObject = $this->_requestObject;
         $resultObject = $this->json->loginByOpenid($requestObject, $openid);
         $msg["status"] = json_decode($resultObject)->status;
         if ($msg["status"] == '1') {
-            $msg["result"] = json_decode($resultObject)->result;
+            $contactResult = $this->objectToArray(json_decode($resultObject));
+            $resultData = $contactResult['result'];
+            $contact = json_decode($resultObject)->result;
+            // 登录成功, 判断是否资金方
+            if ($contact->account->accountType == 'CO07') {
+                $wechatOpenid = $wechatRes['openid'];
+                $weChatNickname = $wechatRes['nickname'];
+                $wechatSex = $wechatRes['sex'];
+                $wechatProvince = $wechatRes['province'];
+                $wechatCity = $wechatRes['city'];
+                $wechatCountry = $wechatRes['country'];
+                $wechatHeadimgurl = $wechatRes['headimgurl'];
+                $wechatUnionid = $wechatRes['unionid'];
+                // 将Json对象转成String,且不为引号添加转义斜杠"\"
+                $this->json->syncUserWechatInfo($requestObject, $contact->contactID, $wechatOpenid, $wechatUnionid, json_encode($wechatRes, JSON_UNESCAPED_SLASHES));
 
-            var_dump($msg);
-            // 个人信息页
-            $content = $this->view->render(SEED_WWW_TPL . "/mp/index.phtml");
-            echo $content;
-            exit;
+                // 更新缓存
+                $this->refreshUserSessionAndRedis($resultData);
+                $_SESSION['rev_session']['wechatOpenid'] = $wechatOpenid;
+                $_SESSION['rev_session']['weChatNickname'] = $weChatNickname;
+                $_SESSION['rev_session']['wechatSex'] = $wechatSex;
+                $_SESSION['rev_session']['wechatProvince'] = $wechatProvince;
+                $_SESSION['rev_session']['wechatCity'] = $wechatCity;
+                $_SESSION['rev_session']['wechatCountry'] = $wechatCountry;
+                $_SESSION['rev_session']['wechatHeadimgurl'] = $wechatHeadimgurl;
+                $_SESSION['rev_session']['wechatUnionid'] = $wechatUnionid;
+
+                $this->redirect("/mp/index");
+            }
         } else {
             // 登录页
-            $content = $this->view->render(SEED_WWW_TPL . "/mp/index.phtml");
+            $content = $this->view->render(SEED_WWW_TPL . "/mp/login.phtml");
+            echo $content;
+            exit;
+        }
+    }
+
+    function loginAction() {
+        // 请求服务端入参
+        $requestObject = $this->_requestObject;
+        $loginName = $this->_request->getParam('loginName');
+        $loginName = trim($loginName);
+        $password = $this->_request->getParam('ecommpasswsd');
+        $password = trim($password);
+        $authCode = $this->_request->getParam('authCode');
+        $authCode = trim($authCode);
+
+        // Login
+        $resultObject = $this->json->loginApi($requestObject, $loginName, $password, $authCode);
+        $contact = json_decode($resultObject)->result;
+
+        // 判断返回结果
+        if (json_decode($resultObject)->status == '1') {
+            // 登录成功, 判断是否资金方
+            if ($contact->account->accountType == 'CO07') {
+                $contactResult = $this->objectToArray(json_decode($resultObject));
+                $resultData = $contactResult['result'];
+
+                // 将用户 openID 写入表
+                $wechatRes = $_SESSION['rev_session']['wechatRes'];
+                $wechatOpenid = $wechatRes['openid'];
+                $weChatNickname = $wechatRes['nickname'];
+                $wechatSex = $wechatRes['sex'];
+                $wechatProvince = $wechatRes['province'];
+                $wechatCity = $wechatRes['city'];
+                $wechatCountry = $wechatRes['country'];
+                $wechatHeadimgurl = $wechatRes['headimgurl'];
+                $wechatUnionid = $wechatRes['unionid'];
+
+                // 将Json对象转成String,且不为引号添加转义斜杠"\"
+                $this->json->syncUserWechatInfo($requestObject, $contact->contactID, $wechatOpenid, $wechatUnionid, json_encode($wechatRes, JSON_UNESCAPED_SLASHES));
+
+                // 更新缓存
+                $this->refreshUserSessionAndRedis($resultData);
+                $_SESSION['rev_session']['wechatOpenid'] = $wechatOpenid;
+                $_SESSION['rev_session']['weChatNickname'] = $weChatNickname;
+                $_SESSION['rev_session']['wechatSex'] = $wechatSex;
+                $_SESSION['rev_session']['wechatProvince'] = $wechatProvince;
+                $_SESSION['rev_session']['wechatCity'] = $wechatCity;
+                $_SESSION['rev_session']['wechatCountry'] = $wechatCountry;
+                $_SESSION['rev_session']['wechatHeadimgurl'] = $wechatHeadimgurl;
+                $_SESSION['rev_session']['wechatUnionid'] = $wechatUnionid;
+
+                $this->redirect("/mp/index");
+            } else {
+                $this->view->resultMsg = "仅允许资金方用户登录";
+                // 登录页
+                $content = $this->view->render(SEED_WWW_TPL . "/mp/login.phtml");
+                echo $content;
+                exit;
+            }
+        } else {
+            $this->view->resultMsg = json_decode($resultObject)->error;
+            // 登录页
+            $content = $this->view->render(SEED_WWW_TPL . "/mp/login.phtml");
             echo $content;
             exit;
         }
