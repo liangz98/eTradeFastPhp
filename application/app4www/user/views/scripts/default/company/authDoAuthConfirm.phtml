@@ -172,17 +172,12 @@
                 authVerifyAmount: $authVerifyAmount.val()
             }, function (data) {
                 if (data === '0') {
-                    $('#authModal').modal('hide');
                     setTimeout(function () {
-                        $("#company-auth").removeClass("et-ico-auth-cno et-ico-auth-cing").addClass("et-ico-auth-cok").trigger("click");
+                        document.location.reload();
                     }, 500);
                 } else if (data === '-4') {
-                    $('#authModal').modal('hide');
                     setTimeout(function () {
-                        $("#company-auth").removeClass("et-ico-auth-cing et-ico-auth-cok").addClass("et-ico-auth-cno").trigger("click");
-
-                        $confirmAlert.removeClass("hidden");
-                        $confirmAlert.html("超出3次认证失败功能冻结，请与客服联系。");
+                        document.location.reload();
                     }, 500);
                 } else {
                     console.log("err: " + data);

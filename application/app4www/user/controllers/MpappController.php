@@ -4,76 +4,17 @@
  * Date: 2019/7/1 12:19
  */
 
-class MpController extends Kyapi_Controller_Action {
+class MpappController extends Kyapi_Controller_Action {
 
     // test
-    private $appID = "wx907021acb9aae1ec";
-    private $appSecret = "b9a6f6f5f2a0bb3c33db2e76e76c8aed";
+    // private $appID = "wx907021acb9aae1ec";
+    // private $appSecret = "b9a6f6f5f2a0bb3c33db2e76e76c8aed";
     // prd
-    // private $appID = "wx3de3c39694609a78";
-    // private $appSecret = "ee96922bdd2a588d2b52249b8ca89be7";
+    private $appID = "wx3de3c39694609a78";
+    private $appSecret = "ee96922bdd2a588d2b52249b8ca89be7";
 
     function indexAction() {
-        $this->view->headimgurl = $_SESSION['rev_session']['headimgurl'];
 
-        // 个人信息页
-        $content = $this->view->render(SEED_WWW_TPL . "/mp/index.phtml");
-        echo $content;
-        exit;
-    }
-
-    // 获取用户的openid (基本授权)
-    function getBaseInfoAction() {
-        //1.获取到code
-        $redirect_uri = urlencode("https://dev.etradefast.com/user/mp/get-user-open-id");
-        $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" . $this->appID . "&redirect_uri=" . $redirect_uri . "&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
-        header('location:' . $url);//引导关注者打开页面
-    }
-
-    function getUserOpenIdAction() {
-        $code = $_GET['code'];
-        $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" . $this->appID . "&secret=" . $this->appSecret . "&code=" . $code . "&grant_type=authorization_code";
-
-        //3.拉取用的openid
-        $res = $this->http_curl($url, 'get');
-        $this->view->openid = $res['openid'];
-
-        if (defined('SEED_WWW_TPL')) {
-            $content = $this->view->render(SEED_WWW_TPL . "/mp/index.phtml");
-            echo $content;
-            exit;
-        }
-    }
-
-    public function http_curl($url, $type = 'get', $res = 'json', $arr = '') {
-        /*
-        $url 请求的url
-        $type 请求类型
-        $res 返回数据类型
-        $arr post请求参数
-        ctrl+f键查找 extension=php_curl.dll 将前面的分号；去掉，
-         */
-        // 1. 初始化
-        $ch = curl_init();
-
-        // 2. 设置选项，包括URL
-        curl_setopt($ch, CURLOPT_URL, $url);//CURLOPT_URL 指定请求的URL
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);//CURLOPT_RETURNTRANSFER 设置为1表示稍后执行的curl_exec函数的返回是URL的返回字符串，而不是把返回字符串定向到标准输出并返回TRUE
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);//FALSE 禁止 cURL 验证对等证书
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        if ($type == 'post') {
-            curl_setopt($ch, CURLOPT_POST, 1);//TRUE 时会发送 POST 请求
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $arr);//全部数据使用HTTP协议中的 "POST" 操作来发送
-        }
-        // 3. 执行并获取HTML文档内容
-        $output = curl_exec($ch);
-        // 4. 释放curl句柄
-        curl_close($ch);
-        if ($res == 'json') {
-            return json_decode($output, true);//对 JSON 格式的字符串进行解码(数组)
-        } else {
-            return json_decode($output, true);//对 JSON 格式的字符串进行解码(数组)
-        }
     }
 
     //（详细授权）
@@ -203,6 +144,37 @@ class MpController extends Kyapi_Controller_Action {
             $content = $this->view->render(SEED_WWW_TPL . "/mp/login.phtml");
             echo $content;
             exit;
+        }
+    }
+
+    public function http_curl($url, $type = 'get', $res = 'json', $arr = '') {
+        /*
+        $url 请求的url
+        $type 请求类型
+        $res 返回数据类型
+        $arr post请求参数
+        ctrl+f键查找 extension=php_curl.dll 将前面的分号；去掉，
+         */
+        // 1. 初始化
+        $ch = curl_init();
+
+        // 2. 设置选项，包括URL
+        curl_setopt($ch, CURLOPT_URL, $url);//CURLOPT_URL 指定请求的URL
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);//CURLOPT_RETURNTRANSFER 设置为1表示稍后执行的curl_exec函数的返回是URL的返回字符串，而不是把返回字符串定向到标准输出并返回TRUE
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);//FALSE 禁止 cURL 验证对等证书
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        if ($type == 'post') {
+            curl_setopt($ch, CURLOPT_POST, 1);//TRUE 时会发送 POST 请求
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $arr);//全部数据使用HTTP协议中的 "POST" 操作来发送
+        }
+        // 3. 执行并获取HTML文档内容
+        $output = curl_exec($ch);
+        // 4. 释放curl句柄
+        curl_close($ch);
+        if ($res == 'json') {
+            return json_decode($output, true);//对 JSON 格式的字符串进行解码(数组)
+        } else {
+            return json_decode($output, true);//对 JSON 格式的字符串进行解码(数组)
         }
     }
 }

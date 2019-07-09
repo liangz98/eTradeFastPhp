@@ -55,6 +55,14 @@
         });
     });
 
+    // app qr
+    var prodStr = 'https://www.etradefast.com';
+    if (document.location.href.search(prodStr) >= 0) {
+        $("#etradeApp").attr("href", "/app/etradefast.apk");
+    } else {
+        $("#etradeApp").attr("href", "/app/app-debug.apk");
+    }
+
     var updateExpireUrl = '/user/common/update-redis-expire-ajax';
     function updateRedisExpire() {
         $.ajax({

@@ -125,6 +125,8 @@
 <script type="text/javascript" src="/ky/fancybox-3.5.6-dist/jquery.fancybox.min.js"></script>
 <script type="text/javascript" src="/ky/fancybox-3.5.6-dist/fancyboxInit.js"></script>
 
+<script type="text/javascript" src="/ky/bootstrap-select-1.12.4-dist/js/bootstrap-select.min.js"></script>
+
 <script type="text/javascript">
     $().ready(function() {
 
@@ -137,6 +139,114 @@
             } else {
                 $(this).removeClass('nav-selected');
             }
+        });
+
+        layui.use('form', function(){
+            var form = layui.form;
+
+            form.on('select(bankName)', function(data){
+                var bankCode = data.value;
+                var cityCode = $("#cityName").val();
+
+                if (cityCode !== '' && bankCode !== '') {
+                    var fuzzyQuery = '/user/company/fuzzy';
+                    $.ajax({
+                        type: "POST",
+                        url: fuzzyQuery,
+                        data: {
+                            dataDictCode: 'ESIGN_SUBBRANCH_BANK',
+                            keyword: '',
+                            valuePCode: cityCode + ',' + bankCode
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            var optionString = "";
+                            $.each(data, function (i, item) {
+                                console.log(item);
+                                optionString += "<option value=\"" + item.valueCode + "\" >" + item.valueCode + "</option>";
+                            });
+                            var str = '<?php echo $this->translate("et_select"); ?>';
+                            $("#subbranchName").html('<option value="">' + str + '</option>' + optionString);
+                            form.render('select'); //这个很重要
+                        }
+                    });
+                } else {
+                    var str = '<?php echo $this->translate("et_select"); ?>';
+                    $("#subbranchName").empty().html('<option value="">' + str + '</option>');
+                    form.render('select');
+                }
+            });
+
+            form.on('select(provinceName)', function (data) {
+                var provinceCode = data.value;
+                if (provinceCode !== '') {
+                    var fuzzyQuery = '/user/company/fuzzy';
+                    $.ajax({
+                        type: "POST",
+                        url: fuzzyQuery,
+                        data: {
+                            dataDictCode: 'ESIGN_CITY_CODE',
+                            keyword: '',
+                            valuePCode: provinceCode
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            var optionString = '';
+                            $.each(data, function (i, item) {
+                                console.log(item);
+                                optionString += '<option value="' + item.valueCode + '" >' + item.valueCode + '</option>';
+                            });
+                            $("#cityName").html('<option value=""></option>' + optionString);
+                            form.render('select'); //这个很重要
+                        }
+                    });
+                } else {
+                    $("#cityName").empty().html('<option value=""></option>');
+                    form.render('select');
+                }
+            });
+
+            form.on('select(cityName)', function (data) {
+                var bankCode = $("#bankName").val();
+                var cityCode = data.value;
+
+                if (cityCode !== '' && bankCode !== '') {
+                    var fuzzyQuery = '/user/company/fuzzy';
+                    $.ajax({
+                        type: "POST",
+                        url: fuzzyQuery,
+                        data: {
+                            dataDictCode: 'ESIGN_SUBBRANCH_BANK',
+                            keyword: '',
+                            valuePCode: cityCode + ',' + bankCode
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            var optionString = "";
+                            $.each(data, function (i, item) {
+                                console.log(item);
+                                optionString += "<option value=\"" + item.valueCode + "\" >" + item.valueCode + "</option>";
+                            });
+                            var str = '<?php echo $this->translate("et_select"); ?>';
+                            $("#subbranchName").html('<option value="">' + str + '</option>' + optionString);
+                            form.render('select'); //这个很重要
+                        }
+                    });
+                } else {
+                    var str = '<?php echo $this->translate("et_select"); ?>';
+                    $("#subbranchName").empty().html('<option value="">' + str + '</option>');
+                    form.render('select');
+                }
+            });
+
+            //但是，如果你的HTML是动态生成的，自动渲染就会失效
+            //因此你需要在相应的地方，执行下述方法来手动渲染，跟这类似的还有 element.init();
+            form.render();
+        });
+
+        layui.use('element', function () {
+            var element = layui.element;
+            element.render();
         });
 
         $("#doConfirmBtn").click(function () {
@@ -158,9 +268,8 @@
                 subbranchName: subbranchName
             }, function (data) {
                 if (data === '0' || data === '-4') {
-                    $('#authModal').modal('hide');
                     setTimeout(function () {
-                        $("#company-auth").removeClass("et-ico-auth-cing et-ico-auth-cok").addClass("et-ico-auth-cno").trigger("click");
+                        document.location.reload();
                     }, 500);
                 } else {
                     $(".alert").removeClass('hidden').addClass('show').find('p').html(data);
