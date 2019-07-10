@@ -6,43 +6,87 @@
     <title>快移资金</title>
     <!-- 引入 WeUI -->
     <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/2.0.0/weui.min.css"/>
+    <!-- 引入 jQuery WeUI -->
+    <link rel="stylesheet" href="/ky/jquery-weui-1.2.1-dist/css/jquery-weui.min.css">
 </head>
 <body>
 <!-- 使用 -->
 
-<div class="weui-form-preview">
+<!--<div class="weui-form-preview">
     <div class="weui-cell__hd" style="position: relative;margin-right: 10px;">
-        <img src="<?php echo $this->wechatHeadimgurl; ?>" style="width: 50px;display: block">
+        <img src="<?php /*echo $this->wechatHeadimgurl; */?>" style="width: 50px;display: block">
     </div>
     <div class="weui-form-preview__hd">
         <label class="weui-form-preview__label">用户名</label>
-        <em class="weui-form-preview__value"><?php echo $this->userLoginName; ?></em>
+        <em class="weui-form-preview__value"><?php /*echo $this->userLoginName; */?></em>
     </div>
-</div>
+</div>-->
 
-
+<!-- tabbar，底部导航 -->
 <div class="weui-tab">
-    <div class="weui-tab__panel">
-
+    <div class="weui-tab__bd">
+        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+            <h1>页面一</h1>
+        </div>
+        <div id="tab2" class="weui-tab__bd-item">
+            <h1>页面二</h1>
+        </div>
     </div>
+
     <div class="weui-tabbar">
-        <a href="javascript:;" class="weui-tabbar__item weui-bar__item_on">
-            <img src="./images/icon_tabbar.png" alt="" class="weui-tabbar__icon">
+        <!--<a href="javascript:;" class="weui-tabbar__item weui-bar__item--on">
+            <span class="weui-badge" style="position: absolute;top: -.4em;right: 1em;">8</span>
+            <div class="weui-tabbar__icon">
+                <img src="./images/icon_nav_button.png" alt="">
+            </div>
             <p class="weui-tabbar__label">微信</p>
         </a>
         <a href="javascript:;" class="weui-tabbar__item">
-            <img src="./images/icon_tabbar.png" alt="" class="weui-tabbar__icon">
+            <div class="weui-tabbar__icon">
+                <img src="./images/icon_nav_msg.png" alt="">
+            </div>
             <p class="weui-tabbar__label">通讯录</p>
         </a>
         <a href="javascript:;" class="weui-tabbar__item">
-            <img src="./images/icon_tabbar.png" alt="" class="weui-tabbar__icon">
+            <div class="weui-tabbar__icon">
+                <img src="./images/icon_nav_article.png" alt="">
+            </div>
             <p class="weui-tabbar__label">发现</p>
         </a>
         <a href="javascript:;" class="weui-tabbar__item">
-            <img src="./images/icon_tabbar.png" alt="" class="weui-tabbar__icon">
+            <div class="weui-tabbar__icon">
+                <img src="/ky/images/mp/tabbar_me.png" alt="">
+            </div>
             <p class="weui-tabbar__label">我</p>
+        </a>-->
+
+
+        <a href="#tab1" class="weui-tabbar__item weui-bar__item_on">
+            <img src="/ky/images/mp/tabbar_home.png" alt="" class="weui-tabbar__icon">
+            <p class="weui-tabbar__label">首页</p>
+        </a>
+        <a href="#tab2" class="weui-tabbar__item">
+            <img src="/ky/images/mp/tabbar_loan.png" alt="" class="weui-tabbar__icon">
+            <p class="weui-tabbar__label">可投标</p>
+        </a>
+        <a href="javascript:;" class="weui-tabbar__item">
+            <img src="/ky/images/mp/tabbar_loaned.png" alt="" class="weui-tabbar__icon">
+            <p class="weui-tabbar__label">已投标</p>
+        </a>
+        <a href="javascript:;" class="weui-tabbar__item">
+            <img src="/ky/images/mp/tabbar_me.png" alt="" class="weui-tabbar__icon">
+            <p class="weui-tabbar__label">我的</p>
         </a>
     </div>
 </div>
+
+<script src="/ky/jquery-3.3.1/jquery-3.3.1.min.js"></script>
+<script src="/ky/jquery-weui-1.2.1-dist/js/jquery-weui.min.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+
+    });
+</script>
 </body>
 </html>
