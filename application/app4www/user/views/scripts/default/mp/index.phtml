@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
     <title>快移资金</title>
+    <!-- base layout -->
+    <link rel="stylesheet" href="/ky/css/mp/base.css">
     <!-- 引入 WeUI -->
     <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/2.0.0/weui.min.css"/>
     <!-- 引入 jQuery WeUI -->
@@ -25,11 +27,133 @@
 <!-- tabbar，底部导航 -->
 <div class="weui-tab">
     <div class="weui-tab__bd">
-        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
-            <h1>页面一</h1>
+        <div id="tab_home" class="weui-tab__bd-item weui-tab__bd-item--active">
+            <div class="weui-flex">
+                <div class="weui-flex__item">
+                    <div class="placeholder">weui</div>
+                </div>
+                <div class="weui-flex__item">weui</div>
+            </div>
+            <div class="weui-flex">
+                <div class="weui-flex__item">
+                    <div class="placeholder">推荐项目</div>
+                </div>
+            </div>
         </div>
-        <div id="tab2" class="weui-tab__bd-item">
-            <h1>页面二</h1>
+
+        <div id="tab_loan" class="weui-tab__bd-item">
+            <div class="weui-flex">
+                <div class="weui-flex__item">weui</div>
+                <div class="weui-flex__item">weui</div>
+            </div>
+            <div class="weui-flex">
+                <div class="weui-flex__item">weui</div>
+                <div class="weui-flex__item">weui</div>
+            </div>
+        </div>
+
+        <div id="tab_loaned" class="weui-tab__bd-item">
+            <div class="weui-flex">
+                <div class="weui-flex__item">weui</div>
+                <div class="weui-flex__item">weui</div>
+            </div>
+            <div class="weui-flex">
+                <div class="weui-flex__item">weui</div>
+                <div class="weui-flex__item">weui</div>
+            </div>
+        </div>
+
+        <div id="tab_me" class="weui-tab__bd-item">
+            <div class="weui-flex">
+                <div class="weui-flex__item">weui</div>
+                <div class="weui-flex__item">weui</div>
+            </div>
+
+            <div class="weui-panel weui-panel_access">
+                <div class="weui-panel__hd">图文组合列表</div>
+                <div class="weui-panel__bd">
+                    <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+                        <div class="weui-media-box__hd">
+                            <img class="weui-media-box__thumb" src="">
+                        </div>
+                        <div class="weui-media-box__bd">
+                            <h4 class="weui-media-box__title">标题一</h4>
+                            <p class="weui-media-box__desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>
+                        </div>
+                    </a>
+                    <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+                        <div class="weui-media-box__hd">
+                            <img class="weui-media-box__thumb" src="">
+                        </div>
+                        <div class="weui-media-box__bd">
+                            <h4 class="weui-media-box__title">标题二</h4>
+                            <p class="weui-media-box__desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="weui-panel__ft">
+                    <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link">
+                        <div class="weui-cell__bd">查看更多</div>
+                        <span class="weui-cell__ft"></span>
+                    </a>
+                </div>
+            </div>
+            <div class="weui-panel weui-panel_access">
+                <div class="weui-panel__hd">文字组合列表</div>
+                <div class="weui-panel__bd">
+                    <div class="weui-media-box weui-media-box_text">
+                        <h4 class="weui-media-box__title">标题一</h4>
+                        <p class="weui-media-box__desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>
+                    </div>
+                    <div class="weui-media-box weui-media-box_text">
+                        <h4 class="weui-media-box__title">标题二</h4>
+                        <p class="weui-media-box__desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>
+                    </div>
+                </div>
+                <div class="weui-panel__ft">
+                    <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link">
+                        <div class="weui-cell__bd">查看更多</div>
+                        <span class="weui-cell__ft"></span>
+                    </a>
+                </div>
+            </div>
+            <div class="weui-panel">
+                <div class="weui-panel__hd">小图文组合列表</div>
+                <div class="weui-panel__bd">
+                    <div class="weui-media-box weui-media-box_small-appmsg">
+                        <div class="weui-cells">
+                            <a class="weui-cell weui-cell_access" href="javascript:;">
+                                <div class="weui-cell__hd"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII=" alt="" style="width:20px;margin-right:5px;display:block"></div>
+                                <div class="weui-cell__bd weui-cell_primary">
+                                    <p>文字标题</p>
+                                </div>
+                                <span class="weui-cell__ft"></span>
+                            </a>
+                            <a class="weui-cell weui-cell_access" href="javascript:;">
+                                <div class="weui-cell__hd"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII=" alt="" style="width:20px;margin-right:5px;display:block"></div>
+                                <div class="weui-cell__bd weui-cell_primary">
+                                    <p>文字标题</p>
+                                </div>
+                                <span class="weui-cell__ft"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="weui-panel">
+                <div class="weui-panel__hd">文字列表附来源</div>
+                <div class="weui-panel__bd">
+                    <div class="weui-media-box weui-media-box_text">
+                        <h4 class="weui-media-box__title">标题一</h4>
+                        <p class="weui-media-box__desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>
+                        <ul class="weui-media-box__info">
+                            <li class="weui-media-box__info__meta">文字来源</li>
+                            <li class="weui-media-box__info__meta">时间</li>
+                            <li class="weui-media-box__info__meta weui-media-box__info__meta_extra">其它信息</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -61,19 +185,19 @@
         </a>-->
 
 
-        <a href="#tab1" class="weui-tabbar__item weui-bar__item_on">
+        <a href="javascript:void(0);" class="weui-tabbar__item weui-bar__item_on" data-target="tab_home">
             <img src="/ky/images/mp/tabbar_home.png" alt="" class="weui-tabbar__icon">
             <p class="weui-tabbar__label">首页</p>
         </a>
-        <a href="#tab2" class="weui-tabbar__item">
+        <a href="javascript:void(0);" class="weui-tabbar__item" data-target="tab_loan">
             <img src="/ky/images/mp/tabbar_loan.png" alt="" class="weui-tabbar__icon">
             <p class="weui-tabbar__label">可投标</p>
         </a>
-        <a href="javascript:;" class="weui-tabbar__item">
+        <a href="javascript:void(0);" class="weui-tabbar__item" data-target="tab_loaned">
             <img src="/ky/images/mp/tabbar_loaned.png" alt="" class="weui-tabbar__icon">
             <p class="weui-tabbar__label">已投标</p>
         </a>
-        <a href="javascript:;" class="weui-tabbar__item">
+        <a href="javascript:void(0);" class="weui-tabbar__item" data-target="tab_me">
             <img src="/ky/images/mp/tabbar_me.png" alt="" class="weui-tabbar__icon">
             <p class="weui-tabbar__label">我的</p>
         </a>
@@ -85,7 +209,16 @@
 
 <script type="text/javascript">
     $(function () {
+        // $("html").attr("height", "100%");
 
+        $(".weui-tabbar__item").click(function () {
+            var tabTarget = $(this).attr("data-target");
+            $(".weui-tabbar__item").removeClass("weui-bar__item_on");
+            $(this).addClass("weui-bar__item_on");
+
+            $(".weui-tab__bd-item").removeClass("weui-tab__bd-item--active");
+            $("#" + tabTarget).addClass("weui-tab__bd-item--active");
+        });
     });
 </script>
 </body>
