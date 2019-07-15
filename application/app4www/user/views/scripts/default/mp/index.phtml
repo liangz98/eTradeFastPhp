@@ -7,40 +7,131 @@
     <!-- base layout -->
     <link rel="stylesheet" href="/ky/css/mp/base.css">
     <!-- 引入 WeUI -->
+<!--    <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/1.1.3/weui.min.css"/>-->
     <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/2.0.0/weui.min.css"/>
     <!-- 引入 jQuery WeUI -->
-    <link rel="stylesheet" href="/ky/jquery-weui-1.2.1-dist/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/ky/jquery-weui-1.2.1-dist/css/jquery-weui.css">
 </head>
-<body>
-<!-- 使用 -->
-
-<!--<div class="weui-form-preview">
-    <div class="weui-cell__hd" style="position: relative;margin-right: 10px;">
-        <img src="<?php /*echo $this->wechatHeadimgurl; */?>" style="width: 50px;display: block">
-    </div>
-    <div class="weui-form-preview__hd">
-        <label class="weui-form-preview__label">用户名</label>
-        <em class="weui-form-preview__value"><?php /*echo $this->userLoginName; */?></em>
-    </div>
-</div>-->
-
-<!-- tabbar，底部导航 -->
+<body ontouchstart>
 <div class="weui-tab">
+    <!-- 主体 -->
     <div class="weui-tab__bd">
-        <div id="tab_home" class="weui-tab__bd-item weui-tab__bd-item--active">
-            <div class="weui-flex">
-                <div class="weui-flex__item">
-                    <div class="placeholder">weui</div>
-                </div>
-                <div class="weui-flex__item">weui</div>
+        <div id="tab_home" class="weui-tab__bd-item weui-tab__bd-item--active weui-pull-to-refresh__layer-re">
+            <div class="weui-pull-to-refresh__layer">
+                <div class='weui-pull-to-refresh__arrow'></div>
+                <div class='weui-pull-to-refresh__preloader'></div>
+                <div class="down">下拉刷新</div>
+                <div class="up">释放刷新</div>
+                <div class="refresh">正在刷新</div>
             </div>
+
+            <div class="weui-flex">
+                <div class="weui-flex__item flex_item">
+                    <div class="weui-flex">
+                        <div class="weui-flex__item">
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    平均收益率
+                                </div>
+                            </div>
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    14.46 %
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="weui-flex__item">
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    累计收益（元）
+                                </div>
+                            </div>
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    20,000
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="weui-flex">
+                        <div class="weui-flex__item">
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    可用投资额度（元）
+                                </div>
+                            </div>
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    5,200,000
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="weui-flex__item">
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    已完成项目数
+                                </div>
+                            </div>
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    30
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 推荐项目 -->
             <div class="weui-flex">
                 <div class="weui-flex__item">
-                    <div class="placeholder">推荐项目</div>
+                    <div class="placeholder flex_item recommend-projects"><img src="/ky/images/mp/hot.png" alt="" style="width:20px;">推荐项目</div>
+                </div>
+            </div>
+
+            <!-- 项目列表 -->
+            <div class="weui-flex">
+                <div class="weui-flex__item">
+                    <div class="weui-flex">
+                        <div class="weui-flex__item">
+                            牛仔成衣出口生产融资
+                        </div>
+                    </div>
+                    <div class="weui-flex">
+                        <div class="weui-flex__item">
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <p>10.55%</p>
+                                    <p>期望收益率</p>
+                                </div>
+                                <div class="weui-flex__item">
+                                    <p>45 天</p>
+                                    <p>预计投资周期</p>
+                                </div>
+                                <div class="weui-flex__item">
+                                    <p>294,500 元</p>
+                                    <p>可投金额（1万元起投）</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="weui-flex">
+                        <div class="weui-flex__item">
+                            预计起息日 2019年6月25日            16天后截止投标
+                        </div>
+                    </div>
+                    <div class="weui-flex">
+                        <div class="weui-flex__item">
+                            <a href="javascript:;" class="weui-btn weui-btn_block weui-btn_bootstrap-primary">按钮</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
+        <!-- 可投标 -->
         <div id="tab_loan" class="weui-tab__bd-item">
             <div class="weui-flex">
                 <div class="weui-flex__item">weui</div>
@@ -52,18 +143,8 @@
             </div>
         </div>
 
-        <div id="tab_loaned" class="weui-tab__bd-item">
-            <div class="weui-flex">
-                <div class="weui-flex__item">weui</div>
-                <div class="weui-flex__item">weui</div>
-            </div>
-            <div class="weui-flex">
-                <div class="weui-flex__item">weui</div>
-                <div class="weui-flex__item">weui</div>
-            </div>
-        </div>
-
-        <div id="tab_me" class="weui-tab__bd-item">
+        <!-- 我的 -->
+        <div id="tab_me" class="weui-tab__bd-item weui-pull-to-refresh__layer-re">
             <div class="weui-flex">
                 <div class="weui-flex__item">weui</div>
                 <div class="weui-flex__item">weui</div>
@@ -157,34 +238,8 @@
         </div>
     </div>
 
+    <!-- tabbar 底部导航 -->
     <div class="weui-tabbar">
-        <!--<a href="javascript:;" class="weui-tabbar__item weui-bar__item--on">
-            <span class="weui-badge" style="position: absolute;top: -.4em;right: 1em;">8</span>
-            <div class="weui-tabbar__icon">
-                <img src="./images/icon_nav_button.png" alt="">
-            </div>
-            <p class="weui-tabbar__label">微信</p>
-        </a>
-        <a href="javascript:;" class="weui-tabbar__item">
-            <div class="weui-tabbar__icon">
-                <img src="./images/icon_nav_msg.png" alt="">
-            </div>
-            <p class="weui-tabbar__label">通讯录</p>
-        </a>
-        <a href="javascript:;" class="weui-tabbar__item">
-            <div class="weui-tabbar__icon">
-                <img src="./images/icon_nav_article.png" alt="">
-            </div>
-            <p class="weui-tabbar__label">发现</p>
-        </a>
-        <a href="javascript:;" class="weui-tabbar__item">
-            <div class="weui-tabbar__icon">
-                <img src="/ky/images/mp/tabbar_me.png" alt="">
-            </div>
-            <p class="weui-tabbar__label">我</p>
-        </a>-->
-
-
         <a href="javascript:void(0);" class="weui-tabbar__item weui-bar__item_on" data-target="tab_home">
             <img src="/ky/images/mp/tabbar_home.png" alt="" class="weui-tabbar__icon">
             <p class="weui-tabbar__label">首页</p>
@@ -192,10 +247,6 @@
         <a href="javascript:void(0);" class="weui-tabbar__item" data-target="tab_loan">
             <img src="/ky/images/mp/tabbar_loan.png" alt="" class="weui-tabbar__icon">
             <p class="weui-tabbar__label">可投标</p>
-        </a>
-        <a href="javascript:void(0);" class="weui-tabbar__item" data-target="tab_loaned">
-            <img src="/ky/images/mp/tabbar_loaned.png" alt="" class="weui-tabbar__icon">
-            <p class="weui-tabbar__label">已投标</p>
         </a>
         <a href="javascript:void(0);" class="weui-tabbar__item" data-target="tab_me">
             <img src="/ky/images/mp/tabbar_me.png" alt="" class="weui-tabbar__icon">
@@ -206,11 +257,11 @@
 
 <script src="/ky/jquery-3.3.1/jquery-3.3.1.min.js"></script>
 <script src="/ky/jquery-weui-1.2.1-dist/js/jquery-weui.min.js"></script>
-
+<!-- 拓展插件 -->
+<script src="/ky/jquery-weui-1.2.1-dist/js/swiper.min.js"></script>
+<script src="/ky/jquery-weui-1.2.1-dist/js/city-picker.min.js"></script>
 <script type="text/javascript">
     $(function () {
-        // $("html").attr("height", "100%");
-
         $(".weui-tabbar__item").click(function () {
             var tabTarget = $(this).attr("data-target");
             $(".weui-tabbar__item").removeClass("weui-bar__item_on");
@@ -220,6 +271,13 @@
             $("#" + tabTarget).addClass("weui-tab__bd-item--active");
         });
     });
+
+    $('.weui-tab__bd-item').pullToRefresh().on('pull-to-refresh', function (done) {
+        var self = this;
+        setTimeout(function() {
+            $(self).pullToRefreshDone();
+        }, 2000)
+    })
 </script>
 </body>
 </html>
