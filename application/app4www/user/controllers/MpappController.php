@@ -7,11 +7,11 @@
 class MpappController extends Kyapi_Controller_Action {
 
     // test
-    // private $appID = "wx907021acb9aae1ec";
-    // private $appSecret = "b9a6f6f5f2a0bb3c33db2e76e76c8aed";
+    private $appID = "wx907021acb9aae1ec";
+    private $appSecret = "b9a6f6f5f2a0bb3c33db2e76e76c8aed";
     // prd
-    private $appID = "wx3de3c39694609a78";
-    private $appSecret = "ee96922bdd2a588d2b52249b8ca89be7";
+    // private $appID = "wx3de3c39694609a78";
+    // private $appSecret = "ee96922bdd2a588d2b52249b8ca89be7";
 
     function indexAction() {
 
@@ -176,5 +176,9 @@ class MpappController extends Kyapi_Controller_Action {
         } else {
             return json_decode($output, true);//对 JSON 格式的字符串进行解码(数组)
         }
+    }
+
+    public function changeAction() {
+
     }
 }
