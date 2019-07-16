@@ -1,83 +1,236 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <?php echo $this->render(SEED_WWW_TPL . '/mp/headerLink.phtml'); ?>
     <title>快移资金</title>
-    <!-- base layout -->
-    <link rel="stylesheet" href="/ky/css/mp/base.css">
-    <!-- 引入 WeUI -->
-<!--    <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/1.1.3/weui.min.css"/>-->
-    <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/2.0.0/weui.min.css"/>
-    <!-- 引入 jQuery WeUI -->
-    <link rel="stylesheet" href="/ky/jquery-weui-1.2.1-dist/css/jquery-weui.css">
-    <!-- minirefresh -->
-    <link rel="stylesheet" href="/ky/minirefresh-2.0.2-dist/minirefresh.min.css">
-<!--    <link rel="stylesheet" href="/ky/minirefresh-2.0.2-dist/themes/applet/minirefresh.theme.applet.min.css">-->
-
-    <style>
-        .minirefresh-wrap {
-            top: 189px;
-        }
-    </style>
 </head>
 <body ontouchstart>
 
-<div class="weui-tab">
-    <!-- 主体 -->
-    <div class="weui-tab__bd">
-        <div class="weui-flex">
-            <div class="weui-flex__item flex_item mp-margin-5_hd">
-                <div class="weui-flex info-border-bottom">
-                    <div class="weui-flex__item">
-                        <div class="weui-flex ">
-                            <div class="weui-flex__item">
-                                <div class="mp-text-info mp-text-margin-5">平均收益率</div>
+    <div class="weui-tab">
+        <!-- 主体 -->
+        <div class="weui-tab__bd">
+            <div class="weui-flex">
+                <div class="weui-flex__item flex_item mp-margin-5_hd">
+                    <div class="weui-flex info-border-bottom">
+                        <div class="weui-flex__item">
+                            <div class="weui-flex ">
+                                <div class="weui-flex__item">
+                                    <div class="mp-text-info mp-text-margin-5">平均收益率</div>
+                                </div>
+                            </div>
+                            <div class="weui-flex info-border-right">
+                                <div class="weui-flex__item">
+                                    <span class="mp-text-info mp-text-margin-5 mp-text-size-28">14.46</span> <span class="mp-text-info mp-text-margin-5 mp-text-size-18">%</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="weui-flex info-border-right">
-                            <div class="weui-flex__item">
-                                <span class="mp-text-info mp-text-margin-5 mp-text-size-28">14.46</span> <span class="mp-text-info mp-text-margin-5 mp-text-size-18">%</span>
+
+                        <div class="weui-flex__item">
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <div class="mp-text-info mp-text-margin-5">累计收益（元）</div>
+                                </div>
+                            </div>
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <span class="mp-text-info mp-text-margin-5 mp-text-size-28">20,000</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="weui-flex__item">
-                        <div class="weui-flex">
-                            <div class="weui-flex__item">
-                                <div class="mp-text-info mp-text-margin-5">累计收益（元）</div>
+                    <div class="weui-flex">
+                        <div class="weui-flex__item">
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <div class="mp-text-info mp-text-margin-5">可用投资额度（元）</div>
+                                </div>
+                            </div>
+                            <div class="weui-flex info-border-right">
+                                <div class="weui-flex__item">
+                                    <span class="mp-text-info mp-text-margin-5 mp-text-size-28">5,200,000</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="weui-flex">
-                            <div class="weui-flex__item">
-                                <span class="mp-text-info mp-text-margin-5 mp-text-size-28">20,000</span>
+
+                        <div class="weui-flex__item">
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <div class="mp-text-info mp-text-margin-5">已完成项目数</div>
+                                </div>
+                            </div>
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <span class="mp-text-info mp-text-margin-5 mp-text-size-28">30</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="weui-flex">
-                    <div class="weui-flex__item">
-                        <div class="weui-flex">
-                            <div class="weui-flex__item">
-                                <div class="mp-text-info mp-text-margin-5">可用投资额度（元）</div>
+            </div>
+
+            <!-- 推荐项目 -->
+            <div class="weui-flex">
+                <div class="weui-flex__item flex_item mp-margin-5_bd">
+                    <div class="placeholder recommend-projects"><img src="/ky/images/mp/hot.png" alt="" style="width:20px;">推荐项目</div>
+                </div>
+            </div>
+
+            <div id="loanRefresh" class="minirefresh-wrap">
+
+                <div class="minirefresh-scroll">
+
+                    <div class="weui-flex">
+                        <div class="weui-flex__item flex_item mp-margin-5_bd">
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <span class="mp-text-info mp-text-margin-5 mp-text-size-10">牛仔成衣出口生产融资</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="weui-flex info-border-right">
-                            <div class="weui-flex__item">
-                                <span class="mp-text-info mp-text-margin-5 mp-text-size-28">5,200,000</span>
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <div class="weui-flex">
+                                        <div class="weui-flex__item">
+                                            <p class="mp-text-danger mp-text-margin-5 mp-text-size-18">10.55%</p>
+                                            <p class="mp-text-desc mp-text-margin-5 mp-text-size-10">期望收益率</p>
+                                        </div>
+                                        <div class="weui-flex__item">
+                                            <p class="mp-text-info mp-text-margin-5 mp-text-size-18">45 天</p>
+                                            <p class="mp-text-desc mp-text-margin-5 mp-text-size-10">预计投资周期</p>
+                                        </div>
+                                        <div class="weui-flex__item">
+                                            <p class="mp-text-info mp-text-margin-5 mp-text-size-18">294,500 元</p>
+                                            <p class="mp-text-desc mp-text-margin-5 mp-text-size-10">可投金额（1万元起投）</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <span class="mp-text-desc mp-text-margin-5 mp-text-size-10" style="float: left;">预计起息日 2019年6月25日</span>
+                                    <span class="mp-text-desc mp-text-margin-5 mp-text-size-10" style="float: right;">16天后截止投标</span>
+                                </div>
+                            </div>
+                            <div class="weui-flex">
+                                <div class="weui-flex__item flex_item mp-margin-10_bd">
+                                    <a href="javascript:;" class="weui-btn weui-btn_block weui-btn_bootstrap-primary" style="width: 98%;">立刻投标</a>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="weui-flex__item">
-                        <div class="weui-flex">
-                            <div class="weui-flex__item">
-                                <div class="mp-text-info mp-text-margin-5">已完成项目数</div>
+                    <div class="weui-flex">
+                        <div class="weui-flex__item flex_item mp-margin-5_bd">
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <span class="mp-text-info mp-text-margin-5 mp-text-size-10">牛仔成衣出口生产融资</span>
+                                </div>
+                            </div>
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <div class="weui-flex">
+                                        <div class="weui-flex__item">
+                                            <p class="mp-text-danger mp-text-margin-5 mp-text-size-18">10.55%</p>
+                                            <p class="mp-text-desc mp-text-margin-5 mp-text-size-10">期望收益率</p>
+                                        </div>
+                                        <div class="weui-flex__item">
+                                            <p class="mp-text-info mp-text-margin-5 mp-text-size-18">45 天</p>
+                                            <p class="mp-text-desc mp-text-margin-5 mp-text-size-10">预计投资周期</p>
+                                        </div>
+                                        <div class="weui-flex__item">
+                                            <p class="mp-text-info mp-text-margin-5 mp-text-size-18">294,500 元</p>
+                                            <p class="mp-text-desc mp-text-margin-5 mp-text-size-10">可投金额（1万元起投）</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <span class="mp-text-desc mp-text-margin-5 mp-text-size-10" style="float: left;">预计起息日 2019年6月25日</span>
+                                    <span class="mp-text-desc mp-text-margin-5 mp-text-size-10" style="float: right;">16天后截止投标</span>
+                                </div>
+                            </div>
+                            <div class="weui-flex">
+                                <div class="weui-flex__item flex_item mp-margin-10_bd">
+                                    <a href="javascript:;" class="weui-btn weui-btn_block weui-btn_bootstrap-primary" style="width: 98%;">立刻投标</a>
+                                </div>
                             </div>
                         </div>
-                        <div class="weui-flex">
-                            <div class="weui-flex__item">
-                                <span class="mp-text-info mp-text-margin-5 mp-text-size-28">30</span>
+                    </div>
+
+                    <div class="weui-flex">
+                        <div class="weui-flex__item flex_item mp-margin-5_bd">
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <span class="mp-text-info mp-text-margin-5 mp-text-size-10">牛仔成衣出口生产融资</span>
+                                </div>
+                            </div>
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <div class="weui-flex">
+                                        <div class="weui-flex__item">
+                                            <p class="mp-text-danger mp-text-margin-5 mp-text-size-18">10.55%</p>
+                                            <p class="mp-text-desc mp-text-margin-5 mp-text-size-10">期望收益率</p>
+                                        </div>
+                                        <div class="weui-flex__item">
+                                            <p class="mp-text-info mp-text-margin-5 mp-text-size-18">45 天</p>
+                                            <p class="mp-text-desc mp-text-margin-5 mp-text-size-10">预计投资周期</p>
+                                        </div>
+                                        <div class="weui-flex__item">
+                                            <p class="mp-text-info mp-text-margin-5 mp-text-size-18">294,501 元</p>
+                                            <p class="mp-text-desc mp-text-margin-5 mp-text-size-10">可投金额（1万元起投）</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <span class="mp-text-desc mp-text-margin-5 mp-text-size-10" style="float: left;">预计起息日 2019年6月25日</span>
+                                    <span class="mp-text-desc mp-text-margin-5 mp-text-size-10" style="float: right;">16天后截止投标</span>
+                                </div>
+                            </div>
+                            <div class="weui-flex">
+                                <div class="weui-flex__item flex_item mp-margin-10_bd">
+                                    <a href="javascript:;" class="weui-btn weui-btn_block weui-btn_bootstrap-primary" style="width: 98%;">立刻投标</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="weui-flex">
+                        <div class="weui-flex__item flex_item mp-margin-5_bd">
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <span class="mp-text-info mp-text-margin-5 mp-text-size-10">牛仔成衣出口生产融资</span>
+                                </div>
+                            </div>
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <div class="weui-flex">
+                                        <div class="weui-flex__item">
+                                            <p class="mp-text-danger mp-text-margin-5 mp-text-size-18">10.55%</p>
+                                            <p class="mp-text-desc mp-text-margin-5 mp-text-size-10">期望收益率</p>
+                                        </div>
+                                        <div class="weui-flex__item">
+                                            <p class="mp-text-info mp-text-margin-5 mp-text-size-18">45 天</p>
+                                            <p class="mp-text-desc mp-text-margin-5 mp-text-size-10">预计投资周期</p>
+                                        </div>
+                                        <div class="weui-flex__item">
+                                            <p class="mp-text-info mp-text-margin-5 mp-text-size-18">294,502 元</p>
+                                            <p class="mp-text-desc mp-text-margin-5 mp-text-size-10">可投金额（1万元起投）</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="weui-flex">
+                                <div class="weui-flex__item">
+                                    <span class="mp-text-desc mp-text-margin-5 mp-text-size-10" style="float: left;">预计起息日 2019年6月25日</span>
+                                    <span class="mp-text-desc mp-text-margin-5 mp-text-size-10" style="float: right;">16天后截止投标</span>
+                                </div>
+                            </div>
+                            <div class="weui-flex">
+                                <div class="weui-flex__item flex_item mp-margin-10_bd">
+                                    <a href="javascript:;" class="weui-btn weui-btn_block weui-btn_bootstrap-primary" style="width: 98%;">立刻投标</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -85,180 +238,10 @@
             </div>
         </div>
 
-        <!-- 推荐项目 -->
-        <div class="weui-flex">
-            <div class="weui-flex__item flex_item mp-margin-5_bd">
-                <div class="placeholder recommend-projects"><img src="/ky/images/mp/hot.png" alt="" style="width:20px;">推荐项目</div>
-            </div>
-        </div>
-
-        <div id="loanRefresh" class="minirefresh-wrap">
-
-            <div class="minirefresh-scroll">
-
-                <div class="weui-flex">
-                    <div class="weui-flex__item flex_item mp-margin-5_bd">
-                        <div class="weui-flex">
-                            <div class="weui-flex__item">
-                                <span class="mp-text-info mp-text-margin-5 mp-text-size-10">牛仔成衣出口生产融资</span>
-                            </div>
-                        </div>
-                        <div class="weui-flex">
-                            <div class="weui-flex__item">
-                                <div class="weui-flex">
-                                    <div class="weui-flex__item">
-                                        <p class="mp-text-danger mp-text-margin-5 mp-text-size-18">10.55%</p>
-                                        <p class="mp-text-desc mp-text-margin-5 mp-text-size-10">期望收益率</p>
-                                    </div>
-                                    <div class="weui-flex__item">
-                                        <p class="mp-text-info mp-text-margin-5 mp-text-size-18">45 天</p>
-                                        <p class="mp-text-desc mp-text-margin-5 mp-text-size-10">预计投资周期</p>
-                                    </div>
-                                    <div class="weui-flex__item">
-                                        <p class="mp-text-info mp-text-margin-5 mp-text-size-18">294,500 元</p>
-                                        <p class="mp-text-desc mp-text-margin-5 mp-text-size-10">可投金额（1万元起投）</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="weui-flex">
-                            <div class="weui-flex__item">
-                                <span class="mp-text-desc mp-text-margin-5 mp-text-size-10" style="float: left;">预计起息日 2019年6月25日</span>
-                                <span class="mp-text-desc mp-text-margin-5 mp-text-size-10" style="float: right;">16天后截止投标</span>
-                            </div>
-                        </div>
-                        <div class="weui-flex">
-                            <div class="weui-flex__item flex_item mp-margin-10_bd">
-                                <a href="javascript:;" class="weui-btn weui-btn_block weui-btn_bootstrap-primary" style="width: 98%;">立刻投标</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="weui-flex">
-                    <div class="weui-flex__item flex_item mp-margin-5_bd">
-                        <div class="weui-flex">
-                            <div class="weui-flex__item">
-                                <span class="mp-text-info mp-text-margin-5 mp-text-size-10">牛仔成衣出口生产融资</span>
-                            </div>
-                        </div>
-                        <div class="weui-flex">
-                            <div class="weui-flex__item">
-                                <div class="weui-flex">
-                                    <div class="weui-flex__item">
-                                        <p class="mp-text-danger mp-text-margin-5 mp-text-size-18">10.55%</p>
-                                        <p class="mp-text-desc mp-text-margin-5 mp-text-size-10">期望收益率</p>
-                                    </div>
-                                    <div class="weui-flex__item">
-                                        <p class="mp-text-info mp-text-margin-5 mp-text-size-18">45 天</p>
-                                        <p class="mp-text-desc mp-text-margin-5 mp-text-size-10">预计投资周期</p>
-                                    </div>
-                                    <div class="weui-flex__item">
-                                        <p class="mp-text-info mp-text-margin-5 mp-text-size-18">294,500 元</p>
-                                        <p class="mp-text-desc mp-text-margin-5 mp-text-size-10">可投金额（1万元起投）</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="weui-flex">
-                            <div class="weui-flex__item">
-                                <span class="mp-text-desc mp-text-margin-5 mp-text-size-10" style="float: left;">预计起息日 2019年6月25日</span>
-                                <span class="mp-text-desc mp-text-margin-5 mp-text-size-10" style="float: right;">16天后截止投标</span>
-                            </div>
-                        </div>
-                        <div class="weui-flex">
-                            <div class="weui-flex__item flex_item mp-margin-10_bd">
-                                <a href="javascript:;" class="weui-btn weui-btn_block weui-btn_bootstrap-primary" style="width: 98%;">立刻投标</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="weui-flex">
-                    <div class="weui-flex__item flex_item mp-margin-5_bd">
-                        <div class="weui-flex">
-                            <div class="weui-flex__item">
-                                <span class="mp-text-info mp-text-margin-5 mp-text-size-10">牛仔成衣出口生产融资</span>
-                            </div>
-                        </div>
-                        <div class="weui-flex">
-                            <div class="weui-flex__item">
-                                <div class="weui-flex">
-                                    <div class="weui-flex__item">
-                                        <p class="mp-text-danger mp-text-margin-5 mp-text-size-18">10.55%</p>
-                                        <p class="mp-text-desc mp-text-margin-5 mp-text-size-10">期望收益率</p>
-                                    </div>
-                                    <div class="weui-flex__item">
-                                        <p class="mp-text-info mp-text-margin-5 mp-text-size-18">45 天</p>
-                                        <p class="mp-text-desc mp-text-margin-5 mp-text-size-10">预计投资周期</p>
-                                    </div>
-                                    <div class="weui-flex__item">
-                                        <p class="mp-text-info mp-text-margin-5 mp-text-size-18">294,501 元</p>
-                                        <p class="mp-text-desc mp-text-margin-5 mp-text-size-10">可投金额（1万元起投）</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="weui-flex">
-                            <div class="weui-flex__item">
-                                <span class="mp-text-desc mp-text-margin-5 mp-text-size-10" style="float: left;">预计起息日 2019年6月25日</span>
-                                <span class="mp-text-desc mp-text-margin-5 mp-text-size-10" style="float: right;">16天后截止投标</span>
-                            </div>
-                        </div>
-                        <div class="weui-flex">
-                            <div class="weui-flex__item flex_item mp-margin-10_bd">
-                                <a href="javascript:;" class="weui-btn weui-btn_block weui-btn_bootstrap-primary" style="width: 98%;">立刻投标</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="weui-flex">
-                    <div class="weui-flex__item flex_item mp-margin-5_bd">
-                        <div class="weui-flex">
-                            <div class="weui-flex__item">
-                                <span class="mp-text-info mp-text-margin-5 mp-text-size-10">牛仔成衣出口生产融资</span>
-                            </div>
-                        </div>
-                        <div class="weui-flex">
-                            <div class="weui-flex__item">
-                                <div class="weui-flex">
-                                    <div class="weui-flex__item">
-                                        <p class="mp-text-danger mp-text-margin-5 mp-text-size-18">10.55%</p>
-                                        <p class="mp-text-desc mp-text-margin-5 mp-text-size-10">期望收益率</p>
-                                    </div>
-                                    <div class="weui-flex__item">
-                                        <p class="mp-text-info mp-text-margin-5 mp-text-size-18">45 天</p>
-                                        <p class="mp-text-desc mp-text-margin-5 mp-text-size-10">预计投资周期</p>
-                                    </div>
-                                    <div class="weui-flex__item">
-                                        <p class="mp-text-info mp-text-margin-5 mp-text-size-18">294,502 元</p>
-                                        <p class="mp-text-desc mp-text-margin-5 mp-text-size-10">可投金额（1万元起投）</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="weui-flex">
-                            <div class="weui-flex__item">
-                                <span class="mp-text-desc mp-text-margin-5 mp-text-size-10" style="float: left;">预计起息日 2019年6月25日</span>
-                                <span class="mp-text-desc mp-text-margin-5 mp-text-size-10" style="float: right;">16天后截止投标</span>
-                            </div>
-                        </div>
-                        <div class="weui-flex">
-                            <div class="weui-flex__item flex_item mp-margin-10_bd">
-                                <a href="javascript:;" class="weui-btn weui-btn_block weui-btn_bootstrap-primary" style="width: 98%;">立刻投标</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <?php echo $this->render(SEED_WWW_TPL . '/mp/footer.phtml'); ?>
     </div>
 
-    <?php echo $this->render(SEED_WWW_TPL . 'footer.phtml'); ?>
-</div>
-
-<?php echo $this->render(SEED_WWW_TPL . 'footerLink.phtml'); ?>
+<?php echo $this->render(SEED_WWW_TPL . '/mp/footerLink.phtml'); ?>
 
 <script type="text/javascript">
     $(function () {

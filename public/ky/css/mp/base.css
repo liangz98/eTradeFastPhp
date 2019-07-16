@@ -47,6 +47,10 @@ body {
     background-color: var(--text-line);
 }
 
+.minirefresh-wrap {
+    top: 189px;
+}
+
 .placeholder {
     /*margin: 5px;*/
     padding: 0 10px;
