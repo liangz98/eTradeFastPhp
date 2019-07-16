@@ -6,6 +6,7 @@
 	<link href="/ky/css/login/login.css" rel="stylesheet">
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
 	<link href="/ky/css/register/register.css" rel="stylesheet">
+    <link href="/ky/bootstrap-select-1.12.4-dist/css/bootstrap-select.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -70,7 +71,7 @@
 				<div class="form-group address">
 					<label for="regdCountryCode" class="col-sm-3 col-xs-12 control-label"><?php echo $this->translate('address'); ?></label>
 					<div class="col-sm-7">
-						<select class="form-control" name="regdCountryCode" id="regdCountryCode" required>
+						<select class="form-control selectpicker" name="regdCountryCode" id="regdCountryCode" required data-live-search="true">
                             <?php echo $this->ShowDictionaryList($this->dic_Setting['COUNTRY_ISO_CODE'], $this->userLangCode, $this->dic_Setting['COUNTRY_ISO_CODE']); ?>
 						</select>
 					</div>
@@ -143,6 +144,8 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerSimple.phtml'); ?>
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script type="text/javascript" src="/ky/bootstrap-select-1.12.4-dist/js/bootstrap-select.min.js"></script>
 
 <script type="text/javascript">
     var serviceContractData = '';

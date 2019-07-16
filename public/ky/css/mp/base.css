@@ -1,7 +1,7 @@
 body,
 html {
     height: 100%;
-    font-size: 17px;
+    font-size: 13px !important;
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -14,19 +14,70 @@ body {
     --brand-info:    #5bc0de;
     --brand-warning: #f0ad4e;
     --brand-danger: #d9534f;
+    --text-info: #666666;
+    --text-danger: #d9534f;
+    --text-desc: #999999;
+    --text-size-10: 10px;
+    --text-size-13: 13px;
+    --text-size-18: 18px;
+    --text-size-28: 28px;
 
     background-color: var(--bg-primary);
 
 }
 
 .placeholder {
-    margin: 5px;
+    /*margin: 5px;*/
     padding: 0 10px;
-    background-color: var(--bg-placeholder);
+    /*background-color: var(--bg-placeholder);*/
     height: 2.3em;
     line-height: 2.3em;
     text-align: center;
     color: rgba(0,0,0,.3);
+}
+
+.mp-margin-5_hd {
+    margin: 0 5px 5px 5px;
+}
+
+.mp-margin-5_bd {
+    margin-bottom: 5px;
+}
+
+.mp-margin-10_bd {
+    margin-bottom: 10px;
+}
+
+.mp-text-margin-5 {
+    margin: 5px;
+}
+
+.mp-text-info {
+    color: var(--text-info);
+}
+
+.mp-text-danger {
+    color: var(--text-danger);
+}
+
+.mp-text-desc {
+    color: var(--text-desc);
+}
+
+.mp-text-size-10 {
+    font-size: var(--text-size-10) !important;
+}
+
+.mp-text-size-13 {
+    font-size: var(--text-size-13) !important;
+}
+
+.mp-text-size-18 {
+    font-size: var(--text-size-18) !important;
+}
+
+.mp-text-size-28 {
+    font-size: var(--text-size-28) !important;
 }
 
 .flex_item {
