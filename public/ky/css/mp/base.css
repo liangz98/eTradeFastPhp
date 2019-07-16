@@ -17,6 +17,7 @@ body {
     --text-info: #666666;
     --text-danger: #d9534f;
     --text-desc: #999999;
+    --text-line: #f6f6f6;
     --text-size-10: 10px;
     --text-size-13: 13px;
     --text-size-18: 18px;
@@ -24,6 +25,26 @@ body {
 
     background-color: var(--bg-primary);
 
+}
+
+.info-border-bottom:after {
+    content: '';
+    position: absolute;
+    left: 3%;
+    height: 1px;
+    top: 70px;
+    width: 94%;
+    background-color: var(--text-line);
+}
+
+.info-border-right:before {
+    content: '';
+    position: relative;
+    left: 97%;
+    top: -18px;
+    width: 1px;
+    height: 44px;
+    background-color: var(--text-line);
 }
 
 .placeholder {
