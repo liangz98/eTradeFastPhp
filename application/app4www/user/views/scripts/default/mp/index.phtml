@@ -5,10 +5,10 @@
     <title>快移资金</title>
 </head>
 <body ontouchstart>
-
     <div class="weui-tab">
         <!-- 主体 -->
         <div class="weui-tab__bd">
+            <!-- 综合信息 -->
             <div class="weui-flex">
                 <div class="weui-flex__item flex_item mp-margin-5_hd">
                     <div class="weui-flex info-border-bottom">
@@ -75,10 +75,10 @@
                 </div>
             </div>
 
+            <!-- 下拉刷新 minirefresh 引用的头 -->
             <div id="loanRefresh" class="minirefresh-wrap">
-
-                <div class="minirefresh-scroll">
-
+                <div class="minirefresh-scroll minirefresh-scroll-background-color">
+                    <!-- 列表内容 -->
                     <div class="weui-flex">
                         <div class="weui-flex__item flex_item mp-margin-5_bd">
                             <div class="weui-flex">
@@ -245,13 +245,12 @@
 
 <script type="text/javascript">
     $(function () {
-        $(".weui-tabbar__item").click(function () {
-            var tabTarget = $(this).attr("data-target");
-            $(".weui-tabbar__item").removeClass("weui-bar__item_on");
-            $(this).addClass("weui-bar__item_on");
-
-            $(".weui-tab__bd-item").removeClass("weui-tab__bd-item--active");
-            $("#" + tabTarget).addClass("weui-tab__bd-item--active");
+        $('.weui-tabbar').find('a').each(function () {
+            if (this.href === document.location.href) {
+                $(this).addClass("weui-bar__item_on");
+            } else {
+                $(this).removeClass('weui-bar__item_on');
+            }
         });
     });
 

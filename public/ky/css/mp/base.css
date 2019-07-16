@@ -47,8 +47,36 @@ body {
     background-color: var(--text-line);
 }
 
+/* 首页 */
 .minirefresh-wrap {
-    top: 189px;
+    top: 189px !important;
+}
+
+.minirefresh-scroll-background-color {
+    background-color: var(--bg-primary) !important;
+}
+
+/* 可投列表页 */
+.minirefresh-wrap-loan-list {
+    top: 177px !important;
+}
+.native-scroll {
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+.scroll__list {
+    position: relative;
+    -webkit-overflow-scrolling: touch;
+    font-size: 0;
+    white-space: nowrap;
+    overflow-x: auto;
+}
+.scroll__item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    font-size: 15px;
 }
 
 .placeholder {
@@ -59,6 +87,15 @@ body {
     line-height: 2.3em;
     text-align: center;
     color: rgba(0,0,0,.3);
+}
+
+.risk-warnings {
+    height: 2.3em;
+    line-height: 2.3em;
+    color: var(--text-danger);
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 .mp-margin-5_hd {

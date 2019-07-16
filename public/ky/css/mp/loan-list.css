@@ -1,0 +1,3 @@
+.native-scroll .scroll__list .scroll__item a {
+    font-size: var(--text-size-10);
+}
