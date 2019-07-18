@@ -19,6 +19,7 @@ body {
     --text-desc: #999999;
     --text-line: #f6f6f6;
     --text-size-10: 10px;
+    --text-size-11: 11px;
     --text-size-13: 13px;
     --text-size-18: 18px;
     --text-size-28: 28px;
@@ -56,29 +57,6 @@ body {
     background-color: var(--bg-primary) !important;
 }
 
-/* 可投列表页 */
-.minirefresh-wrap-loan-list {
-    top: 177px !important;
-}
-.native-scroll {
-    overflow: hidden;
-    margin-bottom: 10px;
-}
-.scroll__list {
-    position: relative;
-    -webkit-overflow-scrolling: touch;
-    font-size: 0;
-    white-space: nowrap;
-    overflow-x: auto;
-}
-.scroll__item {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 120px;
-    font-size: 15px;
-}
-
 .placeholder {
     /*margin: 5px;*/
     padding: 0 10px;
@@ -114,20 +92,28 @@ body {
     margin: 5px;
 }
 
+.mp-text-margin-top-5 {
+    margin-top: 5px;
+}
+
 .mp-text-info {
-    color: var(--text-info);
+    color: var(--text-info) !important;
 }
 
 .mp-text-danger {
-    color: var(--text-danger);
+    color: var(--text-danger) !important;
 }
 
 .mp-text-desc {
-    color: var(--text-desc);
+    color: var(--text-desc) !important;
 }
 
 .mp-text-size-10 {
     font-size: var(--text-size-10) !important;
+}
+
+.mp-text-size-11 {
+    font-size: var(--text-size-11) !important;
 }
 
 .mp-text-size-13 {
@@ -175,4 +161,25 @@ body {
 
 .weui-btn_bootstrap-primary {
     background-color: var(--brand-primary);
+}
+
+.weui-btn_bootstrap-info {
+    background-color: var(--brand-info);
+}
+
+.weui-flex__item_auto {
+    -webkit-flex: auto;
+    flex: auto;
+}
+
+.weui-flex__item_100 {
+    width: 100px;
+}
+
+.weui-flex__item_110 {
+    width: 110px;
+}
+
+.weui-flex__item_120 {
+    width: 120px;
 }

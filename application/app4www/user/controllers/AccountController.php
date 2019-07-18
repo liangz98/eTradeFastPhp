@@ -152,63 +152,57 @@ class AccountController extends Kyapi_Controller_Action
         if ($this->_request->isPost()) {
             // 设置请求数据
             $_requestOb = $this->_requestObject;
-            //编辑用户信息
-            $_account = array();
-            $_account['name'] = $this->_request->getParam('name');
-            $_account['ecommloginname'] = $this->_request->getParam('email');
-            $_account['phone'] = $this->_request->getParam('phone');
+            // 编辑用户信息
+            $contact = array();
+            $contact['name'] = $this->_request->getParam('name');
+            $contact['ecommloginname'] = $this->_request->getParam('email');
+            $contact['phone'] = $this->_request->getParam('phone');
 
             $ecommrole = $this->_request->getParam('ecommrole');
-            $_account['ecommrole'] = implode(',', $ecommrole);  // 将数组转成字符串, 并以逗号分隔
-            $_account['mobilePhone'] = $this->_request->getParam('mobilePhone');
-            $_account['email'] = $this->_request->getParam('email');
-            $_account['salutation'] = $this->_request->getParam('salutation');
-            $ddtime = $this->_request->getParam('birthdate');
-            if (!empty($ddtime)) {
-                $date3 = date("Y-m-d\TH:i:s", strtotime($ddtime));
+            $contact['ecommrole'] = implode(',', $ecommrole);  // 将数组转成字符串, 并以逗号分隔
+            $contact['mobilePhone'] = $this->_request->getParam('mobilePhone');
+            $contact['email'] = $this->_request->getParam('email');
+            $contact['salutation'] = $this->_request->getParam('salutation');
+
+            $dateTime = $this->_request->getParam('birthdate');
+            if (!empty($dateTime)) {
+                $birthdate = date("Y-m-d\TH:i:s", strtotime($dateTime));
             } else {
-                $date3 = null;
+                $birthdate = null;
             }
-            $_account['birthdate'] = $date3;
-            $_account['department'] = $this->_request->getParam('department');
-            //判断是否为默认联系人
-            //            $isDefaultPublic=($this->_request->getParam('isDefaultPublic')=='1')?true:false;
-            //            $_account['isDefaultPublic']=$isDefaultPublic;
-            //判断是否为订单联系人
+            $contact['birthdate'] = $birthdate;
+            $contact['department'] = $this->_request->getParam('department');
 
             $isPublicContact = $this->_request->getParam('isPublicContact');
             if ($isPublicContact == '1') {
-                $_account['isPublicContact'] = true;
+                $contact['isPublicContact'] = true;
             } else {
-                $_account['isPublicContact'] = false;
+                $contact['isPublicContact'] = false;
             }
 
+            $contact['title'] = $this->_request->getParam('title');
+            $contact['sex'] = $this->_request->getParam('sex');
+            $contact['fax'] = $this->_request->getParam('fax');
+            $contact['assistantName'] = $this->_request->getParam('assistantName');
+            $contact['assistantPhone'] = $this->_request->getParam('assistantPhone');
+            $contact['mailingCountryCode'] = $this->_request->getParam('mailingCountryCode');
+            $contact['mailingStateCode'] = $this->_request->getParam('mailingStateCode');
+            $contact['mailingCityCode'] = $this->_request->getParam('mailingCityCode');
+            $contact['mailingAddress'] = $contact['mailingCountryCode'] . $contact['mailingStateCode'] . $contact['mailingCityCode'];
+            $contact['mailingStreet'] = $this->_request->getParam('mailingStreet');
+            $contact['mailingZipCode'] = $this->_request->getParam('mailingZipCode');
+            $contact['othAddress'] = $this->_request->getParam('othAddress');
+            $contact['mailingStreet'] = $this->_request->getParam('mailingStreet');
+            $contact['certificateType'] = $this->_request->getParam('certificateType');
+            $contact['certificateNo'] = $this->_request->getParam('certificateNo');
+            $contact['identityType'] = '01';   // 证件类型:默认身份证
+            $contact['identityNo'] = $this->_request->getParam('identityNo');
 
-            $_account['title'] = $this->_request->getParam('title');
-            $_account['sex'] = $this->_request->getParam('sex');
-            $_account['fax'] = $this->_request->getParam('fax');
-            $_account['assistantName'] = $this->_request->getParam('assistantName');
-            $_account['assistantPhone'] = $this->_request->getParam('assistantPhone');
-            $_account['mailingCountryCode'] = $this->_request->getParam('mailingCountryCode');
-            $_account['mailingStateCode'] = $this->_request->getParam('mailingStateCode');
-            $_account['mailingCityCode'] = $this->_request->getParam('mailingCityCode');
-            $_account['mailingAddress'] = $_account['mailingCountryCode'] . $_account['mailingStateCode'] . $_account['mailingCityCode'];
-            $_account['mailingStreet'] = $this->_request->getParam('mailingStreet');
-            $_account['mailingZipCode'] = $this->_request->getParam('mailingZipCode');
-            $_account['othAddress'] = $this->_request->getParam('othAddress');
-            $_account['mailingStreet'] = $this->_request->getParam('mailingStreet');
-            $_account['certificateType'] = $this->_request->getParam('certificateType');
-            $_account['certificateNo'] = $this->_request->getParam('certificateNo');
-            /*添加字段证件号码  证件类型*/
-            //  $_account['identityType'] = $this->_request->getParam('identityType');
-            $_account['identityType'] = '01';
-            $_account['identityNo'] = $this->_request->getParam('identityNo');
-
-            $userKY = $this->json->addContactApi($_requestOb, $_account);
+            $userKY = $this->json->addContactApi($_requestOb, $contact);
             $userEdit = $this->objectToArray(json_decode($userKY));
 
             if ($userEdit['status'] != 1) {
-                $this->view->e = $this->objectToArray($_account);
+                $this->view->e = $this->objectToArray($contact);
                 $this->view->errMsg = $userEdit['error'];
             } else {
                 $resultMsg = base64_encode($this->view->translate('tip_add_success'));
@@ -240,66 +234,50 @@ class AccountController extends Kyapi_Controller_Action
         $this->view->ecommrole = explode(",", $userData['result']['ecommrole']);
 
         if ($this->_request->isPost()) {
-            //编辑用户信息
-            $_account = array();
-            $_account['contactID'] = $_contactID;
-            //   $_account['name'] = $this->_request->getParam('name');
-            $_account['ecommloginname'] = $userData['result']['ecommloginname'];
-            $_account['phone'] = $this->_request->getParam('phone');
-            //判断是否为默认联系人
-            //                $isDefaultPublic=($this->_request->getParam('isDefaultPublic')=='1')?true:false;
-            //                $_account['isDefaultPublic']=$isDefaultPublic;
-            //判断是否为订单联系人
+            // 编辑用户信息
+            $contact = array();
+
+            // 判断是否为订单联系人
             $isPublicContact = $this->_request->getParam('isPublicContact');
             if ($isPublicContact == '1') {
-                $_account['isPublicContact'] = true;
+                $contact['isPublicContact'] = true;
             } else {
-                $_account['isPublicContact'] = false;
-            }
-            //员工状态 4.10 文档提出 编辑、view页面停用  contactStatus
-            $emrole = $this->_request->getParam('ecommrole');
-            $emrole2 = implode(',', $emrole);
-            $_account['ecommrole'] = $emrole2;
-            $_account['mobilePhone'] = $this->_request->getParam('mobilePhone');
-            $_account['email'] = $this->_request->getParam('email');
-            $_account['salutation'] = $this->_request->getParam('salutation');
-            $ddtime = $this->_request->getParam('birthdate');
-            if (!empty($ddtime)) {
-                $date3 = date("Y-m-d\TH:i:s", strtotime($ddtime));
-            } else {
-                $date3 = null;
-            }
-            $_account['birthdate'] = $date3;
-            $_account['department'] = $this->_request->getParam('department');
-            $_account['title'] = $this->_request->getParam('title');
-            $_account['sex'] = $this->_request->getParam('sex');
-            $_account['fax'] = $this->_request->getParam('fax');
-            $_account['assistantName'] = $this->_request->getParam('assistantName');
-            $_account['assistantPhone'] = $this->_request->getParam('assistantPhone');
-            $_account['mailingCountryCode'] = $this->_request->getParam('mailingCountryCode');
-            $_account['mailingStateCode'] = $this->_request->getParam('mailingStateCode');
-            $_account['mailingCityCode'] = $this->_request->getParam('mailingCityCode');
-            $_account['mailingAddress'] = $_account['mailingCountryCode'] . $_account['mailingStateCode'] . $_account['mailingCityCode'];
-            $_account['mailingStreet'] = $this->_request->getParam('mailingStreet');
-            $_account['mailingZipCode'] = $this->_request->getParam('mailingZipCode');
-            $_account['mailingStreet'] = $this->_request->getParam('mailingStreet');
-            /*添加字段证件号码  证件类型*/
-            $_account['identityType'] = '01';
-            //  $_account['identityType'] = $this->_request->getParam('identityType');
-            //判断状态修改name 和身份证号码
-            if ($userData['result']['realAuthStatus'] == 0 || $userData['result']['realAuthStatus'] == -1) {
-                $_account['name'] = $this->_request->getParam('name');
-                $_account['identityNo'] = $this->_request->getParam('identityNo');
-            } else {
-                $_account['name'] = $userData['result']['name'];
-                $_account['identityNo'] = $userData['result']['identityNo'];
+                $contact['isPublicContact'] = false;
             }
 
-            $userKY = $this->json->editContactApi($_requestOb, $_account);
+            // 员工状态 4.10 文档提出 编辑、view页面停用  contactStatus
+            $ecommrole = $this->_request->getParam('ecommrole');
+            $contact['ecommrole'] = implode(',', $ecommrole);  // 将数组转成字符串, 并以逗号分隔
+
+            // 补充原来的值
+            $contact['contactID'] = $_contactID;
+            $contact['ecommloginname'] = $userData['result']['ecommloginname'];
+            $contact['phone'] = $userData['result']['phone'];
+            $contact['mobilePhone'] = $userData['result']['mobilePhone'];
+            $contact['email'] = $userData['result']['email'];
+            $contact['salutation'] = $userData['result']['salutation'];
+            $contact['birthdate'] = $userData['result']['birthdate'];
+            $contact['department'] = $userData['result']['department'];
+            $contact['title'] = $userData['result']['title'];
+            $contact['sex'] = $userData['result']['sex'];
+            $contact['fax'] = $userData['result']['fax'];
+            $contact['assistantName'] = $userData['result']['assistantName'];
+            $contact['assistantPhone'] = $userData['result']['assistantPhone'];
+            $contact['mailingCountryCode'] = $userData['result']['mailingCountryCode'];
+            $contact['mailingStateCode'] = $userData['result']['mailingStateCode'];
+            $contact['mailingCityCode'] = $userData['result']['mailingCityCode'];
+            $contact['mailingAddress'] = $userData['result']['mailingAddress'];
+            $contact['mailingStreet'] = $userData['result']['mailingStreet'];
+            $contact['mailingZipCode'] = $userData['result']['mailingZipCode'];
+            $contact['mailingStreet'] = $userData['result']['mailingStreet'];
+            $contact['identityType'] = $userData['result']['identityType'];
+            $contact['name'] = $userData['result']['name'];
+            $contact['identityNo'] = $userData['result']['identityNo'];
+
+            $userKY = $this->json->editContactApi($_requestOb, $contact);
             $userEdit = $this->objectToArray(json_decode($userKY));
 
             if ($userEdit['status'] != 1) {
-                $this->view->e = $this->objectToArray($_account);
                 $this->view->errMsg = $userEdit['error'];
             } else {
                 $resultMsg = base64_encode($this->view->translate('tip_edit_success'));

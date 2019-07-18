@@ -148,6 +148,7 @@
             },
             dataType: "json",
             success: function (data) {
+                var langCode = '<?php echo $this->userLangCode?>' === ''?'zh_CN':'<?php echo $this->userLangCode?>';
                 $.data(dataDict, 'dataDict', data);
 
                 $('#resultListTable').bootstrapTable({
@@ -203,6 +204,12 @@
                             if (value === undefined || value === '' || value === null) {
                                 value = "-";
                             }
+                            if (langCode === 'en_US') {
+                                if (row.vendorEnName !== '') {
+                                    value = row.vendorEnName;
+                                }
+                            }
+
                             var base = new Base64();
                             var resultEnCode = base.encode(row.orderID);
                             var href = "/user/pur/view?"+resultEnCode;

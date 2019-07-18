@@ -23,4 +23,5 @@ class Kyapi_Model_contact {
     public $ecommrole;
     public $account;
     public $isPersonAccount;
+    public $identityType;   // 证件类型
 }

@@ -24,12 +24,12 @@
 					<tr>
 						<td style="text-align: left"><?php echo $value->productName;?></td>
 						<td style="text-align: left"><?php echo $value->productModel;?></td>
-						<td style="text-align: left"><?php echo $this->delivery->crnCode;?><label><?php echo $value->buyerUnitPrice;?></label></td>
+						<td style="text-align: left"><?php echo $this->delivery->crnCode;?><label><?php echo $value->vendorUnitPrice;?></label></td>
 						<td style="text-align: left">
 							<input name="deliveryQuantity_edit" class="layui-input" value="<?php echo $value->deliveryQuantity;?>" />
 							<input type="hidden" name="orderItemID_edit" value="<?php echo $value->itemID;?>" />
 						</td>
-						<td style="text-align: left"><?php echo $this->delivery->crnCode?>&nbsp;<label id="itemID_<?php echo $value->itemID;?>"><?php echo $value->buyerTotalAmount;?></label></td>
+						<td style="text-align: left"><?php echo $this->delivery->crnCode?>&nbsp;<label id="itemID_<?php echo $value->itemID;?>"><?php echo $value->vendorTotalAmount;?></label></td>
 					</tr>
                 <?php endforeach; ?>
 				</tbody>

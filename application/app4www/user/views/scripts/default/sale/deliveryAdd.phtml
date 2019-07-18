@@ -30,7 +30,7 @@
 					<tr>
 						<td style="text-align: left; vertical-align: middle;"><?php echo $value->productName;?></td>
 						<td style="text-align: left"><?php echo $value->productModel;?></td>
-						<td style="text-align: left"><?php echo $this->deliveryCrnCode;?><label><?php echo $value->unitPrice;?></label></td>
+						<td style="text-align: left"><?php echo $this->deliveryCrnCode;?><label><?php echo $value->contractUnitPrice;?></label></td>
 						<td style="text-align: left">
 							<?php
 							$quantity = $value->quantity - $value->deliveryQuantity <= 0  ? 0 : $value->quantity - $value->deliveryQuantity;

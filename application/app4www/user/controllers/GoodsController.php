@@ -148,15 +148,31 @@ class GoodsController extends Kyapi_Controller_Action
         if (is_array($querySorts)) {
             $querySorts = $this->arrayToObject($querySorts);
         }
+
+        // 获取供应商列表
         $vendorResultObject = $this->json->listVendorPartnerApi($requestObject, $queryParams, $querySorts, $keyword, $skip, $limit);
         $vendorResult = json_decode($vendorResultObject)->result;
         $vendorList = array();
-        foreach ($vendorResult as $key => $item) {
-            $vendor = array();
-            $vendor["id"] = $item->toID;
-            $vendor["name"] = $item->toName;
+        if (empty($this->view->userLangCode) || $this->view->userLangCode == 'zh_CN') {
+            foreach ($vendorResult as $key => $item) {
+                $vendor = array();
+                $vendor["id"] = $item->toID;
+                $vendor["name"] = $item->toName;
 
-            $vendorList[$key] = $vendor;
+                $vendorList[$key] = $vendor;
+            }
+        } else {
+            foreach ($vendorResult as $key => $item) {
+                $vendor = array();
+                $vendor["id"] = $item->toID;
+                if (!empty($item->toEnName)) {
+                    $vendor["name"] = $item->toEnName;
+                } else {
+                    $vendor["name"] = $item->toName;
+                }
+
+                $vendorList[$key] = $vendor;
+            }
         }
         $this->view->vendorList = $vendorList;
 

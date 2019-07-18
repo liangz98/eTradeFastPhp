@@ -32,7 +32,7 @@
                     <td style="text-align: left; vertical-align: middle;"><?php echo $value->productModel; ?></td>
                     <td style="text-align: left; vertical-align: middle;"><?php echo $this->delivery->crnCode; ?>&nbsp;
                         <label class="buyerUnitPrice_">
-                            <?php echo number_format($value->buyerUnitPrice, 2);?>
+                            <?php echo number_format($value->vendorUnitPrice, 2);?>
                         </label>
                     </td>
                     <td style="text-align: left; vertical-align: middle;"><?php echo $value->deliveryQuantity; ?></td>
@@ -42,7 +42,7 @@
                     <td style="text-align: left; vertical-align: middle;"><?php echo $value->totalVolume; ?></td>
                     <td style="text-align: left; vertical-align: middle;"><?php echo $this->delivery->crnCode ?>&nbsp;
                         <label class="buyerTotalAmount_">
-                            <?php echo number_format($value->buyerTotalAmount, 2);?>
+                            <?php echo number_format($value->vendorTotalAmount, 2);?>
                         </label>
                     </td>
                 </tr>

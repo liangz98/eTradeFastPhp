@@ -92,7 +92,14 @@
 
                                         <dt><?php echo $this->translate('address'); ?></dt>
                                         <dd>
-                                            <?php echo $this->ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'], $this->userLangCode, $this->dic_Setting['COUNTRY_ISO_CODE'], $this->partner['regdCountryCode']) . "&nbsp;&nbsp;" . $this->partner['regdAddress'] ?>
+                                            <?php echo $this->ShowDictionaryTo($this->dic_Setting['COUNTRY_ISO_CODE'], $this->userLangCode, $this->dic_Setting['COUNTRY_ISO_CODE'], $this->partner['regdCountryCode']) . "&nbsp;&nbsp;"; ?>
+                                            <?php if ($this->userrgCode == 'CN') {
+                                                echo $this->partner['regdAddress'];
+                                            } else if (!empty($this->partner['regdEnAddress'])) {
+                                                echo $this->partner['regdEnAddress'];
+                                            } else {
+                                                echo $this->partner['regdAddress'];
+                                            } ?>
                                         </dd>
                                     </dl>
                                 </div>

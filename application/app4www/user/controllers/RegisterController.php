@@ -32,6 +32,7 @@ class RegisterController extends Kyapi_Controller_Action
 
                 if ($_contact->regdCountryCode == "CN") {
                     $_contact->crnCode = 'CNY';
+                    $_contact->identityType = '01'; // 默认证件类型: 身份证
                 } else {
                     $_contact->crnCode = 'USD';
                 }
