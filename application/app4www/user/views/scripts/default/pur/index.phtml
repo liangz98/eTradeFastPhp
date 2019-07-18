@@ -109,7 +109,7 @@
 
 <script type="text/javascript">
     var dataDict = {},
-        userLangCode = '<?php echo $this->userLangCode; ?>';
+        userLangCode = '<?php echo $this->userLangCode; ?>' === ''?'zh_CN':'<?php echo $this->userLangCode?>';
 
     $().ready(function() {
 
@@ -148,7 +148,6 @@
             },
             dataType: "json",
             success: function (data) {
-                var langCode = '<?php echo $this->userLangCode?>' === ''?'zh_CN':'<?php echo $this->userLangCode?>';
                 $.data(dataDict, 'dataDict', data);
 
                 $('#resultListTable').bootstrapTable({

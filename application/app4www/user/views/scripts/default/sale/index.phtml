@@ -108,7 +108,7 @@
 
 <script type="text/javascript">
     var dataDict = {},
-        userLangCode = '<?php echo $this->userLangCode; ?>';
+        userLangCode = '<?php echo $this->userLangCode; ?>' === ''?'zh_CN':'<?php echo $this->userLangCode?>';
 
     $().ready(function() {
 
@@ -202,6 +202,12 @@
                             if (value === undefined || value === '' || value === null) {
                                 value = "-";
                             }
+                            if (langCode === 'en_US') {
+                                if (row.buyerEnName !== '') {
+                                    value = row.buyerEnName;
+                                }
+                            }
+
                             var base = new Base64();
                             var resultEnCode = base.encode(row.orderID);
                             var href = "/user/sale/view?"+resultEnCode;
