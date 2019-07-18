@@ -280,14 +280,31 @@
 
 	// 邮箱登录名验证
 	jQuery.validator.addMethod("checkLoginName", function(value, element) {
-		return $.post("<?php echo $this->BaseUrl();?>/register/check", {
-				ecommloginname: value
-			},
-			function (data) {
-				data = jQuery.parseJSON(data);
-				return data.result == false;
-			}
-		);
+        var ajaxUrl = '/user/register/check-login-name-ajax',
+            canUse = true;
+        $.ajax({
+            type: "POST",
+            url: ajaxUrl,
+            async: false,
+            data: {
+                ecommloginname: value
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data.status === 1) {
+                    if (data.result === true) {
+                        canUse = false;
+                    }
+                }
+            },
+            beforeSend: function () {
+
+            },
+            error: function() {
+
+            }
+        });
+        return canUse;
 	}, "<?php echo $this->translate('de_use');?>");
 
 	// 密码规验证(8-30位  字母数字)

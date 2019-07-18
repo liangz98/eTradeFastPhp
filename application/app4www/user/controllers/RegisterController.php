@@ -1,19 +1,18 @@
 <?php
 
-class RegisterController extends Kyapi_Controller_Action
-{
-    public function preDispatch()
-    {
+class RegisterController extends Kyapi_Controller_Action {
+    public function preDispatch() {
         $this->view->cur_pos = 'login';
-        if(!empty($this->view->userID)){
+        if (!empty($this->view->userID)) {
             //已登录，不要重复登录
-            Mobile_Browser::redirect($this->view->translate('tip_login_two'),$this->view->seed_Setting['user_app_server']."/index");
+            Mobile_Browser::redirect($this->view->translate('tip_login_two'), $this->view->seed_Setting['user_app_server'] . "/index");
         }
     }
-    function indexAction(){
+
+    function indexAction() {
         if ($this->_request->isPost()) {
             try {
-                $_requestOb=$this->_requestObject;
+                $_requestOb = $this->_requestObject;
 
                 /*
                 注册会员模块
@@ -94,7 +93,10 @@ class RegisterController extends Kyapi_Controller_Action
                         $roleArray = explode(",", $userDetail['ecommrole']);
                         foreach ($roleArray as $k => $v) {
                             //#code 根据角色查询菜单 排序
-                            $rows[$k] = $menuM->fetchMenuList(null, array('role_name' => $v), array('order_by ASC', 't1.menu_id ASC'));
+                            $rows[$k] = $menuM->fetchMenuList(null, array('role_name' => $v), array(
+                                'order_by ASC',
+                                't1.menu_id ASC'
+                            ));
                         }
                         // $rowsAtt = Seed_Common::arrayUnique($rows,'menu_id');
 
@@ -179,11 +181,23 @@ class RegisterController extends Kyapi_Controller_Action
     }
 
     function checkAction() {
-
         $_requestOb = $this->_requestObject;
         $_userLoginName = $this->_request->getPost('ecommloginname');
         $resultObject = $this->json->checkLoginNameApi($_requestOb, $_userLoginName);
         echo $resultObject;
+        exit;
+    }
+
+    function checkLoginNameAjaxAction() {
+        $msg = array();
+        $requestObject = $this->_requestObject;
+        $loginName = $this->_request->getPost('ecommloginname');
+
+        $resultObject = $this->json->checkLoginNameApi($requestObject, $loginName);
+        $msg["status"] = json_decode($resultObject)->status;
+        $msg["result"] = json_decode($resultObject)->result;
+
+        echo json_encode($msg);
         exit;
     }
 

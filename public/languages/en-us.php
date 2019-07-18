@@ -643,7 +643,7 @@ return array(
     'settle_Lastlist'          => 'recent transaction',
     'settle_wtlist'            => 'transaction detail',
     'settle_paylist'           => 'Payment application',
-    'settle_VALL'              => 'shoe all',
+    'settle_VALL'              => 'show all',
     'settle_INF'               => 'detail',
     'settle_List'              => 'History',
     'settle_Run'               => 'Flow',
