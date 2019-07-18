@@ -170,7 +170,7 @@
                                             <th>批次状态</th>
                                             <th style="text-align: center"><?php echo $this->translate('date'); ?></th>
                                             <th style="text-align: center"><?php echo $this->translate('settle_DEC'); ?></th>
-                                            <th style="text-align: center"><?php echo $this->translate('operation'); ?></th>
+                                            <th style="text-align: center"><?php echo $this->translate('operatING'); ?></th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -182,21 +182,21 @@
                                                     </td>
                                                     <td style="cursor: pointer;" data-toggle="modal" data-target="#viewDelivery" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-status="<?php echo $v->deliveryStatus; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>"><?php echo $v->deliveryNo; ?></td>
                                                     <td style="cursor: pointer;" data-toggle="modal" data-target="#viewDelivery" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-status="<?php echo $v->deliveryStatus; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>"><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['DELIVERY_STATUE'], $v->deliveryStatus); ?></td>
-                                                    <td style="cursor: pointer;" data-toggle="modal" data-target="#viewDelivery" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-status="<?php echo $v->deliveryStatus; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>"><?php $date = date_create($v->readyDate); echo date_format($date,"Y年m月d日"); ?></td>
+                                                    <td style="cursor: pointer;" data-toggle="modal" data-target="#viewDelivery" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-status="<?php echo $v->deliveryStatus; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>"><?php $date = date_create($v->readyDate); echo date_format($date,"Y-m-d"); ?></td>
                                                     <td style="cursor: pointer;" data-toggle="modal" data-target="#viewDelivery" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-status="<?php echo $v->deliveryStatus; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>"><?php $summary = $v->summary; $replaceStr = "<br />"; echo str_replace('\n', $replaceStr, $summary); ?></td>
                                                     <td style="text-align: center">
                                                         <?php if ($v->deliveryStatus == 1 && $v->needExamine == False): ?>
-                                                            <a class="layui-btn layui-btn-warm" data-toggle="modal" data-target="#deliveryDeliver" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>" >发货</a>
+                                                            <a class="layui-btn layui-btn-warm" data-toggle="modal" data-target="#deliveryDeliver" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>" ><?php echo $this->translate('deGOODS'); ?></a>
                                                         <?php elseif ($v->deliveryStatus == 2): ?>
-                                                            <a class="layui-btn layui-btn-warm" data-toggle="modal" data-target="#deliveryDeliver" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>" >发货</a>
+                                                            <a class="layui-btn layui-btn-warm" data-toggle="modal" data-target="#deliveryDeliver" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>" ><?php echo $this->translate('deGOODS'); ?></a>
                                                         <?php elseif ($v->deliveryStatus == 3): ?>
                                                             <!-- 外贸订单, 并且不是自营的, 才可以开票 -->
                                                             <?php if ($this->orders['orderType'] == 'IT' && !$this->orders['isSelfSupport']): ?>
-                                                                <a href='javascript:void(0)' data-toggle="modal" data-target="#billingInfo" data-delivery-id="<?php echo $v->deliveryID; ?>">开票资料</a>
+                                                                <a href='javascript:void(0)' data-toggle="modal" data-target="#billingInfo" data-delivery-id="<?php echo $v->deliveryID; ?>"><?php echo $this->translate('deliveryBillInfo'); ?></a>
                                                             <?php endif; ?>
                                                         <?php elseif ($v->deliveryStatus == 4): ?>
                                                             <?php if ($this->orders['orderType'] == 'IT' && !$this->orders['isSelfSupport']): ?>
-                                                                <a href='javascript:void(0)' data-toggle="modal" data-target="#billingInfo" data-delivery-id="<?php echo $v->deliveryID; ?>">开票资料</a>
+                                                                <a href='javascript:void(0)' data-toggle="modal" data-target="#billingInfo" data-delivery-id="<?php echo $v->deliveryID; ?>"><?php echo $this->translate('deliveryBillInfo'); ?></a>
                                                             <?php endif; ?>
                                                         <?php endif; ?>
                                                     </td>
@@ -258,17 +258,28 @@
                                     </h3>
 
                                     <div class="row">
-                                        <div class="col-xs-2 view-title"><?php echo $this->translate('buyers'); ?></div>
-                                        <div class="col-xs-4"><?php echo $this->orders['buyerName'];?></div>
+                                        <div class="col-xs-2 view-title"><?php echo $this->translate('seller'); ?></div>
+                                        <div class="col-xs-8">
+                                            <?php if ($this->userrgCode == 'CN') {
+                                                echo $this->orders['buyerName'];
+                                            } else if (!empty($this->orders['buyerEnName'])) {
+                                                echo $this->orders['buyerEnName'];
+                                            } else {
+                                                echo $this->orders['buyerName'];
+                                            } ?>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
                                         <div class="col-xs-2 view-title"><?php echo $this->translate('buyerATTN'); ?></div>
                                         <div class="col-xs-4"><?php echo $this->orders['buyerContactName'];?></div>
+                                        <div class="col-xs-2 view-title"><?php echo $this->translate('thisATTN'); ?></div>
+                                        <div class="col-xs-4"><?php echo $this->orders['vendorContactName'];?></div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-xs-2 view-title"><?php echo $this->translate('payCNY'); ?></div>
                                         <div class="col-xs-4"><?php echo $this->orders['buyerCrnCode'];?></div>
-                                        <div class="col-xs-2 view-title"><?php echo $this->translate('thisATTN'); ?></div>
-                                        <div class="col-xs-4"><?php echo $this->orders['vendorContactName'];?></div>
                                     </div>
 
                                     <div class="row">

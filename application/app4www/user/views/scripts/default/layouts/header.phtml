@@ -68,7 +68,7 @@
 
                 <?php if ($this->isPersonAccount != 1): ?>
                 <li class="dropdown <?php if ($this->accountType == 'CO07'){ echo " hidden";} ?>">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php if (!$this->hasIDCertificate): ?><i class="makerDot"></i><?php endif;?><?php echo $this->translate('companyMNG'); ?> <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php if ($this->regdCountryCode == 'CN' && !$this->hasIDCertificate): ?><i class="makerDot"></i><?php endif;?><?php echo $this->translate('companyMNG'); ?> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="/user/company"><?php echo $this->translate('company_info'); ?></a></li>
                         <?php if ($this->regdCountryCode == 'CN'): ?>
