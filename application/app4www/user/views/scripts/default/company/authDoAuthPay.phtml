@@ -259,26 +259,70 @@
 
             $("#doConfirmBtn").attr("disabled", true);
             var companyDoAuthPay = '/user/company/doauthpay';
-            $.post(companyDoAuthPay, {
-                acctName: acctName,
-                auth_acctNo: auth_acctNo,
-                bankName: bankName,
-                provinceName: provinceName,
-                cityName: cityName,
-                subbranchName: subbranchName
-            }, function (data) {
-                if (data === '0' || data === '-4') {
-                    setTimeout(function () {
-                        document.location.reload();
-                    }, 500);
-                } else {
-                    $(".alert").removeClass('hidden').addClass('show').find('p').html(data);
-                    console.log("err: " + data);
+            var loadLayer;
+
+            $.ajax({
+                type: "POST",
+                url: companyDoAuthPay,
+                data: {
+                    acctName: acctName,
+                    auth_acctNo: auth_acctNo,
+                    bankName: bankName,
+                    provinceName: provinceName,
+                    cityName: cityName,
+                    subbranchName: subbranchName
+                },
+                dataType: "json",
+                success: function (data) {
+                    $("#doConfirmBtn").attr("disabled", false);
+                    layer.close(loadLayer); // 关闭加载层
+
+                    var contentStr = '',
+                        contentErrCode = '';
+                    if (data.status === 1) {
+                        if (data.errCode === '0') {
+                            // 验证成功, 刷新页面
+                            setTimeout(function () {
+                                document.location.reload();
+                            }, 500);
+                        } else {
+                            // 验证失败, 弹出提示
+                            contentErrCode = data.errCode;
+                            contentStr = data.msg;
+                            layerInfo(contentErrCode, contentStr);
+                        }
+                    } else {
+                        contentStr = data.errorCode;
+                        layerInfo(contentErrCode, contentStr);
+                    }
+                },
+                beforeSend: function () {
+                    loadLayer = layer.open({
+                        type: 3
+                        ,icon: 1
+                    });
+                },
+                error: function () {
+                    $("#doConfirmBtn").attr("disabled", false);
                 }
-                $("#doConfirmBtn").attr("disabled", false);
             });
         });
     });
+
+    function layerInfo(contentErrCode, contentStr) {
+        layer.open({
+            type: 1
+            ,title: false //不显示标题栏
+            ,closeBtn: false
+            ,area: '400px;'
+            ,shade: 0.8
+            ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+            ,btn: ['确认']
+            ,btnAlign: 'c'
+            ,moveType: 1 //拖拽模式，0或者1
+            ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">验证失败！<br><br>' + contentStr + '。</div>'
+        });
+    }
 </script>
 </body>
 </html>

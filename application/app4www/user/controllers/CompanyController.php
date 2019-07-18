@@ -267,7 +267,8 @@ class CompanyController extends Kyapi_Controller_Action
 
     // 企业认证 - 基本信息
     public function doauthAction() {
-        $msg = 0;
+        $msg = array();
+        $msg["status"] = 0;
         if ($this->_request->isPost()) {
             // 实例account对象
             $Account = new Kyapi_Model_account();
@@ -281,27 +282,22 @@ class CompanyController extends Kyapi_Controller_Action
             // 取回接口请求状态
             $apiStatus = json_decode($resultObject)->status;
             if ($apiStatus == 1) {
-                // 取回企业认证状态
-                if (json_decode($resultObject)->result->errCode == 0) {
-                    $msg = 0;
-                } else if (json_decode($resultObject)->result->data->entRealAuthStatus == -4) {
-                    $msg = -4;
-                } else {
-                    $msg = json_decode($resultObject)->result->msg;
-                }
-
+                $msg["status"] = $apiStatus;
+                $msg["errCode"] = json_decode($resultObject)->result->errCode;
+                $msg["msg"] = json_decode($resultObject)->result->msg;
             } else {
-                // 接口请求错误的情况下, 将接口错误返回给页面
-                $msg = json_decode($resultObject)->errorCode;
+                $msg["status"] = $apiStatus;
+                $msg["errorCode"] = json_decode($resultObject)->errorCode;
             }
         }
-        echo $msg;
+        echo json_encode($msg);
         exit;
     }
 
     // 企业认证 - 银行信息
     public function doauthpayAction() {
-        $msg = 0;
+        $msg = array();
+        $msg["status"] = 0;
         if ($this->_request->isPost()) {
             $acctName = $this->_request->getParam('acctName');
             $auth_acctNo = $this->_request->getParam('auth_acctNo');
@@ -315,56 +311,41 @@ class CompanyController extends Kyapi_Controller_Action
             // 取回接口请求状态
             $apiStatus = json_decode($resultObject)->status;
             if ($apiStatus == 1) {
-                // 取回企业认证状态
-                if (json_decode($resultObject)->result->errCode == 0) {
-                    $msg = 0;
-                } else if (json_decode($resultObject)->result->data->entRealAuthStatus == -4) {
-                    $msg = -4;
-                } else {
-                    $msg = json_decode($resultObject)->result->msg;
-                }
-
+                $msg["status"] = $apiStatus;
+                $msg["errCode"] = json_decode($resultObject)->result->errCode;
+                $msg["msg"] = json_decode($resultObject)->result->msg;
             } else {
-                // 接口请求错误的情况下, 将接口错误返回给页面
-                $msg = $this->view->translate(trim(json_decode($resultObject)->errorCode));
+                $msg["status"] = $apiStatus;
+                $msg["errorCode"] = json_decode($resultObject)->errorCode;
             }
         }
-        echo $msg;
+        echo json_encode($msg);
         exit;
     }
 
     // 企业认证 - 银行打款金额验证
     public function authconfirmAction() {
-        $msg = 0;
+        $msg = array();
+        $msg["status"] = 0;
         if ($this->_request->isPost()) {
+            $requestObject = $this->_requestObject;
             //获取account数据集合
             $verifyAmount = $this->_request->getParam('authVerifyAmount');
-
-            $requestObject = $this->_requestObject;
             $resultObject = $this->json->doEntRealNameVerify($requestObject, $verifyAmount);
-
             // 取回接口请求状态
             $apiStatus = json_decode($resultObject)->status;
             if ($apiStatus == 1) {
-                // 取回企业认证状态
-                if (json_decode($resultObject)->result->errCode == 0) {
-                    $msg = 0;
-                } else if (json_decode($resultObject)->result->data->entRealAuthStatus == -4) {
-                    $msg = -4;
-                } else {
-                    // 企业认证成功
-                    $msg = json_decode($resultObject)->result->msg;
-                }
-
+                $msg["status"] = $apiStatus;
+                $msg["errCode"] = json_decode($resultObject)->result->errCode;
+                $msg["msg"] = json_decode($resultObject)->result->msg;
             } else {
-                // 接口请求错误的情况下, 将接口错误返回给页面
-                $msg = $this->view->translate(trim(json_decode($resultObject)->errorCode));
+                $msg["status"] = $apiStatus;
+                $msg["errorCode"] = json_decode($resultObject)->errorCode;
             }
-
             // 取回最新的公司认证状态并更新缓存
             $this->refreshAccountCertificate();
         }
-        echo $msg;
+        echo json_encode($msg);
         exit;
     }
 
