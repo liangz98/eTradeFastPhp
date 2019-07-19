@@ -56,6 +56,20 @@
 
                         <div class="row">
                             <form class="form-horizontal">
+                                <input type="hidden" id="acctName" value="<?php echo json_decode($this->account->entRealAuthInfo)->accountName; ?>">
+                                <input type="hidden" id="acctName" value="<?php echo json_decode($this->account->entRealAuthInfo)->cardno; ?>">
+                                <input type="hidden" id="acctName" value="<?php echo json_decode($this->account->entRealAuthInfo)->bank; ?>">
+                                <input type="hidden" id="acctName" value="<?php echo json_decode($this->account->entRealAuthInfo)->provice; ?>">
+                                <input type="hidden" id="acctName" value="<?php echo json_decode($this->account->entRealAuthInfo)->city; ?>">
+                                <input type="hidden" id="acctName" value="<?php echo json_decode($this->account->entRealAuthInfo)->subbranch; ?>">
+
+                                <div class="alert alert-info col-sm-10 col-sm-offset-1" role="alert">
+                                    <p>实名认证申请有效期为72小时，请在 <b><?php echo date('Y-m-d H:i:s', strtotime ("+72 hour", strtotime($this->account->entRealAuthTime))); ?></b> 前完成认证流程。</p>
+                                    <?php if (!empty($this->extData->checkTimes) && $this->extData->checkTimes < 3): ?>
+                                    <P>打款金额验证上限为 3 次，当前剩余 <b class="text-danger"><?php echo $this->extData->checkTimes; ?></b> 次。</p>
+                                    <?php endif; ?>
+                                </div>
+
                                 <div class="alert alert-danger col-sm-10 col-sm-offset-1 hidden confirmAlert" role="alert">Oh snap! 错误信息....</div>
 
                                 <div class="form-group">
@@ -124,7 +138,9 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="doConfirmBtn"><?php echo $this->translate('confirm'); ?></button>
+                        <form id="reToPayForm" method="post" hidden action="/user/company/authview"><input type="hidden" name="setEntRealAuthStatus" value="1"></form>
+                        <span id="reToPay" class="text-primary" style="cursor: pointer;">没有收到打款？</span>
+                        <button type="button" class="btn btn-primary" <?php if ($this->extData->checkTimes == 0): ?>disabled="disabled"<?php endif; ?> id="doConfirmBtn"><?php echo $this->translate('confirm'); ?></button>
                     </div>
                 </div>
             </div>
@@ -187,7 +203,7 @@
                         if (data.errCode === '0') {
                             // 验证成功, 刷新页面
                             setTimeout(function () {
-                                document.location.reload();
+                                document.location.href = '/user/company/authview';
                             }, 500);
                         } else {
                             // 验证失败, 弹出提示
@@ -196,7 +212,7 @@
                             layerInfo(contentErrCode, contentStr);
                         }
                     } else {
-                        contentStr = data.errorCode;
+                        contentStr = data.error;
                         layerInfo(contentErrCode, contentStr);
                     }
                 },
@@ -211,6 +227,10 @@
                 }
             });
         });
+
+        $("#reToPay").click(function () {
+            reToPayLayerInfo();
+        });
     });
 
     function layerInfo(contentErrCode, contentStr) {
@@ -218,13 +238,37 @@
             type: 1
             ,title: false //不显示标题栏
             ,closeBtn: false
-            ,area: '400px;'
+            ,area: '500px;'
             ,shade: 0.8
-            ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+            ,id: 'LAY_layDoAuthConfirm' //设定一个id，防止重复弹出
             ,btn: ['确认']
+            ,yes: function(index, layero) {
+                setTimeout(function () {
+                    document.location.href = '/user/company/authview';
+                }, 500);
+            }
             ,btnAlign: 'c'
             ,moveType: 1 //拖拽模式，0或者1
-            ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">验证失败！<br><br>' + contentStr + '。</div>'
+            ,content: '<div style="padding: 50px; line-height: 22px; background-color: #eee; font-weight: 300;"><h3>验证失败！</h3><br><p>' + contentStr + '</p></div>'
+        });
+    }
+
+    function reToPayLayerInfo(contentErrCode, contentStr) {
+        layer.open({
+            type: 1
+            ,title: false //不显示标题栏
+            ,closeBtn: false
+            ,area: '500px;'
+            ,shade: 0.8
+            ,id: 'LAY_layReToPayLayerInfo' //设定一个id，防止重复弹出
+            ,btn: ['重新打款', '取消']
+            ,yes: function() {
+                $("#reToPayForm").submit();
+            }
+            ,shadeClose: true
+            ,btnAlign: 'c'
+            ,moveType: 1 //拖拽模式，0或者1
+            ,content: '<div style="padding: 50px; line-height: 22px; background-color: #eee; font-weight: 300;"><h3>打款说明：</h3><br><p>系统将在2小时内往你您公司的基本户打入一笔1元以下款项。</p><P>打款上限为 5 次，当前剩余 <b class="text-danger"><?php echo $this->extData->toPayTimes; ?></b> 次。</p></div>'
         });
     }
 </script>

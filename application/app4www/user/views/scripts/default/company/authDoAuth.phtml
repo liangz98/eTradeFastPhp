@@ -157,7 +157,7 @@
                             layerInfo(contentErrCode, contentStr);
                         }
                     } else {
-                        contentStr = data.errorCode;
+                        contentStr = data.error;
                         layerInfo(contentErrCode, contentStr);
                     }
                 },
@@ -179,13 +179,18 @@
             type: 1
             ,title: false //不显示标题栏
             ,closeBtn: false
-            ,area: '400px;'
+            ,area: '500px;'
             ,shade: 0.8
             ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
             ,btn: ['确认']
+            ,yes: function(index, layero) {
+                setTimeout(function () {
+                    document.location.href = '/user/company/authview';
+                }, 500);
+            }
             ,btnAlign: 'c'
             ,moveType: 1 //拖拽模式，0或者1
-            ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">验证失败！<br><br>' + contentStr + '。</div>'
+            ,content: '<div style="padding: 50px; line-height: 22px; background-color: #eee; font-weight: 300;"><h3>提交失败！</h3><br><p>' + contentStr + '</p></div>'
         });
     }
 </script>

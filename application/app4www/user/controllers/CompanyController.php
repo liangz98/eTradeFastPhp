@@ -237,8 +237,16 @@ class CompanyController extends Kyapi_Controller_Action
 
         $account = json_decode($resultObject)->result;
         $this->view->account = json_decode($resultObject)->result;
+        $extData = json_decode($resultObject)->extData;
+        $extData->toPayTimes = empty($extData->toPayTimes) ? 5 : 5 - $extData->toPayTimes;        // 企业打款剩余次数 - 最多5次
+        $extData->checkTimes = empty($extData->checkTimes) ? 3 : 3 - $extData->checkTimes;        // 金额验证剩余次数 - 最多3次
+        $this->view->extData = $extData;
         $entRealAuthStatus = $account->entRealAuthStatus;
 
+        $setEntRealAuthStatus = $this->_request->getParam('setEntRealAuthStatus');
+        if (!empty($setEntRealAuthStatus)) {
+            $entRealAuthStatus = 1;
+        }
 
         if (defined('SEED_WWW_TPL')) {
             if ($entRealAuthStatus == 0 || $entRealAuthStatus == -1) {
@@ -249,11 +257,11 @@ class CompanyController extends Kyapi_Controller_Action
                 $content = $this->view->render(SEED_WWW_TPL . "/company/authDoAuthPay.phtml");
                 echo $content;
                 exit;
-            } else if ($entRealAuthStatus ==3 || $entRealAuthStatus == -3) {
+            } else if ($entRealAuthStatus == 3 || $entRealAuthStatus == -3) {
                 $content = $this->view->render(SEED_WWW_TPL . "/company/authDoAuthConfirm.phtml");
                 echo $content;
                 exit;
-            } else if ($entRealAuthStatus ==2) {
+            } else if ($entRealAuthStatus == 2) {
                 $content = $this->view->render(SEED_WWW_TPL . "/company/authView.phtml");
                 echo $content;
                 exit;
@@ -288,6 +296,7 @@ class CompanyController extends Kyapi_Controller_Action
             } else {
                 $msg["status"] = $apiStatus;
                 $msg["errorCode"] = json_decode($resultObject)->errorCode;
+                $msg["error"] = json_decode($resultObject)->error;
             }
         }
         echo json_encode($msg);
@@ -299,6 +308,13 @@ class CompanyController extends Kyapi_Controller_Action
         $msg = array();
         $msg["status"] = 0;
         if ($this->_request->isPost()) {
+
+            // $msg["status"] = 1;
+            // $msg["errCode"] = '123123';
+            // $msg["msg"] = '123321222!!!!';
+            // echo json_encode($msg);
+            // exit;
+
             $acctName = $this->_request->getParam('acctName');
             $auth_acctNo = $this->_request->getParam('auth_acctNo');
             $bankName = $this->_request->getParam('bankName');
@@ -306,8 +322,8 @@ class CompanyController extends Kyapi_Controller_Action
             $cityName = $this->_request->getParam('cityName');
             $subbranchName = $this->_request->getParam('subbranchName');
 
-            $_requestOb = $this->_requestObject;
-            $resultObject = $this->json->doEntRealNameToPay($_requestOb, $acctName, $auth_acctNo, $bankName, $provinceName, $cityName, $subbranchName);
+            $requestObject = $this->_requestObject;
+            $resultObject = $this->json->doEntRealNameToPay($requestObject, $acctName, $auth_acctNo, $bankName, $provinceName, $cityName, $subbranchName);
             // 取回接口请求状态
             $apiStatus = json_decode($resultObject)->status;
             if ($apiStatus == 1) {
@@ -317,6 +333,7 @@ class CompanyController extends Kyapi_Controller_Action
             } else {
                 $msg["status"] = $apiStatus;
                 $msg["errorCode"] = json_decode($resultObject)->errorCode;
+                $msg["error"] = json_decode($resultObject)->error;
             }
         }
         echo json_encode($msg);
@@ -328,6 +345,12 @@ class CompanyController extends Kyapi_Controller_Action
         $msg = array();
         $msg["status"] = 0;
         if ($this->_request->isPost()) {
+            // $msg["status"] = 1;
+            // $msg["errCode"] = '123123';
+            // $msg["msg"] = '123321222!!!!';
+            // echo json_encode($msg);
+            // exit;
+
             $requestObject = $this->_requestObject;
             //获取account数据集合
             $verifyAmount = $this->_request->getParam('authVerifyAmount');
@@ -341,6 +364,7 @@ class CompanyController extends Kyapi_Controller_Action
             } else {
                 $msg["status"] = $apiStatus;
                 $msg["errorCode"] = json_decode($resultObject)->errorCode;
+                $msg["error"] = json_decode($resultObject)->error;
             }
             // 取回最新的公司认证状态并更新缓存
             $this->refreshAccountCertificate();

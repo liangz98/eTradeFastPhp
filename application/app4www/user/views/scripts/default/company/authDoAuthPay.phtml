@@ -50,11 +50,18 @@
                     </div>
 
                     <div class="modal-body">
+                        <div class="alert alert-info col-sm-10 col-sm-offset-1" role="alert">
+                            <p>实名认证申请有效期为72小时，请在 <b><?php echo date('Y-m-d H:i:s', strtotime ("+72 hour", strtotime($this->account->entRealAuthTime))); ?></b> 前完成认证流程。</p>
+                            <?php if (!empty($this->extData->toPayTimes) && $this->extData->toPayTimes < 5): ?>
+                            <P>打款上限为 5 次，当前剩余 <b class="text-danger"><?php echo $this->extData->toPayTimes; ?></b> 次。</p>
+                            <?php endif; ?>
+                        </div>
+
                         <div class="alert alert-danger hidden" role="alert">
                             <strong>Warning!</strong> <p></p>
                         </div>
                         <div class="row">
-                            <form class="form-horizontal layui-form">
+                            <form class="form-horizontal layui-form" lay-filter="doAuthPayForm">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label"><?php echo $this->translate('et_auth_name'); ?></label>
                                     <div class="col-sm-9">
@@ -66,7 +73,7 @@
                                 <div class="form-group">
                                     <label for="auth_acctNo" class="col-sm-3 control-label"><?php echo $this->translate('et_auth_acctNo'); ?></label>
                                     <div class="col-sm-10 col-sm-8">
-                                        <input type="text" class="form-control" id="auth_acctNo" name="auth_acctNo" placeholder="请输入<?php echo $this->translate('et_auth_acctNo'); ?>">
+                                        <input type="text" class="form-control" id="auth_acctNo" name="auth_acctNo" placeholder="请输入<?php echo $this->translate('et_auth_acctNo'); ?>" value="<?php echo json_decode($this->account->entRealAuthInfo)->cardno; ?>">
                                     </div>
                                 </div>
 
@@ -75,7 +82,7 @@
                                     <div class="col-sm-10 col-sm-8">
                                         <select name="bankName" id="bankName" lay-verify="required" lay-search="" lay-filter="bankName">
                                             <option value=""><?php echo $this->translate('et_select'); ?></option>
-                                            <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userLangCode,$this->dic_Setting['ESIGN_BANK'], '');?>
+                                            <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userLangCode,$this->dic_Setting['ESIGN_BANK'], json_decode($this->account->entRealAuthInfo)->bank);?>
                                         </select>
                                     </div>
                                 </div>
@@ -85,7 +92,7 @@
                                     <div class="col-sm-10 col-sm-4">
                                         <select name="provinceName" id="provinceName" lay-filter="provinceName">
                                             <option value=""></option>
-                                            <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userLangCode,$this->dic_Setting['ESIGN_PROVINCE_CODE'], '');?>
+                                            <?php echo $this-> ShowDictionaryList("datatest_setting",$this->userLangCode,$this->dic_Setting['ESIGN_PROVINCE_CODE'], json_decode($this->account->entRealAuthInfo)->provice);?>
                                         </select>
                                     </div>
                                     <div class="col-sm-10 col-sm-4">
@@ -179,64 +186,16 @@
 
             form.on('select(provinceName)', function (data) {
                 var provinceCode = data.value;
-                if (provinceCode !== '') {
-                    var fuzzyQuery = '/user/company/fuzzy';
-                    $.ajax({
-                        type: "POST",
-                        url: fuzzyQuery,
-                        data: {
-                            dataDictCode: 'ESIGN_CITY_CODE',
-                            keyword: '',
-                            valuePCode: provinceCode
-                        },
-                        dataType: "json",
-                        success: function (data) {
-                            var optionString = '';
-                            $.each(data, function (i, item) {
-                                console.log(item);
-                                optionString += '<option value="' + item.valueCode + '" >' + item.valueCode + '</option>';
-                            });
-                            $("#cityName").html('<option value=""></option>' + optionString);
-                            form.render('select'); //这个很重要
-                        }
-                    });
-                } else {
-                    $("#cityName").empty().html('<option value=""></option>');
-                    form.render('select');
-                }
+                // 刷新 开户行所在城市 select选择框渲染
+                renderCity(form, provinceCode, '');
             });
 
             form.on('select(cityName)', function (data) {
                 var bankCode = $("#bankName").val();
                 var cityCode = data.value;
 
-                if (cityCode !== '' && bankCode !== '') {
-                    var fuzzyQuery = '/user/company/fuzzy';
-                    $.ajax({
-                        type: "POST",
-                        url: fuzzyQuery,
-                        data: {
-                            dataDictCode: 'ESIGN_SUBBRANCH_BANK',
-                            keyword: '',
-                            valuePCode: cityCode + ',' + bankCode
-                        },
-                        dataType: "json",
-                        success: function (data) {
-                            var optionString = "";
-                            $.each(data, function (i, item) {
-                                console.log(item);
-                                optionString += "<option value=\"" + item.valueCode + "\" >" + item.valueCode + "</option>";
-                            });
-                            var str = '<?php echo $this->translate("et_select"); ?>';
-                            $("#subbranchName").html('<option value="">' + str + '</option>' + optionString);
-                            form.render('select'); //这个很重要
-                        }
-                    });
-                } else {
-                    var str = '<?php echo $this->translate("et_select"); ?>';
-                    $("#subbranchName").empty().html('<option value="">' + str + '</option>');
-                    form.render('select');
-                }
+                // 刷新 开户行支行 select选择框渲染
+                renderSubbranch(form, cityCode, bankCode, '');
             });
 
             //但是，如果你的HTML是动态生成的，自动渲染就会失效
@@ -283,7 +242,7 @@
                         if (data.errCode === '0') {
                             // 验证成功, 刷新页面
                             setTimeout(function () {
-                                document.location.reload();
+                                document.location.href = '/user/company/authview';
                             }, 500);
                         } else {
                             // 验证失败, 弹出提示
@@ -292,7 +251,7 @@
                             layerInfo(contentErrCode, contentStr);
                         }
                     } else {
-                        contentStr = data.errorCode;
+                        contentStr = data.error;
                         layerInfo(contentErrCode, contentStr);
                     }
                 },
@@ -307,6 +266,23 @@
                 }
             });
         });
+
+        var provinceName = $("#provinceName").val(),
+            cityName = '<?php echo json_decode($this->account->entRealAuthInfo)->city; ?>',
+            subbranch = '<?php echo json_decode($this->account->entRealAuthInfo)->subbranch; ?>',
+            bank = '<?php echo json_decode($this->account->entRealAuthInfo)->bank; ?>';
+
+        if (provinceName !== '') {
+            layui.use('form', function(){
+                var form = layui.form;
+                renderCity(form, provinceName, cityName);
+            });
+
+            layui.use('form', function(){
+                var form = layui.form;
+                renderSubbranch(form, cityName, bank, subbranch);
+            });
+        }
     });
 
     function layerInfo(contentErrCode, contentStr) {
@@ -314,14 +290,87 @@
             type: 1
             ,title: false //不显示标题栏
             ,closeBtn: false
-            ,area: '400px;'
+            ,area: '500px;'
             ,shade: 0.8
-            ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+            ,id: 'LAY_layDoAuthPay' //设定一个id，防止重复弹出
             ,btn: ['确认']
+            ,yes: function(index, layero) {
+                setTimeout(function () {
+                    document.location.href = '/user/company/authview';
+                }, 500);
+            }
             ,btnAlign: 'c'
             ,moveType: 1 //拖拽模式，0或者1
-            ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">验证失败！<br><br>' + contentStr + '。</div>'
+            ,content: '<div style="padding: 50px; line-height: 22px; background-color: #eee; font-weight: 300;"><h3>提交失败！</h3><br><p>' + contentStr + '</P></div>'
         });
+    }
+
+    // 刷新 开户行所在城市 select选择框渲染
+    function renderCity(form, provinceCode, cityName) {
+        if (provinceCode !== '') {
+            var fuzzyQuery = '/user/company/fuzzy';
+            $.ajax({
+                type: "POST",
+                url: fuzzyQuery,
+                data: {
+                    dataDictCode: 'ESIGN_CITY_CODE',
+                    keyword: '',
+                    valuePCode: provinceCode
+                },
+                dataType: "json",
+                success: function (data) {
+                    var optionString = '';
+                    $.each(data, function (i, item) {
+                        // console.log(item);
+                        if (item.valueCode === cityName) {
+                            optionString += '<option value="' + item.valueCode + '" selected="selected">' + item.valueCode + '</option>';
+                        } else {
+                            optionString += '<option value="' + item.valueCode + '" >' + item.valueCode + '</option>';
+                        }
+                    });
+                    $("#cityName").html('<option value=""></option>' + optionString);
+                    form.render('select'); //这个很重要
+                }
+            });
+        } else {
+            $("#cityName").empty().html('<option value=""></option>');
+            form.render('select');
+        }
+    }
+
+    // 刷新 开户行支行 select选择框渲染
+    function renderSubbranch(form, cityCode, bankCode, subbranch) {
+        if (cityCode !== '' && bankCode !== '') {
+            var fuzzyQuery = '/user/company/fuzzy';
+            $.ajax({
+                type: "POST",
+                url: fuzzyQuery,
+                data: {
+                    dataDictCode: 'ESIGN_SUBBRANCH_BANK',
+                    keyword: '',
+                    valuePCode: cityCode + ',' + bankCode
+                },
+                dataType: "json",
+                success: function (data) {
+                    var optionString = "";
+                    $.each(data, function (i, item) {
+                        // console.log(item);
+                        if (item.valueCode === subbranch) {
+                            optionString += '<option value="' + item.valueCode + '" selected="selected">' + item.valueCode + '</option>';
+                        } else {
+                            optionString += '<option value="' + item.valueCode + '" >' + item.valueCode + '</option>';
+                        }
+                    });
+                    var str = '<?php echo $this->translate("et_select"); ?>';
+                    $("#subbranchName").html('<option value="">' + str + '</option>' + optionString);
+                    form.render('select'); //这个很重要
+                }
+            });
+        } else {
+            var str = '<?php echo $this->translate("et_select"); ?>';
+            $("#subbranchName").empty().html('<option value="">' + str + '</option>');
+            form.render('select');
+        }
     }
 </script>
 </body>
