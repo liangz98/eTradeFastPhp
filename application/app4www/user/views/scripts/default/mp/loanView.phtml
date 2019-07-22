@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <?php echo $this->render(SEED_WWW_TPL . '/mp/headerLink.phtml'); ?>
+    <title>快移资金 - 详情</title>
+
+    <link rel="stylesheet" href="/ky/css/mp/loan-list.css">
+</head>
+<body ontouchstart>
+<div class="weui-tab">
+    <!-- 主体 -->
+    <div class="weui-tab__bd">
+        <!-- 风险提示 risk warnings -->
+        <div class="weui-flex">
+            <div class="weui-flex__item flex_item mp-margin-5_bd">
+                <div class="risk-warnings mp-text-size-13">温馨提示：您可用于投资的金额为 500,000 元</div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <?php echo $this->render(SEED_WWW_TPL . '/mp/footer.phtml'); ?>
+</div>
+
+<?php echo $this->render(SEED_WWW_TPL . '/mp/footerLink.phtml'); ?>
+
+<script type="text/javascript">
+    $(function () {
+        $('.weui-tabbar').find('a').each(function () {
+            if (this.href === document.location.href) {
+                $(this).addClass("weui-bar__item_on");
+            } else {
+                $(this).removeClass('weui-bar__item_on');
+            }
+        });
+    });
+
+</script>
+</body>
+</html>
