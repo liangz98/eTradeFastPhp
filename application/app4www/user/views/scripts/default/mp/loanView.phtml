@@ -4,7 +4,7 @@
     <?php echo $this->render(SEED_WWW_TPL . '/mp/headerLink.phtml'); ?>
     <title>快移资金 - 详情</title>
 
-    <link rel="stylesheet" href="/ky/css/mp/loan-list.css">
+    <link rel="stylesheet" href="/ky/css/mp/loan-view.css">
 </head>
 <body ontouchstart>
 <div class="weui-tab">
@@ -17,7 +17,20 @@
             </div>
         </div>
 
-
+        <div id="loanRefresh" class="minirefresh-wrap minirefresh-wrap-loan-view">
+            <div class="minirefresh-scroll minirefresh-scroll-background-color">
+                <div class="weui-flex">
+                    <div class="weui-flex__item">
+                        <p>10.55%</p>
+                        <p>期望收益率</p>
+                    </div>
+                    <div class="weui-flex__item">
+                        <p>0.00 元</p>
+                        已认投金额
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <?php echo $this->render(SEED_WWW_TPL . '/mp/footer.phtml'); ?>
