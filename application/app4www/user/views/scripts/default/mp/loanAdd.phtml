@@ -4,20 +4,69 @@
     <?php echo $this->render(SEED_WWW_TPL . '/mp/headerLink.phtml'); ?>
     <title>快移资金 - 投标</title>
 
-    <link rel="stylesheet" href="/ky/css/mp/loan-list.css">
+    <link rel="stylesheet" href="/ky/css/mp/loan-view.css">
 </head>
 <body ontouchstart>
 <div class="weui-tab">
     <!-- 主体 -->
     <div class="weui-tab__bd">
-        <!-- 风险提示 risk warnings -->
-        <div class="weui-flex">
-            <div class="weui-flex__item flex_item mp-margin-5_bd">
-                <div class="risk-warnings mp-text-size-13">温馨提示：您可用于投资的金额为 500,000 元</div>
+        <div class="weui-flex flex_item mp-margin-5_bd">
+            <div class="weui-flex__item mp-text-margin-5 loan-view-info">
+                <div class="loan-view-info__item">
+                    <div class="mp-text-info loan-view-info__item_label"><span class="mp-text-size-18" style="font-weight: bold;">生产融资</span></div>
+                    <div class="mp-text-info loan-view-info__item_span"><span class="mp-text-danger" style="float: right; line-height: 30px;">剩余可投 294,500 元</span></div>
+                </div>
+                <div  class="loan-view-info__item">
+                    <div class="mp-text-info loan-view-info__item_label">项目编号</div>
+                    <div class="mp-text-info loan-view-info__item_span">CL032019062500001</div>
+                </div>
+                <div class="loan-view-info__item">
+                    <div class="mp-text-info loan-view-info__item_label">项目名称</div>
+                    <div class="mp-text-info loan-view-info__item_span">牛仔成衣出口生产融资</div>
+                </div>
+                <div class="loan-view-info__item">
+                    <div class="mp-text-info loan-view-info__item_label">预计起息日</div>
+                    <div class="mp-text-info loan-view-info__item_span">2019年6月25日</div>
+                </div>
             </div>
         </div>
 
+        <div class="weui-flex flex_item mp-margin-5_bd">
+            <div class="weui-flex__item mp-text-margin-5 loan-view-info">
+                <div class="loan-view-info__item">
+                    <div class="mp-text-info loan-view-info__item_label mp-text-size-18"><span style="font-weight: bold;">输入金额</span></div>
+                    <div class="mp-text-info loan-view-info__item_span"><span class="mp-text-primary" style="float: right; line-height: 30px;">认投规则</span></div>
+                </div>
+                <div  class="loan-view-info__item">
+                    <div class="mp-text-info loan-view-info__item_label"><span class="mp-text-size-18">￥</span></div>
+                    <div class="mp-text-info loan-view-info__item_span">
+                        <input class="weui-input" style="border-bottom: 1px solid; border-radius: 0; font-size: 18px" type="number" pattern="[1-9]\d*\.\d*|0\.\d*[1-9]\d*$" placeholder="请输入投标金额"/>
+                    </div>
+                </div>
+                <div class="loan-view-info__item">
+                    <div class="mp-text-info loan-view-info__item_label"><span class="mp-text-danger">您的快移资金可用额度 500,000 元</span></div>
+                </div>
+            </div>
+        </div>
 
+        <div class="weui-flex flex_item mp-margin-5_bd">
+            <div class="weui-flex__item mp-text-margin-5 loan-view-info">
+                <a class="weui-cell_access" href="javascript:;">
+                <div class="loan-view-info__item mp-text-size-18">
+                    <div class="mp-text-info loan-view-info__item_label">账户余额</div>
+                    <div class="mp-text-info loan-view-info__item_span">400,000 元</div>
+                    <div class="weui-cell__ft">
+                    </div>
+                </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="weui-flex">
+            <div class="weui-flex__item mp-margin-10_bd">
+                <a href="/user/mp/add-loan" class="weui-btn mp-btn_bootstrap_default" style="width: 98%;">确 定</a>
+            </div>
+        </div>
     </div>
 
     <?php echo $this->render(SEED_WWW_TPL . '/mp/footer.phtml'); ?>

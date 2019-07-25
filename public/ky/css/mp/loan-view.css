@@ -1,3 +1,63 @@
 .minirefresh-wrap-loan-list {
     top: 30px !important;
 }
+
+.loan-view-head {
+    padding: 15px;
+}
+
+.loan-view-head-line__right:after {
+    content: '';
+    position: relative;
+    left: -50%;
+    top: 0;
+    width: 1px;
+    height: 64px;
+    background-color: var(--bg-info);
+}
+
+.loan-view-head-line__top:after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    /* top: 0; */
+    width: 97%;
+    height: 1px;
+    background-color: var(--bg-info);
+}
+
+.loan-view-info__title {
+    margin-left: 5px;
+}
+
+.loan-view-info__title:before {
+    content: '';
+    position: relative;
+    /*left: 1%;*/
+    top: 7px;
+    width: 6px;
+    height: 15px;
+    background-color: var(--brand-primary);
+    border-radius: 8px;
+}
+
+.loan-view-info div {
+    margin-bottom: 5px;
+}
+
+.loan-view-info div:last-child {
+    margin-bottom: 0;
+}
+
+.loan-view-info__item {
+    display: flex;
+}
+
+.loan-view-info__item_label {
+    flex: inherit;
+}
+
+.loan-view-info__item_span {
+    flex: 1;
+    margin-left: 15px;
+}

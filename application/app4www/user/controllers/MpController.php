@@ -225,4 +225,14 @@ class MpController extends Kyapi_Controller_Action {
         echo $content;
         exit;
     }
+
+    /**
+     * 投标
+     */
+    function addLoanAction() {
+
+        $content = $this->view->render(SEED_WWW_TPL . "/mp/loanAdd.phtml");
+        echo $content;
+        exit;
+    }
 }

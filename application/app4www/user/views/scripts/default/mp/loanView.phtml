@@ -13,20 +13,125 @@
         <!-- 风险提示 risk warnings -->
         <div class="weui-flex">
             <div class="weui-flex__item flex_item mp-margin-5_bd">
-                <div class="risk-warnings mp-text-size-13">温馨提示：您可用于投资的金额为 500,000 元</div>
+                <div class="risk-warnings mp-text-size-13 mp-margin-5_left">温馨提示：您可用于投资的金额为 500,000 元</div>
             </div>
         </div>
 
-        <div id="loanRefresh" class="minirefresh-wrap minirefresh-wrap-loan-view">
+        <div id="loanRefresh" class="minirefresh-wrap minirefresh-wrap-loan-list">
             <div class="minirefresh-scroll minirefresh-scroll-background-color">
-                <div class="weui-flex">
+                <div class="weui-flex weui-btn_bootstrap-primary mp-text-white loan-view-head loan-view-head-line__right">
                     <div class="weui-flex__item">
-                        <p>10.55%</p>
-                        <p>期望收益率</p>
+                        <p class="mp-text-size-28 mp-text-align-center">10.55%</p>
+                        <p class="mp-text-align-center">期望收益率</p>
                     </div>
                     <div class="weui-flex__item">
-                        <p>0.00 元</p>
-                        已认投金额
+                        <p class="mp-text-size-28 mp-text-align-center">0.00 元</p>
+                        <p class="mp-text-align-center">已认投金额</p>
+                    </div>
+                </div>
+
+                <div class="weui-flex weui-btn_bootstrap-primary mp-text-white loan-view-head-line__top">
+                    <div class="weui-flex__item mp-text-margin-5">
+                        <span> 剩余可投294,500元 </span>
+                    </div>
+                    <div class="weui-flex__item mp-text-margin-5">
+                        <span style="float: right;">1万元起投</span>
+                    </div>
+                </div>
+
+                <div class="weui-flex">
+                    <div class="weui-flex__item flex_item mp-margin-5_bd">
+                        <div class="weui-flex loan-view-info__title">
+                            <div class="weui-flex__item mp-text-margin-5 mp-text-size-13 mp-text-primary">
+                                牛仔成衣出口生产融资
+                            </div>
+                        </div>
+
+                        <div class="weui-flex">
+                            <div class="weui-flex__item mp-text-margin-5 loan-view-info">
+                                <div class="loan-view-info__item">
+                                    <div class="mp-text-info loan-view-info__item_label">项目类型</div>
+                                    <div class="mp-text-info loan-view-info__item_span">生产融资</div>
+                                </div>
+                                <div  class="loan-view-info__item">
+                                    <div class="mp-text-info loan-view-info__item_label">回款方式</div>
+                                    <div class="mp-text-info loan-view-info__item_span">信用证</div>
+                                </div>
+                                <div class="loan-view-info__item">
+                                    <div class="mp-text-info loan-view-info__item_label">预计起息日期</div>
+                                    <div class="mp-text-info loan-view-info__item_span">2019年6月25日</div>
+                                </div>
+                                <div class="loan-view-info__item">
+                                    <div class="mp-text-info loan-view-info__item_label">预计投资周期</div>
+                                    <div class="mp-text-info loan-view-info__item_span">45天</div>
+                                </div>
+                                <div class="loan-view-info__item">
+                                    <div class="mp-text-info loan-view-info__item_label">截止日期</div>
+                                    <div class="mp-text-info loan-view-info__item_span">剩余16天</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="weui-flex">
+                    <div class="weui-flex__item flex_item mp-margin-5_bd">
+                        <div class="weui-flex loan-view-info__title">
+                            <div class="weui-flex__item mp-text-margin-5 mp-text-size-13 mp-text-primary">
+                                快移评级
+                            </div>
+                        </div>
+
+                        <div class="weui-flex">
+                            <div class="weui-flex__item mp-text-margin-5 loan-view-info">
+                                <div class="loan-view-info__item">
+                                    <div class="mp-text-info loan-view-info__item_label">综合评级</div>
+                                    <div class="mp-text-info loan-view-info__item_span">**** A级</div>
+                                </div>
+                                <div class="loan-view-info__item">
+                                    <div class="mp-text-info loan-view-info__item_label">买家</div>
+                                    <div class="mp-text-info loan-view-info__item_span">境外大型贸易商</div>
+                                </div>
+                                <div class="loan-view-info__item">
+                                    <div class="mp-text-info loan-view-info__item_label">卖家</div>
+                                    <div class="mp-text-info loan-view-info__item_span">境内中小型生产企业</div>
+                                </div>
+                                <div class="loan-view-info__item">
+                                    <div class="mp-text-info loan-view-info__item_label">预计投资周期</div>
+                                    <div class="mp-text-info loan-view-info__item_span">45天</div>
+                                </div>
+                                <div class="loan-view-info__item">
+                                    <div class="mp-text-info loan-view-info__item_label">说明</div>
+                                    <div class="mp-text-info loan-view-info__item_span">该项目为有追索商业保理融资。经风控核实，买家信用良好，回款能力强。卖家经营情况良好，生产能力强。</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="weui-flex">
+                    <div class="weui-flex__item flex_item mp-margin-5_bd">
+                        <div class="weui-flex loan-view-info__title">
+                            <div class="weui-flex__item mp-text-margin-5 mp-text-size-13 mp-text-primary">
+                                <span>风险提示</span>
+                                <span class="mp-text-size-11 mp-text-desc" style="float: right;">市场有风险，投资需谨慎</span>
+                            </div>
+                        </div>
+
+                        <div class="weui-flex">
+                            <div class="weui-flex__item mp-text-margin-5 loan-view-info">
+                                <div class="loan-view-info__item">
+                                    <div class="mp-text-info loan-view-info__item_label">温馨提示</div>
+                                    <div class="mp-text-info loan-view-info__item_span">请您在投资前，仔细阅读 <span class="mp-text-primary">《快移投资风险说明》</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="weui-flex">
+                    <div class="weui-flex__item mp-margin-10_bd">
+                        <a href="/user/mp/add-loan" class="weui-btn weui-btn_block weui-btn_bootstrap-primary" style="width: 98%;">立刻投标</a>
                     </div>
                 </div>
             </div>
@@ -49,6 +154,28 @@
         });
     });
 
+    // 引入任何一个主题后，都会有一个 MiniRefresh 全局变量
+    var requestDelayTime = 600;
+    var miniRefresh = new MiniRefresh({
+        container: '#loanRefresh',
+        down: {
+            callback: function() {
+                setTimeout(function() {
+                    // 每次下拉刷新后，上拉的状态会被自动重置
+                    miniRefresh.endDownLoading(true);
+                }, requestDelayTime);
+            }
+        },
+        up: {
+
+            callback: function() {
+                // 上拉事件
+
+                // 注意，由于默认情况是开启满屏自动加载的，所以请求失败时，请务必endUpLoading(true)，防止无限请求
+                miniRefresh.endUpLoading(true);
+            }
+        }
+    });
 </script>
 </body>
 </html>

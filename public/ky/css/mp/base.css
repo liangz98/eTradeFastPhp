@@ -14,10 +14,12 @@ body {
     --brand-info:    #5bc0de;
     --brand-warning: #f0ad4e;
     --brand-danger: #d9534f;
-    --text-info: #666666;
     --text-danger: #d9534f;
+    --text-primary: #337ab7;
+    --text-info: #666666;
     --text-desc: #999999;
     --text-line: #f6f6f6;
+    --text-white: #fff;
     --text-size-10: 10px;
     --text-size-11: 11px;
     --text-size-13: 13px;
@@ -76,12 +78,20 @@ body {
     overflow-y: hidden;
 }
 
+.mp-margin-15 {
+    margin: 15px;
+}
+
 .mp-margin-5_hd {
     margin: 0 5px 5px 5px;
 }
 
 .mp-margin-5_bd {
     margin-bottom: 5px;
+}
+
+.mp-margin-5_left {
+    margin-left: 5px;
 }
 
 .mp-margin-10_bd {
@@ -94,6 +104,14 @@ body {
 
 .mp-text-margin-top-5 {
     margin-top: 5px;
+}
+
+.mp-text-primary {
+    color: var(--text-primary) !important;
+}
+
+.mp-text-white {
+    color: var(--text-white) !important;
 }
 
 .mp-text-info {
@@ -126,6 +144,10 @@ body {
 
 .mp-text-size-28 {
     font-size: var(--text-size-28) !important;
+}
+
+.mp-text-align-center {
+    text-align: center;
 }
 
 .flex_item {
@@ -165,6 +187,15 @@ body {
 
 .weui-btn_bootstrap-info {
     background-color: var(--brand-info);
+}
+
+.mp-btn_bootstrap_default {
+    color: var(--text-info);
+    background-color: var(--text-desc);
+}
+
+.mp-btn_bootstrap_default:not(.mp-btn_bootstrap_disabled):visited {
+    color: var(--text-info);
 }
 
 .weui-flex__item_auto {
