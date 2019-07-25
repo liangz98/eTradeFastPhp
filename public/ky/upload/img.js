@@ -15,7 +15,6 @@ $(function() {
 });
 
 function webupload_pic() {
-    var maxsize = 2000;
     $.getScript("../../ky/upload/Public/js/plugins/webuploader/webuploader.js", function() {
         if (!WebUploader.Uploader.support()) {
             alert('您的浏览器不支持上传功能！如果你使用的是IE浏览器，请尝试升级 flash 播放器');
@@ -44,7 +43,7 @@ function webupload_pic() {
             //},
             fileNumLimit: 20,//上传数量限制
             fileSizeLimit: 40960000,//限制上传所有文件大小
-            fileSingleSizeLimit: 2048000,
+            fileSingleSizeLimit: 16777216,
             duplicate: true,
             formData: {
                 code: 'identity',
@@ -70,7 +69,6 @@ function webupload_pic() {
             });
             var item_progress = "<img style='margin-top: 30px;' id='" + file['id'] + "' src='/ky/images/loading.gif'></li>";
             $(".webupload_current").parent().parent().find('.img-view').append(item_progress);
-
         });
         //上传中
         uploader.on('uploadProgress', function(file, percentage) {
@@ -176,13 +174,29 @@ function webupload_pic() {
         uploader.on("error", function (type) {
             if (type === "Q_TYPE_DENIED") {
                 layer.msg("请上传JPG、PNG、GIF、BMP格式文件");
-            } else if (type === "Q_EXCEED_SIZE_LIMIT") {
-                layer.msg("文件大小不能超过2M");
-            }else {
-                layer.msg("上传出错！请检查后重新上传！错误代码"+type);
+            } else if (type === "Q_EXCEED_SIZE_LIMIT" || type === 'F_EXCEED_SIZE') {
+                // layer.msg("文件大小不能超过2M");
+                showUploadMsg('文件大小不能超过2M');
+            } else {
+                // layer.msg("上传出错！请检查后重新上传！错误代码"+type);
+                showUploadMsg('上传出错！请检查后重新上传！错误代码: ' + type);
             }
-
         });
+    });
+}
+
+function showUploadMsg(content) {
+    layer.open({
+        type: 1
+        ,title: false //不显示标题栏
+        ,closeBtn: false
+        ,area: '500px;'
+        ,shade: 0.8
+        ,id: 'LAY_layDoAuthConfirm' //设定一个id，防止重复弹出
+        ,btn: ['确认']
+        ,btnAlign: 'c'
+        ,moveType: 1 //拖拽模式，0或者1
+        ,content: '<div style="padding: 50px; line-height: 22px; background-color: #eee; font-weight: 300;"><h3>验证失败！</h3><br><p>' + content + '</p></div>'
     });
 }
 
@@ -190,24 +204,6 @@ function delete_pic(obj) {
     $(obj).parent().parent().remove();
     // isCRCT();
 }
-
- /*
- function view_pic(obj){
-    $(obj).parent().parent().find('.img_common').addClass('a_par');
-    var srcID= $(obj).parent().parent().find('img').attr("src");
-     console.log(srcID);
-    var keyword=srcID.replace("&size=MIDDLE","");
-
-    layer.open({
-        type: 1,
-        area: '750px',
-        title: false,
-        offset: '100px',
-        shadeClose: true, //点击遮罩关闭
-        content: '\<\img style="max-width:720px;max-height:620px;margin:0 auto;padding:15px;" src='+keyword+'>'
-    });
-
-}*/
 
 function addWebuploadCurrent(obj) {
     $(".webupload_current").removeClass("webupload_current");

@@ -15,8 +15,11 @@ if (isset($_POST)) {
 
     // echo $typeDD. '|1'; exit;
 
+    // echo json_encode(array("error" => "您还未选择图片", "size" => $size, "files" => $_FILES));
+    // exit;
+
     if (empty($name)) {
-        echo json_encode(array("error" => "您还未选择图片"));
+        echo json_encode(array("error" => "您还未选择图片", "size" => $size, "files" => $_FILES));
         exit;
     }
     $type = strtolower(substr(strrchr($name, '.'), 1)); //获取文件类型
