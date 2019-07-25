@@ -202,4 +202,7 @@ return array(
 
     // 手机
     'apps'                   => 'Apps',
+
+    // PDF
+    'pdfView'                => 'PDF Viewer',
 );

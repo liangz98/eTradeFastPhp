@@ -162,7 +162,7 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12 text-primary">
-                        <?php echo $this->ShowWebuploader($this->e['attachmentList'], 'PT', 'PTDN', "1", $this->e['tradingID']); ?>
+                        <?php echo $this->ShowUPimg($this->e['attachmentList'], ''); ?>
                     </div>
                 </div>
                 <?php endif;?>
@@ -215,11 +215,23 @@
 	</div>
 </div>
 
+<!--PDF预览-->
+<div id="signViewDiv" style="display: none; background-color: #F6F6F6;">
+    <div class="download-button">下载</div>
+    <div class="pdfDoc" style="padding-left:50px;">
+        <div id="pdfPageBox">
+        </div>
+    </div>
+</div>
+
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
 <script type="text/javascript" src="/ky/upload/img.js"></script>
+<!-- pdf -->
+<script type="text/javascript" src="/ky/pdf/pdf.js"></script>
+<script type="text/javascript" src="/ky/pdf/pdf.worker.js"></script>
 <!-- fancybox -->
 <script type="text/javascript" src="/ky/fancybox-3.5.6-dist/jquery.fancybox.min.js"></script>
 <script type="text/javascript" src="/ky/fancybox-3.5.6-dist/fancyboxInit.js"></script>
@@ -232,6 +244,100 @@
 	$(function () {
 
 	});
+
+    // *************************** PDF Sign View ********************************
+    PDFJS.workerSrc = '/ky/pdf/pdf.worker.js';
+
+    var pdfDoc = null;
+    var pageNum = 1;
+    var pageRendering = false;
+    var pageNumPending = null;
+    var scale = 1.5;
+
+    function renderPage(num, id) {
+        var canvas = document.getElementById(id);
+        var ctx = canvas.getContext('2d');
+        pageRendering = true;
+        pdfDoc.getPage(num).then(function(page) {
+            var viewport = page.getViewport(scale);
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            var renderContext = {
+                canvasContext: ctx,
+                viewport: viewport
+            };
+            var renderTask = page.render(renderContext);
+
+            renderTask.promise.then(function() {
+                pageRendering = false;
+                if (pageNumPending !== null) {
+                    renderPage(pageNumPending);
+                    pageNumPending = null;
+                }
+            });
+        });
+    }
+
+    function queueRenderPage(num) {
+        if (pageRendering) {
+            pageNumPending = num;
+        } else {
+            renderPage(num);
+        }
+    }
+
+    function onPrevPage() {
+        if (pageNum <= 1) {
+            return;
+        }
+        pageNum--;
+        queueRenderPage(pageNum);
+    }
+
+    function onNextPage() {
+        if (pageNum >= pdfDoc.numPages) {
+            return;
+        }
+        pageNum++;
+        queueRenderPage(pageNum);
+    }
+
+    function initPdfView(pdfUrl, obj) {
+        $("#pdfPageBox").html("");
+        PDFJS.getDocument(pdfUrl).then(function(pdfDoc_) {
+            pdfDoc = pdfDoc_;
+            //document.getElementById('page_count').textContent = pdfDoc.numPages;
+            for (var i=1;i<=pdfDoc.numPages;i++){
+                var canvasDiv = $("<div style=\"padding-top:10px;padding-bottom:10px;\"></div>");
+                var pageNum = $("<div style=\"background-color: #999999;position:absolute;float: left;height:30px;width:60px;text-align: center;line-height: 30px;color:#ffffff;opacity: 0.6;\">"+i+"/"+pdfDoc.numPages+"</div>");
+                var canvas = $("<canvas></canvas>").attr("id", "the-canvas_"+i);
+                canvasDiv.append(pageNum);
+                canvasDiv.append(canvas);
+                $("#pdfPageBox").append(canvasDiv);
+                renderPage(i, "the-canvas_"+i);
+            }
+        });
+
+        var signTitle = "<?php echo $this->translate('pdfView');?>";
+        layer.open({
+            type: 1,	//Page层类型
+            area: ['1150px', '100%'],
+            title: signTitle,
+            shadeClose: true,
+            shade: 0.6,	//遮罩透明度
+            // anim: 1,	//0-6的动画形式，-1不开启
+            scrollbar: false,
+            content: $("#signViewDiv")
+        });
+
+        $(".download-button").attr("contractID_", obj.id);
+    }
+
+    $(".download-button").bind("click",function(){
+        var contractID_ = $(this).attr("contractID_");
+        window.location.href = $("#contractAttachUrl_" + contractID_).val();
+    });
 </script>
 </body>
 </html>

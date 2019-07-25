@@ -98,3 +98,21 @@ input[type=number]{
 .pay-row .col-md-10 {
     margin-left: -50px;
 }
+
+/* PDF View */
+.download-button {
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    top: 320px;
+    right: 20px;
+    background: #7180eb;
+    display: block;
+    line-height: 100px;
+    opacity: 0.6;
+    border-radius: 50px;
+    text-align: center;
+    cursor: pointer;
+    font-size: large;
+    color:#ffffff;
+}
