@@ -4,7 +4,7 @@ var bizID = '',
     baseUrl = '',
     uploadUrl = '',
     downloadUrl = '',
-    operation = '', // 1 - 编辑, 0 - 新增
+    operation = '', // 1:正式, 0:临时
     sid = '';
 
 $(function() {
@@ -33,6 +33,20 @@ function webupload_pic() {
             fileSizeLimit: allMaxSize * 1024 * 1024,            // 限制大小50M，所有被选文件，超出选择不上
             fileSingleSizeLimit: singleMaxSize * 1024 * 1024,   // 限制大小16M，单文件
             duplicate: true,
+            //配置生成缩略图的选项
+            thumb: {
+                width: 120,
+                height: 90,
+                // 图片质量，只有type为`image/jpeg`的时候才有效。
+                quality: 100,
+                // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
+                allowMagnify: false,
+                // 是否允许裁剪。
+                crop: true,
+                // 为空的话则保留原有图片格式。
+                // 否则强制转换成指定的类型。
+                type: "image/jpeg"
+            },
             formData: {
                 sid: sid,
                 bizID: bizID,
@@ -41,10 +55,8 @@ function webupload_pic() {
             }
         });
 
-        //上传时
+        // 当一批文件添加进队列以后触发, 上传时
         uploader.on('fileQueued', function (file) {
-            console.log('fileQueued:' + operation);
-            console.log(uploader.option('server'));
             if (operation !== undefined && operation !== '' && operation === '1') {
                 uploadUrl = baseUrl + "/doc/uploadAttach.action";
                 downloadUrl = baseUrl + "/doc/download.action";
@@ -52,11 +64,7 @@ function webupload_pic() {
                 uploadUrl = baseUrl + "/doc/upload.action";
                 downloadUrl = baseUrl + "/doc/temporary.action";
             }
-            console.log(baseUrl);
-            console.log(uploadUrl);
             uploader.option('server', uploadUrl);
-
-            console.log(uploader.option('server'));
             uploader.option('formData', {
                 sid: sid,
                 bizID: bizID,
@@ -65,33 +73,30 @@ function webupload_pic() {
                 // name: file['name']
                 // file: file
             });
-            var item_progress = "<img style='margin-top: 30px;' id='" + file['id'] + "' src='/ky/images/loading.gif'></li>";
-            $(".webupload_current").parent().parent().find('.img-view').append(item_progress);
-        });
-        //上传中
-        uploader.on('uploadProgress', function(file, percentage) {
-            var $li = $( '#'+file.id ),
-                $percent = $li.find('.progress span');
 
-            // console.log(file);
-            console.log("上传中: " + percentage);
+            var progressStr = '<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" style="width: 1%; ">1%</div></div>';
+            uploader.makeThumb( file, function( error, dataSrc ) {
+                if ( !error ) {
+                    $(".img-view").append('<div id="' + file['id'] + '" ><img src="'+dataSrc+'" ><div class="progressing" >' + progressStr + '</div>');
+                }
+            });
+        });
+        // 上传中
+        uploader.on('uploadProgress', function(file, percentage) {
+            // 上传进度
+            var $progressBar = $("#" + file.id).find(".progress-bar");
+            $progressBar.css("width", percentage * 100 + "%");
+            $progressBar.html(percentage * 100 + "%");
         });
 
 		// 上传前
         uploader.on('uploadBeforeSend', function(block, data) {
-			// data.attachType = $(".webupload_current").attr("attachType_");
 
         });
 
         //上传成功后
         uploader.on('uploadSuccess', function(file, response) {
             if (response.responseCode === 'success') {
-                console.log("in 上传结束");
-                console.log(response);
-                console.log(file.name);
-
-                console.log(sid);
-
                 var nid = '',
                     vid = '',
                     middleUrl = '',
@@ -134,7 +139,7 @@ function webupload_pic() {
 
                 if (name !== undefined && name !== '') {
                     if (type !== "jpeg" && type !== "png" && type !== "jpg" && type !== "gif" && type !== "GIF" && type !== "JPG" && type !== "PNG") {
-                        $(".webupload_current").parent().parent().find('.img-view').append("<li><img width='125px' height='125px' class='img_common' src='/ky/ico/" + type + ".png' data-type='" + type + "' alt=" + name.substr(0, 7) + "><span class='del_to' >" + name.substr(0, 7) + "..." + "<br><a href=" + fullUrl + " data-type='download' download><i class='fas fa-download'></i></a>&nbsp;&nbsp;&nbsp;<a onclick='delete_pic(this)' data-type='del'><i class='far fa-trash-alt'></i></a></span>" +
+                        $(".webupload_current").parent().parent().find('.img-view').append("<li><img class='img_common' src='/ky/ico/" + type + ".png' data-type='" + type + "' alt=" + name.substr(0, 7) + "><span class='del_to' >" + name.substr(0, 7) + "..." + "<br><a href=" + fullUrl + " data-type='download' download><i class='fas fa-download'></i></a>&nbsp;&nbsp;&nbsp;<a onclick='delete_pic(this)' data-type='del'><i class='far fa-trash-alt'></i></a></span>" +
                             "<input type='hidden' name='attachNid[]' value=" + nid + "><input type='hidden'  name='attachName[]' value=" + name + "><input type='hidden'  name='attachSize[]' value=" + size + "><input type='hidden'  name='attachType[]' value=" + attach_new + "><input type='hidden'  name='bizType[]' value=" + bizType + "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
                         if (attach_new === "CRSE" || attach_new === "ODSE") {
                             if ($('#KEY_CRCT').length > 0) {
@@ -155,11 +160,12 @@ function webupload_pic() {
                         // $("[data-fancybox-class^='gallery']").fancybox();
                     } else {
                         if (operation !== undefined && operation !== '' && operation === '1') {
-                            $(".webupload_current").parent().parent().find('.img-view').append("<li><a href=" + fullUrl + " data-fancybox-class='gallery' data-caption=" + name + " data-fancybox=" + bizID + "><img width='125px' height='125px' class='img_common' src=" + middleUrl + " alt=''/></a><span class='del_to' >" + name + "</span>" +
+                            $(".webupload_current").parent().parent().find('.img-view').append("<li><a href=" + fullUrl + " data-fancybox-class='gallery' data-caption=" + name + " data-fancybox=" + bizID + "><img class='img_common' src=" + middleUrl + " alt=''/></a><span class='del_to' >" + name + "</span>" +
                                 "<input type='hidden' name='attachNid[]' value=" + nid + "><input type='hidden'  name='attachName[]' value=" + name + "><input type='hidden'  name='attachSize[]' value=" + size + "><input type='hidden'  name='attachType[]' value=" + attach_new + "><input type='hidden'  name='bizType[]' value=" + bizType + "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
                         } else {
-                            $(".webupload_current").parent().parent().find('.img-view').append("<li><a href=" + fullUrl + " data-fancybox-class='gallery' data-caption=" + name + " data-fancybox=" + bizID + "><img width='125px' height='125px' class='img_common' src=" + middleUrl + " alt=''/></a><span class='del_to' >" + name.substr(0, 7) + "..." + "<br><a onclick='delete_pic(this)'><i class=\"far fa-trash-alt\"></i></a></span>" +
+                            $(".webupload_current").parent().parent().find('.img-view').append("<li><a href=" + fullUrl + " data-fancybox-class='gallery' data-caption=" + name + " data-fancybox=" + bizID + "><img class='img_common' src=" + middleUrl + " alt=''/></a><span class='del_to' ><a onclick='delete_pic(this)'><i class=\"far fa-trash-alt\"></i></a></span>" +
                                 "<input type='hidden' name='attachNid[]' value=" + nid + "><input type='hidden'  name='attachName[]' value=" + name + "><input type='hidden'  name='attachSize[]' value=" + size + "><input type='hidden'  name='attachType[]' value=" + attach_new + "><input type='hidden'  name='bizType[]' value=" + bizType + "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
+
                         }
 
                         if (attach_new === "CRSE" || attach_new === "ODSE") {
