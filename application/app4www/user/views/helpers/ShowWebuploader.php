@@ -21,6 +21,7 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
         $indata .= '<input type="hidden" id="attachType" value="' . $attachType . '" />';
         $indata .= '<input type="hidden" id="uploadURL" value="' . $this->view->seed_Setting['KyUrlex'] . '" />';
         $indata .= '<input type="hidden" id="typeURL" value="' . $type . '" />';
+        $indata .= '<input type="hidden" id="sid" value="' . session_id() . '" />';
 
 
         if (is_array($attArr) && count($attArr) > 0) {

@@ -13,28 +13,19 @@ if (isset($_POST)) {
     $attachType = $_REQUEST['attachType'];
     $typeDD = $_REQUEST['typeDD'];
 
-    // echo $typeDD. '|1'; exit;
-
-    // echo json_encode(array("error" => "您还未选择图片", "size" => $size, "files" => $_FILES));
-    // exit;
-
     if (empty($name)) {
-        echo json_encode(array("error" => "您还未选择图片", "size" => $size, "files" => $_FILES));
+        echo json_encode(array("error" => "您还未选择文件", "size" => $size, "files" => $_FILES));
         exit;
     }
     $type = strtolower(substr(strrchr($name, '.'), 1)); //获取文件类型
 
-//    if (!in_array($type, $typeArr)) {
-//        echo json_encode(array("error" => "清上传jpg,png或gif类型的图片！"));
-//        exit;
-//    }
+    // 此处不再做文件大小验证 - 20190725
+    // if ($size > (16000 * 1024)) { //上传大小
+    //     echo json_encode(array("error" => "图片大小已超过16MB！"));
+    //     exit;
+    // }
 
-    if ($size > (2000 * 1024)) { //上传大小
-        echo json_encode(array("error" => "图片大小已超过2000KB！"));
-        exit;
-    }
-
-    //远程服务器上传图片
+    // 远程服务器上传图片
     session_start();
     $sid = session_id();
     
@@ -73,16 +64,11 @@ if (isset($_POST)) {
     );
     curl_error($ch);  //查看报错信息
 
-    // 此处提交了两次
+    // 提交
     $tmpInfo = curl_exec($ch);
-    // $res = json_decode(curl_exec($ch), true);
 
     $res = json_decode($tmpInfo, true);
 
-
-
-//    echo json_encode(array("res"=>$res,"post"=>$post_data));
-//    exit;
     if ($typeDD == "1") {
         $nid = $res['attachment']['attachID'];
         $vid = $res['attachment']['verifyID'];
