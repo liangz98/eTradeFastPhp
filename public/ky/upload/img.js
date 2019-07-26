@@ -74,10 +74,23 @@ function webupload_pic() {
                 // file: file
             });
 
+            var fileExt = file.ext;
+            if (fileExt === "docx" || fileExt === "wps") {
+                fileExt = "word";
+            }
+            if (fileExt === "xlsx") {
+                fileExt = "xls";
+            }
+            if (fileExt === "pptx") {
+                fileExt = "ppt";
+            }
+
             var progressStr = '<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" style="width: 1%; ">1%</div></div>';
             uploader.makeThumb( file, function( error, dataSrc ) {
                 if ( !error ) {
-                    $(".img-view").append('<div id="' + file['id'] + '" ><img src="'+dataSrc+'" ><div class="progressing" >' + progressStr + '</div>');
+                    $(".img-view").append('<div id="' + file['id'] + '" ><img src="' + dataSrc + '" onerror="javascript:this.src=\'/ky/ico/other.png\';"><div class="progressing" >' + progressStr + '</div>');
+                } else {
+                    $(".img-view").append('<div id="' + file['id'] + '" ><img class="img_common" src="/ky/ico/' + fileExt + '.png" ><div class="progressing" >' + progressStr + '</div>');
                 }
             });
         });
