@@ -18,7 +18,7 @@ function webupload_pic() {
         }
 
         var allMaxSize = 50,
-            singleMaxSize = 40;
+            singleMaxSize = 25;
         var uploader = WebUploader.create({
             multiple: false,
             compress: false,
