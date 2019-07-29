@@ -397,10 +397,10 @@ class SaleController extends Kyapi_Controller_Action
         // 请求Hessian服务端方法
         $orderIDget = $_SERVER['QUERY_STRING'];
         $_orderIDget = base64_decode($orderIDget);
-        $_requestOb = $this->_requestObject;
+        $requestObject = $this->_requestObject;
 
         //获取数据
-        $_resultData = $this->json->getOrderApi($_requestOb, $_orderIDget);
+        $_resultData = $this->json->getOrderApi($requestObject, $_orderIDget);
         $userView = json_decode($_resultData);
         $viewData = $userView->result;
         $Viewlist = $this->objectToArray($viewData);
@@ -810,11 +810,11 @@ class SaleController extends Kyapi_Controller_Action
         if ($this->_request->isPost()) {
             $id= $this->_request->getParam("id");
             $type = $this->_request->getParam("type");
-            $_requestOb=$this->_requestObject;
+            $requestObject=$this->_requestObject;
             if($type=='PDF'){
-                $resData= $this->json->getPdfUrl($_requestOb,$id);
+                $resData= $this->json->getPdfUrl($requestObject,$id);
             }else{
-                $resData= $this->json->getImgUrl($_requestOb,$id);
+                $resData= $this->json->getImgUrl($requestObject,$id);
             }
 
             echo $resData;
@@ -825,8 +825,8 @@ class SaleController extends Kyapi_Controller_Action
         if ($this->_request->isPost()) {
             $id= $this->_request->getParam("id");
             $url = $this->_request->getParam("url");
-            $_requestOb=$this->_requestObject;
-            $resData= $this->json->initContractSignView($_requestOb,$id,$url);
+            $requestObject=$this->_requestObject;
+            $resData= $this->json->initContractSignView($requestObject,$id,$url);
             echo $resData;
         }
         exit;
@@ -946,8 +946,8 @@ class SaleController extends Kyapi_Controller_Action
         if ($this->_request->isPost()) {
             // 请求Hessian服务端方法bankAcctID
             $_objID = $this->_request->getPost('delID');
-            $_requestOb=$this->_requestObject;
-            $opData= $this->json->doRemoveDraftApi($_requestOb,$_objID);
+            $requestObject=$this->_requestObject;
+            $opData= $this->json->doRemoveDraftApi($requestObject,$_objID);
             echo $opData;
         }
         exit;
@@ -959,9 +959,9 @@ class SaleController extends Kyapi_Controller_Action
         if ($this->_request->isPost()) {
             // 请求Hessian服务端方法bankAcctID
             $_objID = $this->_request->getPost('delID');
-            $_requestOb=$this->_requestObject;
+            $requestObject=$this->_requestObject;
            // $_operationReason = $this->_request->getParam('operationReason');
-            $opData= $this->json->doCancelOrderApi($_requestOb,$_objID/*,$_operationReason*/);
+            $opData= $this->json->doCancelOrderApi($requestObject,$_objID/*,$_operationReason*/);
             echo $opData;
         }
         exit;
@@ -973,8 +973,8 @@ class SaleController extends Kyapi_Controller_Action
         if ($this->_request->isPost()) {
             // 请求Hessian服务端方法bankAcctID
             $_objID = $this->_request->getPost('delID');
-            $_requestOb=$this->_requestObject;
-            $opData= $this->json->doSubmitOrderApi($_requestOb,$_objID);
+            $requestObject=$this->_requestObject;
+            $opData= $this->json->doSubmitOrderApi($requestObject,$_objID);
             echo $opData;
         }
         exit;
@@ -985,8 +985,8 @@ class SaleController extends Kyapi_Controller_Action
     {
         // 请求Hessian服务端方法
         $_orderID = $this->_request->getParam('orderID');
-        $_requestOb = $this->_requestObject;
-        $_resultData = $this->json->doConfirmOrderApi($_requestOb, $_orderID);
+        $requestObject = $this->_requestObject;
+        $_resultData = $this->json->doConfirmOrderApi($requestObject, $_orderID);
         $existData = json_decode($_resultData);
         echo json_encode($existData->status);
 
@@ -1004,8 +1004,8 @@ class SaleController extends Kyapi_Controller_Action
         $orderID = $_SERVER['QUERY_STRING'];
         $_orderID = base64_decode($orderID);
 
-        $_requestOb = $this->_requestObject;
-        $_resultData = $this->json->doConfirmOrderApi($_requestOb, $_orderID);
+        $requestObject = $this->_requestObject;
+        $_resultData = $this->json->doConfirmOrderApi($requestObject, $_orderID);
         $existData = json_decode($_resultData);
         echo json_encode($existData->status);
 
@@ -1079,11 +1079,11 @@ class SaleController extends Kyapi_Controller_Action
             }
         }
 
-        $_requestOb = $this->_requestObject;
+        $requestObject = $this->_requestObject;
         if (count($_attachList) == 0) {
             $_attachList = null;
         }
-        $resultObject = $this->json->doAgreeContractApi($_requestOb, $_contractID, $_attachList);
+        $resultObject = $this->json->doAgreeContractApi($requestObject, $_contractID, $_attachList);
         $msg['status'] = json_decode($resultObject)->status;
         $msg['result'] = json_decode($resultObject)->result;
         if (json_decode($resultObject)->status <= 0) {
@@ -1161,8 +1161,8 @@ class SaleController extends Kyapi_Controller_Action
     /* 发货单详情 */
     public function deliveryAjaxAction() {
         $deliveryID = $this->_request->getParam('deliveryID');
-        $_requestOb = $this->_requestObject;
-        $resultObject = $this->json->getDeliveryView($_requestOb, $deliveryID);
+        $requestObject = $this->_requestObject;
+        $resultObject = $this->json->getDeliveryView($requestObject, $deliveryID);
 
         $msg["delivery"] = json_decode($resultObject)->result;
 
@@ -1205,8 +1205,8 @@ class SaleController extends Kyapi_Controller_Action
     public function listorderitemAction() {
         $orderID = $this->_request->getParam('orderID');
         $deliveryCrnCode = $this->_request->getParam('deliveryCrnCode');
-        $_requestOb = $this->_requestObject;
-        $resultObject = $this->json->listOrderItem($_requestOb, $orderID);
+        $requestObject = $this->_requestObject;
+        $resultObject = $this->json->listOrderItem($requestObject, $orderID);
 
 
         $this->view->orderItemList = json_decode($resultObject)->result;
@@ -1219,14 +1219,18 @@ class SaleController extends Kyapi_Controller_Action
         }
     }
 
-    //备货
+    /**
+     * 备货
+     */
     public function prepareSaveAction() {
-        $_requestOb = $this->_requestObject;
+        $msg = array();
+
+        $requestObject = $this->_requestObject;
         // 请求Hessian服务端方法
         $name = $_POST['name'];
         $nid = $_POST['nid'];
         $size = $_POST['size'];
-        $attachType=$_POST['attachType'];
+        $attachType = $_POST['attachType'];
         $_orderID = $_POST['orderID'];
         $_nid = explode("|", $nid);
         $_name = explode("|", $name);
@@ -1323,18 +1327,19 @@ class SaleController extends Kyapi_Controller_Action
         if (count($_attachList) == 0) {
             $_attachList = null;
         }
-        $_resultData = $this->json->doPrepareGoodsApi($_requestOb, $delivery, $deliveryItemList, $_attachList);
-        $existData = json_decode($_resultData);
-
-        echo json_encode($existData->status);
+        $resultObject = $this->json->doPrepareGoodsApi($requestObject, $delivery, $deliveryItemList, $_attachList);
+        $msg['status'] = json_decode($resultObject)->status;
+        $msg["errorCode"] = json_decode($resultObject)->errorCode;
+        $msg["error"] = json_decode($resultObject)->error;;
+        echo json_encode($msg);
         exit;
     }
 
     // 编辑备货单 - view
     public function editdeliveryAction() {
         $deliveryID = $this->_request->getParam('deliveryID');
-        $_requestOb = $this->_requestObject;
-        $resultObject = $this->json->getDeliveryView($_requestOb, $deliveryID);
+        $requestObject = $this->_requestObject;
+        $resultObject = $this->json->getDeliveryView($requestObject, $deliveryID);
 
         $delivery = json_decode($resultObject)->result;
         $this->view->delivery = json_decode($resultObject)->result;
@@ -1358,8 +1363,8 @@ class SaleController extends Kyapi_Controller_Action
     /* 发货单详情 */
     public function editDeliveryAjaxAction() {
         $deliveryID = $this->_request->getParam('deliveryID');
-        $_requestOb = $this->_requestObject;
-        $resultObject = $this->json->getDeliveryView($_requestOb, $deliveryID);
+        $requestObject = $this->_requestObject;
+        $resultObject = $this->json->getDeliveryView($requestObject, $deliveryID);
 
         $msg["delivery"] = json_decode($resultObject)->result;
 
@@ -1380,7 +1385,7 @@ class SaleController extends Kyapi_Controller_Action
 
     // 编辑备货单 - 保存
     public function editdeliverysaveAction() {
-        $_requestOb = $this->_requestObject;
+        $requestObject = $this->_requestObject;
         // 请求Hessian服务端方法
         $deliveryID = $_POST['deliveryID'];
         $name = $_POST['name'];
@@ -1480,7 +1485,7 @@ class SaleController extends Kyapi_Controller_Action
         if (count($_attachList) == 0) {
             $_attachList = null;
         }
-        $_resultData = $this->json->editDeliveryApi($_requestOb, $deliveryID, $deliveryItemList, $_attachList);
+        $_resultData = $this->json->editDeliveryApi($requestObject, $deliveryID, $deliveryItemList, $_attachList);
         $existData = json_decode($_resultData);
 
         echo json_encode($existData->status);
@@ -1489,11 +1494,11 @@ class SaleController extends Kyapi_Controller_Action
 
     // 删除备货单
     public function delDeliveryAjaxAction() {
-        $_requestOb = $this->_requestObject;
+        $requestObject = $this->_requestObject;
         // 请求Hessian服务端方法
         $deliveryID = $_POST['deliveryID'];
 
-        $_resultData = $this->json->delDeliveryApi($_requestOb, $deliveryID);
+        $_resultData = $this->json->delDeliveryApi($requestObject, $deliveryID);
         $existData = json_decode($_resultData);
 
         echo json_encode($existData->status);
@@ -1551,7 +1556,7 @@ class SaleController extends Kyapi_Controller_Action
 
     // 发货 - 保存
     public function deliverSaveAction() {
-        $_requestOb = $this->_requestObject;
+        $requestObject = $this->_requestObject;
         // 请求Hessian服务端方法
         $name = $_POST['name'];
         $nid = $_POST['nid'];
@@ -1607,7 +1612,7 @@ class SaleController extends Kyapi_Controller_Action
         if (count($_attachList) == 0) {
             $_attachList = null;
         }
-        $_resultData = $this->json->doDeliverGoodsApi($_requestOb, $deliveryID, $_attachList);
+        $_resultData = $this->json->doDeliverGoodsApi($requestObject, $deliveryID, $_attachList);
         $existData = json_decode($_resultData);
         echo json_encode($existData->status);
 
@@ -1676,8 +1681,8 @@ class SaleController extends Kyapi_Controller_Action
                 $delivery->deliverySupplierList[$index] = $deliverySupplier;
             }
 
-            $_requestOb = $this->_requestObject;
-            $_resultData = $this->json->genBillingInfoApi($_requestOb, $delivery);
+            $requestObject = $this->_requestObject;
+            $_resultData = $this->json->genBillingInfoApi($requestObject, $delivery);
             $existData = json_decode($_resultData);
 
             echo json_encode($existData->status);
@@ -1690,7 +1695,7 @@ class SaleController extends Kyapi_Controller_Action
         $deliverySupplierID = $this->_request->getPost('deliverySupplierID');
         $expressType = $this->_request->getPost('expressType');
         $expressNo = $this->_request->getPost('expressNo');
-        $_requestOb = $this->_requestObject;
+        $requestObject = $this->_requestObject;
 
         $deliverySupplier = new Kyapi_Model_DeliverySupplier();
         $deliverySupplier->deliverySupplierID = $deliverySupplierID;
@@ -1699,7 +1704,7 @@ class SaleController extends Kyapi_Controller_Action
         $deliverySupplier->expressType = $expressType;
         $deliverySupplier->expressNo = $expressNo;
 
-        $resultObject = $this->json->editExpressNoApi($_requestOb, $deliverySupplier);
+        $resultObject = $this->json->editExpressNoApi($requestObject, $deliverySupplier);
 
         echo json_encode($resultObject->status);
         exit;
@@ -1708,8 +1713,8 @@ class SaleController extends Kyapi_Controller_Action
     // 封装银行列表
     public function genbankaccountlistAction() {
         $bankOptions = "";
-        $_requestOb = $this->_requestObject;
-        $resultObject = $this->json->listBankAccountApi($_requestOb, null, null, null, null, null);
+        $requestObject = $this->_requestObject;
+        $resultObject = $this->json->listBankAccountApi($requestObject, null, null, null, null, null);
         $bankAccountList = json_decode($resultObject)->result;
         foreach ($bankAccountList as $bankAccount) {
             $bankOptions .= '<option value="' . $bankAccount->bankNo . '">' . $bankAccount->bankName . '</option>';
@@ -1722,14 +1727,14 @@ class SaleController extends Kyapi_Controller_Action
     public function trackAction()
     {
         // 请求Hessian服务端方法
-        $_requestOb = $this->_requestObject;
+        $requestObject = $this->_requestObject;
         //    $_orderID='EB7E79BD-A9B9-42DC-CBB5-D431264ADC25';
         $_orderID = $this->_request->getParam('orderID');
         $_view = $this->_request->getParam('view');
         if (empty($_view)) {
             $_view = 'date';
         }
-        $_resultData = $this->json->getOrderEventLogApi($_requestOb, $_orderID, $_view);
+        $_resultData = $this->json->getOrderEventLogApi($requestObject, $_orderID, $_view);
         $existData = json_decode($_resultData);
         $trackData = $existData->result;
         $tracklist = $this->objectToArray($trackData);
@@ -1749,8 +1754,8 @@ class SaleController extends Kyapi_Controller_Action
         // 请求Hessian服务端方法
         //	$_orderID='EB7E79BD-A9B9-42DC-CBB5-D431264ADC25';
         $_orderID = $this->_request->getParam('orderID');
-        $_requestOb = $this->_requestObject;
-        $_resultData = $this->json->listDeclarationApi($_requestOb, $_orderID);
+        $requestObject = $this->_requestObject;
+        $_resultData = $this->json->listDeclarationApi($requestObject, $_orderID);
         $bgdData = json_decode($_resultData);
         $bgOb = $bgdData->result;
         $bgd = $this->objectToArray($bgOb);
@@ -1770,8 +1775,8 @@ class SaleController extends Kyapi_Controller_Action
 
         // 请求Hessian服务端方法
         $_orderID = $this->_request->getParam('orderID');
-        $_requestOb = $this->_requestObject;
-        $_resultData = $this->json->listTruckingOrderApi($_requestOb, $_orderID);
+        $requestObject = $this->_requestObject;
+        $_resultData = $this->json->listTruckingOrderApi($requestObject, $_orderID);
         $pcdData = json_decode($_resultData);
         $pcOb = $pcdData->result;
         $pcd = $this->objectToArray($pcOb);
@@ -1790,8 +1795,8 @@ class SaleController extends Kyapi_Controller_Action
 
         // 请求Hessian服务端方法
         $_orderID = $this->_request->getParam('orderID');
-        $_requestOb = $this->_requestObject;
-        $_resultData = $this->json->listShippingOrderApi($_requestOb, $_orderID);
+        $requestObject = $this->_requestObject;
+        $_resultData = $this->json->listShippingOrderApi($requestObject, $_orderID);
         $dcdData = json_decode($_resultData);
         $dcOb = $dcdData->result;
         $dcd = $this->objectToArray($dcOb);
@@ -1808,8 +1813,8 @@ class SaleController extends Kyapi_Controller_Action
     public function tradingAction() {
         // 请求Hessian服务端方法
         $_orderID = $this->_request->getParam('orderID');
-        $_requestOb = $this->_requestObject;
-        $_resultData = $this->json->Trading4OrderApi($_requestOb, $_orderID);
+        $requestObject = $this->_requestObject;
+        $_resultData = $this->json->Trading4OrderApi($requestObject, $_orderID);
         $jsdData = json_decode($_resultData);
         $jsdOb = $jsdData->result;
         $jsd = $this->objectToArray($jsdOb);
@@ -1826,8 +1831,8 @@ class SaleController extends Kyapi_Controller_Action
     public function attachmentAction() {
         // 请求Hessian服务端方法
         $_orderID = $this->_request->getParam('orderID');
-        $_requestOb = $this->_requestObject;
-        $_resultData = $this->json->listOrderAttachment($_requestOb, $_orderID);
+        $requestObject = $this->_requestObject;
+        $_resultData = $this->json->listOrderAttachment($requestObject, $_orderID);
         $docData = json_decode($_resultData);
         $docOb = $docData->result;
         $doc = $this->objectToArray($docOb);

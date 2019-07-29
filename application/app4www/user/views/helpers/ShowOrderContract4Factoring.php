@@ -22,7 +22,7 @@ class Zend_View_Helper_ShowOrderContract4Factoring extends Shop_View_Helper {
 
                 $IMG .= '<div class="row">';
                 $IMG .= '<div class="col-xs-5">';
-                $IMG .= '<em class="new_upicon" style="background:url(\'/ky/ico/pdf.png\') no-repeat;background-size: 20px;"></em>';
+                $IMG .= '<em class="new_upicon showPDFIcon"></em>';
                 $IMG .= '<p class="new_uptitle">' . $v['contractName'] . '</p>';
                 $IMG .= '</div>';
                 $IMG .= '<input type="hidden" value="' . $v['attachType'] . '" />';

@@ -1226,6 +1226,7 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
 <script type="text/javascript" src="/ky/upload/img.js"></script>
+<script type="text/javascript" src="/ky/js/layerMsg.js"></script>
 <!-- pdf -->
 <script type="text/javascript" src="/ky/pdf/pdf.js"></script>
 <script type="text/javascript" src="/ky/pdf/pdf.worker.js"></script>
@@ -2332,13 +2333,15 @@
             },
             dataType: "json",
             success: function (data) {
-                if (data === 1) {
+                var contentStr = '',
+                    contentErrCode = '';
+                if (data.status === 1) {
                     document.location.reload();
                 } else {
-                    alert(data + 'failed,please try again!');
+                    contentStr = data.error;
+                    showLayMsg(contentStr, '', '');
+                    $("#deliveryAddConfirmBtn").attr("disabled", false);
                 }
-
-                $(this).attr("disabled", false);
             }
         });
     });

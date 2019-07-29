@@ -205,6 +205,12 @@ body {
     margin-bottom: 5px;
 }
 
+
+.showPDFIcon {
+    background:url("/ky/ico/pdf.png") no-repeat;
+    background-size: 20px;
+}
+
 .new_upicon {
     width: 30px;
     height: 30px;

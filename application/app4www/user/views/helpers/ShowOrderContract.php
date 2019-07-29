@@ -22,7 +22,7 @@ class Zend_View_Helper_ShowOrderContract extends Shop_View_Helper {
 
                 $IMG .= '<div class="row">';
                 $IMG .= '<div class="col-xs-9 col-md-offset-1">';
-                $IMG .= '<em class="new_upicon" style="background:url(\'/ky/ico/pdf.png\') no-repeat;background-size: 20px;"></em>';
+                $IMG .= '<em class="new_upicon showPDFIcon"></em>';
                 $IMG .= '<p class="new_uptitle">' . $v['contractName'] . '</p>';
                 $IMG .= '</div>';
 

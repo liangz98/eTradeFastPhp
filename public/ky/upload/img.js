@@ -98,7 +98,6 @@ function webupload_pic() {
         });
         // 上传中
         uploader.on('uploadProgress', function(file, percentage) {
-            console.log(percentage);
             // 上传进度
             var $progressBar = $("#" + file.id).find(".progress-bar");
             $progressBar.css("width", percentage * 100 + "%");
@@ -116,6 +115,7 @@ function webupload_pic() {
                 console.log('upload success!');
                 var nid = '',
                     vid = '',
+                    attachID = '',
                     middleUrl = '',
                     fullUrl = '',
                     name = file.name,
@@ -127,9 +127,11 @@ function webupload_pic() {
                     downloadUrl = baseUrl + "/doc/download.action?sid=" + sid ;
                     nid = '&nid=' + attachment.attachID;
                     vid = '&vid=' + attachment.verifyID;
+                    attachID = attachment.attachID;
                 } else {
                     downloadUrl = baseUrl + "/doc/temporary.action?sid=" + sid ;
                     nid = '&nid=' +  response.nid;
+                    attachID = response.nid;
                 }
 
                 middleUrl = downloadUrl + '&size=MIDDLE&' + nid + vid;
@@ -157,7 +159,7 @@ function webupload_pic() {
                 if (name !== undefined && name !== '') {
                     if (type !== "jpeg" && type !== "png" && type !== "jpg" && type !== "gif" && type !== "GIF" && type !== "JPG" && type !== "PNG") {
                         $(".webupload_current").parent().parent().find('.img-view').append("<li><img class='img_common' src='/ky/ico/" + type + ".png' data-type='" + type + "' alt='" + name.substr(0, 7) + "' onerror='javascript:this.src=\"/ky/ico/other.png\";'><span class='del_file_to' >" + name.substr(0, 7) + "..." + "<br><a href=" + fullUrl + " data-type='download' download><i class='fas fa-download'></i></a>&nbsp;&nbsp;&nbsp;<a onclick='delete_pic(this)' data-type='del'><i class='far fa-trash-alt'></i></a></span>" +
-                            "<input type='hidden' name='attachNid[]' value=" + nid + "><input type='hidden'  name='attachName[]' value=" + name + "><input type='hidden'  name='attachSize[]' value=" + size + "><input type='hidden'  name='attachType[]' value=" + attach_new + "><input type='hidden'  name='bizType[]' value=" + bizType + "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
+                            "<input type='hidden' name='attachNid[]' value=" + attachID + "><input type='hidden'  name='attachName[]' value=" + name + "><input type='hidden'  name='attachSize[]' value=" + size + "><input type='hidden'  name='attachType[]' value=" + attach_new + "><input type='hidden'  name='bizType[]' value=" + bizType + "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
                         if (attach_new === "CRSE" || attach_new === "ODSE") {
                             if ($('#KEY_CRCT').length > 0) {
                                 var k = $(this).parent().parent().parent().find('#KEY_CRCT').val();
@@ -172,16 +174,13 @@ function webupload_pic() {
                                 isCRCT();
                             }
                         }
-
-                        // 上传成功后, 重新初始化fancybox3
-                        // $("[data-fancybox-class^='gallery']").fancybox();
                     } else {
                         if (operation !== undefined && operation !== '' && operation === '1') {
                             $(".webupload_current").parent().parent().find('.img-view').append("<li><a href=" + fullUrl + " data-fancybox-class='gallery' data-caption=" + name + " data-fancybox=" + bizID + "><img class='img_common' src=" + middleUrl + " alt='' onerror='javascript:this.src=\"/ky/ico/other.png\";'/></a><span class='del_to' >" + name + "</span>" +
-                                "<input type='hidden' name='attachNid[]' value=" + nid + "><input type='hidden'  name='attachName[]' value=" + name + "><input type='hidden'  name='attachSize[]' value=" + size + "><input type='hidden'  name='attachType[]' value=" + attach_new + "><input type='hidden'  name='bizType[]' value=" + bizType + "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
+                                "<input type='hidden' name='attachNid[]' value=" + attachID + "><input type='hidden'  name='attachName[]' value=" + name + "><input type='hidden'  name='attachSize[]' value=" + size + "><input type='hidden'  name='attachType[]' value=" + attach_new + "><input type='hidden'  name='bizType[]' value=" + bizType + "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
                         } else {
                             $(".webupload_current").parent().parent().find('.img-view').append("<li><a href=" + fullUrl + " data-fancybox-class='gallery' data-caption=" + name + " data-fancybox=" + bizID + "><img class='img_common' src=" + middleUrl + " alt='' onerror='javascript:this.src=\"/ky/ico/other.png\";'/></a><span class='del_to' ><a onclick='delete_pic(this)'><i class=\"far fa-trash-alt\"></i></a></span>" +
-                                "<input type='hidden' name='attachNid[]' value=" + nid + "><input type='hidden'  name='attachName[]' value=" + name + "><input type='hidden'  name='attachSize[]' value=" + size + "><input type='hidden'  name='attachType[]' value=" + attach_new + "><input type='hidden'  name='bizType[]' value=" + bizType + "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
+                                "<input type='hidden' name='attachNid[]' value=" + attachID + "><input type='hidden'  name='attachName[]' value=" + name + "><input type='hidden'  name='attachSize[]' value=" + size + "><input type='hidden'  name='attachType[]' value=" + attach_new + "><input type='hidden'  name='bizType[]' value=" + bizType + "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
 
                         }
 
@@ -206,28 +205,13 @@ function webupload_pic() {
                 showUploadMsg(response.responseText);
                 $("#" + file.id).remove();
             }
-            // var nid = response.nid;
-            // var name = response.name;
-            // var size = response.size;
-            // var type = response.type;
-            // var attachTT = response.attachTT;
-            // var bizTT = response.bizTT;
-            // var bizID = response.bizID;
-
-            // if (type === undefined || type === '') {
-            //     type = file.ext;
-            // }
-
-
-
         });
 
         uploader.on('uploadError', function(file, reason) {
             alert("上传失败！请重试。");
         });
-        /**
-         * 验证文件格式以及文件大小
-         */
+
+        // 验证文件格式以及文件大小
         uploader.on("error", function (type) {
             if (type === "Q_TYPE_DENIED") {
                 layer.msg("请上传JPG、PNG、GIF、BMP格式文件");

@@ -59,7 +59,7 @@ class Zend_View_Helper_ShowUPimg extends Shop_View_Helper {
                     $str .= 'data-fancybox-class="gallery'.$objID.'" ';
                     $str .= 'data-fancybox="' . $objID . '" ';
                     $str .= 'data-caption="'. $name . '"> ';
-                    $str .= '<img width="125px" height="125px" src="' . $downloadURL . '?sid=' . session_id(). '&nid=' . $attachID . '&vid=' . $verifyID . '&size=MIDDLE" alt="" />';
+                    $str .= '<img class="img_common" src="' . $downloadURL . '?sid=' . session_id(). '&nid=' . $attachID . '&vid=' . $verifyID . '&size=MIDDLE" alt="" />';
                     $str .= '</a>';
 
                     // $str .= '<img width="125px" height="125px" ';
@@ -71,7 +71,7 @@ class Zend_View_Helper_ShowUPimg extends Shop_View_Helper {
                     $pdfUrl = $downloadURL. '?sid=' . session_id() . '&nid=' . $attachID . '&vid=' . $verifyID;
 
                     $str .= '<input type="hidden" id="contractAttachUrl_'.$attachID.'" value="' . $pdfUrl . '">';
-                    $str .= '<img id="' . $attachID . '" width="125px" height="125px" src="/ky/ico/' . strtolower($ext) . '.png" alt=' . $attachType_ . ' data-type="' . strtolower($ext) . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" />';
+                    $str .= '<img id="' . $attachID . '" class="img_common" src="/ky/ico/' . strtolower($ext) . '.png" alt=' . $attachType_ . ' data-type="' . strtolower($ext) . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" />';
                     $str .= '<span class="del_to">';
                     if (mb_strlen($name, 'utf-8') > 8) {
                         $str .= mb_substr($name,0,7, 'utf-8') . '...';
