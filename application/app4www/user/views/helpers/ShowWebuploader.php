@@ -77,7 +77,7 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
                     $str .= 'data-fancybox-class="gallery" ';
                     $str .= 'data-fancybox="' . $bizID . '" ';
                     $str .= 'data-caption="' . $name . '"> ';
-                    $str .= '<img width="125px" height="125px" src="' . $downloadURL . '?sid=' . session_id() . '&nid=' . $attachID . '&vid=' . $verifyID . '&size=MIDDLE" alt="" />';
+                    $str .= '<img width="125px" height="125px" src="' . $downloadURL . '?sid=' . session_id() . '&nid=' . $attachID . '&vid=' . $verifyID . '&size=MIDDLE" alt="" onerror="javascript:this.src=\'/ky/ico/other.png\';" />';
                     $str .= '</a>';
 
                     // $str .= '<img width="125px" height="125px" ';
@@ -97,8 +97,8 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
                 } else if ($ext == "doc" || $ext == "xls" || $ext == "ppt" || strtolower($ext) == "pdf") {
                     $pdfUrl = $downloadURL . '?sid=' . session_id() . '&nid=' . $attachID . '&vid=' . $verifyID;
 
-                    $str .= '<img width="125px" height="125px" src="/ky/ico/' . strtolower($ext) . '.png" alt=' . $attachType_ . ' data-type="' . strtolower($ext) . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" />';
-                    $str .= '<span class="del_to">';
+                    $str .= '<img class="img_common" src="/ky/ico/' . strtolower($ext) . '.png" alt=' . $attachType_ . ' data-type="' . strtolower($ext) . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" onerror="javascript:this.src=\'/ky/ico/other.png\';" />';
+                    $str .= '<span class="del_file_to">';
                     if (mb_strlen($name, 'utf-8') > 8) {
                         $str .= mb_substr($name, 0, 7, 'utf-8') . '...';
                     } else {
@@ -110,7 +110,7 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
                     $str .= '</span>';
                 } else {
                     $attachUrl = $downloadURL . '?sid=' . session_id() . '&nid=' . $attachID . '&vid=' . $verifyID;
-                    $str .= '<img width="125px" height="125px" src="/ky/ico/' . strtolower($ext) . '.png" alt=' . $attachType_ . ' data-type="' . strtolower($ext) . '" />';
+                    $str .= '<img class="img_common" src="/ky/ico/' . strtolower($ext) . '.png" alt=' . $attachType_ . ' data-type="' . strtolower($ext) . '" onerror="javascript:this.src=\'/ky/ico/other.png\';" />';
                     $str .= '<span class="del_to">';
                     if (mb_strlen($name, 'utf-8') > 8) {
                         $str .= mb_substr($name, 0, 7, 'utf-8') . '...';

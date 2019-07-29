@@ -74,6 +74,8 @@ function webupload_pic() {
                 // file: file
             });
 
+            console.log(uploader.option('formData'));
+
             var fileExt = file.ext;
             if (fileExt === "docx" || fileExt === "wps") {
                 fileExt = "word";
@@ -88,9 +90,9 @@ function webupload_pic() {
             var progressStr = '<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" style="width: 1%; ">1%</div></div>';
             uploader.makeThumb( file, function( error, dataSrc ) {
                 if ( !error ) {
-                    $(".img-view").append('<div id="' + file['id'] + '" ><img src="' + dataSrc + '" onerror="javascript:this.src=\'/ky/ico/other.png\';"><div class="progressing" >' + progressStr + '</div>');
+                    $(".webupload_current").parent().parent().find('.img-view').append('<div id="' + file['id'] + '" ><img src="' + dataSrc + '" onerror="javascript:this.src=\'/ky/ico/other.png\';"><div class="progressing" >' + progressStr + '</div>');
                 } else {
-                    $(".img-view").append('<div id="' + file['id'] + '" ><img class="img_common" src="/ky/ico/' + fileExt + '.png" onerror=\'javascript:this.src="/ky/ico/other.png";\'><div class="progressing" >' + progressStr + '</div>');
+                    $(".webupload_current").parent().parent().find('.img-view').append('<div id="' + file['id'] + '" ><img class="img_common" src="/ky/ico/' + fileExt + '.png" onerror=\'javascript:this.src="/ky/ico/other.png";\'><div class="progressing" >' + progressStr + '</div>');
                 }
             });
         });
@@ -108,9 +110,10 @@ function webupload_pic() {
 
         });
 
-        //上传成功后
+        // 上传成功后
         uploader.on('uploadSuccess', function(file, response) {
             if (response.responseCode === 'success') {
+                console.log('upload success!');
                 var nid = '',
                     vid = '',
                     middleUrl = '',
@@ -153,7 +156,7 @@ function webupload_pic() {
 
                 if (name !== undefined && name !== '') {
                     if (type !== "jpeg" && type !== "png" && type !== "jpg" && type !== "gif" && type !== "GIF" && type !== "JPG" && type !== "PNG") {
-                        $(".webupload_current").parent().parent().find('.img-view').append("<li><img class='img_common' src='/ky/ico/" + type + ".png' data-type='" + type + "' alt='" + name.substr(0, 7) + "' onerror='javascript:this.src=\"/ky/ico/other.png\";'><span class='del_to' >" + name.substr(0, 7) + "..." + "<br><a href=" + fullUrl + " data-type='download' download><i class='fas fa-download'></i></a>&nbsp;&nbsp;&nbsp;<a onclick='delete_pic(this)' data-type='del'><i class='far fa-trash-alt'></i></a></span>" +
+                        $(".webupload_current").parent().parent().find('.img-view').append("<li><img class='img_common' src='/ky/ico/" + type + ".png' data-type='" + type + "' alt='" + name.substr(0, 7) + "' onerror='javascript:this.src=\"/ky/ico/other.png\";'><span class='del_file_to' >" + name.substr(0, 7) + "..." + "<br><a href=" + fullUrl + " data-type='download' download><i class='fas fa-download'></i></a>&nbsp;&nbsp;&nbsp;<a onclick='delete_pic(this)' data-type='del'><i class='far fa-trash-alt'></i></a></span>" +
                             "<input type='hidden' name='attachNid[]' value=" + nid + "><input type='hidden'  name='attachName[]' value=" + name + "><input type='hidden'  name='attachSize[]' value=" + size + "><input type='hidden'  name='attachType[]' value=" + attach_new + "><input type='hidden'  name='bizType[]' value=" + bizType + "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
                         if (attach_new === "CRSE" || attach_new === "ODSE") {
                             if ($('#KEY_CRCT').length > 0) {
@@ -199,7 +202,9 @@ function webupload_pic() {
                     }
                 }
             } else {
-
+                console.log('upload fail!');
+                showUploadMsg(response.responseText);
+                $("#" + file.id).remove();
             }
             // var nid = response.nid;
             // var name = response.name;
@@ -235,7 +240,11 @@ function webupload_pic() {
     });
 }
 
-function showUploadMsg(content) {
+function showUploadMsg(content, title) {
+    var defaultTitle = '操作失败';
+    if (title === undefined || title === '') {
+        title = defaultTitle;
+    }
     layer.open({
         type: 1
         ,title: false //不显示标题栏
@@ -246,7 +255,7 @@ function showUploadMsg(content) {
         ,btn: ['确认']
         ,btnAlign: 'c'
         ,moveType: 1 //拖拽模式，0或者1
-        ,content: '<div style="padding: 50px; line-height: 22px; background-color: #eee; font-weight: 300;"><h3>验证失败！</h3><br><p>' + content + '</p></div>'
+        ,content: '<div style="padding: 50px; line-height: 22px; background-color: #eee; font-weight: 300;"><h3>' + title + '！</h3><br><p>' + content + '</p></div>'
     });
 }
 

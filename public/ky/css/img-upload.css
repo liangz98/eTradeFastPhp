@@ -171,6 +171,21 @@
     opacity: 0.6;
 }
 
+.del_file_to {
+    width: 120px;
+    /*height: 80px;*/
+    height: 40px;
+    display: none;
+    word-break: break-all;
+    color: #fff;
+    text-align: center;
+    background: #000;
+    float: left;
+    margin-left: -130px;
+    margin-top: 60px;
+    opacity: 0.6;
+}
+
 .del_to {
     width: 120px;
     /*height: 80px;*/
