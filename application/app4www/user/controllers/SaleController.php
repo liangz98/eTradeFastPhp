@@ -423,7 +423,7 @@ class SaleController extends Kyapi_Controller_Action
         $this->view->orders = $Viewlist;
         $this->view->orderItem = json_encode($userView->result->orderItemList);
 
-        //处理根据返回的运输方式来判断 起运|卸货|交货查询的缓存目录名称
+        // 处理根据返回的运输方式来判断 起运|卸货|交货查询的缓存目录名称
         if ($Viewlist['shippingMethod'] == 'SEA') {
             $this->view->port = "SEA_PORT";
         } else if ($Viewlist['shippingMethod'] == 'AIR') {
@@ -432,63 +432,68 @@ class SaleController extends Kyapi_Controller_Action
             $this->view->port = "CITY_ISO_CODE";
         };
 
-        //        /*获取默认联系人 start*/
-        $_queryP = new queryAccount();
-        /**contactStatus 01有效 02禁用*/
-        $_queryP->contactStatus = "01";
-        $userKY = $this->json->listContactApi($this->_requestObject, $_queryP, null, null, 0, 0);
-        $userData = $this->objectToArray(json_decode($userKY));
-        $userList = $userData['result'];
+        /* 获取默认联系人 start */
+        if (!empty($viewData->vendorContactID)) {
+            $this->view->dfContactID = $viewData->vendorContactID;
+            $this->view->dfContactName = $viewData->vendorContactName;
+        } else {
+            $_queryP = new queryAccount();
+            /**contactStatus 01有效 02禁用*/
+            $_queryP->contactStatus = "01";
+            $userKY = $this->json->listContactApi($this->_requestObject, $_queryP, null, null, 0, 0);
+            $userData = $this->objectToArray(json_decode($userKY));
+            $userList = $userData['result'];
 
-        foreach ($userList as $k => $v) {
-            if ($v['isPublicContact'] == true) {
-                $this->view->dfContactName = $v['name'];
-                $this->view->dfContactID = $v['contactID'];
+            foreach ($userList as $k => $v) {
+                if ($v['isPublicContact'] == true) {
+                    $this->view->dfContactName = $v['name'];
+                    $this->view->dfContactID = $v['contactID'];
+                }
             }
         }
-        /*获取默认联系人 END*/
+        /* 获取默认联系人 END */
 
 
         //处理编辑
         if ($this->_request->isPost()) {
             //订单商品列表
-            $iterm = array();
-            $iterm["orderID"] = $_orderIDget;    //新增不存在
-            //				$iterm["totalVolume"] = $this->_request->getParam("totalVolume"); 体积
-            $iterm["hscode"] = $this->_request->getParam('hscode');
-            $iterm["itemID"] = $this->_request->getParam("itemID");//
-            $iterm["productID"] = $this->_request->getParam("productID");
-            $iterm["supplierID"] = $this->_request->getParam("supplierID");
-            $iterm["packingType"] = $this->_request->getParam('packingType');
-            $iterm["productName"] = $this->_request->getParam("productName");
-            $iterm["productEnName"] = $this->_request->getParam("productEnName");
-            $iterm["productSize"] = $this->_request->getParam("productSize");
-            $iterm["pricingUnit"] = $this->_request->getParam("pricingUnit");
-            $iterm["quantity"] = $this->_request->getParam("quantity");
-            $iterm["grossWeight"] = $this->_request->getParam("grossWeight");
-            $iterm["netWeight"] = $this->_request->getParam("netWeight");
-            $iterm["totalGrossWeight"] = $this->_request->getParam("totalGrossWeight");
-            $iterm["totalNetWeight"] = $this->_request->getParam("totalNetWeight");
-            $iterm["totalPackage"] = $this->_request->getParam("totalPackage");
-            $iterm["totalPrice"] = $this->_request->getParam("totalPrice");
-            $iterm["unitPrice"] = $this->_request->getParam("unitPrice");
-            $iterm["purUnitPrice"] = $this->_request->getParam("purUnitPrice");
-            $iterm["totalPurPrice"] = $this->_request->getParam("totalPurPrice");
-            $iterm["productBrand"] = $this->_request->getParam("productBrand");
-            $iterm["productModel"] = $this->_request->getParam("productModel");  //商品型号
-            $iterm["productionMode"] = $this->_request->getParam("productionMode");//商品生产方式
-            if ($iterm["productionMode"] == "01") {
-                $iterm["isOwnProduct"] = true;
+            $itemList = array();
+            $itemList["orderID"] = $_orderIDget;    //新增不存在
+            //				$itemList["totalVolume"] = $this->_request->getParam("totalVolume"); 体积
+            $itemList["hscode"] = $this->_request->getParam('hscode');
+            $itemList["itemID"] = $this->_request->getParam("itemID");//
+            $itemList["productID"] = $this->_request->getParam("productID");
+            $itemList["supplierID"] = $this->_request->getParam("supplierID");
+            $itemList["packingType"] = $this->_request->getParam('packingType');
+            $itemList["productName"] = $this->_request->getParam("productName");
+            $itemList["productEnName"] = $this->_request->getParam("productEnName");
+            $itemList["productSize"] = $this->_request->getParam("productSize");
+            $itemList["pricingUnit"] = $this->_request->getParam("pricingUnit");
+            $itemList["quantity"] = $this->_request->getParam("quantity");
+            $itemList["grossWeight"] = $this->_request->getParam("grossWeight");
+            $itemList["netWeight"] = $this->_request->getParam("netWeight");
+            $itemList["totalGrossWeight"] = $this->_request->getParam("totalGrossWeight");
+            $itemList["totalNetWeight"] = $this->_request->getParam("totalNetWeight");
+            $itemList["totalPackage"] = $this->_request->getParam("totalPackage");
+            $itemList["totalPrice"] = $this->_request->getParam("totalPrice");
+            $itemList["unitPrice"] = $this->_request->getParam("unitPrice");
+            $itemList["purUnitPrice"] = $this->_request->getParam("purUnitPrice");
+            $itemList["totalPurPrice"] = $this->_request->getParam("totalPurPrice");
+            $itemList["productBrand"] = $this->_request->getParam("productBrand");
+            $itemList["productModel"] = $this->_request->getParam("productModel");  //商品型号
+            $itemList["productionMode"] = $this->_request->getParam("productionMode");//商品生产方式
+            if ($itemList["productionMode"] == "01") {
+                $itemList["isOwnProduct"] = true;
             } else {
-                $iterm["isOwnProduct"] = false;
+                $itemList["isOwnProduct"] = false;
             }
-            $iterm["functionUsage"] = $this->_request->getParam("functionUsage");
-            $iterm["productMaterial"] = $this->_request->getParam("productMaterial");
+            $itemList["functionUsage"] = $this->_request->getParam("functionUsage");
+            $itemList["productMaterial"] = $this->_request->getParam("productMaterial");
             $it2 = array();
 
             //组装商品列表
-            foreach ($iterm as $key => $value) {
-                foreach ($value as $k => $v) {
+            foreach ($itemList as $key => $item) {
+                foreach ($item as $k => $v) {
                     $it2[$k][$key] = $v;
                 }
             }
@@ -671,7 +676,7 @@ class SaleController extends Kyapi_Controller_Action
                 $this->view->orderStatus = '00';
 
                 $this->view->order = $this->objectToArray($_order);
-                $this->view->errMsg = $this->view->translate('tip_edit_fail') . $resultObject->error;
+                $this->view->resultMsg = $this->view->translate('tip_edit_fail') . $resultObject->error;
             } else {
                 $orderStatus = "00";
                 if ($viewData->orderStatus != '00') {
@@ -753,8 +758,8 @@ class SaleController extends Kyapi_Controller_Action
         $this->view->hasOneTakeOverDelivery = False;
         $deliveryData = $this->objectToArray(json_decode($deliveryList));
         $deliveryDataList = $deliveryData['result'];
-        foreach ($deliveryDataList as $value) {
-            if ($value['deliveryStatus'] == 4) {
+        foreach ($deliveryDataList as $delivery) {
+            if ($delivery['deliveryStatus'] == 4) {
                 $this->view->hasOneTakeOverDelivery = True;
                 break;
             }

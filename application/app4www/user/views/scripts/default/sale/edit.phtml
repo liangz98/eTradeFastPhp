@@ -716,7 +716,7 @@
                         }
                     });
 
-                    var content = genOrderItemConten(item, productPricingUnit);
+                    var content = genOrderItemContent(item, productPricingUnit);
                     $orderItemDiv.append(content);
 
                     // 更新包装类型默认选中项
@@ -1286,7 +1286,7 @@
                     }
                 });
 
-                var content = genOrderItemConten(item, productPricingUnit);
+                var content = genOrderItemContent(item, productPricingUnit);
                 $orderItemDiv.append(content);
                 // 更新包装类型默认选中项
                 var $packingType = $("#packingType_" + item.productID);
@@ -1420,35 +1420,36 @@
         var $unitPriceCrnCodes = $(".unitPriceCrnCode");
 
         $.each($unitPriceCrnCodes, function () {
-            if (crnCode !== $(this).html()) {
-                var productID = $(this).attr("data-productID"),
-                    $unitPriceCrnCode = $(this);
-                // 取汇率重新计算
-                var exchangeRate = '/user/common/exchange-rate-ajax';
-                $.ajax({
-                    type: "POST",
-                    url: exchangeRate,
-                    data: {
-                        bizType: 'OD',
-                        bizID: $("#orderID").val(),
-                        baseCrn: $(this).html(),
-                        contraCrn: crnCode
-                    },
-                    dataType: "json",
-                    success: function (data) {
-                        var $quantity = $("#quantity_" + productID),        // 数量
-                            $unitPrice = $("#unitPrice_" + productID),      // 价格
-                            $totalPrice = $("#totalPrice_" + productID);
+            // if (crnCode !== $(this).html()) {
+            //
+            // }
+            var productID = $(this).attr("data-productID"),
+                $unitPriceCrnCode = $(this);
+            // 取汇率重新计算
+            var exchangeRate = '/user/common/exchange-rate-ajax';
+            $.ajax({
+                type: "POST",
+                url: exchangeRate,
+                data: {
+                    bizType: 'OD',
+                    bizID: $("#orderID").val(),
+                    baseCrn: $(this).html(),
+                    contraCrn: crnCode
+                },
+                dataType: "json",
+                success: function (data) {
+                    var $quantity = $("#quantity_" + productID),        // 数量
+                        $unitPrice = $("#unitPrice_" + productID),      // 价格
+                        $totalPrice = $("#totalPrice_" + productID);
 
-                        // 价格, 金额
-                        $unitPrice.val(arithRound(arithMul($unitPrice.val(), data), 2));
-                        $totalPrice.val(arithRound(arithMul($unitPrice.val(), $quantity.val()), 2));
+                    // 价格, 金额
+                    $unitPrice.val(arithRound(arithMul($unitPrice.val(), data), 2));
+                    $totalPrice.val(arithRound(arithMul($unitPrice.val(), $quantity.val()), 2));
 
-                        // 更新货币
-                        $unitPriceCrnCode.html(crnCode);
-                    }
-                });
-            }
+                    // 更新货币
+                    $unitPriceCrnCode.html(crnCode);
+                }
+            });
         });
 
         // 更新金额货币
@@ -1461,8 +1462,8 @@
         });
     }
 
-    function genOrderItemConten(item, productPricingUnit) {
-        // console.log(item.totalNetWeight);
+    function genOrderItemContent(item, productPricingUnit) {
+        // console.log(item.genOrderItemContent);
         var crnCode = item.crnCode === undefined ? $("#buyerCrnCode").val() : item.crnCode;
         var content = '<div class="alert alert-info alert-dismissible productAlert" role="alert" id="' + item.productID + '" data-type="product">' +
             '   <input type="hidden" name="productSize" value="' + item.productSize + '">' +
