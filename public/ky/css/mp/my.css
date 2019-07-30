@@ -1,3 +1,7 @@
 .my-head-bg {
     background: linear-gradient(90deg, rgba(22, 155, 213, 1) 0%, rgba(22, 155, 213, 1) 31%, rgba(38, 183, 237, 1) 67%, rgba(51, 204, 255, 1) 100%, rgba(51, 204, 255, 1) 100%);
 }
+
+.weui-cell_access .weui-cell__ft:after {
+    /*border-color: var(--text-white);*/
+}
