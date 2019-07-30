@@ -61,12 +61,6 @@ class Zend_View_Helper_ShowUPimg extends Shop_View_Helper {
                     $str .= 'data-caption="'. $name . '"> ';
                     $str .= '<img class="img_common" src="' . $downloadURL . '?sid=' . session_id(). '&nid=' . $attachID . '&vid=' . $verifyID . '&size=MIDDLE" alt="" />';
                     $str .= '</a>';
-
-                    // $str .= '<img width="125px" height="125px" ';
-                    // $str .= 'data-bp="' . $downloadURL . '?sid=' . session_id().'&nid=' . $attachID.'&vid=' . $verifyID.'" ';
-                    // $str .= 'src="' . $downloadURL . '?sid=' . session_id(). '&nid=' . $attachID . '&vid=' . $verifyID . '&size=MIDDLE" ';
-                    // $str .= 'data-caption='. $name . ' ';
-                    // $str .= 'name="' . $name . '_'.$k.'" alt="' . $attachType_ . '" >';
                 } elseif ($ext == "doc" || $ext == "xls" || $ext == "ppt" || $ext == "pdf") {
                     $pdfUrl = $downloadURL. '?sid=' . session_id() . '&nid=' . $attachID . '&vid=' . $verifyID;
 
@@ -91,8 +85,6 @@ class Zend_View_Helper_ShowUPimg extends Shop_View_Helper {
                     $str .= '<source src="' . $downloadURL . '?sid=' . session_id().'&nid=' . $attachID . '&vid=' . $verifyID . '" type="video/mp4">';
                     $str .= 'Your browser doesn\'t support HTML5 video tag.';
                     $str .= '</video>';
-
-                    // $str .= '<div class="vid htmlvid" style="background-image:url(/ky/images/video-circle.png); background-size: 64px 64px; background-repeat: no-repeat; background-position-x:center; background-position-y:center;" vidSrc="' . $downloadURL . '?sid=' . session_id().'&nid=' . $attachID.'&vid=' . $verifyID. '"></div>';
                 }
                 $str .= '</li>';
             }
