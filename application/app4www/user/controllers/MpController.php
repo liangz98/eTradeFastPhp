@@ -13,7 +13,7 @@ class MpController extends Kyapi_Controller_Action {
     private $appID = "wx3de3c39694609a78";
     private $appSecret = "ee96922bdd2a588d2b52249b8ca89be7";
 
-    function indexAction() {
+    public function indexAction() {
         $this->view->headimgurl = $_SESSION['rev_session']['headimgurl'];
 
         // 个人信息页
@@ -23,14 +23,14 @@ class MpController extends Kyapi_Controller_Action {
     }
 
     // 获取用户的openid (基本授权)
-    function getBaseInfoAction() {
+    public function getBaseInfoAction() {
         //1.获取到code
         $redirect_uri = urlencode("https://dev.etradefast.com/user/mp/get-user-open-id");
         $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" . $this->appID . "&redirect_uri=" . $redirect_uri . "&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
         header('location:' . $url);//引导关注者打开页面
     }
 
-    function getUserOpenIdAction() {
+    public function getUserOpenIdAction() {
         $code = $_GET['code'];
         $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" . $this->appID . "&secret=" . $this->appSecret . "&code=" . $code . "&grant_type=authorization_code";
 
@@ -77,7 +77,7 @@ class MpController extends Kyapi_Controller_Action {
     }
 
     //（详细授权）
-    function getUserDetailAction() {
+    public function getUserDetailAction() {
         //1.获取到code
         $redirect_uri = urlencode("https://dev.etradefast.com/user/mp/get-user-info");
         $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" . $this->appID . "&redirect_uri=" . $redirect_uri . "&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
@@ -85,7 +85,7 @@ class MpController extends Kyapi_Controller_Action {
         header('location:' . $url);
     }
 
-    function getUserInfoAction() {
+    public function getUserInfoAction() {
         // 2.获取到网页授权的access_token
         $code = $_GET['code'];
         $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" . $this->appID . "&secret=" . $this->appSecret . "&code=" . $code . "&grant_type=authorization_code";
@@ -143,7 +143,7 @@ class MpController extends Kyapi_Controller_Action {
         }
     }
 
-    function loginAction() {
+    public function loginAction() {
         // 请求服务端入参
         $requestObject = $this->_requestObject;
         $loginName = $this->_request->getParam('loginName');
@@ -209,7 +209,7 @@ class MpController extends Kyapi_Controller_Action {
     /**
      * 可投列表
      */
-    function getLoanListAction() {
+    public function getLoanListAction() {
 
         $content = $this->view->render(SEED_WWW_TPL . "/mp/loanList.phtml");
         echo $content;
@@ -217,9 +217,9 @@ class MpController extends Kyapi_Controller_Action {
     }
 
     /**
-     * 可投列表
+     * 详情
      */
-    function getLoanViewAction() {
+    public function getLoanViewAction() {
 
         $content = $this->view->render(SEED_WWW_TPL . "/mp/loanView.phtml");
         echo $content;
@@ -229,9 +229,37 @@ class MpController extends Kyapi_Controller_Action {
     /**
      * 投标
      */
-    function addLoanAction() {
+    public function addLoanAction() {
+        if ($this->_request->isPost()) {
+
+
+            // 页面跳转
+            if (false) {
+                $this->view->errMsg = $this->view->translate('tip_add_fail');
+            } else {
+                $resultMsg = 'success';
+                $this->redirect("/mp/get-result-msg?resultMsg=" . $resultMsg);
+            }
+        }
 
         $content = $this->view->render(SEED_WWW_TPL . "/mp/loanAdd.phtml");
+        echo $content;
+        exit;
+    }
+
+    /**
+     * 操作结果
+     */
+    public function getResultMsgAction() {
+
+        $content = $this->view->render(SEED_WWW_TPL . "/mp/msgSuccess.phtml");
+        echo $content;
+        exit;
+    }
+
+    public function myAction() {
+
+        $content = $this->view->render(SEED_WWW_TPL . "/mp/my.phtml");
         echo $content;
         exit;
     }

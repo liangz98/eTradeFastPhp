@@ -2,25 +2,33 @@
 <html lang="en">
 <head>
     <?php echo $this->render(SEED_WWW_TPL . '/mp/headerLink.phtml'); ?>
-    <title>快移资金 - 可投标</title>
+    <title>快移资金 - 操作成功</title>
 
-    <link rel="stylesheet" href="/ky/css/mp/loan-list.css">
+    <link rel="stylesheet" href="/ky/css/mp/loan-view.css">
 </head>
 <body ontouchstart>
 <div class="weui-tab">
     <!-- 主体 -->
-    <div class="weui-tab__bd">
-        <!-- 风险提示 risk warnings -->
-        <div class="weui-flex">
-            <div class="weui-flex__item flex_item mp-margin-5_bd">
-                <div class="risk-warnings mp-text-size-13 mp-margin-5_left">温馨提示：您可用于投资的金额为 500,000 元</div>
+    <div class="weui-msg">
+        <div class="weui-msg__icon-area"><i class="weui-icon-success weui-icon_msg"></i></div>
+        <div class="weui-msg__text-area">
+            <h2 class="weui-msg__title">操作成功</h2>
+            <p class="weui-msg__desc">请在项目认筹时间内，保证您的快移账户有足够的余额。</p>
+        </div>
+        <div class="weui-msg__opr-area">
+            <p class="weui-btn-area">
+                <a href="/mp/get-loan-view" class="weui-btn weui-btn_primary">返回详情</a>
+            </p>
+        </div>
+        <div class="weui-msg__extra-area">
+            <div class="weui-footer">
+                <p class="weui-footer__links">
+                    <a href="javascript:void(0);" class="weui-footer__link">底部链接文本</a>
+                </p>
+                <p class="weui-footer__text">Copyright &copy; 2015-<?php echo date('Y')?> 快移交易 eTradeFast 版权所有</p>
             </div>
         </div>
-
-
     </div>
-
-    <?php echo $this->render(SEED_WWW_TPL . '/mp/footer.phtml'); ?>
 </div>
 
 <?php echo $this->render(SEED_WWW_TPL . '/mp/footerLink.phtml'); ?>

@@ -1364,7 +1364,7 @@
     }
     //document.getElementById('next').addEventListener('click', onNextPage);
 
-    function initPdfView(pdfUrl, obj) {
+    function initPdfView(pdfUrl, obj, viewType) {
         $("#pdfPageBox").html("");
         PDFJS.getDocument(pdfUrl).then(function(pdfDoc_) {
             pdfDoc = pdfDoc_;
@@ -1381,6 +1381,11 @@
         });
 
         var signTitle = "<?php echo $this->translate('signTitle');?>";
+        if (viewType !== undefined && viewType !== '') {
+            if (viewType === 'pdf_view') {
+                signTitle = "<?php echo $this->translate('document');?>";
+            }
+        }
         layer.open({
             type: 1,	//Page层类型
             area: ['1150px', '100%'],
@@ -1404,6 +1409,18 @@
             $(".person-sign-button").hide();
         } else {
             $(".person-sign-button").show().attr("contractID_", obj.id);
+        }
+
+        // 在物流详情页签署的时候, 如果有弹出层, 会影响到input框无法输入
+        $("#viewDelivery").modal('hide');
+
+        if (viewType !== undefined && viewType !== '') {
+            if (viewType === 'pdf_view') {
+                var $signViewDiv = $("#signViewDiv");
+                $signViewDiv.find(".sign-button").hide();
+                $signViewDiv.find(".person-sign-button").hide();
+                $signViewDiv.find(".download-button").hide();
+            }
         }
     }
 
