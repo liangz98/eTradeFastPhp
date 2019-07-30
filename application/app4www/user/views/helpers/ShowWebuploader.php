@@ -84,7 +84,7 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
                 } else if ($ext == "doc" || $ext == "xls" || $ext == "ppt" || strtolower($ext) == "pdf") {
                     $pdfUrl = $downloadURL . '?sid=' . session_id() . '&nid=' . $attachID . '&vid=' . $verifyID;
 
-                    $str .= '<img class="img_common" src="/ky/ico/' . strtolower($ext) . '.png" alt=' . $attachType_ . ' data-type="' . strtolower($ext) . '" onclick="initPdfView(\'' . $pdfUrl . '\', this)" onerror="javascript:this.src=\'/ky/ico/other.png\';" />';
+                    $str .= '<img class="img_common" src="/ky/ico/' . strtolower($ext) . '.png" alt=' . $attachType_ . ' data-type="' . strtolower($ext) . '" onclick="initPdfView(\'' . $pdfUrl . '\', this, \'pdf_view\')" onerror="javascript:this.src=\'/ky/ico/other.png\';" />';
                     $str .= '<span class="del_file_to">';
                     if (mb_strlen($name, 'utf-8') > 8) {
                         $str .= mb_substr($name, 0, 7, 'utf-8') . '...';
@@ -93,7 +93,9 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
                     }
                     $str .= '<br>';
                     $str .= '<a href="' . $this->view->seed_Setting['KyUrlex'] . '/doc/download.action?sid=' . session_id() . '&nid=' . $attachID . '&vid=' . $verifyID . '" data-type="download" download><i class="fas fa-download"></i></a>&nbsp;&nbsp;&nbsp;';
-                    $str .= '<a onclick="delete_pic(this)" data-type="del"><i class="far fa-trash-alt"></i></a>';
+                    if ($operation != '1') {
+                        $str .= '<a onclick="delete_pic(this)" data-type="del"><i class="far fa-trash-alt"></i></a>';
+                    }
                     $str .= '</span>';
                 } else {
                     $attachUrl = $downloadURL . '?sid=' . session_id() . '&nid=' . $attachID . '&vid=' . $verifyID;

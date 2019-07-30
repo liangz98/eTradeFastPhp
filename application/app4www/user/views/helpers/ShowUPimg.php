@@ -84,7 +84,7 @@ class Zend_View_Helper_ShowUPimg extends Shop_View_Helper {
                     $str .= 'data-fancybox="' . $objID . '" ';
                     $str .= 'data-caption="'. $name . '"> ';
                     // $str .= '<img src="/ky/images/video-circle.png" alt="" style="height: 64px; width: 64px; margin-top: 40px;" />';
-                    $str .= '<div style="background-image:url(/ky/images/video-circle.png); background-size: 64px 64px; background-repeat: no-repeat; background-position-x:center; background-position-y:center;" ></div>';
+                    $str .= '<div style="background-image:url(/ky/images/video-circle.png); background-size: 64px 64px; background-repeat: no-repeat; background-position-x:center; background-position-y:center; height: 90px; width: 120px; float: left;" ></div>';
                     $str .= '</a>';
 
                     $str .= '<video controls id="' . $attachID . '" style="display:none;">';

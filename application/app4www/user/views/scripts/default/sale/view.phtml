@@ -853,7 +853,7 @@
 <div id="signViewDiv" style="display: none; background-color: #F6F6F6;">
     <div class="sign-button">企业签署</div>
     <div class="person-sign-button">个人签署</div>
-    <div class="download-button">下载</div>
+    <div class="download-button"><?php echo $this->translate('download'); ?></div>
     <div class="pdfDoc" style="padding-left:50px;">
         <div id="pdfPageBox">
         </div>
@@ -1548,7 +1548,7 @@
     }
     //document.getElementById('next').addEventListener('click', onNextPage);
 
-    function initPdfView(pdfUrl, obj) {
+    function initPdfView(pdfUrl, obj, viewType) {
         $("#pdfPageBox").html("");
         PDFJS.getDocument(pdfUrl).then(function(pdfDoc_) {
             pdfDoc = pdfDoc_;
@@ -1565,6 +1565,11 @@
         });
 
         var signTitle = "<?php echo $this->translate('signTitle');?>";
+        if (viewType !== undefined && viewType !== '') {
+            if (viewType === 'pdf_view') {
+                signTitle = "<?php echo $this->translate('document');?>";
+            }
+        }
         layer.open({
             type: 1,	//Page层类型
             area: ['1150px', '100%'],
@@ -1592,6 +1597,15 @@
 
         // 在物流详情页签署的时候, 如果有弹出层, 会影响到input框无法输入
         $("#viewDelivery").modal('hide');
+
+        if (viewType !== undefined && viewType !== '') {
+            if (viewType === 'pdf_view') {
+                var $signViewDiv = $("#signViewDiv");
+                $signViewDiv.find(".sign-button").hide();
+                $signViewDiv.find(".person-sign-button").hide();
+                $signViewDiv.find(".download-button").hide();
+            }
+        }
     }
 
     //document.getElementById('prev').addEventListener('click', onPrevPage);

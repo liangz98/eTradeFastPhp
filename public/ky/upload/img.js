@@ -45,7 +45,7 @@ function webupload_pic() {
                 crop: true,
                 // 为空的话则保留原有图片格式。
                 // 否则强制转换成指定的类型。
-                type: "image/jpeg"
+                type: "image/png"
             },
             formData: {
                 sid: sid,
@@ -64,14 +64,15 @@ function webupload_pic() {
                 uploadUrl = baseUrl + "/doc/upload.action";
                 downloadUrl = baseUrl + "/doc/temporary.action";
             }
+            // 覆盖file对象的 type 类型,
+            file.type = attachType;
+            // 配置新的上传属性
             uploader.option('server', uploadUrl);
             uploader.option('formData', {
                 sid: sid,
                 bizID: bizID,
                 bizType: bizType,
                 type: attachType
-                // name: file['name']
-                // file: file
             });
 
             console.log(uploader.option('formData'));
@@ -98,6 +99,12 @@ function webupload_pic() {
         });
         // 上传中
         uploader.on('uploadProgress', function(file, percentage) {
+            uploader.option('formData', {
+                sid: sid,
+                bizID: bizID,
+                bizType: bizType,
+                type: attachType
+            });
             // 上传进度
             var $progressBar = $("#" + file.id).find(".progress-bar");
             $progressBar.css("width", percentage * 100 + "%");
@@ -106,7 +113,12 @@ function webupload_pic() {
 
 		// 上传前
         uploader.on('uploadBeforeSend', function(block, data) {
-
+            uploader.option('formData', {
+                sid: sid,
+                bizID: bizID,
+                bizType: bizType,
+                type: attachType
+            });
         });
 
         // 上传成功后
@@ -145,6 +157,7 @@ function webupload_pic() {
                 if (type === "pptx") {
                     type = "ppt";
                 }
+
                 $("#" + file.id).remove();
                 var CROD = $(".webupload_current").parent().find('#CROD').val();
                 var attach_new = "";
@@ -158,7 +171,7 @@ function webupload_pic() {
 
                 if (name !== undefined && name !== '') {
                     if (type !== "jpeg" && type !== "png" && type !== "jpg" && type !== "gif" && type !== "GIF" && type !== "JPG" && type !== "PNG") {
-                        $(".webupload_current").parent().parent().find('.img-view').append("<li><img class='img_common' src='/ky/ico/" + type + ".png' data-type='" + type + "' alt='" + name.substr(0, 7) + "' onerror='javascript:this.src=\"/ky/ico/other.png\";'><span class='del_file_to' >" + name.substr(0, 7) + "..." + "<br><a href=" + fullUrl + " data-type='download' download><i class='fas fa-download'></i></a>&nbsp;&nbsp;&nbsp;<a onclick='delete_pic(this)' data-type='del'><i class='far fa-trash-alt'></i></a></span>" +
+                        $(".webupload_current").parent().parent().find('.img-view').append("<li><img class='img_common' src='/ky/ico/" + type.toLowerCase() + ".png' data-type='" + type + "' alt='" + name.substr(0, 7) + "' onerror='javascript:this.src=\"/ky/ico/other.png\";'><span class='del_file_to' >" + name.substr(0, 7) + "..." + "<br><a href=" + fullUrl + " data-type='download' download><i class='fas fa-download'></i></a>&nbsp;&nbsp;&nbsp;<a onclick='delete_pic(this)' data-type='del'><i class='far fa-trash-alt'></i></a></span>" +
                             "<input type='hidden' name='attachNid[]' value=" + attachID + "><input type='hidden'  name='attachName[]' value=" + name + "><input type='hidden'  name='attachSize[]' value=" + size + "><input type='hidden'  name='attachType[]' value=" + attach_new + "><input type='hidden'  name='bizType[]' value=" + bizType + "><input type='hidden'  name='attachBizID[]' value=" + bizID + "></li>");
                         if (attach_new === "CRSE" || attach_new === "ODSE") {
                             if ($('#KEY_CRCT').length > 0) {

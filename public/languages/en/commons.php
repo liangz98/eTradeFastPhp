@@ -78,6 +78,7 @@ return array(
     'close'                  => 'Close',
     'operation'              => 'Op.',
     'noRegister'             => 'Unregistered',
+    'download'               => 'Download',
 
     // 用户角色
     'CompUser'               => 'Average user',

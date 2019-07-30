@@ -52,8 +52,8 @@
                             <div role="tabpanel" class="tab-pane active row" id="info">
                                 <div class="col-md-2 company-img">
                                     <img class="img-responsive img-thumbnail" alt="110x110" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgdmlld0JveD0iMCAwIDE0MCAxNDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzE0MHgxNDAKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNjMyYTBkYTliZSB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE2MzJhMGRhOWJlIj48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjQ0LjA1NDY4NzUiIHk9Ijc0LjUiPjE0MHgxNDA8L3RleHQ+PC9nPjwvZz48L3N2Zz4=" data-holder-rendered="true">
-                                    <?php if (!empty($this->e['accountNumber'])): ?>
-                                    <img class="img-responsive img-thumbnail" alt="110x110" src="/user/qrcode/number?number=<?php echo $this->e['accountNumber']; ?>" >
+                                    <?php if (!empty($this->account['accountNumber'])): ?>
+                                    <img class="img-responsive img-thumbnail" alt="110x110" src="/user/qrcode/number?number=<?php echo $this->account['accountNumber']; ?>" >
                                     <?php endif; ?>
                                 </div>
 
@@ -64,58 +64,58 @@
                                                 <i class="fas fa-pencil-alt" aria-hidden="true"></i><?php echo $this->translate('edit'); ?>
                                             </a>
                                         <?php endif; ?>
-                                        <?php echo $this->e['accountName']; ?>
+                                        <?php echo $this->account['accountName']; ?>
                                         <?php if ($this->regdCountryCode == 'CN'): ?>
                                         <small>
                                             <a href="javascript:void(0)">
-                                                <?php if ($this->e['entRealAuthStatus'] == 0 || $this->e['entRealAuthStatus'] == -1 || $this->e['entRealAuthStatus'] == -4): ?>
+                                                <?php if ($this->account['entRealAuthStatus'] == 0 || $this->account['entRealAuthStatus'] == -1 || $this->account['entRealAuthStatus'] == -4): ?>
                                                     <a href="/user/company/authview" class="et-ico et-ico-auth-cno"></a>
-                                                <?php elseif ($this->e['entRealAuthStatus'] == 1 || $this->e['entRealAuthStatus'] == 3 || $this->e['entRealAuthStatus'] == -2 || $this->e['entRealAuthStatus'] == -3): ?>
+                                                <?php elseif ($this->account['entRealAuthStatus'] == 1 || $this->account['entRealAuthStatus'] == 3 || $this->account['entRealAuthStatus'] == -2 || $this->account['entRealAuthStatus'] == -3): ?>
                                                     <a href="/user/company/authview" class="et-ico et-ico-auth-cing"></a>
-                                                <?php elseif ($this->e['entRealAuthStatus'] == 2): ?>
+                                                <?php elseif ($this->account['entRealAuthStatus'] == 2): ?>
                                                     <a href="/user/company/authview" class="et-ico et-ico-auth-cok"></a>
                                                 <?php endif; ?>
                                             </a>
                                         </small>
                                         <?php endif;?>
                                     </h3>
-                                    <?php if ($this->e['accountEnName']): ?>
+                                    <?php if ($this->account['accountEnName']): ?>
                                         <p>
-                                            <?php echo $this->e['accountEnName']; ?>
+                                            <?php echo $this->account['accountEnName']; ?>
                                         </p>
                                     <?php endif; ?>
 
                                     <dl class="dl-horizontal">
                                         <dt><?php echo $this->translate('address'); ?></dt>
-                                        <dd><?php echo $this->ShowDictionaryTo($this->dic_Setting["COUNTRY_ISO_CODE"], $this->userLangCode, $this->dic_Setting["COUNTRY_ISO_CODE"], $this->e['regdCountryCode']); ?></dd>
-                                        <dd><?php echo $this->e['regdAddress']; ?></dd>
-                                        <?php if ($this->e['regdEnAddress']): ?>
-                                            <dd><?php echo $this->e['regdEnAddress']; ?></dd>
+                                        <dd><?php echo $this->ShowDictionaryTo($this->dic_Setting["COUNTRY_ISO_CODE"], $this->userLangCode, $this->dic_Setting["COUNTRY_ISO_CODE"], $this->account['regdCountryCode']); ?></dd>
+                                        <dd><?php echo $this->account['regdAddress']; ?></dd>
+                                        <?php if ($this->account['regdEnAddress']): ?>
+                                            <dd><?php echo $this->account['regdEnAddress']; ?></dd>
                                         <?php endif; ?>
 
                                         <dt><?php echo $this->translate('email'); ?></dt>
                                         <dd>
-                                            <?php echo $this->e['email']; ?>
+                                            <?php echo $this->account['email']; ?>
                                             <?php if ($this->CompAdmin == true): ?>
-                                                <?php if (empty($this->e['emailVerifyTime'])): ?>
+                                                <?php if (empty($this->account['emailVerifyTime'])): ?>
                                                     <button type="button" id="acEmail" class="btn btn-warning btn-xs"><?php echo $this->translate('verify'); ?></button>
                                                 <?php endif; ?>
                                             <?php endif; ?>
                                         </dd>
 
                                         <dt><?php echo $this->translate('company_phone'); ?></dt>
-                                        <dd><?php echo $this->e['phone']; ?></dd>
+                                        <dd><?php echo $this->account['phone']; ?></dd>
 
                                         <dt><?php echo $this->translate('company_fax'); ?></dt>
-                                        <dd><?php echo $this->e['fax']; ?></dd>
+                                        <dd><?php echo $this->account['fax']; ?></dd>
 
                                         <dt><?php echo $this->translate('company_website'); ?></dt>
-                                        <dd><?php echo $this->e['website']; ?></dd>
+                                        <dd><?php echo $this->account['website']; ?></dd>
 
                                         <dt><?php echo $this->translate('company_incorporation_date'); ?></dt>
                                         <dd>
-                                            <?php if ($this->e['incorporationDate']) {
-                                                echo date('Y-m-d', strtotime($this->e['incorporationDate']));
+                                            <?php if ($this->account['incorporationDate']) {
+                                                echo date('Y-m-d', strtotime($this->account['incorporationDate']));
                                             } else {
                                                 echo null;
                                             } ?>
@@ -123,23 +123,23 @@
 
                                         <dt><?php echo $this->translate('industry'); ?></dt>
                                         <dd>
-                                            <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ISIC_INDUSTRY_TYPE'], $this->e['industryCode']); ?>
+                                            <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ISIC_INDUSTRY_TYPE'], $this->account['industryCode']); ?>
                                         </dd>
 
                                         <dt><?php echo $this->translate('company_legal_form'); ?></dt>
-                                        <dd><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ACCOUNT_LEGALFORM'], $this->e['legalForm']); ?></dd>
+                                        <dd><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['ACCOUNT_LEGALFORM'], $this->account['legalForm']); ?></dd>
 
                                         <dt><?php echo $this->translate('businessLicenseNo'); ?></dt>
-                                        <dd><?php echo $this->e['businessLicenseNo']; ?></dd>
+                                        <dd><?php echo $this->account['businessLicenseNo']; ?></dd>
 
                                         <dt><?php echo $this->translate('ECC'); ?></dt>
-                                        <dd><?php echo $this->e['customsCode']; ?></dd>
+                                        <dd><?php echo $this->account['customsCode']; ?></dd>
 
                                         <dt><?php echo $this->translate('crnCode'); ?></dt>
-                                        <dd><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['CURRENCY'], $this->e['crnCode']); ?></dd>
+                                        <dd><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['CURRENCY'], $this->account['crnCode']); ?></dd>
 
                                         <dt><?php echo $this->translate('langCode'); ?></dt>
-                                        <dd><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['SYS_LANG'], $this->e['langCode']); ?></dd>
+                                        <dd><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['SYS_LANG'], $this->account['langCode']); ?></dd>
                                     </dl>
                                 </div>
                             </div>
@@ -150,7 +150,7 @@
                                 </div>
 
                                 <div class="col-md-12" style="min-height: 500px;">
-                                    <?php echo $this->ShowWebuploader($this->attlist, '36', '36BL', "1", $this->accountID); ?>
+                                    <?php echo $this->ShowWebuploader($this->account['attachmentList'], '36', '36BL', "1", $this->accountID); ?>
                                 </div>
                             </div>
 
@@ -403,7 +403,7 @@
     }
     //document.getElementById('next').addEventListener('click', onNextPage);
 
-    function initPdfView(pdfUrl, obj) {
+    function initPdfView(pdfUrl, obj, viewType) {
         $("#pdfPageBox").html("");
         PDFJS.getDocument(pdfUrl).then(function(pdfDoc_) {
             pdfDoc = pdfDoc_;
@@ -420,6 +420,11 @@
         });
 
         var signTitle = "<?php echo $this->translate('signTitle');?>";
+        if (viewType !== undefined && viewType !== '') {
+            if (viewType === 'pdf_view') {
+                signTitle = "<?php echo $this->translate('document');?>";
+            }
+        }
         layer.open({
             type: 1,	//Page层类型
             area: ['1150px', '100%'],
@@ -443,6 +448,15 @@
             $(".person-sign-button").hide();
         } else {
             $(".person-sign-button").show().attr("contractID_", obj.id);
+        }
+
+        if (viewType !== undefined && viewType !== '') {
+            if (viewType === 'pdf_view') {
+                var $signViewDiv = $("#signViewDiv");
+                $signViewDiv.find(".sign-button").hide();
+                $signViewDiv.find(".person-sign-button").hide();
+                $signViewDiv.find(".download-button").hide();
+            }
         }
     }
 
@@ -683,19 +697,19 @@
             nidArr += nid[i].value + "|";
         }
         var nameArr = "";
-        var name = document.getElementsByName("attachName[]");
+        var name = document.getElementsByName("attachNamaccount[]");
         for (var i = 0, j = name.length; i < j; i++) {
-            nameArr += name[i].value + "|";
+            nameArr += namaccount[i].value + "|";
         }
         var sizeArr = "";
-        var size = document.getElementsByName("attachSize[]");
+        var size = document.getElementsByName("attachSizaccount[]");
         for (var i = 0, j = size.length; i < j; i++) {
-            sizeArr += size[i].value + "|";
+            sizeArr += sizaccount[i].value + "|";
         }
         var attachTypeArr = "";
-        var attachType = document.getElementsByName("attachType[]");
+        var attachType = document.getElementsByName("attachTypaccount[]");
         for (var i = 0, j = attachType.length; i < j; i++) {
-            attachTypeArr += attachType[i].value + "|";
+            attachTypeArr += attachTypaccount[i].value + "|";
         }
 
         $.ajax({

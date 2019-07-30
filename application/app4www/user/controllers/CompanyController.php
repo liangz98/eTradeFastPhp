@@ -26,7 +26,7 @@ class CompanyController extends Kyapi_Controller_Action
         // 请求Hessian服务端方法
         $accountResultObject = $this->json->getAccountApi($requestObject);
         $account = $this->objectToArray(json_decode($accountResultObject)->result);
-        $this->view->e = $account;
+        $this->view->account = $account;
         $this->view->accountID = $accountID;
 
         // 合作协议
@@ -44,13 +44,6 @@ class CompanyController extends Kyapi_Controller_Action
         $contact = $this->json->getContactApi($requestObject, $contactID);
         $this->view->contactHasIDCertificate = json_decode($contact)->result->hasIDCertificate;
 
-        if (!empty($existDatt['incorporationDate']['date'])) {
-            $creatDate = date('Y-m-d', strtotime($existDatt['incorporationDate']['date']));
-        } else {
-            $creatDate = null;
-        }
-        $this->view->date = $creatDate;
-        $this->view->attlist = $existDatt['attachmentList'];
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/company/index.phtml");
             echo $content;

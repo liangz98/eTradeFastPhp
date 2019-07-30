@@ -78,6 +78,7 @@ return array(
     'close'                  => '关闭',
     'operation'              => '操作',
     'noRegister'             => '暂未注册',
+    'download'               => '下载',
 
     // 用户角色
     'CompUser'               => '普通用户',
