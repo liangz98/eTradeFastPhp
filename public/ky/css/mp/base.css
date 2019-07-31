@@ -106,6 +106,14 @@ body {
     margin-top: 5px;
 }
 
+.mp-padding-16 {
+    padding: 16px;
+}
+
+.mp-padding-LR-16 {
+    padding: 0 16px;
+}
+
 .mp-text-primary {
     color: var(--text-primary) !important;
 }

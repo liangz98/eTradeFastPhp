@@ -2,6 +2,18 @@
     background: linear-gradient(90deg, rgba(22, 155, 213, 1) 0%, rgba(22, 155, 213, 1) 31%, rgba(38, 183, 237, 1) 67%, rgba(51, 204, 255, 1) 100%, rgba(51, 204, 255, 1) 100%);
 }
 
-.weui-cell_access .weui-cell__ft:after {
-    /*border-color: var(--text-white);*/
+.mp-my-right_arrow:after {
+    content: " ";
+    display: inline-block;
+    height: 8px;
+    width: 8px;
+    border-width: 2px 2px 0 0;
+    /*border-color: #b2b2b2;*/
+    border-style: solid;
+    -webkit-transform: matrix(.71,.71,-.71,.71,0,0);
+    transform: matrix(.71,.71,-.71,.71,0,0);
+    position: absolute;
+    margin-top: 5px;
+    right: 15px;
+    border-color: var(--text-white);
 }
