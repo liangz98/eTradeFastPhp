@@ -83,6 +83,14 @@ body {
     margin: 15px;
 }
 
+.mp-text-margin-5 {
+    margin: 5px;
+}
+
+.mp-text-margin-top-5 {
+    margin-top: 5px;
+}
+
 .mp-margin-5_hd {
     margin: 0 5px 5px 5px;
 }
@@ -95,16 +103,12 @@ body {
     margin-left: 5px;
 }
 
+.mp-margin-8_bd {
+    margin-bottom: 8px;
+}
+
 .mp-margin-10_bd {
     margin-bottom: 10px;
-}
-
-.mp-text-margin-5 {
-    margin: 5px;
-}
-
-.mp-text-margin-top-5 {
-    margin-top: 5px;
 }
 
 .mp-padding-16 {

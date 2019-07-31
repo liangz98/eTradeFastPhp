@@ -4,26 +4,26 @@
     <?php echo $this->render(SEED_WWW_TPL . '/mp/headerLink.phtml'); ?>
     <title>快移资金 - 充值</title>
 
-    <link rel="stylesheet" href="/ky/css/mp/loan-list.css">
+    <link rel="stylesheet" href="/ky/css/mp/loan-view.css">
 </head>
 <body ontouchstart>
 <div class="weui-tab">
     <!-- 主体 -->
     <div class="weui-tab__bd">
         <form action="/mp/add-loan" method="post">
-            <div class="weui-flex flex_item mp-margin-5_bd">
+            <div class="weui-flex flex_item mp-margin-8_bd">
                 <div class="weui-flex__item mp-padding-16 loan-view-info">
-                    <div class="loan-view-info__item">
-                        <div class="mp-text-info loan-view-info__item_span"><span class="mp-text-danger" style="line-height: 30px;">温馨提示</span></div>
+                    <div>
+                        <div class="mp-text-info"><span class="mp-text-danger" style="line-height: 30px;">温馨提示</span></div>
                     </div>
-                    <div  class="loan-view-info__item">
-                        <div class="mp-text-info loan-view-info__item_label">• 目前仅支持线下汇款。</div>
-                        <div class="mp-text-info loan-view-info__item_span">• 线下转账直接向快移资金的专属账户汇款，系统会将汇款匹配到你的快移账户</div>
+                    <div>
+                        <div class="mp-text-info">• 目前仅支持线下汇款。</div>
+                        <div class="mp-text-info">• 线下转账直接向快移资金的专属账户汇款，系统会将汇款匹配到你的快移账户</div>
                     </div>
                 </div>
             </div>
 
-            <div class="weui-flex flex_item mp-margin-5_bd">
+            <div class="weui-flex flex_item mp-margin-8_bd">
                 <div class="weui-flex__item mp-padding-16 loan-view-info">
                     <div class="loan-view-info__item">
                         <div class="mp-text-info loan-view-info__item_label mp-text-size-18"><span style="font-weight: bold;">充值金额</span></div>
@@ -40,16 +40,23 @@
                 </div>
             </div>
 
-            <div class="weui-flex flex_item mp-margin-5_bd">
+            <div class="weui-flex flex_item mp-margin-8_bd">
                 <div class="weui-flex__item mp-padding-16 loan-view-info">
-                    <a class="weui-cell_access" href="javascript:;">
-                        <div class="loan-view-info__item mp-text-size-18">
-                            <div class="mp-text-info loan-view-info__item_label">账户余额</div>
-                            <div class="mp-text-info loan-view-info__item_span">400,000 元</div>
-                            <div class="weui-cell__ft">
-                            </div>
-                        </div>
-                    </a>
+                    <div class="loan-view-info__item">
+                        <div class="mp-text-info loan-view-info__item_label"><span class="mp-text-size-18" style="font-weight: bold;">转账信息</span></div>
+                    </div>
+                    <div  class="loan-view-info__item">
+                        <div class="mp-text-info loan-view-info__item_label">账户名称</div>
+                        <div class="mp-text-info loan-view-info__item_span">骏海威商业保理（深圳）有限公司</div>
+                    </div>
+                    <div class="loan-view-info__item">
+                        <div class="mp-text-info loan-view-info__item_label">开户银行</div>
+                        <div class="mp-text-info loan-view-info__item_span">中国农业银行前海分行</div>
+                    </div>
+                    <div class="loan-view-info__item">
+                        <div class="mp-text-info loan-view-info__item_label">银行账号</div>
+                        <div class="mp-text-info loan-view-info__item_span">41013700040058794</div>
+                    </div>
                 </div>
             </div>
 
