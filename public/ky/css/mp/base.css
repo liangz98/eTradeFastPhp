@@ -24,6 +24,7 @@ body {
     --text-size-11: 11px;
     --text-size-13: 13px;
     --text-size-18: 18px;
+    --text-size-26: 26px;
     --text-size-28: 28px;
 
     background-color: var(--bg-primary);
@@ -148,6 +149,10 @@ body {
 
 .mp-text-size-18 {
     font-size: var(--text-size-18) !important;
+}
+
+.mp-text-size-26 {
+    font-size: var(--text-size-26) !important;
 }
 
 .mp-text-size-28 {

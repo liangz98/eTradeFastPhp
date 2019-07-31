@@ -10,14 +10,55 @@
 <div class="weui-tab">
     <!-- 主体 -->
     <div class="weui-tab__bd">
-        <!-- 风险提示 risk warnings -->
-        <div class="weui-flex">
-            <div class="weui-flex__item flex_item mp-margin-5_bd">
-                <div class="risk-warnings mp-text-size-13 mp-margin-5_left">温馨提示：您可用于投资的金额为 500,000 元</div>
+        <form action="/mp/add-loan" method="post">
+            <div class="weui-flex flex_item mp-margin-5_bd">
+                <div class="weui-flex__item mp-padding-16 loan-view-info">
+                    <div class="loan-view-info__item">
+                        <div class="mp-text-info loan-view-info__item_span"><span class="mp-text-danger" style="line-height: 30px;">温馨提示</span></div>
+                    </div>
+                    <div  class="loan-view-info__item">
+                        <div class="mp-text-info loan-view-info__item_label">• 目前仅支持线下汇款。</div>
+                        <div class="mp-text-info loan-view-info__item_span">• 线下转账直接向快移资金的专属账户汇款，系统会将汇款匹配到你的快移账户</div>
+                    </div>
+                </div>
             </div>
-        </div>
 
+            <div class="weui-flex flex_item mp-margin-5_bd">
+                <div class="weui-flex__item mp-padding-16 loan-view-info">
+                    <div class="loan-view-info__item">
+                        <div class="mp-text-info loan-view-info__item_label mp-text-size-18"><span style="font-weight: bold;">充值金额</span></div>
+                    </div>
+                    <div  class="loan-view-info__item">
+                        <div class="mp-text-info loan-view-info__item_label"><span class="mp-text-size-18">￥</span></div>
+                        <div class="mp-text-info loan-view-info__item_span">
+                            <input class="weui-input" style="border-bottom: 1px solid; border-radius: 0; font-size: 18px" type="number" pattern="[1-9]\d*\.\d*|0\.\d*[1-9]\d*$" placeholder="请输入投标金额"/>
+                        </div>
+                    </div>
+                    <div class="loan-view-info__item mp-text-margin-top-5">
+                        <div class="mp-text-info loan-view-info__item_label"><span class="mp-text-danger">当前额度 300,000 元</span></div>
+                    </div>
+                </div>
+            </div>
 
+            <div class="weui-flex flex_item mp-margin-5_bd">
+                <div class="weui-flex__item mp-padding-16 loan-view-info">
+                    <a class="weui-cell_access" href="javascript:;">
+                        <div class="loan-view-info__item mp-text-size-18">
+                            <div class="mp-text-info loan-view-info__item_label">账户余额</div>
+                            <div class="mp-text-info loan-view-info__item_span">400,000 元</div>
+                            <div class="weui-cell__ft">
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="weui-flex">
+                <div class="weui-flex__item mp-margin-10_bd">
+                    <button type="submit" class="weui-btn mp-btn_bootstrap_default" style="width: 98%;">确 定</button>
+                </div>
+            </div>
+        </form>
     </div>
 
     <?php echo $this->render(SEED_WWW_TPL . '/mp/footer.phtml'); ?>
