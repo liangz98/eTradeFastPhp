@@ -25,8 +25,7 @@ class Zend_View_Helper_ShowWebuploader extends Shop_View_Helper {
         $initData .= '<input type="hidden" id="typeURL" value="' . $operation . '" />';
         $initData .= '<input type="hidden" id="sid" value="' . session_id() . '" />';
 
-
-        if (is_array($attachmentList) && count($attachmentList) > 0) {
+        if (!empty($attachmentList) && is_array($attachmentList) && count($attachmentList) > 0) {
             foreach ($attachmentList as $k => $attachment) {
                 $ext = "";
                 $attachID = "";

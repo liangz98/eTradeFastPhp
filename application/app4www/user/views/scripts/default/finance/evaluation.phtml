@@ -58,7 +58,13 @@
                             <?php endif; ?>
 
                             <?php if ($evaluationDocument->documentType == 'TA' || $evaluationDocument->documentType == 'AT'): ?>
-                                <?php echo $this->ShowWebuploader($evaluationDocument->attachmentList, $this->biz_Setting['EA'], $this->attach_Setting['0000'], '', $evaluationDocument->documentID); ?>
+                            <div class="col-sm-12">
+                                <?php if (!empty($evaluationDocument->attachmentList)): ?>
+                                    <?php echo $this->ShowWebuploader($evaluationDocument->attachmentList, 'EA', $this->attach_Setting['0000'], '', $evaluationDocument->documentID); ?>
+                                <?php else:?>
+                                    <?php echo $this->ShowWebuploader('', 'EA', $this->attach_Setting['0000'], '', $evaluationDocument->documentID); ?>
+                                <?php endif;?>
+                            </div>
                             <?php endif; ?>
                         </div>
                         <span class="help-block"><?php echo $evaluationDocument->description; ?></span>

@@ -267,6 +267,19 @@ class MpController extends Kyapi_Controller_Action {
         exit;
     }
 
+    /**
+     * 个人信息
+     */
+    public function myInfoAction() {
+
+        $content = $this->view->render(SEED_WWW_TPL . "/mp/myInfo.phtml");
+        echo $content;
+        exit;
+    }
+
+    /**
+     * 充值
+     */
     public function rechargeAction() {
 
         $content = $this->view->render(SEED_WWW_TPL . "/mp/recharge.phtml");

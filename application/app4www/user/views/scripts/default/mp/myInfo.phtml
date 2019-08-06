@@ -10,14 +10,74 @@
 <div class="weui-tab">
     <!-- 主体 -->
     <div class="weui-tab__bd">
-        <!-- 风险提示 risk warnings -->
-        <div class="weui-flex">
-            <div class="weui-flex__item flex_item mp-margin-8_bd">
-                <div class="risk-warnings mp-text-size-13 mp-margin-5_left">温馨提示：您可用于投资的金额为 500,000 元</div>
+        <div class="weui-flex flex_item mp-margin-8_bd">
+            <div class="weui-flex__item loan-view-info">
+                <div class="weui-cells weui-cells_form">
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label class="weui-label">姓名</label></div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" type="text" placeholder="请输入真实姓名"/>
+                        </div>
+                    </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label class="weui-label">移动电话</label></div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" type="tel" placeholder="请输入手机号"/>
+                        </div>
+                    </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label class="weui-label">身份证号码</label></div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" type="text" placeholder="请输入身份证号码"/>
+                        </div>
+                    </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label class="weui-label">电子邮箱</label></div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" type="email" placeholder="请输入电子邮箱"/>
+                        </div>
+                    </div>
+                    <div class="weui-cell weui-cell_select weui-cell_select-after">
+                        <div class="weui-cell__hd">
+                            <label for="" class="weui-label">性别</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <select class="weui-select" name="select2">
+                                <option value="1">男</option>
+                                <option value="2">女</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
+        <div class="weui-flex flex_item mp-margin-8_bd">
+            <div class="weui-flex__item loan-view-info mp-text-size-17">
+                <a class="weui-cell weui-cell_access" href="javascript:;">
+                    <div class="weui-cell__bd">
+                        <p style="font-size: 17px">身份认证</p>
+                    </div>
+                    <div class="weui-cell__ft">
+                        <span class="mp-text-danger">未认证</span>
+                    </div>
+                </a>
+            </div>
+        </div>
 
+        <div class="weui-flex mp-margin-8_bd">
+            <div class="weui-flex__item mp-padding-16">
+                <div>
+                    <div class="mp-text-info"><b><span style="line-height: 30px;">温馨提示</span></b></div>
+                </div>
+                <div>
+                    <div class="mp-text-info">• 进行身份认证前，请编辑好以上信息后，再点击保存按钮</div>
+                    <div class="mp-text-info">• 所填移动电话号码必须为本人经过运营商实名的号码</div>
+                    <div class="mp-text-info">• 信息保存后，请点击身份认证按钮，可进行身份认证操作</div>
+                    <div class="mp-text-info">• 修改移动号码后，需要重新进行身份认证</div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <?php echo $this->render(SEED_WWW_TPL . '/mp/footer.phtml'); ?>

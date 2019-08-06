@@ -50,6 +50,13 @@
                                         <?php echo $this->goods['productName']; ?>
                                     </h3>
 
+                                    <?php if ($this->goods['productStatus'] == '04' && !empty($this->goods['refuseReason'])): ?>
+                                        <div class="alert alert-danger alert-dismissible fade in" style="margin-top: 15px;" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <p><?php echo $this->goods['refuseReason']; ?>!</p>
+                                        </div>
+                                    <?php endif; ?>
+
                                     <dl class="dl-horizontal">
                                         <dt><?php echo $this->translate('productNAME'); ?></dt>
                                         <dd><?php echo $this->goods['productName']; ?></dd>

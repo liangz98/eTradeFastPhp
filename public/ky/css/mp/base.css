@@ -23,6 +23,7 @@ body {
     --text-size-10: 10px;
     --text-size-11: 11px;
     --text-size-13: 13px;
+    --text-size-17: 17px;
     --text-size-18: 18px;
     --text-size-26: 26px;
     --text-size-28: 28px;
@@ -149,6 +150,10 @@ body {
 
 .mp-text-size-13 {
     font-size: var(--text-size-13) !important;
+}
+
+.mp-text-size-17 {
+    font-size: var(--text-size-17) !important;
 }
 
 .mp-text-size-18 {
