@@ -133,7 +133,7 @@ class SaleController extends Kyapi_Controller_Action
         $_queryP->contactStatus = "01";
 
         // 请求Hessian服务端方法
-        $userKY = $this->json->listContactApi($this->_requestObject, $_queryP);
+        $userKY = $this->json->listContactApi($this->_requestObject, $_queryP, null, null, 0, 0);
         $userData = $this->objectToArray(json_decode($userKY));
         $userList = $userData['result'];
 
@@ -325,6 +325,9 @@ class SaleController extends Kyapi_Controller_Action
             } else {
                 $_order->needFinancing = (boolean)$this->_request->getParam("needFinancing");// 是否需要融资服务
                 $_order->financingRequest = $this->_request->getParam("financingRequest");// 融资服务要求
+                $_order->financingCrnCode = $this->_request->getParam("financingCrnCode"); // 期望融资货币
+                $_order->financingAmount = $this->_request->getParam("financingAmount");// 期望融资金额
+                $_order->financingType = $this->_request->getParam("financingType");// 金融需求类型
             }
             /*报关行模块开始*/
             $regdCountryCode = $this->_request->getParam("regdCountryCode");
@@ -630,6 +633,9 @@ class SaleController extends Kyapi_Controller_Action
             } else {
                 $_order->needFinancing = (boolean)$this->_request->getParam("needFinancing");// 是否需要融资服务
                 $_order->financingRequest = $this->_request->getParam("financingRequest");// 融资服务要求
+                $_order->financingCrnCode = $this->_request->getParam("financingCrnCode"); // 期望融资货币
+                $_order->financingAmount = $this->_request->getParam("financingAmount");// 期望融资金额
+                $_order->financingType = $this->_request->getParam("financingType");// 金融需求类型
             }
             /*报关行模块开始*/
             $regdCountryCode = $this->_request->getParam("regdCountryCode");

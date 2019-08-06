@@ -5,4 +5,8 @@
  */
 return array(
     'order_helloWord' => 'Hello Word！',
+
+    'expectFinancingCrnCode' => 'CURR.',
+    'expectFinancingAmount'  => 'AMT.',
+    'expectFinancingType'    => 'Financing Type',
 );

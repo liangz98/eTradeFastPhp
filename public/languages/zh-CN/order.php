@@ -5,4 +5,8 @@
  */
 return array(
     'order_helloWord' => '你好！',
+
+    'expectFinancingCrnCode' => '期望融资货币',
+    'expectFinancingAmount'  => '期望融资金额',
+    'expectFinancingType'    => '金融需求类型',
 );

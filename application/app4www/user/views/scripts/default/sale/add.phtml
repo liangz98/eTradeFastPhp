@@ -293,6 +293,7 @@
                                 </div>
                             </div>
 
+                            <!-- 物流服务 -->
                             <div class="form-group needShipping">
                                 <label for="needShipping" class="col-sm-2 control-label"><?php echo $this->translate('logisticSS'); ?></label>
                                 <div class="col-sm-8">
@@ -312,6 +313,7 @@
                                 </div>
                             </div>
 
+                            <!-- 报关要求 -->
                             <div class="form-group agency">
                                 <label for="isAssignCustomsAgency" class="col-sm-2 control-label"><?php echo $this->translate('selectCHB'); ?></label>
                                 <div class="col-sm-8">
@@ -341,6 +343,7 @@
                                 </div>
                             </div>
 
+                            <!-- 金融服务 -->
                             <div class="form-group financing">
                                 <label for="needFinancing" class="col-sm-2 control-label"><?php echo $this->translate('nameSRV'); ?></label>
                                 <div class="col-sm-8">
@@ -350,6 +353,31 @@
                                     <label class="radio-inline">
                                         <input type="radio" name="needFinancing" value="0" checked> <?php echo $this->translate('no');?>
                                     </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group financingRequest" style="display: none;">
+                                <label for="financingCrnCode" class="col-sm-2 control-label"><?php echo $this->translate('expectFinancingCrnCode'); ?></label>
+                                <div class="col-sm-8">
+                                    <select class="selectpicker form-control" name="financingCrnCode" id="financingCrnCode" data-live-search="true">
+                                        <?php echo $this->ShowDictionaryList($this->dic_Setting['CURRENCY'], $this->userLangCode, $this->dic_Setting['CURRENCY'], $this->orders['financingCrnCode']); ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group financingRequest" style="display: none;">
+                                <label for="financingAmount" class="col-sm-2 control-label"><?php echo $this->translate('expectFinancingAmount'); ?></label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control" name="financingAmount" id="financingAmount" placeholder="" value="<?php echo $this->orders['financingAmount']; ?>" min="0" step="1" >
+                                </div>
+                            </div>
+
+                            <div class="form-group financingRequest" style="display: none;">
+                                <label for="financingType" class="col-sm-2 control-label"><?php echo $this->translate('expectFinancingType'); ?></label>
+                                <div class="col-sm-8">
+                                    <select class="selectpicker form-control" name="financingType" id="financingType" data-live-search="true">
+                                        <?php echo $this->ShowDictionaryList($this->dic_Setting['FACTORING_MODE'], $this->userLangCode, $this->dic_Setting['FACTORING_MODE'], $this->orders['financingType']); ?>
+                                    </select>
                                 </div>
                             </div>
 

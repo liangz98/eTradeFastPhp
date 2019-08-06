@@ -573,6 +573,13 @@
                                     <?php if ($this->orders['paymentTerm'] != "T/T"): ?>
                                         <?php if ($this->orders['needFinancing'] == true && $this->accountID == $this->orders['financingClient']): ?>
                                             <div class="row">
+                                                <div class="col-xs-2 view-title"><?php echo $this->translate('expectFinancingAmount'); ?></div>
+                                                <div class="col-xs-4"><?php echo $this->orders['financingCrnCode'] . ' ' .$this->orders['financingAmount']; ?></div>
+                                                <div class="col-xs-2 view-title"><?php echo $this->translate('expectFinancingType'); ?></div>
+                                                <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->dic_Setting['FACTORING_MODE'], $this->orders['financingType']); ?></div>
+                                            </div>
+
+                                            <div class="row">
                                                 <div class="col-xs-2 view-title"><?php echo $this->translate('needOTH'); ?></div>
                                                 <div class="col-xs-8"><?php echo $this->orders['financingRequest']; ?></div>
                                             </div>

@@ -50,6 +50,9 @@ class Kyapi_Model_order
     public $customClearanceRequest;
     public $needFinancing;
     public $financingRequest;
+    public $financingCrnCode;
+    public $financingAmount;
+    public $financingType;
     public $orderItemList;
     public $attachmentList;
 //    public $attachList;
