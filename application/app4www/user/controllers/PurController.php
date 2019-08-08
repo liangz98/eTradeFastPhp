@@ -122,7 +122,7 @@ class PurController extends Kyapi_Controller_Action
         // 获取默认联系人
         $_queryP = new queryAccount();
         $_queryP->contactStatus = "01"; // contactStatus: 01有效 02禁用
-        $userResultObject = $this->json->listContactApi($this->_requestObject, $_queryP);
+        $userResultObject = $this->json->listContactApi($this->_requestObject, $_queryP, null, null, 0, 0);
         $userData = $this->objectToArray(json_decode($userResultObject));
         $userList = $userData['result'];
         foreach ($userList as $k => $v) {
@@ -299,15 +299,27 @@ class PurController extends Kyapi_Controller_Action
             $_order->shippingServiceType = $this->_request->getParam("shippingServiceType");        // 装柜类型
             $_order->sizeQuantityMap = $orderMM;                    // 货柜数量
             $_order->isSelfSupport = (boolean)$this->_request->getParam("isSelfSupport");// 是否自营进出口
-            /*金融服务模块开始*/
-            if ($_order->paymentTerm == "T/T") {
-                $_order->needFinancing = false;
-                $_order->financingRequest = null;
-            } else {
-                $_order->needFinancing = (boolean)$this->_request->getParam("needFinancing");// 是否需要融资服务
-                $_order->financingRequest = $this->_request->getParam("financingRequest");// 融资服务要求
-            }
-            /*报关行模块开始*/
+
+            // 金融服务
+            // 20190808 周盛提出"结算方式"为 T/T 时不隐藏金额服务
+            // if ($_order->paymentTerm == "T/T") {
+            //     $_order->needFinancing = false;
+            //     $_order->financingRequest = null;
+            // } else {
+            //     $_order->needFinancing = (boolean)$this->_request->getParam("needFinancing");// 是否需要融资服务
+            //     $_order->financingRequest = $this->_request->getParam("financingRequest");// 融资服务要求
+            //     $_order->financingCrnCode = $this->_request->getParam("financingCrnCode"); // 期望融资货币
+            //     $_order->financingAmount = $this->_request->getParam("financingAmount");// 期望融资金额
+            //     $_order->financingType = $this->_request->getParam("financingType");// 金融需求类型
+            // }
+            $_order->needFinancing = (boolean)$this->_request->getParam("needFinancing");// 是否需要融资服务
+            $_order->financingRequest = $this->_request->getParam("financingRequest");// 融资服务要求
+            $_order->financingCrnCode = $this->_request->getParam("financingCrnCode"); // 期望融资货币
+            $_order->financingAmount = $this->_request->getParam("financingAmount");// 期望融资金额
+            $_order->financingType = $this->_request->getParam("financingType");// 金融需求类型
+
+
+            // 报关行
             $regdCountryCode = $this->_request->getParam("regdCountryCode");
             $buyerRegdCountryCode = $this->_request->getParam("buyerRegdCountryCode");
             if ($regdCountryCode == $buyerRegdCountryCode && $regdCountryCode == "CN") {
@@ -326,7 +338,7 @@ class PurController extends Kyapi_Controller_Action
                 $_order->customClearanceRequest = $this->_request->getParam("customClearanceRequest");// 报关要求
             }
 
-            /*物流服务模块*/
+            // 物流服务
             if ($_order->priceTerm == "CIF" || $_order->priceTerm == "CFR") {
                 $_order->needShipping = false;    // 物流安排
                 $_order->shippingRequest = null;// 物流服务要求
@@ -603,18 +615,29 @@ class PurController extends Kyapi_Controller_Action
             $_order->shippingServiceType = $this->_request->getParam("shippingServiceType");        // 装柜类型
             $_order->sizeQuantityMap = $orderMM;                    // 货柜数量
             $_order->isSelfSupport = (boolean)$this->_request->getParam("isSelfSupport");// 是否自营进出口
-            /*金融服务模块开始*/
-            if ($_order->paymentTerm == "T/T") {
-                $_order->needFinancing = false;
-                $_order->financingRequest = null;
-            } else {
-                $_order->needFinancing = (boolean)$this->_request->getParam("needFinancing");// 是否需要融资服务
-                $_order->financingRequest = $this->_request->getParam("financingRequest");// 融资服务要求
-            }
-            /*报关行模块开始*/
-            $comcity = $this->_request->getParam("comcity");
-            $buyercity = $this->_request->getParam("buyercity");
-            if ($comcity == $buyercity && $comcity == "CN") {
+
+            // 金融服务
+            // 20190808 周盛提出"结算方式"为 T/T 时不隐藏金额服务
+            // if ($_order->paymentTerm == "T/T") {
+            //     $_order->needFinancing = false;
+            //     $_order->financingRequest = null;
+            // } else {
+            //     $_order->needFinancing = (boolean)$this->_request->getParam("needFinancing");// 是否需要融资服务
+            //     $_order->financingRequest = $this->_request->getParam("financingRequest");// 融资服务要求
+            //     $_order->financingCrnCode = $this->_request->getParam("financingCrnCode"); // 期望融资货币
+            //     $_order->financingAmount = $this->_request->getParam("financingAmount");// 期望融资金额
+            //     $_order->financingType = $this->_request->getParam("financingType");// 金融需求类型
+            // }
+            $_order->needFinancing = (boolean)$this->_request->getParam("needFinancing");// 是否需要融资服务
+            $_order->financingRequest = $this->_request->getParam("financingRequest");// 融资服务要求
+            $_order->financingCrnCode = $this->_request->getParam("financingCrnCode"); // 期望融资货币
+            $_order->financingAmount = $this->_request->getParam("financingAmount");// 期望融资金额
+            $_order->financingType = $this->_request->getParam("financingType");// 金融需求类型
+
+            // 报关行
+            $companyCountry = $this->_request->getParam("comcity");
+            $buyerCountry = $this->_request->getParam("buyercity");
+            if ($companyCountry == $buyerCountry && $companyCountry == "CN") {
                 $_order->isAssignCustomsAgency = false;
                 $_order->customsAgencyName = null;// 报关行名称
                 $_order->customsAgencyCode = null;// 报关行代码
@@ -630,7 +653,7 @@ class PurController extends Kyapi_Controller_Action
                 $_order->customClearanceRequest = $this->_request->getParam("customClearanceRequest");// 报关要求
             }
 
-            /*物流服务模块*/
+            // 物流服务
             if ($_order->priceTerm == "CIF" || $_order->priceTerm == "CFR") {
                 $_order->needShipping = false;    // 物流安排
                 $_order->shippingRequest = null;// 物流服务要求

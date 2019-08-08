@@ -898,9 +898,9 @@
 
         // 结算方式
         $paymentTerm.on('changed.bs.select', function(e, clickedIndex, newValue, oldValue) {
-            // console.log(this.value, clickedIndex, newValue, oldValue)
             if (this.value === 'T/T') {
-                $(".financing, .financingRequest").hide();
+                // 20190808 周盛提出"结算方式"为 T/T 时不隐藏金额服务
+                // $(".financing, .financingRequest").hide();
             } else {
                 $(".financing").show();
                 if ($("input[name='needFinancing']:checked").val() === '1') {
