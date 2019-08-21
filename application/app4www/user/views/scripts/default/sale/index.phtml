@@ -14,7 +14,7 @@
 <div class="container-fluid index-body">
 	<div class="container">
 		<div class="row">
-            <div class="col-md-3 company-navigation">
+            <div class="col-md-3 company-navigation hidden">
                 <div class="panel panel-default">
                     <div class="panel-heading"><?php echo $this->translate('orderIN'); ?></div>
                     <div class="list-group">
@@ -24,7 +24,13 @@
                 </div>
             </div>
 
-            <div class="col-md-9 order-main">
+            <div class="col-md-12 order-main">
+                <ol class="breadcrumb hidden">
+                    <li><a href="/"><?php echo $this->translate('nav_index'); ?></a></li>
+                    <li><a href="/user/settle"><?php echo $this->translate('settle_IN'); ?></a></li>
+                    <li class="active"><?php echo $this->translate('settle_List'); ?></li>
+                </ol>
+
                 <div class="panel panel-default">
                     <!-- Default panel contents -->
                     <div class="panel-heading"><?php echo $this->translate('orderSALLE'); ?></div>
@@ -32,7 +38,7 @@
                         <?php if (!empty($this->resultMsg)): ?>
                         <div class="alert alert-success alert-dismissible fade in" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <p><?php echo base64_decode($this->resultMsg); ?>!</p>
+                            <p><?php echo base64_decode($this->resultMsg); ?></p>
                         </div>
                         <?php endif; ?>
 
@@ -240,43 +246,84 @@
 
                             var result = '';
                             <?php if ($this->CompOrderAdmin == true): ?>
-                            if ('<?php echo $this->accountID; ?>' === row.client) {
-                                if (row.orderStatus === '00' || row.orderStatus === '01' || row.orderStatus === '02' || row.orderStatus === '05') {
-                                    result += '<a title="' + editTitle+ '" href="' + href + '">'
-                                        + '<i class="far fa-edit"></i>'
-                                        + '</a>&nbsp;';
+                            if (row.agent !== undefined && row.agent !== '') {
+                                if ('<?php echo $this->accountID; ?>' === row.agent) {
+                                    if (row.orderStatus === '00' || row.orderStatus === '01' || row.orderStatus === '02' || row.orderStatus === '05') {
+                                        result += '<a title="' + editTitle+ '" href="' + href + '">'
+                                            + '<i class="far fa-edit"></i>'
+                                            + '</a>&nbsp;';
+                                    }
+
+                                    if (row.orderStatus === '01' || row.orderStatus === '02' || row.orderStatus === '05') {
+                                        result += '<a href="javascript:void(0)" title="' + cancelTitle + '" data-id="' + row.orderID + '" data-url="/user/sale/cancel" '
+                                            + 'data-msg1="<?php echo $this->translate("is_cancel");?>" '
+                                            + 'data-msg2="<?php echo $this->translate("tip_cancel_success");?>" '
+                                            + 'data-msg3="<?php echo $this->translate("tip_cancel_fail");?>" '
+                                            + 'onclick="doOption(this);" '
+                                            + '>'
+                                            + '<i class="fas fa-ban"></i>'
+                                            + '</a>&nbsp;';
+                                    }
+
+                                    if (row.orderStatus === '00') {
+                                        result += '<a href="javascript:void(0)" title="' + delTitle + '" data-id="' + row.orderID + '" data-url="/user/sale/del" '
+                                            + 'data-msg1="<?php echo $this->translate("is_delete");?>" '
+                                            + 'data-msg2="<?php echo $this->translate("tip_del_success");?>" '
+                                            + 'data-msg3="<?php echo $this->translate("tip_del_fail");?>" '
+                                            + 'onclick="doOption(this);" '
+                                            + '>'
+                                            + '<i class="far fa-trash-alt"></i>'
+                                            + '</a>&nbsp;';
+
+                                        result += '<a href="javascript:void(0)" title="' + submitForReviewTitle + '" data-id="' + row.orderID + '" data-url="/user/sale/submit" '
+                                            + 'data-msg1="<?php echo $this->translate("is_submit");?>" '
+                                            + 'data-msg2="<?php echo $this->translate("tip_forReview_success");?>" '
+                                            + 'data-msg3="<?php echo $this->translate("tip_forReview_fail");?>" '
+                                            + 'onclick="doOption(this);" '
+                                            + '>'
+                                            + '<i class="far fa-check-circle"></i>'
+                                            + '</a>&nbsp;';
+                                    }
                                 }
-                            }
+                            } else {
+                                if ('<?php echo $this->accountID; ?>' === row.client) {
+                                    if (row.orderStatus === '00' || row.orderStatus === '01' || row.orderStatus === '02' || row.orderStatus === '05') {
+                                        result += '<a title="' + editTitle+ '" href="' + href + '">'
+                                            + '<i class="far fa-edit"></i>'
+                                            + '</a>&nbsp;';
+                                    }
 
-                            if (row.orderStatus === '01' || row.orderStatus === '02' || row.orderStatus === '05') {
-                                result += '<a href="javascript:void(0)" title="' + cancelTitle + '" data-id="' + row.orderID + '" data-url="/user/sale/cancel" '
-                                    + 'data-msg1="<?php echo $this->translate("is_cancel");?>" '
-                                    + 'data-msg2="<?php echo $this->translate("tip_cancel_success");?>" '
-                                    + 'data-msg3="<?php echo $this->translate("tip_cancel_fail");?>" '
-                                    + 'onclick="doOption(this);" '
-                                    + '>'
-                                    + '<i class="fas fa-ban"></i>'
-                                    + '</a>&nbsp;';
-                            }
+                                    if (row.orderStatus === '01' || row.orderStatus === '02' || row.orderStatus === '05') {
+                                        result += '<a href="javascript:void(0)" title="' + cancelTitle + '" data-id="' + row.orderID + '" data-url="/user/sale/cancel" '
+                                            + 'data-msg1="<?php echo $this->translate("is_cancel");?>" '
+                                            + 'data-msg2="<?php echo $this->translate("tip_cancel_success");?>" '
+                                            + 'data-msg3="<?php echo $this->translate("tip_cancel_fail");?>" '
+                                            + 'onclick="doOption(this);" '
+                                            + '>'
+                                            + '<i class="fas fa-ban"></i>'
+                                            + '</a>&nbsp;';
+                                    }
 
-                            if (row.orderStatus === '00') {
-                                result += '<a href="javascript:void(0)" title="' + delTitle + '" data-id="' + row.orderID + '" data-url="/user/sale/del" '
-                                    + 'data-msg1="<?php echo $this->translate("is_delete");?>" '
-                                    + 'data-msg2="<?php echo $this->translate("tip_del_success");?>" '
-                                    + 'data-msg3="<?php echo $this->translate("tip_del_fail");?>" '
-                                    + 'onclick="doOption(this);" '
-                                    + '>'
-                                    + '<i class="far fa-trash-alt"></i>'
-                                    + '</a>&nbsp;';
+                                    if (row.orderStatus === '00') {
+                                        result += '<a href="javascript:void(0)" title="' + delTitle + '" data-id="' + row.orderID + '" data-url="/user/sale/del" '
+                                            + 'data-msg1="<?php echo $this->translate("is_delete");?>" '
+                                            + 'data-msg2="<?php echo $this->translate("tip_del_success");?>" '
+                                            + 'data-msg3="<?php echo $this->translate("tip_del_fail");?>" '
+                                            + 'onclick="doOption(this);" '
+                                            + '>'
+                                            + '<i class="far fa-trash-alt"></i>'
+                                            + '</a>&nbsp;';
 
-                                result += '<a href="javascript:void(0)" title="' + submitForReviewTitle + '" data-id="' + row.orderID + '" data-url="/user/sale/submit" '
-                                    + 'data-msg1="<?php echo $this->translate("is_submit");?>" '
-                                    + 'data-msg2="<?php echo $this->translate("tip_forReview_success");?>" '
-                                    + 'data-msg3="<?php echo $this->translate("tip_forReview_fail");?>" '
-                                    + 'onclick="doOption(this);" '
-                                    + '>'
-                                    + '<i class="far fa-check-circle"></i>'
-                                    + '</a>&nbsp;';
+                                        result += '<a href="javascript:void(0)" title="' + submitForReviewTitle + '" data-id="' + row.orderID + '" data-url="/user/sale/submit" '
+                                            + 'data-msg1="<?php echo $this->translate("is_submit");?>" '
+                                            + 'data-msg2="<?php echo $this->translate("tip_forReview_success");?>" '
+                                            + 'data-msg3="<?php echo $this->translate("tip_forReview_fail");?>" '
+                                            + 'onclick="doOption(this);" '
+                                            + '>'
+                                            + '<i class="far fa-check-circle"></i>'
+                                            + '</a>&nbsp;';
+                                    }
+                                }
                             }
                             <?php endif; ?>
 

@@ -6,6 +6,7 @@
 return array(
     'order_helloWord' => 'Hello Word！',
 
+    'vendorTotalAmount'      => '采购总额',
     'expectFinancingCrnCode' => 'CURR.',
     'expectFinancingAmount'  => 'AMT.',
     'expectFinancingType'    => 'Financing Type',

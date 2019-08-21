@@ -21,6 +21,8 @@ class Kyapi_Model_order
     public $vendorContactName;
     public $vendorCrnCode;
     public $vendorOrderRequest;
+    public $agentContactID;
+    public $agentContactName;
     public $paymentPeriod;
     public $paymentTerm;
     public $isSelfSupport;

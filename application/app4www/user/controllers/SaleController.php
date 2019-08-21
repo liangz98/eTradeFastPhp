@@ -127,20 +127,36 @@ class SaleController extends Kyapi_Controller_Action
 
     /*新增订单*/
     public function addAction() {
+        $requestObject = $this->_requestObject;
+
         // 获取默认联系人
         $_queryP = new queryAccount();
         $_queryP->contactStatus = "01"; // contactStatus: 01有效 02禁用
-        $userKY = $this->json->listContactApi($this->_requestObject, $_queryP, null, null, 0, 0);
+        $userKY = $this->json->listContactApi($requestObject, $_queryP, null, null, 0, 0);
         $userData = $this->objectToArray(json_decode($userKY));
         $userList = $userData['result'];
 
+        $defaultContactID = '';
+        $defaultContactName = '';
         foreach ($userList as $k => $v) {
             if ($v['isPublicContact'] == true) {
-                $this->view->dfContactName = $v['name'];
-                $this->view->dfContactID = $v['contactID'];
+                $defaultContactID = $v['contactID'];
+                $defaultContactName = $v['name'];
+                $this->view->dfContactID = $defaultContactID;
+                $this->view->dfContactName = $defaultContactName;
             }
         }
-        /*获取默认联系人 END*/
+
+        // 默认卖家
+        $accountResultObject = $this->json->getAccountApi($requestObject);
+        $account = json_decode($accountResultObject)->result;
+        $vendor = array();
+        $vendor['vendor'] = $account->accountID;
+        $vendor['vendorName'] = $account->accountName;
+        $vendor['vendorRegdCountryCode'] = $account->regdCountryCode;
+        $vendor['vendorContactID'] = $defaultContactID;
+        $vendor['vendorContactName'] = $defaultContactName;
+        $this->view->orders = $vendor;
 
         if ($this->_request->isPost()) {
             //获取附件ID
@@ -195,8 +211,8 @@ class SaleController extends Kyapi_Controller_Action
             $iterm["totalPackage"] = $this->_request->getParam("totalPackage");
             $iterm["totalPrice"] = $this->_request->getParam("totalPrice");
             $iterm["unitPrice"] = $this->_request->getParam("unitPrice");
-            $iterm["purUnitPrice"] = $this->_request->getParam("purUnitPrice");
-            $iterm["totalPurPrice"] = $this->_request->getParam("totalPurPrice");
+            $iterm["vendorUnitPrice"] = $this->_request->getParam("vendorUnitPrice");
+            $iterm["vendorTotalPrice"] = $this->_request->getParam("vendorTotalPrice");
             $iterm["productBrand"] = $this->_request->getParam("productBrand");
             $iterm["productModel"] = $this->_request->getParam("productModel");  //商品型号
             $iterm["productionMode"] = $this->_request->getParam("productionMode");//商品生产方式
@@ -230,10 +246,9 @@ class SaleController extends Kyapi_Controller_Action
                     $it3[$k]->totalVolume = (double)$it2[$k]['totalVolume'];
                     $it3[$k]->totalPackage = (int)$it2[$k]['totalPackage'];
                     $it3[$k]->totalPrice = (double)$it2[$k]['totalPrice'];
-                    $it3[$k]->totalPurPrice = (double)$it2[$k]['totalPurPrice'];
-                    //						$it3[$k]->totalVolume=(double)$it2[$k]['totalVolume'];
                     $it3[$k]->unitPrice = (double)$it2[$k]['unitPrice'];
-                    $it3[$k]->purUnitPrice = (double)$it2[$k]['purUnitPrice'];
+                    $it3[$k]->vendorTotalPrice = (double)$it2[$k]['vendorTotalPrice'];
+                    $it3[$k]->vendorUnitPrice = (double)$it2[$k]['vendorUnitPrice'];
                     $it3[$k]->productName = $it2[$k]['productName'];
                     $it3[$k]->productEnName = $it2[$k]['productEnName'];
                     $it3[$k]->productSize = $it2[$k]['productSize'];
@@ -274,19 +289,22 @@ class SaleController extends Kyapi_Controller_Action
             }
 
             $_order = new Kyapi_Model_order();
-            //   $_order->orderID = $_orderIDget;  //订单ID
-            //委托方信息公司ID、公司名称、联系人、联系人ID（本方联系人CRNCODE货币 不做传递服务端）
-            $_order->vendor = $this->view->accountID;
-            $_order->vendorName = $this->_request->getParam("accountName");
+            // 委托方信息公司ID、公司名称、联系人、联系人ID（本方联系人CRNCODE货币 不做传递服务端）
+            $_order->vendor = $this->_request->getParam("vendor");
+            $_order->vendorName = $this->_request->getParam("vendorName");
             $_order->vendorContactID = $this->_request->getParam("vendorContactID");
             $_order->vendorContactName = $this->_request->getParam("vendorContactName");
-            // $_order->vendorCrnCode = $this->_request->getParam("CrnCode");
-            //客户方信息 ID、Name、货币（Crncode）、联系人ID、联系人姓名
+
+            // 客户方信息 ID、Name、货币（Crncode）、联系人ID、联系人姓名
             $_order->buyer = $this->_request->getParam("buyer");
             $_order->buyerName = $this->_request->getParam("buyerName");
             $_order->buyerCrnCode = $this->_request->getParam("buyerCrnCode");
             $_order->buyerContactID = $this->_request->getParam("buyerContactID");
             $_order->buyerContactName = $this->_request->getParam("buyerContactName");
+
+            // 委托方联系人
+            $_order->agentContactID = $this->_request->getParam("agentContactID");
+            $_order->agentContactName = $this->_request->getParam("agentContactName");
 
             $_order->vendorOrderRequest = $this->_request->getParam("vendorOrderRequest");// 订单要求(2选1)
             $_order->packingMode = $this->_request->getParam("packingMode");// 包装方式
@@ -331,7 +349,7 @@ class SaleController extends Kyapi_Controller_Action
             $_order->needFinancing = (boolean)$this->_request->getParam("needFinancing");// 是否需要融资服务
             $_order->financingRequest = $this->_request->getParam("financingRequest");// 融资服务要求
             $_order->financingCrnCode = $this->_request->getParam("financingCrnCode"); // 期望融资货币
-            $_order->financingAmount = $this->_request->getParam("financingAmount");// 期望融资金额
+            $_order->financingAmount = (int)$this->_request->getParam("financingAmount");// 期望融资金额
             $_order->financingType = $this->_request->getParam("financingType");// 金融需求类型
 
             // 报关行
@@ -369,7 +387,6 @@ class SaleController extends Kyapi_Controller_Action
             $_order->orderItemList = $it3;//订单商品集合
             $_order->attachmentList = $_attachList;//附件集合
 
-            $requestObject = $this->_requestObject;
             $_resultData = $this->json->addOrderApi($requestObject, $_order);
             $resultObject = json_decode($_resultData);
 
@@ -441,24 +458,24 @@ class SaleController extends Kyapi_Controller_Action
         };
 
         /* 获取默认联系人 start */
-        if (!empty($viewData->vendorContactID)) {
-            $this->view->dfContactID = $viewData->vendorContactID;
-            $this->view->dfContactName = $viewData->vendorContactName;
-        } else {
-            $_queryP = new queryAccount();
-            /**contactStatus 01有效 02禁用*/
-            $_queryP->contactStatus = "01";
-            $userKY = $this->json->listContactApi($this->_requestObject, $_queryP, null, null, 0, 0);
-            $userData = $this->objectToArray(json_decode($userKY));
-            $userList = $userData['result'];
-
-            foreach ($userList as $k => $v) {
-                if ($v['isPublicContact'] == true) {
-                    $this->view->dfContactName = $v['name'];
-                    $this->view->dfContactID = $v['contactID'];
-                }
-            }
-        }
+        // if (!empty($viewData->vendorContactID)) {
+        //     $this->view->dfContactID = $viewData->vendorContactID;
+        //     $this->view->dfContactName = $viewData->vendorContactName;
+        // } else {
+        //     $_queryP = new queryAccount();
+        //     /**contactStatus 01有效 02禁用*/
+        //     $_queryP->contactStatus = "01";
+        //     $userKY = $this->json->listContactApi($this->_requestObject, $_queryP, null, null, 0, 0);
+        //     $userData = $this->objectToArray(json_decode($userKY));
+        //     $userList = $userData['result'];
+        //
+        //     foreach ($userList as $k => $v) {
+        //         if ($v['isPublicContact'] == true) {
+        //             $this->view->dfContactName = $v['name'];
+        //             $this->view->dfContactID = $v['contactID'];
+        //         }
+        //     }
+        // }
         /* 获取默认联系人 END */
 
 
@@ -485,8 +502,8 @@ class SaleController extends Kyapi_Controller_Action
             $itemList["totalPackage"] = $this->_request->getParam("totalPackage");
             $itemList["totalPrice"] = $this->_request->getParam("totalPrice");
             $itemList["unitPrice"] = $this->_request->getParam("unitPrice");
-            $itemList["purUnitPrice"] = $this->_request->getParam("purUnitPrice");
-            $itemList["totalPurPrice"] = $this->_request->getParam("totalPurPrice");
+            $itemList["vendorUnitPrice"] = $this->_request->getParam("vendorUnitPrice");
+            $itemList["vendorTotalPrice"] = $this->_request->getParam("vendorTotalPrice");
             $itemList["productBrand"] = $this->_request->getParam("productBrand");
             $itemList["productModel"] = $this->_request->getParam("productModel");  //商品型号
             $itemList["productionMode"] = $this->_request->getParam("productionMode");//商品生产方式
@@ -522,10 +539,9 @@ class SaleController extends Kyapi_Controller_Action
                     $it3[$k]->totalNetWeight = (double)$it2[$k]['totalNetWeight'];
                     $it3[$k]->totalPackage = (int)$it2[$k]['totalPackage'];
                     $it3[$k]->totalPrice = (double)$it2[$k]['totalPrice'];
-                    $it3[$k]->totalPurPrice = (double)$it2[$k]['totalPurPrice'];
-                    //						$it3[$k]->totalVolume=(double)$it2[$k]['totalVolume'];
                     $it3[$k]->unitPrice = (double)$it2[$k]['unitPrice'];
-                    $it3[$k]->purUnitPrice = (double)$it2[$k]['purUnitPrice'];
+                    $it3[$k]->vendorTotalPrice = (double)$it2[$k]['vendorTotalPrice'];
+                    $it3[$k]->vendorUnitPrice = (double)$it2[$k]['vendorUnitPrice'];
                     $it3[$k]->productName = $it2[$k]['productName'];
                     $it3[$k]->productEnName = $it2[$k]['productEnName'];
                     $it3[$k]->productSize = $it2[$k]['productSize'];
@@ -592,17 +608,22 @@ class SaleController extends Kyapi_Controller_Action
             $_order = new Kyapi_Model_order();
             $_order->orderID = $_orderIDget;  //订单ID
             //本方信息公司ID、公司名称、联系人、联系人ID（本方联系人CRNCODE货币 不做传递服务端）
-            $_order->vendor = $this->view->accountID;
-            $_order->vendorName = $this->_request->getParam("accountName");
+            $_order->vendor = $this->_request->getParam("vendor");
+            $_order->vendorName = $this->_request->getParam("vendorName");
             $_order->vendorContactID = $this->_request->getParam("vendorContactID");
             $_order->vendorContactName = $this->_request->getParam("vendorContactName");
             $_order->vendorCrnCode = $this->_request->getParam("CrnCode");
+
             //委托方信息 ID、Name、货币（Crncode）、联系人ID、联系人姓名
             $_order->buyer = $this->_request->getParam("buyer");
             $_order->buyerName = $this->_request->getParam("buyerName");
             $_order->buyerCrnCode = $this->_request->getParam("buyerCrnCode");
             $_order->buyerContactID = $this->_request->getParam("buyerContactID");
             $_order->buyerContactName = $this->_request->getParam("buyerContactName");
+
+            // 委托方联系人
+            $_order->agentContactID = $this->_request->getParam("agentContactID");
+            $_order->agentContactName = $this->_request->getParam("agentContactName");
 
             $_order->vendorOrderRequest = $this->_request->getParam("vendorOrderRequest");// 订单要求(2选1)
             $_order->packingMode = $this->_request->getParam("packingMode");// 包装方式
@@ -647,7 +668,7 @@ class SaleController extends Kyapi_Controller_Action
             $_order->needFinancing = (boolean)$this->_request->getParam("needFinancing");// 是否需要融资服务
             $_order->financingRequest = $this->_request->getParam("financingRequest");// 融资服务要求
             $_order->financingCrnCode = $this->_request->getParam("financingCrnCode"); // 期望融资货币
-            $_order->financingAmount = $this->_request->getParam("financingAmount");// 期望融资金额
+            $_order->financingAmount = (int)$this->_request->getParam("financingAmount");// 期望融资金额
             $_order->financingType = $this->_request->getParam("financingType");// 金融需求类型
 
             // 报关行
@@ -812,16 +833,16 @@ class SaleController extends Kyapi_Controller_Action
         $listTruckingOrderResultObject = $this->json->listTruckingOrderApi($requestObject, $_orderID);
         $this->view->listTruckingOrder = json_decode($listTruckingOrderResultObject)->result;
 
-        // 不可删,但未查出用在哪里
-        if ($this->view->accountID == $existDatt['client']) {
-            if ($existDatt['orderStatus'] == 05 || $existDatt['orderStatus'] == 00 || $existDatt['orderStatus'] == 02) {
-                $this->view->allowEdit = 1;
-            } else {
-                $this->view->allowEdit = 0;
-            }
-        } else {
-            $this->view->allowEdit = 0;
-        }
+        // // 不可删,但未查出用在哪里
+        // if ($this->view->accountID == $existDatt['client']) {
+        //     if ($existDatt['orderStatus'] == 05 || $existDatt['orderStatus'] == 00 || $existDatt['orderStatus'] == 02) {
+        //         $this->view->allowEdit = 1;
+        //     } else {
+        //         $this->view->allowEdit = 0;
+        //     }
+        // } else {
+        //     $this->view->allowEdit = 0;
+        // }
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/sale/view.phtml");

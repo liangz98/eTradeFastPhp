@@ -379,15 +379,15 @@
                                                             <div class="col-sm-1"><?php echo $goods['totalPurPrice'];?></div>
                                                         </div>
                                                     <?php else: ?>
-                                                        <?php if ($goods['productionMode'] != '01'): ?>
+                                                        <?php if ($this->orders['vendor'] != $this->accountID): ?>
                                                             <div class="row">
                                                                 <div class="col-xs-2"><?php echo $this->translate("purchaseUnitPrice"); ?></div>
-                                                                <div class="col-sm-1"><?php echo $goods['purUnitPrice'];?></div>
+                                                                <div class="col-sm-1"><?php echo $goods['vendorUnitPrice']; ?></div>
                                                                 <div class="col-xs-1">x</div>
                                                                 <div class="col-sm-1"><?php echo $goods['quantity'];?></div>
                                                                 <div class="col-xs-1">=</div>
-                                                                <div class="col-sm-1"><?php echo $goods['purCrnCode'];?></div>
-                                                                <div class="col-sm-1"><?php echo $goods['totalPurPrice'];?></div>
+                                                                <div class="col-sm-1"><?php echo $this->orders['buyerCrnCode'];?></div>
+                                                                <div class="col-sm-1"><?php echo $goods['vendorTotalPrice'];?></div>
                                                             </div>
                                                         <?php endif; ?>
                                                     <?php endif; ?>

@@ -1007,6 +1007,15 @@
             }
         });
 
+        $vendorModal.on('show.bs.modal', function () {
+            $vendorListTable.bootstrapTable('uncheckAll');
+            var selectVendor = $("#vendor");
+            $.each(selectVendor, function () {
+                var vendorID = $(this).val();
+                $vendorListTable.bootstrapTable('checkBy', {field:'toID', values:[vendorID]});
+            });
+        });
+
         // 内贸订单隐藏出口方式, 报关口岸, 报关行
         if ($("#orderType").val() === 'DT') {
             // $(".isSelfSupport").hide();

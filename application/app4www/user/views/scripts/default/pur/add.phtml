@@ -884,6 +884,15 @@
             }
         });
 
+        $vendorModal.on('show.bs.modal', function () {
+            $vendorListTable.bootstrapTable('uncheckAll');
+            var selectVendor = $("#vendor");
+            $.each(selectVendor, function () {
+                var vendorID = $(this).val();
+                $vendorListTable.bootstrapTable('checkBy', {field:'toID', values:[vendorID]});
+            });
+        });
+
         // 订单商品
         $orderItemModal.on('show.bs.modal', function () {
             var supplierID = $("#vendor").val();
