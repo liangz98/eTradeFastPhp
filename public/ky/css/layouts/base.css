@@ -53,6 +53,14 @@ input[type=number]{
     margin-bottom: 5px;
 }
 
+.footer-body .row:last-child div p a:link {
+    color: #777;
+}
+
+.footer-body .row:last-child div p a:visited {
+    color: #777;
+}
+
 .footer-body .row:first-child div:last-child img:first-child {
     width: 64px;
 }
