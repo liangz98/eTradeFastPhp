@@ -7,7 +7,7 @@ return array(
     // 系统配置
     'document'               => 'Document',
     'etradefast'             => 'eTradeFast',
-    'etrade'                 => 'ETRADEFAST TRADING',
+    'etrade'                 => 'ETRADEFAST',
 
     // 语言 (这部分不用翻译)
     'language'               => 'English',
@@ -198,7 +198,7 @@ return array(
 
     // 底部说明文字
     'aboutInfo_1'            => 'Provide working capital advisory services and more flexible solutions, improve working capital costs and better manage trade risks.',
-    'aboutInfo_2'            => 'Innovation of supply chain financial service mode: founder and practitioner of fast-moving finance.',
+    'aboutInfo_2'            => 'Innovation of Supply Chain Service Model: Founder and Practitioner of Fast Moving Platform.',
     'aboutInfo_3'            => 'IFG members make full use of global experience to help Chinese trade partners to accelerate internationalization.',
 
     // 手机

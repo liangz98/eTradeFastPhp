@@ -6,7 +6,7 @@
 return array(
     // 系统配置
     'document'               => '文档',
-    'etradefast'             => '快移交易',
+    'etradefast'             => '快移平台',
     'etrade'                 => '快移平台',
 
     // 语言
@@ -17,7 +17,8 @@ return array(
     // 登录页
     'welcomeLogin'           => '欢迎登录',
     'welcomeReg'             => '欢迎注册',
-    'fair'                   => '让交易更公平',
+    'fair'                   => '更公平',
+    // 'fair'                   => '让交易更公平',
     'speed'                  => '更快捷',
     'guarantee'              => '更有保障',
     'qrLogin'                => '扫码登录',
@@ -198,7 +199,7 @@ return array(
 
     // 底部说明文字
     'aboutInfo_1'            => '提供营运资本咨询服务和更灵活的解决方案，改进营运资金成本和更好管理贸易风险。',
-    'aboutInfo_2'            => '创新供应链金融服务模式：快移金融创始者及践行者。',
+    'aboutInfo_2'            => '创新供应链服务模式：快移平台创始者及践行者。',
     'aboutInfo_3'            => 'IFG的成员，充分利用全球经验，助中国的贸易合作伙伴，以加快国际化。',
 
     // 手机
