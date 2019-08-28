@@ -64,7 +64,7 @@
 				<div class="form-group email">
 					<label for="email" class="col-sm-3 control-label"><?php echo $this->translate('companyEM'); ?></label>
 					<div class="col-sm-7">
-						<input type="email" class="form-control" name="email" id="email" required placeholder="<?php echo $this->translate('ps_email'); ?>">
+						<input type="email" class="form-control" name="email" id="email" required placeholder="<?php echo $this->translate('ps_email'); ?>" onkeyup="this.value=this.value.replace(/^\s+|\s+$/g,'')">
 					</div>
 				</div>
 
@@ -94,14 +94,14 @@
 				<div class="form-group phone">
 					<label for="mobilePhone" class="col-sm-3 control-label"><?php echo $this->translate('phone'); ?></label>
 					<div class="col-sm-7">
-						<input type="text" class="form-control" name="mobilePhone" id="mobilePhone" required placeholder="<?php echo $this->translate('is_phone'); ?>">
+						<input type="text" class="form-control" name="mobilePhone" id="mobilePhone" required placeholder="<?php echo $this->translate('is_phone'); ?>" onkeyup="this.value=this.value.replace(/^\s+|\s+$/g,'')">
 					</div>
 				</div>
 
 				<div class="form-group">
 					<label for="ecommloginname" class="col-sm-3 control-label"><?php echo $this->translate('elogname'); ?></label>
 					<div class="col-sm-7">
-						<input type="email" class="form-control" name="ecommloginname" id="ecommloginname" required placeholder="<?php echo $this->translate('ps_email'); ?>">
+						<input type="email" class="form-control" name="ecommloginname" id="ecommloginname" required placeholder="<?php echo $this->translate('ps_email'); ?>" onkeyup="this.value=this.value.replace(/^\s+|\s+$/g,'')">
 					</div>
 				</div>
 
@@ -287,7 +287,7 @@
             url: ajaxUrl,
             async: false,
             data: {
-                ecommloginname: value
+                ecommloginname: $.trim(value)
             },
             dataType: "json",
             success: function (data) {
