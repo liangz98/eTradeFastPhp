@@ -34,6 +34,7 @@ return array(
     'nav_baseService'        => 'Basic Services',
     'nav_financeService'     => 'Financial Services',
     'nav_channel'            => 'Financial Channels',
+    'nav_freight'            => 'Freight Order',
     'nav_help'               => 'Help',
     'nav_about'              => 'About Us',
     'nav_exit'               => 'Sign out',

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+	<title><?php echo $this->translate('etradefast'); ?></title>
+    <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <link href="/ky/css/settle/settle.css" rel="stylesheet">
+    <link href="/ky/css/img-upload.css" rel="stylesheet">
+    <!-- fancybox -->
+    <link href="/ky/fancybox-3.5.6-dist/jquery.fancybox.min.css" rel="stylesheet">
+</head>
+<body>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
+
+<div class="container-fluid index-body">
+	<div class="container">
+        <ol class="breadcrumb">
+            <li><a href="/"><?php echo $this->translate('nav_index'); ?></a></li>
+            <li><a href="/user/settle"><?php echo $this->translate('settle_IN'); ?></a></li>
+            <li><a href="/user/settle/list"><?php echo $this->translate('settle_List'); ?></a></li>
+            <li><a href="/user/settle/lslist"><?php echo $this->translate('settle_Run'); ?></a></li>
+            <li class="active"><?php echo $this->translate('settle_INF'); ?></li>
+        </ol>
+
+        <div class="page-header">
+            <h3><?php echo $this->translate('settle_Record'); ?></h3>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('settle_TradeID'); ?></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="form-control-static text-666">
+                            <?php echo $this->e['transNo']; ?>
+                        </p>
+                    </div>
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('settle_wtname'); ?></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="form-control-static text-666">
+                            <?php echo $this->e['subject']; ?>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999">
+                            <?php echo $this->ShowDictionaryTo("", $this->userLangCode, $this->div_Setting['AR_AP_TYPE'], $this->e['rptype']) . $this->translate('ordertotal'); ?>
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="form-control-static text-666">
+                            <?php echo $this->e['crnCode'] . ' ' . $this->ShowToPrice($this->e['totalAmount']); ?>
+                        </p>
+                    </div>
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('settle_Unsettle'); ?></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="form-control-static text-666">
+                            <?php echo $this->e['crnCode'] . ' ' . $this->ShowToPrice($this->e['balanceAmount']); ?> &nbsp;&nbsp;
+                            <?php if ($this->e['allowPayment']): ?>
+                                <a class="btn btn-warning btn-sm" href="/user/settle/payment?<?php echo base64_encode($this->e['tradingID']); ?>"><?php echo $this->translate('settle_payment'); ?></a>
+                            <?php endif; ?>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('type'); ?></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="form-control-static text-666">
+                            <?php if ($this->e['tradingType'] == 'D'): ?>
+                                <?php echo $this->ShowDictionaryTo("AR_AP_TYPE", $this->userLangCode, $this->dic_Setting['AR_AP_TYPE'], $this->e['rptype']); ?>
+                            <?php else: ?>
+                                <?php echo $this->ShowDictionaryTo("PAYMENT_TRADING_TYPE", $this->userLangCode, $this->dic_Setting['PAYMENT_TRADING_TYPE'], $this->e['tradingType']); ?>
+                            <?php endif;?>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999">
+                            <?php echo $this->translate('settle_contartNo'); ?>
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="form-control-static text-666">
+                            <?php echo $this->e['contractNo']; ?>
+                        </p>
+                    </div>
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('settle_GTime'); ?></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="form-control-static text-666">
+                            <?php echo empty($this->e['recordDate']) ? null : date('Y-m-d H:i:s', strtotime($this->e['recordDate'])); ?>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999">
+                            <?php echo $this->ShowToRptypeTitle($this->e['rptype'], 'settle_Time_ING'); ?>
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="form-control-static text-666">
+                            <?php echo empty($this->e['expectedDate']) ? null : date('Y-m-d H:i:s', strtotime($this->e['expectedDate'])); ?>
+                        </p>
+                    </div>
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->ShowToRptypeTitle($this->e['rptype'], 'settle_Time_Now'); ?></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="form-control-static text-666">
+                            <?php echo empty($this->e['actualDate']) ? null : date('Y-m-d H:i:s', strtotime($this->e['actualDate'])); ?>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->ShowToRptypeTitle($this->e['rptype'], 'settle_FTO_Status'); ?></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="form-control-static text-666">
+                            <?php echo $this->ShowDictionaryTo("PAYMENT_STATUS", $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'], $this->e['paymentStatus']); ?>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999">
+                            <?php echo $this->translate('settle_DEC'); ?>
+                        </p>
+                    </div>
+                    <div class="col-md-9">
+                        <p class="form-control-static text-666">
+                            <?php echo $this->e['remarks']; ?>
+                        </p>
+                    </div>
+                </div>
+
+                <?php if ($this->e['rptype'] == 'P' && $this->e['isOriented'] == false): ?>
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('files'); ?></p>
+                    </div>
+                    <div class="col-md-10"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 text-primary">
+                        <?php echo $this->ShowUPimg($this->e['attachmentList'], ''); ?>
+                    </div>
+                </div>
+                <?php endif;?>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="span-font-size-18 text-primary margin-top-15"><?php echo $this->translate('settle_paylist'); ?></p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th><?php echo $this->translate('settle_requestNo'); ?></th>
+                                <th><?php echo $this->translate('settle_Time'); ?></th>
+                                <th class="text-right"><?php echo $this->translate('settle_TradeMount'); ?></th>
+                                <th class="text-center"><?php echo $this->translate('settle_Status'); ?></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <?php if (empty($this->e['paymentRequestList'])):?>
+                                <tr>
+                                    <td colspan="4"><?php echo $this->translate('noData'); ?></td>
+                                </tr>
+                            <?php else:?>
+                                <?php foreach ($this->e['paymentRequestList'] as $paymentRequest):?>
+                                    <tr>
+                                        <td><?php echo $paymentRequest['requestNo']; ?></td>
+                                        <td><?php echo date('Y-m-d H:i:s', strtotime($paymentRequest['paymentDate'])); ?></td>
+                                        <td class="text-right"><?php echo $paymentRequest['crnCode'] . ' ' . number_format($paymentRequest['totalAmount'], 2); ?></td>
+                                        <td class="text-center">
+                                            <?php echo $this->ShowDictionaryTo("PAYMENT_REQUEST_STATUS", $this->userLangCode, $this->dic_Setting['PAYMENT_REQUEST_STATUS'], $paymentRequest['requestStatus']); ?>
+                                        </td>
+                                    </tr>
+
+<!--                                    <tr>-->
+<!--                                        <td colspan="4">11111111111111&nbsp;&nbsp;&nbsp;11111111111111&nbsp;&nbsp;&nbsp;<br>11111111111111&nbsp;&nbsp;&nbsp;11111111111111<br>11111111111111&nbsp;&nbsp;&nbsp;11111111111111<br>11111111111111&nbsp;&nbsp;&nbsp;11111111111111<br>11111111111111&nbsp;&nbsp;&nbsp;11111111111111<br>11111111111111&nbsp;&nbsp;&nbsp;11111111111111<br></td>-->
+<!--                                    </tr>-->
+                                <?php endforeach;?>
+                            <?php endif;?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>
+
+<!--PDF预览-->
+<div id="signViewDiv" style="display: none; background-color: #F6F6F6;">
+    <div class="download-button">下载</div>
+    <div class="pdfDoc" style="padding-left:50px;">
+        <div id="pdfPageBox">
+        </div>
+    </div>
+</div>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script type="text/javascript" src="/ky/upload/img.js"></script>
+<!-- pdf -->
+<script type="text/javascript" src="/ky/pdf/pdf.js"></script>
+<script type="text/javascript" src="/ky/pdf/pdf.worker.js"></script>
+<!-- fancybox -->
+<script type="text/javascript" src="/ky/fancybox-3.5.6-dist/jquery.fancybox.min.js"></script>
+<script type="text/javascript" src="/ky/fancybox-3.5.6-dist/fancyboxInit.js"></script>
+
+<script type="text/javascript">
+	$().ready(function() {
+
+	});
+
+	$(function () {
+
+	});
+
+    // *************************** PDF Sign View ********************************
+    PDFJS.workerSrc = '/ky/pdf/pdf.worker.js';
+
+    var pdfDoc = null;
+    var pageNum = 1;
+    var pageRendering = false;
+    var pageNumPending = null;
+    var scale = 1.5;
+
+    function renderPage(num, id) {
+        var canvas = document.getElementById(id);
+        var ctx = canvas.getContext('2d');
+        pageRendering = true;
+        pdfDoc.getPage(num).then(function(page) {
+            var viewport = page.getViewport(scale);
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            var renderContext = {
+                canvasContext: ctx,
+                viewport: viewport
+            };
+            var renderTask = page.render(renderContext);
+
+            renderTask.promise.then(function() {
+                pageRendering = false;
+                if (pageNumPending !== null) {
+                    renderPage(pageNumPending);
+                    pageNumPending = null;
+                }
+            });
+        });
+    }
+
+    function queueRenderPage(num) {
+        if (pageRendering) {
+            pageNumPending = num;
+        } else {
+            renderPage(num);
+        }
+    }
+
+    function onPrevPage() {
+        if (pageNum <= 1) {
+            return;
+        }
+        pageNum--;
+        queueRenderPage(pageNum);
+    }
+
+    function onNextPage() {
+        if (pageNum >= pdfDoc.numPages) {
+            return;
+        }
+        pageNum++;
+        queueRenderPage(pageNum);
+    }
+
+    function initPdfView(pdfUrl, obj) {
+        $("#pdfPageBox").html("");
+        PDFJS.getDocument(pdfUrl).then(function(pdfDoc_) {
+            pdfDoc = pdfDoc_;
+            //document.getElementById('page_count').textContent = pdfDoc.numPages;
+            for (var i=1;i<=pdfDoc.numPages;i++){
+                var canvasDiv = $("<div style=\"padding-top:10px;padding-bottom:10px;\"></div>");
+                var pageNum = $("<div style=\"background-color: #999999;position:absolute;float: left;height:30px;width:60px;text-align: center;line-height: 30px;color:#ffffff;opacity: 0.6;\">"+i+"/"+pdfDoc.numPages+"</div>");
+                var canvas = $("<canvas></canvas>").attr("id", "the-canvas_"+i);
+                canvasDiv.append(pageNum);
+                canvasDiv.append(canvas);
+                $("#pdfPageBox").append(canvasDiv);
+                renderPage(i, "the-canvas_"+i);
+            }
+        });
+
+        var signTitle = "<?php echo $this->translate('pdfView');?>";
+        layer.open({
+            type: 1,	//Page层类型
+            area: ['1150px', '100%'],
+            title: signTitle,
+            shadeClose: true,
+            shade: 0.6,	//遮罩透明度
+            // anim: 1,	//0-6的动画形式，-1不开启
+            scrollbar: false,
+            content: $("#signViewDiv")
+        });
+
+        $(".download-button").attr("contractID_", obj.id);
+    }
+
+    $(".download-button").bind("click",function(){
+        var contractID_ = $(this).attr("contractID_");
+        window.location.href = $("#contractAttachUrl_" + contractID_).val();
+    });
+</script>
+</body>
+</html>

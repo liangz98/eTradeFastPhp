@@ -5,4 +5,5 @@
  */
 return array(
     'freight_order' => '货运单',
+    'freightList'  => '订单列表',
 );
