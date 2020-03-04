@@ -6,4 +6,6 @@
 return array(
     'freight_order' => 'Freight Order',
     'freight_list'  => 'Freight List',
+
+    'freightLoanList' => 'Freight Loan List',
 );

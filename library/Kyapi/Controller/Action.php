@@ -93,7 +93,8 @@ class Kyapi_Controller_Action extends Zend_Controller_Action {
         $languagesPath = '/languages/' . $lan . '.php';
         $locale = $this->getRequest()->getParam('locale');
 
-        $langFilesArray = array("commons", "order", "product", "partner", "account", "contact", "bank", "payment", "freight", "finance");
+        // 有使用的语言文件, 要放在前面
+        $langFilesArray = array("commons", "order", "freight", "product", "partner", "account", "contact", "bank", "payment", "freight", "finance");
         $langFilePath = (SEED_WWW_ROOT)."/languages/".$langCode."/";
         // 加载注册语言模块
         try {

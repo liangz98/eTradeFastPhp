@@ -17,7 +17,7 @@
 	<div class="container">
         <ol class="breadcrumb">
             <li><a href="/"><?php echo $this->translate('nav_index'); ?></a></li>
-            <li class="active"><?php echo $this->translate('订单列表'); ?></li>
+            <li class="active"><?php echo $this->translate('freightList'); ?></li>
         </ol>
 
         <div class="panel panel-default">
@@ -363,7 +363,7 @@
                             var resultEnCode = base.encode(row.tradingID);
                             var result = '';
                             if (row.allowPayment) {
-                                var href = "/user/settle/payment?"+resultEnCode;
+                                var href = "/user/freight/payment?"+resultEnCode;
                                 var str = "<?php echo $this->translate('settle_payment');?>";
                                 result += '<a href="' + href + '">' + str + '</a>|';
                             }
@@ -373,7 +373,7 @@
                                 result += '<a href="' + href + '">' + str + '</a>|';
                             }
 
-                            var infoHref = "/user/settle/listview?"+resultEnCode;
+                            var infoHref = "/user/freight/freight-view?"+resultEnCode;
                             var infoStr = "<?php echo $this->translate('settle_INF');?>";
                             result += '<a href="' + infoHref + '">' + infoStr + '</a>';
 

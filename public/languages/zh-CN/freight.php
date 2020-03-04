@@ -5,5 +5,7 @@
  */
 return array(
     'freight_order' => '货运单',
-    'freightList'  => '订单列表',
+    'freightList'   => '运单列表',
+
+    'freightLoanList' => '金融项目列表',
 );

@@ -17,8 +17,27 @@
 	<div class="container">
         <ol class="breadcrumb">
             <li><a href="/"><?php echo $this->translate('nav_index'); ?></a></li>
-            <li class="active"><?php echo $this->translate('订单列表'); ?></li>
+            <li class="active"><?php echo $this->translate('freightLoanList'); ?></li>
         </ol>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                        <div id="main_1" style="width: 600px;height:400px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="panel panel-default">
             <div class="panel-body">
@@ -77,6 +96,45 @@
         </div>
 
         <div class="panel panel-default">
+            <div class="panel-body title-options">
+                <div class="row">
+                    <div class="col-sm-11">
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <p class="form-control-static"><?php echo $this->translate('债项金额'); ?></p>
+                            </div>
+                            <div class="col-sm-9">
+                                <button type="button" class="btn btn-warning" data-type="factoringAmount" data-value="all"><?php echo $this->translate('factoring_all'); ?></button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A1"><?php echo $this->translate('factoring_amount_a1'); ?></button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A2"><?php echo $this->translate('factoring_amount_a2'); ?></button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A3"><?php echo $this->translate('factoring_amount_a3'); ?></button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A4"><?php echo $this->translate('factoring_amount_a4'); ?></button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A5"><?php echo $this->translate('factoring_amount_a5'); ?></button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringAmount" data-value="A6"><?php echo $this->translate('factoring_amount_a6'); ?></button>
+                                <input type="hidden" name="factoringAmount" id="factoringAmount" value="all">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <p class="form-control-static"><?php echo $this->translate('项目进度'); ?></p>
+                            </div>
+                            <div class="col-sm-9">
+                                <button type="button" class="btn btn-warning" data-type="factoringMode" data-value="all"><?php echo $this->translate('factoring_all'); ?></button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringMode" data-value="RF"><?php echo $this->translate('factoring_mode_rf'); ?></button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="factoringMode" data-value="PF"><?php echo $this->translate('factoring_mode_pf'); ?></button>
+                                <button type="button" class="btn btn-default" data-type="factoringMode" data-value="EF"><?php echo $this->translate('factoring_mode_ef'); ?></button>
+                                <input type="hidden" name="factoringMode" id="factoringMode" value="all">
+                                <input type="hidden" name="limit" id="limit" value="<?php echo $this->limit; ?>">
+                                <input type="hidden" name="offset" id="offset" value="<?php echo $this->offset; ?>">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
             <div class="panel-body">
                 <!-- Table -->
                 <table id="resultListTable" class="table-striped"></table>
@@ -93,6 +151,7 @@
 <script src="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.js"></script>
 <script src="/ky/bootstrap-table-1.12.1-dist/locale/bootstrap-table-zh-CN.min.js"></script>
 <script type="text/javascript" src="/ky/bootstrap-select-1.12.4-dist/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="/ky/echarts-4.2.0/echarts.min.js"></script>
 
 <script type="text/javascript">
     var dataDict = {},
@@ -384,6 +443,142 @@
             }
         });
 	});
+
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main_1'));
+
+    // 指定图表的配置项和数据
+    var option = {
+        title: {
+
+        },
+        tooltip: {},
+        legend: {
+            data:['销量']
+        },
+        series: [
+            {
+                type: "gauge",
+                center: ["50%", "45%"], // 仪表位置
+                radius: "40%",          //仪表大小
+                startAngle: 180,
+                endAngle: 0,
+                axisLine: {
+                    show: false,
+                    lineStyle: { // 属性lineStyle控制线条样式
+                        color: [
+                            [ 0.5,  new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                                offset: 1,
+                                color: "#E75F25" // 50% 处的颜色
+                            }, {
+                                offset: 0.8,
+                                color: "#D9452C" // 40% 处的颜色
+                            }], false) ], // 100% 处的颜色
+                            [ 0.7,  new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                                offset: 1,
+                                color: "#FFC539" // 70% 处的颜色
+                            }, {
+                                offset: 0.8,
+                                color: "#FE951E" // 66% 处的颜色
+                            }, {
+                                offset: 0,
+                                color: "#E75F25" // 50% 处的颜色
+                            }], false) ],
+                            [ 0.9,  new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                offset: 1,
+                                color: "#C7DD6B" // 90% 处的颜色
+                            }, {
+                                offset: 0.8,
+                                color: "#FEEC49" // 86% 处的颜色
+                            }, {
+                                offset: 0,
+                                color: "#FFC539" // 70% 处的颜色
+                            }], false) ],
+                            [1,  new echarts.graphic.LinearGradient(0, 0, 0, 1, [ {
+                                offset: 0.2,
+                                color: "#1CAD52" // 92% 处的颜色
+                            }, {
+                                offset: 0,
+                                color: "#C7DD6B" // 90% 处的颜色
+                            }], false) ]
+                        ],
+                        width: 10
+                    }
+                },
+                splitLine: {
+                    show: false
+                },
+                axisTick: {
+                    show: false
+                },
+                axisLabel: {
+                    show: false
+                },
+                pointer : { //指针样式
+                    length: '45%'
+                },
+                detail: {
+                    show: false
+                }
+            },
+            {
+                type : "gauge",
+                center: ["50%", "45%"], // 默认全局居中
+                radius : "70%",
+                startAngle: 180,
+                endAngle: 0,
+                axisLine : {
+                    show : true,
+                    lineStyle : { // 属性lineStyle控制线条样式
+                        color : [ //表盘颜色
+                            [ 0.5, "#DA462C" ],//0-50%处的颜色
+                            [ 0.7, "#FF9618" ],//51%-70%处的颜色
+                            [ 0.9, "#FFED44" ],//70%-90%处的颜色
+                            [ 1,"#20AE51" ]//90%-100%处的颜色
+                        ],
+                        width : 30//表盘宽度
+                    }
+                },
+                splitLine : { //分割线样式（及10、20等长线样式）
+                    length : 30,
+                    lineStyle : { // 属性lineStyle控制线条样式
+                        width : 2
+                    }
+                },
+                axisTick : { //刻度线样式（及短线样式）
+                    length : 20
+                },
+                axisLabel : { //文字样式（及“10”、“20”等文字样式）
+                    color : "black",
+                    distance : 5 //文字离表盘的距离
+                },
+                detail: {
+                    formatter : "{score|{value}%}",
+                    offsetCenter: [0, "40%"],
+                    // backgroundColor: '#FFEC45',
+                    // height: 30,
+                    rich : {
+                        score : {
+                            color : "red",
+                            fontFamily : "微软雅黑",
+                            fontSize : 32
+                        }
+                    }
+                },
+                data: [{
+                    value: 56,
+                    label: {
+                        textStyle: {
+                            fontSize: 12
+                        }
+                    }
+                }]
+            }
+        ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
 </script>
 </body>
 </html>

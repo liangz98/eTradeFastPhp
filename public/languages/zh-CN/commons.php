@@ -36,6 +36,7 @@ return array(
     'nav_financeService'     => '金融服务',
     'nav_channel'            => '金融项目',
     'nav_freight'            => '货运单',
+    'nav_freightLoan'        => '金融项目',
     'nav_help'               => '帮助中心',
     'nav_about'              => '关于我们',
     'nav_exit'               => '退出',
