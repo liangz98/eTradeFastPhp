@@ -24,7 +24,7 @@
             <div class="panel-body">
 
                 <div class="page-header">
-                    <h3><?php echo $this->translate('订单列表'); ?></h3>
+                    <h3><?php echo $this->translate('订单列表'); ?><a href="/user/freight/freight-loan-apply" class="btn btn-success pull-right">生成金融方案</a></h3>
                 </div>
 
                 <form class="form-horizontal" action="javascript:void(0)" onsubmit="search()" id="search_form">
@@ -146,7 +146,7 @@
                     contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                     pageNumber: 1,
                     pageSize: 10,
-                    checkboxHeader: false,
+                    // checkboxHeader: false,
                     queryParams: function(params) {
                         return {
                             limit: params.limit,
@@ -163,9 +163,6 @@
                         };
                     },
                     columns: [{
-                        halign: 'center',
-                        checkbox: true
-                    }, {
                         field: 'recordDate',
                         title: '<?php echo $this->translate("订单编号/商品"); ?>',
                         valign: 'middle',

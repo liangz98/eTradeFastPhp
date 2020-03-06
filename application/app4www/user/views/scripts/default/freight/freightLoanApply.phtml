@@ -17,64 +17,8 @@
 	<div class="container">
         <ol class="breadcrumb">
             <li><a href="/"><?php echo $this->translate('nav_index'); ?></a></li>
-            <li class="active"><?php echo $this->translate('freightList'); ?></li>
+            <li class="active"><?php echo $this->translate('freightLoanApply'); ?></li>
         </ol>
-
-        <div class="panel panel-default">
-            <div class="panel-body">
-
-                <div class="page-header">
-                    <h3><?php echo $this->translate('订单列表'); ?></h3>
-                </div>
-
-                <form class="form-horizontal" action="javascript:void(0)" onsubmit="search()" id="search_form">
-                    <div class="form-group">
-                        <label for="keyword" class="col-sm-1 control-label"><?php echo $this->translate('订单编号'); ?></label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" name="keyword" id="keyword" placeholder="<?php echo $this->translate('订单编号'); ?>" >
-                        </div>
-
-                        <label for="keyword" class="col-sm-1 control-label"><?php echo $this->translate('商品名称'); ?></label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" name="proName" id="proName" placeholder="<?php echo $this->translate('商品名称'); ?>" >
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="paymentStatus" class="col-sm-1 control-label"><?php echo $this->translate('订单类型'); ?></label>
-                        <div class="col-sm-4">
-                            <select class="selectpicker form-control" name="paymentStatus" id="paymentStatus" data-live-search="true">
-                                <option value=""><?php echo $this->translate('et_select'); ?></option>
-                                <?php echo $this->ShowDictionaryList($this->dic_Setting['PAYMENT_STATUS'], $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'], $this->paymentStatus); ?>
-                            </select>
-                        </div>
-
-                        <label for="startDate" class="col-sm-1 control-label"><?php echo $this->translate('时间'); ?></label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control layDateUI" name="startDate" id="startDate">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="crnCode" class="col-sm-1 control-label"><?php echo $this->translate('配送方式'); ?></label>
-                        <div class="col-sm-4">
-                            <select class="selectpicker form-control" name="crnCode" id="crnCode" data-live-search="true">
-                                <option value=""><?php echo $this->translate('et_select'); ?></option>
-                                <?php echo $this->ShowDictionaryList($this->dic_Setting['CURRENCY'], $this->userLangCode, $this->dic_Setting['CURRENCY']); ?>
-                            </select>
-                        </div>
-
-                        <label for="proType" class="col-sm-1 control-label"><?php echo $this->translate('产品类型'); ?></label>
-                        <div class="col-sm-4">
-                            <select class="selectpicker form-control" name="proType" id="proType" data-live-search="true">
-                                <option value=""><?php echo $this->translate('et_select'); ?></option>
-                                <?php echo $this->ShowDictionaryList($this->dic_Setting['CURRENCY'], $this->userLangCode, $this->dic_Setting['CURRENCY']); ?>
-                            </select>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
 
         <div class="panel panel-default">
             <div class="panel-body">
@@ -82,10 +26,48 @@
                 <table id="resultListTable" class="table-striped"></table>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-md-12" style="margin-bottom: 50px"></div>
+        </div>
 	</div>
 </div>
 
-<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+<nav class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container">
+        <form class="form-horizontal" action="javascript:void(0)" onsubmit="search()" id="search_form">
+            <div class="form-group" style="margin-top: 10px;">
+                <label for="paymentStatus" class="col-sm-1 control-label"><?php echo $this->translate('订单类型'); ?></label>
+                <div class="col-sm-4">
+                    <select class="selectpicker form-control" name="paymentStatus" id="paymentStatus">
+                        <option value="db">德邦快递  可用额度  1,000,000 元</option>
+                        <option value="rr">日日顺  可用额度  1,000,000 元</option>
+                        <option value="sf">顺丰速运  可用额度  1,000,000 元</option>
+                        <option value="jd">京东快递  可用额度  1,000,000 元</option>
+                    </select>
+                </div>
+
+                <label class="sr-only" for="selectionsDate">selectionsDate</label>
+                <div class="col-sm-2">
+                    <select class="selectpicker form-control" id="selectionsDate">
+                        <?php for ($i = 0; $i <= 6; $i++): ?>
+                        <option><?php echo date('Y-m-d', strtotime("-$i day")); ?></option>
+                        <?php endfor; ?>
+                    </select>
+                </div>
+
+                <label for="startDate" class="col-sm-1 control-label"><?php echo $this->translate('合计'); ?></label>
+                <div class="col-sm-3">
+                    <p class="form-control-static"><span id="total_static">0</span> 元</p>
+                    <input type="hidden" name="total" id="total" value="0">
+                </div>
+
+                <button type="submit" class="btn btn-primary"><?php echo $this->translate('提交申请'); ?></button>
+            </div>
+        </form>
+    </div>
+</nav>
+
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
@@ -96,7 +78,8 @@
 
 <script type="text/javascript">
     var dataDict = {},
-        userLangCode = '<?php echo $this->userLangCode; ?>';
+        userLangCode = '<?php echo $this->userLangCode; ?>',
+        $resultListTable = $('#resultListTable');
 
 	$().ready(function() {
 
@@ -135,85 +118,50 @@
             success: function (data) {
                 $.data(dataDict, 'dataDict', data);
 
-                $('#resultListTable').bootstrapTable({
-                    url: '/user/settle/payment-trading-list-ajax',
-                    method: 'post',
-                    // showRefresh: true,
-                    // search: true,
-                    pagination: true,
+                $resultListTable.bootstrapTable({
                     classes: 'table table-no-bordered',
-                    sidePagination: 'server',
+                    checkboxHeader: true,
+                    method: 'POST',
+                    clickToSelect: true,
+                    // 对a和button标签忽略clickToSelect事件
+                    ignoreClickToSelectOn: function (element) {
+                        return $.inArray(element.tagName, ['A', 'BUTTON']);
+                    },
+                    url: '/user/freight/freight-loan-apply-list-ajax',
                     contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                    pageNumber: 1,
-                    pageSize: 10,
-                    checkboxHeader: false,
                     queryParams: function(params) {
                         return {
-                            limit: params.limit,
-                            skip: params.offset,
-                            keyword: $("#keyword").val(),
-                            startDate: $("#startDate").val(),
-                            endDate: $("#endDate").val(),
-                            crnCode: $("#crnCode").val(),
-                            lowerAmount: $("#lowerAmount").val(),
-                            upperAmount: $("#upperAmount").val(),
-                            tradingType: $("#tradingType").val(),
-                            transNo: $("#transNo").val(),
-                            paymentStatus: $("#paymentStatus").val()
+                            limit: 120,
+                            skip: 0,
+                            orderType: $("#paymentStatus").val()
                         };
+                    },
+                    onLoadSuccess: function() {
+                        $resultListTable.bootstrapTable('checkAll');
+                        refreshTotal($resultListTable);
+                    },
+                    onCheck: function() {
+                        refreshTotal($resultListTable);
+                    },
+                    onUncheck:function(){
+                        refreshTotal($resultListTable);
+                    },
+                    onCheckAll: function () {
+                        refreshTotal($resultListTable);
+                    },
+                    onUncheckAll: function () {
+                        refreshTotal($resultListTable);
+                    },
+                    onClickRow:function(row, $element, field) {
+                        // alert(JSON.stringify(row));
                     },
                     columns: [{
                         halign: 'center',
                         checkbox: true
                     }, {
-                        field: 'recordDate',
-                        title: '<?php echo $this->translate("订单编号/商品"); ?>',
-                        valign: 'middle',
-                        width: 170,
-                        formatter: function (value, row) {
-                            if (value === undefined || value === '' || value === null) {
-                                value = "-";
-                            }
-                            return new Date(value).format("yyyy-MM-dd hh:mm:ss");
-                        }
-                    }, {
-                        field: 'tradingType',
-                        title: '<?php echo $this->translate("type"); ?>',
-                        valign: 'middle',
-                        formatter: function (value, row) {
-                            if (value === undefined || value === '' || value === null) {
-                                return value = "-";
-                            } else {
-                                var result = '';
-                                var data = $.data(dataDict, 'dataDict');
-                                if (value !== 'D') {
-                                    $.each(data, function (key, item) {
-                                        if (key === 'PAYMENT_TRADING_TYPE') {
-                                            $.each(item, function (i, dict) {
-                                                if (dict.code === value) {
-                                                    result = dict.name;
-                                                }
-                                            });
-                                        }
-                                    });
-                                } else {
-                                    $.each(data, function (key, item) {
-                                        if (key === 'AR_AP_TYPE') {
-                                            $.each(item, function (i, dict) {
-                                                if (dict.code === row.rptype) {
-                                                    result = dict.name;
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                                return result;
-                            }
-                        }
-                    }, {
                         field: 'transNo',
-                        title: '<?php echo $this->translate("货物数量/体积/重量"); ?>',
-                        width: 350,
+                        title: '<?php echo $this->translate("运单编号"); ?>',
+                        width: 200,
                         formatter: function (value, row) {
                             if (value === undefined || value === '' || value === null) {
                                 value = "";
@@ -231,25 +179,15 @@
                                 remarks = "";
                             }
 
-                            return value + '<span style="color: #ccc;">' + subject + remarks + '</span>';
-                        }
-                    }, {
-                        field: 'oppCustomerName',
-                        title: '<?php echo $this->translate("承运人"); ?>',
-                        valign: 'middle',
-                        formatter: function (value, row) {
-                            if (value === undefined || value === '' || value === null) {
-                                value = "-";
-                            }
-
-                            return value;
+                            return '<a href="/user/freight/freight-loan-view" target="_blank">' + value + '</a>';
                         }
                     }, {
                         field: 'totalAmount',
-                        title: '<?php echo $this->translate("始发地/目的地"); ?>',
+                        title: '<?php echo $this->translate("运单金额"); ?>',
                         align: 'right',
                         halign: 'center',
                         valign: 'middle',
+                        width: 160,
                         formatter: function (value, row) {
                             if (value === undefined || value === '' || value === null) {
                                 value = "-";
@@ -259,13 +197,25 @@
                                 result = '<p class="text-danger">' + row.crnCode + ' ' + value + '</p>';
                             }
 
+                            return '<a href="/user/freight/freight-loan-view" target="_blank">' + result + '</a>';
+                        }
+                    }, {
+                        field: 'oppCustomerName',
+                        title: '<?php echo $this->translate("承运方"); ?>',
+                        valign: 'middle',
+                        width: 300,
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "-";
+                            }
 
-                            return result;
+                            return '<a href="/user/freight/freight-loan-view" target="_blank">' + value + '</a>';
                         }
                     }, {
                         field: 'paymentStatus',
-                        title: '<?php echo $this->translate("到货时间"); ?>',
+                        title: '<?php echo $this->translate("始发地/目的地"); ?>',
                         valign: 'middle',
+                        // width: 160,
                         formatter: function (value, row) {
                             if (value === undefined || value === '' || value === null) {
                                 value = "-";
@@ -291,99 +241,49 @@
                                     });
                                 }
                             });
-                            return result;
-                        }
-                    }, {
-                        field: 'paymentStatus',
-                        title: '<?php echo $this->translate("路线距离"); ?>',
-                        valign: 'middle',
-                        formatter: function (value, row) {
-                            if (value === undefined || value === '' || value === null) {
-                                value = "-";
-                            }
-                            var result = '';
-                            var data = $.data(dataDict, 'dataDict');
-                            $.each(data, function (key, item) {
-                                if (key === 'PAYMENT_STATUS') {
-                                    $.each(item, function (i, dict) {
-                                        if (dict.code === value + '') {
-                                            if (dict.code === '0') {
-                                                if (row.rptype === 'P') {
-                                                    result = '待付';
-                                                } else if (row.rptype === 'R') {
-                                                    result = '待收';
-                                                } else if (row.rptype === 'O') {
-                                                    result = '申请中';
-                                                }
-                                            } else {
-                                                result = dict.name;
-                                            }
-                                        }
-                                    });
-                                }
-                            });
-                            return result;
-                        }
-                    }, {
-                        field: 'paymentStatus',
-                        title: '<?php echo $this->translate("运费总价"); ?>',
-                        valign: 'middle',
-                        formatter: function (value, row) {
-                            if (value === undefined || value === '' || value === null) {
-                                value = "-";
-                            }
-                            var result = '';
-                            var data = $.data(dataDict, 'dataDict');
-                            $.each(data, function (key, item) {
-                                if (key === 'PAYMENT_STATUS') {
-                                    $.each(item, function (i, dict) {
-                                        if (dict.code === value + '') {
-                                            if (dict.code === '0') {
-                                                if (row.rptype === 'P') {
-                                                    result = '待付';
-                                                } else if (row.rptype === 'R') {
-                                                    result = '待收';
-                                                } else if (row.rptype === 'O') {
-                                                    result = '申请中';
-                                                }
-                                            } else {
-                                                result = dict.name;
-                                            }
-                                        }
-                                    });
-                                }
-                            });
-                            return result;
-                        }
-                    }, {
-                        title: '<?php echo $this->translate("operation"); ?>',
-                        valign: 'middle',
-                        formatter: function (value, row, index) {
-                            var base = new Base64();
-                            var resultEnCode = base.encode(row.tradingID);
-                            var result = '';
-                            if (row.allowPayment) {
-                                var href = "/user/freight/payment?"+resultEnCode;
-                                var str = "<?php echo $this->translate('settle_payment');?>";
-                                result += '<a href="' + href + '">' + str + '</a>|';
-                            }
-                            if (row.allowTransfer) {
-                                var href = "/user/settle/transfer?"+resultEnCode;
-                                var str = "<?php echo $this->translate('settle_transfer');?>";
-                                result += '<a href="' + href + '">' + str + '</a>|';
-                            }
-
-                            var infoHref = "/user/freight/freight-view?"+resultEnCode;
-                            var infoStr = "<?php echo $this->translate('settle_INF');?>";
-                            result += '<a href="' + infoHref + '">' + infoStr + '</a>';
-
-                            return result;
+                            return '<a href="/user/freight/freight-loan-view" target="_blank">' + result + '</a>';
                         }
                     }]
                 });
             }
         });
-	});
+
+        $('#paymentStatus').on('changed.bs.select', function () {
+            $resultListTable.bootstrapTable('refresh', {
+                query: {
+                    limit: 10,
+                    skip: 0,
+                    orderType: $("#paymentStatus").val()
+                }
+            });
+
+            refreshTotal($resultListTable);
+        });
+
+        $('#selectionsDate').on('changed.bs.select', function () {
+            $resultListTable.bootstrapTable('refresh', {
+                query: {
+                    limit: 20,
+                    skip: 0,
+                    orderType: $("#paymentStatus").val()
+                }
+            });
+
+            refreshTotal($resultListTable);
+        });
+    });
+
+	function refreshTotal($resultListTable) {
+        var $allSelectionsData = $resultListTable.bootstrapTable('getAllSelections'),
+            allSelectionsTotal = 0;
+
+        $.each($allSelectionsData, function(i, val) { //两个参数，第一个参数表示遍历的数组的下标，第二个参数表示下标对应的值
+            allSelectionsTotal += val.totalAmount;
+        });
+
+        $("#total_static").html(formatCurrency(allSelectionsTotal, 2));
+        $("#total").val(allSelectionsTotal);
+    }
 </script>
 </body>
 </html>

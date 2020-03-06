@@ -160,7 +160,100 @@ class FreightController extends Kyapi_Controller_Action {
         }
     }
 
-    // 金融项目列表页
+    // 方案申请页
+    public function freightLoanApplyAction() {
+        $this->view->resultMsg = $this->_request->getParam('resultMsg');
+
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/freight/freightLoanApply.phtml");
+            echo $content;
+            exit;
+        }
+    }
+
+    // 方案申请页列表
+    public function freightLoanApplyListAjaxAction() {
+        $msg = array();
+        $requestObject = $this->_requestObject;
+
+        $queryParams = array();
+        $crnCode = $this->_request->getParam('crnCode');
+        if (!empty($crnCode)) {
+            $queryParams['crnCode'] = $crnCode;
+        }
+
+        $querySorts = array();
+        $querySorts['createTime'] = "DESC";
+
+        $keyword = $this->_request->getParam('keyword');
+        if (empty($keyword)) {
+            $keyword = null;
+        }
+
+        $limit = $this->_request->getParam('limit');
+        if (empty($limit) || $limit <= 0) {
+            $limit = 50;
+        }
+
+        $skip = $this->_request->getParam('skip');
+        if (empty($limit) || $limit <= 0) {
+            $skip = 0;
+        }
+
+        if (is_array($queryParams)) {
+            $queryParams = $this->arrayToObject($queryParams);
+        }
+
+        if (is_array($querySorts)) {
+            $querySorts = $this->arrayToObject($querySorts);
+        }
+
+        $startDate = $this->_request->getParam('startDate');
+        if (empty($startDate)) {
+            $startDate = null;
+        } else {
+            $startDate = date("Y-m-d\TH:i:s", strtotime($startDate));
+        }
+        $endDate = $this->_request->getParam('endDate');
+        if (empty($endDate)) {
+            $endDate = null;
+        } else {
+            $endDate = date("Y-m-d\TH:i:s", strtotime($endDate));
+        }
+
+        $lowerAmount = $this->_request->getParam('lowerAmount');
+        if (empty($lowerAmount)) {
+            $lowerAmount = null;
+        }
+        $upperAmount = $this->_request->getParam('upperAmount');
+        if (empty($upperAmount)) {
+            $upperAmount = null;
+        }
+
+        $paymentStatus = strval($this->_request->getParam('paymentStatus'));
+        if (empty($paymentStatus)) {
+            $paymentStatus = null;
+        }
+
+        $tradingType = strval($this->_request->getParam('tradingType'));
+        if (empty($tradingType)) {
+            $tradingType = null;
+        }
+
+        $transNo = strval($this->_request->getParam('transNo'));
+        if (empty($transNo)) {
+            $transNo = null;
+        }
+
+        $resultObject = $this->json->listpaymentTradApi($requestObject, $queryParams, $querySorts, $keyword, $skip, $limit, $startDate, $endDate, $lowerAmount, $upperAmount, $paymentStatus, $tradingType, $transNo);
+        // $msg["total"] = json_decode($resultObject)->extData->totalSize;
+        // $msg["rows"] = json_decode($resultObject)->result;
+
+        echo json_encode(json_decode($resultObject)->result);
+        exit;
+    }
+
+    // 金融项目页
     public function freightLoanIndexAction() {
         $this->view->resultMsg = $this->_request->getParam('resultMsg');
 
@@ -171,8 +264,19 @@ class FreightController extends Kyapi_Controller_Action {
         }
     }
 
+    // 金融项目列表页
+    public function freightLoanItemIndexAction() {
+        $this->view->resultMsg = $this->_request->getParam('resultMsg');
+
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/freight/freightLoanItemIndex.phtml");
+            echo $content;
+            exit;
+        }
+    }
+
     // 金融项目列表页Ajax
-    public function freightLoanListAjaxAction() {
+    public function freightLoanItemListAjaxAction() {
         $msg = array();
         $requestObject = $this->_requestObject;
 

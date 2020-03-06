@@ -7,5 +7,13 @@ return array(
     'freight_order' => 'Freight Order',
     'freight_list'  => 'Freight List',
 
-    'freightLoanList' => 'Freight Loan List',
+    'freightLoan'      => 'Freight Loan',
+    'freightLoanList'  => 'Freight Loan List',
+    'freightLoanApply' => 'Freight Loan Apply',
+
+    'freightFinanceStat'          => '方案状态',
+    'freightFinanceStat_All'      => '全部',
+    'freightFinanceStat_Valid'    => '有效',
+    'freightFinanceStat_Invalid'  => '无效',
+    'freightFinanceStat_ForCheck' => '待处理',
 );
