@@ -179,7 +179,7 @@
                                 remarks = "";
                             }
 
-                            return '<a href="/user/freight/freight-loan-view" target="_blank">' + value + '</a>';
+                            return value;
                         }
                     }, {
                         field: 'totalAmount',
@@ -192,12 +192,12 @@
                             if (value === undefined || value === '' || value === null) {
                                 value = "-";
                             }
-                            var result = '<p>' + row.crnCode + ' ' + value + '</p>';
+                            var result = '<p>' + row.crnCode + ' ' + formatCurrency(value, 2) + '</p>';
                             if (row.rptype === 'P') {
-                                result = '<p class="text-danger">' + row.crnCode + ' ' + value + '</p>';
+                                result = '<p class="text-danger">' + row.crnCode + ' ' + formatCurrency(value, 2) + '</p>';
                             }
 
-                            return '<a href="/user/freight/freight-loan-view" target="_blank">' + result + '</a>';
+                            return result;
                         }
                     }, {
                         field: 'oppCustomerName',
@@ -209,7 +209,7 @@
                                 value = "-";
                             }
 
-                            return '<a href="/user/freight/freight-loan-view" target="_blank">' + value + '</a>';
+                            return value;
                         }
                     }, {
                         field: 'paymentStatus',
@@ -241,7 +241,7 @@
                                     });
                                 }
                             });
-                            return '<a href="/user/freight/freight-loan-view" target="_blank">' + result + '</a>';
+                            return result;
                         }
                     }]
                 });

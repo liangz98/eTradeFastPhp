@@ -2728,4 +2728,156 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl {
         $resultObject = $this->vpost($_url, $_params);
         return $resultObject;
     }
+
+    /**
+     * 运单 - 金融项目
+     * @param $requestObject
+     * @param $financingStatus
+     * @return bool|string
+     */
+    public function listFinancing($requestObject, $financingStatus) {
+        $_url = $this->url . '/financingapi/financingApi!listFinancing.action';
+        $_params = json_encode(array(
+            "requestObject"   => $requestObject,
+            "financingStatus" => $financingStatus
+        ));
+        return $this->vpost($_url, $_params);
+    }
+
+    /**
+     * 运单 - 金融项目列表 - view
+     * @param $requestObject
+     * @param $financingID
+     * @return bool|string
+     */
+    public function getFinancingView($requestObject, $financingID) {
+        $_url = $this->url . '/financingapi/financingApi!getFinancingView.action';
+        $_params = json_encode(array(
+            "requestObject" => $requestObject,
+            "financingID"   => $financingID
+        ));
+        return $this->vpost($_url, $_params);
+    }
+
+    /**
+     * 运单 - 金融项目列表 - view - 项目列表
+     * @param $requestObject
+     * @param $financingID
+     * @param $itemStatus
+     * @return bool|string
+     */
+    public function listFinancingItem($requestObject, $financingID, $itemStatus) {
+        $_url = $this->url . '/financingapi/financingApi!listFinancingItem.action';
+        $_params = json_encode(array(
+            "requestObject" => $requestObject,
+            "financingID"   => $financingID,
+            "itemStatus"    => $itemStatus
+        ));
+        return $this->vpost($_url, $_params);
+    }
+
+    /**
+     * 运单 - 金融项目列表 - 项目详情
+     * @param $requestObject
+     * @param $itemID
+     * @return bool|string
+     */
+    public function getFinancingItemView($requestObject, $itemID) {
+        $_url = $this->url . '/financingapi/financingApi!getFinancingItemView.action';
+        $_params = json_encode(array(
+            "requestObject" => $requestObject,
+            "itemID"        => $itemID
+        ));
+        return $this->vpost($_url, $_params);
+    }
+
+    /**
+     * 运单 - 金融项目列表 - 核销记录列表
+     * @param $requestObject
+     * @param $itemID
+     * @return bool|string
+     */
+    public function listFinancingWriteoff($requestObject, $itemID) {
+        $_url = $this->url . '/financingapi/financingApi!listFinancingWriteoff.action';
+        $_params = json_encode(array(
+            "requestObject" => $requestObject,
+            "itemID"        => $itemID
+        ));
+        return $this->vpost($_url, $_params);
+    }
+
+    /**
+     * 运单 - 金融项目列表 - 项目详情 - 放款情况 - 放款详情
+     * @param $requestObject
+     * @param $loanID
+     * @return bool|string
+     */
+    public function getFinancingLoanView($requestObject, $loanID) {
+        $_url = $this->url . '/financingapi/financingApi!getFinancingLoanView.action';
+        $_params = json_encode(array(
+            "requestObject" => $requestObject,
+            "loanID"        => $loanID
+        ));
+        return $this->vpost($_url, $_params);
+    }
+
+    /**
+     * 运单 - 金融项目列表 - 项目详情 - 放款情况 - 还款详情
+     * @param $requestObject
+     * @param $repaymentID
+     * @return bool|string
+     */
+    public function getFinancingRepaymentView($requestObject, $repaymentID) {
+        $_url = $this->url . '/financingapi/financingApi!getFinancingRepaymentView.action';
+        $_params = json_encode(array(
+            "requestObject" => $requestObject,
+            "repaymentID"   => $repaymentID
+        ));
+        return $this->vpost($_url, $_params);
+    }
+
+    /**
+     * 运单 - 金融项目列表 - 项目详情 - 放款情况 - 利息
+     * @param $requestObject
+     * @param $loanID
+     * @return bool|string
+     */
+    public function listFinancingInterest($requestObject, $loanID) {
+        $_url = $this->url . '/financingapi/financingApi!listFinancingInterest.action';
+        $_params = json_encode(array(
+            "requestObject" => $requestObject,
+            "loanID"        => $loanID
+        ));
+        return $this->vpost($_url, $_params);
+    }
+
+    /**
+     * 运单 - 方案申请
+     * @param $requestObject
+     * @param $financingItem
+     * @param $financingObjectList
+     * @return bool|string
+     */
+    public function addFinancingItem($requestObject, $financingItem, $financingObjectList) {
+        $_url = $this->url . '/financingapi/financingApi!addFinancingItem.action';
+        $_params = json_encode(array(
+            "requestObject"       => $requestObject,
+            "financingItem"       => $financingItem,
+            "financingObjectList" => $financingObjectList
+        ));
+        return $this->vpost($_url, $_params);
+    }
+
+    /**
+     * 运单 - 金融列表申请右上角图表
+     * @param $requestObject
+     * @return bool|string
+     */
+    public function listLoanStatisticData($requestObject) {
+        $_url = $this->url . '/financingapi/financingApi!listLoanStatisticData.action';
+        $_params = json_encode(array(
+            "requestObject" => $requestObject
+        ));
+        return $this->vpost($_url, $_params);
+    }
 }

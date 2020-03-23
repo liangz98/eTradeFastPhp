@@ -121,6 +121,10 @@ input[type=number]{
     font-size: 18px;
 }
 
+.span-font-size-68 {
+    font-size: 68px;
+}
+
 .margin-top-15 {
     margin-top: 15px;
 }

@@ -17,14 +17,10 @@
 	<div class="container">
         <ol class="breadcrumb">
             <li><a href="/"><?php echo $this->translate('nav_index'); ?></a></li>
-            <li><a href="/user/settle"><?php echo $this->translate('settle_IN'); ?></a></li>
-            <li><a href="/user/settle/list"><?php echo $this->translate('settle_List'); ?></a></li>
-            <li class="active"><?php echo $this->translate('settle_payment'); ?></li>
+            <li><a href="/user/freight/freight-loan-index"><?php echo $this->translate('freightLoanFinanceItem'); ?></a></li>
+            <li><a href="/user/freight/freight-loan-item-index"><?php echo $this->translate('freightLoanApplyList'); ?>：德邦快递</a></li>
+            <li class="active"><?php echo $this->translate('freightPayment'); ?></li>
         </ol>
-
-        <div class="page-header">
-            <h3><?php echo $this->translate('settle_payment'); ?></h3>
-        </div>
 
         <?php if (!empty($this->resultMsg)): ?>
         <div class="alert alert-danger alert-dismissible fade in" role="alert">
@@ -33,135 +29,156 @@
         </div>
         <?php endif; ?>
 
-        <form class="form-horizontal" action="#" method="post">
-            <input type="hidden" name="tradingID" value="<?php echo $this->payment['tradingID']; ?>">
+        <div class="alert alert-danger alert-dismissible fade in" role="alert">
+            <p>还款会根据债项发生时序正序，优先核销最早一笔债项的服务费和利息，再核销本金。</p>
+        </div>
 
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label"><?php echo $this->translate('settle_Name'); ?></label>
-                        <div class="col-sm-4">
-                            <p class="form-control-static"><?php echo $this->paymentTrading['subject']; ?></p>
-                        </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('本金'); ?></p>
                     </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label"><?php echo $this->translate('settle_amount'); ?></label>
-                        <div class="col-sm-4">
-                            <p class="form-control-static"><?php echo $this->paymentTrading['crnCode'] . ' ' . number_format($this->paymentTrading['totalAmount'], 2); ?></p>
-                        </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">3,487,688.19  元</p>
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label"><?php echo $this->translate('settle_Unsettle'); ?></label>
-                        <div class="col-sm-4">
-                            <p class="form-control-static"><?php echo $this->paymentTrading['crnCode'] . ' ' . number_format($this->paymentTrading['balanceAmount'], 2); ?></p>
-                        </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('总利息'); ?></p>
                     </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label"><?php echo $this->translate('settle_GTime'); ?></label>
-                        <div class="col-sm-4">
-                            <p class="form-control-static"><?php echo date('Y-m-d', strtotime($this->paymentTrading['recordDate'])); ?></p>
-                        </div>
+                    <div class="col-md-2">
+                        <p class="form-control-static text-666">1,238.51 元</p>
                     </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label"><?php echo $this->translate('settle_Time_ING'); ?></label>
-                        <div class="col-sm-4">
-                            <p class="form-control-static"><?php echo date('Y-m-d', strtotime($this->paymentTrading['expectedDate'])); ?></p>
-                        </div>
+                    <div class="col-md-6">
+                        <div class="well well-sm text-999" style="margin-bottom: 0 !important;"><?php echo $this->translate('总利息=利息+宽限期利息+逾期利息'); ?></div>
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label"><?php echo $this->translate('settle_DEC'); ?></label>
-                        <div class="col-sm-9">
-                            <p class="form-control-static"><?php echo $this->paymentTrading['remarks']; ?></p>
-                        </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('服务费'); ?></p>
                     </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">100.81元</p>
+                    </div>
+                </div>
 
-                    <div class="form-group hide">
-                        <label class="col-sm-2 control-label"><?php echo $this->translate('settle_mark'); ?></label>
-                        <div class="col-sm-9">
-                            <p class="form-control-static">
-                                <?php if (is_array($this->paymentDetailList) && count($this->paymentDetailList) > 0): ?>
-                                    <?php foreach ($this->paymentDetailList as $k => $paymentDetailList): ?>
-                                        <span><?php echo $paymentDetailList['oppCustomerName'] . '&nbsp;-&nbsp;' . $paymentDetailList['accruedItemName'] . '&nbsp;-&nbsp;'  . '<em style="color: #EE9001;">'.$paymentDetailList['crnCode'] . '&nbsp;-&nbsp;'  . $this->ShowToPrice($paymentDetailList['balanceAmount']).'</em>'; ?></span>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
-                            </p>
-                        </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('应付总额'); ?></p>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">3,488,926.7 元</p>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="form-group">
-                <label for="balPaymentAmount" class="col-sm-2 control-label"><?php echo $this->translate('settle_eAmount'); ?></label>
-                <div class="col-sm-3">
-                    <div class="input-group">
-                        <div class="input-group-addon"><?php echo $this->payment['crnCode']; ?></div>
-                        <input type="number" class="form-control" name="balPaymentAmount" id="balPaymentAmount" min="0" value="0" step="0.01">
+        <div class="panel panel-warning">
+            <!-- Default panel contents -->
+            <div class="panel-heading">转账信息</div>
+
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('开户名称'); ?></p>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">骏海威商业保理（深圳）有限公司</p>
                     </div>
                 </div>
-                <div class="col-sm-offset-2 col-sm-10">
-                    <p class="form-control-static text-999">
-                        <?php echo $this->translate('settle_free') . ' ' . $this->payment['crnCode'] . ' ' . $this->payment['validFreeBalAmount'] . ' = '.$this->translate('settle_CNY_free'). ' ' . $this->paymentAccountCNYBal['crnCode']. ' ' . number_format($this->paymentAccountCNYBal['balAmount'], 2) . ' + ' . $this->translate('settle_USD_free'). ' ' . $this->paymentAccountUSDBal['crnCode']. ' ' . number_format($this->paymentAccountUSDBal['balAmount'], 2) . ' * '; ?>
-                        <?php echo $this->ShowExchange($this->reqOb, 'USD', 'CNY', 'PR', null, $this->seed_Setting['KyUrl']); ?>
-                    </p>
-                </div>
-            </div>
 
-            <div class="form-group bankGroup">
-                <label class="col-sm-2 control-label bankLabel" style="cursor: pointer;"><i class="fas fa-plus-circle"></i> <?php echo $this->translate('settle_add_BankAmount'); ?></label>
-            </div>
-
-            <div class="form-group hide paymentGroup">
-                <label for="paymentAmount" class="col-sm-2 control-label paymentLabel" style="cursor: pointer;"><i class="fas fa-minus-circle"></i> <?php echo $this->translate('settle_BankAmount'); ?></label>
-                <div class="col-sm-3">
-                    <div class="input-group">
-                        <div class="input-group-addon"><?php echo $this->payment['crnCode']; ?></div>
-                        <input type="number" class="form-control" name="paymentAmount" id="paymentAmount" min="0" step="0.01">
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('开户银行'); ?></p>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">宁波银行深圳罗湖支行</p>
                     </div>
                 </div>
-                <div class="col-sm-offset-2 col-sm-10">
-                    <p class="form-control-static text-999">
-                        <?php echo $this->translate('settle_tips00'); ?>
-                    </p>
-                </div>
-            </div>
 
-            <div class="form-group">
-                <label for="totalAmount" class="col-sm-2 control-label"><?php echo $this->translate('settle_total'); ?></label>
-                <div class="col-sm-3">
-                    <div class="input-group">
-                        <div class="input-group-addon"><?php echo $this->payment['crnCode']; ?></div>
-                        <input type="number" class="form-control" name="totalAmount" id="totalAmount" readonly>
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('银行账号'); ?></p>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">73100122000088618</p>
                     </div>
                 </div>
-                <div class="col-sm-offset-2 col-sm-10">
-                    <p class="form-control-static text-999">
-                        <?php echo $this->translate('settle_tips05'); ?>
-                    </p>
-                </div>
-            </div>
 
-            <div class="form-group">
-                <label for="" class="col-sm-2 control-label"><?php echo $this->translate('attachUpload'); ?></label>
-                <div class="col-sm-10">
-                    <?php echo $this->ShowWebuploader('', 'PR', 'PRSP', '0'); ?>
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('银行地址'); ?></p>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">深圳市罗湖区深南东路2103号</p>
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="paymentPwd" class="col-sm-2 control-label"><?php echo $this->translate('settle_pay_pwd'); ?></label>
-                <div class="col-sm-3">
-                    <input type="password" class="form-control" name="paymentPwd" id="paymentPwd" required>
-                </div>
-                <div class="col-sm-3">
-                    <button type="submit" class="btn btn-warning"><?php echo $this->translate('confirmed'); ?></button>&nbsp;&nbsp;<a href="javascript:void(0)"><?php echo $this->translate('forgetPSD');?></a>
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('备注'); ?></p>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">请在转账备注以下代码：DKJ97H996LHG</p>
+                    </div>
                 </div>
             </div>
-        </form>
+        </div>
+
+        <div class="panel panel-warning">
+            <!-- Default panel contents -->
+            <div class="panel-heading">FL042019112900001<span class="pull-right">共400运单 <i class="layui-icon layui-icon-about"></i></span></div>
+
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <p class="form-control-static text-999"><?php echo $this->translate('债务方'); ?></p>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">XXXXXXX有限公司</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <p class="form-control-static text-999"><?php echo $this->translate('应收账款金额'); ?></p>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">3,487,688.19  元</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <p class="form-control-static text-999"><?php echo $this->translate('可融资金额'); ?></p>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">3,487,688.19  元</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <p class="form-control-static text-999"><?php echo $this->translate('计划放款日'); ?></p>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">2020年2月6日</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <p class="form-control-static text-999"><?php echo $this->translate('届满日'); ?></p>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">2020年2月6日</p>
+                    </div>
+                </div>
+            </div>
+        </div>
 	</div>
 </div>
 
@@ -179,51 +196,9 @@
 
 	});
 
-    var $directPaymentAmount = $("#directPaymentAmount"),
-        $balPaymentAmount = $("#balPaymentAmount"),
-        $paymentAmount = $("#paymentAmount"),
-        $totalAmount = $("#totalAmount"),
-        directPaymentAmount = 0,
-        balPaymentAmount = 0,
-        paymentAmount = 0;
-
 	$(function () {
-        $paymentAmount.val(0);
-        doAddPaymentAmount();
 
-	    $("#directPaymentAmount, #balPaymentAmount, #paymentAmount").keyup(function () {
-            doAddPaymentAmount();
-        });
-
-	    $(".bankLabel").click(function () {
-            $(".paymentGroup").removeClass("hide");
-            $(".bankGroup").addClass("hide");
-
-            doAddPaymentAmount();
-        });
-
-        $(".paymentLabel").click(function () {
-            $(".paymentGroup").addClass("hide");
-            $(".bankGroup").removeClass("hide");
-
-            $paymentAmount.val(0);
-            doAddPaymentAmount();
-        });
 	});
-
-	function doAddPaymentAmount() {
-        if ($directPaymentAmount.val() !== "" && $.isNumeric($directPaymentAmount.val())) {
-            directPaymentAmount = $directPaymentAmount.val();
-        }
-        if ($balPaymentAmount.val() !== "" && $.isNumeric($balPaymentAmount.val())) {
-            balPaymentAmount = $balPaymentAmount.val();
-        }
-        if ($paymentAmount.val() !== "" && $.isNumeric($paymentAmount.val())) {
-            paymentAmount = $paymentAmount.val();
-        }
-
-        $totalAmount.val(arithAdd(arithAdd(directPaymentAmount, balPaymentAmount), paymentAmount));
-    }
 </script>
 </body>
 </html>
