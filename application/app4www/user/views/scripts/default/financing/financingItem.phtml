@@ -14,10 +14,11 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
 
 <div class="container-fluid index-body">
-	<div class="container">
+	<div class="container" style="min-height: 620px;">
         <ol class="breadcrumb">
             <li><a href="/"><?php echo $this->translate('nav_index'); ?></a></li>
-            <li class="active"><?php echo $this->translate('freightLoanList'); ?></li>
+            <li><a href="/user/financing"><?php echo $this->translate('financing'); ?></a></li>
+            <li class="active"><?php echo $this->translate('financingItem'). '：'.$this->financingItem['debtorCustomerName']; ?></li>
         </ol>
 
         <div class="row">
@@ -39,7 +40,7 @@
                                     <p class="form-control-static text-999"><?php echo $this->translate('可融资额度'); ?></p>
                                 </div>
                                 <div class="col-md-6">
-                                    <p class="form-control-static text-666" style="font-weight: bold;">46,500,000.00 元</p>
+                                    <p class="form-control-static text-666" style="font-weight: bold;"><?php echo number_format($this->financingItem['debtorPayAcct']['creditBal'], 2); ?> 元</p>
                                 </div>
                             </div>
 
@@ -48,7 +49,7 @@
                                     <p class="form-control-static text-999"><?php echo $this->translate('总额度'); ?></p>
                                 </div>
                                 <div class="col-md-6">
-                                    <p class="form-control-static text-666" style="font-weight: bold;">150,000,000.00 元</p>
+                                    <p class="form-control-static text-666" style="font-weight: bold;"><?php echo number_format($this->financingItem['debtorPayAcct']['creditLimit'], 2); ?> 元</p>
                                 </div>
                             </div>
                         </div>
@@ -75,11 +76,13 @@
                                 <p class="form-control-static"><?php echo $this->translate('项目进度'); ?></p>
                             </div>
                             <div class="col-sm-9">
-                                <button type="button" class="btn btn-warning" data-type="factoringMode" data-value="all"><?php echo $this->translate('factoring_all'); ?></button>&nbsp;&nbsp;
-                                <button type="button" class="btn btn-default" data-type="factoringMode" data-value="RF"><?php echo $this->translate('factoring_mode_rf'); ?></button>&nbsp;&nbsp;
-                                <button type="button" class="btn btn-default" data-type="factoringMode" data-value="PF"><?php echo $this->translate('factoring_mode_pf'); ?></button>
-                                <button type="button" class="btn btn-default" data-type="factoringMode" data-value="EF"><?php echo $this->translate('factoring_mode_ef'); ?></button>
-                                <input type="hidden" name="factoringMode" id="factoringMode" value="all">
+                                <button type="button" class="btn btn-warning" data-type="itemStatus" data-value="all"><?php echo $this->translate('financingAll'); ?></button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="itemStatus" data-value="12"><?php echo $this->translate('financingRepayment'); ?></button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default" data-type="itemStatus" data-value="11"><?php echo $this->translate('financingPendingLoan'); ?></button>
+                                <button type="button" class="btn btn-default" data-type="itemStatus" data-value="05"><?php echo $this->translate('financingDone'); ?></button>
+                                <button type="button" class="btn btn-default" data-type="itemStatus" data-value="01"><?php echo $this->translate('financingPending'); ?></button>
+                                <input type="hidden" name="itemStatus" id="itemStatus" value="all">
+                                <input type="hidden" name="financingID" id="financingID" value="<?php echo $this->financingItem['financingID']; ?>">
                                 <input type="hidden" name="limit" id="limit" value="<?php echo $this->limit; ?>">
                                 <input type="hidden" name="offset" id="offset" value="<?php echo $this->offset; ?>">
                             </div>
@@ -137,7 +140,7 @@
         });
 
         let dataDictQuery = '/user/common/dict-ajax';
-        let dictCode = ["FACTORING_STATUS"];
+        let dictCode = ["LOAN_STATUS"];
         $.ajax({
             type: "POST",
             url: dataDictQuery,
@@ -149,8 +152,9 @@
             success: function (data) {
                 $.data(dataDict, 'dataDict', data);
 
-                $('#resultListTable').bootstrapTable({
-                    url: '/user/settle/payment-trading-list-ajax',
+                let $resultListTable = $('#resultListTable');
+                $resultListTable.bootstrapTable({
+                    url: '/user/financing/financing-item-list-ajax',
                     method: 'post',
                     // showRefresh: true,
                     // search: true,
@@ -170,15 +174,8 @@
                         return {
                             limit: params.limit,
                             skip: params.offset,
-                            keyword: $("#keyword").val(),
-                            startDate: $("#startDate").val(),
-                            endDate: $("#endDate").val(),
-                            crnCode: $("#crnCode").val(),
-                            lowerAmount: $("#lowerAmount").val(),
-                            upperAmount: $("#upperAmount").val(),
-                            tradingType: $("#tradingType").val(),
-                            transNo: $("#transNo").val(),
-                            paymentStatus: $("#paymentStatus").val()
+                            financingID: $("#financingID").val(),
+                            itemStatus: $("#itemStatus").val()
                         };
                     },
                     onClickRow:function(row, $element, field) {
@@ -188,123 +185,115 @@
                         halign: 'center',
                         checkbox: true
                     }, {
-                        field: 'transNo',
+                        field: 'itemNo',
                         title: '<?php echo $this->translate("项目编号"); ?>',
-                        width: 150,
+                        width: 220,
                         formatter: function (value, row) {
                             if (value === undefined || value === '' || value === null) {
                                 value = "";
                             }
-                            value += '<br>';
 
-                            let subject = row.subject;
-                            if (subject === undefined || subject === '' || subject === null) {
-                                subject = "";
-                            }
-                            subject += '<br>';
+                            let base = new Base64();
+                            let resultEnCode = base.encode(row.itemID);
+                            let href = "/user/financing/financing-item-view?"+resultEnCode;
 
-                            let remarks = row.remarks;
-                            if (remarks === undefined || remarks === '' || remarks === null) {
-                                remarks = "";
-                            }
-
-                            return '<a href="/user/freight/freight-loan-view" target="_blank">' + value + '</a>';
+                            return '<a href="' + href + '" target="_blank">' + value + '</a>';
                         }
                     }, {
-                        field: 'totalAmount',
+                        field: 'receivableAmount',
                         title: '<?php echo $this->translate("应收账款金额"); ?>',
                         align: 'right',
                         halign: 'center',
                         valign: 'middle',
-                        width: 140,
+                        width: 180,
                         formatter: function (value, row) {
                             if (value === undefined || value === '' || value === null) {
                                 value = "-";
                             }
                             let result = row.crnCode + ' ' + formatCurrency(value, 2);
 
-                            return '<a href="/user/freight/freight-loan-view" target="_blank">' + result + '</a>';
-                        }
-                    }, {
-                        field: 'oppCustomerName',
-                        title: '<?php echo $this->translate("债务方"); ?>',
-                        valign: 'middle',
-                        width: 300,
-                        formatter: function (value, row) {
-                            if (value === undefined || value === '' || value === null) {
-                                value = "-";
-                            }
+                            let base = new Base64();
+                            let resultEnCode = base.encode(row.itemID);
+                            let href = "/user/financing/financing-item-view?"+resultEnCode;
 
-                            return '<a href="/user/freight/freight-loan-view" target="_blank">' + value + '</a>';
+                            return '<a href="' + href + '" target="_blank">' + result + '</a>';
                         }
                     }, {
-                        field: 'totalAmount',
+                        field: 'financingAmount',
                         title: '<?php echo $this->translate("目标融资金额"); ?>',
                         align: 'right',
                         halign: 'center',
                         valign: 'middle',
-                        width: 140,
+                        width: 180,
                         formatter: function (value, row) {
                             if (value === undefined || value === '' || value === null) {
                                 value = "-";
                             }
-                            let result = '<p>' + row.crnCode + ' ' + formatCurrency(value, 2) + '</p>';
-                            if (row.rptype === 'P') {
-                                result = '<p class="text-danger">' + row.crnCode + ' ' + formatCurrency(value, 2) + '</p>';
-                            }
+                            let result = row.crnCode + ' ' + formatCurrency(value, 2);
 
-                            return '<a href="/user/freight/freight-loan-view" target="_blank">' + result + '</a>';
+                            let base = new Base64();
+                            let resultEnCode = base.encode(row.itemID);
+                            let href = "/user/financing/financing-item-view?"+resultEnCode;
+
+                            return '<a href="' + href + '" target="_blank">' + result + '</a>';
                         }
                     }, {
-                        field: 'recordDate',
+                        field: 'actualExpiryDate',
                         title: '<?php echo $this->translate("届满日"); ?>',
+                        valign: 'middle',
+                        width: 180,
+                        formatter: function (value, row) {
+                            let base = new Base64();
+                            let resultEnCode = base.encode(row.itemID);
+                            let href = "/user/financing/financing-item-view?"+resultEnCode;
+
+                            if (value === undefined || value === '' || value === null) {
+                                if (row.expiryDate === undefined || row.expiryDate === '' || row.expiryDate === null) {
+                                    return "";
+                                } else {
+                                    return '<a href="' + href + '" target="_blank">' + new Date(row.expiryDate).format("yyyy-MM-dd") + '</a>';
+                                }
+                            } else {
+                                return '<a href="' + href + '" target="_blank">' + new Date(value).format("yyyy-MM-dd") + '</a>';
+                            }
+                        }
+                    }, {
+                        field: 'itemStatus',
+                        title: '<?php echo $this->translate("项目状态"); ?>',
                         valign: 'middle',
                         width: 120,
                         formatter: function (value, row) {
-                            if (value === undefined || value === '' || value === null) {
-                                value = "-";
-                            }
-                            return new Date(value).format("yyyy-MM-dd");
-                        }
-                    }, {
-                        field: 'paymentStatus',
-                        title: '<?php echo $this->translate("项目状态"); ?>',
-                        valign: 'middle',
-                        formatter: function (value, row) {
-                            if (value === undefined || value === '' || value === null) {
-                                value = "-";
+                            let loanStatus = row.financingLoan.loanStatus;
+                            if (loanStatus === undefined || loanStatus === '' || loanStatus === null) {
+                                loanStatus = "-";
                             }
                             let result = '';
                             let data = $.data(dataDict, 'dataDict');
+
                             $.each(data, function (key, item) {
-                                if (key === 'PAYMENT_STATUS') {
+                                if (key === 'LOAN_STATUS') {
                                     $.each(item, function (i, dict) {
-                                        if (dict.code === value + '') {
-                                            if (dict.code === '0') {
-                                                if (row.rptype === 'P') {
-                                                    result = '待付';
-                                                } else if (row.rptype === 'R') {
-                                                    result = '待收';
-                                                } else if (row.rptype === 'O') {
-                                                    result = '申请中';
-                                                }
-                                            } else {
-                                                result = dict.name;
-                                            }
+                                        if (dict.code === loanStatus) {
+                                            result = dict.name;
                                         }
                                     });
                                 }
                             });
-                            return result;
+
+                            let base = new Base64();
+                            let resultEnCode = base.encode(row.itemID);
+                            let href = "/user/financing/financing-item-view?"+resultEnCode;
+
+                            return '<a href="' + href + '" target="_blank">' + result + '</a>';
                         }
                     }, {
                         title: '<?php echo $this->translate("operation"); ?>',
                         valign: 'middle',
                         formatter: function (value, row, index) {
                             let base = new Base64();
-                            let resultEnCode = base.encode(row.tradingID);
+                            let resultEnCode = base.encode(row.itemID);
                             let result = '';
-                            if (row.allowPayment) {
+                            if (row.financingLoan.loanStatus && row.financingLoan.loanStatus === '02') {
                                 let href = "/user/freight/freight-loan-payment?"+resultEnCode;
                                 let str = "<?php echo $this->translate('settle_payment');?>";
                                 result += '<a href="' + href + '" style="color: #337ab7">' + str + '</a>';
@@ -314,16 +303,40 @@
                         }
                     }]
                 });
+
+
+                let $titleOptions = $(".title-options");
+                $titleOptions.find("button").click(function () {
+                    let dataType = $(this).attr("data-type");
+                    $("button[data-type='" + dataType + "']").removeClass("btn-warning").addClass("btn-default");
+                    $(this).addClass("btn-warning");
+
+                    $("#" + dataType).val($(this).attr("data-value"));
+
+                    // 刷新 bootstrapTable
+                    let refreshOptions = {
+                        query:{
+                            itemStatus: $("#itemStatus").val()
+                        }
+                    };
+                    $resultListTable.bootstrapTable('refresh', refreshOptions);
+                });
+
+
             }
         });
 	});
+
+    function refreshResultList() {
+
+    }
 
     // 基于准备好的dom，初始化echarts实例
     let pie_Chart = echarts.init(document.getElementById('pie_'));
     let line_Chart = echarts.init(document.getElementById('line_'));
 
     let pie_data = {
-        value: 45,
+        value: <?php echo intval($this->financingItem['debtorPayAcct']['creditBal'] / $this->financingItem['debtorPayAcct']['creditLimit'] * 100); ?>,
         name: '完成率'
     };
 
@@ -342,7 +355,7 @@
             }
         }, {
             id: 'ti2',
-            text: '占用额度',
+            text: '可用额度',
             x: '29%',
             y: '30%',
             textAlign: 'center',

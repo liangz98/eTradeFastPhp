@@ -20,8 +20,8 @@
 	<div class="container">
         <ol class="breadcrumb">
             <li><a href="/"><?php echo $this->translate('nav_index'); ?></a></li>
-            <li><a href="/user/freight/freight-loan-index"><?php echo $this->translate('freightLoanFinanceItem'); ?></a></li>
-            <li><a href="/user/freight/freight-loan-item-index"><?php echo $this->translate('freightLoanApplyList'); ?>：德邦快递</a></li>
+            <li><a href="/user/financing"><?php echo $this->translate('financing'); ?></a></li>
+            <li><a href="/user/financing/financing-item?<?php echo base64_encode($this->financingItem['financing']['financingID'])?>"><?php echo $this->translate('financingItem'); ?>：<?php echo $this->financingItem['financing']['debtorCustomerName']; ?></a></li>
             <li class="active"><?php echo $this->translate('freightLoanItemView'); ?></li>
         </ol>
 
@@ -29,7 +29,7 @@
             <div class="col-md-5">
                 <div class="panel panel-primary">
                     <!-- Default panel contents -->
-                    <div class="panel-heading">FL042019112900001<span class="pull-right">共400运单 <i class="layui-icon layui-icon-about" style="cursor: pointer;" data-toggle="modal" data-target="#freightModal" data-loan-id=""></i></span></div>
+                    <div class="panel-heading"><?php echo $this->financingItem['itemNo']; ?><span class="pull-right">共400运单 <i class="layui-icon layui-icon-about" style="cursor: pointer;" data-toggle="modal" data-target="#freightModal" data-loan-id=""></i></span></div>
 
                     <div class="panel-body">
                         <div class="row">
@@ -37,7 +37,7 @@
                                 <p class="form-control-static text-999"><?php echo $this->translate('债务方'); ?></p>
                             </div>
                             <div class="col-md-8">
-                                <p class="form-control-static text-666">XXXXXXX有限公司</p>
+                                <p class="form-control-static text-666"><?php echo $this->financingItem['financing']['debtorCustomerName']; ?></p>
                             </div>
                         </div>
 
@@ -46,7 +46,7 @@
                                 <p class="form-control-static text-999"><?php echo $this->translate('应收账款金额'); ?></p>
                             </div>
                             <div class="col-md-8">
-                                <p class="form-control-static text-666">3,487,688.19  元</p>
+                                <p class="form-control-static text-666"><?php echo number_format($this->financingItem['receivableAmount'], 2); ?>  元</p>
                             </div>
                         </div>
 
@@ -55,7 +55,7 @@
                                 <p class="form-control-static text-999"><?php echo $this->translate('可融资金额'); ?></p>
                             </div>
                             <div class="col-md-8">
-                                <p class="form-control-static text-666">3,487,688.19  元</p>
+                                <p class="form-control-static text-666"><?php echo number_format($this->financingItem['assignmentAmount'], 2); ?>  元</p>
                             </div>
                         </div>
 
@@ -64,7 +64,7 @@
                                 <p class="form-control-static text-999"><?php echo $this->translate('计划放款日'); ?></p>
                             </div>
                             <div class="col-md-8">
-                                <p class="form-control-static text-666">2020年2月6日</p>
+                                <p class="form-control-static text-666"><?php echo date("Y-m-d", strtotime($this->financingItem['loanDate'])); ?></p>
                             </div>
                         </div>
 
@@ -73,7 +73,7 @@
                                 <p class="form-control-static text-999"><?php echo $this->translate('届满日'); ?></p>
                             </div>
                             <div class="col-md-8">
-                                <p class="form-control-static text-666">2020年2月6日</p>
+                                <p class="form-control-static text-666"><?php echo date("Y-m-d", strtotime($this->financingItem['expiryDate'])); ?></p>
                             </div>
                         </div>
                     </div>
@@ -91,7 +91,7 @@
                                 <p class="form-control-static text-999"><?php echo $this->translate('融资（日）利率'); ?></p>
                             </div>
                             <div class="col-md-6">
-                                <p class="form-control-static text-666">0.03 %</p>
+                                <p class="form-control-static text-666"><?php echo $this->financingItem['financing']['minInterestPercent'] * 100; ?> %</p>
                             </div>
                         </div>
 
@@ -100,7 +100,7 @@
                                 <p class="form-control-static text-999"><?php echo $this->translate('逾期（日）利率'); ?></p>
                             </div>
                             <div class="col-md-6">
-                                <p class="form-control-static text-666">0.08 %</p>
+                                <p class="form-control-static text-666"><?php echo $this->financingItem['financing']['overdueInterestPercent'] * 100; ?> %</p>
                             </div>
                         </div>
 
@@ -109,7 +109,7 @@
                                 <p class="form-control-static text-999"><?php echo $this->translate('宽限期（日）利率'); ?></p>
                             </div>
                             <div class="col-md-6">
-                                <p class="form-control-static text-666">0.03 %</p>
+                                <p class="form-control-static text-666"><?php echo $this->financingItem['financing']['graceInterestPercent'] * 100; ?> %</p>
                             </div>
                         </div>
 
@@ -118,7 +118,7 @@
                                 <p class="form-control-static text-999"><?php echo $this->translate('服务费（日）利率'); ?></p>
                             </div>
                             <div class="col-md-6">
-                                <p class="form-control-static text-666">0.0002 %</p>
+                                <p class="form-control-static text-666"><?php echo $this->financingItem['financing']['serviceChargePercent'] * 100; ?> %</p>
                             </div>
                         </div>
 
@@ -127,7 +127,7 @@
                                 <p class="form-control-static text-999"><?php echo $this->translate('预期总费用'); ?></p>
                             </div>
                             <div class="col-md-6">
-                                <p class="form-control-static text-666">10,288.31 元</p>
+                                <p class="form-control-static text-666"><?php echo number_format($this->financingItem['serviceCharge'], 2); ?> 元</p>
                             </div>
                         </div>
                     </div>
@@ -137,7 +137,7 @@
             <div class="col-md-3">
                 <div class="panel panel-primary" style="height: 242px;">
                     <!-- Default panel contents -->
-                    <div class="panel-heading">待还金额<span class="pull-right">2020年1月12日</i></span></div>
+                    <div class="panel-heading">待还金额<span class="pull-right"><?php echo date("Y-m-d", strtotime($this->financingItem['expiryDate'])); ?></i></span></div>
 
                     <div class="panel-body">
                         <div class="row">
@@ -145,7 +145,7 @@
                                 <p class="form-control-static text-999" style="margin-top: 47px;"><?php echo $this->translate('距还款'); ?></p>
                             </div>
                             <div class="col-md-6">
-                                <p class="form-control-static text-666"><span class="text-danger span-font-size-68">24</span> 天</p>
+                                <p class="form-control-static text-666"><span class="text-danger span-font-size-68"><?php echo round((strtotime($this->financingItem['expiryDate']) - strtotime(date("Y-m-d"))) / 86400); ?></span> 天</p>
                             </div>
                         </div>
 
@@ -154,7 +154,7 @@
                                 <p class="form-control-static text-999"><?php echo $this->translate('预期应还'); ?></p>
                             </div>
                             <div class="col-md-6">
-                                <p class="form-control-static text-danger">3,488,926.7 元</p>
+                                <p class="form-control-static text-danger"><?php echo number_format($this->financingItem['financingAmount'] + $this->financingItem['interest'] + $this->financingItem['serviceCharge'], 2); ?> 元</p>
                             </div>
                         </div>
                     </div>
@@ -176,25 +176,42 @@
             <div class="panel-heading"><?php echo $this->translate('放款情况'); ?></div>
 
             <!-- Table -->
-            <table id="resultListTable" data-toggle="table" data-classes="table" class="table">
+            <table data-classes="table" class="table">
                 <thead>
                 <tr>
-                    <th data-field="id"><?php echo $this->translate('放款编号'); ?></th>
-                    <th data-field="name"><?php echo $this->translate('放款日期'); ?></th>
-                    <th data-field="name"><?php echo $this->translate('放款金额'); ?></th>
-                    <th data-field="name"><?php echo $this->translate('利息'); ?></th>
-                    <th data-field="name"><?php echo $this->translate('宽限期利息'); ?></th>
-                    <th data-field="name"><?php echo $this->translate('逾期利息'); ?></th>
-                    <th data-field="name"><?php echo $this->translate('利息合计'); ?></th>
-                    <th data-field="name"><?php echo $this->translate('服务费'); ?></th>
-                    <th data-field="name"><?php echo $this->translate('未还金额'); ?></th>
+                    <th><?php echo $this->translate('放款编号'); ?></th>
+                    <th><?php echo $this->translate('放款日期'); ?></th>
+                    <th><?php echo $this->translate('放款金额'); ?></th>
+                    <th><?php echo $this->translate('利息'); ?></th>
+                    <th><?php echo $this->translate('宽限期利息'); ?></th>
+                    <th><?php echo $this->translate('逾期利息'); ?></th>
+                    <th><?php echo $this->translate('利息合计'); ?></th>
+                    <th><?php echo $this->translate('服务费'); ?></th>
+                    <th><?php echo $this->translate('未还金额'); ?></th>
+                    <th><?php echo $this->translate('状态'); ?></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>LR01201912290001</td>
-                    <td>2020年</td>
-                </tr>
+                <?php if (empty($this->financingItem['financingLoanList'])):?>
+                    <tr>
+                        <td colspan="9"><?php echo $this->translate('noData'); ?></td>
+                    </tr>
+                <?php else: ?>
+                    <?php foreach ($this->financingItem['financingLoanList'] as $financingLoan): ?>
+                        <tr>
+                            <td><?php echo $financingLoan['loanNo']; ?></td>
+                            <td><?php echo date("Y-m-d", strtotime($financingLoan['loanDate'])); ?></td>
+                            <td><?php echo number_format($financingLoan['loanAmount'], 2); ?> 元</td>
+                            <td><?php echo number_format($financingLoan['totalGeneralInterest'], 2); ?> 元</td>
+                            <td><?php echo number_format($financingLoan['totalGraceInterest'], 2); ?> 元</td>
+                            <td><?php echo number_format($financingLoan['totalOverdueInterest'], 2); ?> 元</td>
+                            <td><?php echo number_format($financingLoan['totalInterest'], 2); ?> 元</td>
+                            <td><?php echo number_format($financingLoan['serviceCharge'], 2); ?> 元</td>
+                            <td><?php echo number_format($financingLoan['writeoffBalInterest'] + $financingLoan['writeoffBalAmount'] + $financingLoan['writeoffServiceBalCharge'], 2); ?> 元</td>
+                            <td><?php echo $this->ShowDictionaryTo("LOAN_STATUS", $this->userLangCode, $this->dic_Setting['LOAN_STATUS'], $financingLoan['loanStatus']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
                 </tbody>
             </table>
         </div>
@@ -204,22 +221,36 @@
             <div class="panel-heading"><?php echo $this->translate('还款情况'); ?></div>
 
             <!-- Table -->
-            <table id="resultListTable" data-toggle="table" data-classes="table" class="table">
+            <table data-classes="table" class="table">
                 <thead>
                 <tr>
-                    <th data-field="id"><?php echo $this->translate('还款编号'); ?></th>
-                    <th data-field="name"><?php echo $this->translate('还款日期'); ?></th>
-                    <th data-field="name"><?php echo $this->translate('应还金额'); ?></th>
-                    <th data-field="name"><?php echo $this->translate('还款金额'); ?></th>
-                    <th data-field="name"><?php echo $this->translate('已还本金'); ?></th>
-                    <th data-field="name"><?php echo $this->translate('已还利息'); ?></th>
+                    <th><?php echo $this->translate('还款编号'); ?></th>
+                    <th><?php echo $this->translate('还款日期'); ?></th>
+                    <th><?php echo $this->translate('还款金额'); ?></th>
+                    <th><?php echo $this->translate('已还本金'); ?></th>
+                    <th><?php echo $this->translate('已还利息'); ?></th>
+                    <th><?php echo $this->translate('支付服务费'); ?></th>
+                    <th><?php echo $this->translate('状态'); ?></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>LR01201912290001</td>
-                    <td>2020年</td>
-                </tr>
+                <?php if (empty($this->financingItem['financingRepaymentList'])):?>
+                    <tr>
+                        <td colspan="9" class="text-center"><a href="/user/financing">暂无还款记录，去还款</a></td>
+                    </tr>
+                <?php else: ?>
+                    <?php foreach ($this->financingItem['financingRepaymentList'] as $financingRepayment): ?>
+                        <tr>
+                            <td><?php echo $financingRepayment['repaymentNo']; ?></td>
+                            <td><?php echo date("Y-m-d", strtotime($financingRepayment['repaymentDate'])); ?></td>
+                            <td><?php echo number_format($financingRepayment['repaymentTotalAmount'], 2); ?> 元</td>
+                            <td><?php echo number_format($financingRepayment['writeoffPrincipalAmount'], 2); ?> 元</td>
+                            <td><?php echo number_format($financingRepayment['writeoffInterestAmount'], 2); ?> 元</td>
+                            <td><?php echo number_format($financingRepayment['writeoffServiceCharge'], 2); ?> 元</td>
+                            <td><?php echo $this->ShowDictionaryTo("LOAN_STATUS", $this->userLangCode, $this->dic_Setting['REPAYMENT_STATUS'], $financingRepayment['repaymentStatus']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
                 </tbody>
             </table>
         </div>

@@ -2760,24 +2760,32 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl {
     }
 
     /**
-     * 运单 - 金融项目列表 - view - 项目列表
+     * 金融方案详情 - 项目列表
      * @param $requestObject
      * @param $financingID
      * @param $itemStatus
+     * @param $querySorts
+     * @param $keyword
+     * @param $skip
+     * @param $limit
      * @return bool|string
      */
-    public function listFinancingItem($requestObject, $financingID, $itemStatus) {
+    public function listFinancingItem($requestObject, $financingID, $itemStatus, $querySorts, $keyword, $skip, $limit) {
         $_url = $this->url . '/financingapi/financingApi!listFinancingItem.action';
         $_params = json_encode(array(
             "requestObject" => $requestObject,
             "financingID"   => $financingID,
-            "itemStatus"    => $itemStatus
+            "itemStatus"    => $itemStatus,
+            "querySorts"    => $querySorts,
+            "keyword"       => $keyword,
+            "skip"          => $skip,
+            "limit"         => $limit
         ));
         return $this->vpost($_url, $_params);
     }
 
     /**
-     * 运单 - 金融项目列表 - 项目详情
+     * 金融方案详情 - 项目详情
      * @param $requestObject
      * @param $itemID
      * @return bool|string
@@ -2795,13 +2803,21 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl {
      * 运单 - 金融项目列表 - 核销记录列表
      * @param $requestObject
      * @param $itemID
+     * @param $querySorts
+     * @param $keyword
+     * @param $skip
+     * @param $limit
      * @return bool|string
      */
-    public function listFinancingWriteoff($requestObject, $itemID) {
+    public function listFinancingWriteoff($requestObject, $itemID, $querySorts, $keyword, $skip, $limit) {
         $_url = $this->url . '/financingapi/financingApi!listFinancingWriteoff.action';
         $_params = json_encode(array(
             "requestObject" => $requestObject,
-            "itemID"        => $itemID
+            "itemID"        => $itemID,
+            "querySorts"    => $querySorts,
+            "keyword"       => $keyword,
+            "skip"          => $skip,
+            "limit"         => $limit,
         ));
         return $this->vpost($_url, $_params);
     }
@@ -2840,13 +2856,21 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl {
      * 运单 - 金融项目列表 - 项目详情 - 放款情况 - 利息
      * @param $requestObject
      * @param $loanID
+     * @param $querySorts
+     * @param $keyword
+     * @param $skip
+     * @param $limit
      * @return bool|string
      */
-    public function listFinancingInterest($requestObject, $loanID) {
+    public function listFinancingInterest($requestObject, $loanID, $querySorts, $keyword, $skip, $limit) {
         $_url = $this->url . '/financingapi/financingApi!listFinancingInterest.action';
         $_params = json_encode(array(
             "requestObject" => $requestObject,
-            "loanID"        => $loanID
+            "loanID"        => $loanID,
+            "querySorts"    => $querySorts,
+            "keyword"       => $keyword,
+            "skip"          => $skip,
+            "limit"         => $limit
         ));
         return $this->vpost($_url, $_params);
     }

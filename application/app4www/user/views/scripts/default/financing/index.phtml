@@ -13,11 +13,11 @@
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
 
-<div class="container-fluid index-body">
+<div class="container-fluid index-body" style="min-height: 550px;">
 	<div class="container">
         <ol class="breadcrumb">
             <li><a href="/"><?php echo $this->translate('nav_index'); ?></a></li>
-            <li class="active"><?php echo $this->translate('freightLoan'); ?></li>
+            <li class="active"><?php echo $this->translate('financing'); ?></li>
         </ol>
 
         <div class="panel panel-default">
@@ -36,11 +36,13 @@
                                 <p class="form-control-static"><?php echo $this->translate('freightFinanceStat'); ?></p>
                             </div>
                             <div class="col-sm-9">
-                                <button type="button" class="btn btn-warning" data-type="freightFinanceStat" data-value="all"><?php echo $this->translate('freightFinanceStat_All'); ?></button>&nbsp;&nbsp;
-                                <button type="button" class="btn btn-default" data-type="freightFinanceStat" data-value="01"><?php echo $this->translate('freightFinanceStat_Valid'); ?></button>&nbsp;&nbsp;
-                                <button type="button" class="btn btn-default" data-type="freightFinanceStat" data-value="02"><?php echo $this->translate('freightFinanceStat_ForCheck'); ?></button>
-                                <button type="button" class="btn btn-default" data-type="freightFinanceStat" data-value="03"><?php echo $this->translate('freightFinanceStat_Invalid'); ?></button>
-                                <input type="hidden" name="freightFinanceStat" id="freightFinanceStat" value="all">
+                                <button type="button" class="btn <?php if (empty($this->resultStatus) || $this->resultStatus == 'all') { echo ' btn-warning';} else {echo ' btn-default';}?>" data-type="financingStatus" data-value="all"><?php echo $this->translate('freightFinanceStat_All'); ?></button>&nbsp;&nbsp;
+                                <button type="button" class="btn <?php if ($this->resultStatus == '03') { echo ' btn-warning';} else {echo ' btn-default';}?>" data-type="financingStatus" data-value="03"><?php echo $this->translate('freightFinanceStat_Valid'); ?></button>&nbsp;&nbsp;
+                                <button type="button" class="btn <?php if ($this->resultStatus == '01') { echo ' btn-warning';} else {echo ' btn-default';}?>" data-type="financingStatus" data-value="01"><?php echo $this->translate('freightFinanceStat_ForCheck'); ?></button>
+                                <button type="button" class="btn <?php if ($this->resultStatus == '05') { echo ' btn-warning';} else {echo ' btn-default';}?>" data-type="financingStatus" data-value="05"><?php echo $this->translate('freightFinanceStat_Invalid'); ?></button>
+                                <form action="/user/financing/index" name="refreshFinancingList" id="refreshFinancingList" method="post">
+                                <input type="hidden" name="financingStatus" id="financingStatus" value="all">
+                                </form>
                                 <input type="hidden" name="limit" id="limit" value="<?php echo $this->limit; ?>">
                                 <input type="hidden" name="offset" id="offset" value="<?php echo $this->offset; ?>">
                             </div>
@@ -50,110 +52,75 @@
             </div>
         </div>
 
-        <div class="panel panel-danger">
-            <!-- Default panel contents -->
-            <div class="panel-heading"><?php echo $this->translate('德邦快递'); ?></div>
+        <?php if (empty($this->financingList)):?>
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading"></div>
 
-            <!-- Table -->
-            <table id="resultListTable" data-toggle="table" data-classes="table" class="table">
-                <thead>
-                <tr>
-                    <th data-field="id"><?php echo $this->translate('方案编号'); ?></th>
-                    <th data-field="name"><?php echo $this->translate('年份'); ?></th>
-                    <th data-field="price"><?php echo $this->translate('总额度'); ?> <i class="layui-icon layui-icon-about" data-toggle="tooltip" data-placement="top" title="已放款且未还款的金额"></i></th>
-                    <th><?php echo $this->translate('已用额度'); ?> <i class="layui-icon layui-icon-about" data-toggle="tooltip" data-placement="top" title="已放款且未还款的金额"></i></th>
-                    <th><?php echo $this->translate('锁定额度'); ?> <i class="layui-icon layui-icon-about" data-toggle="tooltip" data-placement="top" title="已申请未放款的金额"></i></th>
-                    <th><?php echo $this->translate('可用额度'); ?></th>
-                    <th><?php echo $this->translate('融资日利率'); ?></th>
-                    <th><?php echo $this->translate('服务费日费率'); ?></th>
-                    <th><?php echo $this->translate('合同'); ?></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td><a href="/user/freight/freight-loan-item-index">LR01201912290001</a></td>
-                    <td>2020年</td>
-                    <td>5,000,000.00 元</td>
-                    <td>--  元</td>
-                    <td>--  元</td>
-                    <td>5,000,000.00 元</td>
-                    <td>0.0003 %</td>
-                    <td>0.0002 %</td>
-                    <td><button type="button" class="btn btn-warning">签署</button></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+                <!-- Table -->
+                <table id="resultListTable" data-toggle="table" data-classes="table" class="table">
+                    <thead>
+                    <tr>
+                        <th data-field="id"><?php echo $this->translate('方案编号'); ?></th>
+                        <th data-field="name"><?php echo $this->translate('年份'); ?></th>
+                        <th data-field="price"><?php echo $this->translate('总额度'); ?> <i class="layui-icon layui-icon-about" data-toggle="tooltip" data-placement="top" title="已放款且未还款的金额"></i></th>
+                        <th><?php echo $this->translate('已用额度'); ?> <i class="layui-icon layui-icon-about" data-toggle="tooltip" data-placement="top" title="已放款且未还款的金额"></i></th>
+                        <th><?php echo $this->translate('锁定额度'); ?> <i class="layui-icon layui-icon-about" data-toggle="tooltip" data-placement="top" title="已申请未放款的金额"></i></th>
+                        <th><?php echo $this->translate('可用额度'); ?></th>
+                        <th><?php echo $this->translate('融资日利率'); ?></th>
+                        <th><?php echo $this->translate('服务费日费率'); ?></th>
+                        <th><?php echo $this->translate('合同'); ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td colspan="9"><?php echo $this->translate("noData"); ?></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        <?php else: ?>
+            <?php foreach ($this->financingList as $financing): ?>
+                <?php if (strtotime($financing['expiryDate']) < strtotime(date('Y-m-d'))): ?>
+                <div class="panel panel-default">
+                <?php else: ?>
+                <div class="panel panel-danger">
+                <?php endif; ?>
+                    <!-- Default panel contents -->
+                    <div class="panel-heading"><?php echo $financing['debtorCustomerName']; ?></div>
 
-        <div class="panel panel-default">
-            <!-- Default panel contents -->
-            <div class="panel-heading"><?php echo $this->translate('德邦快递'); ?></div>
-
-            <!-- Table -->
-            <table id="resultListTable" data-toggle="table" data-classes="table" class="table">
-                <thead>
-                <tr>
-                    <th data-field="id"><?php echo $this->translate('方案编号'); ?></th>
-                    <th data-field="name"><?php echo $this->translate('年份'); ?></th>
-                    <th data-field="price"><?php echo $this->translate('总额度'); ?> <i class="layui-icon layui-icon-about" data-toggle="tooltip" data-placement="top" title="已放款且未还款的金额"></i></th>
-                    <th><?php echo $this->translate('已用额度'); ?></th>
-                    <th><?php echo $this->translate('锁定额度'); ?></th>
-                    <th><?php echo $this->translate('可用额度'); ?></th>
-                    <th><?php echo $this->translate('融资日利率'); ?></th>
-                    <th><?php echo $this->translate('服务费日费率'); ?></th>
-                    <th><?php echo $this->translate('合同'); ?></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>LR01201912290001</td>
-                    <td>2020年</td>
-                    <td>5,000,000.00 元</td>
-                    <td>--  元</td>
-                    <td>--  元</td>
-                    <td>5,000,000.00 元</td>
-                    <td>0.0003 %</td>
-                    <td>0.0002 %</td>
-                    <td><button type="button" class="btn btn-warning">签署</button></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="panel panel-danger">
-            <!-- Default panel contents -->
-            <div class="panel-heading"><?php echo $this->translate('德邦快递'); ?></div>
-
-            <!-- Table -->
-            <table id="resultListTable" data-toggle="table" data-classes="table" class="table">
-                <thead>
-                <tr>
-                    <th data-field="id"><?php echo $this->translate('方案编号'); ?></th>
-                    <th data-field="name"><?php echo $this->translate('年份'); ?></th>
-                    <th data-field="price"><?php echo $this->translate('总额度'); ?></th>
-                    <th><?php echo $this->translate('已用额度'); ?></th>
-                    <th><?php echo $this->translate('锁定额度'); ?></th>
-                    <th><?php echo $this->translate('可用额度'); ?></th>
-                    <th><?php echo $this->translate('融资日利率'); ?></th>
-                    <th><?php echo $this->translate('服务费日费率'); ?></th>
-                    <th><?php echo $this->translate('合同'); ?></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>LR01201912290001</td>
-                    <td>2020年</td>
-                    <td>5,000,000.00 元</td>
-                    <td>--  元</td>
-                    <td>--  元</td>
-                    <td>5,000,000.00 元</td>
-                    <td>0.0003 %</td>
-                    <td>0.0002 %</td>
-                    <td><button type="button" class="btn btn-warning">签署</button></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+                    <!-- Table -->
+                    <table data-toggle="table" data-classes="table" class="table">
+                        <thead>
+                        <tr>
+                            <th><?php echo $this->translate('方案编号'); ?></th>
+                            <th><?php echo $this->translate('有效期'); ?></th>
+                            <th><?php echo $this->translate('总额度'); ?> <i class="layui-icon layui-icon-about" data-toggle="tooltip" data-placement="top" title="已放款且未还款的金额"></i></th>
+                            <th><?php echo $this->translate('已用额度'); ?> <i class="layui-icon layui-icon-about" data-toggle="tooltip" data-placement="top" title="已放款且未还款的金额"></i></th>
+                            <th><?php echo $this->translate('锁定额度'); ?> <i class="layui-icon layui-icon-about" data-toggle="tooltip" data-placement="top" title="已申请未放款的金额"></i></th>
+                            <th><?php echo $this->translate('可用额度'); ?></th>
+                            <th><?php echo $this->translate('融资日利率'); ?></th>
+                            <th><?php echo $this->translate('服务费日费率'); ?></th>
+                            <th><?php echo $this->translate('合同'); ?></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><a href="<?php echo '/user/financing/financing-item?'. base64_encode($financing['financingID'])?>"><?php echo $financing['financingNo']; ?></a></td>
+                            <td><a href="/user/financing/financing-item?<?php echo base64_encode($financing['financingID'])?>"><?php echo date("Y-m", strtotime($financing['applyDate'])). ' 至 '. date("Y-m", strtotime($financing['expiryDate'])); ?></a></td>
+                            <td><a href="/user/financing/financing-item?<?php echo base64_encode($financing['financingID'])?>"><?php echo number_format($financing['debtorPayAcct']['creditLimit'], 2); ?> 元</a></td>
+                            <td><a href="/user/financing/financing-item?<?php echo base64_encode($financing['financingID'])?>"><?php echo number_format($financing['debtorPayAcct']['creditLimit'] - $financing['debtorPayAcct']['creditBal'], 2); ?> 元</a></td>
+                            <td><a href="/user/financing/financing-item?<?php echo base64_encode($financing['financingID'])?>">--  元</a></td>
+                            <td><a href="/user/financing/financing-item?<?php echo base64_encode($financing['financingID'])?>"><?php echo number_format($financing['debtorPayAcct']['creditBal'], 2); ?> 元</a></td>
+                            <td><a href="/user/financing/financing-item?<?php echo base64_encode($financing['financingID'])?>"><?php echo $financing['minInterestPercent'] * 100; ?> %</a></td>
+                            <td><a href="/user/financing/financing-item?<?php echo base64_encode($financing['financingID'])?>"><?php echo $financing['serviceChargePercent'] * 100; ?> %</a></td>
+                            <td><button type="button" class="btn btn-warning">签署</button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
 	</div>
 </div>
 
@@ -168,7 +135,7 @@
 <script type="text/javascript" src="/ky/echarts-4.2.0/echarts.min.js"></script>
 
 <script type="text/javascript">
-    var dataDict = {},
+    let dataDict = {},
         userLangCode = '<?php echo $this->userLangCode; ?>';
 
 	$().ready(function() {
@@ -182,8 +149,8 @@
             $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['zh-CN']);
         }
 
-        var dataDictQuery = '/user/common/dict-ajax';
-        var dictCode = ["FACTORING_STATUS"];
+        let dataDictQuery = '/user/financing/financing-item-list-ajax';
+        let dictCode = ["FACTORING_STATUS"];
         $.ajax({
             type: "POST",
             url: dataDictQuery,
@@ -196,6 +163,18 @@
                 $.data(dataDict, 'dataDict', data);
 
             }
+        });
+
+        let $titleOptions = $(".title-options");
+        $titleOptions.find("button").click(function () {
+            let dataType = $(this).attr("data-type");
+            $("button[data-type='" + dataType + "']").removeClass("btn-warning").addClass("btn-default");
+            $(this).addClass("btn-warning");
+
+            $("#" + dataType).val($(this).attr("data-value"));
+
+            // 清空之前的结果
+            $("#refreshFinancingList").submit();
         });
 
         $('[data-toggle="tooltip"]').tooltip();

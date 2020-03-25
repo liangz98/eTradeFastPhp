@@ -99,19 +99,19 @@
                 </li>
                 <?php endif; ?>
 
-                <?php if ($this->accountType == 'CU01'): ?>
+                <?php //if ($this->accountType == 'CU01'): ?>
                 <!-- 公司类型: 运单 -->
                 <li>
                     <a href="/user/freight"><?php echo $this->translate('nav_freight'); ?></a>
                 </li>
-                <?php endif; ?>
+                <?php //endif; ?>
 
-                <?php if ($this->accountType == 'CU01'): ?>
+                <?php //if ($this->accountType == 'CU01'): ?>
                     <!-- 公司类型: 金融项目 -->
                     <li>
-                        <a href="/user/freight/freight-loan-index"><?php echo $this->translate('nav_freightLoan'); ?></a>
+                        <a href="/user/financing"><?php echo $this->translate('nav_freightLoan'); ?></a>
                     </li>
-                <?php endif; ?>
+                <?php //endif; ?>
             </ul>
         </div>
     </div>

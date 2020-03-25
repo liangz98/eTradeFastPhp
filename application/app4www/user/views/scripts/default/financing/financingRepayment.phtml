@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+	<title><?php echo $this->translate('etradefast'); ?></title>
+    <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <link href="/ky/css/settle/settle.css" rel="stylesheet">
+    <link href="/ky/css/img-upload.css" rel="stylesheet">
+    <!-- fancybox -->
+    <link href="/ky/fancybox-3.5.6-dist/jquery.fancybox.min.css" rel="stylesheet">
+</head>
+<body>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
+
+<div class="container-fluid index-body">
+	<div class="container">
+        <ol class="breadcrumb">
+            <li><a href="/"><?php echo $this->translate('nav_index'); ?></a></li>
+            <li><a href="/user/freight/freight-loan-index"><?php echo $this->translate('freightLoanFinanceItem'); ?></a></li>
+            <li><a href="/user/freight/freight-loan-item-index"><?php echo $this->translate('freightLoanApplyList'); ?>：德邦快递</a></li>
+            <li class="active"><?php echo $this->translate('freightPayment'); ?></li>
+        </ol>
+
+        <?php if (!empty($this->resultMsg)): ?>
+        <div class="alert alert-danger alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <p><?php echo $this->resultMsg; ?>!</p>
+        </div>
+        <?php endif; ?>
+
+        <div class="alert alert-danger alert-dismissible fade in" role="alert">
+            <p>还款会根据债项发生时序正序，优先核销最早一笔债项的服务费和利息，再核销本金。</p>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('本金'); ?></p>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">3,487,688.19  元</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('总利息'); ?></p>
+                    </div>
+                    <div class="col-md-2">
+                        <p class="form-control-static text-666">1,238.51 元</p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="well well-sm text-999" style="margin-bottom: 0 !important;"><?php echo $this->translate('总利息=利息+宽限期利息+逾期利息'); ?></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('服务费'); ?></p>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">100.81元</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('应付总额'); ?></p>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">3,488,926.7 元</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-warning">
+            <!-- Default panel contents -->
+            <div class="panel-heading">转账信息</div>
+
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('开户名称'); ?></p>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">骏海威商业保理（深圳）有限公司</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('开户银行'); ?></p>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">宁波银行深圳罗湖支行</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('银行账号'); ?></p>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">73100122000088618</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('银行地址'); ?></p>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">深圳市罗湖区深南东路2103号</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('备注'); ?></p>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">请在转账备注以下代码：DKJ97H996LHG</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-warning">
+            <!-- Default panel contents -->
+            <div class="panel-heading">FL042019112900001<span class="pull-right">共400运单 <i class="layui-icon layui-icon-about"></i></span></div>
+
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <p class="form-control-static text-999"><?php echo $this->translate('债务方'); ?></p>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">XXXXXXX有限公司</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <p class="form-control-static text-999"><?php echo $this->translate('应收账款金额'); ?></p>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">3,487,688.19  元</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <p class="form-control-static text-999"><?php echo $this->translate('可融资金额'); ?></p>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">3,487,688.19  元</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <p class="form-control-static text-999"><?php echo $this->translate('计划放款日'); ?></p>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">2020年2月6日</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <p class="form-control-static text-999"><?php echo $this->translate('届满日'); ?></p>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="form-control-static text-666">2020年2月6日</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script type="text/javascript" src="/ky/upload/img.js"></script>
+<!-- fancybox -->
+<script type="text/javascript" src="/ky/fancybox-3.5.6-dist/jquery.fancybox.min.js"></script>
+<script type="text/javascript" src="/ky/fancybox-3.5.6-dist/fancyboxInit.js"></script>
+
+<script type="text/javascript">
+	$().ready(function() {
+
+	});
+
+	$(function () {
+
+	});
+</script>
+</body>
+</html>

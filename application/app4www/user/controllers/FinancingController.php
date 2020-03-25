@@ -37,9 +37,22 @@ class FinancingController extends Kyapi_Controller_Action {
         $this->updateRedisExpire();
     }
 
-    // 列表页
+    // 金融方案首页
     public function indexAction() {
-        $this->view->resultMsg = $this->_request->getParam('resultMsg');
+        $requestObject = $this->_requestObject;
+
+        $financingStatus = $this->_request->getParam('financingStatus');
+        if (empty($financingStatus)) {
+            $financingStatus = null;
+        } else {
+            if ($financingStatus == 'all') {
+                $financingStatus = null;
+            }
+        }
+        $this->view->resultStatus = $financingStatus;
+
+        $resultObject = $this->json->listFinancing($requestObject, $financingStatus);
+        $this->view->financingList = $this->objectToArray(json_decode($resultObject)->result);
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/financing/index.phtml");
@@ -47,6 +60,7 @@ class FinancingController extends Kyapi_Controller_Action {
             exit;
         }
     }
+
 
     public function financingListAjaxAction() {
         $msg = array();
@@ -79,31 +93,38 @@ class FinancingController extends Kyapi_Controller_Action {
         exit;
     }
 
-    // 金融申请列表
-    public function financingViewAction() {
+    // 金融方案详情
+    public function financingItemAction() {
         $requestObject = $this->_requestObject;
 
         $queryString = $_SERVER['QUERY_STRING'];
         $financingID = base64_decode($queryString);
 
-        $financingResultObject = $this->json->getFinancingView($requestObject, $financingID);
-        $this->view->financing = $this->objectToArray(json_decode($financingResultObject)->result);
+        $financingItemResultObject = $this->json->getFinancingView($requestObject, $financingID);
+        $this->view->financingItem = $this->objectToArray(json_decode($financingItemResultObject)->result);
 
         // 右上角图表
         $loanStatisticResultobject = $this->json->listLoanStatisticData($requestObject);
         $this->view->loanStatistic = $this->objectToArray(json_decode($loanStatisticResultobject)->result);
 
         if (defined('SEED_WWW_TPL')) {
-            $content = $this->view->render(SEED_WWW_TPL . "/financing/financingView.phtml");
+            $content = $this->view->render(SEED_WWW_TPL . "/financing/financingItem.phtml");
             echo $content;
             exit;
         }
     }
 
-    // 金融申请列表 - 项目列表
+    // 金融方案详情 - 项目列表
     public function financingItemListAjaxAction() {
         $msg = array();
         $requestObject = $this->_requestObject;
+
+        $querySorts = array();
+
+        $keyword = $this->_request->getParam('keyword');
+        if (empty($keyword)) {
+            $keyword = null;
+        }
 
         $limit = $this->_request->getParam('limit');
         if (empty($limit) || $limit <= 0) {
@@ -117,16 +138,58 @@ class FinancingController extends Kyapi_Controller_Action {
 
         $financingID = $this->_request->getParam('financingID');
 
-        $financingStatus = $this->_request->getParam('financingStatus');
-        if (empty($financingStatus)) {
-            $financingStatus = '01';
+        $itemStatus = $this->_request->getParam('itemStatus');
+        if (empty($itemStatus)) {
+            $itemStatus = null;
+        } else {
+            if ($itemStatus == 'all') {
+                $itemStatus = null;
+            }
         }
 
-        $resultObject = $this->json->listFinancingItem($requestObject, $financingID, $financingStatus);
+        if (is_array($querySorts)) {
+            $querySorts = $this->arrayToObject($querySorts);
+        }
+
+        $resultObject = $this->json->listFinancingItem($requestObject, $financingID, $itemStatus, $querySorts, $keyword, $skip, $limit);
         $msg["totalPage"] = json_decode($resultObject)->extData->totalPage;
         $msg["rows"] = json_decode($resultObject)->result;
 
         echo json_encode($msg);
         exit;
+    }
+
+    // 金融方案详情 - 项目详情
+    public function financingItemViewAction() {
+        $requestObject = $this->_requestObject;
+
+        $queryString = $_SERVER['QUERY_STRING'];
+        $itemID = base64_decode($queryString);
+
+        $resultObject = $this->json->getFinancingItemView($requestObject, $itemID);
+        $this->view->financingItem = $this->objectToArray(json_decode($resultObject)->result);
+
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/financing/financingItemView.phtml");
+            echo $content;
+            exit;
+        }
+    }
+
+    // 金融方案详情 - 项目详情 - 还款
+    public function financingRepaymentAction() {
+        $requestObject = $this->_requestObject;
+
+        $queryString = $_SERVER['QUERY_STRING'];
+        $itemID = base64_decode($queryString);
+
+        $resultObject = $this->json->getFinancingItemView($requestObject, $itemID);
+        $this->view->financingItem = $this->objectToArray(json_decode($resultObject)->result);
+
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/financing/financingRepayment.phtml");
+            echo $content;
+            exit;
+        }
     }
 }

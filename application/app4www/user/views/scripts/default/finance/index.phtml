@@ -141,8 +141,8 @@
 	});
 
 	$(function () {
-        var dataDictQuery = '/user/common/dict-ajax';
-        var dictCode = ["FACTORING_STATUS"];
+        let dataDictQuery = '/user/common/dict-ajax';
+        let dictCode = ["FACTORING_STATUS"];
         $.ajax({
             type: "POST",
             url: dataDictQuery,
@@ -154,9 +154,9 @@
             success: function (data) {
                 $.data(dataDict, 'dataDict', data);
 
-                var $titleOptions = $(".title-options");
+                let $titleOptions = $(".title-options");
                 $titleOptions.find("button").click(function () {
-                    var dataType = $(this).attr("data-type");
+                    let dataType = $(this).attr("data-type");
                     $("button[data-type='" + dataType + "']").removeClass("btn-warning").addClass("btn-default");
                     $(this).addClass("btn-warning");
 
@@ -191,7 +191,7 @@
 	});
 
 	function refreshResultList() {
-        var factoringQuery = '/user/finance/factoring-list-ajax';
+        let factoringQuery = '/user/finance/factoring-list-ajax';
         $.ajax({
             type: "POST",
             url: factoringQuery,
@@ -203,7 +203,7 @@
             },
             dataType: "json",
             success: function (data) {
-                var contents = '',
+                let contents = '',
                     $resultList = $(".resultList"),
                     noResult = '<?php echo $this->translate("noData"); ?>';
 
@@ -310,7 +310,7 @@
             }
         });
     }
-    
+
     function refreshFlowResultList() {
 	    var $limit = $("#limit"),
             $offset = $("#offset"),

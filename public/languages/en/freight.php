@@ -7,8 +7,8 @@ return array(
     'freight_order' => 'Freight Order',
     'freight_list'  => 'Freight List',
 
-    'freightLoan'            => 'Freight Loan',
-    'freightLoanList'        => 'Freight Loan List',
+    'financing'              => 'Financing',
+    'financingItem'          => '金融方案详情',
     'freightLoanApply'       => 'Freight Loan Apply',
     'freightLoanFinanceItem' => '金融方案',
     'freightLoanApplyList'   => '申请列表',
@@ -20,4 +20,10 @@ return array(
     'freightFinanceStat_Invalid'  => '无效',
     'freightFinanceStat_ForCheck' => '待处理',
     'freightPayment'              => '还款',
+
+    'financingAll'         => '全部',
+    'financingRepayment'   => '待还款',
+    'financingPendingLoan' => '待放款',
+    'financingDone'        => '已完成',
+    'financingPending'     => '待处理',
 );
