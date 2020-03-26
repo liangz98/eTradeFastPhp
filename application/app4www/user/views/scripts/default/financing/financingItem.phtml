@@ -42,7 +42,7 @@
                                 <div class="col-md-6">
                                     <p class="form-control-static text-666" style="font-weight: bold;"><?php echo number_format($this->financingItem['debtorPayAcct']['creditBal'], 2); ?> 元</p>
                                 </div>
-                            </div>
+                            </div>428bca
 
                             <div class="row">
                                 <div class="col-md-5">
@@ -101,7 +101,23 @@
 	</div>
 </div>
 
-<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+<nav class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container">
+        <form class="form-horizontal" action="javascript:void(0)" onsubmit="search()" id="search_form">
+            <div class="form-group" style="margin-top: 10px;">
+                <label for="startDate" class="col-sm-1 control-label"><?php echo $this->translate('应还金额'); ?></label>
+                <div class="col-sm-3">
+                    <p class="form-control-static"><span id="total_static">0</span> 元</p>
+                    <input type="hidden" name="total" id="total" value="0">
+                </div>
+
+                <div class="col-sm-7"></div>
+
+                <button type="submit" class="btn btn-primary"><?php echo $this->translate('批量还款'); ?></button>
+            </div>
+        </form>
+    </div>
+</nav>
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
@@ -113,7 +129,8 @@
 
 <script type="text/javascript">
     let dataDict = {},
-        userLangCode = '<?php echo $this->userLangCode; ?>';
+        userLangCode = '<?php echo $this->userLangCode; ?>',
+        $resultListTable = $('#resultListTable');
 
 	$().ready(function() {
 
@@ -152,31 +169,52 @@
             success: function (data) {
                 $.data(dataDict, 'dataDict', data);
 
-                let $resultListTable = $('#resultListTable');
                 $resultListTable.bootstrapTable({
-                    url: '/user/financing/financing-item-list-ajax',
-                    method: 'post',
-                    // showRefresh: true,
-                    // search: true,
-                    pagination: true,
                     classes: 'table table-no-bordered',
-                    sidePagination: 'server',
-                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                    pageNumber: 1,
-                    pageSize: 10,
                     checkboxHeader: true,
+                    method: 'post',
                     clickToSelect: true,
                     // 对a和button标签忽略clickToSelect事件
                     ignoreClickToSelectOn: function (element) {
                         return $.inArray(element.tagName, ['A', 'BUTTON']);
                     },
+                    url: '/user/financing/financing-item-list-ajax',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                     queryParams: function(params) {
                         return {
-                            limit: params.limit,
-                            skip: params.offset,
+                            limit: 120,
+                            skip: 0,
                             financingID: $("#financingID").val(),
                             itemStatus: $("#itemStatus").val()
                         };
+                    },
+                    onLoadSuccess: function() {
+                        // $resultListTable.bootstrapTable('checkAll');
+
+                        let $resultList = $resultListTable.bootstrapTable('getData');
+                        $.each($resultList, function (i, item) {
+                            // alert(item['itemID']);
+                            if (item['financingLoan']['loanStatus'] === '02') {
+                                $resultListTable.bootstrapTable('check', i);
+                            }
+                        });
+                        // $resultList.each(function() {
+                        //     alert($(this).itemID);
+                        // });
+
+                        refreshTotal($resultListTable);
+                    },
+                    onCheck: function() {
+                        refreshTotal($resultListTable);
+                    },
+                    onUncheck:function(){
+                        refreshTotal($resultListTable);
+                    },
+                    onCheckAll: function () {
+                        refreshTotal($resultListTable);
+                    },
+                    onUncheckAll: function () {
+                        refreshTotal($resultListTable);
                     },
                     onClickRow:function(row, $element, field) {
                         // alert(JSON.stringify(row));
@@ -188,6 +226,7 @@
                         field: 'itemNo',
                         title: '<?php echo $this->translate("项目编号"); ?>',
                         width: 220,
+                        sortable: true,
                         formatter: function (value, row) {
                             if (value === undefined || value === '' || value === null) {
                                 value = "";
@@ -224,12 +263,30 @@
                         align: 'right',
                         halign: 'center',
                         valign: 'middle',
+                        sortable: true,
                         width: 180,
                         formatter: function (value, row) {
                             if (value === undefined || value === '' || value === null) {
                                 value = "-";
                             }
                             let result = row.crnCode + ' ' + formatCurrency(value, 2);
+
+                            let base = new Base64();
+                            let resultEnCode = base.encode(row.itemID);
+                            let href = "/user/financing/financing-item-view?"+resultEnCode;
+
+                            return '<a href="' + href + '" target="_blank">' + result + '</a>';
+                        }
+                    }, {
+                        field: 'financingLoan',
+                        title: '<?php echo $this->translate("应还金额"); ?>',
+                        align: 'right',
+                        halign: 'center',
+                        valign: 'middle',
+                        sortable: true,
+                        width: 180,
+                        formatter: function (value, row) {
+                            let result = row.crnCode + ' ' + formatCurrency(value.writeoffBalAmount + value.writeoffBalInterest + value.writeoffServiceBalCharge, 2);
 
                             let base = new Base64();
                             let resultEnCode = base.encode(row.itemID);
@@ -295,7 +352,7 @@
                             let result = '';
                             if (row.financingLoan.loanStatus && row.financingLoan.loanStatus === '02') {
                                 let href = "/user/freight/freight-loan-payment?"+resultEnCode;
-                                let str = "<?php echo $this->translate('settle_payment');?>";
+                                let str = "<?php echo $this->translate('还款');?>";
                                 result += '<a href="' + href + '" style="color: #337ab7">' + str + '</a>';
                             }
 
@@ -327,8 +384,16 @@
         });
 	});
 
-    function refreshResultList() {
+    function refreshTotal($resultListTable) {
+        let $allSelectionsData = $resultListTable.bootstrapTable('getAllSelections'),
+            allSelectionsTotal = 0;
 
+        $.each($allSelectionsData, function(i, val) { //两个参数，第一个参数表示遍历的数组的下标，第二个参数表示下标对应的值
+            allSelectionsTotal += val.financingLoan.writeoffBalAmount + val.financingLoan.writeoffBalInterest + val.financingLoan.writeoffServiceBalCharge;
+        });
+
+        $("#total_static").html(formatCurrency(allSelectionsTotal, 2));
+        $("#total").val(allSelectionsTotal);
     }
 
     // 基于准备好的dom，初始化echarts实例

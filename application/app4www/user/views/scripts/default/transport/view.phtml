@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+	<title><?php echo $this->translate('etradefast'); ?></title>
+    <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <link href="/ky/css/freight/freight.css" rel="stylesheet">
+
+    <link href="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.css" rel="stylesheet">
+</head>
+<body>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
+
+<div class="container-fluid index-body">
+	<div class="container">
+        <ol class="breadcrumb">
+            <li><a href="/"><?php echo $this->translate('nav_index'); ?></a></li>
+            <li><a href="/user/freight"><?php echo $this->translate('运单列表'); ?></a></li>
+            <li class="active"><?php echo $this->translate('运单详情'); ?></li>
+        </ol>
+
+        <div class="page-header">
+            <h3><?php echo $this->translate('运单详情'); ?></h3>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <h3><?php echo $this->translate('订单编号'); ?>：0D2901820099931009</h3>
+                            </div>
+                            <div class="col-md-3">
+                                <span class="label label-success">状态：已发货</span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>&nbsp;</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('货物信息'); ?></p>
+                            </div>
+                            <div class="col-md-10">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->e['transNo']; ?>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('货源'); ?></p>
+                            </div>
+                            <div class="col-md-10">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->e['transNo']; ?>来自某地的货源要求信息，货物名称xxxxx
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('运输费用'); ?></p>
+                            </div>
+                            <div class="col-md-10">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->e['transNo']; ?>6,000
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('完成时间'); ?></p>
+                            </div>
+                            <div class="col-md-10">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->e['transNo']; ?>2019-10-10 12:23:46
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('金融服务'); ?></p>
+                            </div>
+                            <div class="col-md-10">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->e['transNo']; ?>已融资XXXX,还款日期，利率/ 未融资
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3><?php echo $this->translate('运输信息'); ?></h3>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>&nbsp;</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('始发地'); ?></p>
+                            </div>
+                            <div class="col-md-10">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->e['transNo']; ?>广东省，广州市，白云区
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('目的地'); ?></p>
+                            </div>
+                            <div class="col-md-10">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->e['transNo']; ?>浙江省，金华市，金东区
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('距离'); ?></p>
+                            </div>
+                            <div class="col-md-10">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->e['transNo']; ?>1000km
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('开始时间'); ?></p>
+                            </div>
+                            <div class="col-md-10">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->e['transNo']; ?>2019-10-10 12:23:46
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <p class="form-control-static text-999"><?php echo $this->translate('结束时间'); ?></p>
+                            </div>
+                            <div class="col-md-10">
+                                <p class="form-control-static text-666">
+                                    <?php echo $this->e['transNo']; ?>2019-10-10 12:23:46
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3><?php echo $this->translate('承运人'); ?></h3>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>&nbsp;</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+<!--                                <table id="resultListTable" class="table-striped"></table>-->
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>司机</th>
+                                        <th>联系方式</th>
+                                        <th>车辆</th>
+                                        <th>身份证</th>
+                                        <th>备注</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>沈师傅</td>
+                                        <td>158 5858 6060</td>
+                                        <td>皖SXXXXX，9.6米，高栏</td>
+                                        <td>362255198810066320</td>
+                                        <td>XXXXXXXXXX</td>
+                                    </tr>
+                                    <tr>
+                                        <td>沈师傅</td>
+                                        <td>158 5858 6060</td>
+                                        <td>皖SXXXXX，9.6米，高栏</td>
+                                        <td>362255198810066320</td>
+                                        <td>XXXXXXXXXX</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3>运输路线</h3>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <ul class="layui-timeline">
+                                    <li class="layui-timeline-item">
+                                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                                        <div class="layui-timeline-content layui-text">
+                                            <h3 class="layui-timeline-title">2019-10-10 20:09:19</h3>
+                                            <p>
+                                                浙江省绍兴市上虞区苏宁,西南方向,105.2米
+                                            </p>
+                                        </div>
+                                    </li>
+                                    <li class="layui-timeline-item">
+                                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                                        <div class="layui-timeline-content layui-text">
+                                            <h3 class="layui-timeline-title">2019-10-10 20:09:19</h3>
+                                            <p>
+                                                浙江省绍兴市上虞区苏宁,西南方向,105.2米
+                                            </p>
+                                        </div>
+                                    </li>
+                                    <li class="layui-timeline-item">
+                                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                                        <div class="layui-timeline-content layui-text">
+                                            <h3 class="layui-timeline-title">2019-10-10 20:09:19</h3>
+                                            <p>
+                                                浙江省绍兴市上虞区苏宁,西南方向,105.2米
+                                            </p>
+                                        </div>
+                                    </li>
+                                    <li class="layui-timeline-item">
+                                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                                        <div class="layui-timeline-content layui-text">
+                                            <h3 class="layui-timeline-title">2019-10-10 20:09:19</h3>
+                                            <p>
+                                                浙江省绍兴市上虞区苏宁,西南方向,105.2米
+                                            </p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3>路线地图</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+<script src="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.js"></script>
+<script src="/ky/bootstrap-table-1.12.1-dist/locale/bootstrap-table-zh-CN.min.js"></script>
+
+<script type="text/javascript">
+	$().ready(function() {
+
+	});
+
+	$(function () {
+        $('#resultListTable').bootstrapTable({
+
+        });
+	});
+</script>
+</body>
+</html>

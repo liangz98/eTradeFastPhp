@@ -116,7 +116,7 @@ class FinancingController extends Kyapi_Controller_Action {
 
     // 金融方案详情 - 项目列表
     public function financingItemListAjaxAction() {
-        $msg = array();
+        // $msg = array();
         $requestObject = $this->_requestObject;
 
         $querySorts = array();
@@ -152,10 +152,11 @@ class FinancingController extends Kyapi_Controller_Action {
         }
 
         $resultObject = $this->json->listFinancingItem($requestObject, $financingID, $itemStatus, $querySorts, $keyword, $skip, $limit);
-        $msg["totalPage"] = json_decode($resultObject)->extData->totalPage;
-        $msg["rows"] = json_decode($resultObject)->result;
-
-        echo json_encode($msg);
+        // $msg["totalPage"] = json_decode($resultObject)->extData->totalPage;
+        // $msg["rows"] = json_decode($resultObject)->result;
+        //
+        // echo json_encode($msg);
+        echo json_encode(json_decode($resultObject)->result);
         exit;
     }
 
@@ -185,6 +186,11 @@ class FinancingController extends Kyapi_Controller_Action {
 
         $resultObject = $this->json->getFinancingItemView($requestObject, $itemID);
         $this->view->financingItem = $this->objectToArray(json_decode($resultObject)->result);
+        $financingItem = json_decode($resultObject)->result;
+
+        // 转帐信息
+        $bankAcctResultObject = $this->json->getBankAccountApi($requestObject, $financingItem->companyBankAcctID);
+        $this->view->bankAcct = $this->objectToArray(json_decode($bankAcctResultObject)->result);
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/financing/financingRepayment.phtml");

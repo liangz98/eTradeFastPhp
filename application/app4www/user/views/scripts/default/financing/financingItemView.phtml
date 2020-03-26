@@ -236,7 +236,7 @@
                 <tbody>
                 <?php if (empty($this->financingItem['financingRepaymentList'])):?>
                     <tr>
-                        <td colspan="9" class="text-center"><a href="/user/financing">暂无还款记录，去还款</a></td>
+                        <td colspan="9" class="text-center"><a href="/user/financing/financing-repayment">暂无还款记录，<span style="color: var(--brand-primary);">去还款</span></a></td>
                     </tr>
                 <?php else: ?>
                     <?php foreach ($this->financingItem['financingRepaymentList'] as $financingRepayment): ?>

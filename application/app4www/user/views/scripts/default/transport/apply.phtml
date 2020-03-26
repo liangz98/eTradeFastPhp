@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+	<title><?php echo $this->translate('etradefast'); ?></title>
+    <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <link href="/ky/css/freight/freight.css" rel="stylesheet">
+
+    <link href="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.css" rel="stylesheet">
+    <link href="/ky/bootstrap-select-1.12.4-dist/css/bootstrap-select.min.css" rel="stylesheet">
+</head>
+<body>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
+
+<div class="container-fluid index-body">
+	<div class="container">
+        <ol class="breadcrumb">
+            <li><a href="/"><?php echo $this->translate('nav_index'); ?></a></li>
+            <li class="active"><?php echo $this->translate('freightLoanApply'); ?></li>
+        </ol>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <!-- Table -->
+                <table id="resultListTable" class="table-striped"></table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12" style="margin-bottom: 50px"></div>
+        </div>
+	</div>
+</div>
+
+<nav class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container">
+        <form class="form-horizontal" action="javascript:void(0)" onsubmit="search()" id="search_form">
+            <div class="form-group" style="margin-top: 10px;">
+                <label for="paymentStatus" class="col-sm-1 control-label"><?php echo $this->translate('订单类型'); ?></label>
+                <div class="col-sm-4">
+                    <select class="selectpicker form-control" name="paymentStatus" id="paymentStatus">
+                        <option value="db">德邦快递  可用额度  1,000,000 元</option>
+                        <option value="rr">日日顺  可用额度  1,000,000 元</option>
+                        <option value="sf">顺丰速运  可用额度  1,000,000 元</option>
+                        <option value="jd">京东快递  可用额度  1,000,000 元</option>
+                    </select>
+                </div>
+
+                <label class="sr-only" for="selectionsDate">selectionsDate</label>
+                <div class="col-sm-2">
+                    <select class="selectpicker form-control" id="selectionsDate">
+                        <?php for ($i = 0; $i <= 6; $i++): ?>
+                        <option><?php echo date('Y-m-d', strtotime("-$i day")); ?></option>
+                        <?php endfor; ?>
+                    </select>
+                </div>
+
+                <label for="startDate" class="col-sm-1 control-label"><?php echo $this->translate('合计'); ?></label>
+                <div class="col-sm-3">
+                    <p class="form-control-static"><span id="total_static">0</span> 元</p>
+                    <input type="hidden" name="total" id="total" value="0">
+                </div>
+
+                <button type="submit" class="btn btn-primary"><?php echo $this->translate('提交申请'); ?></button>
+            </div>
+        </form>
+    </div>
+</nav>
+
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script src="/ky/js/base64.js"></script>
+<script src="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.js"></script>
+<script src="/ky/bootstrap-table-1.12.1-dist/locale/bootstrap-table-zh-CN.min.js"></script>
+<script type="text/javascript" src="/ky/bootstrap-select-1.12.4-dist/js/bootstrap-select.min.js"></script>
+
+<script type="text/javascript">
+    var dataDict = {},
+        userLangCode = '<?php echo $this->userLangCode; ?>',
+        $resultListTable = $('#resultListTable');
+
+	$().ready(function() {
+
+	});
+
+	$(function () {
+        if (userLangCode === 'en_US') {
+            $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['en-US']);
+        } else {
+            $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['zh-CN']);
+        }
+
+        // 初始化日期控件, 绑定多个
+        var layDateLang = '<?php if ($this->userLangCode == "en_US") echo "en"; else echo "cn";?>';
+        layui.use('laydate', function() {
+            var laydate = layui.laydate;
+            lay('.layDateUI').each(function(){
+                laydate.render({
+                    elem: this
+                    ,trigger: 'click'
+                    ,lang: layDateLang
+                });
+            });
+        });
+
+        var dataDictQuery = '/user/common/dict-ajax';
+        var dictCode = ["FACTORING_STATUS"];
+        $.ajax({
+            type: "POST",
+            url: dataDictQuery,
+            data: {
+                dictCode: dictCode,
+                langCode: '<?php echo $this->userLangCode; ?>'
+            },
+            dataType: "json",
+            success: function (data) {
+                $.data(dataDict, 'dataDict', data);
+
+                $resultListTable.bootstrapTable({
+                    classes: 'table table-no-bordered',
+                    checkboxHeader: true,
+                    method: 'POST',
+                    clickToSelect: true,
+                    // 对a和button标签忽略clickToSelect事件
+                    ignoreClickToSelectOn: function (element) {
+                        return $.inArray(element.tagName, ['A', 'BUTTON']);
+                    },
+                    url: '/user/freight/freight-loan-apply-list-ajax',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    queryParams: function(params) {
+                        return {
+                            limit: 120,
+                            skip: 0,
+                            orderType: $("#paymentStatus").val()
+                        };
+                    },
+                    onLoadSuccess: function() {
+                        $resultListTable.bootstrapTable('checkAll');
+                        refreshTotal($resultListTable);
+                    },
+                    onCheck: function() {
+                        refreshTotal($resultListTable);
+                    },
+                    onUncheck:function(){
+                        refreshTotal($resultListTable);
+                    },
+                    onCheckAll: function () {
+                        refreshTotal($resultListTable);
+                    },
+                    onUncheckAll: function () {
+                        refreshTotal($resultListTable);
+                    },
+                    onClickRow:function(row, $element, field) {
+                        // alert(JSON.stringify(row));
+                    },
+                    columns: [{
+                        halign: 'center',
+                        checkbox: true
+                    }, {
+                        field: 'transNo',
+                        title: '<?php echo $this->translate("运单编号"); ?>',
+                        width: 200,
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "";
+                            }
+                            value += '<br>';
+
+                            var subject = row.subject;
+                            if (subject === undefined || subject === '' || subject === null) {
+                                subject = "";
+                            }
+                            subject += '<br>';
+
+                            var remarks = row.remarks;
+                            if (remarks === undefined || remarks === '' || remarks === null) {
+                                remarks = "";
+                            }
+
+                            return value;
+                        }
+                    }, {
+                        field: 'totalAmount',
+                        title: '<?php echo $this->translate("运单金额"); ?>',
+                        align: 'right',
+                        halign: 'center',
+                        valign: 'middle',
+                        width: 160,
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "-";
+                            }
+                            var result = '<p>' + row.crnCode + ' ' + formatCurrency(value, 2) + '</p>';
+                            if (row.rptype === 'P') {
+                                result = '<p class="text-danger">' + row.crnCode + ' ' + formatCurrency(value, 2) + '</p>';
+                            }
+
+                            return result;
+                        }
+                    }, {
+                        field: 'oppCustomerName',
+                        title: '<?php echo $this->translate("承运方"); ?>',
+                        valign: 'middle',
+                        width: 300,
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "-";
+                            }
+
+                            return value;
+                        }
+                    }, {
+                        field: 'paymentStatus',
+                        title: '<?php echo $this->translate("始发地/目的地"); ?>',
+                        valign: 'middle',
+                        // width: 160,
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                value = "-";
+                            }
+                            var result = '';
+                            var data = $.data(dataDict, 'dataDict');
+                            $.each(data, function (key, item) {
+                                if (key === 'PAYMENT_STATUS') {
+                                    $.each(item, function (i, dict) {
+                                        if (dict.code === value + '') {
+                                            if (dict.code === '0') {
+                                                if (row.rptype === 'P') {
+                                                    result = '待付';
+                                                } else if (row.rptype === 'R') {
+                                                    result = '待收';
+                                                } else if (row.rptype === 'O') {
+                                                    result = '申请中';
+                                                }
+                                            } else {
+                                                result = dict.name;
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                            return result;
+                        }
+                    }]
+                });
+            }
+        });
+
+        $('#paymentStatus').on('changed.bs.select', function () {
+            $resultListTable.bootstrapTable('refresh', {
+                query: {
+                    limit: 10,
+                    skip: 0,
+                    orderType: $("#paymentStatus").val()
+                }
+            });
+
+            refreshTotal($resultListTable);
+        });
+
+        $('#selectionsDate').on('changed.bs.select', function () {
+            $resultListTable.bootstrapTable('refresh', {
+                query: {
+                    limit: 20,
+                    skip: 0,
+                    orderType: $("#paymentStatus").val()
+                }
+            });
+
+            refreshTotal($resultListTable);
+        });
+    });
+
+	function refreshTotal($resultListTable) {
+        var $allSelectionsData = $resultListTable.bootstrapTable('getAllSelections'),
+            allSelectionsTotal = 0;
+
+        $.each($allSelectionsData, function(i, val) { //两个参数，第一个参数表示遍历的数组的下标，第二个参数表示下标对应的值
+            allSelectionsTotal += val.totalAmount;
+        });
+
+        $("#total_static").html(formatCurrency(allSelectionsTotal, 2));
+        $("#total").val(allSelectionsTotal);
+    }
+</script>
+</body>
+</html>

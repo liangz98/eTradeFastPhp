@@ -2893,7 +2893,7 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl {
     }
 
     /**
-     * 运单 - 金融列表申请右上角图表
+     * 金融列表申请右上角图表
      * @param $requestObject
      * @return bool|string
      */
@@ -2901,6 +2901,61 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl {
         $_url = $this->url . '/financingapi/financingApi!listLoanStatisticData.action';
         $_params = json_encode(array(
             "requestObject" => $requestObject
+        ));
+        return $this->vpost($_url, $_params);
+    }
+
+    /**
+     * 运单列表
+     * @param $requestObject
+     * @param $customerID
+     * @param $querySorts
+     * @param $keyword
+     * @param $skip
+     * @param $limit
+     * @return bool|string
+     */
+    public function listTransportOrder($requestObject, $customerID, $querySorts, $keyword, $skip, $limit) {
+        $_url = $this->url . '/transOrderapi/transOrderApi!listTransportOrderQuery.action';
+        $_params = json_encode(array(
+            "requestObject" => $requestObject,
+            "customerID"    => $customerID,
+            "querySorts"    => $querySorts,
+            "keyword"       => $keyword,
+            "skip"          => $skip,
+            "limit"         => $limit
+        ));
+        return $this->vpost($_url, $_params);
+    }
+
+    /**
+     * 运单详细信息
+     * @param $requestObject
+     * @param $transportOrderID
+     * @return bool|string
+     */
+    public function getTransOrderView($requestObject, $transportOrderID) {
+        $_url = $this->url . '/transOrderapi/transOrderApi!getTransOrderView.action';
+        $_params = json_encode(array(
+            "requestObject"    => $requestObject,
+            "transportOrderID" => $transportOrderID
+        ));
+        return $this->vpost($_url, $_params);
+    }
+
+    /**
+     * 申请的列表
+     * @param $requestObject
+     * @param $customerID
+     * @param $signDateTime
+     * @return bool|string
+     */
+    public function listApplyOrderList($requestObject, $customerID, $signDateTime) {
+        $_url = $this->url . '/transOrderapi/transOrderApi!listApplyOrderList.action';
+        $_params = json_encode(array(
+            "requestObject" => $requestObject,
+            "customerID"    => $customerID,
+            "signDateTime"  => $signDateTime
         ));
         return $this->vpost($_url, $_params);
     }
