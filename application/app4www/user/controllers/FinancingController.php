@@ -169,9 +169,82 @@ class FinancingController extends Kyapi_Controller_Action {
 
         $resultObject = $this->json->getFinancingItemView($requestObject, $itemID);
         $this->view->financingItem = $this->objectToArray(json_decode($resultObject)->result);
+        $financingItem = json_decode($resultObject)->result;
+
+        // 文档签署模
+        if ($financingItem->itemID) {
+            $bizType = 'CR';
+            $contractResultObject = $this->json->listBizContract($requestObject, $bizType, $financingItem->itemID);
+            $resContract = json_decode($contractResultObject);
+            if ($resContract->result) {
+                $this->view->contractList = $this->objectToArray($resContract->result);
+            }
+        } else {
+            $this->view->contractList = [];
+        }
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/financing/financingItemView.phtml");
+            echo $content;
+            exit;
+        }
+    }
+
+    // 金融项目申请
+    public function addFinancingItemAction() {
+        $requestObject = $this->_requestObject;
+
+        if ($this->_request->isPost()) {
+            $financingItem = array();
+            $financingItem['financingID'] = $this->_request->getParam('financingID');
+            $loanDate = $this->_request->getParam('loanDate');
+            $expiryDate = $this->_request->getParam('expiryDate');
+            if (empty($loanDate)) {
+                $loanDate = date("Y-m-d\TH:i:s");
+            }
+            if (empty($expiryDate)) {
+                $expiryDate = date("Y-m-d\TH:i:s");
+            }
+            $financingItem['loanDate'] = date("Y-m-d\TH:i:s", strtotime($loanDate));
+            $financingItem['expiryDate'] = date("Y-m-d\TH:i:s", strtotime($expiryDate));
+            $financingItem['receivableAmount'] = (double)$this->_request->getParam('receivableAmount');
+            $financingItem['assignmentAmount'] = (double)$this->_request->getParam('assignmentAmount');
+            $financingItem['financingAmount'] = (double)$this->_request->getParam('financingAmount');
+            if (is_array($financingItem)) {
+                $financingItem = $this->arrayToObject($financingItem);
+            }
+
+            $financingObjectList = array();
+            $objBizType = $_POST['objBizType'];
+            $objBizID = $_POST['objBizID'];
+            $objBizNo = $_POST['objBizNo'];
+            $summary = $_POST['summary'];
+            $crnCode = $_POST['crnCode'];
+            $totalAmount = $_POST['totalAmount'];
+            foreach ($objBizType as $key=>$value) {
+                $financingObjectList[$key]['objBizType'] = $objBizType[$key];
+                $financingObjectList[$key]['objBizID'] = $objBizID[$key];
+                $financingObjectList[$key]['objBizNo'] = $objBizNo[$key];
+                $financingObjectList[$key]['summary'] = $summary[$key];
+                $financingObjectList[$key]['crnCode'] = $crnCode[$key];
+                $financingObjectList[$key]['totalAmount'] = (double)$totalAmount[$key];
+            }
+
+            $resultObject = $this->json->addFinancingItem($requestObject, $financingItem, $financingObjectList);
+            $resultObject = json_decode($resultObject);
+            $resultMsg = base64_encode($resultObject->result->itemID);
+
+            // 页面跳转
+            if ($resultObject->status == 1) {
+                $this->redirect("/financing/financing-item-view?" . $resultMsg);
+            } else {
+                $resultMsg = base64_encode($this->view->translate('tip_add_fail'). '! ' . $resultObject->error);
+                $this->redirect("/transport/apply?resultMsg=" . $resultMsg);
+            }
+        }
+
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/transport/apply.phtml");
             echo $content;
             exit;
         }

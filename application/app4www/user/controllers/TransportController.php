@@ -48,7 +48,7 @@ class TransportController extends Kyapi_Controller_Action {
         }
     }
 
-    public function freightListAjaxAction() {
+    public function transportOrderListAjaxAction() {
         $msg = array();
         $requestObject = $this->_requestObject;
 
@@ -94,14 +94,8 @@ class TransportController extends Kyapi_Controller_Action {
                 $factoringMode = null;
             }
         }
-        $factoringNo = $this->_request->getParam('factoringNo');
-        $orderNo = $this->_request->getParam('orderNo');
-        $crnCode = $this->_request->getParam('crnCode');
-        if (!empty($crnCode)) {
-            if ($crnCode == 'all') {
-                $crnCode = null;
-            }
-        }
+        $customerID = $this->_request->getParam('customerID');
+
         $startDate = $this->_request->getParam('startDate');
         if (empty($startDate)) {
             $startDate = null;
@@ -139,9 +133,7 @@ class TransportController extends Kyapi_Controller_Action {
             }
         }
 
-        $resultObject = $this->json->listFactoring($requestObject, $queryParams, $querySorts, $keyword, $skip, $limit,
-            $factoringStatus, $factoringMode, $factoringNo, $waitConfirmed = false, $waitPayServiceCharge = false, $orderNo, $crnCode,
-            $startDate, $endDate, $lowerAmount, $upperAmount);
+        $resultObject = $this->json->listTransportOrder($requestObject, $customerID, $querySorts, $keyword, $skip, $limit);
         $msg["totalPage"] = json_decode($resultObject)->extData->totalPage;
         $msg["rows"] = json_decode($resultObject)->result;
 
@@ -172,80 +164,32 @@ class TransportController extends Kyapi_Controller_Action {
     }
 
     // 方案申请页列表
-    public function freightLoanApplyListAjaxAction() {
+    public function applyListAjaxAction() {
         $msg = array();
         $requestObject = $this->_requestObject;
 
-        $queryParams = array();
-        $crnCode = $this->_request->getParam('crnCode');
-        if (!empty($crnCode)) {
-            $queryParams['crnCode'] = $crnCode;
+        $customerID = $this->_request->getParam('customerID');
+
+        $signDateTime = $this->_request->getParam('signDateTime');
+        if (empty($signDateTime)) {
+            $signDateTime = '';
         }
 
-        $querySorts = array();
-        $querySorts['createTime'] = "DESC";
+        $resultObject = $this->json->listApplyOrderList($requestObject, $customerID, $signDateTime);
+        // $msg["total"] = json_decode($resultObject)->extData->totalSize;
+        // $msg["rows"] = json_decode($resultObject)->result;
 
-        $keyword = $this->_request->getParam('keyword');
-        if (empty($keyword)) {
-            $keyword = null;
-        }
+        echo json_encode(json_decode($resultObject)->result);
+        exit;
+    }
 
-        $limit = $this->_request->getParam('limit');
-        if (empty($limit) || $limit <= 0) {
-            $limit = 50;
-        }
+    public function listActivatedFinancingAjaxAction() {
+        $msg = array();
+        $requestObject = $this->_requestObject;
 
-        $skip = $this->_request->getParam('skip');
-        if (empty($limit) || $limit <= 0) {
-            $skip = 0;
-        }
+        $debtor = $this->_request->getParam('debtor');
 
-        if (is_array($queryParams)) {
-            $queryParams = $this->arrayToObject($queryParams);
-        }
-
-        if (is_array($querySorts)) {
-            $querySorts = $this->arrayToObject($querySorts);
-        }
-
-        $startDate = $this->_request->getParam('startDate');
-        if (empty($startDate)) {
-            $startDate = null;
-        } else {
-            $startDate = date("Y-m-d\TH:i:s", strtotime($startDate));
-        }
-        $endDate = $this->_request->getParam('endDate');
-        if (empty($endDate)) {
-            $endDate = null;
-        } else {
-            $endDate = date("Y-m-d\TH:i:s", strtotime($endDate));
-        }
-
-        $lowerAmount = $this->_request->getParam('lowerAmount');
-        if (empty($lowerAmount)) {
-            $lowerAmount = null;
-        }
-        $upperAmount = $this->_request->getParam('upperAmount');
-        if (empty($upperAmount)) {
-            $upperAmount = null;
-        }
-
-        $paymentStatus = strval($this->_request->getParam('paymentStatus'));
-        if (empty($paymentStatus)) {
-            $paymentStatus = null;
-        }
-
-        $tradingType = strval($this->_request->getParam('tradingType'));
-        if (empty($tradingType)) {
-            $tradingType = null;
-        }
-
-        $transNo = strval($this->_request->getParam('transNo'));
-        if (empty($transNo)) {
-            $transNo = null;
-        }
-
-        $resultObject = $this->json->listpaymentTradApi($requestObject, $queryParams, $querySorts, $keyword, $skip, $limit, $startDate, $endDate, $lowerAmount, $upperAmount, $paymentStatus, $tradingType, $transNo);
+        $resultObject = $this->json->listActivatedFinancing($requestObject, $debtor);
         // $msg["total"] = json_decode($resultObject)->extData->totalSize;
         // $msg["rows"] = json_decode($resultObject)->result;
 

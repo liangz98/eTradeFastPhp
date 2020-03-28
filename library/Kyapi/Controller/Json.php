@@ -2906,6 +2906,21 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl {
     }
 
     /**
+     * 激活的金融方案
+     * @param $requestObject
+     * @param $debtor
+     * @return bool|string
+     */
+    public function listActivatedFinancing($requestObject, $debtor) {
+        $_url = $this->url . '/financingapi/financingApi!listActivatedFinancing.action';
+        $_params = json_encode(array(
+            "requestObject" => $requestObject,
+            "debtor"        => $debtor
+        ));
+        return $this->vpost($_url, $_params);
+    }
+
+    /**
      * 运单列表
      * @param $requestObject
      * @param $customerID

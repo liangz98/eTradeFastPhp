@@ -20,6 +20,13 @@
             <li class="active"><?php echo $this->translate('freightLoanApply'); ?></li>
         </ol>
 
+        <?php if (!empty($this->resultMsg)): ?>
+            <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <p><?php echo base64_decode($this->resultMsg); ?></p>
+            </div>
+        <?php endif; ?>
+
         <div class="panel panel-default">
             <div class="panel-body">
                 <!-- Table -->
@@ -35,22 +42,19 @@
 
 <nav class="navbar navbar-default navbar-fixed-bottom">
     <div class="container">
-        <form class="form-horizontal" action="javascript:void(0)" onsubmit="search()" id="search_form">
+        <form class="form-horizontal" action="/user/financing/add-financing-item" onsubmit="return addFinancing();" id="addFinancing_form" method="post">
             <div class="form-group" style="margin-top: 10px;">
-                <label for="paymentStatus" class="col-sm-1 control-label"><?php echo $this->translate('订单类型'); ?></label>
+                <label for="customerID" class="col-sm-1 control-label"><?php echo $this->translate('订单类型'); ?></label>
                 <div class="col-sm-4">
-                    <select class="selectpicker form-control" name="paymentStatus" id="paymentStatus">
-                        <option value="db">德邦快递  可用额度  1,000,000 元</option>
-                        <option value="rr">日日顺  可用额度  1,000,000 元</option>
-                        <option value="sf">顺丰速运  可用额度  1,000,000 元</option>
-                        <option value="jd">京东快递  可用额度  1,000,000 元</option>
+                    <select class="selectpicker form-control" name="customerID" id="customerID">
+                        <?php echo $this->ShowDictionaryList($this->dic_Setting['TRANSPORT_ACCOUNT_LIST'], $this->userLangCode, $this->dic_Setting['TRANSPORT_ACCOUNT_LIST'], ''); ?>
                     </select>
                 </div>
 
-                <label class="sr-only" for="selectionsDate">selectionsDate</label>
+                <label class="sr-only" for="signDateTime">signDateTime</label>
                 <div class="col-sm-2">
-                    <select class="selectpicker form-control" id="selectionsDate">
-                        <?php for ($i = 0; $i <= 6; $i++): ?>
+                    <select class="selectpicker form-control" name="signDateTime" id="signDateTime">
+                        <?php for ($i = 0; $i <= 9; $i++): ?>
                         <option><?php echo date('Y-m-d', strtotime("-$i day")); ?></option>
                         <?php endfor; ?>
                     </select>
@@ -58,8 +62,8 @@
 
                 <label for="startDate" class="col-sm-1 control-label"><?php echo $this->translate('合计'); ?></label>
                 <div class="col-sm-3">
-                    <p class="form-control-static"><span id="total_static">0</span> 元</p>
-                    <input type="hidden" name="total" id="total" value="0">
+                    <p class="form-control-static"><span id="receivableAmount_static">0</span> 元</p>
+                    <input type="hidden" name="receivableAmount" id="receivableAmount" value="0">
                 </div>
 
                 <button type="submit" class="btn btn-primary"><?php echo $this->translate('提交申请'); ?></button>
@@ -77,7 +81,8 @@
 <script type="text/javascript" src="/ky/bootstrap-select-1.12.4-dist/js/bootstrap-select.min.js"></script>
 
 <script type="text/javascript">
-    var dataDict = {},
+    let dataDict = {},
+        listActivatedFinancing = {},
         userLangCode = '<?php echo $this->userLangCode; ?>',
         $resultListTable = $('#resultListTable');
 
@@ -93,9 +98,9 @@
         }
 
         // 初始化日期控件, 绑定多个
-        var layDateLang = '<?php if ($this->userLangCode == "en_US") echo "en"; else echo "cn";?>';
+        let layDateLang = '<?php if ($this->userLangCode == "en_US") echo "en"; else echo "cn";?>';
         layui.use('laydate', function() {
-            var laydate = layui.laydate;
+            let laydate = layui.laydate;
             lay('.layDateUI').each(function(){
                 laydate.render({
                     elem: this
@@ -105,167 +110,134 @@
             });
         });
 
-        var dataDictQuery = '/user/common/dict-ajax';
-        var dictCode = ["FACTORING_STATUS"];
-        $.ajax({
-            type: "POST",
-            url: dataDictQuery,
-            data: {
-                dictCode: dictCode,
-                langCode: '<?php echo $this->userLangCode; ?>'
+        $resultListTable.bootstrapTable({
+            classes: 'table table-no-bordered',
+            checkboxHeader: true,
+            method: 'POST',
+            clickToSelect: true,
+            // 对a和button标签忽略clickToSelect事件
+            ignoreClickToSelectOn: function (element) {
+                return $.inArray(element.tagName, ['A', 'BUTTON']);
             },
-            dataType: "json",
-            success: function (data) {
-                $.data(dataDict, 'dataDict', data);
-
-                $resultListTable.bootstrapTable({
-                    classes: 'table table-no-bordered',
-                    checkboxHeader: true,
-                    method: 'POST',
-                    clickToSelect: true,
-                    // 对a和button标签忽略clickToSelect事件
-                    ignoreClickToSelectOn: function (element) {
-                        return $.inArray(element.tagName, ['A', 'BUTTON']);
+            url: '/user/transport/apply-list-ajax',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            queryParams: function(params) {
+                return {
+                    customerID: $("#customerID").val(),
+                    signDateTime: $("#signDateTime").val()
+                };
+            },
+            onLoadSuccess: function() {
+                $resultListTable.bootstrapTable('checkAll');
+                $.ajax({
+                    type: "POST",
+                    url: '/user/transport/list-activated-financing-ajax',
+                    data: {
+                        debtor: $("#customerID").val()
                     },
-                    url: '/user/freight/freight-loan-apply-list-ajax',
-                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                    queryParams: function(params) {
-                        return {
-                            limit: 120,
-                            skip: 0,
-                            orderType: $("#paymentStatus").val()
-                        };
-                    },
-                    onLoadSuccess: function() {
-                        $resultListTable.bootstrapTable('checkAll');
-                        refreshTotal($resultListTable);
-                    },
-                    onCheck: function() {
-                        refreshTotal($resultListTable);
-                    },
-                    onUncheck:function(){
-                        refreshTotal($resultListTable);
-                    },
-                    onCheckAll: function () {
-                        refreshTotal($resultListTable);
-                    },
-                    onUncheckAll: function () {
-                        refreshTotal($resultListTable);
-                    },
-                    onClickRow:function(row, $element, field) {
-                        // alert(JSON.stringify(row));
-                    },
-                    columns: [{
-                        halign: 'center',
-                        checkbox: true
-                    }, {
-                        field: 'transNo',
-                        title: '<?php echo $this->translate("运单编号"); ?>',
-                        width: 200,
-                        formatter: function (value, row) {
-                            if (value === undefined || value === '' || value === null) {
-                                value = "";
-                            }
-                            value += '<br>';
-
-                            var subject = row.subject;
-                            if (subject === undefined || subject === '' || subject === null) {
-                                subject = "";
-                            }
-                            subject += '<br>';
-
-                            var remarks = row.remarks;
-                            if (remarks === undefined || remarks === '' || remarks === null) {
-                                remarks = "";
-                            }
-
-                            return value;
-                        }
-                    }, {
-                        field: 'totalAmount',
-                        title: '<?php echo $this->translate("运单金额"); ?>',
-                        align: 'right',
-                        halign: 'center',
-                        valign: 'middle',
-                        width: 160,
-                        formatter: function (value, row) {
-                            if (value === undefined || value === '' || value === null) {
-                                value = "-";
-                            }
-                            var result = '<p>' + row.crnCode + ' ' + formatCurrency(value, 2) + '</p>';
-                            if (row.rptype === 'P') {
-                                result = '<p class="text-danger">' + row.crnCode + ' ' + formatCurrency(value, 2) + '</p>';
-                            }
-
-                            return result;
-                        }
-                    }, {
-                        field: 'oppCustomerName',
-                        title: '<?php echo $this->translate("承运方"); ?>',
-                        valign: 'middle',
-                        width: 300,
-                        formatter: function (value, row) {
-                            if (value === undefined || value === '' || value === null) {
-                                value = "-";
-                            }
-
-                            return value;
-                        }
-                    }, {
-                        field: 'paymentStatus',
-                        title: '<?php echo $this->translate("始发地/目的地"); ?>',
-                        valign: 'middle',
-                        // width: 160,
-                        formatter: function (value, row) {
-                            if (value === undefined || value === '' || value === null) {
-                                value = "-";
-                            }
-                            var result = '';
-                            var data = $.data(dataDict, 'dataDict');
-                            $.each(data, function (key, item) {
-                                if (key === 'PAYMENT_STATUS') {
-                                    $.each(item, function (i, dict) {
-                                        if (dict.code === value + '') {
-                                            if (dict.code === '0') {
-                                                if (row.rptype === 'P') {
-                                                    result = '待付';
-                                                } else if (row.rptype === 'R') {
-                                                    result = '待收';
-                                                } else if (row.rptype === 'O') {
-                                                    result = '申请中';
-                                                }
-                                            } else {
-                                                result = dict.name;
-                                            }
-                                        }
-                                    });
-                                }
-                            });
-                            return result;
-                        }
-                    }]
+                    dataType: "json",
+                    success: function (data) {
+                        listActivatedFinancing = data;
+                    }
                 });
-            }
+                refreshTotal($resultListTable);
+            },
+            onCheck: function() {
+                refreshTotal($resultListTable);
+            },
+            onUncheck:function(){
+                refreshTotal($resultListTable);
+            },
+            onCheckAll: function () {
+                refreshTotal($resultListTable);
+            },
+            onUncheckAll: function () {
+                refreshTotal($resultListTable);
+            },
+            onClickRow:function(row, $element, field) {
+                // alert(JSON.stringify(row));
+            },
+            columns: [{
+                halign: 'center',
+                checkbox: true
+            }, {
+                field: 'transOrderRefCode',
+                title: '<?php echo $this->translate("运单编号"); ?>',
+                width: 260,
+                formatter: function (value, row) {
+                    if (value === undefined || value === '' || value === null) {
+                        value = "";
+                    }
+                    return value;
+                }
+            }, {
+                field: 'orderAmount',
+                title: '<?php echo $this->translate("运单金额"); ?>',
+                align: 'right',
+                halign: 'center',
+                valign: 'middle',
+                width: 160,
+                formatter: function (value, row) {
+                    if (value === undefined || value === '' || value === null) {
+                        value = "-";
+                    }
+                    return ' ' + formatCurrency(value, 2);
+                }
+            }, {
+                field: 'oppCustomerName',
+                title: '<?php echo $this->translate("承运方"); ?>',
+                valign: 'middle',
+                width: 300,
+                formatter: function (value, row) {
+                    if (value === undefined || value === '' || value === null) {
+                        value = "-";
+                    }
+
+                    return value;
+                }
+            }, {
+                field: 'departureName',
+                title: '<?php echo $this->translate("始发地/目的地"); ?>',
+                valign: 'middle',
+                // width: 160,
+                formatter: function (value, row) {
+                    if (value === undefined || value === '' || value === null) {
+                        value = "-";
+                    }
+                    return value;
+                }
+            }]
         });
 
-        $('#paymentStatus').on('changed.bs.select', function () {
+        $('#customerID').on('changed.bs.select', function () {
+            let customerID = $("#customerID").val();
             $resultListTable.bootstrapTable('refresh', {
                 query: {
-                    limit: 10,
-                    skip: 0,
-                    orderType: $("#paymentStatus").val()
+                    customerID: customerID,
+                    signDateTime: $("#signDateTime").val()
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: '/user/transport/list-activated-financing-ajax',
+                data: {
+                    debtor: customerID
+                },
+                dataType: "json",
+                success: function (data) {
+                    listActivatedFinancing = data;
                 }
             });
 
             refreshTotal($resultListTable);
         });
 
-        $('#selectionsDate').on('changed.bs.select', function () {
+        $('#signDateTime').on('changed.bs.select', function () {
             $resultListTable.bootstrapTable('refresh', {
                 query: {
-                    limit: 20,
-                    skip: 0,
-                    orderType: $("#paymentStatus").val()
+                    customerID: $("#customerID").val(),
+                    signDateTime: $("#signDateTime").val()
                 }
             });
 
@@ -274,15 +246,51 @@
     });
 
 	function refreshTotal($resultListTable) {
-        var $allSelectionsData = $resultListTable.bootstrapTable('getAllSelections'),
+        let $allSelectionsData = $resultListTable.bootstrapTable('getAllSelections'),
             allSelectionsTotal = 0;
 
         $.each($allSelectionsData, function(i, val) { //两个参数，第一个参数表示遍历的数组的下标，第二个参数表示下标对应的值
-            allSelectionsTotal += val.totalAmount;
+            allSelectionsTotal += val.orderAmount;
         });
 
-        $("#total_static").html(formatCurrency(allSelectionsTotal, 2));
-        $("#total").val(allSelectionsTotal);
+        $("#receivableAmount_static").html(formatCurrency(allSelectionsTotal, 2));
+        $("#receivableAmount").val(allSelectionsTotal);
+    }
+
+    function addFinancing() {
+        if (listActivatedFinancing && listActivatedFinancing.length > 0) {
+            let $addFinancing_form = $("#addFinancing_form"),
+                activatedFinancing = listActivatedFinancing[0],
+                receivableAmount = $("#receivableAmount").val();
+
+            $addFinancing_form.append($("<input type='hidden' name='financingID' value='" + activatedFinancing.financingID + "' />"));
+            $addFinancing_form.append($("<input type='hidden' name='loanDate' value='2020-4-1' />"));
+            $addFinancing_form.append($("<input type='hidden' name='expiryDate' value='2020-5-20' />"));
+            $addFinancing_form.append($("<input type='hidden' name='assignmentAmount' value='" + receivableAmount + "' />"));
+            $addFinancing_form.append($("<input type='hidden' name='financingAmount' value='" + receivableAmount * 0.63 + "' />"));
+
+            let resultSelections = $resultListTable.bootstrapTable('getSelections');
+            $.each(resultSelections, function(i, transportOrder) {
+                console.log(i);
+                $addFinancing_form.append($("<input type='hidden' name='objBizType[]' value='TT' />"));
+                $addFinancing_form.append($("<input type='hidden' name='objBizID[]' value='" + transportOrder.transportOrderID + "' />"));
+                $addFinancing_form.append($("<input type='hidden' name='objBizNo[]' value='" + transportOrder.transportOrderCode + "' />"));
+                let summary = transportOrder.agencyName + "|" + transportOrder.customerName + "|" + transportOrder.goodsDesc + "|" + transportOrder.carrierName + "|";
+                let transporterStr = '';
+                $.each(transportOrder.transporterList, function(i, transporter) {
+                    if (i > 0) {
+                        transporterStr += ";";
+                    }
+                    transporterStr += transporter.vehicleNo + " " + transporter.dirverName + " " + transporter.mobile;
+                });
+                $addFinancing_form.append($("<input type='hidden' name='summary[]' value='" + summary + transporterStr + "' />"));
+                $addFinancing_form.append($("<input type='hidden' name='crnCode[]' value='" + transportOrder.crnCode + "' />"));
+                $addFinancing_form.append($("<input type='hidden' name='totalAmount[]' value='" + transportOrder.orderAmount + "' />"));
+            });
+            return true;
+        } else {
+            return false;
+        }
     }
 </script>
 </body>

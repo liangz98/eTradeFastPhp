@@ -24,7 +24,7 @@
             <div class="panel-body">
 
                 <div class="page-header">
-                    <h3><?php echo $this->translate('订单列表'); ?><a href="/user/freight/freight-loan-apply" class="btn btn-success pull-right">生成金融方案</a></h3>
+                    <h3><?php echo $this->translate('订单列表'); ?><a href="/user/transport/apply" class="btn btn-success pull-right">生成金融方案</a></h3>
                 </div>
 
                 <form class="form-horizontal" action="javascript:void(0)" onsubmit="search()" id="search_form">
@@ -95,7 +95,7 @@
 <script type="text/javascript" src="/ky/bootstrap-select-1.12.4-dist/js/bootstrap-select.min.js"></script>
 
 <script type="text/javascript">
-    var dataDict = {},
+    let dataDict = {},
         userLangCode = '<?php echo $this->userLangCode; ?>';
 
 	$().ready(function() {
@@ -110,9 +110,9 @@
         }
 
         // 初始化日期控件, 绑定多个
-        var layDateLang = '<?php if ($this->userLangCode == "en_US") echo "en"; else echo "cn";?>';
+        let layDateLang = '<?php if ($this->userLangCode == "en_US") echo "en"; else echo "cn";?>';
         layui.use('laydate', function() {
-            var laydate = layui.laydate;
+            let laydate = layui.laydate;
             lay('.layDateUI').each(function(){
                 laydate.render({
                     elem: this
@@ -122,8 +122,8 @@
             });
         });
 
-        var dataDictQuery = '/user/common/dict-ajax';
-        var dictCode = ["FACTORING_STATUS"];
+        let dataDictQuery = '/user/common/dict-ajax';
+        let dictCode = ["FACTORING_STATUS"];
         $.ajax({
             type: "POST",
             url: dataDictQuery,
@@ -136,7 +136,7 @@
                 $.data(dataDict, 'dataDict', data);
 
                 $('#resultListTable').bootstrapTable({
-                    url: '/user/settle/payment-trading-list-ajax',
+                    url: '/user/transport/transport-order-list-ajax',
                     method: 'post',
                     // showRefresh: true,
                     // search: true,
@@ -163,15 +163,20 @@
                         };
                     },
                     columns: [{
-                        field: 'recordDate',
+                        field: 'transOrderRefCode',
                         title: '<?php echo $this->translate("订单编号/商品"); ?>',
                         valign: 'middle',
-                        width: 170,
+                        width: 280,
                         formatter: function (value, row) {
+                            let base = new Base64(),
+                                resultEnCode = base.encode(row.transportOrderID),
+                                href = "/user/transport/view?"+resultEnCode;
+
                             if (value === undefined || value === '' || value === null) {
                                 value = "-";
                             }
-                            return new Date(value).format("yyyy-MM-dd hh:mm:ss");
+                            // return new Date(value).format("yyyy-MM-dd hh:mm:ss");
+                            return '<a href="' + href + '">' + value + '<br>' + row.goodsDesc + '</a>';
                         }
                     }, {
                         field: 'tradingType',
@@ -181,8 +186,8 @@
                             if (value === undefined || value === '' || value === null) {
                                 return value = "-";
                             } else {
-                                var result = '';
-                                var data = $.data(dataDict, 'dataDict');
+                                let result = '',
+                                    data = $.data(dataDict, 'dataDict');
                                 if (value !== 'D') {
                                     $.each(data, function (key, item) {
                                         if (key === 'PAYMENT_TRADING_TYPE') {
@@ -204,34 +209,16 @@
                                         }
                                     });
                                 }
-                                return result;
+
+                                let base = new Base64(),
+                                    resultEnCode = base.encode(row.transportOrderID),
+                                    href = "/user/transport/view?"+resultEnCode;
+
+                                return '<a href="' + href + '">' + result + '</a>';
                             }
                         }
                     }, {
-                        field: 'transNo',
-                        title: '<?php echo $this->translate("货物数量/体积/重量"); ?>',
-                        width: 350,
-                        formatter: function (value, row) {
-                            if (value === undefined || value === '' || value === null) {
-                                value = "";
-                            }
-                            value += '<br>';
-
-                            var subject = row.subject;
-                            if (subject === undefined || subject === '' || subject === null) {
-                                subject = "";
-                            }
-                            subject += '<br>';
-
-                            var remarks = row.remarks;
-                            if (remarks === undefined || remarks === '' || remarks === null) {
-                                remarks = "";
-                            }
-
-                            return value + '<span style="color: #ccc;">' + subject + remarks + '</span>';
-                        }
-                    }, {
-                        field: 'oppCustomerName',
+                        field: 'carrierName',
                         title: '<?php echo $this->translate("承运人"); ?>',
                         valign: 'middle',
                         formatter: function (value, row) {
@@ -239,142 +226,69 @@
                                 value = "-";
                             }
 
-                            return value;
+                            let base = new Base64(),
+                                resultEnCode = base.encode(row.transportOrderID),
+                                href = "/user/transport/view?"+resultEnCode;
+                            return '<a href="' + href + '">' + value + '</a>';
                         }
                     }, {
-                        field: 'totalAmount',
+                        field: 'arrivalsName',
                         title: '<?php echo $this->translate("始发地/目的地"); ?>',
-                        align: 'right',
                         halign: 'center',
                         valign: 'middle',
                         formatter: function (value, row) {
                             if (value === undefined || value === '' || value === null) {
                                 value = "-";
                             }
-                            var result = '<p>' + row.crnCode + ' ' + value + '</p>';
-                            if (row.rptype === 'P') {
-                                result = '<p class="text-danger">' + row.crnCode + ' ' + value + '</p>';
-                            }
 
+                            let base = new Base64(),
+                                resultEnCode = base.encode(row.transportOrderID),
+                                href = "/user/transport/view?"+resultEnCode;
 
-                            return result;
+                            return '<a href="' + href + '">' + row.departureName + '<br>' + value + '</a>';
                         }
                     }, {
-                        field: 'paymentStatus',
+                        field: 'takeDeliveryTime',
                         title: '<?php echo $this->translate("到货时间"); ?>',
                         valign: 'middle',
                         formatter: function (value, row) {
+                            let base = new Base64(),
+                                resultEnCode = base.encode(row.transportOrderID),
+                                href = "/user/transport/view?"+resultEnCode;
+
                             if (value === undefined || value === '' || value === null) {
                                 value = "-";
-                            }
-                            var result = '';
-                            var data = $.data(dataDict, 'dataDict');
-                            $.each(data, function (key, item) {
-                                if (key === 'PAYMENT_STATUS') {
-                                    $.each(item, function (i, dict) {
-                                        if (dict.code === value + '') {
-                                            if (dict.code === '0') {
-                                                if (row.rptype === 'P') {
-                                                    result = '待付';
-                                                } else if (row.rptype === 'R') {
-                                                    result = '待收';
-                                                } else if (row.rptype === 'O') {
-                                                    result = '申请中';
-                                                }
-                                            } else {
-                                                result = dict.name;
-                                            }
-                                        }
-                                    });
-                                }
-                            });
-                            return result;
-                        }
-                    }, {
-                        field: 'paymentStatus',
-                        title: '<?php echo $this->translate("路线距离"); ?>',
-                        valign: 'middle',
-                        formatter: function (value, row) {
-                            if (value === undefined || value === '' || value === null) {
-                                value = "-";
-                            }
-                            var result = '';
-                            var data = $.data(dataDict, 'dataDict');
-                            $.each(data, function (key, item) {
-                                if (key === 'PAYMENT_STATUS') {
-                                    $.each(item, function (i, dict) {
-                                        if (dict.code === value + '') {
-                                            if (dict.code === '0') {
-                                                if (row.rptype === 'P') {
-                                                    result = '待付';
-                                                } else if (row.rptype === 'R') {
-                                                    result = '待收';
-                                                } else if (row.rptype === 'O') {
-                                                    result = '申请中';
-                                                }
-                                            } else {
-                                                result = dict.name;
-                                            }
-                                        }
-                                    });
-                                }
-                            });
-                            return result;
-                        }
-                    }, {
-                        field: 'paymentStatus',
-                        title: '<?php echo $this->translate("运费总价"); ?>',
-                        valign: 'middle',
-                        formatter: function (value, row) {
-                            if (value === undefined || value === '' || value === null) {
-                                value = "-";
-                            }
-                            var result = '';
-                            var data = $.data(dataDict, 'dataDict');
-                            $.each(data, function (key, item) {
-                                if (key === 'PAYMENT_STATUS') {
-                                    $.each(item, function (i, dict) {
-                                        if (dict.code === value + '') {
-                                            if (dict.code === '0') {
-                                                if (row.rptype === 'P') {
-                                                    result = '待付';
-                                                } else if (row.rptype === 'R') {
-                                                    result = '待收';
-                                                } else if (row.rptype === 'O') {
-                                                    result = '申请中';
-                                                }
-                                            } else {
-                                                result = dict.name;
-                                            }
-                                        }
-                                    });
-                                }
-                            });
-                            return result;
-                        }
-                    }, {
-                        title: '<?php echo $this->translate("operation"); ?>',
-                        valign: 'middle',
-                        formatter: function (value, row, index) {
-                            var base = new Base64();
-                            var resultEnCode = base.encode(row.tradingID);
-                            var result = '';
-                            if (row.allowPayment) {
-                                var href = "/user/freight/payment?"+resultEnCode;
-                                var str = "<?php echo $this->translate('settle_payment');?>";
-                                result += '<a href="' + href + '">' + str + '</a>|';
-                            }
-                            if (row.allowTransfer) {
-                                var href = "/user/settle/transfer?"+resultEnCode;
-                                var str = "<?php echo $this->translate('settle_transfer');?>";
-                                result += '<a href="' + href + '">' + str + '</a>|';
                             }
 
-                            var infoHref = "/user/freight/freight-view?"+resultEnCode;
-                            var infoStr = "<?php echo $this->translate('settle_INF');?>";
-                            result += '<a href="' + infoHref + '">' + infoStr + '</a>';
+                            return '<a href="' + href + '">' + new Date(value).format("yyyy-MM-dd") + '</a>';
+                        }
+                    }, {
+                        field: 'orderAmount',
+                        title: '<?php echo $this->translate("应收运费"); ?>',
+                        align: 'right',
+                        valign: 'middle',
+                        formatter: function (value, row) {
+                            let result = row.crnCode + ' ' + formatCurrency(value, 2);
 
-                            return result;
+                            let base = new Base64();
+                            let resultEnCode = base.encode(row.customerID);
+                            let href = "/user/financing/financing-item-view?"+resultEnCode;
+
+                            return '<a href="' + href + '">' + result + '</a>';
+                        }
+                    }, {
+                        field: 'freightAmount',
+                        title: '<?php echo $this->translate("应付运费"); ?>',
+                        align: 'right',
+                        valign: 'middle',
+                        formatter: function (value, row) {
+                            let result = row.crnCode + ' ' + formatCurrency(value, 2);
+
+                            let base = new Base64(),
+                                resultEnCode = base.encode(row.customerID),
+                                href = "/user/financing/financing-item-view?"+resultEnCode;
+
+                            return '<a href="' + href + '">' + result + '</a>';
                         }
                     }]
                 });

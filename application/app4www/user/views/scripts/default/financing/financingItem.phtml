@@ -221,7 +221,15 @@
                     },
                     columns: [{
                         halign: 'center',
-                        checkbox: true
+                        checkbox: true,
+                        formatter: function (value, row, index) {
+                            if (row.financingLoan.loanStatus !== '02') {
+                                return {
+                                    disabled: true
+                                }
+                            }
+                            return value
+                        }
                     }, {
                         field: 'itemNo',
                         title: '<?php echo $this->translate("项目编号"); ?>',

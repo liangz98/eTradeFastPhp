@@ -167,7 +167,11 @@
             <div class="panel-heading"><?php echo $this->translate('项目文件'); ?></div>
 
             <div class="panel-body">
-
+                <div class="col-xs-12 text-primary">
+                    <?php
+                    echo $this->ShowOrderContract4Factoring($this->contractList, $this->accountID);
+                    ?>
+                </div>
             </div>
         </div>
 
