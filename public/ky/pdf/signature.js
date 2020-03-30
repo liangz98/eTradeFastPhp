@@ -6,6 +6,10 @@ let pageNum = 1;
 let pageRendering = false;
 let pageNumPending = null;
 let scale = 1.5;
+let $downloadBtn = $(".download-button"),
+    $signBtn = $(".sign-button"),
+    $personSignBtn = $(".person-sign-button"),
+    $signSendAuthCodeBtn = $("#signSendAuthCodeBtn");
 
 function renderPage(num, id) {
     let canvas = document.getElementById(id);
@@ -59,7 +63,6 @@ function onNextPage() {
     pageNum++;
     queueRenderPage(pageNum);
 }
-//document.getElementById('next').addEventListener('click', onNextPage);
 
 function initPdfView(pdfUrl, obj) {
     $("#pdfPageBox").html("");
@@ -77,11 +80,10 @@ function initPdfView(pdfUrl, obj) {
         }
     });
 
-    let signTitle = "<?php echo $this->translate('signTitle');?>";
     layer.open({
         type: 1,	//Page层类型
         area: ['1150px', '100%'],
-        title: signTitle,
+        title: signViewTitle,
         shadeClose: true,
         shade: 0.6,	//遮罩透明度
         // anim: 1,	//0-6的动画形式，-1不开启
@@ -89,30 +91,30 @@ function initPdfView(pdfUrl, obj) {
         content: $("#signViewDiv")
     });
 
-    $(".download-button").attr("contractID_", obj.id);
+    $downloadBtn.attr("contractID_", obj.id);
 
     if ($("#isESigned_" + obj.id).val() === '1') {
-        $(".sign-button").hide();
+        $signBtn.hide();
     } else {
-        $(".sign-button").show().attr("contractID_", obj.id);
+        $signBtn.show().attr("contractID_", obj.id);
     }
 
     if ($("#isPSigned_" + obj.id).val() === '1') {
-        $(".person-sign-button").hide();
+        $personSignBtn.hide();
     } else {
-        $(".person-sign-button").show().attr("contractID_", obj.id);
+        $personSignBtn.show().attr("contractID_", obj.id);
     }
 }
 
 //document.getElementById('prev').addEventListener('click', onPrevPage);
 
-$(".download-button").bind("click",function(){
+$downloadBtn.bind("click",function(){
     let contractID_ = $(this).attr("contractID_");
     window.location.href = $("#contractAttachUrl_" + contractID_).val();
 });
 
 // ********************   获取验证手机号码 Start  *************************************
-$(".sign-button").bind("click",function(){
+$signBtn.bind("click",function(){
     let getSignMobile = '/user/pur/getsignmobile';
     $.ajax({
         type: "POST",
@@ -122,14 +124,12 @@ $(".sign-button").bind("click",function(){
         },
         dataType: "json",
         success: function (data) {
-            let mobileStr = "<?php echo $this->translate('mobile_phone');?>";
             $("#signMobileInput").val(mobileStr + " " +data);
         }
     });
 
     // 企业实名认证
-    let hasIDCertificate = '<?php echo $this->hasIDCertificate;?>',
-        layerHeight = '420px';
+    let layerHeight = '420px';
     if (hasIDCertificate === '1') {
         $(".signContent").removeClass("hidden");
         $(".jumpInfoContent").addClass("hidden");
@@ -142,10 +142,9 @@ $(".sign-button").bind("click",function(){
         layerHeight = '220px';
     }
 
-    let signTitle = "<?php echo $this->translate('signTitle');?>";
     layer.open({
         type: 1,
-        title: signTitle,
+        title: signViewTitle,
         shadeClose: true,
         shade: 0.2,
         area: ['500px', layerHeight],
@@ -153,7 +152,7 @@ $(".sign-button").bind("click",function(){
     });
 });
 
-$(".person-sign-button").bind("click",function(){
+$personSignBtn.bind("click",function(){
     let getSignMobile = '/user/pur/getpersonsignmobile';
     $.ajax({
         type: "POST",
@@ -163,14 +162,12 @@ $(".person-sign-button").bind("click",function(){
         },
         dataType: "json",
         success: function (data) {
-            let mobileStr = "<?php echo $this->translate('mobile_phone');?>";
             $("#signMobileInput").val(mobileStr + " " +data);
         }
     });
 
     // 个人实名认证
-    let contactHasIDCertificate = '<?php echo $this->contactHasIDCertificate;?>',
-        layerHeight = '420px';
+    let layerHeight = '420px';
     if (contactHasIDCertificate === '1') {
         $(".signContent").removeClass("hidden");
         $(".jumpInfoContent").addClass("hidden");
@@ -183,24 +180,23 @@ $(".person-sign-button").bind("click",function(){
         layerHeight = '220px';
     }
 
-    let signTitle = "<?php echo $this->translate('signTitle');?>";
     layer.open({
         type: 1,
-        title: signTitle,
+        title: signViewTitle,
         shadeClose: true,
         shade: 0.2,
         area: ['500px', layerHeight],
         content: $('#doSignPDFLayDiv')
     });
-    $("#signSendAuthCodeBtn").attr("personSend", "true");
+    $signSendAuthCodeBtn.attr("personSend", "true");
     $("#singConfirmBtn").attr("personSend", "true");
 });
 // ********************   End  *************************************
 
 // ********************   获取短信验证码 Start  *************************************
-$("#signSendAuthCodeBtn").click(function () {
+$signSendAuthCodeBtn.click(function () {
     let sendSignAuthCode = '/user/pur/sendsignauthcode';
-    if ($(this).attr("personSend") == "true") {
+    if ($(this).attr("personSend") === "true") {
         sendSignAuthCode = '/user/pur/sendpersonsignauthcode';
     }
 
@@ -212,8 +208,7 @@ $("#signSendAuthCodeBtn").click(function () {
         },
         dataType: "json",
         success: function (data) {
-            let sendingStr = "<?php echo $this->translate('signAuthCodeSending');?>";
-            $("#signSendAuthCodeBtn").text(sendingStr);
+            $signSendAuthCodeBtn.text(sendingStr);
             sendSignAuthCodeCountDown();
         }
     });
@@ -221,25 +216,21 @@ $("#signSendAuthCodeBtn").click(function () {
 
 let countdown=120;
 function sendSignAuthCodeCountDown() {
-    let obj = $("#signSendAuthCodeBtn");
-    settime(obj);
+    setTimeSend($signSendAuthCodeBtn);
 }
 
-function settime(obj) { //发送验证码倒计时
-    if (countdown == 0) {
+function setTimeSend(obj) { //发送验证码倒计时
+    if (countdown === 0) {
         obj.attr('disabled',false);
-        //obj.removeattr("disabled");
         obj.removeClass('layui-btn-disabled');
-        let btnStr = "<?php echo $this->translate('signSendAuthCode'); ?>";
-        obj.text(btnStr);
+        obj.text(signSendAuthCodeStr);
         countdown = 120;
         return;
     } else {
         console.log(countdown);
         obj.attr('disabled',true);
         obj.addClass('layui-btn-disabled');
-        let btnStr = "<?php echo $this->translate('signAuthCodeSending'); ?>";
-        obj.text(btnStr + "(" + countdown + ")");
+        obj.text(signAuthCodeSendingStr + "(" + countdown + ")");
         countdown--;
     }
     setTimeout(function() {
@@ -253,10 +244,10 @@ function settime(obj) { //发送验证码倒计时
 // ********************   获取短信验证码 Start  *************************************
 $("#singConfirmBtn").click(function () {
     let doSignPDF = '/user/pur/dosignpdf';
-    let contractID = $(".sign-button").attr("contractID_");
-    if ($(this).attr("personSend") == "true") {
+    let contractID = $signBtn.attr("contractID_");
+    if ($(this).attr("personSend") === "true") {
         doSignPDF = '/user/pur/dopersonsignpdf';
-        contractID = $(".person-sign-button").attr("contractID_");
+        contractID = $personSignBtn.attr("contractID_");
     }
 
     $.ajax({
@@ -268,9 +259,9 @@ $("#singConfirmBtn").click(function () {
         },
         dataType: "json",
         success: function (data) {
-            let signMsg = "<?php echo $this->translate('signFail');?>";
-            if (data != null && data != '') {
-                signMsg = "<?php echo $this->translate('signSuccess');?>";
+            let signMsg = signFailStr;
+            if (data != null && data !== '') {
+                signMsg = signSuccessStr;
                 layer.msg(signMsg);
                 window.location.reload();
             } else {
@@ -286,11 +277,10 @@ $("#singConfirmBtn").click(function () {
 // ********************   显示非网签上传合同层 Start  *************************************
 function initSignViewNoEContract(obj) {
 
-    let signTitle = "<?php echo $this->translate('signTitle');?>";
     layer.open({
         type: 1,	//Page层类型
         area: ['800px', '550px'],
-        title: signTitle,
+        title: signViewTitle,
         // shadeClose: true,
         shade: 0.6,	//遮罩透明度
         // anim: 1,	//0-6的动画形式，-1不开启
@@ -301,8 +291,9 @@ function initSignViewNoEContract(obj) {
 
     $("#signViewNoEContractDiv tr:not(:first)").empty();
     //获取最后一行的data-id(标识行)
-    let rowIndex = $("#signViewNoEContractDiv tr:last").attr("data-row");
-    if (rowIndex == "" || rowIndex == null) {
+    let $signViewNoEContractDiv = $("#signViewNoEContractDiv tr:last"),
+        rowIndex = $signViewNoEContractDiv.attr("data-row");
+    if (rowIndex === "" || rowIndex == null) {
         rowIndex = parseInt(1);
     } else {
         rowIndex = parseInt(rowIndex) + 1;
@@ -318,11 +309,9 @@ function initSignViewNoEContract(obj) {
 
     htmlList += '</td></tr>';
     //在行最后添加数据
-    $("#signViewNoEContractDiv tr:last").after(htmlList);
+    $signViewNoEContractDiv.after(htmlList);
 
     $("#signNoEContractConfirmBtn").attr("contractID_", obj.id);
-    // alert(obj.id);
-    // alert($("#contractName_" + obj.id).val());
 }
 
 function doDownload(objID) {
@@ -358,7 +347,7 @@ $("#signNoEContractConfirmBtn").click(function () {
 
     $.ajax({
         type: "POST",
-        url: '<?php echo $this->BaseUrl();?>/sale/agree',
+        url: '/user/sale/agree',
         data: {
             contractID: contractID,
             name: nameArr,

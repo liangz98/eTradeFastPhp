@@ -52,7 +52,20 @@ class FinancingController extends Kyapi_Controller_Action {
         $this->view->resultStatus = $financingStatus;
 
         $resultObject = $this->json->listFinancing($requestObject, $financingStatus);
-        $this->view->financingList = $this->objectToArray(json_decode($resultObject)->result);
+        // $this->view->financingList = $this->objectToArray(json_decode($resultObject)->result);
+        $financingList = json_decode($resultObject)->result;
+
+        // 文档签署模
+        $bizType = 'NC';
+        foreach ($financingList as $financing) {
+            $contractResultObject = $this->json->listBizContract($requestObject, $bizType, $financing->financingID);
+            $resContract = json_decode($contractResultObject);
+            if ($resContract->result) {
+                $financing->contractList = $resContract->result;
+            }
+        }
+
+        $this->view->financingList = $this->objectToArray($financingList);
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/financing/index.phtml");
@@ -172,16 +185,16 @@ class FinancingController extends Kyapi_Controller_Action {
         $financingItem = json_decode($resultObject)->result;
 
         // 文档签署模
-        if ($financingItem->itemID) {
-            $bizType = 'CR';
-            $contractResultObject = $this->json->listBizContract($requestObject, $bizType, $financingItem->itemID);
+        $contractList = [];
+        $bizType = 'NL';
+        foreach ($financingItem->financingLoanList as $financingLoan) {
+            $contractResultObject = $this->json->listBizContract($requestObject, $bizType, $financingLoan->loanID);
             $resContract = json_decode($contractResultObject);
             if ($resContract->result) {
-                $this->view->contractList = $this->objectToArray($resContract->result);
+                $contractList = array_merge($contractList, $this->objectToArray($resContract->result));
             }
-        } else {
-            $this->view->contractList = [];
         }
+        $this->view->contractList = $contractList;
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/financing/financingItemView.phtml");

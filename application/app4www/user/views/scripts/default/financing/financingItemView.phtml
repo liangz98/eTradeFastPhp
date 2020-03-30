@@ -4,7 +4,7 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
 	<title><?php echo $this->translate('etradefast'); ?></title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
-    <link href="/ky/css/settle/settle.css" rel="stylesheet">
+    <link href="/ky/css/finance/finance.css" rel="stylesheet">
     <link href="/ky/css/img-upload.css" rel="stylesheet">
     <link href="/ky/bootstrap-table-1.16.0-dist/bootstrap-table.min.css" rel="stylesheet">
     <link href="/ky/bootstrap-table-1.16.0-dist/extensions/group-by-v2/bootstrap-table-group-by.css" rel="stylesheet">
@@ -168,9 +168,7 @@
 
             <div class="panel-body">
                 <div class="col-xs-12 text-primary">
-                    <?php
-                    echo $this->ShowOrderContract4Factoring($this->contractList, $this->accountID);
-                    ?>
+                    <?php echo $this->ShowOrderContract4Factoring($this->contractList, $this->accountID); ?>
                 </div>
             </div>
         </div>
@@ -277,15 +275,133 @@
     </div>
 </div>
 
-<!-- PDF预览 -->
+<!--PDF预览-->
 <div id="signViewDiv" style="display: none; background-color: #F6F6F6;">
+    <div class="sign-button">企业签署</div>
+    <div class="person-sign-button">个人签署</div>
     <div class="download-button">下载</div>
     <div class="pdfDoc" style="padding-left:50px;">
         <div id="pdfPageBox">
         </div>
     </div>
 </div>
+<!--非网签-->
+<div id="signViewNoEContractDiv" class="layui-form" style="display: none;">
+    <div class="et-auth-error" style="display: none;"></div>
+    <div class="et-auth-content">
+        <div style="margin-top: 20px;"></div>
 
+        <div class="layui-form-item" style="margin-left: 28px;">
+            <div style="text-align: left;">
+                <label class="layui-form-label" style="width: 400px;text-align: left;"><?php echo $this->translate('contractUPInfo'); ?></label>
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-bottom: -5px;margin-top: -15px;margin-left: 28px;margin-right: 28px;">
+            <div style="text-align: left;">
+                <table class="layui-table" id="demo" lay-filter="test">
+                    <colgroup>
+                        <col width="470">
+                        <col width="150">
+                        <col>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>合同列表</th>
+                        <th><?php echo $this->translate('type'); ?></th>
+                        <th style="text-align:center"><?php echo $this->translate('operation'); ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-left: 28px; margin-top: 50px; width: 600px;">
+            <div class="layui-form-label" style="width: 420px;">
+                <div class="yyzz_box clearfix" style="width: 600px;">
+                    <p class="zzname" style="width: 600px; font-weight:bold;"><?php echo $this->translate('contractUP'); ?><!--合同相关附件上传--></p>
+                    <?php if ($this->vestut == 1) {
+                        echo $this->ShowWebuploader($this->goods['attachmentList'], $this->biz_Setting['ORDER'], $this->attach_Setting['CRIM'], "0", null);
+                    } ?>
+                </div>
+            </div>
+        </div>
+
+
+        <div style="height: 12px"></div>
+        <div class="et-auth-row">
+            <button class="layui-btn" id="signNoEContractConfirmBtn"><?php echo $this->translate('signing'); ?></button>
+        </div>
+    </div>
+</div>
+
+<!--签署-->
+<div id="doSignPDFLayDiv" class="layui-form" style="display: none;">
+    <div class="et-auth-error" style="display: none;"></div>
+    <div class="et-auth-content">
+        <div style="margin-top: 20px;"></div>
+
+        <div class="signContent">
+            <div class="layui-form-item" style="margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label" style="width: 180px;text-align: left;"><?php echo $this->translate('signInfo'); ?></label>
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label" style="width: 180px;text-align: left;"><b><?php echo $this->translate('signAuthType'); ?></b></label>
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="margin-left: 28px;">
+                <div class="layui-form-label" style="width: 420px;">
+                    <input type="text" id="signMobileInput" name="signMobileInput" lay-verify="signMobileInput" autocomplete="off" class="layui-input" readonly="readonly">
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="margin-left: 28px;">
+                <div class="layui-form-label" style="width: 250px;">
+                    <input type="text" id="signAuthCode" name="signAuthCode" lay-verify="signAuthCode" autocomplete="off" placeholder="<?php echo $this->translate('signInputAuthCode'); ?>" class="layui-input">
+                </div>
+
+                <div class="layui-form-label" style="width: 140px;">
+                    <button class="layui-btn layui-btn-fluid" id="signSendAuthCodeBtn"><?php echo $this->translate('signSendAuthCode'); ?></button>
+                </div>
+            </div>
+
+            <div style="height: 12px"></div>
+            <div class="et-auth-row">
+                <button class="layui-btn layui-btn-fluid" id="singConfirmBtn" style="width: 85%;"><?php echo $this->translate('confirmed'); ?></button>
+            </div>
+        </div>
+
+        <div class="jumpInfoContent hidden">
+            <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label text-danger" style="width: 450px;text-align: left;"><i class="fas fa-exclamation-triangle"></i> <?php echo $this->translate('未生成有效的企业签署证书，请先完成企业及管理员实名认证。'); ?></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="jumpPersonInfoContent hidden">
+            <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label text-danger" style="width: 320px;text-align: left;"><i class="fas fa-exclamation-triangle"></i> <?php echo $this->translate('个人实名认证未完成前不可签署合同。'); ?></label>
+                </div>
+            </div>
+            <div class="layui-form-item" style="margin-bottom: -5px; margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label" style="width: 280px;text-align: left;">
+                        <a href="/user/index/profile"><u><strong><?php echo $this->translate('点击此处'); ?></strong></u></a> <?php echo $this->translate('完成个人实名认证。'); ?>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
 
@@ -295,6 +411,7 @@
 <!-- pdf -->
 <script type="text/javascript" src="/ky/pdf/pdf.js"></script>
 <script type="text/javascript" src="/ky/pdf/pdf.worker.js"></script>
+<script type="text/javascript" src="/ky/pdf/signature.js"></script>
 <!-- fancybox -->
 <script type="text/javascript" src="/ky/fancybox-3.5.6-dist/jquery.fancybox.min.js"></script>
 <script type="text/javascript" src="/ky/fancybox-3.5.6-dist/fancyboxInit.js"></script>
@@ -304,6 +421,18 @@
 <script src="/ky/bootstrap-table-1.16.0-dist/locale/bootstrap-table-zh-CN.min.js"></script>
 
 <script type="text/javascript">
+    // signatureJS用到的变量
+    let signViewTitle = "<?php echo $this->translate('签署合同');?>",
+        mobileStr = "<?php echo $this->translate('mobile_phone');?>",
+        sendingStr = "<?php echo $this->translate('signAuthCodeSending');?>",
+        signSendAuthCodeStr = "<?php echo $this->translate('signSendAuthCode'); ?>",
+        signAuthCodeSendingStr = "<?php echo $this->translate('signAuthCodeSending'); ?>",
+        signFailStr = "<?php echo $this->translate('signFail');?>",
+        signSuccessStr = "<?php echo $this->translate('signSuccess');?>",
+        hasIDCertificate = '<?php echo $this->hasIDCertificate;?>',
+        contactHasIDCertificate = '<?php echo $this->contactHasIDCertificate;?>';
+
+
 	$().ready(function() {
 
 	});
@@ -399,100 +528,6 @@
         });
 	});
 
-    // *************************** PDF Sign View ********************************
-    PDFJS.workerSrc = '/ky/pdf/pdf.worker.js';
-
-    let pdfDoc = null,
-        pageNum = 1,
-        pageRendering = false,
-        pageNumPending = null,
-        scale = 1.5,
-        $downLoadBtn = $(".download-button");
-
-    function renderPage(num, id) {
-        let canvas = document.getElementById(id);
-        let ctx = canvas.getContext('2d');
-        pageRendering = true;
-        pdfDoc.getPage(num).then(function(page) {
-            let viewport = page.getViewport(scale);
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
-
-            let renderContext = {
-                canvasContext: ctx,
-                viewport: viewport
-            };
-            let renderTask = page.render(renderContext);
-
-            renderTask.promise.then(function() {
-                pageRendering = false;
-                if (pageNumPending !== null) {
-                    renderPage(pageNumPending);
-                    pageNumPending = null;
-                }
-            });
-        });
-    }
-
-    function queueRenderPage(num) {
-        if (pageRendering) {
-            pageNumPending = num;
-        } else {
-            renderPage(num);
-        }
-    }
-
-    function onPrevPage() {
-        if (pageNum <= 1) {
-            return;
-        }
-        pageNum--;
-        queueRenderPage(pageNum);
-    }
-
-    function onNextPage() {
-        if (pageNum >= pdfDoc.numPages) {
-            return;
-        }
-        pageNum++;
-        queueRenderPage(pageNum);
-    }
-
-    function initPdfView(pdfUrl, obj) {
-        $("#pdfPageBox").html("");
-        PDFJS.getDocument(pdfUrl).then(function(pdfDoc_) {
-            pdfDoc = pdfDoc_;
-            //document.getElementById('page_count').textContent = pdfDoc.numPages;
-            for (let i=1;i<=pdfDoc.numPages;i++){
-                let canvasDiv = $("<div style=\"padding-top:10px;padding-bottom:10px;\"></div>");
-                let pageNum = $("<div style=\"background-color: #999999;position:absolute;float: left;height:30px;width:60px;text-align: center;line-height: 30px;color:#ffffff;opacity: 0.6;\">"+i+"/"+pdfDoc.numPages+"</div>");
-                let canvas = $("<canvas></canvas>").attr("id", "the-canvas_"+i);
-                canvasDiv.append(pageNum);
-                canvasDiv.append(canvas);
-                $("#pdfPageBox").append(canvasDiv);
-                renderPage(i, "the-canvas_"+i);
-            }
-        });
-
-        let signTitle = "<?php echo $this->translate('pdfView');?>";
-        layer.open({
-            type: 1,	//Page层类型
-            area: ['1150px', '100%'],
-            title: signTitle,
-            shadeClose: true,
-            shade: 0.6,	//遮罩透明度
-            // anim: 1,	//0-6的动画形式，-1不开启
-            scrollbar: false,
-            content: $("#signViewDiv")
-        });
-
-        $downLoadBtn.attr("contractID_", obj.id);
-    }
-
-    $downLoadBtn.bind("click",function(){
-        let contractID_ = $(this).attr("contractID_");
-        window.location.href = $("#contractAttachUrl_" + contractID_).val();
-    });
 </script>
 </body>
 </html>
