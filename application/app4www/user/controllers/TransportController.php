@@ -52,14 +52,22 @@ class TransportController extends Kyapi_Controller_Action {
         $msg = array();
         $requestObject = $this->_requestObject;
 
-        $queryParams = array();
-
         $querySorts = array();
         // $querySorts['createTime'] = "DESC";
 
         $keyword = $this->_request->getParam('keyword');
         if (empty($keyword)) {
             $keyword = null;
+        }
+
+        $customerID = $this->_request->getParam('customerID');
+        $transOrderCode = $this->_request->getParam('transOrderCode');
+        $carrierName = $this->_request->getParam('carrierName');
+        $takeDeliveryTime = $this->_request->getParam('takeDeliveryTime');
+        if (empty($takeDeliveryTime)) {
+            $takeDeliveryTime = null;
+        } else {
+            $takeDeliveryTime = date("Y-m-d\TH:i:s", strtotime($takeDeliveryTime));
         }
 
         $limit = $this->_request->getParam('limit');
@@ -72,69 +80,12 @@ class TransportController extends Kyapi_Controller_Action {
             $skip = 0;
         }
 
-        if (is_array($queryParams)) {
-            $queryParams = $this->arrayToObject($queryParams);
-        }
-
         if (is_array($querySorts)) {
             $querySorts = $this->arrayToObject($querySorts);
         }
 
-        $factoringStatus = $this->_request->getParam('factoringStatus');
-        if (empty($factoringStatus)) {
-            $factoringStatus = null;
-        } else {
-            if ($factoringStatus == 'all') {
-                $factoringStatus = null;
-            }
-        }
-        $factoringMode = $this->_request->getParam('factoringMode');
-        if (!empty($factoringMode)) {
-            if ($factoringMode == 'all') {
-                $factoringMode = null;
-            }
-        }
-        $customerID = $this->_request->getParam('customerID');
-
-        $startDate = $this->_request->getParam('startDate');
-        if (empty($startDate)) {
-            $startDate = null;
-        } else {
-            $startDate = date("Y-m-d\TH:i:s", strtotime($startDate));
-        }
-        $endDate = $this->_request->getParam('endDate');
-        if (empty($endDate)) {
-            $endDate = null;
-        } else {
-            $endDate = date("Y-m-d\TH:i:s", strtotime($endDate));
-        }
-
-        $lowerAmount = null;
-        $upperAmount = null;
-        $factoringAmount = $this->_request->getParam('factoringAmount');
-        if (!empty($factoringAmount)) {
-            if ($factoringAmount == 'A1') {
-                $lowerAmount = 0;
-                $upperAmount = 5000;
-            } else if ($factoringAmount == 'A2') {
-                $lowerAmount = 5000;
-                $upperAmount = 20000;
-            } else if ($factoringAmount == 'A3') {
-                $lowerAmount = 20000;
-                $upperAmount = 50000;
-            } else if ($factoringAmount == 'A4') {
-                $lowerAmount = 50000;
-                $upperAmount = 100000;
-            } else if ($factoringAmount == 'A5') {
-                $lowerAmount = 100000;
-                $upperAmount = 200000;
-            } else if ($factoringAmount == 'A6') {
-                $lowerAmount = 200000;
-            }
-        }
-
-        $resultObject = $this->json->listTransportOrder($requestObject, $customerID, $querySorts, $keyword, $skip, $limit);
-        $msg["totalPage"] = json_decode($resultObject)->extData->totalPage;
+        $resultObject = $this->json->listTransportOrder($requestObject, $querySorts, $keyword, $skip, $limit, $customerID, $transOrderCode, $carrierName, $takeDeliveryTime);
+        $msg["total"] = json_decode($resultObject)->extData->totalSize;
         $msg["rows"] = json_decode($resultObject)->result;
 
         echo json_encode($msg);
@@ -143,7 +94,15 @@ class TransportController extends Kyapi_Controller_Action {
 
     // 详情页
     public function viewAction() {
-        $this->view->resultMsg = $this->_request->getParam('resultMsg');
+        $requestObject = $this->_requestObject;
+
+        $queryString = $_SERVER['QUERY_STRING'];
+        $transportOrderID = base64_decode($queryString);
+
+        $resultObject = $this->json->getTransOrderView($requestObject, $transportOrderID);
+        $this->view->transportOrder = $this->objectToArray(json_decode($resultObject)->result);
+        // $transportOrder = json_decode($resultObject)->result;
+
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/transport/view.phtml");
@@ -170,16 +129,28 @@ class TransportController extends Kyapi_Controller_Action {
 
         $customerID = $this->_request->getParam('customerID');
 
-        $signDateTime = $this->_request->getParam('signDateTime');
-        if (empty($signDateTime)) {
-            $signDateTime = '';
+        $startSignDate = $this->_request->getParam('startSignDate');
+        if (empty($startSignDate)) {
+            $startSignDate = null;
+        } else {
+            $startSignDate = date("Y-m-d\TH:i:s", strtotime($startSignDate));
         }
 
-        $resultObject = $this->json->listApplyOrderList($requestObject, $customerID, $signDateTime);
+        $endSignDate = $this->_request->getParam('endSignDate');
+        if (empty($endSignDate)) {
+            $endSignDate = null;
+        } else {
+            $endSignDate = date("Y-m-d\TH:i:s", strtotime($endSignDate));
+        }
+
+        $resultObject = $this->json->listApplyOrderList($requestObject, $customerID, $startSignDate, $endSignDate);
         // $msg["total"] = json_decode($resultObject)->extData->totalSize;
         // $msg["rows"] = json_decode($resultObject)->result;
-
-        echo json_encode(json_decode($resultObject)->result);
+        if (json_decode($resultObject)->result) {
+            echo json_encode(json_decode($resultObject)->result);
+        } else {
+            echo null;
+        }
         exit;
     }
 

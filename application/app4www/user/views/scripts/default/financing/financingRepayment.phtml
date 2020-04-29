@@ -16,169 +16,153 @@
 <div class="container-fluid index-body">
 	<div class="container">
         <ol class="breadcrumb">
-            <li><a href="/"><?php echo $this->translate('nav_index'); ?></a></li>
+            <li><a href="/user/transport"><?php echo $this->translate('nav_index'); ?></a></li>
             <li><a href="/user/freight/freight-loan-index"><?php echo $this->translate('freightLoanFinanceItem'); ?></a></li>
-            <li><a href="/user/freight/freight-loan-item-index"><?php echo $this->translate('freightLoanApplyList'); ?>：德邦快递</a></li>
+            <li><a href="/user/financing/financing-item?<?php echo base64_encode($this->financing['financingID']); ?>"><?php echo $this->translate('freightLoanApplyList'); ?>：<?php echo $this->financing['debtorCustomerName']; ?></a></li>
             <li class="active"><?php echo $this->translate('freightPayment'); ?></li>
         </ol>
 
         <?php if (!empty($this->resultMsg)): ?>
         <div class="alert alert-danger alert-dismissible fade in" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <p><?php echo $this->resultMsg; ?>!</p>
+            <p><?php echo base64_decode($this->resultMsg); ?></p>
         </div>
         <?php endif; ?>
 
-        <div class="alert alert-danger alert-dismissible fade in" role="alert">
-            <p>还款会根据债项发生时序正序，优先核销最早一笔债项的服务费和利息，再核销本金。</p>
-        </div>
+        <form class="form-horizontal" action="/user/financing/financing-repayment-save" id="repaymentSave_form" method="post">
+            <input type="hidden" name="financingID" value="<?php echo $this->financing['financingID'];?>">
+            <input type="hidden" name="paymentAmount" id="paymentAmount" value="">
+            <input type="hidden" name="explanation" value="<?php echo $this->explanationStr;?>">
+            <input type="hidden" name="actualFinancingAmount" id="actualFinancingAmount" value="">
+            <input type="hidden" name="actualInterest" id="actualInterest" value="">
+            <input type="hidden" name="actualServiceCharge" id="actualServiceCharge" value="">
+            <?php foreach ($this->loanIDs as $loanID): ?>
+                <input type="hidden" name="loanIDs[]" value="<?php echo $loanID;?>">
+            <?php endforeach; ?>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p class="form-control-static text-999"><?php echo $this->translate('还款日期'); ?></p>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="expiryDate" class="sr-only" ></label>
+                            <input type="text" class="form-control" name="expiryDate" id="expiryDate" placeholder="yyyy-MM-dd" value="<?php echo date('Y-m-d'); ?>" >
+                        </div>
+                    </div>
 
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-2">
-                        <p class="form-control-static text-999"><?php echo $this->translate('本金'); ?></p>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p class="form-control-static text-999"><?php echo $this->translate('本金'); ?></p>
+                        </div>
+                        <div class="col-md-8">
+                            <p class="form-control-static text-666"><span id="financingAmountStr"></span> 元</p>
+                        </div>
                     </div>
-                    <div class="col-md-8">
-                        <p class="form-control-static text-666">3,487,688.19  元</p>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-2">
-                        <p class="form-control-static text-999"><?php echo $this->translate('总利息'); ?></p>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p class="form-control-static text-999"><?php echo $this->translate('总利息'); ?></p>
+                        </div>
+                        <div class="col-md-2">
+                            <p class="form-control-static text-666"><span id="interestStr"></span> 元</p>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="well well-sm text-999" style="margin-bottom: 0 !important;"><?php echo $this->translate('总利息=利息+宽限期利息+逾期利息'); ?></div>
+                        </div>
                     </div>
-                    <div class="col-md-2">
-                        <p class="form-control-static text-666">1,238.51 元</p>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="well well-sm text-999" style="margin-bottom: 0 !important;"><?php echo $this->translate('总利息=利息+宽限期利息+逾期利息'); ?></div>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-2">
-                        <p class="form-control-static text-999"><?php echo $this->translate('服务费'); ?></p>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p class="form-control-static text-999"><?php echo $this->translate('服务费'); ?></p>
+                        </div>
+                        <div class="col-md-8">
+                            <p class="form-control-static text-666"><span id="serviceChargeStr"></span> 元</p>
+                        </div>
                     </div>
-                    <div class="col-md-8">
-                        <p class="form-control-static text-666">100.81元</p>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-2">
-                        <p class="form-control-static text-999"><?php echo $this->translate('应付总额'); ?></p>
-                    </div>
-                    <div class="col-md-8">
-                        <p class="form-control-static text-666">3,488,926.7 元</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-warning">
-            <!-- Default panel contents -->
-            <div class="panel-heading">转账信息</div>
-
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-2">
-                        <p class="form-control-static text-999"><?php echo $this->translate('开户名称'); ?></p>
-                    </div>
-                    <div class="col-md-8">
-                        <p class="form-control-static text-666">骏海威商业保理（深圳）有限公司</p>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-2">
-                        <p class="form-control-static text-999"><?php echo $this->translate('开户银行'); ?></p>
-                    </div>
-                    <div class="col-md-8">
-                        <p class="form-control-static text-666">宁波银行深圳罗湖支行</p>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-2">
-                        <p class="form-control-static text-999"><?php echo $this->translate('银行账号'); ?></p>
-                    </div>
-                    <div class="col-md-8">
-                        <p class="form-control-static text-666">73100122000088618</p>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-2">
-                        <p class="form-control-static text-999"><?php echo $this->translate('银行地址'); ?></p>
-                    </div>
-                    <div class="col-md-8">
-                        <p class="form-control-static text-666">深圳市罗湖区深南东路2103号</p>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-2">
-                        <p class="form-control-static text-999"><?php echo $this->translate('备注'); ?></p>
-                    </div>
-                    <div class="col-md-8">
-                        <p class="form-control-static text-666">请在转账备注以下代码：DKJ97H996LHG</p>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p class="form-control-static text-999"><?php echo $this->translate('应付总额'); ?></p>
+                        </div>
+                        <div class="col-md-8">
+                            <p class="form-control-static text-666"><span id="paymentAmountStr"></span> 元</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="panel panel-warning">
-            <!-- Default panel contents -->
-            <div class="panel-heading">FL042019112900001<span class="pull-right">共400运单 <i class="layui-icon layui-icon-about"></i></span></div>
+            <div class="panel panel-warning">
+                <!-- Default panel contents -->
+                <div class="panel-heading">转账信息</div>
 
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-4">
-                        <p class="form-control-static text-999"><?php echo $this->translate('债务方'); ?></p>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p class="form-control-static text-999"><?php echo $this->translate('开户名称'); ?></p>
+                        </div>
+                        <div class="col-md-8">
+                            <p class="form-control-static text-666"><?php echo $this->bankAcct['bankAcctName']; ?></p>
+                        </div>
                     </div>
-                    <div class="col-md-8">
-                        <p class="form-control-static text-666">XXXXXXX有限公司</p>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-4">
-                        <p class="form-control-static text-999"><?php echo $this->translate('应收账款金额'); ?></p>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p class="form-control-static text-999"><?php echo $this->translate('开户银行'); ?></p>
+                        </div>
+                        <div class="col-md-8">
+                            <p class="form-control-static text-666"><?php echo $this->bankAcct['bankName']; ?></p>
+                        </div>
                     </div>
-                    <div class="col-md-8">
-                        <p class="form-control-static text-666">3,487,688.19  元</p>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-4">
-                        <p class="form-control-static text-999"><?php echo $this->translate('可融资金额'); ?></p>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p class="form-control-static text-999"><?php echo $this->translate('银行账号'); ?></p>
+                        </div>
+                        <div class="col-md-8">
+                            <p class="form-control-static text-666"><?php echo $this->bankAcct['bankAcctNo']; ?></p>
+                        </div>
                     </div>
-                    <div class="col-md-8">
-                        <p class="form-control-static text-666">3,487,688.19  元</p>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-4">
-                        <p class="form-control-static text-999"><?php echo $this->translate('计划放款日'); ?></p>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p class="form-control-static text-999"><?php echo $this->translate('银行地址'); ?></p>
+                        </div>
+                        <div class="col-md-8">
+                            <p class="form-control-static text-666"><?php echo $this->bankAcct['bankAddress']; ?></p>
+                        </div>
                     </div>
-                    <div class="col-md-8">
-                        <p class="form-control-static text-666">2020年2月6日</p>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-4">
-                        <p class="form-control-static text-999"><?php echo $this->translate('届满日'); ?></p>
-                    </div>
-                    <div class="col-md-8">
-                        <p class="form-control-static text-666">2020年2月6日</p>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p class="form-control-static text-999"><?php echo $this->translate('备注'); ?></p>
+                        </div>
+                        <div class="col-md-8">
+                            <p class="form-control-static text-666">请在转账备注以下代码：<?php echo $this->explanationStr; ?></p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+            <div class="panel panel-warning">
+                <!-- Default panel contents -->
+                <div class="panel-heading">还款凭证</div>
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <?php echo $this->ShowWebuploader('', 'NR', 'PRSP', '0'); ?>
+                        </div>
+                    </div>
+
+                    <div class="row" style="padding-top: 15px;">
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-primary"><?php echo $this->translate('确定'); ?></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
 	</div>
 </div>
 
@@ -192,13 +176,73 @@
 <script type="text/javascript" src="/ky/fancybox-3.5.6-dist/fancyboxInit.js"></script>
 
 <script type="text/javascript">
+    let dataDict = {},
+        userLangCode = '<?php echo $this->userLangCode; ?>',
+        $resultListTable = $('#resultListTable');
+
 	$().ready(function() {
 
 	});
 
 	$(function () {
+        let layDateLang = '<?php if ($this->userLangCode == "en_US") echo "en"; else echo "cn";?>';
+        layui.use('laydate', function(){
+            let laydate = layui.laydate;
+            let dateVal = new Date().format("yyyy-MM-dd");
 
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#expiryDate' //指定元素
+                ,value: dateVal
+                ,isInitValue: true
+                ,max: dateVal
+                ,showBottom: false
+                ,lang: layDateLang
+                ,trigger: 'click'
+                ,change: function (value, date, endDate) {
+                    // 这个在点击上面的上个月下个月之后都会换到另外一页，所以需要跟ready一样处理哪些不可选哪些可选，实际应用中可以将处理逻辑封装一下调用就可以了。
+
+                    // 切换会调用
+                    refreshAmount();
+                }
+            });
+        });
+
+        refreshAmount();
 	});
+
+	function getLoanIDs() {
+        let arr = [];
+        $("input[name^='loanIDs']").each(function(){
+            arr.push($(this).val());
+        });
+        return arr;
+    }
+
+    function refreshAmount() {
+        let interestQuery = '/user/financing/calc-interest-ajax';
+        $.ajax({
+            type: "POST",
+            url: interestQuery,
+            data: {
+                financingID: $("input[name='financingID']").val(),
+                loanIDs: getLoanIDs(),
+                expiryDate: $("#expiryDate").val()
+            },
+            dataType: "json",
+            success: function (data) {
+                let financingAmount = formatCurrency(data.principalAmount, 2),
+                    interest = formatCurrency(data.totalInterest, 2),
+                    serviceCharge = formatCurrency(data.serviceCharge, 2);
+                    paymentAmount = formatCurrency(data.principalAmount + data.totalInterest + data.serviceCharge, 2);
+                $("#paymentAmount").val(data.principalAmount + data.totalInterest + data.serviceCharge);
+                $("#financingAmountStr").html(financingAmount);
+                $("#interestStr").html(interest);
+                $("#serviceChargeStr").html(serviceCharge);
+                $("#paymentAmountStr").html(paymentAmount);
+            }
+        });
+    }
 </script>
 </body>
 </html>

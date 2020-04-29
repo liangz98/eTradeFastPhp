@@ -13,14 +13,16 @@ class Kyapi_Model_Vcode
      * @param	string	$randcode	验证码
      *
      */
-    public function show($randcode)
+    public function show($randcode, $border)
     {
         Header("Content-type: image/gif");
         /*
         * 初始化
         */
         $how=strlen($randcode);//长度
-        $border = 0; //是否要边框 1要:0不要
+        if (empty($border)) {
+            $border = 0; //是否要边框 1要:0不要
+        }
         $w = $how*26.8; //图片宽度
         $h = 32; //图片高度
         $fontsize = 28; //字体大小
@@ -55,11 +57,11 @@ class Kyapi_Model_Vcode
             $color1 = ImageColorAllocate($im, mt_rand(0,255), mt_rand(0,255), mt_rand(0,255)); //干扰线颜色
             ImageArc($im, mt_rand(-5,$w), mt_rand(-5,$h), mt_rand(20,300), mt_rand(20,200), 55, 44, $color1); //干扰线
         }
-//		for($i=0; $i<$how*40; $i++)//绘背景干扰点
-//		{
-//		    $color2 = ImageColorAllocate($im, mt_rand(0,255), mt_rand(0,255), mt_rand(0,255)); //干扰点颜色
-//		    ImageSetPixel($im, mt_rand(0,$w), mt_rand(0,$h), $color2); //干扰点
-//		}
+		for($i=0; $i<$how*40; $i++)//绘背景干扰点
+		{
+		    $color2 = ImageColorAllocate($im, mt_rand(0,255), mt_rand(0,255), mt_rand(0,255)); //干扰点颜色
+		    ImageSetPixel($im, mt_rand(0,$w), mt_rand(0,$h), $color2); //干扰点
+		}
 
         /*绘图结束*/
         Imagegif($im);

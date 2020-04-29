@@ -19,17 +19,17 @@
 <div class="container-fluid index-body">
 	<div class="container">
         <ol class="breadcrumb">
-            <li><a href="/"><?php echo $this->translate('nav_index'); ?></a></li>
+            <li><a href="/user/transport"><?php echo $this->translate('nav_index'); ?></a></li>
             <li><a href="/user/financing"><?php echo $this->translate('financing'); ?></a></li>
-            <li><a href="/user/financing/financing-item?<?php echo base64_encode($this->financingItem['financing']['financingID'])?>"><?php echo $this->translate('financingItem'); ?>：<?php echo $this->financingItem['financing']['debtorCustomerName']; ?></a></li>
+            <li><a href="/user/financing/financing-item?<?php echo base64_encode($this->financingLoan['financing']['financingID'])?>"><?php echo $this->translate('financingItem'); ?>：<?php echo $this->financingLoan['financing']['debtorCustomerName']; ?></a></li>
             <li class="active"><?php echo $this->translate('freightLoanItemView'); ?></li>
         </ol>
 
         <div class="row">
             <div class="col-md-5">
-                <div class="panel panel-primary">
+                <div class="panel panel-primary" style="height: 242px;">
                     <!-- Default panel contents -->
-                    <div class="panel-heading"><?php echo $this->financingItem['itemNo']; ?><span class="pull-right">共400运单 <i class="layui-icon layui-icon-about" style="cursor: pointer;" data-toggle="modal" data-target="#freightModal" data-loan-id=""></i></span></div>
+                    <div class="panel-heading"><?php echo $this->financingLoan['loanNo']; ?><span class="pull-right">共400运单 <i class="layui-icon layui-icon-about" style="cursor: pointer;" data-toggle="modal" data-target="#freightModal" data-loan-id=""></i></span></div>
 
                     <div class="panel-body">
                         <div class="row">
@@ -37,7 +37,7 @@
                                 <p class="form-control-static text-999"><?php echo $this->translate('债务方'); ?></p>
                             </div>
                             <div class="col-md-8">
-                                <p class="form-control-static text-666"><?php echo $this->financingItem['financing']['debtorCustomerName']; ?></p>
+                                <p class="form-control-static text-666"><?php echo $this->financingLoan['financing']['debtorCustomerName']; ?></p>
                             </div>
                         </div>
 
@@ -46,7 +46,7 @@
                                 <p class="form-control-static text-999"><?php echo $this->translate('应收账款金额'); ?></p>
                             </div>
                             <div class="col-md-8">
-                                <p class="form-control-static text-666"><?php echo number_format($this->financingItem['receivableAmount'], 2); ?>  元</p>
+                                <p class="form-control-static text-666"><?php echo number_format($this->financingLoan['receivableAmount'], 2); ?>  元</p>
                             </div>
                         </div>
 
@@ -55,7 +55,7 @@
                                 <p class="form-control-static text-999"><?php echo $this->translate('可融资金额'); ?></p>
                             </div>
                             <div class="col-md-8">
-                                <p class="form-control-static text-666"><?php echo number_format($this->financingItem['assignmentAmount'], 2); ?>  元</p>
+                                <p class="form-control-static text-666"><?php echo number_format($this->financingLoan['assignmentAmount'], 2); ?>  元</p>
                             </div>
                         </div>
 
@@ -64,7 +64,7 @@
                                 <p class="form-control-static text-999"><?php echo $this->translate('计划放款日'); ?></p>
                             </div>
                             <div class="col-md-8">
-                                <p class="form-control-static text-666"><?php echo date("Y-m-d", strtotime($this->financingItem['loanDate'])); ?></p>
+                                <p class="form-control-static text-666"><?php echo date("Y-m-d", strtotime($this->financingLoan['applyLoanDate'])); ?></p>
                             </div>
                         </div>
 
@@ -73,7 +73,7 @@
                                 <p class="form-control-static text-999"><?php echo $this->translate('届满日'); ?></p>
                             </div>
                             <div class="col-md-8">
-                                <p class="form-control-static text-666"><?php echo date("Y-m-d", strtotime($this->financingItem['expiryDate'])); ?></p>
+                                <p class="form-control-static text-666"><?php echo date("Y-m-d", strtotime($this->financingLoan['applyExpiryDate'])); ?></p>
                             </div>
                         </div>
                     </div>
@@ -81,9 +81,9 @@
             </div>
 
             <div class="col-md-4">
-                <div class="panel panel-primary">
+                <div class="panel panel-primary" style="height: 242px;">
                     <!-- Default panel contents -->
-                    <div class="panel-heading">项目利率<span class="pull-right"><i class="layui-icon layui-icon-about"></i></span></div>
+                    <div class="panel-heading">方案利率/费率<span class="pull-right"><i class="layui-icon layui-icon-about"></i></span></div>
 
                     <div class="panel-body">
                         <div class="row">
@@ -91,7 +91,7 @@
                                 <p class="form-control-static text-999"><?php echo $this->translate('融资（日）利率'); ?></p>
                             </div>
                             <div class="col-md-6">
-                                <p class="form-control-static text-666"><?php echo $this->financingItem['financing']['minInterestPercent'] * 100; ?> %</p>
+                                <p class="form-control-static text-666"><?php echo $this->financingLoan['financing']['minInterestPercent'] * 100; ?> %</p>
                             </div>
                         </div>
 
@@ -100,7 +100,7 @@
                                 <p class="form-control-static text-999"><?php echo $this->translate('逾期（日）利率'); ?></p>
                             </div>
                             <div class="col-md-6">
-                                <p class="form-control-static text-666"><?php echo $this->financingItem['financing']['overdueInterestPercent'] * 100; ?> %</p>
+                                <p class="form-control-static text-666"><?php echo $this->financingLoan['financing']['overdueInterestPercent'] * 100; ?> %</p>
                             </div>
                         </div>
 
@@ -109,25 +109,16 @@
                                 <p class="form-control-static text-999"><?php echo $this->translate('宽限期（日）利率'); ?></p>
                             </div>
                             <div class="col-md-6">
-                                <p class="form-control-static text-666"><?php echo $this->financingItem['financing']['graceInterestPercent'] * 100; ?> %</p>
+                                <p class="form-control-static text-666"><?php echo $this->financingLoan['financing']['graceInterestPercent'] * 100; ?> %</p>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-6">
-                                <p class="form-control-static text-999"><?php echo $this->translate('服务费（日）利率'); ?></p>
+                                <p class="form-control-static text-999"><?php echo $this->translate('服务（日）费率'); ?></p>
                             </div>
                             <div class="col-md-6">
-                                <p class="form-control-static text-666"><?php echo $this->financingItem['financing']['serviceChargePercent'] * 100; ?> %</p>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p class="form-control-static text-999"><?php echo $this->translate('预期总费用'); ?></p>
-                            </div>
-                            <div class="col-md-6">
-                                <p class="form-control-static text-666"><?php echo number_format($this->financingItem['serviceCharge'], 2); ?> 元</p>
+                                <p class="form-control-static text-666"><?php echo $this->financingLoan['financing']['serviceChargePercent'] * 100; ?> %</p>
                             </div>
                         </div>
                     </div>
@@ -137,7 +128,7 @@
             <div class="col-md-3">
                 <div class="panel panel-primary" style="height: 242px;">
                     <!-- Default panel contents -->
-                    <div class="panel-heading">待还金额<span class="pull-right"><?php echo date("Y-m-d", strtotime($this->financingItem['expiryDate'])); ?></i></span></div>
+                    <div class="panel-heading">待还金额<span class="pull-right"><?php echo date("Y-m-d", strtotime($this->financingLoan['applyExpiryDate'])); ?></i></span></div>
 
                     <div class="panel-body">
                         <div class="row">
@@ -145,7 +136,7 @@
                                 <p class="form-control-static text-999" style="margin-top: 47px;"><?php echo $this->translate('距还款'); ?></p>
                             </div>
                             <div class="col-md-6">
-                                <p class="form-control-static text-666"><span class="text-danger span-font-size-68"><?php echo round((strtotime($this->financingItem['expiryDate']) - strtotime(date("Y-m-d"))) / 86400); ?></span> 天</p>
+                                <p class="form-control-static text-666"><span class="text-danger span-font-size-68"><?php echo round((strtotime($this->financingLoan['applyExpiryDate']) - strtotime(date("Y-m-d"))) / 86400); ?></span> 天</p>
                             </div>
                         </div>
 
@@ -154,7 +145,7 @@
                                 <p class="form-control-static text-999"><?php echo $this->translate('预期应还'); ?></p>
                             </div>
                             <div class="col-md-6">
-                                <p class="form-control-static text-danger"><?php echo number_format($this->financingItem['financingAmount'] + $this->financingItem['interest'] + $this->financingItem['serviceCharge'], 2); ?> 元</p>
+                                <p class="form-control-static text-danger"><?php echo number_format($this->financingLoan['loanAmount'] + $this->financingLoan['totalInterest'] + $this->financingLoan['totalServiceCharge'], 2); ?> 元</p>
                             </div>
                         </div>
                     </div>
@@ -167,8 +158,12 @@
             <div class="panel-heading"><?php echo $this->translate('项目文件'); ?></div>
 
             <div class="panel-body">
-                <div class="col-xs-12 text-primary">
-                    <?php echo $this->ShowOrderContract4Factoring($this->contractList, $this->accountID); ?>
+                <div class="col-xs-12 text-muted">
+                    <?php if (!empty($this->contractList)):?>
+                        <?php echo $this->ShowOrderContract4Factoring($this->contractList, $this->accountID); ?>
+                    <?php else: ?>
+                        <label>暂无数据！</label>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -194,33 +189,38 @@
                 </tr>
                 </thead>
                 <tbody>
-                <?php if (empty($this->financingItem['financingLoanList'])):?>
                     <tr>
-                        <td colspan="9"><?php echo $this->translate('noData'); ?></td>
+                        <td><?php echo $this->financingLoan['loanNo']; ?></td>
+                        <td><?php echo date("Y-m-d", strtotime($this->financingLoan['applyLoanDate'])); ?></td>
+                        <td><?php echo number_format($this->financingLoan['loanAmount'], 2); ?> 元</td>
+                        <td><?php echo number_format($this->financingLoan['totalGeneralInterest'], 2); ?> 元</td>
+                        <td><?php echo number_format($this->financingLoan['totalGraceInterest'], 2); ?> 元</td>
+                        <td><?php echo number_format($this->financingLoan['totalOverdueInterest'], 2); ?> 元</td>
+                        <td><?php echo number_format($this->financingLoan['totalInterest'], 2); ?> 元</td>
+                        <td><?php echo number_format($this->financingLoan['totalServiceCharge'], 2); ?> 元</td>
+                        <td><?php echo number_format($this->financingLoan['writeoffBalInterest'] + $this->financingLoan['writeoffBalAmount'] + $this->financingLoan['writeoffServiceBalCharge'], 2); ?> 元</td>
+                        <td><?php echo $this->ShowDictionaryTo("LOAN_STATUS", $this->userLangCode, $this->dic_Setting['LOAN_STATUS'], $this->financingLoan['loanStatus']); ?></td>
                     </tr>
-                <?php else: ?>
-                    <?php foreach ($this->financingItem['financingLoanList'] as $financingLoan): ?>
-                        <tr>
-                            <td><?php echo $financingLoan['loanNo']; ?></td>
-                            <td><?php echo date("Y-m-d", strtotime($financingLoan['loanDate'])); ?></td>
-                            <td><?php echo number_format($financingLoan['loanAmount'], 2); ?> 元</td>
-                            <td><?php echo number_format($financingLoan['totalGeneralInterest'], 2); ?> 元</td>
-                            <td><?php echo number_format($financingLoan['totalGraceInterest'], 2); ?> 元</td>
-                            <td><?php echo number_format($financingLoan['totalOverdueInterest'], 2); ?> 元</td>
-                            <td><?php echo number_format($financingLoan['totalInterest'], 2); ?> 元</td>
-                            <td><?php echo number_format($financingLoan['serviceCharge'], 2); ?> 元</td>
-                            <td><?php echo number_format($financingLoan['writeoffBalInterest'] + $financingLoan['writeoffBalAmount'] + $financingLoan['writeoffServiceBalCharge'], 2); ?> 元</td>
-                            <td><?php echo $this->ShowDictionaryTo("LOAN_STATUS", $this->userLangCode, $this->dic_Setting['LOAN_STATUS'], $financingLoan['loanStatus']); ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php endif; ?>
                 </tbody>
             </table>
         </div>
 
         <div class="panel panel-success">
             <!-- Default panel contents -->
-            <div class="panel-heading"><?php echo $this->translate('还款情况'); ?></div>
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <?php echo $this->translate('还款情况'); ?>
+                    </div>
+                    <div class="col-sm-4">
+                        <p class="text-right">
+                            <?php if (!empty($this->financingLoan) && $this->financingLoan['loanStatus'] == '02' && $this->isRepayment == true): ?>
+                                <a class="btn btn-warning btn-xs"  href="/user/financing/financing-repayment?<?php echo base64_encode($this->financingLoan['loanID']);?>">去还款</a>
+                            <?php endif; ?>
+                        </p>
+                    </div>
+                </div>
+            </div>
 
             <!-- Table -->
             <table data-classes="table" class="table">
@@ -236,12 +236,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                <?php if (empty($this->financingItem['financingRepaymentList'])):?>
+                <?php if (empty($this->financingLoan['financingRepaymentList'])): ?>
                     <tr>
-                        <td colspan="9" class="text-center"><a href="/user/financing/financing-repayment">暂无还款记录，<span style="color: var(--brand-primary);">去还款</span></a></td>
+                        <td colspan="9" class="text-center">暂无还款记录</td>
                     </tr>
                 <?php else: ?>
-                    <?php foreach ($this->financingItem['financingRepaymentList'] as $financingRepayment): ?>
+                    <?php foreach ($this->financingLoan['financingRepaymentList'] as $financingRepayment): ?>
                         <tr>
                             <td><?php echo $financingRepayment['repaymentNo']; ?></td>
                             <td><?php echo date("Y-m-d", strtotime($financingRepayment['repaymentDate'])); ?></td>
@@ -249,7 +249,7 @@
                             <td><?php echo number_format($financingRepayment['writeoffPrincipalAmount'], 2); ?> 元</td>
                             <td><?php echo number_format($financingRepayment['writeoffInterestAmount'], 2); ?> 元</td>
                             <td><?php echo number_format($financingRepayment['writeoffServiceCharge'], 2); ?> 元</td>
-                            <td><?php echo $this->ShowDictionaryTo("LOAN_STATUS", $this->userLangCode, $this->dic_Setting['REPAYMENT_STATUS'], $financingRepayment['repaymentStatus']); ?></td>
+                            <td><?php echo $this->ShowDictionaryTo("REPAYMENT_STATUS", $this->userLangCode, $this->dic_Setting['REPAYMENT_STATUS'], $financingRepayment['repaymentStatus']); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>

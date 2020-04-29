@@ -2800,6 +2800,48 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl {
     }
 
     /**
+     * 金融方案详情 - 项目列表
+     * @param $requestObject
+     * @param $financingID
+     * @param $loanStatus
+     * @param $expiryDate
+     * @param $querySorts
+     * @param $keyword
+     * @param $skip
+     * @param $limit
+     * @return bool|string
+     */
+    public function listFinancingLoan($requestObject, $financingID, $loanStatus, $expiryDate, $querySorts, $keyword, $skip, $limit) {
+        $_url = $this->url . '/financingapi/financingApi!listFinancingLoan.action';
+        $_params = json_encode(array(
+            "requestObject" => $requestObject,
+            "financingID"   => $financingID,
+            "loanStatus"    => $loanStatus,
+            "expiryDate"    => $expiryDate,
+            "querySorts"    => $querySorts,
+            "keyword"       => $keyword,
+            "skip"          => $skip,
+            "limit"         => $limit
+        ));
+        return $this->vpost($_url, $_params);
+    }
+
+    /**
+     * 金融方案详情 - 项目详情
+     * @param $requestObject
+     * @param $loanID
+     * @return bool|string
+     */
+    public function getFinancingLoanView($requestObject, $loanID) {
+        $_url = $this->url . '/financingapi/financingApi!getFinancingLoanView.action';
+        $_params = json_encode(array(
+            "requestObject" => $requestObject,
+            "loanID"        => $loanID
+        ));
+        return $this->vpost($_url, $_params);
+    }
+
+    /**
      * 运单 - 金融项目列表 - 核销记录列表
      * @param $requestObject
      * @param $itemID
@@ -2823,21 +2865,6 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl {
     }
 
     /**
-     * 运单 - 金融项目列表 - 项目详情 - 放款情况 - 放款详情
-     * @param $requestObject
-     * @param $loanID
-     * @return bool|string
-     */
-    public function getFinancingLoanView($requestObject, $loanID) {
-        $_url = $this->url . '/financingapi/financingApi!getFinancingLoanView.action';
-        $_params = json_encode(array(
-            "requestObject" => $requestObject,
-            "loanID"        => $loanID
-        ));
-        return $this->vpost($_url, $_params);
-    }
-
-    /**
      * 运单 - 金融项目列表 - 项目详情 - 放款情况 - 还款详情
      * @param $requestObject
      * @param $repaymentID
@@ -2848,6 +2875,42 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl {
         $_params = json_encode(array(
             "requestObject" => $requestObject,
             "repaymentID"   => $repaymentID
+        ));
+        return $this->vpost($_url, $_params);
+    }
+
+    /**
+     * @param $requestObject
+     * @param $financingID
+     * @param $loanIDs
+     * @param $expiryDate
+     * @return bool|string
+     */
+    public function calcInterest($requestObject, $financingID, $loanIDs, $expiryDate) {
+        $_url = $this->url . '/financingapi/financingApi!calcInterest.action';
+        $_params = json_encode(array(
+            "requestObject" => $requestObject,
+            "financingID"   => $financingID,
+            "loanIDs"       => $loanIDs,
+            "expiryDate"    => $expiryDate,
+        ));
+        return $this->vpost($_url, $_params);
+    }
+
+    /**
+     * @param $requestObject
+     * @param $financingID
+     * @param $paymentRequest
+     * @param $loanIDs
+     * @return bool|string
+     */
+    public function doRepayment($requestObject, $financingID, $paymentRequest, $loanIDs) {
+        $_url = $this->url . '/financingapi/financingApi!doRepayment.action';
+        $_params = json_encode(array(
+            "requestObject"  => $requestObject,
+            "financingID"    => $financingID,
+            "paymentRequest" => $paymentRequest,
+            "loanIDs"        => $loanIDs
         ));
         return $this->vpost($_url, $_params);
     }
@@ -2878,15 +2941,15 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl {
     /**
      * 运单 - 方案申请
      * @param $requestObject
-     * @param $financingItem
+     * @param $financingLoan
      * @param $financingObjectList
      * @return bool|string
      */
-    public function addFinancingItem($requestObject, $financingItem, $financingObjectList) {
-        $_url = $this->url . '/financingapi/financingApi!addFinancingItem.action';
+    public function addFinancingLoan($requestObject, $financingLoan, $financingObjectList) {
+        $_url = $this->url . '/financingapi/financingApi!addFinancingLoan.action';
         $_params = json_encode(array(
             "requestObject"       => $requestObject,
-            "financingItem"       => $financingItem,
+            "financingLoan"       => $financingLoan,
             "financingObjectList" => $financingObjectList
         ));
         return $this->vpost($_url, $_params);
@@ -2923,22 +2986,28 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl {
     /**
      * 运单列表
      * @param $requestObject
-     * @param $customerID
      * @param $querySorts
      * @param $keyword
      * @param $skip
      * @param $limit
+     * @param $customerID
+     * @param $transOrderCode
+     * @param $carrierName
+     * @param $takeDeliveryTime
      * @return bool|string
      */
-    public function listTransportOrder($requestObject, $customerID, $querySorts, $keyword, $skip, $limit) {
+    public function listTransportOrder($requestObject, $querySorts, $keyword, $skip, $limit, $customerID, $transOrderCode, $carrierName, $takeDeliveryTime) {
         $_url = $this->url . '/transOrderapi/transOrderApi!listTransportOrderQuery.action';
         $_params = json_encode(array(
-            "requestObject" => $requestObject,
-            "customerID"    => $customerID,
-            "querySorts"    => $querySorts,
-            "keyword"       => $keyword,
-            "skip"          => $skip,
-            "limit"         => $limit
+            "requestObject"    => $requestObject,
+            "querySorts"       => $querySorts,
+            "keyword"          => $keyword,
+            "skip"             => $skip,
+            "limit"            => $limit,
+            "customerID"       => $customerID,
+            "transOrderCode"   => $transOrderCode,
+            "carrierName"      => $carrierName,
+            "takeDeliveryTime" => $takeDeliveryTime
         ));
         return $this->vpost($_url, $_params);
     }
@@ -2962,15 +3031,17 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl {
      * 申请的列表
      * @param $requestObject
      * @param $customerID
-     * @param $signDateTime
+     * @param $startSignDate
+     * @param $endSignDate
      * @return bool|string
      */
-    public function listApplyOrderList($requestObject, $customerID, $signDateTime) {
+    public function listApplyOrderList($requestObject, $customerID, $startSignDate, $endSignDate) {
         $_url = $this->url . '/transOrderapi/transOrderApi!listApplyOrderList.action';
         $_params = json_encode(array(
             "requestObject" => $requestObject,
             "customerID"    => $customerID,
-            "signDateTime"  => $signDateTime
+            "startSignDate" => $startSignDate,
+            "endSignDate"   => $endSignDate
         ));
         return $this->vpost($_url, $_params);
     }

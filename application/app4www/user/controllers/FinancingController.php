@@ -117,8 +117,8 @@ class FinancingController extends Kyapi_Controller_Action {
         $this->view->financingItem = $this->objectToArray(json_decode($financingItemResultObject)->result);
 
         // 右上角图表
-        $loanStatisticResultobject = $this->json->listLoanStatisticData($requestObject);
-        $this->view->loanStatistic = $this->objectToArray(json_decode($loanStatisticResultobject)->result);
+        $loanStatisticResultObject = $this->json->listLoanStatisticData($requestObject);
+        $this->view->loanStatistic = $this->objectToArray(json_decode($loanStatisticResultObject)->result);
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/financing/financingItem.phtml");
@@ -128,7 +128,7 @@ class FinancingController extends Kyapi_Controller_Action {
     }
 
     // 金融方案详情 - 项目列表
-    public function financingItemListAjaxAction() {
+    public function financingLoanListAjaxAction() {
         // $msg = array();
         $requestObject = $this->_requestObject;
 
@@ -151,49 +151,68 @@ class FinancingController extends Kyapi_Controller_Action {
 
         $financingID = $this->_request->getParam('financingID');
 
-        $itemStatus = $this->_request->getParam('itemStatus');
-        if (empty($itemStatus)) {
-            $itemStatus = null;
+        $loanStatus = $this->_request->getParam('loanStatus');
+        if (empty($loanStatus)) {
+            $loanStatus = null;
         } else {
-            if ($itemStatus == 'all') {
-                $itemStatus = null;
+            if ($loanStatus == 'all') {
+                $loanStatus = null;
             }
+        }
+
+        $expiryDate = $this->_request->getParam('expiryDate');
+        if (empty($loanStatus)) {
+            $expiryDate = date("Y-m-d\TH:i:s");
         }
 
         if (is_array($querySorts)) {
             $querySorts = $this->arrayToObject($querySorts);
         }
 
-        $resultObject = $this->json->listFinancingItem($requestObject, $financingID, $itemStatus, $querySorts, $keyword, $skip, $limit);
+        $resultObject = $this->json->listFinancingLoan($requestObject, $financingID, $loanStatus, $expiryDate, $querySorts, $keyword, $skip, $limit);
         // $msg["totalPage"] = json_decode($resultObject)->extData->totalPage;
         // $msg["rows"] = json_decode($resultObject)->result;
         //
         // echo json_encode($msg);
-        echo json_encode(json_decode($resultObject)->result);
+        if (json_decode($resultObject)->status == 1) {
+            echo json_encode(json_decode($resultObject)->result);
+        } else {
+            echo null;
+        }
+
         exit;
     }
 
     // 金融方案详情 - 项目详情
-    public function financingItemViewAction() {
+    public function financingLoanViewAction() {
         $requestObject = $this->_requestObject;
 
         $queryString = $_SERVER['QUERY_STRING'];
         $itemID = base64_decode($queryString);
 
-        $resultObject = $this->json->getFinancingItemView($requestObject, $itemID);
-        $this->view->financingItem = $this->objectToArray(json_decode($resultObject)->result);
-        $financingItem = json_decode($resultObject)->result;
+        $resultObject = $this->json->getFinancingLoanView($requestObject, $itemID);
+        $this->view->financingLoan = $this->objectToArray(json_decode($resultObject)->result);
+        $financingLoan = json_decode($resultObject)->result;
+
+        // 判断是否已存在有效还款记录
+        $isRepayment = true;
+        foreach ($financingLoan->financingRepaymentList as $financingRepayment) {
+            if ($financingRepayment->repaymentStatus == 0) {
+                $isRepayment = false;
+                break;
+            }
+        }
+        $this->view->isRepayment = $isRepayment;
 
         // 文档签署模
         $contractList = [];
         $bizType = 'NL';
-        foreach ($financingItem->financingLoanList as $financingLoan) {
-            $contractResultObject = $this->json->listBizContract($requestObject, $bizType, $financingLoan->loanID);
-            $resContract = json_decode($contractResultObject);
-            if ($resContract->result) {
-                $contractList = array_merge($contractList, $this->objectToArray($resContract->result));
-            }
+        $contractResultObject = $this->json->listBizContract($requestObject, $bizType, $financingLoan->loanID);
+        $resContract = json_decode($contractResultObject);
+        if ($resContract->result) {
+            $contractList = array_merge($contractList, $this->objectToArray($resContract->result));
         }
+
         $this->view->contractList = $contractList;
 
         if (defined('SEED_WWW_TPL')) {
@@ -204,27 +223,27 @@ class FinancingController extends Kyapi_Controller_Action {
     }
 
     // 金融项目申请
-    public function addFinancingItemAction() {
+    public function addFinancingLoanAction() {
         $requestObject = $this->_requestObject;
 
         if ($this->_request->isPost()) {
-            $financingItem = array();
-            $financingItem['financingID'] = $this->_request->getParam('financingID');
-            $loanDate = $this->_request->getParam('loanDate');
-            $expiryDate = $this->_request->getParam('expiryDate');
-            if (empty($loanDate)) {
-                $loanDate = date("Y-m-d\TH:i:s");
+            $financingLoan = array();
+            $financingLoan['financingID'] = $this->_request->getParam('financingID');
+            $applyLoanDate = $this->_request->getParam('applyLoanDate');
+            $applyExpiryDate = $this->_request->getParam('applyExpiryDate');
+            if (empty($applyLoanDate)) {
+                $applyLoanDate = date("Y-m-d\TH:i:s");
             }
-            if (empty($expiryDate)) {
-                $expiryDate = date("Y-m-d\TH:i:s");
+            if (empty($applyExpiryDate)) {
+                $applyExpiryDate = date("Y-m-d\TH:i:s");
             }
-            $financingItem['loanDate'] = date("Y-m-d\TH:i:s", strtotime($loanDate));
-            $financingItem['expiryDate'] = date("Y-m-d\TH:i:s", strtotime($expiryDate));
-            $financingItem['receivableAmount'] = (double)$this->_request->getParam('receivableAmount');
-            $financingItem['assignmentAmount'] = (double)$this->_request->getParam('assignmentAmount');
-            $financingItem['financingAmount'] = (double)$this->_request->getParam('financingAmount');
-            if (is_array($financingItem)) {
-                $financingItem = $this->arrayToObject($financingItem);
+            $financingLoan['applyLoanDate'] = date("Y-m-d\TH:i:s", strtotime($applyLoanDate));
+            $financingLoan['applyExpiryDate'] = date("Y-m-d\TH:i:s", strtotime($applyExpiryDate));
+            $financingLoan['receivableAmount'] = (double)$this->_request->getParam('receivableAmount');
+            $financingLoan['assignmentAmount'] = (double)$this->_request->getParam('assignmentAmount');
+            $financingLoan['loanAmount'] = (double)$this->_request->getParam('loanAmount');
+            if (is_array($financingLoan)) {
+                $financingLoan = $this->arrayToObject($financingLoan);
             }
 
             $financingObjectList = array();
@@ -234,6 +253,7 @@ class FinancingController extends Kyapi_Controller_Action {
             $summary = $_POST['summary'];
             $crnCode = $_POST['crnCode'];
             $totalAmount = $_POST['totalAmount'];
+            $billDate = $_POST['billDate'];
             foreach ($objBizType as $key=>$value) {
                 $financingObjectList[$key]['objBizType'] = $objBizType[$key];
                 $financingObjectList[$key]['objBizID'] = $objBizID[$key];
@@ -241,15 +261,16 @@ class FinancingController extends Kyapi_Controller_Action {
                 $financingObjectList[$key]['summary'] = $summary[$key];
                 $financingObjectList[$key]['crnCode'] = $crnCode[$key];
                 $financingObjectList[$key]['totalAmount'] = (double)$totalAmount[$key];
+                $financingObjectList[$key]['billDate'] = date("Y-m-d\TH:i:s", strtotime($billDate[$key]));
             }
 
-            $resultObject = $this->json->addFinancingItem($requestObject, $financingItem, $financingObjectList);
+            $resultObject = $this->json->addFinancingLoan($requestObject, $financingLoan, $financingObjectList);
             $resultObject = json_decode($resultObject);
-            $resultMsg = base64_encode($resultObject->result->itemID);
+            $resultMsg = base64_encode($resultObject->result->loanID);
 
             // 页面跳转
             if ($resultObject->status == 1) {
-                $this->redirect("/financing/financing-item-view?" . $resultMsg);
+                $this->redirect("/financing/financing-loan-view?" . $resultMsg);
             } else {
                 $resultMsg = base64_encode($this->view->translate('tip_add_fail'). '! ' . $resultObject->error);
                 $this->redirect("/transport/apply?resultMsg=" . $resultMsg);
@@ -268,18 +289,176 @@ class FinancingController extends Kyapi_Controller_Action {
         $requestObject = $this->_requestObject;
 
         $queryString = $_SERVER['QUERY_STRING'];
-        $itemID = base64_decode($queryString);
+        $loanID = base64_decode($queryString);
 
-        $resultObject = $this->json->getFinancingItemView($requestObject, $itemID);
-        $this->view->financingItem = $this->objectToArray(json_decode($resultObject)->result);
-        $financingItem = json_decode($resultObject)->result;
+        $financingLoanResultObject = $this->json->getFinancingLoanView($requestObject, $loanID);
+        $financingLoan = json_decode($financingLoanResultObject)->result;
+
+        $financingID = $financingLoan->financingID;
+        $financingResultObject = $this->json->getFinancingView($requestObject, $financingID);
+        $financing = json_decode($financingResultObject)->result;
+        $this->view->financing = $this->objectToArray($financing);
 
         // 转帐信息
-        $bankAcctResultObject = $this->json->getBankAccountApi($requestObject, $financingItem->companyBankAcctID);
+        $bankAcctResultObject = $this->json->getBankAccountApi($requestObject, $financing->companyBankAcctID);
         $this->view->bankAcct = $this->objectToArray(json_decode($bankAcctResultObject)->result);
+
+        // 随机验证码
+        $this->view->explanationStr = date('d') . str_pad(mt_rand(1, 99999), 3, '0', STR_PAD_LEFT);
+
+        $paymentLoanIDs = array();
+        $paymentLoanIDs[0] = $financingLoan->loanID;
+        $this->view->loanIDs = $paymentLoanIDs;
 
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/financing/financingRepayment.phtml");
+            echo $content;
+            exit;
+        }
+    }
+
+    // 金融方案详情 - 项目详情 - 批量还款
+    public function financingRepaymentsAction() {
+        $requestObject = $this->_requestObject;
+
+        $financingID = $this->_request->getParam('financingID');
+
+        $resultObject = $this->json->getFinancingView($requestObject, $financingID);
+        $financing = json_decode($resultObject)->result;
+        $this->view->financing = $this->objectToArray($financing);
+        // 转帐信息
+        $bankAcctResultObject = $this->json->getBankAccountApi($requestObject, $financing->companyBankAcctID);
+        $this->view->bankAcct = $this->objectToArray(json_decode($bankAcctResultObject)->result);
+
+        // 随机验证码
+        $this->view->explanationStr = date('d') . str_pad(mt_rand(1, 99999), 3, '0', STR_PAD_LEFT);
+
+        $paymentLoanIDs = $_POST['paymentLoanIDs'];
+        $this->view->loanIDs = $paymentLoanIDs;
+
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/financing/financingRepayment.phtml");
+            echo $content;
+            exit;
+        }
+    }
+
+    // 查询利息
+    public function calcInterestAjaxAction() {
+        $msg = array();
+        $requestObject = $this->_requestObject;
+
+        $financingID = $this->_request->getParam('financingID');
+
+        $expiryDate = $this->_request->getParam('expiryDate');
+        if (empty($expiryDate)) {
+            $expiryDate = date("Y-m-d\TH:i:s");
+        } else {
+            $expiryDate = date("Y-m-d\TH:i:s", strtotime($expiryDate));
+        }
+
+        $loanIDs = $_POST['loanIDs'];
+
+        $resultObject = $this->json->calcInterest($requestObject, $financingID, $loanIDs, $expiryDate);
+        if (json_decode($resultObject)->status == 0) {
+            echo json_encode(json_decode($resultObject)->result);
+        } else {
+            echo null;
+        }
+        exit;
+    }
+
+    public function financingRepaymentSaveAction() {
+        $requestObject = $this->_requestObject;
+
+        // 基本信息
+        $financingID = $this->_request->getParam('financingID');
+        $paymentRequest = array();
+        $paymentAmount = (double)$this->_request->getParam('paymentAmount');
+        $explanation = $this->_request->getParam('explanation');
+        $paymentDate = $this->_request->getParam('expiryDate');
+        if (empty($paymentDate)) {
+            $paymentDate = date("Y-m-d\TH:i:s");
+        } else {
+            $paymentDate = date("Y-m-d\TH:i:s", strtotime($paymentDate));
+        }
+        $paymentRequest['paymentAmount'] = $paymentAmount;
+        $paymentRequest['explanation'] = $explanation;
+        $paymentRequest['paymentDate'] = $paymentDate;
+
+        // 附件
+        $attachmentList = array();
+        $attachID = $this->_request->getParam('attachNid');
+        $attachType = $this->_request->getParam('attachType');
+        $attachName = $this->_request->getParam("attachName");
+        $attachSize = $this->_request->getParam("attachSize");
+        foreach ($attachID as $key=>$value) {
+            $attachmentList[$key]['attachID'] = $attachID[$key];
+            $attachmentList[$key]['attachType'] = $attachType[$key];
+            $attachmentList[$key]['name'] = $attachName[$key];
+            $attachmentList[$key]['attachSize'] = $attachSize[$key];
+        }
+        $paymentRequest['attachmentList'] = $attachmentList;
+
+        // loans
+        $loanIDs = $_POST['loanIDs'];
+
+
+        $this->view->paymentAmount = $paymentAmount;                    // 应付总额
+        $this->view->actualFinancingAmount = (double)$this->_request->getParam('actualFinancingAmount');    // 本金
+        $this->view->actualInterest = (double)$this->_request->getParam('actualInterest');                  // 利息
+        $this->view->actualServiceCharge = (double)$this->_request->getParam('actualServiceCharge');        // 服务费
+
+        // 判断附件是否为空
+        if (empty($attachmentList)) {
+            $this->view->resultMsg = base64_encode($this->view->translate('tip_add_fail'). '! ' . '附件不能为空。');
+
+            $resultObject = $this->json->getFinancingView($requestObject, $financingID);
+            $financing = json_decode($resultObject)->result;
+            $this->view->financing = $this->objectToArray($financing);
+            // 转帐信息
+            $bankAcctResultObject = $this->json->getBankAccountApi($requestObject, $financing->companyBankAcctID);
+            $this->view->bankAcct = $this->objectToArray(json_decode($bankAcctResultObject)->result);
+
+            // 随机验证码
+            $this->view->explanationStr = date('d') . str_pad(mt_rand(1, 99999), 3, '0', STR_PAD_LEFT);
+
+            $this->view->loanIDs = $loanIDs;
+
+            $content = $this->view->render(SEED_WWW_TPL . "/financing/financingRepayment.phtml");
+            echo $content;
+            exit;
+        }
+
+        // 还款请求
+        $resultObject = $this->json->doRepayment($requestObject, $financingID, $paymentRequest, $loanIDs);
+        $resultStatus = json_decode($resultObject)->status;
+        $resultMsg = base64_encode($financingID);
+
+        // 页面跳转
+        if ($resultStatus == 1) {   // 请求成功
+            $this->redirect("/financing/financing-item?" . $resultMsg);
+        } else {
+            $this->view->resultMsg = base64_encode($this->view->translate('tip_add_fail'). '! ' . json_decode($resultObject)->error);
+
+            $resultObject = $this->json->getFinancingView($requestObject, $financingID);
+            $financing = json_decode($resultObject)->result;
+            $this->view->financing = $this->objectToArray($financing);
+            // 转帐信息
+            $bankAcctResultObject = $this->json->getBankAccountApi($requestObject, $financing->companyBankAcctID);
+            $this->view->bankAcct = $this->objectToArray(json_decode($bankAcctResultObject)->result);
+
+            // 随机验证码
+            $this->view->explanationStr = date('d') . str_pad(mt_rand(1, 99999), 3, '0', STR_PAD_LEFT);
+
+            $this->view->loanIDs = $loanIDs;
+
+            $content = $this->view->render(SEED_WWW_TPL . "/financing/financingRepayment.phtml");
+            echo $content;
+            exit;
+        }
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/financing/index.phtml");
             echo $content;
             exit;
         }

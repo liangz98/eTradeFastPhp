@@ -119,6 +119,16 @@
 					</div>
 				</div>
 
+                <div class="form-group">
+                    <label for="verification" class="col-sm-3 control-label"><?php echo $this->translate('codes'); ?></label>
+                    <div class="col-sm-3">
+                        <input type="password" class="form-control" name="verification" id="verification" required placeholder="<?php echo $this->translate('tip_code'); ?>">
+                    </div>
+                    <div class="col-sm-3">
+                        <img src='/user/check/radom-verification-code' alt="" />
+                    </div>
+                </div>
+
 				<div class="form-group">
 					<label for="serviceContract" class="col-sm-3 control-label"></label>
 					<div class="checkbox col-sm-7">

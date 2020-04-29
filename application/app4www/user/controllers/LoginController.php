@@ -20,8 +20,7 @@ class LoginController extends Kyapi_Controller_Action {
         if ($this->_request->isPost()) {
             // 请求服务端方法
             $_requestOb = $this->_requestObject;
-            $loginName = $this->_request->getParam('ecommloginname');
-            $loginName = trim($loginName);
+            $loginName = trim($this->_request->getParam('ecommloginname'));
             $password = $this->_request->getParam('ecommpasswsd');
             $password = trim($password);
 
@@ -56,6 +55,8 @@ class LoginController extends Kyapi_Controller_Action {
 
                 if ($existData['account']['accountType'] == 'CO07') {
                     $this->redirect("/finance/channel");
+                } else if ($existData['account']['accountType'] == 'CO09') {
+                    $this->redirect("/transport");
                 } else {
                     $this->redirect("/");
                 }

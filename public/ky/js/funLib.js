@@ -526,3 +526,13 @@ Date.prototype.format = function(fmt) {
     }
     return fmt;
 };
+
+/* 扩展增加天数 */
+Date.prototype.addDays = function(days) {
+    this.setDate(this.getDate() + days);
+    return this;
+};
+Date.prototype.addMonths = function(months) {
+    this.setMonth(this.getMonth() + months);
+    return this;
+};

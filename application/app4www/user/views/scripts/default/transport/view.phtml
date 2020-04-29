@@ -6,7 +6,7 @@
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/freight/freight.css" rel="stylesheet">
 
-    <link href="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.css" rel="stylesheet">
+    <link href="/ky/bootstrap-table-1.16.0-dist/bootstrap-table.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -15,8 +15,8 @@
 <div class="container-fluid index-body">
 	<div class="container">
         <ol class="breadcrumb">
-            <li><a href="/"><?php echo $this->translate('nav_index'); ?></a></li>
-            <li><a href="/user/freight"><?php echo $this->translate('运单列表'); ?></a></li>
+            <li><a href="/user/transport"><?php echo $this->translate('nav_index'); ?></a></li>
+            <li><a href="/user/transport"><?php echo $this->translate('运单列表'); ?></a></li>
             <li class="active"><?php echo $this->translate('运单详情'); ?></li>
         </ol>
 
@@ -25,15 +25,16 @@
         </div>
 
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-md-9">
-                                <h3><?php echo $this->translate('订单编号'); ?>：0D2901820099931009</h3>
+                            <div class="col-md-5">
+                                <h3><?php echo $this->translate('运单编号'); ?>：<?php echo $this->transportOrder['transOrderCode']; ?> </h3>
+
                             </div>
-                            <div class="col-md-3">
-                                <span class="label label-success">状态：已发货</span>
+                            <div class="col-md-1">
+                                <span class="label label-success">状态：<?php echo $this->ShowDictionaryTo($this->dic_Setting['TRANSORDER_FACTORING_STATUS'], $this->userLangCode, $this->dic_Setting['TRANSORDER_FACTORING_STATUS'], $this->transportOrder["financeStatus"]); ?></span>
                             </div>
                         </div>
 
@@ -60,7 +61,7 @@
                             </div>
                             <div class="col-md-10">
                                 <p class="form-control-static text-666">
-                                    <?php echo $this->e['transNo']; ?>来自某地的货源要求信息，货物名称xxxxx
+                                    <?php echo $this->transportOrder['customerName']; ?>
                                 </p>
                             </div>
                         </div>
@@ -71,7 +72,7 @@
                             </div>
                             <div class="col-md-10">
                                 <p class="form-control-static text-666">
-                                    <?php echo $this->e['transNo']; ?>6,000
+                                    <?php echo number_format($this->transportOrder['freightAmount'], 2); ?> 元
                                 </p>
                             </div>
                         </div>
@@ -82,7 +83,7 @@
                             </div>
                             <div class="col-md-10">
                                 <p class="form-control-static text-666">
-                                    <?php echo $this->e['transNo']; ?>2019-10-10 12:23:46
+                                    <?php echo date("Y-m-d H:i:s", strtotime($this->transportOrder['takeDeliveryTime'])); ?>
                                 </p>
                             </div>
                         </div>
@@ -93,7 +94,7 @@
                             </div>
                             <div class="col-md-10">
                                 <p class="form-control-static text-666">
-                                    <?php echo $this->e['transNo']; ?>已融资XXXX,还款日期，利率/ 未融资
+
                                 </p>
                             </div>
                         </div>
@@ -120,7 +121,7 @@
                             </div>
                             <div class="col-md-10">
                                 <p class="form-control-static text-666">
-                                    <?php echo $this->e['transNo']; ?>广东省，广州市，白云区
+                                    <?php echo $this->transportOrder['departureName']; ?>
                                 </p>
                             </div>
                         </div>
@@ -131,7 +132,7 @@
                             </div>
                             <div class="col-md-10">
                                 <p class="form-control-static text-666">
-                                    <?php echo $this->e['transNo']; ?>浙江省，金华市，金东区
+                                    <?php echo $this->transportOrder['arrivalsName']; ?>
                                 </p>
                             </div>
                         </div>
@@ -142,7 +143,7 @@
                             </div>
                             <div class="col-md-10">
                                 <p class="form-control-static text-666">
-                                    <?php echo $this->e['transNo']; ?>1000km
+                                    <?php echo $this->transportOrder['distance']; ?> km
                                 </p>
                             </div>
                         </div>
@@ -153,7 +154,7 @@
                             </div>
                             <div class="col-md-10">
                                 <p class="form-control-static text-666">
-                                    <?php echo $this->e['transNo']; ?>2019-10-10 12:23:46
+                                    <?php echo date("Y-m-d H:i:s", strtotime($this->transportOrder['departureTime'])); ?>
                                 </p>
                             </div>
                         </div>
@@ -164,7 +165,7 @@
                             </div>
                             <div class="col-md-10">
                                 <p class="form-control-static text-666">
-                                    <?php echo $this->e['transNo']; ?>2019-10-10 12:23:46
+                                    <?php echo date("Y-m-d H:i:s", strtotime($this->transportOrder['arrivalsTime'])); ?>
                                 </p>
                             </div>
                         </div>
@@ -187,32 +188,26 @@
 
                         <div class="row">
                             <div class="col-md-12">
-<!--                                <table id="resultListTable" class="table-striped"></table>-->
-                                <table class="table">
+                                <table data-toggle="table" data-classes="table">
                                     <thead>
                                     <tr>
-                                        <th>司机</th>
-                                        <th>联系方式</th>
-                                        <th>车辆</th>
-                                        <th>身份证</th>
-                                        <th>备注</th>
+                                        <th data-width="130">司机</th>
+                                        <th data-width="120">联系方式</th>
+                                        <th data-width="180">车辆</th>
+                                        <th data-width="180">身份证</th>
+                                        <th data-width="180">备注</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>沈师傅</td>
-                                        <td>158 5858 6060</td>
-                                        <td>皖SXXXXX，9.6米，高栏</td>
-                                        <td>362255198810066320</td>
-                                        <td>XXXXXXXXXX</td>
-                                    </tr>
-                                    <tr>
-                                        <td>沈师傅</td>
-                                        <td>158 5858 6060</td>
-                                        <td>皖SXXXXX，9.6米，高栏</td>
-                                        <td>362255198810066320</td>
-                                        <td>XXXXXXXXXX</td>
-                                    </tr>
+                                    <?php foreach ($this->transportOrder['transporterList'] as $transporter): ?>
+                                        <tr>
+                                            <td><?php echo $transporter['dirverName']; ?></td>
+                                            <td><?php echo $transporter['mobile']; ?></td>
+                                            <td><?php echo $transporter['vehicleNo']; ?>，<?php echo $transporter['vehicleLength']; ?>，<?php echo $transporter['vehicleModel']; ?></td>
+                                            <td><?php echo $transporter['identityCardID']; ?></td>
+                                            <td></td>
+                                        </tr>
+                                    <?php endforeach; ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -221,7 +216,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="hidden">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div class="row">
@@ -292,8 +287,8 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
-<script src="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.js"></script>
-<script src="/ky/bootstrap-table-1.12.1-dist/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="/ky/bootstrap-table-1.16.0-dist/bootstrap-table.min.js"></script>
+<script src="/ky/bootstrap-table-1.16.0-dist/locale/bootstrap-table-zh-CN.min.js"></script>
 
 <script type="text/javascript">
 	$().ready(function() {

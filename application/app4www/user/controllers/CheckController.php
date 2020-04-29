@@ -131,23 +131,35 @@ class CheckController extends Kyapi_Controller_Action
         }
         exit;
     }
-    //验证码接口请求
-    function codeAction(){
 
-        $_requestOb=$this->_requestObject;
-        $resultObject= $this->json->getLoginAuthCodeApi( $_requestOb);
-        $checkKY= $this->objectToArray(json_decode($resultObject));
+    // 验证码接口请求
+    function codeAction() {
+        $_requestOb = $this->_requestObject;
+        $resultObject = $this->json->getLoginAuthCodeApi($_requestOb);
+        $checkKY = $this->objectToArray(json_decode($resultObject));
 
-
-        if($checkKY['status']!=1){
-            echo 'yanzshibai';
-        }else{
-            $vc=new Kyapi_Model_Vcode();
-            $pngcode=$vc->show($checkKY['result']);
-             echo $pngcode;
-             exit;
-
+        if ($checkKY['status'] != 1) {
+            echo 'verification failed';
+        } else {
+            $vc = new Kyapi_Model_Vcode();
+            $pngcode = $vc->show($checkKY['result']);
+            echo $pngcode;
+            exit;
         }
+    }
 
+    function radomVerificationCodeAction() {
+        $verificationCode = new Kyapi_Model_Vcode();
+        $captchaStr = '';//保存验证码字符串，后面存入session用于session验证
+        //验证码随机四个数字
+        for ($i=0;$i<4;$i++){
+            $fontContent = rand(0,9);//0-9随机数字
+            $captchaStr .= $fontContent;//字符串拼接到$captch_code
+        }
+        $_SESSION['regVerificationCode'] = $captchaStr; //保存验证信息，等待校验
+        $pngCode = $verificationCode->show($captchaStr, 1);
+
+        echo $pngCode;
+        exit;
     }
 }

@@ -16,7 +16,7 @@
 <div class="container-fluid index-body">
 	<div class="container">
         <ol class="breadcrumb">
-            <li><a href="/"><?php echo $this->translate('nav_index'); ?></a></li>
+            <li><a href="/user/transport"><?php echo $this->translate('nav_index'); ?></a></li>
             <li class="active"><?php echo $this->translate('freightList'); ?></li>
         </ol>
 
@@ -24,52 +24,39 @@
             <div class="panel-body">
 
                 <div class="page-header">
-                    <h3><?php echo $this->translate('订单列表'); ?><a href="/user/transport/apply" class="btn btn-success pull-right">生成金融方案</a></h3>
+                    <h3><?php echo $this->translate('freightList'); ?><a href="/user/transport/apply" class="btn btn-success pull-right">生成金融方案</a></h3>
                 </div>
 
                 <form class="form-horizontal" action="javascript:void(0)" onsubmit="search()" id="search_form">
                     <div class="form-group">
-                        <label for="keyword" class="col-sm-1 control-label"><?php echo $this->translate('订单编号'); ?></label>
+                        <label for="transOrderCode" class="col-sm-1 control-label"><?php echo $this->translate('运单编号'); ?></label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" name="keyword" id="keyword" placeholder="<?php echo $this->translate('订单编号'); ?>" >
+                            <input type="text" class="form-control" name="transOrderCode" id="transOrderCode" placeholder="<?php echo $this->translate('运单编号'); ?>" >
                         </div>
 
-                        <label for="keyword" class="col-sm-1 control-label"><?php echo $this->translate('商品名称'); ?></label>
+                        <label for="customerID" class="col-sm-1 control-label"><?php echo $this->translate('货主'); ?></label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" name="proName" id="proName" placeholder="<?php echo $this->translate('商品名称'); ?>" >
+                            <select class="selectpicker form-control" name="customerID" id="customerID">
+                                <?php echo $this->ShowDictionaryList($this->dic_Setting['TRANSPORT_ACCOUNT_LIST'], $this->userLangCode, $this->dic_Setting['TRANSPORT_ACCOUNT_LIST'], ''); ?>
+                            </select>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="paymentStatus" class="col-sm-1 control-label"><?php echo $this->translate('订单类型'); ?></label>
+                        <label for="carrierName" class="col-sm-1 control-label"><?php echo $this->translate('承运人'); ?></label>
                         <div class="col-sm-4">
-                            <select class="selectpicker form-control" name="paymentStatus" id="paymentStatus" data-live-search="true">
-                                <option value=""><?php echo $this->translate('et_select'); ?></option>
-                                <?php echo $this->ShowDictionaryList($this->dic_Setting['PAYMENT_STATUS'], $this->userLangCode, $this->dic_Setting['PAYMENT_STATUS'], $this->paymentStatus); ?>
-                            </select>
+                            <input type="text" class="form-control" name="carrierName" id="carrierName" placeholder="<?php echo $this->translate('承运人'); ?>" >
                         </div>
 
-                        <label for="startDate" class="col-sm-1 control-label"><?php echo $this->translate('时间'); ?></label>
+                        <label for="takeDeliveryTime" class="col-sm-1 control-label"><?php echo $this->translate('到货时间'); ?></label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control layDateUI" name="startDate" id="startDate">
+                            <input type="text" class="form-control layDateUI" name="takeDeliveryTime" id="takeDeliveryTime">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="crnCode" class="col-sm-1 control-label"><?php echo $this->translate('配送方式'); ?></label>
-                        <div class="col-sm-4">
-                            <select class="selectpicker form-control" name="crnCode" id="crnCode" data-live-search="true">
-                                <option value=""><?php echo $this->translate('et_select'); ?></option>
-                                <?php echo $this->ShowDictionaryList($this->dic_Setting['CURRENCY'], $this->userLangCode, $this->dic_Setting['CURRENCY']); ?>
-                            </select>
-                        </div>
-
-                        <label for="proType" class="col-sm-1 control-label"><?php echo $this->translate('产品类型'); ?></label>
-                        <div class="col-sm-4">
-                            <select class="selectpicker form-control" name="proType" id="proType" data-live-search="true">
-                                <option value=""><?php echo $this->translate('et_select'); ?></option>
-                                <?php echo $this->ShowDictionaryList($this->dic_Setting['CURRENCY'], $this->userLangCode, $this->dic_Setting['CURRENCY']); ?>
-                            </select>
+                        <div class="col-sm-offset-4 col-sm-4">
+                            <button type="submit" class="btn btn-warning btn-block"><?php echo $this->translate('find'); ?></button>
                         </div>
                     </div>
                 </form>
@@ -123,7 +110,7 @@
         });
 
         let dataDictQuery = '/user/common/dict-ajax';
-        let dictCode = ["FACTORING_STATUS"];
+        let dictCode = ["TRANSORDER_FACTORING_STATUS"];
         $.ajax({
             type: "POST",
             url: dataDictQuery,
@@ -151,15 +138,10 @@
                         return {
                             limit: params.limit,
                             skip: params.offset,
-                            keyword: $("#keyword").val(),
-                            startDate: $("#startDate").val(),
-                            endDate: $("#endDate").val(),
-                            crnCode: $("#crnCode").val(),
-                            lowerAmount: $("#lowerAmount").val(),
-                            upperAmount: $("#upperAmount").val(),
-                            tradingType: $("#tradingType").val(),
-                            transNo: $("#transNo").val(),
-                            paymentStatus: $("#paymentStatus").val()
+                            customerID: $("#customerID").val(),
+                            transOrderCode: $("#transOrderCode").val(),
+                            signDateTime: $("#signDateTime").val(),
+                            carrierName: $("#carrierName").val()
                         };
                     },
                     columns: [{
@@ -176,46 +158,7 @@
                                 value = "-";
                             }
                             // return new Date(value).format("yyyy-MM-dd hh:mm:ss");
-                            return '<a href="' + href + '">' + value + '<br>' + row.goodsDesc + '</a>';
-                        }
-                    }, {
-                        field: 'tradingType',
-                        title: '<?php echo $this->translate("type"); ?>',
-                        valign: 'middle',
-                        formatter: function (value, row) {
-                            if (value === undefined || value === '' || value === null) {
-                                return value = "-";
-                            } else {
-                                let result = '',
-                                    data = $.data(dataDict, 'dataDict');
-                                if (value !== 'D') {
-                                    $.each(data, function (key, item) {
-                                        if (key === 'PAYMENT_TRADING_TYPE') {
-                                            $.each(item, function (i, dict) {
-                                                if (dict.code === value) {
-                                                    result = dict.name;
-                                                }
-                                            });
-                                        }
-                                    });
-                                } else {
-                                    $.each(data, function (key, item) {
-                                        if (key === 'AR_AP_TYPE') {
-                                            $.each(item, function (i, dict) {
-                                                if (dict.code === row.rptype) {
-                                                    result = dict.name;
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-
-                                let base = new Base64(),
-                                    resultEnCode = base.encode(row.transportOrderID),
-                                    href = "/user/transport/view?"+resultEnCode;
-
-                                return '<a href="' + href + '">' + result + '</a>';
-                            }
+                            return '<a href="' + href + '">订单编号：' + row.transOrderCode + '<br>' + value + '<br>' + row.goodsDesc + '</a>';
                         }
                     }, {
                         field: 'carrierName',
@@ -260,7 +203,7 @@
                                 value = "-";
                             }
 
-                            return '<a href="' + href + '">' + new Date(value).format("yyyy-MM-dd") + '</a>';
+                            return '<a href="' + href + '">' + new Date(value).format("yyyy-MM-dd") + '<br>' + new Date(value).format("hh:mm:ss") + '</a>';
                         }
                     }, {
                         field: 'orderAmount',
@@ -270,9 +213,9 @@
                         formatter: function (value, row) {
                             let result = row.crnCode + ' ' + formatCurrency(value, 2);
 
-                            let base = new Base64();
-                            let resultEnCode = base.encode(row.customerID);
-                            let href = "/user/financing/financing-item-view?"+resultEnCode;
+                            let base = new Base64(),
+                                resultEnCode = base.encode(row.transportOrderID),
+                                href = "/user/transport/view?"+resultEnCode;
 
                             return '<a href="' + href + '">' + result + '</a>';
                         }
@@ -285,16 +228,56 @@
                             let result = row.crnCode + ' ' + formatCurrency(value, 2);
 
                             let base = new Base64(),
-                                resultEnCode = base.encode(row.customerID),
-                                href = "/user/financing/financing-item-view?"+resultEnCode;
+                                resultEnCode = base.encode(row.transportOrderID),
+                                href = "/user/transport/view?"+resultEnCode;
 
                             return '<a href="' + href + '">' + result + '</a>';
+                        }
+                    }, {
+                        field: 'financeStatus',
+                        title: '<?php echo $this->translate("金融状态"); ?>',
+                        valign: 'middle',
+                        formatter: function (value, row) {
+                            if (value === undefined || value === '' || value === null) {
+                                return value = "-";
+                            } else {
+                                let result = '',
+                                    data = $.data(dataDict, 'dataDict');
+                                $.each(data, function (key, item) {
+                                    if (key === 'TRANSORDER_FACTORING_STATUS') {
+                                        $.each(item, function (i, dict) {
+                                            if (dict.code === value) {
+                                                result = dict.name;
+                                            }
+                                        });
+                                    }
+                                });
+
+                                let base = new Base64(),
+                                    resultEnCode = base.encode(row.transportOrderID),
+                                    href = "/user/transport/view?"+resultEnCode;
+
+                                return '<a href="' + href + '">' + result + '</a>';
+                            }
                         }
                     }]
                 });
             }
         });
 	});
+
+    function search() {
+        let $resultList = $('#resultListTable');
+        let options = {
+            query:{
+                skip: 0,
+                keyword: $("#keyword").val(),
+                partnerStatus: $("#partnerStatus").val()
+            },
+            pageNumber: 1
+        };
+        $resultList.bootstrapTable('refresh', options);
+    }
 </script>
 </body>
 </html>
