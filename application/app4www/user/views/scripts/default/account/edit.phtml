@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
-	<title><?php echo $this->translate('etradefast'); ?></title>
+    <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+    <title><?php echo $this->translate('etradefast'); ?></title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/account/account.css" rel="stylesheet">
 </head>
@@ -11,8 +11,8 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
 
 <div class="container-fluid index-body">
-	<div class="container">
-		<div class="row">
+    <div class="container">
+        <div class="row">
             <div class="col-md-3 company-navigation">
                 <div class="panel panel-default">
                     <div class="panel-heading"><?php echo $this->translate('companyMNG'); ?></div>
@@ -30,10 +30,10 @@
                     <div class="panel-heading"><?php echo $this->translate('personNO'); ?></div>
                     <div class="panel-body">
                         <?php if (!empty($this->errMsg)): ?>
-                        <div class="alert alert-danger alert-dismissible" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Warning!</strong> <?php echo $this->errMsg; ?>
-                        </div>
+                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <strong>Warning!</strong> <?php echo $this->errMsg; ?>
+                            </div>
                         <?php endif; ?>
 
                         <form class="form-horizontal" action="#" id="contact_edit_form" method="post">
@@ -41,9 +41,9 @@
                                 <label for="name" class="col-sm-2 control-label"><?php echo $this->translate('name'); ?></label>
                                 <div class="col-sm-9">
                                     <?php if ($this->e['realAuthStatus'] != 0 && $this->e['realAuthStatus'] != -1): ?>
-                                    <p class="form-control-static"><?php echo $this->e['name']; ?></p>
+                                        <p class="form-control-static"><?php echo $this->e['name']; ?></p>
                                     <?php else:?>
-                                    <input type="text" class="form-control" name="name" id="name" placeholder="<?php echo $this->translate('is_name');?>" value="<?php echo $this->e['name']; ?>" required>
+                                        <input type="text" class="form-control" name="name" id="name" placeholder="<?php echo $this->translate('is_name');?>" value="<?php echo $this->e['name']; ?>" required>
                                     <?php endif; ?>
                                     <input type="hidden" name="contactID" value="<?php echo $this->e['contactID']; ?>">
                                 </div>
@@ -93,33 +93,33 @@
                             </div>
 
                             <?php if ($this->account->regdCountryCode == 'CN'): ?>
-                            <div class="form-group">
-                                <label for="identityType" class="col-sm-2 control-label"><?php echo $this->translate('certificateType'); ?></label>
-                                <div class="col-sm-9">
-                                    <?php if ($this->e['ecommstatus'] == 'AT'): ?>
-                                        <p class="form-control-static">
-                                            <?php echo $this->ShowDictionaryTo($this->dic_Setting['ID_TYPE'], $this->userLangCode, $this->dic_Setting['ID_TYPE'], $this->e['identityType']); ?>
-                                        </p>
-                                    <?php else: ?>
-                                        <select class="form-control" name="identityType" id="identityType">
-                                            <?php echo $this->ShowDictionaryList($this->dic_Setting['ID_TYPE'], $this->userLangCode, $this->dic_Setting['ID_TYPE'], $this->e['identityType']); ?>
-                                        </select>
-                                    <?php endif; ?>
+                                <div class="form-group">
+                                    <label for="identityType" class="col-sm-2 control-label"><?php echo $this->translate('certificateType'); ?></label>
+                                    <div class="col-sm-9">
+                                        <?php if ($this->e['ecommstatus'] == 'AT'): ?>
+                                            <p class="form-control-static">
+                                                <?php echo $this->ShowDictionaryTo($this->dic_Setting['ID_TYPE'], $this->userLangCode, $this->dic_Setting['ID_TYPE'], $this->e['identityType']); ?>
+                                            </p>
+                                        <?php else: ?>
+                                            <select class="form-control" name="identityType" id="identityType">
+                                                <?php echo $this->ShowDictionaryList($this->dic_Setting['ID_TYPE'], $this->userLangCode, $this->dic_Setting['ID_TYPE'], $this->e['identityType']); ?>
+                                            </select>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="form-group">
-                                <label for="identityNo" class="col-sm-2 control-label"><?php echo $this->translate('certificateNo'); ?></label>
-                                <div class="col-sm-9">
-                                    <?php if ($this->e['ecommstatus'] == 'AT'): ?>
-                                        <p class="form-control-static">
-                                            <?php echo $this->e['identityNo']; ?>
-                                        </p>
-                                    <?php else: ?>
-                                        <input type="text" class="form-control" name="identityNo" id="identityNo" placeholder="<?php echo $this->translate('certificateNo');?>" value="<?php echo $this->e['identityNo'];?>" >
-                                    <?php endif; ?>
+                                <div class="form-group">
+                                    <label for="identityNo" class="col-sm-2 control-label"><?php echo $this->translate('certificateNo'); ?></label>
+                                    <div class="col-sm-9">
+                                        <?php if ($this->e['ecommstatus'] == 'AT'): ?>
+                                            <p class="form-control-static">
+                                                <?php echo $this->e['identityNo']; ?>
+                                            </p>
+                                        <?php else: ?>
+                                            <input type="text" class="form-control" name="identityNo" id="identityNo" placeholder="<?php echo $this->translate('certificateNo');?>" value="<?php echo $this->e['identityNo'];?>" >
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
-                            </div>
                             <?php endif;?>
 
                             <div class="form-group">
@@ -233,64 +233,66 @@
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="ecommrole[]" value="CompOrderAdmin" <?php if (in_array("CompOrderAdmin", $this->ecommrole)) { echo 'checked="checked"';} ?>>
-                                            <?php echo $this->translate('CompOrderAdmin');?>
-                                        </label>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="ecommrole[]" value="CompClerk" <?php if (in_array("CompClerk", $this->ecommrole)) { echo 'checked="checked"';} ?>>
-                                            <?php echo $this->translate('CompClerk');?>
-                                        </label>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="ecommrole[]" value="CompProductAdmin" <?php if (in_array("CompProductAdmin", $this->ecommrole)) { echo 'checked="checked"';} ?>>
-                                            <?php echo $this->translate('CompProductAdmin');?>
-                                        </label>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="ecommrole[]" value="CompPartnerAdmin" <?php if (in_array("CompPartnerAdmin", $this->ecommrole)) { echo 'checked="checked"';} ?>>
-                                            <?php echo $this->translate('CompPartnerAdmin');?>
-                                        </label>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="ecommrole[]" value="SOAdmin" <?php if (in_array("SOAdmin", $this->ecommrole)) { echo 'checked="checked"';} ?>>
-                                            <?php echo $this->translate('SOAdmin');?>
-                                        </label>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="ecommrole[]" value="TOAdmin" <?php if (in_array("TOAdmin", $this->ecommrole)) { echo 'checked="checked"';} ?>>
-                                            <?php echo $this->translate('TOAdmin');?>
-                                        </label>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="ecommrole[]" value="CompPublicInfoAdmin" <?php if (in_array("CompPublicInfoAdmin", $this->ecommrole)) { echo 'checked="checked"';} ?>>
-                                            <?php echo $this->translate('CompPublicInfoAdmin');?>
-                                        </label>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label>
                                             <input type="checkbox" name="ecommrole[]" value="CompAdmin" <?php if (in_array("CompAdmin", $this->ecommrole)) { echo 'checked="checked"';} ?>>
                                             <?php echo $this->translate('CompAdmin');?>
                                         </label>
                                     </div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="ecommrole[]" value="DeclarationAdmin" <?php if (in_array("DeclarationAdmin", $this->ecommrole)) { echo 'checked="checked"';} ?>>
-                                            <?php echo $this->translate('DeclarationAdmin');?>
-                                        </label>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="ecommrole[]" value="CompSettleAdmin" <?php if (in_array("CompSettleAdmin", $this->ecommrole)) { echo 'checked="checked"';} ?>>
-                                            <?php echo $this->translate('CompSettleAdmin');?>
-                                        </label>
-                                    </div>
+                                    <?php if ($this->accountType != 'CO09'): ?>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="ecommrole[]" value="CompOrderAdmin" <?php if (in_array("CompOrderAdmin", $this->ecommrole)) { echo 'checked="checked"';} ?>>
+                                                <?php echo $this->translate('CompOrderAdmin');?>
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="ecommrole[]" value="CompClerk" <?php if (in_array("CompClerk", $this->ecommrole)) { echo 'checked="checked"';} ?>>
+                                                <?php echo $this->translate('CompClerk');?>
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="ecommrole[]" value="CompProductAdmin" <?php if (in_array("CompProductAdmin", $this->ecommrole)) { echo 'checked="checked"';} ?>>
+                                                <?php echo $this->translate('CompProductAdmin');?>
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="ecommrole[]" value="CompPartnerAdmin" <?php if (in_array("CompPartnerAdmin", $this->ecommrole)) { echo 'checked="checked"';} ?>>
+                                                <?php echo $this->translate('CompPartnerAdmin');?>
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="ecommrole[]" value="SOAdmin" <?php if (in_array("SOAdmin", $this->ecommrole)) { echo 'checked="checked"';} ?>>
+                                                <?php echo $this->translate('SOAdmin');?>
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="ecommrole[]" value="TOAdmin" <?php if (in_array("TOAdmin", $this->ecommrole)) { echo 'checked="checked"';} ?>>
+                                                <?php echo $this->translate('TOAdmin');?>
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="ecommrole[]" value="CompPublicInfoAdmin" <?php if (in_array("CompPublicInfoAdmin", $this->ecommrole)) { echo 'checked="checked"';} ?>>
+                                                <?php echo $this->translate('CompPublicInfoAdmin');?>
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="ecommrole[]" value="DeclarationAdmin" <?php if (in_array("DeclarationAdmin", $this->ecommrole)) { echo 'checked="checked"';} ?>>
+                                                <?php echo $this->translate('DeclarationAdmin');?>
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="ecommrole[]" value="CompSettleAdmin" <?php if (in_array("CompSettleAdmin", $this->ecommrole)) { echo 'checked="checked"';} ?>>
+                                                <?php echo $this->translate('CompSettleAdmin');?>
+                                            </label>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
 
@@ -315,8 +317,8 @@
                     </div>
                 </div>
             </div>
-		</div>
-	</div>
+        </div>
+    </div>
 </div>
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
@@ -324,11 +326,11 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
 <script type="text/javascript">
-	$().ready(function() {
+    $().ready(function() {
 
-	});
+    });
 
-	$(function () {
+    $(function () {
         $('.company-navigation').find('a').each(function () {
             if (this.href === document.location.href || document.location.href.search(this.href) >= 0) {
                 $(this).addClass('nav-selected');
@@ -348,7 +350,7 @@
                 ,lang: layDateLang
             });
         });
-	});
+    });
 </script>
 </body>
 </html>

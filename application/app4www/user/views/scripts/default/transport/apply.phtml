@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
-	<title><?php echo $this->translate('etradefast'); ?></title>
+    <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+    <title><?php echo $this->translate('etradefast'); ?></title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/freight/freight.css" rel="stylesheet">
 
@@ -14,7 +14,7 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
 
 <div class="container-fluid index-body">
-	<div class="container">
+    <div class="container">
         <ol class="breadcrumb">
             <li><a href="/user/transport"><?php echo $this->translate('nav_index'); ?></a></li>
             <li class="active"><?php echo $this->translate('freightLoanApply'); ?></li>
@@ -27,6 +27,11 @@
             </div>
         <?php endif; ?>
 
+        <div id="financingLoanAlert" class="alert alert-danger alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <p>未选择运单或可用融资额度低于申请的融资金额，请重新选择运单！</p>
+        </div>
+
         <div class="panel panel-default">
             <div class="panel-body">
                 <form class="form-horizontal" action="javascript:void(0)">
@@ -34,7 +39,13 @@
                         <label for="customerID" class="col-sm-1 control-label"><?php echo $this->translate('债务方'); ?></label>
                         <div class="col-sm-4">
                             <select class="selectpicker form-control" name="customerID" id="customerID">
-                                <?php echo $this->ShowDictionaryList($this->dic_Setting['TRANSPORT_ACCOUNT_QUOTA_LIST'], $this->userLangCode, $this->dic_Setting['TRANSPORT_ACCOUNT_QUOTA_LIST'], ''); ?>
+                                <?php foreach ($this->dataDictList['TRANSPORT_ACCOUNT_LIST'] as $key => $dataDict): ?>
+                                    <?php if ($key == 0): ?>
+                                        <option value="<?php echo $dataDict['code']; ?>" selected="selected"><?php echo $dataDict['name']; ?></option>
+                                    <?php else: ?>
+                                        <option value="<?php echo $dataDict['code']; ?>"><?php echo $dataDict['name']; ?></option>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
                             </select>
                         </div>
                     </div>
@@ -64,20 +75,32 @@
         <div class="row">
             <div class="col-md-12" style="margin-bottom: 50px"></div>
         </div>
-	</div>
+    </div>
 </div>
 
 <nav class="navbar navbar-default navbar-fixed-bottom">
     <div class="container">
         <form class="form-horizontal" action="/user/financing/add-financing-loan" onsubmit="return addFinancing();" id="addFinancing_form" method="post">
+            <input type="hidden" name="loanRatio" id="loanRatio" value="<?php echo $this->creditRating['instance']['evaluationLevel']['loanRatio']; ?>">
             <div class="form-group" style="margin-top: 10px;">
-                <label for="startDate" class="col-sm-8 control-label"><?php echo $this->translate('合计'); ?></label>
-                <div class="col-sm-3">
+                <label for="creditBal" class="col-sm-3 control-label"><?php echo $this->translate('融资余额'); ?></label>
+                <div class="col-sm-2">
+                    <p class="form-control-static"><span id="creditBal_static">0</span> 元</p>
+                </div>
+
+                <label for="receivableAmount" class="col-sm-1 control-label"><?php echo $this->translate('运单金额'); ?></label>
+                <div class="col-sm-2">
                     <p class="form-control-static"><span id="receivableAmount_static">0</span> 元</p>
                     <input type="hidden" name="receivableAmount" id="receivableAmount" value="0">
                 </div>
 
-                <button type="submit" class="btn btn-primary"><?php echo $this->translate('提交申请'); ?></button>
+                <label for="loanAmount" class="col-sm-1 control-label"><?php echo $this->translate('融资金额'); ?></label>
+                <div class="col-sm-2">
+                    <p class="form-control-static"><span id="loanAmount_static">0</span> 元</p>
+                    <input type="hidden" name="loanAmount" id="loanAmount" value="0">
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="addFinancingLoanBtn"><?php echo $this->translate('提交申请'); ?></button>
             </div>
         </form>
     </div>
@@ -98,7 +121,8 @@
         $resultListTable = $('#resultListTable'),
         signDateTime = $("#startSignDate").val(),
         endSignDate = $("#endSignDate").val(),
-        layDateLang = '<?php if ($this->userLangCode == "en_US") echo "en"; else echo "cn";?>';
+        layDateLang = '<?php if ($this->userLangCode == "en_US") echo "en"; else echo "cn";?>',
+        creditBal = 0;
 
     if (!signDateTime || signDateTime === '') {
         signDateTime = new Date().format("yyyy-MM-dd")
@@ -107,16 +131,18 @@
         endSignDate = new Date().format("yyyy-MM-dd")
     }
 
-	$().ready(function() {
+    $().ready(function() {
 
-	});
+    });
 
-	$(function () {
+    $(function () {
         if (userLangCode === 'en_US') {
             $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['en-US']);
         } else {
             $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['zh-CN']);
         }
+
+        // $("#financingLoanAlert").alert('close');
 
         // 初始化日期控件, 绑定多个
         layui.use('laydate', function() {
@@ -137,7 +163,7 @@
         });
     });
 
-	function initListTable() {
+    function initListTable() {
         $.ajax({
             type: "POST",
             url: '/user/transport/list-activated-financing-ajax',
@@ -156,6 +182,11 @@
                     let earliestBillDate = listActivatedFinancing[0].earliestBillDate;
                     earliestDate = new Date(earliestBillDate);
                     lastDay = new Date(earliestDate.year, earliestDate.month, 0);
+                    // 可用额度
+                    creditBal = listActivatedFinancing[0].creditBal;
+                    if (creditBal) {
+                        $("#creditBal_static").html(formatCurrency(creditBal, 2));
+                    }
                 }
 
                 layui.use('laydate', function() {
@@ -312,9 +343,12 @@
         });
     }
 
-	function refreshTotal($resultListTable) {
+    function refreshTotal($resultListTable) {
+        $("#financingLoanAlert").alert('close');
         let $allSelectionsData = $resultListTable.bootstrapTable('getAllSelections'),
-            allSelectionsTotal = 0;
+            allSelectionsTotal = 0,
+            $loanAmount = $("#loanAmount"),
+            loanRatio = $("#loanRatio").val();
 
         $.each($allSelectionsData, function(i, val) { //两个参数，第一个参数表示遍历的数组的下标，第二个参数表示下标对应的值
             allSelectionsTotal += val.orderAmount;
@@ -322,44 +356,60 @@
 
         $("#receivableAmount_static").html(formatCurrency(allSelectionsTotal, 2));
         $("#receivableAmount").val(allSelectionsTotal);
+
+        $("#loanAmount_static").html(formatCurrency(allSelectionsTotal * loanRatio, 2));
+        $loanAmount.val(allSelectionsTotal * loanRatio);
+        if ($loanAmount.val() <= 0 || $loanAmount.val() > creditBal) {
+            $("#addFinancingLoanBtn").attr("disabled","disabled");
+        } else {
+            $("#addFinancingLoanBtn").removeAttr("disabled");
+        }
     }
 
     function addFinancing() {
         if (listActivatedFinancing && listActivatedFinancing.length > 0) {
-            let $addFinancing_form = $("#addFinancing_form"),
-                activatedFinancing = listActivatedFinancing[0],
-                receivableAmount = $("#receivableAmount").val(),
-                applyLoanDateStr = new Date(),
-                chooseDate = new Date($("#startSignDate").val()),
-                applyExpiryDate = new Date(chooseDate.getFullYear(), parseInt(chooseDate.getMonth() + parseInt(listActivatedFinancing[0].settlementPeriod / 30)), listActivatedFinancing[0].settlementDays);
+            let loanAmount = $("#loanAmount").val();
+            if (loanAmount <= 0 || loanAmount > creditBal) {
+                $("#financingLoanAlert").alert();
+                $("#addFinancingLoanBtn").attr("disabled","disabled");
+                return false;
+            } else {
+                $("#addFinancingLoanBtn").removeAttr("disabled");
+                let $addFinancing_form = $("#addFinancing_form"),
+                    activatedFinancing = listActivatedFinancing[0],
+                    receivableAmount = $("#receivableAmount").val(),
+                    applyLoanDateStr = new Date(),
+                    chooseDate = new Date($("#startSignDate").val()),
+                    applyExpiryDate = new Date(chooseDate.getFullYear(), parseInt(chooseDate.getMonth() + parseInt(listActivatedFinancing[0].settlementPeriod / 30)), listActivatedFinancing[0].settlementDays);
 
-            $addFinancing_form.append($("<input type='hidden' name='financingID' value='" + activatedFinancing.financingID + "' />"));
-            $addFinancing_form.append($("<input type='hidden' name='applyLoanDate' value='" + applyLoanDateStr.addDays(1).format("yyyy-MM-dd") + "' />"));
-            $addFinancing_form.append($("<input type='hidden' name='applyExpiryDate' value='" + applyExpiryDate.format("yyyy-MM-dd") + "' />"));
-            $addFinancing_form.append($("<input type='hidden' name='receivableAmount' value='" + receivableAmount + "' />"));
-            $addFinancing_form.append($("<input type='hidden' name='assignmentAmount' value='" + receivableAmount + "' />"));
-            $addFinancing_form.append($("<input type='hidden' name='loanAmount' value='" + receivableAmount * 0.63 + "' />"));
+                $addFinancing_form.append($("<input type='hidden' name='financingID' value='" + activatedFinancing.financingID + "' />"));
+                $addFinancing_form.append($("<input type='hidden' name='applyLoanDate' value='" + applyLoanDateStr.format("yyyy-MM-dd") + "' />"));
+                $addFinancing_form.append($("<input type='hidden' name='applyExpiryDate' value='" + applyExpiryDate.format("yyyy-MM-dd") + "' />"));
+                $addFinancing_form.append($("<input type='hidden' name='receivableAmount' value='" + receivableAmount + "' />"));
+                $addFinancing_form.append($("<input type='hidden' name='assignmentAmount' value='" + receivableAmount + "' />"));
+                // $addFinancing_form.append($("<input type='hidden' name='loanAmount' value='" + receivableAmount * 0.63 + "' />"));
 
-            let resultSelections = $resultListTable.bootstrapTable('getSelections');
-            $.each(resultSelections, function(i, transportOrder) {
-                console.log(i);
-                $addFinancing_form.append($("<input type='hidden' name='objBizType[]' value='TT' />"));
-                $addFinancing_form.append($("<input type='hidden' name='objBizID[]' value='" + transportOrder.transportOrderID + "' />"));
-                $addFinancing_form.append($("<input type='hidden' name='objBizNo[]' value='" + transportOrder.transOrderCode + "' />"));
-                let summary = transportOrder.agencyName + "|" + transportOrder.customerName + "|" + transportOrder.goodsDesc + "|" + transportOrder.carrierName + "|";
-                let transporterStr = '';
-                $.each(transportOrder.transporterList, function(i, transporter) {
-                    if (i > 0) {
-                        transporterStr += ";";
-                    }
-                    transporterStr += transporter.vehicleNo + " " + transporter.dirverName + " " + transporter.mobile;
+                let resultSelections = $resultListTable.bootstrapTable('getSelections');
+                $.each(resultSelections, function(i, transportOrder) {
+                    // console.log(i);
+                    $addFinancing_form.append($("<input type='hidden' name='objBizType[]' value='TT' />"));
+                    $addFinancing_form.append($("<input type='hidden' name='objBizID[]' value='" + transportOrder.transportOrderID + "' />"));
+                    $addFinancing_form.append($("<input type='hidden' name='objBizNo[]' value='" + transportOrder.transOrderCode + "' />"));
+                    let summary = transportOrder.agencyName + "|" + transportOrder.customerName + "|" + transportOrder.goodsDesc + "|" + transportOrder.carrierName + "|";
+                    let transporterStr = '';
+                    $.each(transportOrder.transporterList, function(i, transporter) {
+                        if (i > 0) {
+                            transporterStr += ";";
+                        }
+                        transporterStr += transporter.vehicleNo + " " + transporter.dirverName + " " + transporter.mobile;
+                    });
+                    $addFinancing_form.append($("<input type='hidden' name='summary[]' value='" + summary + transporterStr + "' />"));
+                    $addFinancing_form.append($("<input type='hidden' name='crnCode[]' value='" + transportOrder.crnCode + "' />"));
+                    $addFinancing_form.append($("<input type='hidden' name='totalAmount[]' value='" + transportOrder.orderAmount + "' />"));
+                    $addFinancing_form.append($("<input type='hidden' name='billDate[]' value='" + transportOrder.takeDeliveryTime + "' />"));
                 });
-                $addFinancing_form.append($("<input type='hidden' name='summary[]' value='" + summary + transporterStr + "' />"));
-                $addFinancing_form.append($("<input type='hidden' name='crnCode[]' value='" + transportOrder.crnCode + "' />"));
-                $addFinancing_form.append($("<input type='hidden' name='totalAmount[]' value='" + transportOrder.orderAmount + "' />"));
-                $addFinancing_form.append($("<input type='hidden' name='billDate[]' value='" + transportOrder.takeDeliveryTime + "' />"));
-            });
-            return true;
+                return true;
+            }
         } else {
             return false;
         }

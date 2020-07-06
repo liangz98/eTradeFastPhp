@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
-	<title><?php echo $this->translate('etradefast'); ?></title>
+    <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+    <title><?php echo $this->translate('etradefast'); ?></title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/freight/freight.css" rel="stylesheet">
 
@@ -14,7 +14,7 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
 
 <div class="container-fluid index-body">
-	<div class="container" style="min-height: 620px;">
+    <div class="container" style="min-height: 620px;">
         <ol class="breadcrumb">
             <li><a href="/user/transport"><?php echo $this->translate('nav_index'); ?></a></li>
             <li><a href="/user/financing"><?php echo $this->translate('financing'); ?></a></li>
@@ -40,7 +40,7 @@
                                     <p class="form-control-static text-999"><?php echo $this->translate('可融资额度'); ?></p>
                                 </div>
                                 <div class="col-md-6">
-                                    <p class="form-control-static text-666" style="font-weight: bold;"><?php echo number_format($this->financingItem['debtorPayAcct']['creditBal'], 2); ?> 元</p>
+                                    <p class="form-control-static text-666" style="font-weight: bold;"><?php echo number_format($this->financingItem['creditBal'], 2); ?> 元</p>
                                 </div>
                             </div>
 
@@ -49,7 +49,7 @@
                                     <p class="form-control-static text-999"><?php echo $this->translate('总额度'); ?></p>
                                 </div>
                                 <div class="col-md-6">
-                                    <p class="form-control-static text-666" style="font-weight: bold;"><?php echo number_format($this->financingItem['debtorPayAcct']['creditLimit'], 2); ?> 元</p>
+                                    <p class="form-control-static text-666" style="font-weight: bold;"><?php echo number_format($this->financingItem['creditLimit'], 2); ?> 元</p>
                                 </div>
                             </div>
                         </div>
@@ -92,13 +92,13 @@
             </div>
         </div>
 
-        <div class="panel panel-default">
-            <div class="panel-body">
+        <div class="panel panel-default" style="margin-bottom: 70px">
+            <div class="panel-body" >
                 <!-- Table -->
                 <table id="resultListTable" class="table-striped"></table>
             </div>
         </div>
-	</div>
+    </div>
 </div>
 
 <nav class="navbar navbar-default navbar-fixed-bottom">
@@ -136,11 +136,11 @@
         userLangCode = '<?php echo $this->userLangCode; ?>',
         $resultListTable = $('#resultListTable');
 
-	$().ready(function() {
+    $().ready(function() {
 
-	});
+    });
 
-	$(function () {
+    $(function () {
         if (userLangCode === 'en_US') {
             $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['en-US']);
         } else {
@@ -367,7 +367,6 @@
                     }]
                 });
 
-
                 let $titleOptions = $(".title-options");
                 $titleOptions.find("button").click(function () {
                     let dataType = $(this).attr("data-type");
@@ -384,11 +383,153 @@
                     };
                     $resultListTable.bootstrapTable('refresh', refreshOptions);
                 });
-
-
             }
         });
-	});
+
+        let loanStatisticQuery = '/user/financing/list-loan-statistic-data-ajax';
+        $.ajax({
+            type: "POST",
+            url: loanStatisticQuery,
+            data: {
+                financingID: $("#financingID").val()
+            },
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                let nowDate = new Date,
+                    year_ = [],
+                    month_ = [1,2,3,4,5,6,7,8,9,10,11,12],
+                    seriesData = [];
+
+                year_.push(nowDate.getFullYear());
+                year_.push(nowDate.getFullYear() - 1);
+
+                $.each(year_, function (yearKey, yearItem) {
+                    seriesData[yearKey] = [];
+                    $.each(month_, function (monthKey, monthItem) {
+                        seriesData[yearKey][monthKey] = 0;
+                        $.each(data, function (dataKey, dataItem) {
+                            if (dataItem.resultMap.year_.value == yearItem && dataItem.resultMap.month_.value == monthItem) {
+                                seriesData[yearKey][monthKey] = dataItem.resultMap.totalAmount.value
+                            }
+                        });
+                    });
+                });
+
+                let line_option = {
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    xAxis: [{
+                        type: 'category',
+                        data: ['1','2','3','4','5','6', '7', '8', '9', '10', '11', '12'],
+                        axisLine: {
+                            lineStyle: {
+                                color: "#999"
+                            }
+                        }
+                    }],
+                    yAxis: [{
+                        name: '万元',
+                        type: 'value',
+                        splitNumber: 4,
+                        splitLine: {
+                            lineStyle: {
+                                type: 'solid',
+                                color: '#DDD'
+                            }
+                        },
+                        axisLine: {
+                            show: false,
+                            lineStyle: {
+                                color: "#333"
+                            },
+                        },
+                        nameTextStyle: {
+                            color: '#999',
+                            align: 'left',
+                            width: '100%'
+                        },
+                        splitArea: {
+                            show: false
+                        }
+                    }],
+                    series: [{
+                        name: '今年',
+                        type: 'line',
+                        data: seriesData[0],
+                        lineStyle: {
+                            normal: {
+                                width: 6,
+                                color: {
+                                    type: 'linear',
+
+                                    colorStops: [{
+                                        offset: 0,
+                                        color: '#A9F387' // 0% 处的颜色
+                                    }, {
+                                        offset: 1,
+                                        color: '#48D8BF' // 100% 处的颜色
+                                    }],
+                                    globalCoord: false // 缺省为 false
+                                },
+                                shadowColor: 'rgba(72,216,191, 0.3)',
+                                shadowBlur: 10,
+                                shadowOffsetY: 20
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: '#fff',
+                                borderWidth: 10,
+                                /*shadowColor: 'rgba(72,216,191, 0.3)',
+                                shadowBlur: 100,*/
+                                borderColor: "#A9F387"
+                            }
+                        },
+                        smooth: true
+                    }, {
+                        name: '去年',
+                        type: 'line',
+                        data: seriesData[1],
+                        lineStyle: {
+                            normal: {
+                                width: 6,
+                                color: {
+                                    type: 'linear',
+
+                                    colorStops: [{
+                                        offset: 0,
+                                        color: '#F6D06F' // 0% 处的颜色
+                                    }, {
+                                        offset: 1,
+                                        color: '#F9A589' // 100% 处的颜色
+                                    }],
+                                    globalCoord: false // 缺省为 false
+                                },
+                                shadowColor: 'rgba(246,208,111, 0.3)',
+                                shadowBlur: 10,
+                                shadowOffsetY: 20
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: '#fff',
+                                borderWidth: 10,
+                                /*shadowColor: 'rgba(72,216,191, 0.3)',
+                                shadowBlur: 100,*/
+                                borderColor: "#F6D06F"
+                            }
+                        },
+                        smooth: true
+                    }]
+                };
+
+                // 使用刚指定的配置项和数据显示图表。
+                line_Chart.setOption(line_option);
+            }
+        });
+    });
 
     function refreshPaymentAmount($resultListTable) {
         let $allSelectionsData = $resultListTable.bootstrapTable('getAllSelections'),
@@ -429,7 +570,7 @@
     let line_Chart = echarts.init(document.getElementById('line_'));
 
     let pie_data = {
-        value: <?php echo intval($this->financingItem['debtorPayAcct']['creditBal'] / $this->financingItem['debtorPayAcct']['creditLimit'] * 100); ?>,
+        value: <?php echo intval($this->financingItem['creditBal'] / $this->financingItem['creditLimit'] * 100); ?>,
         name: '完成率'
     };
 
@@ -523,121 +664,8 @@
             }]
         }]
     };
-
     // 使用刚指定的配置项和数据显示图表。
     pie_Chart.setOption(pie_option);
-
-    let line_option = {
-        tooltip: {
-            trigger: 'axis'
-        },
-        xAxis: [{
-            type: 'category',
-            data: ['01','02','03','04','05','06', '07', '08', '09', '10', '11', '12'],
-            axisLine: {
-                lineStyle: {
-                    color: "#999"
-                }
-            }
-        }],
-        yAxis: [{
-            name: '万元',
-            type: 'value',
-            splitNumber: 4,
-            splitLine: {
-                lineStyle: {
-                    type: 'solid',
-                    color: '#DDD'
-                }
-            },
-            axisLine: {
-                show: false,
-                lineStyle: {
-                    color: "#333"
-                },
-            },
-            nameTextStyle: {
-                color: '#999',
-                align: 'left',
-                width: '100%'
-            },
-            splitArea: {
-                show: false
-            }
-        }],
-        series: [{
-            name: '本月',
-            type: 'line',
-            data: [23,60,20,36,23,75],
-            lineStyle: {
-                normal: {
-                    width: 6,
-                    color: {
-                        type: 'linear',
-
-                        colorStops: [{
-                            offset: 0,
-                            color: '#A9F387' // 0% 处的颜色
-                        }, {
-                            offset: 1,
-                            color: '#48D8BF' // 100% 处的颜色
-                        }],
-                        globalCoord: false // 缺省为 false
-                    },
-                    shadowColor: 'rgba(72,216,191, 0.3)',
-                    shadowBlur: 10,
-                    shadowOffsetY: 20
-                }
-            },
-            itemStyle: {
-                normal: {
-                    color: '#fff',
-                    borderWidth: 10,
-                    /*shadowColor: 'rgba(72,216,191, 0.3)',
-                    shadowBlur: 100,*/
-                    borderColor: "#A9F387"
-                }
-            },
-            smooth: true
-        }, {
-            name: '上月',
-            type: 'line',
-            data: [75,60,30,80,120,95, 100, 80, 50, 40],
-            lineStyle: {
-                normal: {
-                    width: 6,
-                    color: {
-                        type: 'linear',
-
-                        colorStops: [{
-                            offset: 0,
-                            color: '#F6D06F' // 0% 处的颜色
-                        }, {
-                            offset: 1,
-                            color: '#F9A589' // 100% 处的颜色
-                        }],
-                        globalCoord: false // 缺省为 false
-                    },
-                    shadowColor: 'rgba(72,216,191, 0.3)',
-                    shadowBlur: 10,
-                    shadowOffsetY: 20
-                }
-            },
-            itemStyle: {
-                normal: {
-                    color: '#fff',
-                    borderWidth: 10,
-                    /*shadowColor: 'rgba(72,216,191, 0.3)',
-                    shadowBlur: 100,*/
-                    borderColor: "#F6D06F"
-                }
-            },
-            smooth: true
-        }]
-    };
-
-    // 使用刚指定的配置项和数据显示图表。
-    line_Chart.setOption(line_option);
 </script>
 </body>
 </html>

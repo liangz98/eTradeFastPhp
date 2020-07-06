@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
-	<title><?php echo $this->translate('etradefast'); ?></title>
+    <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+    <title><?php echo $this->translate('etradefast'); ?></title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/freight/freight.css" rel="stylesheet">
     <link href="/ky/css/finance/finance.css" rel="stylesheet">
@@ -14,7 +14,7 @@
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
 
 <div class="container-fluid index-body" style="min-height: 550px;">
-	<div class="container">
+    <div class="container">
         <ol class="breadcrumb">
             <li><a href="/user/transport"><?php echo $this->translate('nav_index'); ?></a></li>
             <li class="active"><?php echo $this->translate('financing'); ?></li>
@@ -41,7 +41,7 @@
                                 <button type="button" class="btn <?php if ($this->resultStatus == '01') { echo ' btn-warning';} else {echo ' btn-default';}?>" data-type="financingStatus" data-value="01"><?php echo $this->translate('freightFinanceStat_ForCheck'); ?></button>
                                 <button type="button" class="btn <?php if ($this->resultStatus == '05') { echo ' btn-warning';} else {echo ' btn-default';}?>" data-type="financingStatus" data-value="05"><?php echo $this->translate('freightFinanceStat_Invalid'); ?></button>
                                 <form action="/user/financing/index" name="refreshFinancingList" id="refreshFinancingList" method="post">
-                                <input type="hidden" name="financingStatus" id="financingStatus" value="all">
+                                    <input type="hidden" name="financingStatus" id="financingStatus" value="all">
                                 </form>
                                 <input type="hidden" name="limit" id="limit" value="<?php echo $this->limit; ?>">
                                 <input type="hidden" name="offset" id="offset" value="<?php echo $this->offset; ?>">
@@ -80,232 +80,230 @@
                 </table>
             </div>
         <?php else: ?>
-            <?php foreach ($this->financingList as $financing): ?>
-                <?php if (strtotime($financing['expiryDate']) < strtotime(date('Y-m-d'))): ?>
-                <div class="panel panel-default">
-                <?php else: ?>
-                <div class="panel panel-danger">
+        <?php foreach ($this->financingList as $financing): ?>
+        <?php if (strtotime($financing['expiryDate']) < strtotime(date('Y-m-d'))): ?>
+        <div class="panel panel-default">
+            <?php else: ?>
+            <div class="panel panel-danger">
                 <?php endif; ?>
-                    <!-- Default panel contents -->
-                    <div class="panel-heading"><?php echo $financing['debtorCustomerName']; ?></div>
+                <!-- Default panel contents -->
+                <div class="panel-heading"><?php echo $financing['debtorCustomerName']; ?></div>
 
-                    <!-- Table -->
-                    <table data-toggle="table" data-classes="table" class="table">
-                        <thead>
-                        <tr>
-                            <th><?php echo $this->translate('方案编号'); ?></th>
-                            <th><?php echo $this->translate('有效期'); ?></th>
-                            <th><?php echo $this->translate('总额度'); ?> <i class="layui-icon layui-icon-about" data-toggle="tooltip" data-placement="top" title="已放款且未还款的金额"></i></th>
-                            <th><?php echo $this->translate('已用额度'); ?> <i class="layui-icon layui-icon-about" data-toggle="tooltip" data-placement="top" title="已放款且未还款的金额"></i></th>
-                            <th><?php echo $this->translate('锁定额度'); ?> <i class="layui-icon layui-icon-about" data-toggle="tooltip" data-placement="top" title="已申请未放款的金额"></i></th>
-                            <th><?php echo $this->translate('可用额度'); ?></th>
-                            <th><?php echo $this->translate('融资日利率'); ?></th>
-                            <th><?php echo $this->translate('服务费日费率'); ?></th>
-                            <th><?php echo $this->translate('合同'); ?></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td><a href="<?php echo '/user/financing/financing-item?'. base64_encode($financing['financingID'])?>"><?php echo $financing['financingNo']; ?></a></td>
-                            <td><a href="/user/financing/financing-item?<?php echo base64_encode($financing['financingID'])?>"><?php echo date("Y-m", strtotime($financing['applyDate'])). ' 至 '. date("Y-m", strtotime($financing['expiryDate'])); ?></a></td>
-                            <td><a href="/user/financing/financing-item?<?php echo base64_encode($financing['financingID'])?>"><?php echo number_format($financing['debtorPayAcct']['creditLimit'], 2); ?> 元</a></td>
-                            <td><a href="/user/financing/financing-item?<?php echo base64_encode($financing['financingID'])?>"><?php echo number_format($financing['debtorPayAcct']['creditLimit'] - $financing['debtorPayAcct']['creditBal'], 2); ?> 元</a></td>
-                            <td><a href="/user/financing/financing-item?<?php echo base64_encode($financing['financingID'])?>">--  元</a></td>
-                            <td><a href="/user/financing/financing-item?<?php echo base64_encode($financing['financingID'])?>"><?php echo number_format($financing['debtorPayAcct']['creditBal'], 2); ?> 元</a></td>
-                            <td><a href="/user/financing/financing-item?<?php echo base64_encode($financing['financingID'])?>"><?php echo $financing['minInterestPercent'] * 100; ?> %</a></td>
-                            <td><a href="/user/financing/financing-item?<?php echo base64_encode($financing['financingID'])?>"><?php echo $financing['serviceChargePercent'] * 100; ?> %</a></td>
-                            <td><?php echo $this->ShowSimpleContract($financing['contractList'][0], $this->accountID); ?></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            <?php endforeach; ?>
-        <?php endif; ?>
-	</div>
-</div>
-
-<!--PDF预览-->
-<div id="signViewDiv" style="display: none; background-color: #F6F6F6;">
-    <div class="sign-button">企业签署</div>
-    <div class="person-sign-button">个人签署</div>
-    <div class="download-button">下载</div>
-    <div class="pdfDoc" style="padding-left:50px;">
-        <div id="pdfPageBox">
-        </div>
-    </div>
-</div>
-<!--非网签-->
-<div id="signViewNoEContractDiv" class="layui-form" style="display: none;">
-    <div class="et-auth-error" style="display: none;"></div>
-    <div class="et-auth-content">
-        <div style="margin-top: 20px;"></div>
-
-        <div class="layui-form-item" style="margin-left: 28px;">
-            <div style="text-align: left;">
-                <label class="layui-form-label" style="width: 400px;text-align: left;"><?php echo $this->translate('contractUPInfo'); ?></label>
-            </div>
-        </div>
-
-        <div class="layui-form-item" style="margin-bottom: -5px;margin-top: -15px;margin-left: 28px;margin-right: 28px;">
-            <div style="text-align: left;">
-                <table class="layui-table" id="demo" lay-filter="test">
-                    <colgroup>
-                        <col width="470">
-                        <col width="150">
-                        <col>
-                    </colgroup>
+                <!-- Table -->
+                <table data-toggle="table" data-classes="table" class="table">
                     <thead>
                     <tr>
-                        <th>合同列表</th>
-                        <th><?php echo $this->translate('type'); ?></th>
-                        <th style="text-align:center"><?php echo $this->translate('operation'); ?></th>
+                        <th><?php echo $this->translate('方案编号'); ?></th>
+                        <th><?php echo $this->translate('有效期'); ?></th>
+                        <th><?php echo $this->translate('总额度'); ?></th>
+                        <th><?php echo $this->translate('申请中额度'); ?> <i class="layui-icon layui-icon-about" data-toggle="tooltip" data-placement="top" title="已申请未放款的金额"></i></th>
+                        <th><?php echo $this->translate('可用额度'); ?></th>
+                        <th><?php echo $this->translate('融资日利率'); ?></th>
+                        <th><?php echo $this->translate('服务费日费率'); ?></th>
+                        <th><?php echo $this->translate('合同'); ?></th>
                     </tr>
                     </thead>
                     <tbody>
+                    <tr>
+                        <td><a href="<?php echo '/user/financing/financing-item?'. base64_encode($financing['financingID'])?>"><?php echo $financing['financingNo']; ?></a></td>
+                        <td><a href="/user/financing/financing-item?<?php echo base64_encode($financing['financingID'])?>"><?php echo date("Y-m", strtotime($financing['applyDate'])). ' 至 '. date("Y-m", strtotime($financing['expiryDate'])); ?></a></td>
+                        <td><a href="/user/financing/financing-item?<?php echo base64_encode($financing['financingID'])?>"><?php echo number_format($financing['creditLimit'], 2); ?> 元</a></td>
+                        <td><a href="/user/financing/financing-item?<?php echo base64_encode($financing['financingID'])?>"><?php echo number_format($financing['applyingLoanAmount'], 2); ?> 元</a></td>
+                        <td><a href="/user/financing/financing-item?<?php echo base64_encode($financing['financingID'])?>"><?php echo number_format($financing['creditBal'], 2); ?> 元</a></td>
+                        <td><a href="/user/financing/financing-item?<?php echo base64_encode($financing['financingID'])?>"><?php echo $financing['minInterestPercent'] * 100; ?> %</a></td>
+                        <td><a href="/user/financing/financing-item?<?php echo base64_encode($financing['financingID'])?>"><?php echo $financing['serviceChargePercent'] * 100; ?> %</a></td>
+                        <td><?php echo $this->ShowSimpleContract($financing['contractList'][0], $this->accountID); ?></td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
-        </div>
-
-        <div class="layui-form-item" style="margin-left: 28px; margin-top: 50px; width: 600px;">
-            <div class="layui-form-label" style="width: 420px;">
-                <div class="yyzz_box clearfix" style="width: 600px;">
-                    <p class="zzname" style="width: 600px; font-weight:bold;"><?php echo $this->translate('contractUP'); ?><!--合同相关附件上传--></p>
-                    <?php if ($this->vestut == 1) {
-                        echo $this->ShowWebuploader($this->goods['attachmentList'], $this->biz_Setting['ORDER'], $this->attach_Setting['CRIM'], "0", null);
-                    } ?>
-                </div>
-            </div>
-        </div>
-
-
-        <div style="height: 12px"></div>
-        <div class="et-auth-row">
-            <button class="layui-btn" id="signNoEContractConfirmBtn"><?php echo $this->translate('signing'); ?></button>
+            <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </div>
-</div>
 
-<!--签署-->
-<div id="doSignPDFLayDiv" class="layui-form" style="display: none;">
-    <div class="et-auth-error" style="display: none;"></div>
-    <div class="et-auth-content">
-        <div style="margin-top: 20px;"></div>
+    <!--PDF预览-->
+    <div id="signViewDiv" style="display: none; background-color: #F6F6F6;">
+        <div class="sign-button">企业签署</div>
+        <div class="person-sign-button">个人签署</div>
+        <div class="download-button">下载</div>
+        <div class="pdfDoc" style="padding-left:50px;">
+            <div id="pdfPageBox">
+            </div>
+        </div>
+    </div>
+    <!--非网签-->
+    <div id="signViewNoEContractDiv" class="layui-form" style="display: none;">
+        <div class="et-auth-error" style="display: none;"></div>
+        <div class="et-auth-content">
+            <div style="margin-top: 20px;"></div>
 
-        <div class="signContent">
             <div class="layui-form-item" style="margin-left: 28px;">
                 <div style="text-align: left;">
-                    <label class="layui-form-label" style="width: 180px;text-align: left;"><?php echo $this->translate('signInfo'); ?></label>
+                    <label class="layui-form-label" style="width: 400px;text-align: left;"><?php echo $this->translate('contractUPInfo'); ?></label>
                 </div>
             </div>
 
-            <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
+            <div class="layui-form-item" style="margin-bottom: -5px;margin-top: -15px;margin-left: 28px;margin-right: 28px;">
                 <div style="text-align: left;">
-                    <label class="layui-form-label" style="width: 180px;text-align: left;"><b><?php echo $this->translate('signAuthType'); ?></b></label>
+                    <table class="layui-table" id="demo" lay-filter="test">
+                        <colgroup>
+                            <col width="470">
+                            <col width="150">
+                            <col>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>合同列表</th>
+                            <th><?php echo $this->translate('type'); ?></th>
+                            <th style="text-align:center"><?php echo $this->translate('operation'); ?></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
-            <div class="layui-form-item" style="margin-left: 28px;">
+            <div class="layui-form-item" style="margin-left: 28px; margin-top: 50px; width: 600px;">
                 <div class="layui-form-label" style="width: 420px;">
-                    <input type="text" id="signMobileInput" name="signMobileInput" lay-verify="signMobileInput" autocomplete="off" class="layui-input" readonly="readonly">
+                    <div class="yyzz_box clearfix" style="width: 600px;">
+                        <p class="zzname" style="width: 600px; font-weight:bold;"><?php echo $this->translate('contractUP'); ?><!--合同相关附件上传--></p>
+                        <?php if ($this->vestut == 1) {
+                            echo $this->ShowWebuploader($this->goods['attachmentList'], $this->biz_Setting['ORDER'], $this->attach_Setting['CRIM'], "0", null);
+                        } ?>
+                    </div>
                 </div>
             </div>
 
-            <div class="layui-form-item" style="margin-left: 28px;">
-                <div class="layui-form-label" style="width: 250px;">
-                    <input type="text" id="signAuthCode" name="signAuthCode" lay-verify="signAuthCode" autocomplete="off" placeholder="<?php echo $this->translate('signInputAuthCode'); ?>" class="layui-input">
-                </div>
-
-                <div class="layui-form-label" style="width: 140px;">
-                    <button class="layui-btn layui-btn-fluid" id="signSendAuthCodeBtn"><?php echo $this->translate('signSendAuthCode'); ?></button>
-                </div>
-            </div>
 
             <div style="height: 12px"></div>
             <div class="et-auth-row">
-                <button class="layui-btn layui-btn-fluid" id="singConfirmBtn" style="width: 85%;"><?php echo $this->translate('confirmed'); ?></button>
+                <button class="layui-btn" id="signNoEContractConfirmBtn"><?php echo $this->translate('signing'); ?></button>
             </div>
         </div>
+    </div>
 
-        <div class="jumpInfoContent hidden">
-            <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
-                <div style="text-align: left;">
-                    <label class="layui-form-label text-danger" style="width: 450px;text-align: left;"><i class="fas fa-exclamation-triangle"></i> <?php echo $this->translate('未生成有效的企业签署证书，请先完成企业及管理员实名认证。'); ?></label>
+    <!--签署-->
+    <div id="doSignPDFLayDiv" class="layui-form" style="display: none;">
+        <div class="et-auth-error" style="display: none;"></div>
+        <div class="et-auth-content">
+            <div style="margin-top: 20px;"></div>
+
+            <div class="signContent">
+                <div class="layui-form-item" style="margin-left: 28px;">
+                    <div style="text-align: left;">
+                        <label class="layui-form-label" style="width: 180px;text-align: left;"><?php echo $this->translate('signInfo'); ?></label>
+                    </div>
+                </div>
+
+                <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
+                    <div style="text-align: left;">
+                        <label class="layui-form-label" style="width: 180px;text-align: left;"><b><?php echo $this->translate('signAuthType'); ?></b></label>
+                    </div>
+                </div>
+
+                <div class="layui-form-item" style="margin-left: 28px;">
+                    <div class="layui-form-label" style="width: 420px;">
+                        <input type="text" id="signMobileInput" name="signMobileInput" lay-verify="signMobileInput" autocomplete="off" class="layui-input" readonly="readonly">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" style="margin-left: 28px;">
+                    <div class="layui-form-label" style="width: 250px;">
+                        <input type="text" id="signAuthCode" name="signAuthCode" lay-verify="signAuthCode" autocomplete="off" placeholder="<?php echo $this->translate('signInputAuthCode'); ?>" class="layui-input">
+                    </div>
+
+                    <div class="layui-form-label" style="width: 140px;">
+                        <button class="layui-btn layui-btn-fluid" id="signSendAuthCodeBtn"><?php echo $this->translate('signSendAuthCode'); ?></button>
+                    </div>
+                </div>
+
+                <div style="height: 12px"></div>
+                <div class="et-auth-row">
+                    <button class="layui-btn layui-btn-fluid" id="singConfirmBtn" style="width: 85%;"><?php echo $this->translate('confirmed'); ?></button>
                 </div>
             </div>
-        </div>
 
-        <div class="jumpPersonInfoContent hidden">
-            <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
-                <div style="text-align: left;">
-                    <label class="layui-form-label text-danger" style="width: 320px;text-align: left;"><i class="fas fa-exclamation-triangle"></i> <?php echo $this->translate('个人实名认证未完成前不可签署合同。'); ?></label>
+            <div class="jumpInfoContent hidden">
+                <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
+                    <div style="text-align: left;">
+                        <label class="layui-form-label text-danger" style="width: 450px;text-align: left;"><i class="fas fa-exclamation-triangle"></i> <?php echo $this->translate('未生成有效的企业签署证书，请先完成企业及管理员实名认证。'); ?></label>
+                    </div>
                 </div>
             </div>
-            <div class="layui-form-item" style="margin-bottom: -5px; margin-left: 28px;">
-                <div style="text-align: left;">
-                    <label class="layui-form-label" style="width: 280px;text-align: left;">
-                        <a href="/user/index/profile"><u><strong><?php echo $this->translate('点击此处'); ?></strong></u></a> <?php echo $this->translate('完成个人实名认证。'); ?>
-                    </label>
+
+            <div class="jumpPersonInfoContent hidden">
+                <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
+                    <div style="text-align: left;">
+                        <label class="layui-form-label text-danger" style="width: 320px;text-align: left;"><i class="fas fa-exclamation-triangle"></i> <?php echo $this->translate('个人实名认证未完成前不可签署合同。'); ?></label>
+                    </div>
+                </div>
+                <div class="layui-form-item" style="margin-bottom: -5px; margin-left: 28px;">
+                    <div style="text-align: left;">
+                        <label class="layui-form-label" style="width: 280px;text-align: left;">
+                            <a href="/user/index/profile"><u><strong><?php echo $this->translate('点击此处'); ?></strong></u></a> <?php echo $this->translate('完成个人实名认证。'); ?>
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+    <?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
 
-<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+    <?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
 
-<!-- pdf -->
-<script type="text/javascript" src="/ky/pdf/pdf.js"></script>
-<script type="text/javascript" src="/ky/pdf/pdf.worker.js"></script>
-<script type="text/javascript" src="/ky/pdf/signature.js"></script>
+    <!-- pdf -->
+    <script type="text/javascript" src="/ky/pdf/pdf.js"></script>
+    <script type="text/javascript" src="/ky/pdf/pdf.worker.js"></script>
+    <script type="text/javascript" src="/ky/pdf/signature.js"></script>
 
-<script src="/ky/js/base64.js"></script>
-<script src="/ky/bootstrap-table-1.16.0-dist/bootstrap-table.min.js"></script>
-<script src="/ky/bootstrap-table-1.16.0-dist/locale/bootstrap-table-zh-CN.min.js"></script>
-<script type="text/javascript" src="/ky/bootstrap-select-1.12.4-dist/js/bootstrap-select.min.js"></script>
-<script type="text/javascript" src="/ky/echarts-4.2.0/echarts.min.js"></script>
+    <script src="/ky/js/base64.js"></script>
+    <script src="/ky/bootstrap-table-1.16.0-dist/bootstrap-table.min.js"></script>
+    <script src="/ky/bootstrap-table-1.16.0-dist/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script type="text/javascript" src="/ky/bootstrap-select-1.12.4-dist/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="/ky/echarts-4.2.0/echarts.min.js"></script>
 
-<script type="text/javascript">
-    let dataDict = {},
-        userLangCode = '<?php echo $this->userLangCode; ?>';
+    <script type="text/javascript">
+        let dataDict = {},
+            userLangCode = '<?php echo $this->userLangCode; ?>';
 
-    // signatureJS用到的变量
-    let signViewTitle = "<?php echo $this->translate('签署合同');?>",
-        mobileStr = "<?php echo $this->translate('mobile_phone');?>",
-        sendingStr = "<?php echo $this->translate('signAuthCodeSending');?>",
-        signSendAuthCodeStr = "<?php echo $this->translate('signSendAuthCode'); ?>",
-        signAuthCodeSendingStr = "<?php echo $this->translate('signAuthCodeSending'); ?>",
-        signFailStr = "<?php echo $this->translate('signFail');?>",
-        signSuccessStr = "<?php echo $this->translate('signSuccess');?>",
-        hasIDCertificate = '<?php echo $this->hasIDCertificate;?>',
-        contactHasIDCertificate = '<?php echo $this->contactHasIDCertificate;?>';
+        // signatureJS用到的变量
+        let signViewTitle = "<?php echo $this->translate('签署合同');?>",
+            mobileStr = "<?php echo $this->translate('mobile_phone');?>",
+            sendingStr = "<?php echo $this->translate('signAuthCodeSending');?>",
+            signSendAuthCodeStr = "<?php echo $this->translate('signSendAuthCode'); ?>",
+            signAuthCodeSendingStr = "<?php echo $this->translate('signAuthCodeSending'); ?>",
+            signFailStr = "<?php echo $this->translate('signFail');?>",
+            signSuccessStr = "<?php echo $this->translate('signSuccess');?>",
+            hasIDCertificate = '<?php echo $this->hasIDCertificate;?>',
+            contactHasIDCertificate = '<?php echo $this->contactHasIDCertificate;?>';
 
-	$().ready(function() {
+        $().ready(function() {
 
-	});
-
-	$(function () {
-        if (userLangCode === 'en_US') {
-            $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['en-US']);
-        } else {
-            $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['zh-CN']);
-        }
-
-        let $titleOptions = $(".title-options");
-        $titleOptions.find("button").click(function () {
-            let dataType = $(this).attr("data-type");
-            $("button[data-type='" + dataType + "']").removeClass("btn-warning").addClass("btn-default");
-            $(this).addClass("btn-warning");
-
-            $("#" + dataType).val($(this).attr("data-value"));
-
-            // 清空之前的结果
-            $("#refreshFinancingList").submit();
         });
 
-        $('[data-toggle="tooltip"]').tooltip();
-	});
-</script>
+        $(function () {
+            if (userLangCode === 'en_US') {
+                $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['en-US']);
+            } else {
+                $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['zh-CN']);
+            }
+
+            let $titleOptions = $(".title-options");
+            $titleOptions.find("button").click(function () {
+                let dataType = $(this).attr("data-type");
+                $("button[data-type='" + dataType + "']").removeClass("btn-warning").addClass("btn-default");
+                $(this).addClass("btn-warning");
+
+                $("#" + dataType).val($(this).attr("data-value"));
+
+                // 清空之前的结果
+                $("#refreshFinancingList").submit();
+            });
+
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
 </body>
 </html>
