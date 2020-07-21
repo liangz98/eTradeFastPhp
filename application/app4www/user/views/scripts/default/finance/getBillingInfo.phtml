@@ -1,0 +1,118 @@
+<div id="deliveryBillInfoDiv" class="layui-form">
+	<div class="et-auth-top et-auth-bg-orange billInfoTop" style="height: 190px; text-align: left;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3><label><?php echo $this->delivery->deliveryNo; ?></label>&nbsp;<?php echo $this->translate('deliveryBillTips'); ?></h3>
+		<h6 class="padding-left-15">*&nbsp;<?php echo $this->translate('deliveryBillTips_A'); ?></h6>
+		<h6 class="padding-left-15">*&nbsp;<?php echo $this->translate('deliveryBillTips_B'); ?></h6>
+		<h6 class="padding-left-24"><?php echo $this->translate('deliveryBillTips_C'); ?></h6>
+		<h6 class="padding-left-24"><?php echo $this->translate('deliveryBillTips_D'); ?></h6>
+		<h6 class="padding-left-24"><?php echo $this->translate('deliveryBillTips_E'); ?></h6>
+		<h6 class="padding-left-15">*&nbsp;<?php echo $this->translate('deliveryBillTips_F'); ?></h6>
+	</div>
+	<div class="et-auth-error" style="display: none;"></div>
+
+	<div class="layui-form">
+		<div class="layui-collapse" lay-accordion>
+		<?php
+		$isShow = true;
+		foreach ($this->deliverySupplierList as $deliverySupplier):
+		?>
+			<div class="layui-colla-item" style="text-align: left">
+				<h2 class="layui-colla-title"><?php echo $deliverySupplier->supplierName; ?></h2>
+				<div class="layui-colla-content <?php if ($isShow) echo "layui-show" ?>">
+					<div class="layui-form-item margin-bottom-1">
+						<label class="layui-form-label width-120">价税合计金额</label>
+						<div class="layui-input-block">
+							<div class="layui-form-mid layui-word-aux"><?php echo $deliverySupplier->supplierCrnCode. ' ' .$deliverySupplier->totalAmount; ?></div>
+						</div>
+					</div>
+
+					<div class="layui-form-item margin-bottom-1">
+						<label class="layui-form-label width-120 text-align-left billingInfoFont font-orange">销售方信息</label>
+					</div>
+
+					<div class="layui-form-item margin-bottom-1">
+						<label class="layui-form-label width-120">名称</label>
+						<div class="layui-input-block">
+							<div class="layui-form-mid layui-word-aux"><?php echo $deliverySupplier->supplierName ?></div>
+						</div>
+					</div>
+
+					<div class="layui-form-item margin-bottom-1">
+						<label class="layui-form-label width-120">纳税人识别号</label>
+						<div class="layui-input-block">
+							<div class="layui-form-mid layui-word-aux"><?php echo $deliverySupplier->supplier->businessLicenseNo ?></div>
+						</div>
+					</div>
+
+					<div class="layui-form-item margin-bottom-1">
+						<label class="layui-form-label width-120">地址、电话</label>
+						<div class="layui-input-block">
+							<div class="layui-form-mid layui-word-aux">
+								<?php echo $deliverySupplier->supplier->regdAddress ?>
+								<a href="tel:<?php echo $deliverySupplier->supplier->phone ?>" class="text-muted"><?php echo $deliverySupplier->supplier->phone ?></a>
+							</div>
+						</div>
+					</div>
+
+					<div class="layui-form-item margin-bottom-1">
+						<label class="layui-form-label width-120">开户行及帐号</label>
+						<div class="layui-input-block">
+							<div class="layui-form-mid layui-word-aux"><?php echo $deliverySupplier->bankName. ' ' .$deliverySupplier->bankAcctNo ?></div>
+						</div>
+					</div>
+
+					<div class="layui-form-item margin-bottom-1">
+						<label class="layui-form-label width-120 text-align-left billingInfoFont font-orange">邮寄信息</label>
+					</div>
+
+					<div class="layui-form-item margin-bottom-1">
+						<label class="layui-form-label width-120">快递单号</label>
+                        <div class="layui-input-block">
+                            <div class="layui-form-mid layui-word-aux">
+                                <label class="expressName_"><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['EXPRESS_TYPE'], $deliverySupplier->expressType); ?></label>&nbsp;&nbsp;
+                                <label class="expressNo_"><?php echo $deliverySupplier->expressNo ?></label>
+                            </div>
+                        </div>
+					</div>
+
+                    <?php if (!empty($deliverySupplier->purContract)): ?>
+					<div class="layui-form-item margin-bottom-1">
+						<label class="layui-form-label width-100 text-align-left billingInfoFont font-blue">供货合同</label>
+                        <div class="col-xs-12">
+                            <?php
+                            $contractList = array();
+                            $contractList[] = $deliverySupplier->purContract;
+                            echo $this->ShowTopContract($contractList, $this->accountID, 'CRSE', null, $this->hasIDCertificate);
+                            ?>
+                        </div>
+					</div>
+                    <?php endif; ?>
+
+					<div class="layui-form-item margin-bottom-1">
+						<label class="layui-form-label width-100 text-align-left billingInfoFont font-blue">开票指引</label>
+                        <div class="col-xs-12">
+                            <?php //echo $this->ShowUPimg($deliverySupplier->attachmentList, $deliverySupplier->deliverySupplierID); ?>
+
+                            <?php foreach ($deliverySupplier->attachmentList as $k => $attach): ?>
+                                <div class="col-xs-8">
+                                    <em class="new_upicon" style="background:url('/ky/ico/<?php echo strtolower($attach->ext); ?>.png') no-repeat;background-size: 20px;"></em>
+                                    <a class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'] . '/doc/download.action?sid=' . session_id() . '&nid=' . $attach->attachID . '&vid=' . $attach->verifyID; ?>" download>
+                                        <p class="new_uptitle"><?php echo $attach->name; ?></p>
+                                    </a>
+                                </div>
+                                <div class="col-xs-4">
+                                    <?php echo $this->translate('creatdate') . " " . date('Y-m-d H:i:s', strtotime($attach->createTime)); ?>
+                                </div>
+                            <?php endforeach; ?>
+						</div>
+					</div>
+				</div>
+			</div>
+		<?php
+            $isShow = false;
+		endforeach;
+		?>
+		</div>
+	</div>
+</div>

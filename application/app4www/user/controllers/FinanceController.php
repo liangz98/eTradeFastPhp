@@ -524,6 +524,7 @@ class FinanceController extends Kyapi_Controller_Action
 
         $crnCode = $this->_request->getParam('crnCode');
         $year = $this->_request->getParam('year');
+        $chartType = $this->_request->getParam('chartType');
 
         // $resultObject = $this->json->countGains($requestObject, $year, $crnCode);
         // $msg = json_decode($resultObject)->result;
@@ -550,48 +551,115 @@ class FinanceController extends Kyapi_Controller_Action
                 $monthDataArray = array();
                 $seriesArray = array();
 
-                $textInfo['text'] = $currYear . '收益分析';
-                $seriesArray['title'] = $textInfo;
+                if ($chartType == 'gains') {
+                    $textInfo['text'] = $currYear . ' 收益数';
+                    $seriesArray['title'] = $textInfo;
 
-                // gains
-                foreach ($month as $monthItem) {
-                    $resultItem = array();
-                    foreach (json_decode($resultObject)->result as $key => $item) {
-                        if ($item->month == $monthItem) {
-                            $resultItem = $item;
-                            break;
+                    // gains
+                    foreach ($month as $monthItem) {
+                        $resultItem = array();
+                        foreach (json_decode($resultObject)->result as $key => $item) {
+                            if ($item->month == $monthItem) {
+                                $resultItem = $item;
+                                break;
+                            }
+                        }
+                        if (!empty($resultItem)) {
+                            $monthDataArray[] = $resultItem->gains;
+                        } else {
+                            $monthDataArray[] = 0;
                         }
                     }
-                    if (!empty($resultItem)) {
-                        $monthDataArray[] = $resultItem->gains;
-                    } else {
-                        $monthDataArray[] = 0;
-                    }
-                }
-                $dataCont['data'] = $monthDataArray;
-                $seriesArray['series'][] = $dataCont;
+                    $dataCont['data'] = $monthDataArray;
+                    $dataCont['name'] = '实际收益';
+                    $seriesArray['series'][] = $dataCont;
 
-                // arGains
-                $monthDataArray = array();
-                foreach ($month as $monthItem) {
-                    $resultItem = array();
-                    foreach (json_decode($resultObject)->result as $key => $item) {
-                        if ($item->month == $monthItem) {
-                            $resultItem = $item;
-                            break;
+                    // arGains
+                    $monthDataArray = array();
+                    foreach ($month as $monthItem) {
+                        $resultItem = array();
+                        foreach (json_decode($resultObject)->result as $key => $item) {
+                            if ($item->month == $monthItem) {
+                                $resultItem = $item;
+                                break;
+                            }
+                        }
+
+                        if (!empty($resultItem)) {
+                            $monthDataArray[] = $resultItem->arGains;
+                        } else {
+                            $monthDataArray[] = 0;
+                        }
+                    }
+                    $dataCont['data'] = $monthDataArray;
+                    $dataCont['name'] = '预计收益';
+                    $seriesArray['series'][] = $dataCont;
+                    $seriesArray['title']['subtext'] = '收益(元)';
+                    $seriesArray['legend']['data'] = array("实际收益", "预计收益");
+                } elseif ($chartType == 'quantity') {
+                    $textInfo['text'] = $currYear . ' 项目笔数';
+                    $seriesArray['title'] = $textInfo;
+
+                    // quantity
+                    foreach ($month as $monthItem) {
+                        $resultItem = array();
+                        foreach (json_decode($resultObject)->result as $key => $item) {
+                            if ($item->month == $monthItem) {
+                                $resultItem = $item;
+                                break;
+                            }
+                        }
+                        if (!empty($resultItem)) {
+                            $monthDataArray[] = $resultItem->quantity;
+                        } else {
+                            $monthDataArray[] = 0;
                         }
                     }
 
-                    if (!empty($resultItem)) {
-                        $monthDataArray[] = $resultItem->arGains;
-                    } else {
-                        $monthDataArray[] = 0;
+                    $dataCont['data'] = $monthDataArray;
+                    $dataCont['name'] = '项目笔数';
+                    $seriesArray['series'][] = $dataCont;
+
+
+                    // arGains
+                    $monthDataArray = array();
+                    $dataCont['data'] = $monthDataArray[] = 0;
+                    $seriesArray['series'][] = $dataCont;
+
+                    $seriesArray['title']['subtext'] = '笔数(笔)';
+                    $seriesArray['legend']['data'] = array('项目笔数');
+                } else {
+                    $textInfo['text'] = $currYear . ' 项目金额';
+                    $seriesArray['title'] = $textInfo;
+
+                    // loanAmount
+                    foreach ($month as $monthItem) {
+                        $resultItem = array();
+                        foreach (json_decode($resultObject)->result as $key => $item) {
+                            if ($item->month == $monthItem) {
+                                $resultItem = $item;
+                                break;
+                            }
+                        }
+
+                        if (!empty($resultItem)) {
+                            $monthDataArray[] = $resultItem->arLoanAmount;
+                        } else {
+                            $monthDataArray[] = 0;
+                        }
                     }
+                    $dataCont['data'] = $monthDataArray;
+                    $dataCont['name'] = '项目金额';
+                    $seriesArray['series'][] = $dataCont;
+
+                    // quantity
+                    $monthDataArray = array();
+                    $dataCont['data'] = $monthDataArray[] = 0;
+                    $seriesArray['series'][] = $dataCont;
+
+                    $seriesArray['title']['subtext'] = '金额(元)';
+                    $seriesArray['legend']['data'] = array('项目金额');
                 }
-                $dataCont['data'] = $monthDataArray;
-                $seriesArray['series'][] = $dataCont;
-
-
             } else {
                 $seriesArray = array();
 
@@ -764,5 +832,144 @@ class FinanceController extends Kyapi_Controller_Action
             }
         }
         return ($second1 - $second2) / 86400;
+    }
+
+    // 订单详情页
+    public function orderViewAction() {
+        $orderID = $_SERVER['QUERY_STRING'];
+        $_orderID = base64_decode($orderID);
+        $this->view->orderid = $_orderID;
+
+        $requestObject = $this->_requestObject;
+        $orderResultObject = $this->json->getOrderApi($requestObject, $_orderID);
+        $order = $this->objectToArray(json_decode($orderResultObject)->result);
+
+        // 当前返回数据为空时 前端显示为无
+        if (!isset($order['packingDesc']))
+            $order['packingDesc'] = $this->view->translate('noData');  //包装描述
+        if (!isset($order['financingRequest']))
+            $order['financingRequest'] = $this->view->translate('noData');  //金融要求
+        if (!isset($order['customClearanceRequest']))
+            $order['customClearanceRequest'] = $this->view->translate('noData'); //报关要求
+        if (!isset($order['shippingRequest'])) {
+            if (isset($order['truckingRequest']) && !empty($order['truckingRequest'])) {
+                $order['shippingRequest'] = $order['truckingRequest'];
+            } else {
+                $order['shippingRequest'] = $this->view->translate('noData');
+            }
+        }
+
+        $this->view->orders = $order;
+
+        // 订单商品
+        $this->view->orderItem = $order['orderItemList'];
+
+        // 取回当前公司的企业认证状态
+        $account = $this->json->getAccountApi($requestObject);
+        $this->refreshAccountCertificateByResult(json_decode($account)->result->hasIDCertificate);
+
+        // 取回当前登录用户的实名认证状态
+        $contactID = $this->view->userID;
+        $contact = $this->json->getContactApi($requestObject, $contactID);
+        $this->view->contactHasIDCertificate = json_decode($contact)->result->hasIDCertificate;
+
+        $accountData = $this->objectToArray(json_decode($account)->result);
+        $this->view->account = $accountData;
+
+        // 订单合同列表
+        $bizType = 'OD';
+        $listBizContractResultObject = $this->json->listBizContract($requestObject, $bizType, $_orderID);
+        $listBizContract = json_decode($listBizContractResultObject)->result;
+        $this->view->contractList = empty($listBizContract) ? null : $this->objectToArray($listBizContract);
+
+        // 买家执行状态
+        $this->view->vestut = $order['vendorExecStatus'];
+        // $this->view->veorderID = $order->orderID;
+
+        // 取回订单商品
+        $orderItemListResultObject = $this->json->listOrderItem($requestObject, $_orderID);
+        $this->view->orderItemList = json_decode($orderItemListResultObject)->result;
+
+        // 取回物流信息
+        $deliveryList = $this->json->listDelivery($requestObject, $_orderID);
+        $this->view->deliveryList = json_decode($deliveryList)->result;
+
+        // 是否存在已完成的物流
+        $this->view->hasOneTakeOverDelivery = False;
+        $deliveryData = $this->objectToArray(json_decode($deliveryList));
+        $deliveryDataList = $deliveryData['result'];
+        foreach ($deliveryDataList as $delivery) {
+            if ($delivery['deliveryStatus'] == 4) {
+                $this->view->hasOneTakeOverDelivery = True;
+                break;
+            }
+        }
+
+        // 订单汇率
+        $rateResultObject = $this->json->listExchangeRateApi($requestObject, $bizType, $_orderID);
+        $this->view->exchangeRateList = json_decode($rateResultObject)->result;
+
+        // 物流相关附件
+        $this->view->DLPG = array();    // 备货相关附件
+        $this->view->DLEG = array();    // 验货相关附件
+        $this->view->DLDG = array();    // 发货相关附件
+        $this->view->DLRG = array();    // 收货相关附件
+        $this->view->DLQT = array();    // 质量保证函模板
+        $this->view->DLQF = array();    // 质量保证函正本
+        $this->view->DLCT = array();    // 收货确认函模板
+        $this->view->DLCF = array();    // 收货确认函正本
+        $deliveryAttachDataList = $deliveryData['result'];
+
+        // 报关单列表
+        $listDeclarationResultObject = $this->json->listDeclarationApi($requestObject, $_orderID);
+        $this->view->listDeclaration = json_decode($listDeclarationResultObject)->result;
+
+        // 订舱单列表
+        $listShippingOrderResultObject = $this->json->listShippingOrderApi($requestObject, $_orderID);
+        $this->view->listShippingOrder = json_decode($listShippingOrderResultObject)->result;
+
+        // 派车单列表
+        $listTruckingOrderResultObject = $this->json->listTruckingOrderApi($requestObject, $_orderID);
+        $this->view->listTruckingOrder = json_decode($listTruckingOrderResultObject)->result;
+
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/finance/orderView.phtml");
+            echo $content;
+            exit;
+        }
+    }
+
+    // 开票资料 - view
+    public function deliverBillingInfoAction() {
+        $deliveryID = $this->_request->getParam('deliveryID');
+        $requestObject = $this->_requestObject;
+        $resultObject = $this->json->getDeliveryView($requestObject, $deliveryID);
+
+        $delivery = json_decode($resultObject)->result;
+        $this->view->deliveryID = $deliveryID;
+        $this->view->delivery = json_decode($resultObject)->result;
+        $this->view->deliverySupplierList = $delivery->deliverySupplierList;
+
+        // 取回当前公司的企业认证状态
+        $account = $this->json->getAccountApi($requestObject);
+        $this->refreshAccountCertificateByResult(json_decode($account)->result->hasIDCertificate);
+
+        if (defined('SEED_WWW_TPL')) {
+//            if ($delivery->needTransfer && $delivery->transferRequestDate == null) {
+//                $content = $this->view->render(SEED_WWW_TPL . "/sale/genBillingInfo.phtml");
+//                echo $content;
+//                exit;
+//            } else {
+                $billingInfoResultObject = $this->json->getBillingInfoApi($requestObject, $deliveryID);
+                $billingInfo = json_decode($billingInfoResultObject)->result;
+                $this->view->billingInfo = $billingInfo;
+                $this->view->deliverySupplierList = $billingInfo->deliverySupplierList;
+                // $purContractAttachmentList = $billingInfo->deliverySupplierList->purContract->attachmentList;
+
+                $content = $this->view->render(SEED_WWW_TPL . "/finance/getBillingInfo.phtml");
+                echo $content;
+                exit;
+//            }
+        }
     }
 }

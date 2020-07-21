@@ -145,31 +145,42 @@
                                 </div>
                             </div>
                         <?php else: ?>
-                            <?php if (round((strtotime($this->financingLoan['expiryDate']) - strtotime(date("Y-m-d"))) / 86400) > 0): ?>
+                            <?php if ($this->financingLoan['expiryDate']): ?>
+                                <?php if (round((strtotime($this->financingLoan['expiryDate']) - strtotime(date("Y-m-d"))) / 86400) > 0): ?>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <p class="form-control-static text-999" style="margin-top: 47px;"><?php echo $this->translate('距还款'); ?></p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="form-control-static text-666"><span class="text-danger span-font-size-68"><?php echo round((strtotime($this->financingLoan['expiryDate']) - strtotime(date("Y-m-d"))) / 86400); ?></span> 天</p>
+                                        </div>
+                                    </div>
+                                <?php elseif (round((strtotime($this->financingLoan['expiryDate'] .' +'. $this->financingLoan['financing']['gracePeriod'] .' day') - strtotime(date("Y-m-d"))) / 86400) > 0): ?>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <p class="form-control-static text-999" style="margin-top: 47px;"><?php echo $this->translate('宽限期内'); ?></p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="form-control-static text-666"><span class="text-danger span-font-size-68"><?php echo round((strtotime($this->financingLoan['expiryDate'] .' +'. $this->financingLoan['financing']['gracePeriod'] .' day') - strtotime(date("Y-m-d"))) / 86400); ?></span> 天</p>
+                                        </div>
+                                    </div>
+                                <?php else: ?>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <p class="form-control-static text-999" style="margin-top: 47px;"><?php echo $this->translate('逾期'); ?></p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="form-control-static text-666"><span class="text-danger span-font-size-68"><?php echo round((strtotime(date("Y-m-d")) - strtotime($this->financingLoan['expiryDate'] .' +'. $this->financingLoan['financing']['gracePeriod'] .' day')) / 86400); ?></span> 天</p>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+                            <?php else: ?>
                                 <div class="row">
                                     <div class="col-md-4">
                                         <p class="form-control-static text-999" style="margin-top: 47px;"><?php echo $this->translate('距还款'); ?></p>
                                     </div>
                                     <div class="col-md-6">
-                                        <p class="form-control-static text-666"><span class="text-danger span-font-size-68"><?php echo round((strtotime($this->financingLoan['expiryDate']) - strtotime(date("Y-m-d"))) / 86400); ?></span> 天</p>
-                                    </div>
-                                </div>
-                            <?php elseif (round((strtotime($this->financingLoan['expiryDate'] .' +'. $this->financingLoan['financing']['gracePeriod'] .' day') - strtotime(date("Y-m-d"))) / 86400) > 0): ?>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <p class="form-control-static text-999" style="margin-top: 47px;"><?php echo $this->translate('宽限期内'); ?></p>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p class="form-control-static text-666"><span class="text-danger span-font-size-68"><?php echo round((strtotime($this->financingLoan['expiryDate'] .' +'. $this->financingLoan['financing']['gracePeriod'] .' day') - strtotime(date("Y-m-d"))) / 86400); ?></span> 天</p>
-                                    </div>
-                                </div>
-                            <?php else: ?>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <p class="form-control-static text-999" style="margin-top: 47px;"><?php echo $this->translate('逾期'); ?></p>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p class="form-control-static text-666"><span class="text-danger span-font-size-68"><?php echo round((strtotime(date("Y-m-d")) - strtotime($this->financingLoan['expiryDate'] .' +'. $this->financingLoan['financing']['gracePeriod'] .' day')) / 86400); ?></span> 天</p>
+                                        <p class="form-control-static text-666"><span class="text-danger span-font-size-68">--</span> 天</p>
                                     </div>
                                 </div>
                             <?php endif; ?>

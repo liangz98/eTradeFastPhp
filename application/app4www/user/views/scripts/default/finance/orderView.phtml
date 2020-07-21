@@ -1,0 +1,2756 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+	<title><?php echo $this->translate('etradefast'); ?></title>
+    <link href="/ky/css/layouts/base.css" rel="stylesheet">
+    <link href="/ky/css/order/order.css" rel="stylesheet">
+    <link href="/ky/css/img-upload.css" rel="stylesheet">
+    <!-- fancybox -->
+    <link href="/ky/fancybox-3.5.6-dist/jquery.fancybox.min.css" rel="stylesheet">
+</head>
+<body>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/header.phtml'); ?>
+
+<div class="container-fluid index-body">
+	<div class="container">
+		<div class="row">
+            <div class="col-md-3 company-navigation hidden">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><?php echo $this->translate('orderIN'); ?></div>
+                    <div class="list-group">
+                        <a href="/user/sale" class="list-group-item"><?php echo $this->translate('orderSALLE'); ?></a>
+                        <a href="/user/pur" class="list-group-item"><?php echo $this->translate('orderBUY'); ?></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 order-view">
+                <?php if ($this->vestut >= 0): ?>
+                <div class="panel panel-default">
+                    <div class="panel-body order-news">
+                        <div class="row responsive-utilities-test hidden-on">
+                            <div class="col-xs-6 col-sm-3">
+                                <span class="hidden <?php if ($this->vestut == 0) { echo 'order-activated'; } elseif ($this->vestut > 0) { echo 'order-finished'; } ?>"><?php echo $this->translate('confirming'); ?></span>
+                            </div>
+
+                            <a href="#sign" aria-controls="info" role="tab" <?php if ($this->vestut != 0) { echo 'data-toggle="tab"'; } ?>>
+                                <div class="col-xs-6 col-sm-3 hidden">
+                                    <span class="hidden <?php if ($this->vestut == 1 || $this->vestut == 3) { echo 'order-activated'; } elseif ($this->vestut > 1) { echo 'order-finished'; } else { echo 'order-no-start';} ?>"><?php echo $this->translate('sign'); ?></span>
+                                </div>
+                            </a>
+
+                            <div class="clearfix visible-xs-block"></div>
+
+                            <a href="#delivery" aria-controls="info" role="tab" <?php if ($this->vestut != 0) { echo 'data-toggle="tab"'; } ?>>
+                                <div class="col-xs-6 col-sm-4">
+                                    <span class="<?php if ($this->vestut > 3) { echo 'order-activated'; } elseif ($this->vestut > 7) { echo 'order-finished'; } else { echo 'order-no-start';} ?>"><?php echo $this->translate('delivery'); ?></span>
+                                </div>
+                            </a>
+
+                            <a href="#calculate" aria-controls="info" role="tab" <?php if ($this->vestut != 0) { echo 'data-toggle="tab"'; } ?>>
+                                <div class="col-xs-6 col-sm-3 hidden">
+                                    <span class="hidden <?php if ($this->vestut > 3) { echo 'order-activated'; } elseif ($this->vestut > 7) { echo 'order-finished'; } else { echo 'order-no-start';} ?>"><?php echo $this->translate('calculate'); ?></span>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="tab-content ">
+                            <div role="tabpanel" class="tab-pane fade <?php if ($this->vestut == 0) { echo 'in active'; } ?>" id="confirming">
+                                <div class="row">
+                                    <div class="col-xs-2">
+                                        <p class="text-right news-title"><?php echo $this->translate('orderNo');?></p>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <p><?php echo $this->orders["orderNo"];?></p>
+                                    </div>
+                                    <div class="col-xs-2 news-title"><?php echo $this->translate('Prities');?></div>
+                                    <div class="col-xs-4">
+                                        <p>
+                                            <?php
+                                                foreach ($this->exchangeRateList as $exchangeRate) {
+                                                    echo $exchangeRate->contraCrn . '-->' . $exchangeRate->baseCrn . ' ' . $exchangeRate->actualRate . '; ';
+                                                }
+                                            ?>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-2 news-title">
+                                        <p class="text-right"><?php echo $this->translate('progressING');?></p>
+                                    </div>
+                                    <div class="col-xs-8">
+                                        <p><?php echo $this->plan['plan'];?></p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-2 news-title">
+                                        <p class="text-right"><?php echo $this->translate('stateING');?></p>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <p><?php echo $this->ShowDictionaryTo($this->dic_Setting['ORDER_STATUS'], $this->userLangCode, $this->dic_Setting['ORDER_STATUS'], $this->orders["orderStatus"]); ?></p>
+                                    </div>
+                                    <div class="col-xs-2 news-title"><?php echo $this->translate('operatING');?></div>
+                                    <div class="col-xs-4">
+                                        <?php if ($this->orders["allowVendorConfirm"] == 1): ?>
+                                        <button type="button" class="btn btn-warning" id="vendorConfirmBtn" data-order-id="<?php echo $this->orders["orderID"];?>"><?php echo $this->translate('confirmed'); ?></button>
+                                        <?php endif;?>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane row <?php if ($this->vestut == 1 || $this->vestut == 3) { echo 'in active'; } ?>" id="sign">
+                                <div class="row">
+                                    <div class="col-xs-2">
+                                        <p class="text-right news-title"><?php echo $this->translate('orderNo');?></p>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <p><?php echo $this->orders["orderNo"];?></p>
+                                    </div>
+                                    <div class="col-xs-2 news-title"><?php echo $this->translate('Prities');?></div>
+                                    <div class="col-xs-4">
+                                        <p>
+                                            <?php foreach ($this->exchangeRateList as $exchangeRate) {
+                                                echo $exchangeRate->contraCrn . '-->' . $exchangeRate->baseCrn . ' ' . $exchangeRate->actualRate . '; ';
+                                            }?>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-2 news-title">
+                                        <p class="text-right"><?php echo $this->translate('progressING');?></p>
+                                    </div>
+                                    <div class="col-xs-8">
+                                        <p><?php echo $this->plan['plan'];?></p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-2 news-title">
+                                        <p class="text-right"><?php echo $this->translate('files');?></p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <?php echo $this->ShowOrderContract($this->contractList, $this->accountID); ?>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-2 news-title">
+                                        <p class="text-right"><?php echo $this->translate('stateING');?></p>
+                                    </div>
+                                    <div class="col-xs-8">
+                                        <p><?php echo $this->ShowDictionaryTo($this->dic_Setting['ORDER_STATUS'], $this->userLangCode, $this->dic_Setting['ORDER_STATUS'], $this->orders["orderStatus"]); ?></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 物流 -->
+                            <div role="tabpanel" class="tab-pane row <?php if ($this->vestut > 3) { echo 'in active'; } ?>" id="delivery">
+                                <div class="col-md-12">
+                                    <table class="layui-table" lay-skin="line" id="deliveryTable" lay-filter="demoEvent">
+                                        <colgroup>
+                                            <col width="60">
+                                            <col width="140">
+                                            <col width="100">
+                                            <col width="160">
+                                            <col>
+                                            <col width="130">
+                                        </colgroup>
+                                        <thead>
+                                        <tr style="background-color: #01AAED; color: white;">
+                                            <th>批次</th>
+                                            <th>收发货单编号</th>
+                                            <th>批次状态</th>
+                                            <th style="text-align: center"><?php echo $this->translate('date'); ?></th>
+                                            <th style="text-align: center"><?php echo $this->translate('settle_DEC'); ?></th>
+                                            <th style="text-align: center"><?php echo $this->translate('operatING'); ?></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php if (count($this->deliveryList) > 0): ?>
+                                            <?php foreach ($this->deliveryList as $k => $v):?>
+                                                <tr>
+                                                    <td data-toggle="modal" data-target="#viewDelivery" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-status="<?php echo $v->deliveryStatus; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>">
+                                                        <span class="layui-badge" style="background-color: #4CAF50;"><?php echo $k + 1; ?></span>
+                                                    </td>
+                                                    <td style="cursor: pointer;" data-toggle="modal" data-target="#viewDelivery" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-status="<?php echo $v->deliveryStatus; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>"><?php echo $v->deliveryNo; ?></td>
+                                                    <td style="cursor: pointer;" data-toggle="modal" data-target="#viewDelivery" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-status="<?php echo $v->deliveryStatus; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>"><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['DELIVERY_STATUE'], $v->deliveryStatus); ?></td>
+                                                    <td style="cursor: pointer;" data-toggle="modal" data-target="#viewDelivery" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-status="<?php echo $v->deliveryStatus; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>"><?php $date = date_create($v->readyDate); echo date_format($date,"Y-m-d"); ?></td>
+                                                    <td style="cursor: pointer;" data-toggle="modal" data-target="#viewDelivery" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-status="<?php echo $v->deliveryStatus; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>"><?php $summary = $v->summary; $replaceStr = "<br />"; echo str_replace('\n', $replaceStr, $summary); ?></td>
+                                                    <td style="text-align: center">
+                                                        <?php if ($v->deliveryStatus == 1 && $v->needExamine == False): ?>
+                                                            <a class="layui-btn layui-btn-warm" data-toggle="modal" data-target="#deliveryDeliver" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>" ><?php echo $this->translate('deGOODS'); ?></a>
+                                                        <?php elseif ($v->deliveryStatus == 2): ?>
+                                                            <a class="layui-btn layui-btn-warm" data-toggle="modal" data-target="#deliveryDeliver" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>" ><?php echo $this->translate('deGOODS'); ?></a>
+                                                        <?php elseif ($v->deliveryStatus == 3): ?>
+                                                            <!-- 外贸订单, 并且不是自营的, 才可以开票 -->
+                                                            <?php if ($this->orders['orderType'] == 'IT' && !$this->orders['isSelfSupport']): ?>
+                                                                <a href='javascript:void(0)' data-toggle="modal" data-target="#billingInfo" data-delivery-id="<?php echo $v->deliveryID; ?>"><?php echo $this->translate('deliveryBillInfo'); ?></a>
+                                                            <?php endif; ?>
+                                                        <?php elseif ($v->deliveryStatus == 4): ?>
+                                                            <?php if ($this->orders['orderType'] == 'IT' && !$this->orders['isSelfSupport']): ?>
+                                                                <a href='javascript:void(0)' data-toggle="modal" data-target="#billingInfo" data-delivery-id="<?php echo $v->deliveryID; ?>"><?php echo $this->translate('deliveryBillInfo'); ?></a>
+                                                            <?php endif; ?>
+                                                        <?php endif; ?>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <tr>
+                                                <td colspan="6" style="height: 100px; text-align: center;">
+                                                    <label><?php echo $this->translate('deliveryItemListNull'); ?></label>
+                                                </td>
+                                            </tr>
+                                        <?php endif; ?>
+                                        </tbody>
+                                    </table>
+
+                                    <div style="height: 12px"></div>
+                                    <div class="hidden">
+                                        <button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target="#addDelivery"><b><?php echo $this->translate('deliveryAdd'); ?></b></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 结算 -->
+                            <div role="tabpanel" class="tab-pane row" id="calculate">
+                                <div class="col-md-12 calculateContent"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php endif; ?>
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <ul class="nav nav-tabs">
+                            <li role="presentation" class="active">
+                                <a href="#info" aria-controls="info" role="tab" data-toggle="tab"><?php echo $this->translate('orderVINF'); ?></a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#logistics" aria-controls="logistics" role="tab" data-toggle="tab"><?php echo $this->translate('logistics'); ?></a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#log" aria-controls="log" role="tab" data-toggle="tab"><?php echo $this->translate('DERIL_log'); ?></a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><?php echo $this->translate('file'); ?></a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <!-- 订单信息预览 -->
+                            <div role="tabpanel" class="tab-pane active row" id="info">
+                                <div class="col-md-12 orderInfo">
+                                    <h3>
+                                        <?php if (($this->CompProductAdmin == true || $this->CompOrderAdmin == true) && ($this->orders['orderStatus'] == '00' || $this->orders['orderStatus'] == '01' || $this->orders['orderStatus'] == '02' || $this->orders['orderStatus'] == '05')): ?>
+                                            <a class="profile-heading-edit pull-right btn btn-xs" data-type="base" href="<?php echo '/user/sale/edit?' . base64_encode($this->orders['orderID']); ?>">
+                                                <i class="fas fa-pencil-alt" aria-hidden="true"></i><?php echo $this->translate('edit'); ?>
+                                            </a>
+                                        <?php endif; ?>
+                                        <?php echo $this->orders['orderNo']; ?>
+                                    </h3>
+
+                                    <div class="row">
+                                        <div class="col-xs-2 view-title"><?php echo $this->translate('buyers'); ?></div>
+                                        <div class="col-xs-4">
+                                            <?php if ($this->userrgCode == 'CN') {
+                                                echo $this->orders['buyerName'];
+                                            } else if (!empty($this->orders['buyerEnName'])) {
+                                                echo $this->orders['buyerEnName'];
+                                            } else {
+                                                echo $this->orders['buyerName'];
+                                            } ?>
+                                        </div>
+                                        <div class="col-xs-2 view-title"><?php echo $this->translate('buyerATTN'); ?></div>
+                                        <div class="col-xs-4"><?php echo $this->orders['buyerContactName'];?></div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-2 view-title"><?php echo $this->translate('seller'); ?></div>
+                                        <div class="col-xs-4">
+                                            <?php if ($this->userrgCode == 'CN') {
+                                                echo $this->orders['vendorName'];
+                                            } else if (!empty($this->orders['vendorEnName'])) {
+                                                echo $this->orders['vendorEnName'];
+                                            } else {
+                                                echo $this->orders['vendorName'];
+                                            } ?>
+                                        </div>
+                                        <div class="col-xs-2 view-title"><?php echo $this->translate('sellerATTN'); ?></div>
+                                        <div class="col-xs-4"><?php echo $this->orders['vendorContactName'];?></div>
+                                    </div>
+
+                                    <?php if (!empty($this->orders['agent']) && $this->orders['agent'] !== ''): ?>
+                                    <div class="row">
+                                        <div class="col-xs-2 view-title"><?php echo $this->translate('thisATTN'); ?></div>
+                                        <div class="col-xs-4"><?php echo $this->orders['agentContactName'];?></div>
+                                    </div>
+                                    <?php endif; ?>
+
+                                    <div class="row">
+                                        <div class="col-xs-2 view-title"><?php echo $this->translate('payCNY'); ?></div>
+                                        <div class="col-xs-4"><?php echo $this->orders['buyerCrnCode'];?></div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-2 view-title"><?php echo $this->translate('remitMD'); ?></div>
+                                        <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->dic_Setting['PAYMENT_TERM'], $this->orders['paymentTerm']); ?></div>
+                                        <div class="col-xs-2 view-title"><?php echo $this->translate('payDD'); ?></div>
+                                        <div class="col-xs-4"><?php echo $this->orders['paymentPeriod'];?> DAYS</div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-2 view-title"><?php echo $this->translate('payJJ'); ?></div>
+                                        <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->dic_Setting['ORDER_QUOTATION_MODE'], $this->orders['quotationMode']); ?></div>
+                                        <?php if ($this->orders['orderType'] != 'DT'): ?>
+                                        <div class="col-xs-2 view-title"><?php echo $this->translate('exportMD'); ?></div>
+                                        <div class="col-xs-4"><?php if($this->orders['isSelfSupport']==true){echo $this->translate('sellersEX'); }else{ echo $this->translate('siteEX');}?></div>
+                                        <?php endif; ?>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-2 view-title"><?php echo $this->translate('payPrice'); ?></div>
+                                        <div class="col-xs-4"><?php echo $this->orders['priceTerm'];?></div>
+                                        <div class="col-xs-2 view-title"><?php echo $this->translate('payCasing'); ?></div>
+                                        <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->dic_Setting['ORDER_PACKING_MODE'], $this->orders['packingMode']); ?></div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-2 view-title"><?php echo $this->translate('packINF'); ?></div>
+                                        <div class="col-xs-8"><?php echo $this->orders['packingDesc'];?></div>
+                                    </div>
+
+                                    <!-- 商品项目 -->
+                                    <div class="page-header">
+                                        <h3><?php echo $this->translate('payGoods'); ?></h3>
+                                    </div>
+
+                                    <div class="orderItemDiv">
+                                        <?php if (is_array($this->orders['orderItemList']) && count($this->orders['orderItemList']) > 0): ?>
+                                            <?php foreach ($this->orders['orderItemList'] as $k => $goods): ?>
+                                                <div class="alert alert-info alert-dismissible orderItemAlert <?php if ($k > 0) {echo "hidden";}?>" <?php if ($k == 0) {echo "id='orderItemTop'";}?> role="alert">
+                                                    <div class="row">
+                                                        <div class="col-xs-2"><?php echo $this->translate("productNAME"); ?></div>
+                                                        <div class="col-sm-4"><?php echo $goods['productName'];?></div>
+                                                        <div class="col-xs-2"><?php echo $this->translate("productENNAME"); ?></div>
+                                                        <div class="col-sm-4"><?php echo $goods['productEnName'];?></div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-xs-2"><?php echo $this->translate("packageTYPE"); ?></div>
+                                                        <div class="col-sm-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->dic_Setting['PRODUCT_PACKING_TYPE'], $goods['packingType']); ?></div>
+                                                        <div class="col-xs-2"><?php echo $this->translate("HSCODE"); ?></div>
+                                                        <div class="col-sm-4"><?php echo $goods['hscode'];?></div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-xs-2"><?php echo $this->translate("brand"); ?></div>
+                                                        <div class="col-sm-4"><?php echo $goods['productBrand'];?></div>
+                                                        <div class="col-xs-2"><?php echo $this->translate("model"); ?></div>
+                                                        <div class="col-sm-4"><?php echo $goods['productModel'];?></div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-xs-2"><?php echo $this->translate("productMaterial"); ?></div>
+                                                        <div class="col-sm-8"><?php echo $goods['productMaterial'];?></div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-xs-2"><?php echo $this->translate("functionUsage"); ?></div>
+                                                        <div class="col-sm-8"><?php if (array_key_exists('functionUsage', $goods)) echo $goods['functionUsage'];?></div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-xs-2"><?php echo $this->translate("number"); ?></div>
+                                                        <div class="col-sm-4"><?php echo $goods['quantity'];?>&nbsp;&nbsp;<?php echo $this->ShowDictionaryTo("", $this->userLangCode, $this->dic_Setting['PRODUCT_PRICING_UNIT'], $goods['pricingUnit']); ?></div>
+                                                        <div class="col-xs-2"><?php echo $this->translate("quantity"); ?></div>
+                                                        <div class="col-sm-4"><?php echo $goods['totalPackage'];?></div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-xs-2"><?php echo $this->translate("orderprice"); ?></div>
+                                                        <div class="col-sm-1"><?php echo $goods['unitPrice'];?></div>
+                                                        <div class="col-xs-1">x</div>
+                                                        <div class="col-sm-1"><?php echo $goods['quantity'];?></div>
+                                                        <div class="col-xs-1">=</div>
+                                                        <div class="col-sm-1"><?php echo $this->orders['buyerCrnCode'];?></div>
+                                                        <div class="col-sm-1"><?php echo $goods['totalPrice'];?></div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-xs-2"><?php echo $this->translate("packingNetWeight"); ?></div>
+                                                        <div class="col-sm-1"><?php echo $goods['packingNetWeight'];?></div>
+                                                        <div class="col-xs-1">x</div>
+                                                        <div class="col-sm-1"><?php echo $goods['totalPackage'];?></div>
+                                                        <div class="col-xs-1">=</div>
+                                                        <div class="col-sm-1"><?php echo $goods['totalNetWeight'];?></div>
+                                                        <div class="col-sm-1">KGS</div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-xs-2"><?php echo $this->translate("packingGrossWeight"); ?></div>
+                                                        <div class="col-sm-1"><?php echo $goods['packingGrossWeight'];?></div>
+                                                        <div class="col-xs-1">x</div>
+                                                        <div class="col-sm-1"><?php echo $goods['totalPackage'];?></div>
+                                                        <div class="col-xs-1">=</div>
+                                                        <div class="col-sm-1"><?php echo $goods['totalGrossWeight'];?></div>
+                                                        <div class="col-sm-1">KGS</div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-xs-2"><?php echo $this->translate("packingVolume"); ?></div>
+                                                        <div class="col-sm-1"><?php echo $goods['packingVolume'];?></div>
+                                                        <div class="col-xs-1">x</div>
+                                                        <div class="col-sm-1"><?php echo $goods['totalPackage'];?></div>
+                                                        <div class="col-xs-1">=</div>
+                                                        <div class="col-sm-1"><?php echo $goods['totalVolume'];?></div>
+                                                        <div class="col-sm-1">CBM</div>
+                                                    </div>
+
+                                                    <?php if ($this->orders['quotationMode'] === 'IV'): ?>
+                                                        <div class="row">
+                                                            <div class="col-xs-2"><?php echo $this->translate("uiprice"); ?></div>
+                                                            <div class="col-sm-1"><?php echo $goods['purUnitPrice'];?></div>
+                                                            <div class="col-xs-1">x</div>
+                                                            <div class="col-sm-1"><?php echo $goods['quantity'];?></div>
+                                                            <div class="col-xs-1">=</div>
+                                                            <div class="col-sm-1"><?php echo $goods['purCrnCode'];?></div>
+                                                            <div class="col-sm-1"><?php echo $goods['totalPurPrice'];?></div>
+                                                        </div>
+                                                    <?php else: ?>
+                                                        <?php if ($this->orders['vendor'] != $this->accountID): ?>
+                                                            <div class="row">
+                                                                <div class="col-xs-2"><?php echo $this->translate("purchaseUnitPrice"); ?></div>
+                                                                <div class="col-sm-1"><?php echo $goods['vendorUnitPrice']; ?></div>
+                                                                <div class="col-xs-1">x</div>
+                                                                <div class="col-sm-1"><?php echo $goods['quantity'];?></div>
+                                                                <div class="col-xs-1">=</div>
+                                                                <div class="col-sm-1"><?php echo $this->orders['buyerCrnCode'];?></div>
+                                                                <div class="col-sm-1"><?php echo $goods['vendorTotalPrice'];?></div>
+                                                            </div>
+                                                        <?php endif; ?>
+                                                    <?php endif; ?>
+                                                </div>
+                                            <?php endforeach; ?>
+
+                                            <?php if (count($this->orders['orderItemList']) > 1): ?>
+                                            <div class="row">
+                                                <div class="col-sm-3 col-sm-offset-5 padding-bottom-15">
+                                                    <button type="button" class="btn btn-default btn-xs showAll" data-type="down">展开全部 <i class="fas fa-chevron-down"></i></button>
+                                                </div>
+                                            </div>
+                                            <?php endif; ?>
+
+                                            <div class="alert alert-success alert-dismissible" role="alert">
+                                                <div class="row">
+                                                    <div class="col-xs-2"><?php echo $this->translate("shopNet"); ?></div>
+                                                    <div class="col-sm-3"><?php echo $this->orders['totalNetWeight'];?>&nbsp;<b>KGS</b></div>
+                                                    <div class="col-xs-2"><?php echo $this->translate("shopGross"); ?></div>
+                                                    <div class="col-sm-3"><?php echo $this->orders['totalGrossWeight'];?>&nbsp;<b>KGS</b></div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-xs-2"><?php echo $this->translate("shopTotal"); ?></div>
+                                                    <div class="col-sm-3"><b><?php echo $this->orders['buyerCrnCode']; ?></b>&nbsp;<?php echo $this->orders['totalAmount'];?></div>
+                                                    <div class="col-xs-2"><?php echo $this->translate("shopPrities"); ?></div>
+                                                    <div class="col-sm-4">
+                                                        <p>
+                                                            <?php foreach ($this->exchangeRateList as $exchangeRate) {
+                                                                echo $exchangeRate->contraCrn . '-->' . $exchangeRate->baseCrn . ' ' . $exchangeRate->actualRate . '; ';
+                                                            }?>
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <?php if ($this->orders['vendor'] != $this->accountID): ?>
+                                                <div class="row">
+                                                    <div class="col-xs-2"><?php echo $this->translate("vendorTotalAmount"); ?></div>
+                                                    <div class="col-sm-3"><b><?php echo $this->orders['buyerCrnCode']; ?></b>&nbsp;<?php echo $this->orders['vendorTotalAmount'];?></div>
+                                                </div>
+                                                <?php endif;?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+
+                                    <!-- 运输方式 -->
+                                    <div class="page-header">
+                                        <h3><?php echo $this->translate('moveMD'); ?></h3>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-2 view-title"><?php echo $this->translate('moveMD'); ?></div>
+                                        <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->dic_Setting['SHIPPING_METHOD'], $this->orders['shippingMethod']); ?></div>
+                                        <?php if ($this->orders['orderType'] != 'DT'): ?>
+                                        <div class="col-xs-2 view-title"><?php echo $this->translate('POCRC'); ?></div>
+                                        <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->dic_Setting['EXPORT_POINTS'], $this->orders['clearancePlace']); ?></div>
+                                        <?php endif; ?>
+                                    </div>
+
+                                    <?php if ($this->orders['shippingMethod'] == 'SEA' || $this->orders['shippingMethod'] == 'AIR'): ?>
+                                        <div class="row">
+                                            <div class="col-xs-2 view-title"><?php echo $this->translate('portSHIP'); ?></div>
+                                            <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->orders['shippingMethod'], $this->orders['loadingPort']); ?></div>
+                                            <div class="col-xs-2 view-title"><?php echo $this->translate('portDSCG'); ?></div>
+                                            <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->orders['shippingMethod'], $this->orders['dischargePort']); ?></div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-xs-2 view-title"><?php echo $this->translate('portDLVY'); ?></div>
+                                            <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->orders['shippingMethod'], $this->orders['deliveryPort']); ?></div>
+                                            <div class="col-xs-2 view-title"><?php echo $this->translate('mabyDATE'); ?></div>
+                                            <div class="col-xs-4"><?php echo date('Y-m-d', strtotime($this->orders['deliveryDate'])); ?></div>
+                                        </div>
+                                    <?php else: ?>
+                                        <div class="row">
+                                            <div class="col-xs-2 view-title"><?php echo $this->translate('citypost1'); ?></div>
+                                            <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->orders['shippingMethod'], $this->orders['loadingCity']); ?></div>
+                                            <div class="col-xs-2 view-title"><?php echo $this->translate('citypost2'); ?></div>
+                                            <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->orders['shippingMethod'], $this->orders['dischargeCity']); ?></div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-xs-2 view-title"><?php echo $this->translate('citypost3'); ?></div>
+                                            <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->orders['shippingMethod'], $this->orders['deliveryCity']); ?></div>
+                                            <div class="col-xs-2 view-title"><?php echo $this->translate('mabyDATE'); ?></div>
+                                            <div class="col-xs-4"><?php echo date('Y-m-d', strtotime($this->orders['deliveryDate'])); ?></div>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <?php if ($this->orders['needShipping'] == true || $this->orders['needTrucking'] == true): ?>
+                                        <div class="row">
+                                            <div class="col-xs-2 view-title"><?php echo $this->translate('isFCL'); ?></div>
+                                            <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->dic_Setting['SHIPPING_SERVICE_TYPE'], $this->orders['shippingServiceType']); ?></div>
+                                        </div>
+
+                                        <?php if ($this->orders['shippingServiceType'] == 'FCL'): ?>
+                                        <div class="row">
+                                            <div class="col-xs-2 view-title"><?php echo $this->translate('infoFCL'); ?></div>
+                                            <div class="col-xs-10">
+                                                <div class="row" style="margin-top: 0 !important;">
+                                                <?php if(!empty($this->orders['sizeQuantityMap']['20GP'])):?>
+                                                    <div class="col-xs-2">
+                                                        20GP*<?php echo $this->orders['sizeQuantityMap']['20GP'];?>
+                                                    </div>
+                                                <?php endif;?>
+
+                                                <?php if(!empty($this->orders['sizeQuantityMap']['40GP'])):?>
+                                                    <div class="col-xs-2">
+                                                        40GP*<?php echo $this->orders['sizeQuantityMap']['40GP'];?>
+                                                    </div>
+                                                <?php endif;?>
+
+                                                <?php if(!empty($this->orders['sizeQuantityMap']['40HP'])):?>
+                                                    <div class="col-xs-2">
+                                                        40HP*<?php echo $this->orders['sizeQuantityMap']['40HP'];?>
+                                                    </div>
+                                                <?php endif;?>
+
+                                                <?php if(!empty($this->orders['sizeQuantityMap']['45HP'])):?>
+                                                    <div class="col-xs-2">
+                                                        45HP*<?php echo $this->orders['sizeQuantityMap']['45HP'];?>
+                                                    </div>
+                                                <?php endif;?>
+
+                                                <?php if(!empty($this->orders['sizeQuantityMap']['20OT'])):?>
+                                                    <div class="col-xs-2">
+                                                        20OT*<?php echo $this->orders['sizeQuantityMap']['20OT'];?>
+                                                    </div>
+                                                <?php endif;?>
+
+                                                <?php if(!empty($this->orders['sizeQuantityMap']['40OT'])):?>
+                                                    <div class="col-xs-2">
+                                                        40OT*<?php echo $this->orders['sizeQuantityMap']['40OT'];?>
+                                                    </div>
+                                                <?php endif;?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php endif;?>
+
+                                        <?php if (($this->orders['needShipping'] == true && $this->accountID = $this->orders['shippingClient']) || ($this->orders['needTrucking'] == true && $this->accountID = $this->orders['truckingClient'])): ?>
+                                            <div class="row">
+                                                <div class="col-xs-2 view-title"><?php echo $this->translate('logisticND'); ?></div>
+                                                <div class="col-xs-4"><?php echo $this->orders['shippingRequest']; ?></div>
+                                            </div>
+                                        <?php endif;?>
+                                    <?php endif;?>
+
+                                    <?php if ($this->orders['orderType'] != 'DT'): ?>
+                                        <?php if ($this->orders['isAssignCustomsAgency'] == true): ?>
+                                            <div class="row">
+                                                <div class="col-xs-2 view-title"><?php echo $this->translate('nameCHB'); ?></div>
+                                                <div class="col-xs-8"><?php echo $this->orders['customsAgencyName'];?></div>
+                                            </div>
+                                        <?php endif;?>
+
+                                        <div class="row">
+                                            <div class="col-xs-2 view-title"><?php echo $this->translate('needCHB'); ?></div>
+                                            <div class="col-xs-8"><?php echo $this->orders['customClearanceRequest']; ?></div>
+                                        </div>
+                                    <?php endif;?>
+
+                                    <?php if ($this->orders['paymentTerm'] != "T/T"): ?>
+                                        <?php if ($this->orders['needFinancing'] == true && $this->accountID == $this->orders['financingClient']): ?>
+                                            <?php if (!empty($this->orders['financingCrnCode']) && !empty($this->orders['financingAmount'])): ?>
+                                            <div class="row">
+                                                <div class="col-xs-2 view-title"><?php echo $this->translate('expectFinancingAmount'); ?></div>
+                                                <div class="col-xs-4"><?php echo $this->orders['financingCrnCode'] . ' ' .$this->orders['financingAmount']; ?></div>
+                                                <div class="col-xs-2 view-title"><?php echo $this->translate('expectFinancingType'); ?></div>
+                                                <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->dic_Setting['FACTORING_MODE'], $this->orders['financingType']); ?></div>
+                                            </div>
+                                            <?php endif;?>
+
+                                            <div class="row">
+                                                <div class="col-xs-2 view-title"><?php echo $this->translate('needOTH'); ?></div>
+                                                <div class="col-xs-8"><?php echo $this->orders['financingRequest']; ?></div>
+                                            </div>
+                                        <?php endif;?>
+                                    <?php endif;?>
+                                </div>
+                            </div>
+
+                            <!-- 报关物流 -->
+                            <div role="tabpanel" class="tab-pane row" id="logistics">
+                                <div class="col-md-12" style="min-height: 250px;">
+                                    <div class="row">
+                                        <div class="col-md-12 margin-bottom-15">
+                                            <p class="span-font-size-18 text-primary margin-top-15"><?php echo $this->translate('customs'); ?></p>
+                                        </div>
+                                    </div>
+
+                                    <?php if (!empty($this->listDeclaration)): ?>
+                                        <?php foreach ($this->listDeclaration as $declaration): ?>
+                                            <div class="alert alert-info alert-dismissible taskDeliveryAlert" role="alert">
+                                                <div class="row">
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('manCHB'); ?></div>
+                                                    <div class="col-xs-4"><?php echo $declaration->clientName; ?></div>
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('companyCHB'); ?></div>
+                                                    <div class="col-xs-4"><?php echo $declaration->operator; ?></div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('registerCHB'); ?></div>
+                                                    <div class="col-xs-4"><?php echo $declaration->declarer; ?></div>
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('adressCHB'); ?></div>
+                                                    <div class="col-xs-4">
+                                                        <?php echo $this->ShowDictionaryTo('EXPORT_POINTS', $this->userLangCode, $this->dic_Setting['EXPORT_POINTS'], $declaration->declarationLocation); ?>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('cityCHB'); ?></div>
+                                                    <div class="col-xs-4">
+                                                        <?php echo $this->ShowDictionaryTo('SEA_PORT', $this->userLangCode, $this->dic_Setting['EXPORT_POINTS'], $declaration->destinationPort); ?>
+                                                        <?php echo $this->ShowDictionaryTo('CITY_ISO_CODE', $this->userLangCode, $this->dic_Setting['EXPORT_POINTS'], $declaration->destinationCity); ?>
+                                                    </div>
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('state'); ?></div>
+                                                    <div class="col-xs-4 text-warning"><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['EXPORT_DECLARATION_STATUS'], $declaration->declarationStatus); ?></div>
+                                                </div>
+
+                                                <!-- 报关相关附件 -->
+                                                <?php if (!empty($declaration->attachmentList)): ?>
+                                                    <?php foreach ($declaration->attachmentList as $k => $attach): ?>
+                                                        <div class="row">
+                                                            <div class="col-xs-6">
+                                                                <em class="new_upicon" style="background:url('/ky/ico/<?php echo strtolower($attach->ext); ?>.png') no-repeat;background-size: 20px;"></em>
+                                                                <a class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'] . '/doc/download.action?sid=' . session_id() . '&nid=' . $attach->attachID . '&vid=' . $attach->verifyID; ?>" download>
+                                                                    <p class="new_uptitle"><?php echo $attach->name; ?></p>
+                                                                </a>
+                                                            </div>
+                                                            <div class="col-xs-2 text-muted"><?php echo $this->translate('creatdate'); ?></div>
+                                                            <div class="col-xs-4">
+                                                                <?php echo date('Y-m-d H:i:s', strtotime($attach->createTime)); ?>
+                                                            </div>
+                                                        </div>
+                                                    <?php endforeach; ?>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endforeach;?>
+                                    <?php else:?>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <?php echo $this->translate('noData'); ?>
+                                            </div>
+                                        </div>
+                                    <?php endif;?>
+
+
+                                    <div class="row">
+                                        <div class="col-md-12 margin-bottom-15">
+                                            <p class="span-font-size-18 text-primary margin-top-15"><?php echo $this->translate('shipping'); ?></p>
+                                        </div>
+                                    </div>
+
+                                    <?php if (!empty($this->listShippingOrder)): ?>
+                                        <?php foreach ($this->listShippingOrder as $key=>$shippingOrder): ?>
+                                            <div class="alert alert-info alert-dismissible taskDeliveryAlert" role="alert">
+                                                <div class="row">
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('shippingOrderNo'); ?></div>
+                                                    <div class="col-xs-4"><?php echo $shippingOrder->shippingOrderNo; ?></div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('companySPP'); ?></div>
+                                                    <div class="col-xs-4"><?php echo $shippingOrder->carrierName; ?></div>
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('poxySPP'); ?></div>
+                                                    <div class="col-xs-4"><?php echo $shippingOrder->forwarderName; ?></div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('moveMD'); ?></div>
+                                                    <div class="col-xs-4"><?php echo $this->ShowDictionaryTo(null, $this->userLangCode, $this->dic_Setting['SHIPPING_METHOD'], $shippingOrder->shippingMethod); ?></div>
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('saveSPP'); ?></div>
+                                                    <div class="col-xs-4">
+                                                        <?php echo $shippingOrder->releaseWay; ?>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('shippingNo'); ?></div>
+                                                    <div class="col-xs-10">
+                                                        <?php
+                                                            $containerStr = array();
+                                                            foreach ($shippingOrder->containerList as $container) {
+                                                                if (array_key_exists($container->containerSize, $containerStr)) {
+                                                                    $containerStr[$container->containerSize] = $containerStr[$container->containerSize] + 1;
+                                                                } else {
+                                                                    $containerStr[$container->containerSize] = 1;
+                                                                }
+                                                            }
+
+                                                            foreach ($containerStr as $containerSize=>$containerCount) {
+                                                                echo $containerSize . ' * ' . $containerCount . "  ";
+                                                            }
+                                                        ?>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('isbatchSPP'); ?></div>
+                                                    <div class="col-xs-4">
+                                                        <?php $canPartialShipment = 'false'; if ($shippingOrder->$canPartialShipment) $canPartialShipment = 'true'; ?>
+                                                        <?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['TRUE_OR_FALSE'], $canPartialShipment); ?>
+                                                    </div>
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('state'); ?></div>
+                                                    <div class="col-xs-4 text-warning"><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['SHIPPING_ORDER_STATUS'], $shippingOrder->orderStatus); ?></div>
+                                                </div>
+
+                                                <!-- 订舱单相关附件 -->
+                                                <?php if (!empty($shippingOrder->attachmentList)): ?>
+                                                    <div class="row"><div class="col-xs-12">&nbsp;</div></div>
+                                                    <?php foreach ($shippingOrder->attachmentList as $k => $attach): ?>
+                                                        <div class="row">
+                                                            <div class="col-xs-6">
+                                                                <em class="new_upicon" style="background:url('/ky/ico/<?php echo strtolower($attach->ext); ?>.png') no-repeat;background-size: 20px;"></em>
+                                                                <a class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'] . '/doc/download.action?sid=' . session_id() . '&nid=' . $attach->attachID . '&vid=' . $attach->verifyID; ?>" download>
+                                                                    <p class="new_uptitle"><?php echo $attach->name; ?></p>
+                                                                </a>
+                                                            </div>
+                                                            <div class="col-xs-2 text-muted"><?php echo $this->translate('creatdate'); ?></div>
+                                                            <div class="col-xs-4">
+                                                                <?php echo date('Y-m-d H:i:s', strtotime($attach->createTime)); ?>
+                                                            </div>
+                                                        </div>
+                                                    <?php endforeach; ?>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endforeach;?>
+                                    <?php else:?>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <?php echo $this->translate('noData'); ?>
+                                            </div>
+                                        </div>
+                                    <?php endif;?>
+
+                                    <div class="row">
+                                        <div class="col-md-12 margin-bottom-15">
+                                            <p class="span-font-size-18 text-primary margin-top-15"><?php echo $this->translate('carsbook'); ?></p>
+                                        </div>
+                                    </div>
+
+                                    <?php if (!empty($this->listTruckingOrder)): ?>
+                                        <?php foreach ($this->listTruckingOrder as $truckingOrder): ?>
+                                            <div class="alert alert-info alert-dismissible taskDeliveryAlert" role="alert">
+                                                <div class="row">
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('truckingOrderNo'); ?></div>
+                                                    <div class="col-xs-4"><?php echo $truckingOrder->truckingOrderNo; ?></div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('carsCOM'); ?></div>
+                                                    <div class="col-xs-4"><?php echo $truckingOrder->truckerName; ?></div>
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('carsNo'); ?></div>
+                                                    <div class="col-xs-4"><?php echo $truckingOrder->plateNo; ?></div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('shippingNo'); ?></div>
+                                                    <div class="col-xs-10"><?php //echo $truckingOrder->declarer; ?></div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('carsPrice'); ?></div>
+                                                    <div class="col-xs-4">
+                                                        <?php echo $this->orders['buyerCrnCode']?> <?php echo number_format($truckingOrder->totalPrice, 2); ?>
+                                                        <?php //echo $this->ShowDictionaryTo('SEA_PORT', $this->userLangCode, $this->dic_Setting['EXPORT_POINTS'], $ShippingOrder->destinationPort); ?>
+                                                        <?php //echo $this->ShowDictionaryTo('CITY_ISO_CODE', $this->userLangCode, $this->dic_Setting['EXPORT_POINTS'], $ShippingOrder->destinationCity); ?>
+                                                    </div>
+                                                    <div class="col-xs-2 text-muted"><?php echo $this->translate('state'); ?></div>
+                                                    <div class="col-xs-4 text-warning"><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['TRUCKING_ORDER_STATUS'], $truckingOrder->orderStatus); ?></div>
+                                                </div>
+
+                                                <!-- 订舱单相关附件 -->
+                                                <?php if (!empty($truckingOrder->attachmentList)): ?>
+                                                    <?php foreach ($truckingOrder->attachmentList as $k => $attach): ?>
+                                                        <div class="row">
+                                                            <div class="col-xs-6">
+                                                                <em class="new_upicon" style="background:url('/ky/ico/<?php echo strtolower($attach->ext); ?>.png') no-repeat;background-size: 20px;"></em>
+                                                                <a class="new_uptitle" href="<?php echo $this->seed_Setting['KyUrlex'] . '/doc/download.action?sid=' . session_id() . '&nid=' . $attach->attachID . '&vid=' . $attach->verifyID; ?>" download>
+                                                                    <p class="new_uptitle"><?php echo $attach->name; ?></p>
+                                                                </a>
+                                                            </div>
+                                                            <div class="col-xs-2 text-muted"><?php echo $this->translate('creatdate'); ?></div>
+                                                            <div class="col-xs-4">
+                                                                <?php echo date('Y-m-d H:i:s', strtotime($attach->createTime)); ?>
+                                                            </div>
+                                                        </div>
+                                                    <?php endforeach; ?>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endforeach;?>
+                                    <?php else:?>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <?php echo $this->translate('noData'); ?>
+                                            </div>
+                                        </div>
+                                    <?php endif;?>
+                                </div>
+                            </div>
+
+                            <!-- 跟踪日志 -->
+                            <div role="tabpanel" class="tab-pane row" id="log">
+                                <div class="col-md-12">
+                                    <form class="form-horizontal" action="javascript:void(0)" onsubmit="trackSearch('<?php echo $this->orders['orderID'] ?>')" id="partner_search_form">
+                                        <div class="col-md-3">
+                                            <button type="button" class="btn btn-warning btn-sm trackTimeBtn" data-order-id="<?php echo $this->orders['orderID'] ?>" data-view="date"><?php echo $this->translate('timeCLASS'); ?></button>
+
+                                            <button type="button" class="btn btn-sm trackEventBtn" data-order-id="<?php echo $this->orders['orderID'] ?>" data-view="event"><?php echo $this->translate('eventCLASS'); ?></button>
+                                        </div>
+
+                                        <div class="col-md-8">
+                                            <div class="form-group" style="margin-bottom: 0 !important;">
+                                                <label for="keyword" class="sr-only">keyword</label>
+                                                <div class="col-sm-6 col-xs-7">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="fas fa-search"></i></span>
+                                                        <input type="text" class="form-control input-sm" id="logKeyword" placeholder="<?php echo $this->translate('orderLogKeyword');?>">
+                                                        <input type="hidden" id="logViewType" value="date" >
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-1 col-xs-2">
+                                                    <button type="submit" class="btn btn-primary btn-sm">  Go  </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-1">
+                                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#logEventRiverModal"><i class="fas fa-chart-area"></i></button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div class="col-md-12" style="min-height: 250px;">
+                                    <ul class="layui-timeline trackTimeLine"></ul>
+                                </div>
+                            </div>
+
+                            <!-- 文档 -->
+                            <div role="tabpanel" class="tab-pane row" id="profile">
+                                <div class="col-md-12" style="min-height: 250px;">
+                                    <?php echo $this->ShowWebuploader($this->orders['attachmentList'], $this->biz_Setting['ORDER'], 'ODOD', "1", $this->orders['orderID']); ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+
+<!--PDF预览-->
+<div id="signViewDiv" style="display: none; background-color: #F6F6F6;">
+    <div class="sign-button">企业签署</div>
+    <div class="person-sign-button">个人签署</div>
+    <div class="download-button"><?php echo $this->translate('download'); ?></div>
+    <div class="pdfDoc" style="padding-left:50px;">
+        <div id="pdfPageBox">
+        </div>
+    </div>
+</div>
+
+<!--非网签-->
+<div id="signViewNoEContractDiv" style="display: none;">
+    <div class="container" style="width: 100%;">
+        <div class="alert alert-danger alert-dismissible fade in hidden signViewNoEContractAlert" role="alert">
+            <p></p>!
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12" style="margin-top: 15px;">
+                <h4><?php echo $this->translate('contractUPInfo'); ?></h4>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="layui-table" lay-skin="line">
+                    <colgroup>
+                        <col width="470">
+                        <col width="150">
+                        <col>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th><?php echo $this->translate('contractList'); ?></th>
+                        <th><?php echo $this->translate('ext'); ?></th>
+                        <th style="text-align:center"><?php echo $this->translate('operation'); ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <h4 style="color: #56859D; font-weight: bold;"><?php echo $this->translate('contractUP');?></h4>
+                <?php echo $this->ShowWebuploader($this->notEContractAttachmentList, $this->biz_Setting['ORDER'], 'CRIM', '1', $this->notEContractBizID); ?>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12" style="margin-top: 15px;">
+                <button class="order_contract_sign fr" id="signNoEContractConfirmBtn"><?php echo $this->translate('signing'); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--签署-->
+<div id="doSignPDFLayDiv" class="layui-form" style="display: none;">
+    <div class="et-auth-error" style="display: none;"></div>
+    <div class="et-auth-content">
+        <div style="margin-top: 20px;"></div>
+
+        <div class="signContent">
+            <div class="layui-form-item" style="margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label" style="width: 180px;text-align: left;"><?php echo $this->translate('signInfo'); ?></label>
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label" style="width: 180px;text-align: left;"><b><?php echo $this->translate('signAuthType'); ?></b></label>
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="margin-left: 28px;">
+                <div class="layui-form-label" style="width: 420px;">
+                    <input type="text" id="signMobileInput" name="signMobileInput" lay-verify="signMobileInput" autocomplete="off" class="layui-input" readonly="readonly">
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="margin-left: 28px;">
+                <div class="layui-form-label" style="width: 250px;">
+                    <input type="text" id="signAuthCode" name="signAuthCode" lay-verify="signAuthCode" autocomplete="off" placeholder="<?php echo $this->translate('signInputAuthCode'); ?>" class="layui-input">
+                </div>
+
+                <div class="layui-form-label" style="width: 140px;">
+                    <button class="layui-btn layui-btn-fluid" id="signSendAuthCodeBtn"><?php echo $this->translate('signSendAuthCode'); ?></button>
+                </div>
+            </div>
+
+            <div style="height: 12px"></div>
+            <div class="et-auth-row">
+                <button class="layui-btn layui-btn-fluid" id="singConfirmBtn" style="width: 85%;"><?php echo $this->translate('confirmed'); ?></button>
+            </div>
+        </div>
+
+        <div class="jumpInfoContent hidden">
+            <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label text-danger" style="width: 450px;text-align: left;"><i class="fas fa-exclamation-triangle"></i> <?php echo $this->translate('未生成有效的企业签署证书，请先完成企业及管理员实名认证。'); ?></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="jumpPersonInfoContent hidden">
+            <div class="layui-form-item" style="margin-bottom: -5px;margin-top: 25px;margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label text-danger" style="width: 320px;text-align: left;"><i class="fas fa-exclamation-triangle"></i> <?php echo $this->translate('个人实名认证未完成前不可签署合同。'); ?></label>
+                </div>
+            </div>
+            <div class="layui-form-item" style="margin-bottom: -5px; margin-left: 28px;">
+                <div style="text-align: left;">
+                    <label class="layui-form-label" style="width: 280px;text-align: left;">
+                        <a href="/user/index/profile"><u><strong><?php echo $this->translate('点击此处'); ?></strong></u></a> <?php echo $this->translate('完成个人实名认证。'); ?>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 查看发货记录 -->
+<div class="modal fade" id="viewDelivery" tabindex="-1" role="dialog" aria-labelledby="viewDeliveryLabel">
+    <div class="modal-dialog modal-lg" role="document" style="width: 1080px !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><?php echo $this->translate('deliveryView'); ?> <span class="deliveryNo"></span></h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="row viewDeliveryTable"></div>
+
+                <div class="row">
+                    <div class="col-sm-12 deliveryItemAttachment"></div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="deliveryEditBtn"><?php echo $this->translate('edit'); ?></button>
+                <a id="deliveryDelBtn" style="color: #c2c2c2; cursor: pointer;"><?php echo $this->translate('deliveryDel'); ?></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 添加发货记录 -->
+<div class="modal fade" id="addDelivery" tabindex="-1" role="dialog" aria-labelledby="addDeliveryLabel">
+    <div class="modal-dialog modal-lg" role="document" style="width: 1080px !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><?php echo $this->translate('deliveryAdd'); ?></h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="layui-form-item table-responsive">
+                    <table class="table layui-table" lay-skin="line">
+                        <colgroup>
+                            <col width="140">
+                            <col width="140">
+                            <col width="60">
+                            <col width="100">
+                            <col width="100">
+                            <col width="100">
+                            <col width="100">
+                            <col width="100">
+                            <col width="160">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th><?php echo $this->translate('productNAME'); ?></th>
+                            <th><?php echo $this->translate('model'); ?></th>
+                            <th><?php echo $this->translate('uprice'); ?></th>
+                            <th><?php echo $this->translate('number'); ?></th>
+                            <th><?php echo $this->translate('quantity'); ?></th>
+                            <th><?php echo $this->translate('totalNetWeight'); ?>(KGS)</th>
+                            <th><?php echo $this->translate('totalGrossWeight'); ?>(KGS)</th>
+                            <th><?php echo $this->translate('totalVolume'); ?>(CBM)</th>
+                            <th><?php echo $this->translate('ordertotal'); ?></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($this->orderItemList as $index => $value):?>
+                            <tr>
+                                <td style="text-align: left; vertical-align: middle;"><?php echo $value->productName;?></td>
+                                <td style="text-align: left; vertical-align: middle;"><?php echo $value->productModel;?></td>
+                                <td style="text-align: left; vertical-align: middle;">
+                                    <?php echo $this->deliveryCrnCode;?> <?php echo $value->contractUnitPrice;?>
+                                    <input type="hidden" id="unitPrice_<?php echo $value->itemID;?>" value="<?php echo $value->contractUnitPrice;?>">
+                                </td>
+                                <td style="text-align: left; vertical-align: middle;">
+                                    <?php
+                                    $quantity = $value->quantity - $value->deliveryQuantity <= 0  ? 0 : $value->quantity - $value->deliveryQuantity;
+                                    ?>
+                                    <input name="deliveryQuantity_add" data-item-id="<?php echo $value->itemID;?>" class="layui-input" value="<?php echo $quantity;?>" />
+                                    <input type="hidden" name="orderItemID_add" value="<?php echo $value->itemID;?>" />
+                                </td>
+                                <td>
+                                    <?php
+                                    $packingQuantity = $value->packingQuantity <= 0  ? 1 : $value->packingQuantity;
+                                    $totalPackage = ceil($quantity / $packingQuantity);
+                                    ?>
+                                    <input name="deliveryTotalPackage_add" id="deliveryTotalPackage_<?php echo $value->itemID;?>" data-item-id="<?php echo $value->itemID;?>" class="layui-input" value="<?php echo $totalPackage;?>" />
+                                    <input type="hidden" id="packingQuantity_<?php echo $value->itemID;?>" value="<?php echo $packingQuantity;?>">
+                                </td>
+                                <td>
+                                    <?php
+                                    $packingNetWeight = $value->packingNetWeight <= 0  ? 0 : $value->packingNetWeight;
+                                    $totalNetWeight = $totalPackage * $packingNetWeight;
+                                    ?>
+                                    <input name="deliveryTotalNetWeight_add" id="deliveryTotalNetWeight_<?php echo $value->itemID;?>" data-item-id="<?php echo $value->itemID;?>" class="layui-input" value="<?php echo $totalNetWeight;?>" />
+                                    <input type="hidden" id="packingNetWeight_<?php echo $value->itemID;?>" value="<?php echo $packingNetWeight;?>">
+                                </td>
+                                <td>
+                                    <?php
+                                    $packingGrossWeight = $value->packingGrossWeight <= 0  ? 0 : $value->packingGrossWeight;
+                                    $totalGrossWeight = $totalPackage * $packingGrossWeight;
+                                    ?>
+                                    <input name="deliveryTotalGrossWeight_add" id="deliveryTotalGrossWeight_<?php echo $value->itemID;?>" data-item-id="<?php echo $value->itemID;?>" class="layui-input" value="<?php echo $totalGrossWeight;?>" />
+                                    <input type="hidden" id="packingGrossWeight_<?php echo $value->itemID;?>" value="<?php echo $packingGrossWeight;?>">
+                                </td>
+                                <td>
+                                    <?php
+                                    $packingVolume = $value->packingVolume <= 0  ? 0 : $value->packingVolume;
+                                    $totalVolume = $totalPackage * $packingNetWeight;
+                                    ?>
+                                    <input name="deliveryTotalVolume_add" id="deliveryTotalVolume_<?php echo $value->itemID;?>" data-item-id="<?php echo $value->itemID;?>" class="layui-input" value="<?php echo $totalVolume;?>" />
+                                    <input type="hidden" id="packingVolume_<?php echo $value->itemID;?>" value="<?php echo $packingVolume;?>">
+                                </td>
+                                <td style="text-align: left; vertical-align: middle;">
+                                    <?php
+                                    $totalAmount = $value->unitPrice * $quantity;
+                                    ?>
+                                    <?php echo $this->orders['buyerCrnCode']?>&nbsp;<label id="itemID_<?php echo $value->itemID;?>"><?php echo number_format($totalAmount, 2); ?></label>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <?php echo $this->ShowWebuploader($this->attachmentList, $this->biz_Setting['ORDER'], 'DLPG', null); ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="deliveryAddConfirmBtn"><?php echo $this->translate('submit'); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 编辑发货记录 -->
+<div class="modal fade" id="editDelivery" tabindex="-1" role="dialog" aria-labelledby="editDeliveryLabel">
+    <div class="modal-dialog modal-lg" role="document" style="width: 1080px !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><?php echo $this->translate('edit'); ?> <span class="editDeliveryNo"></span> <?php echo $this->translate('deliveryItemQuantity'); ?></h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="layui-form-item table-responsive editDeliveryTable">
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 editDeliveryItemAttachment">
+                        <?php echo $this->ShowWebuploader($this->attachmentList, $this->biz_Setting['ORDER'], $this->attach_Setting['DLPG'], '1', null); ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="deliveryEditConfirmBtn"><?php echo $this->translate('confirmed'); ?></button>
+                <a id="editDeliveryDelBtn" style="color: #c2c2c2; cursor: pointer;"><?php echo $this->translate('deliveryDel'); ?></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 开票资料 -->
+<div class="modal fade" id="billingInfo" tabindex="-1" role="dialog" aria-labelledby="billingInfoLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="layui-form-item table-responsive billingInfoContent">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 发货 -->
+<div class="modal fade" id="deliveryDeliver" tabindex="-1" role="dialog" aria-labelledby="deliveryDeliverLabel">
+    <div class="modal-dialog modal-lg" role="document" style="width: 1080px !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><?php echo $this->translate('deGOODS'); ?> <span class="deliverDeliveryNo"></span></h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="row deliveryDeliverContent">
+                </div>
+
+                <div class="row" style="margin-top: 15px;">
+                    <div class="col-sm-12">
+                        <h4 style="color: #56859D; font-weight: bold;"><?php echo $this->translate('DELIVER_GOODS').$this->translate('upload'); ?></h4>
+                        <?php
+                        echo $this->ShowWebuploader(null, $this->biz_Setting['ORDER'], $this->attach_Setting['DLDG'], "0", null);
+                        ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="deliveryDeliverGoodsBtn"><?php echo $this->translate('deGOODS'); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal QC明细 -->
+<div class="modal fade" id="qcDetailModal" tabindex="-1" role="dialog" aria-labelledby="qcDetailLabel">
+    <div class="modal-dialog modal-lg" role="document" style="width: 1080px !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title qcSummary"></h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="qcContent">
+                    info Content
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 日志-事件河流图 -->
+<div class="modal fade" id="logEventRiverModal" tabindex="-1" role="dialog" aria-labelledby="logEventRiverLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><?php echo $this->translate('DERIL_log'); ?></h4>
+            </div>
+
+            <div class="modal-body">
+                <div id="eventRiverContent" style="height: 400px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 物流编辑 -->
+<div id="deliveryViewDiv" style="display: none;"></div>
+
+<div id="deliveryEditViewDiv" style="display: none;"></div>
+
+<div id="billingInfoDiv" style="display: none;"></div>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+
+<script type="text/javascript" src="/ky/upload/img.js"></script>
+<script type="text/javascript" src="/ky/js/layerMsg.js"></script>
+<!-- pdf -->
+<script type="text/javascript" src="/ky/pdf/pdf.js"></script>
+<script type="text/javascript" src="/ky/pdf/pdf.worker.js"></script>
+<!-- fancybox -->
+<script type="text/javascript" src="/ky/fancybox-3.5.6-dist/jquery.fancybox.min.js"></script>
+<script type="text/javascript" src="/ky/fancybox-3.5.6-dist/fancyboxInit.js"></script>
+<!-- echarts-4.2.0 -->
+<script type="text/javascript" src="/ky/echarts-4.2.0/echarts.min.js"></script>
+
+<script type="text/javascript">
+    let dataDict = {},
+        trackData = {}; // 日志
+
+	$().ready(function() {
+
+	});
+
+	$(function () {
+        $('.company-navigation').find('a').each(function () {
+            if (this.href === document.location.href || document.location.href.search(this.href) >= 0) {
+                $(this).addClass('nav-selected');
+            } else {
+                $(this).removeClass('nav-selected');
+            }
+        });
+
+        let $trackTimeBtn = $(".trackTimeBtn"),
+            $trackEventBtn = $(".trackEventBtn"),
+            $calculateContent = $(".calculateContent"),
+            $logViewType = $("#logViewType"),
+            $logKeyword = $("#logKeyword");
+
+        let dataDictQuery = '/user/common/dict-ajax';
+        let dictCode = ["BIZ_TYPE", "ACTION_LOG_EVENT_TYPE", "TASK_STATUS"];
+        $.ajax({
+            type: "POST",
+            url: dataDictQuery,
+            data: {
+                dictCode: dictCode,
+                langCode: '<?php echo $this->userLangCode; ?>'
+            },
+            dataType: "json",
+            success: function (data) {
+                $.data(dataDict, 'dataDict', data);
+
+                $trackTimeBtn.trigger('click');
+            }
+        });
+
+        $trackTimeBtn.click(function () {
+            let orderID = $(this).attr("data-order-ID"),
+                view = $(this).attr("data-view");
+            genTrack(orderID, view, $logKeyword.val());
+
+            $logViewType.val(view);
+            $(this).addClass("btn-warning");
+            $trackEventBtn.removeClass("btn-warning")
+        });
+
+        $trackEventBtn.click(function () {
+            let orderID = $(this).attr("data-order-ID"),
+                view = $(this).attr("data-view");
+            genTrack(orderID, view, $logKeyword.val());
+
+            $logViewType.val(view);
+            $(this).addClass("btn-warning");
+            $trackTimeBtn.removeClass("btn-warning")
+        });
+
+        $calculateContent.load('/user/sale/trading', {'orderID': '<?php echo $this->orders['orderID'] ?>'});
+
+        /* 确认订单 */
+        $("#vendorConfirmBtn").click(function () {
+            let track = '/user/sale/confirm';
+            let orderID = $(this).attr("data-order-id");
+            $.ajax({
+                type: "POST",
+                url: track,
+                data: {
+                    orderID: orderID
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data === 1) {
+                        document.location.reload();
+                    } else {
+                        alert(data + 'failed, please try again!');
+                    }
+                }
+            });
+        });
+
+        // 展开/收起按钮
+        $(".showAll").click(function () {
+            let dataType = $(this).attr("data-type");
+            if (dataType === 'down') {
+                $(".orderItemAlert").removeClass("hidden");
+                $(this).html('收起 <i class="fas fa-chevron-up"></i>');
+                $(this).attr("data-type", "up");
+                let target_top = $("#orderItemTop").offset().top;
+                $("html,body").animate({scrollTop: target_top}, 1000);
+            } else {
+                $.each($(".orderItemAlert"), function (i, val) {
+                    if (i > 0) {
+                        $(val).addClass("hidden");
+                    }
+                });
+                $(this).html('展开全部 <i class="fas fa-chevron-down"></i>');
+                $(this).attr("data-type", "down");
+            }
+        });
+	});
+
+	function trackSearch(orderID) {
+	    let view = $("#logViewType").val(),
+            logKeyword = $("#logKeyword").val();
+
+        genTrack(orderID, view, logKeyword);
+    }
+
+    function genTrack(orderID, view, keyword) {
+        // 日志
+        let track = '/user/pur/track-ajax';
+        $.ajax({
+            type: "POST",
+            url: track,
+            data: {
+                orderID: orderID,
+                viewType: view,
+                keyword: keyword
+            },
+            dataType: "json",
+            success: function (data) {
+                trackData = data;
+                let $trackTimeLine = $(".trackTimeLine"),
+                    trackContent = '';
+
+                $.each(data, function (index, trackList) {
+                    if (view === 'event') {
+                        let data = $.data(dataDict, 'dataDict'),
+                            result = '';
+                        $.each(data, function (key, item) {
+                            if (key === 'ACTION_LOG_EVENT_TYPE') {
+                                $.each(item, function (i, dict) {
+                                    if (dict.code === index) {
+                                        result = dict.name;
+                                    }
+                                });
+                            }
+                        });
+
+                        index = result;
+                    }
+                    trackContent += '<li class="layui-timeline-item">'
+                        + '<i class="layui-icon layui-timeline-axis"></i>'
+                        + '<div class="layui-timeline-content layui-text">'
+                        + '<h3 class="layui-timeline-title">' + index + '</h3>';
+
+                    $.each(trackList, function (tackIndex, track) {
+                        let data = $.data(dataDict, 'dataDict'),
+                            result = '';
+                        $.each(data, function (key, item) {
+                            if (key === 'ACTION_LOG_EVENT_TYPE') {
+                                $.each(item, function (i, dict) {
+                                    if (dict.code === track.eventType) {
+                                        result = dict.name;
+                                    }
+                                });
+                            }
+                        });
+
+                        if (track.eventType === 'QC') {
+                            let taskStatusResult = '';
+                            $.each(data, function (key, item) {
+                                if (key === 'TASK_STATUS') {
+                                    $.each(item, function (i, dict) {
+                                        if (dict.code === track.bizObj.taskStatus) {
+                                            taskStatusResult = dict.name;
+                                        }
+                                    });
+                                }
+                            });
+
+                            trackContent += '<div class="row" data-toggle="modal" data-target="#qcDetailModal" data-order-id="' + track.projectID + '" data-task-id="' + track.bizObj.taskID + '" data-summary="' + track.summary + '" style="cursor: pointer;">';
+                            trackContent += '<div class="col-sm-2"><b>' + result + '</b></div>'
+                                + '<div class="col-sm-7">'
+                                + track.summary
+                                + ' <i class="layui-icon layui-icon-about text-primary"></i>'
+                                + '<br>'
+                                + '<span style="color: #ccc;">'
+                                + '责任人：' + track.operator + '&nbsp;&nbsp;&nbsp;&nbsp;状态：' + taskStatusResult + '&nbsp;&nbsp;&nbsp;&nbsp;' + track.bizObj.progress + '%'
+                                + '</span>'
+                                + '</div>'
+                                + '<div class="col-sm-3">' + new Date(track.operateTime).format("yyyy-MM-dd hh:mm:ss") + '</div>';
+
+                            trackContent += '</div>';
+                        } else {
+                            trackContent += '<div class="row">';
+                            trackContent += '<div class="col-sm-2"><b>' + result + '</b></div>'
+                                + '<div class="col-sm-7">'
+                                + track.summary
+                                + '<br>'
+                                + '<span style="color: #ccc;">'
+                                + '责任人：' + track.operator
+                                + '</span>'
+                                + '</div>'
+                                + '<div class="col-sm-3">' + new Date(track.operateTime).format("yyyy-MM-dd hh:mm:ss") + '</div>';
+                            trackContent += '</div>';
+                        }
+                    });
+                    trackContent += '</div>'
+                        + '</li>';
+                });
+
+                $trackTimeLine.html(trackContent);
+
+                // 初始化layui进度条
+                layui.use('element', function(){
+                    let element = layui.element;
+                    element.render();
+                });
+            }
+        });
+    }
+
+    $("#qcDetailModal").on('show.bs.modal', function (e) {
+        let triggered = $(e.relatedTarget),
+            taskID = triggered.data("task-id"),
+            orderID = triggered.data("order-id"),
+            summary = triggered.data("summary");
+
+        let getOrderTask = '/user/sale/get-order-task-view-ajax';
+        $(".qcContent").html("").load(getOrderTask, {
+            orderID: orderID,
+            taskID: taskID
+        }, function (data) {
+            $(".qcSummary").html(summary);
+
+            // 展开/收起按钮
+            $(".showImgAll").unbind('click').click(function () {
+                let dataType = $(this).attr("data-type");
+                if (dataType === 'down') {
+                    $(".imgLi").removeClass("hidden");
+                    $(this).html('收起 <i class="fas fa-chevron-up"></i>');
+                    $(this).attr("data-type", "up");
+                } else {
+                    $.each($(".imgLi"), function (i, val) {
+                            $(val).addClass("hidden");
+                    });
+                    $(this).html('展开全部 <i class="fas fa-chevron-down"></i>');
+                    $(this).attr("data-type", "down");
+                }
+            });
+        });
+    });
+
+
+
+    // *************************** PDF Sign View ********************************
+    PDFJS.workerSrc = '/ky/pdf/pdf.worker.js';
+
+    let pdfDoc = null;
+    let pageNum = 1;
+    let pageRendering = false;
+    let pageNumPending = null;
+    let scale = 1.5;
+
+    function renderPage(num, id) {
+        let canvas = document.getElementById(id);
+        let ctx = canvas.getContext('2d');
+        pageRendering = true;
+        pdfDoc.getPage(num).then(function(page) {
+            let viewport = page.getViewport(scale);
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            let renderContext = {
+                canvasContext: ctx,
+                viewport: viewport
+            };
+            let renderTask = page.render(renderContext);
+
+            renderTask.promise.then(function() {
+                pageRendering = false;
+                if (pageNumPending !== null) {
+                    // New page rendering is pending
+                    renderPage(pageNumPending);
+                    pageNumPending = null;
+                }
+            });
+        });
+
+        //document.getElementById('page_num').textContent = pageNum;
+    }
+
+    function queueRenderPage(num) {
+        if (pageRendering) {
+            pageNumPending = num;
+        } else {
+            renderPage(num);
+        }
+    }
+
+    function onPrevPage() {
+        if (pageNum <= 1) {
+            return;
+        }
+        pageNum--;
+        queueRenderPage(pageNum);
+    }
+    //document.getElementById('prev').addEventListener('click', onPrevPage);
+
+    function onNextPage() {
+        if (pageNum >= pdfDoc.numPages) {
+            return;
+        }
+        pageNum++;
+        queueRenderPage(pageNum);
+    }
+    //document.getElementById('next').addEventListener('click', onNextPage);
+
+    function initPdfView(pdfUrl, obj, viewType) {
+        $("#pdfPageBox").html("");
+        PDFJS.getDocument(pdfUrl).then(function(pdfDoc_) {
+            pdfDoc = pdfDoc_;
+            //document.getElementById('page_count').textContent = pdfDoc.numPages;
+            for (let i=1;i<=pdfDoc.numPages;i++){
+                let canvasDiv = $("<div style=\"padding-top:10px;padding-bottom:10px;\"></div>");
+                let pageNum = $("<div style=\"background-color: #999999;position:absolute;float: left;height:30px;width:60px;text-align: center;line-height: 30px;color:#ffffff;opacity: 0.6;\">"+i+"/"+pdfDoc.numPages+"</div>");
+                let canvas = $("<canvas></canvas>").attr("id", "the-canvas_"+i);
+                canvasDiv.append(pageNum);
+                canvasDiv.append(canvas);
+                $("#pdfPageBox").append(canvasDiv);
+                renderPage(i, "the-canvas_"+i);
+            }
+        });
+
+        let signTitle = "<?php echo $this->translate('signTitle');?>";
+        if (viewType !== undefined && viewType !== '') {
+            if (viewType === 'pdf_view') {
+                signTitle = "<?php echo $this->translate('document');?>";
+            }
+        }
+        layer.open({
+            type: 1,	//Page层类型
+            area: ['1150px', '100%'],
+            title: signTitle,
+            shadeClose: true,
+            shade: 0.6,	//遮罩透明度
+            // anim: 1,	//0-6的动画形式，-1不开启
+            scrollbar: false,
+            content: $("#signViewDiv")
+        });
+
+        $(".download-button").attr("contractID_", obj.id);
+
+        if ($("#isESigned_" + obj.id).val() === '1') {
+            $(".sign-button").hide();
+        } else {
+            $(".sign-button").show().attr("contractID_", obj.id);
+        }
+
+        if ($("#isPSigned_" + obj.id).val() === '1') {
+            $(".person-sign-button").hide();
+        } else {
+            $(".person-sign-button").show().attr("contractID_", obj.id);
+        }
+
+        // 在物流详情页签署的时候, 如果有弹出层, 会影响到input框无法输入
+        $("#viewDelivery").modal('hide');
+
+        if (viewType !== undefined && viewType !== '') {
+            if (viewType === 'pdf_view') {
+                let $signViewDiv = $("#signViewDiv");
+                $signViewDiv.find(".sign-button").hide();
+                $signViewDiv.find(".person-sign-button").hide();
+                $signViewDiv.find(".download-button").hide();
+            }
+        }
+    }
+
+    //document.getElementById('prev').addEventListener('click', onPrevPage);
+
+    $(".download-button").bind("click",function(){
+        let contractID_ = $(this).attr("contractID_");
+        window.location.href = $("#contractAttachUrl_" + contractID_).val();
+    });
+
+    // ********************   获取验证手机号码 Start  *************************************
+    $(".sign-button").bind("click",function(){
+        let getSignMobile = '/user/pur/getsignmobile';
+        $.ajax({
+            type: "POST",
+            url: getSignMobile,
+            data: {
+
+            },
+            dataType: "json",
+            success: function (data) {
+                let mobileStr = "<?php echo $this->translate('mobile_phone');?>";
+                $("#signMobileInput").val(mobileStr + " " +data);
+            }
+        });
+
+        // 企业实名认证
+        let hasIDCertificate = '<?php echo $this->hasIDCertificate;?>',
+            layerHeight = '420px';
+        if (hasIDCertificate === '1') {
+            $(".signContent").removeClass("hidden");
+            $(".jumpInfoContent").addClass("hidden");
+            $(".jumpPersonInfoContent").addClass("hidden");
+            layerHeight = '420px';
+        } else {
+            $(".signContent").addClass("hidden");
+            $(".jumpInfoContent").removeClass("hidden");
+            $(".jumpPersonInfoContent").addClass("hidden");
+            layerHeight = '220px';
+        }
+
+        let signTitle = "<?php echo $this->translate('signTitle');?>";
+        layer.open({
+            type: 1,
+            title: signTitle,
+            shadeClose: true,
+            shade: 0.2,
+            area: ['500px', layerHeight],
+            content: $('#doSignPDFLayDiv')
+        });
+    });
+
+    $(".person-sign-button").bind("click",function(){
+        let getSignMobile = '/user/pur/getpersonsignmobile';
+        $.ajax({
+            type: "POST",
+            url: getSignMobile,
+            data: {
+
+            },
+            dataType: "json",
+            success: function (data) {
+                let mobileStr = "<?php echo $this->translate('mobile_phone');?>";
+                $("#signMobileInput").val(mobileStr + " " +data);
+            }
+        });
+
+        // 个人实名认证
+        let contactHasIDCertificate = '<?php echo $this->contactHasIDCertificate;?>',
+            layerHeight = '420px';
+        if (contactHasIDCertificate === '1') {
+            $(".signContent").removeClass("hidden");
+            $(".jumpInfoContent").addClass("hidden");
+            $(".jumpPersonInfoContent").addClass("hidden");
+            layerHeight = '420px';
+        } else {
+            $(".signContent").addClass("hidden");
+            $(".jumpInfoContent").addClass("hidden");
+            $(".jumpPersonInfoContent").removeClass("hidden");
+            layerHeight = '220px';
+        }
+
+        let signTitle = "<?php echo $this->translate('signTitle');?>";
+        layer.open({
+            type: 1,
+            title: signTitle,
+            shadeClose: true,
+            shade: 0.2,
+            area: ['500px', layerHeight],
+            content: $('#doSignPDFLayDiv')
+        });
+        $("#signSendAuthCodeBtn").attr("personSend", "true");
+        $("#singConfirmBtn").attr("personSend", "true");
+    });
+    // ********************   End  *************************************
+
+    // ********************   获取短信验证码 Start  *************************************
+    $("#signSendAuthCodeBtn").click(function () {
+        let sendSignAuthCode = '/user/pur/sendsignauthcode';
+        if ($(this).attr("personSend") == "true") {
+            sendSignAuthCode = '/user/pur/sendpersonsignauthcode';
+        }
+
+        $.ajax({
+            type: "POST",
+            url: sendSignAuthCode,
+            data: {
+
+            },
+            dataType: "json",
+            success: function (data) {
+                let sendingStr = "<?php echo $this->translate('signAuthCodeSending');?>";
+                $("#signSendAuthCodeBtn").text(sendingStr);
+                sendSignAuthCodeCountDown();
+            }
+        });
+    });
+
+    let countdown=120;
+    function sendSignAuthCodeCountDown() {
+        let obj = $("#signSendAuthCodeBtn");
+        settime(obj);
+    }
+
+    function settime(obj) { //发送验证码倒计时
+        if (countdown == 0) {
+            obj.attr('disabled',false);
+            //obj.removeattr("disabled");
+            obj.removeClass('layui-btn-disabled');
+            let btnStr = "<?php echo $this->translate('signSendAuthCode'); ?>";
+            obj.text(btnStr);
+            countdown = 120;
+            return;
+        } else {
+            console.log(countdown);
+            obj.attr('disabled',true);
+            obj.addClass('layui-btn-disabled');
+            let btnStr = "<?php echo $this->translate('signAuthCodeSending'); ?>";
+            obj.text(btnStr + "(" + countdown + ")");
+            countdown--;
+        }
+        setTimeout(function() {
+                settime(obj) }
+            ,1000)
+    }
+    // ********************   获取短信验证码 End  *************************************
+
+
+
+    // ********************   获取短信验证码 Start  *************************************
+    $("#singConfirmBtn").click(function () {
+        let doSignPDF = '/user/pur/dosignpdf';
+        let contractID = $(".sign-button").attr("contractID_");
+        if ($(this).attr("personsend") == "true") {
+            doSignPDF = '/user/pur/dopersonsignpdf';
+            contractID = $(".person-sign-button").attr("contractID_");
+        }
+
+        $.ajax({
+            type: "POST",
+            url: doSignPDF,
+            data: {
+                contractID: contractID,
+                signAuthCode: $("#signAuthCode").val()
+            },
+            dataType: "json",
+            success: function (data) {
+                let signMsg = "<?php echo $this->translate('signFail');?>";
+                if (data != null && data != '') {
+                    signMsg = "<?php echo $this->translate('signSuccess');?>";
+                    layer.msg(signMsg);
+                    window.location.reload();
+                } else {
+                    $("#signAuthCode").val('');
+                    layer.msg(signMsg);
+                }
+            }
+        });
+    });
+    // ********************   获取短信验证码 End  *************************************
+
+
+    // ********************   显示非网签上传合同层 Start  *************************************
+    function initSignViewNoEContract(obj) {
+        let signTitle = "<?php echo $this->translate('signTitle');?>",
+            downloadTitle = "<?php echo $this->translate('download');?>";
+
+        layer.open({
+            type: 1,	//Page层类型
+            area: ['800px', '550px'],
+            title: signTitle,
+            // shadeClose: true,
+            shade: 0.6,	//遮罩透明度
+            // anim: 1,	//0-6的动画形式，-1不开启
+            scrollbar: false,
+            zIndex: 50,
+            content: $("#signViewNoEContractDiv")
+        });
+
+        $("#signViewNoEContractDiv tr:not(:first)").empty();
+        //获取最后一行的data-id(标识行)
+        let rowIndex = $("#signViewNoEContractDiv tr:last").attr("data-row");
+        if (rowIndex == "" || rowIndex == null) {
+            rowIndex = parseInt(1);
+        } else {
+            rowIndex = parseInt(rowIndex) + 1;
+        }
+
+        let htmlList = '<tr data-row=' + rowIndex + '>';
+
+        htmlList += '<td><a href="#" id="" onclick="doDownload(\''+obj.id+'\')">' + $("#contractName_" + obj.id).val() + '</a></td>';
+
+        htmlList += '<td>' + $("#ext_" + obj.id).val() + '</td>';
+
+        htmlList += '<td><a href="#" id="" onclick="doDownload(\''+obj.id+'\')" class="order_contract_sign fr">下载</a></td>';
+
+        htmlList += '</td></tr>';
+        //在行最后添加数据
+        $("#signViewNoEContractDiv tr:last").after(htmlList);
+
+        $("#signNoEContractConfirmBtn").attr("contractID_", obj.id);
+    }
+
+    function doDownload(objID) {
+        window.location.href = $("#contractAttachUrl_" + objID).val();
+    }
+    // ********************   显示非网签上传合同层 End  *************************************
+
+
+    // ********************   非网签签署合同提交按钮 Start  *************************************
+    $("#signNoEContractConfirmBtn").click(function () {
+        let contractID = $(this).attr("contractID_");
+
+        let nidArr = "";
+        let nid = document.getElementsByName("attachNid[]");
+        for (let i = 0, j = nid.length; i < j; i++) {
+            nidArr += nid[i].value + "|";
+        }
+        let nameArr = "";
+        let name = document.getElementsByName("attachName[]");
+        for (let i = 0, j = name.length; i < j; i++) {
+            nameArr += name[i].value + "|";
+        }
+        let sizeArr = "";
+        let size = document.getElementsByName("attachSize[]");
+        for (let i = 0, j = size.length; i < j; i++) {
+            sizeArr += size[i].value + "|";
+        }
+        let attachTypeArr = "";
+        let attachType = document.getElementsByName("attachType[]");
+        for (let i = 0, j = attachType.length; i < j; i++) {
+            attachTypeArr += attachType[i].value + "|";
+        }
+
+        $.ajax({
+            type: "POST",
+            url: '<?php echo $this->BaseUrl();?>/sale/agree',
+            data: {
+                contractID: contractID,
+                name: nameArr,
+                nid: nidArr,
+                size: sizeArr,
+                attachType: attachTypeArr
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data === '1') {
+                    document.location.reload();
+                } else {
+                    alert(data + 'failed,please try again!');
+                }
+            }
+        });
+    });
+    // ********************   非网签签署合同提交按钮 End  *************************************
+
+
+    // ********************   物流详情 Start  *************************************
+    let $deliveryEditBtn = $("#deliveryEditBtn"),
+        $deliveryDelBtn = $("#deliveryDelBtn"),
+        $viewDelivery = $("#viewDelivery"),
+        $editDelivery = $("#editDelivery");
+    $viewDelivery.on('show.bs.modal', function (e) {
+        let triggered = $(e.relatedTarget),
+            deliveryID = triggered.data("delivery-id"),
+            deliveryStatus = triggered.data("delivery-status"),
+            deliveryNo = triggered.data("delivery-no"),
+            $viewDeliveryTable = $(".viewDeliveryTable"),
+            $deliveryItemAttachment = $(".deliveryItemAttachment");
+
+        if (deliveryStatus === 1) {
+            $deliveryDelBtn.show();
+            $deliveryDelBtn.attr("data-delivery-id", deliveryID);
+
+            $deliveryEditBtn.show();
+            $deliveryEditBtn.attr("data-delivery-id", deliveryID);
+            $deliveryEditBtn.attr("data-delivery-no", deliveryNo);
+        } else {
+            $deliveryDelBtn.hide();
+            $deliveryEditBtn.hide();
+        }
+
+        $(".deliveryNo").html(deliveryNo);
+
+        $viewDeliveryTable.html("").load("/user/sale/delivery-view", {
+            deliveryID: deliveryID
+        }, function () {
+            // $(".deliverDeliveryNo").html(deliveryNo);
+            // $("#deliveryDeliverGoodsBtn").attr("data-delivery-ID", deliveryID);
+        });
+
+    });
+
+    function genAttachContent(data, title, attachUrl) {
+        let attachmentContent = '<div class="col-xs-12">'
+            + '<div class="page-header">'
+            + '<h4>' + title + '</h4>'
+            + '</div>';
+        $.each(data, function (index, attach) {
+            let ext = attach.ext !== undefined ? attach.ext.toLowerCase(): '';
+            attachmentContent += '<div class="col-xs-8">'
+                + '<em class="new_upicon" style="background:url(\'/ky/ico/' + ext + '.png\') no-repeat;background-size: 20px;"></em>'
+                + '<a href="' + attachUrl + '/doc/download.action?sid=<?php echo session_id(); ?>&nid=' + attach.attachID + '&vid=' + attach.verifyID + '" download>'
+                + '<p class="new_uptitle">' + attach.name + '</p>'
+                + '</a>'
+                + '</div>'
+                + '<div class="col-xs-4">'
+                + '<?php echo $this->translate("creatdate") ?>&nbsp;' + new Date(attach.createTime).format("yyyy-MM-dd hh:mm:ss")
+                + '</div>';
+        });
+        attachmentContent += '</div>';
+        return attachmentContent;
+    }
+
+    $deliveryDelBtn.click(function () {
+        let deliveryID = $(this).attr("data-delivery-id"),
+            delDelivery = '/user/sale/del-delivery-ajax';
+        layer.msg('确定删除发货单？', {
+            time: 0 //不自动关闭
+            ,btn: ['确定', '取消']
+            ,yes: function(index){
+                layer.close(layer.index);
+                $.ajax({
+                    type: "POST",
+                    url: delDelivery,
+                    data: {
+                        deliveryID: deliveryID
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data === 1) {
+                            document.location.reload();
+                        } else {
+                            alert(data + ' failed, please try again!');
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    // 查看备货单页面点击编辑按钮
+    $deliveryEditBtn.click(function () {
+        $editDelivery.attr('data-delivery-id', $(this).attr("data-delivery-id"));
+        $editDelivery.attr('data-delivery-no', $(this).attr("data-delivery-no"));
+
+        $viewDelivery.modal('hide');
+        setTimeout(function () {
+            $editDelivery.modal('show')
+        }, 400);
+    });
+
+    // 呈现备货单编辑页面
+    $editDelivery.on('show.bs.modal', function (e) {
+        let deliveryID = $editDelivery.attr("data-delivery-id"),
+            deliveryNo = $editDelivery.attr("data-delivery-no"),
+            $editDeliveryTable = $(".editDeliveryTable"),
+            $attachView = $(".editDeliveryItemAttachment").find(".img-view");
+
+        $(".editDeliveryNo").html(deliveryNo);
+        $attachView.html("");
+
+        let deliveryUrl = "/user/sale/edit-delivery-ajax";
+        $.ajax({
+            type: "POST",
+            url: deliveryUrl,
+            data: {
+                deliveryID: deliveryID
+            },
+            dataType: "json",
+            success: function (data) {
+                let content = '',
+                    attachmentContent = '',
+                    attachUrl = '<?php echo $this->seed_Setting['KyUrlex'] ?>';
+                if (data.delivery === null) {
+
+                    content += '暂无数据';
+                } else {
+                    content += '<table class="layui-table" lay-skin="line" id="deliveryEditTable">'
+                        + '<colgroup>'
+                        + ' <col width="140">'
+                        + ' <col width="140">'
+                        + ' <col width="60">'
+                        + ' <col width="100">'
+                        + ' <col width="100">'
+                        + ' <col width="100">'
+                        + ' <col width="100">'
+                        + ' <col width="100">'
+                        + ' <col width="160">'
+                        + '</colgroup>'
+                        + '<thead>'
+                        + '<tr>'
+                        + ' <th><?php echo $this->translate("productNAME"); ?></th>'
+                        + ' <th><?php echo $this->translate("model"); ?></th>'
+                        + ' <th><?php echo $this->translate("uprice"); ?></th>'
+                        + ' <th><?php echo $this->translate("number"); ?></th>'
+                        + ' <th><?php echo $this->translate("quantity"); ?></th>'
+                        + ' <th><?php echo $this->translate("totalNetWeight"); ?>(KGS)</th>'
+                        + ' <th><?php echo $this->translate("totalGrossWeight"); ?>(KGS)</th>'
+                        + ' <th><?php echo $this->translate("totalVolume"); ?>(CBM)</th>'
+                        + ' <th><?php echo $this->translate("ordertotal"); ?></th>'
+                        + '</thead>'
+                        + '<tbody>';
+
+                    $.each(data.delivery.deliveryItemList, function (index, deliveryItem) {
+                        content += '<tr>'
+                            + '<td style="text-align: left">' + deliveryItem.productName + '</td>'
+                            + '<td style="text-align: left">' + deliveryItem.productModel + '</td>'
+                            + '<td style="text-align: left">' + data.delivery.crnCode + '&nbsp;<label>' + formatCurrency(deliveryItem.buyerUnitPrice, 2) + '</label></td>'
+                            + '<td style="text-align: left">'
+                            + '<input name="deliveryQuantity_edit" data-item-id="' + deliveryItem.itemID + '" class="layui-input" value="' + deliveryItem.deliveryQuantity + '" />'
+                            + '<input type="hidden" id="unitPriceEdit_' + deliveryItem.itemID + '" value="' + deliveryItem.buyerUnitPrice + '" />'
+                            + '<input type="hidden" id="packingQuantityEdit_' + deliveryItem.itemID + '" value="' + deliveryItem.packingQuantity + '" />'
+                            + '<input type="hidden" id="packingNetWeightEdit_' + deliveryItem.itemID + '" value="' + deliveryItem.packingNetWeight + '" />'
+                            + '<input type="hidden" id="packingGrossWeightEdit_' + deliveryItem.itemID + '" value="' + deliveryItem.packingGrossWeight + '" />'
+                            + '<input type="hidden" id="packingVolumeEdit_' + deliveryItem.itemID + '" value="' + deliveryItem.packingVolume + '" />'
+                            + '<input type="hidden" name="orderItemID_edit" value="' + deliveryItem.itemID + '" />'
+                            + '</td>'
+                            + '<td style="text-align: left">'
+                            + '<input name="deliveryTotalPackage_edit" id="deliveryTotalPackageEdit_' + deliveryItem.itemID + '" data-item-id="' + deliveryItem.itemID + '" class="layui-input" value="' + deliveryItem.totalPackages + '" />'
+                            + '</td>'
+                            + '<td style="text-align: left">'
+                            + '<input name="deliveryTotalNetWeight_edit" id="deliveryTotalNetWeightEdit_' + deliveryItem.itemID + '" data-item-id="' + deliveryItem.itemID + '" class="layui-input" value="' + deliveryItem.totalNetWeight + '" />'
+                            + '</td>'
+                            + '<td style="text-align: left">'
+                            + '<input name="deliveryTotalGrossWeight_edit" id="deliveryTotalGrossWeightEdit_' + deliveryItem.itemID + '" data-item-id="' + deliveryItem.itemID + '" class="layui-input" value="' + deliveryItem.totalGrossWeight + '" />'
+                            + '</td>'
+                            + '<td style="text-align: left">'
+                            + '<input name="deliveryTotalVolume_edit" id="deliveryTotalVolumeEdit_' + deliveryItem.itemID + '" data-item-id="' + deliveryItem.itemID + '" class="layui-input" value="' + deliveryItem.totalVolume + '" />'
+                            + '</td>'
+                            + '<td style="text-align: left">' + data.delivery.crnCode + '&nbsp;<label id="itemIDEdit_' + deliveryItem.itemID + '">' + formatCurrency(deliveryItem.buyerTotalAmount, 2) + '</label></td>'
+                            + '</tr>';
+                    });
+
+                    content += '</tbody>'
+                        + '</table>';
+
+                    $.each(data.prepareAttachmentList, function (index, attach) {
+                        let ext = attach.ext !== undefined ? attach.ext.toLowerCase(): '';
+                        if (ext === "DOCX" || ext === "WPS") {
+                            ext = "doc";
+                        }
+                        if (ext === "XLSX") {
+                            ext = "xls";
+                        }
+                        if (ext === "PPTX") {
+                            ext = "ppt";
+                        }
+                        attachmentContent += '<li>';
+                        if (ext === "jpeg" || ext === "png" || ext === "jpg" || ext === "gif" || ext === "GIF" || ext === "JPG" || ext === "PNG" || ext === "JPEG") {
+                            attachmentContent += '<img width="125px" height="125px"  layer-src="' + attachUrl + '/doc/download.action?sid=<?php echo session_id(); ?>&nid=' + attach.attachID + '&vid=' + attach.verifyID + '" src="' + attachUrl + '/doc/download.action?sid=<?php echo session_id(); ?>&nid=' + attach.attachID + '&vid=' + attach.verifyID + '&size=MIDDLE" name="' + attach.name + '">'
+                                + '<span class="del_to">' + attach.name + '<br><a onclick="view_pic(this)">查看</a>|<a onclick="delete_pic(this)">删除</a></span>';
+                        } else {
+                            attachmentContent += '<img width="125px" height="125px" src="/ky/ico/' + ext + '.png" alt=' + attach.attachType + ' />'
+                                + '<span class="del_to">' + attach.name + '<br>'
+                                + '<a href="' + attachUrl + '/doc/download.action?sid=<?php echo session_id(); ?>&nid=' + attach.attachID + '&vid=' + attach.verifyID + '" download>下载</a>'
+                                + '<a onclick="delete_pic(this)">删除</a>'
+                                + '</span>';
+                        }
+
+                        attachmentContent += '<input type="hidden" name="attachNid[]" value="' + attach.attachID + '" />'
+                            + '<input type="hidden" name="attachType[]" value="' + attach.attachType + '" />'
+                            + '<input type="hidden" name="attachName[]" value="' + attach.name + '" />'
+                            + '<input type="hidden" name="attachSize[]" value="' + attach.size + '" />';
+                        attachmentContent += '</li>';
+                    });
+                }
+
+                $editDeliveryTable.html(content);
+                $attachView.html(attachmentContent);
+
+                $("input[name='deliveryQuantity_edit']").keyup(function () {
+                    let itemID = $(this).attr("data-item-id"),
+                        unitPrice = $("#unitPriceEdit_" + itemID).val(),
+                        quantity = $(this).val(),
+                        packingQuantity = $("#packingQuantityEdit_" + itemID).val(),
+                        totalPackage = Math.ceil(quantity / packingQuantity);
+                    if (isNaN(quantity)) {
+                        quantity = 0;
+                    }
+                    // 修改总件数
+                    $("#deliveryTotalPackageEdit_" + itemID).val(totalPackage);
+
+                    // 修改净重
+                    let packingNetWeight = $("#packingNetWeightEdit_" + itemID).val();
+                    $("#deliveryTotalNetWeightEdit_" + itemID).val((packingNetWeight * totalPackage).toFixed(2));
+
+                    // 修改毛重
+                    let packingGrossWeight = $("#packingGrossWeightEdit_" + itemID).val();
+                    $("#deliveryTotalGrossWeightEdit_" + itemID).val((packingGrossWeight * totalPackage).toFixed(2));
+
+                    // 修改体积
+                    let packingVolume = $("#packingVolumeEdit_" + itemID).val();
+                    $("#deliveryTotalVolumeEdit_" + itemID).val((packingVolume * totalPackage).toFixed(2));
+
+                    // 修改总价
+                    let totalAmount = arithMul(unitPrice, quantity);
+                    $("#itemIDEdit_" + itemID).html(formatCurrency(totalAmount, 2));
+                });
+                // 修改件数
+                $("input[name='deliveryTotalPackage_edit']").keyup(function () {
+                    let itemID = $(this).attr("data-item-id"),
+                        totalPackage = $(this).val();
+                    if (isNaN(totalPackage)) {
+                        totalPackage = 0;
+                    }
+
+                    console.log(itemID);
+                    // 修改净重
+                    let packingNetWeight = $("#packingNetWeightEdit_" + itemID).val();
+                    $("#deliveryTotalNetWeightEdit_" + itemID).val((packingNetWeight * totalPackage).toFixed(2));
+
+                    // 修改毛重
+                    let packingGrossWeight = $("#packingGrossWeightEdit_" + itemID).val();
+                    $("#deliveryTotalGrossWeightEdit_" + itemID).val((packingGrossWeight * totalPackage).toFixed(2));
+
+                    // 修改体积
+                    let packingVolume = $("#packingVolumeEdit_" + itemID).val();
+                    $("#deliveryTotalVolumeEdit_" + itemID).val((packingVolume * totalPackage).toFixed(2));
+                });
+
+                $("#deliveryEditConfirmBtn").click(function () {
+                    $(this).attr("disabled", true);
+                    let nidArr = "";
+                    let nid = $("#editDelivery input[name='attachNid[]']");
+                    for (let i = 0, j = nid.length; i < j; i++) {
+                        nidArr += nid[i].value + "|";
+                    }
+                    let nameArr = "";
+                    let name = $("#editDelivery input[name='attachName[]']");
+                    for (let i = 0, j = name.length; i < j; i++) {
+                        nameArr += name[i].value + "|";
+                    }
+                    let sizeArr = "";
+                    let size = $("#editDelivery input[name='attachSize[]']");
+                    for (let i = 0, j = size.length; i < j; i++) {
+                        sizeArr += size[i].value + "|";
+                    }
+                    let attachTypeArr = "";
+                    let attachType = $("#editDelivery input[name='attachType[]']");
+                    for (let i = 0, j = attachType.length; i < j; i++) {
+                        attachTypeArr += attachType[i].value + "|";
+                    }
+                    // let orderItemID_add = "";
+                    let orderItemIDArr = "";
+                    let orderItemID_add = $("#editDelivery input[name='orderItemID_edit']");
+                    for (let i = 0, j = orderItemID_add.length; i < j; i++) {
+                        orderItemIDArr += orderItemID_add[i].value + "|";
+                    }
+
+                    let deliveryQuantityArr = "";
+                    let deliveryQuantity_add = $("#editDelivery input[name='deliveryQuantity_edit']");
+                    for (let i = 0, j = deliveryQuantity_add.length; i < j; i++) {
+                        deliveryQuantityArr += deliveryQuantity_add[i].value + "|";
+                    }
+
+                    let deliveryTotalPackageArr = "";
+                    let deliveryTotalPackage_add = $("#editDelivery input[name='deliveryTotalPackage_edit']");
+                    for (let i = 0, j = deliveryTotalPackage_add.length; i < j; i++) {
+                        deliveryTotalPackageArr += deliveryTotalPackage_add[i].value + "|";
+                    }
+
+                    let deliveryTotalNetWeightArr = "";
+                    let deliveryTotalNetWeight_add = $("#editDelivery input[name='deliveryTotalNetWeight_edit']");
+                    for (let i = 0, j = deliveryTotalNetWeight_add.length; i < j; i++) {
+                        deliveryTotalNetWeightArr += deliveryTotalNetWeight_add[i].value + "|";
+                    }
+
+                    let deliveryTotalGrossWeightArr = "";
+                    let deliveryTotalGrossWeight_add = $("#editDelivery input[name='deliveryTotalGrossWeight_edit']");
+                    for (let i = 0, j = deliveryTotalGrossWeight_add.length; i < j; i++) {
+                        deliveryTotalGrossWeightArr += deliveryTotalGrossWeight_add[i].value + "|";
+                    }
+
+                    let deliveryTotalVolumeArr = "";
+                    let deliveryTotalVolume_add = $("#editDelivery input[name='deliveryTotalVolume_edit']");
+                    for (let i = 0, j = deliveryTotalVolume_add.length; i < j; i++) {
+                        deliveryTotalVolumeArr += deliveryTotalVolume_add[i].value + "|";
+                    }
+
+                    let editDelivery = '/user/sale/editdeliverysave';
+                    $.ajax({
+                        type: "POST",
+                        url: editDelivery,
+                        data: {
+                            deliveryID: deliveryID,
+                            name: nameArr,
+                            nid: nidArr,
+                            size: sizeArr,
+                            attachType: attachTypeArr,
+                            orderItemID: orderItemIDArr,
+                            deliveryQuantity: deliveryQuantityArr,
+                            deliveryTotalPackage: deliveryTotalPackageArr,
+                            deliveryTotalNetWeight: deliveryTotalNetWeightArr,
+                            deliveryTotalGrossWeight: deliveryTotalGrossWeightArr,
+                            deliveryTotalVolume: deliveryTotalVolumeArr
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            if (data === 1) {
+                                document.location.reload();
+                            } else {
+                                alert(data + 'failed,please try again!');
+                            }
+
+                            $(this).attr("disabled", false);
+                        }
+                    });
+                });
+
+                $("#editDeliveryDelBtn").click(function () {
+                    let delDelivery = '/user/sale/del-delivery-ajax';
+                    layer.msg('确定删除发货单？', {
+                        time: 0, //不自动关闭
+                        btn: ['确定', '取消'],
+                        zIndex: 99991014,
+                        yes: function(index){
+                            layer.close(layer.index);
+                            $.ajax({
+                                type: "POST",
+                                url: delDelivery,
+                                data: {
+                                    deliveryID: deliveryID
+                                },
+                                dataType: "json",
+                                success: function (data) {
+                                    if (data === 1) {
+                                        document.location.reload();
+                                    } else {
+                                        alert(data + 'failed,please try again!');
+                                    }
+                                }
+                            });
+                        }
+                    });
+                });
+            }
+        });
+    });
+
+    /* 添加发货记录 */
+    $("#deliveryAddConfirmBtn").click(function () {
+        $(this).attr("disabled", true);
+        let auth_error = $('#deliveryAddDiv').find('.et-auth-error');
+
+        let nidArr = "";
+        let nid = $("#addDelivery input[name='attachNid[]']");
+        for (let i = 0, j = nid.length; i < j; i++) {
+            nidArr += nid[i].value + "|";
+        }
+        let nameArr = "";
+        let name = $("#addDelivery input[name='attachName[]']");
+        for (let i = 0, j = name.length; i < j; i++) {
+            nameArr += name[i].value + "|";
+        }
+        let sizeArr = "";
+        let size = $("#addDelivery input[name='attachSize[]']");
+        for (let i = 0, j = size.length; i < j; i++) {
+            sizeArr += size[i].value + "|";
+        }
+        let attachTypeArr = "";
+        let attachType = $("#addDelivery input[name='attachType[]']");
+        for (let i = 0, j = attachType.length; i < j; i++) {
+            attachTypeArr += attachType[i].value + "|";
+        }
+        // let orderItemID_add = "";
+        let orderItemIDArr = "";
+        let orderItemID_add = $("#addDelivery input[name='orderItemID_add']");
+        console.log(orderItemID_add.length);
+        for (let i = 0, j = orderItemID_add.length; i < j; i++) {
+            orderItemIDArr += orderItemID_add[i].value + "|";
+        }
+
+        let deliveryQuantityArr = "";
+        let deliveryQuantity_add = $("#addDelivery input[name='deliveryQuantity_add']");
+        for (let i = 0, j = deliveryQuantity_add.length; i < j; i++) {
+            deliveryQuantityArr += deliveryQuantity_add[i].value + "|";
+        }
+
+        let deliveryTotalPackageArr = "";
+        let deliveryTotalPackage_add = $("#addDelivery input[name='deliveryTotalPackage_add']");
+        for (let i = 0, j = deliveryTotalPackage_add.length; i < j; i++) {
+            deliveryTotalPackageArr += deliveryTotalPackage_add[i].value + "|";
+        }
+
+        let deliveryTotalNetWeightArr = "";
+        let deliveryTotalNetWeight_add = $("#addDelivery input[name='deliveryTotalNetWeight_add']");
+        for (let i = 0, j = deliveryTotalNetWeight_add.length; i < j; i++) {
+            deliveryTotalNetWeightArr += deliveryTotalNetWeight_add[i].value + "|";
+        }
+
+        let deliveryTotalGrossWeightArr = "";
+        let deliveryTotalGrossWeight_add = $("#addDelivery input[name='deliveryTotalGrossWeight_add']");
+        for (let i = 0, j = deliveryTotalGrossWeight_add.length; i < j; i++) {
+            deliveryTotalGrossWeightArr += deliveryTotalGrossWeight_add[i].value + "|";
+        }
+
+        let deliveryTotalVolumeArr = "";
+        let deliveryTotalVolume_add = $("#addDelivery input[name='deliveryTotalVolume_add']");
+        for (let i = 0, j = deliveryTotalVolume_add.length; i < j; i++) {
+            deliveryTotalVolumeArr += deliveryTotalVolume_add[i].value + "|";
+        }
+
+        let doPrepareGoods = '/user/sale/prepare-save';
+        $.ajax({
+            type: "POST",
+            url: doPrepareGoods,
+            data: {
+                orderID: '<?php echo $this->orders['orderID'];?>',
+                name: nameArr,
+                nid: nidArr,
+                size: sizeArr,
+                attachType: attachTypeArr,
+                orderItemID: orderItemIDArr,
+                deliveryQuantity: deliveryQuantityArr,
+                deliveryTotalPackage: deliveryTotalPackageArr,
+                deliveryTotalNetWeight: deliveryTotalNetWeightArr,
+                deliveryTotalGrossWeight: deliveryTotalGrossWeightArr,
+                deliveryTotalVolume: deliveryTotalVolumeArr
+            },
+            dataType: "json",
+            success: function (data) {
+                let contentStr = '',
+                    contentErrCode = '';
+                if (data.status === 1) {
+                    document.location.reload();
+                } else {
+                    contentStr = data.error;
+                    showLayMsg(contentStr, '', '');
+                    $("#deliveryAddConfirmBtn").attr("disabled", false);
+                }
+            }
+        });
+    });
+
+    /* 添加发货记录 */
+    // 修改数量
+    $("input[name='deliveryQuantity_add']").keyup(function () {
+        let itemID = $(this).attr("data-item-id"),
+            unitPrice = $("#unitPrice_" + itemID).val(),
+            quantity = $(this).val(),
+            packingQuantity = $("#packingQuantity_" + itemID).val(),
+            totalPackage = Math.ceil(quantity / packingQuantity);
+        if (isNaN(quantity)) {
+            quantity = 0;
+        }
+
+        // 修改总件数
+        $("#deliveryTotalPackage_" + itemID).val(totalPackage);
+
+        // 修改净重
+        let packingNetWeight = $("#packingNetWeight_" + itemID).val();
+        $("#deliveryTotalNetWeight_" + itemID).val(packingNetWeight * totalPackage);
+
+        // 修改毛重
+        let packingGrossWeight = $("#packingGrossWeight_" + itemID).val();
+        $("#deliveryTotalGrossWeight_" + itemID).val(packingGrossWeight * totalPackage);
+
+        // 修改体积
+        let packingVolume = $("#packingVolume_" + itemID).val();
+        $("#deliveryTotalVolume_" + itemID).val(packingVolume * totalPackage);
+
+        // 修改总价
+        let totalAmount = arithMul(unitPrice, quantity);
+        $("#itemID_" + itemID).html(formatCurrency(totalAmount, 2));
+    });
+    // 修改件数
+    $("input[name='deliveryTotalPackge_add']").keyup(function () {
+        let itemID = $(this).attr("data-item-id"),
+            totalPackage = $(this).val();
+        if (isNaN(totalPackage)) {
+            totalPackage = 0;
+        }
+
+        // 修改净重
+        let packingNetWeight = $("#packingNetWeight_" + itemID).val();
+        $("#deliveryTotalNetWeight_" + itemID).val(packingNetWeight * totalPackage);
+
+        // 修改毛重
+        let packingGrossWeight = $("#packingGrossWeight_" + itemID).val();
+        $("#deliveryTotalGrossWeight_" + itemID).val(packingGrossWeight * totalPackage);
+
+        // 修改体积
+        let packingVolume = $("#packingVolume_" + itemID).val();
+        $("#deliveryTotalVolume_" + itemID).val(packingVolume * totalPackage);
+    });
+
+    // 发货
+    $deliveryDeliver = $("#deliveryDeliver");
+    $deliveryDeliver.on('show.bs.modal', function (e) {
+        let triggered = $(e.relatedTarget),
+            deliveryID = triggered.data("delivery-id"),
+            deliveryNo = triggered.data("delivery-no"),
+            $deliveryDeliverContent = $(".deliveryDeliverContent");
+
+        $deliveryDeliverContent.html("").load("/user/sale/deliver", {
+            deliveryID: deliveryID
+        }, function () {
+            $(".deliverDeliveryNo").html(deliveryNo);
+            $("#deliveryDeliverGoodsBtn").attr("data-delivery-ID", deliveryID);
+        });
+    });
+
+    /* 提交发货 */
+    $("#deliveryDeliverGoodsBtn").click(function () {
+        let deliveryID = $(this).attr("data-delivery-ID");
+        let nidArr = "";
+        let nid = $("#deliveryDeliver input[name='attachNid[]']");
+        for (let i = 0, j = nid.length; i < j; i++) {
+            nidArr += nid[i].value + "|";
+        }
+        let nameArr = "";
+        let name = $("#deliveryDeliver input[name='attachName[]']");
+        for (let i = 0, j = name.length; i < j; i++) {
+            nameArr += name[i].value + "|";
+        }
+        let sizeArr = "";
+        let size = $("#deliveryDeliver input[name='attachSize[]']");
+        for (let i = 0, j = size.length; i < j; i++) {
+            sizeArr += size[i].value + "|";
+        }
+        let attachTypeArr = "";
+        let attachType = $("#deliveryDeliver input[name='attachType[]']");
+        for (let i = 0, j = attachType.length; i < j; i++) {
+            attachTypeArr += attachType[i].value + "|";
+        }
+
+        let deliverGoods = '/user/sale/deliver-save';
+        $.ajax({
+            type: "POST",
+            url: deliverGoods,
+            data: {
+                deliveryID: deliveryID,
+                name: nameArr,
+                nid: nidArr,
+                size: sizeArr,
+                attachType: attachTypeArr
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data === 1) {
+                    document.location.reload();
+                } else {
+                    alert(data + 'failed,please try again!');
+                }
+            }
+        });
+    });
+    // ********************   物流详情 End  *************************************
+
+
+    // ********************   Start  *************************************
+    $(".signTopBtn").click(function () {
+        let executionStatus = <?php echo $this->vestut;?>;
+        $(".signTopDiv").show();
+        $(".deliveryTopDiv").hide();
+        $(".paymentTopDiv").hide();
+    });
+
+    $(".deliveryTopBtn").click(function () {
+        let executionStatus = <?php echo $this->vestut;?>;
+        if (executionStatus >= 7) {
+            $(".signTopDiv").hide();
+            $(".deliveryTopDiv").show();
+            $(".paymentTopDiv").hide();
+        }
+
+    });
+
+    $(".paymentTopBtn").click(function () {
+        let executionStatus = <?php echo $this->vestut;?>;
+        if (executionStatus >= 7) {
+            $(".signTopDiv").hide();
+            $(".deliveryTopDiv").hide();
+            $(".paymentTopDiv").show().load('<?php echo $this->BaseUrl();?>/sale/trading', {'orderID': $("#orderID").val()});
+        }
+    });
+
+    // ********************   开票资料 Start  *************************************
+    let $billingInfo = $("#billingInfo");
+    $billingInfo.on('show.bs.modal', function (e) {
+        let triggered = $(e.relatedTarget),
+            deliveryID = triggered.data("delivery-id");
+        if (deliveryID === undefined || deliveryID === '') {
+            deliveryID = $billingInfo.attr("data-delivery-id");
+        }
+
+
+        $billingInfo.attr("data-delivery-id", deliveryID);
+
+        $(".billingInfoContent").html("").load("/user/finance/deliver-billing-info", {
+            deliveryID: deliveryID
+        }, function () {
+            layui.use('form', function() {
+                let form = layui.form;
+                form.render();
+            });
+
+            layui.use('element', function(){
+                let element = layui.element;
+                element.render();
+            });
+
+            $(".billingExpressEdit").click(function () {
+                $(".expressShow").hide();
+                $(".expressEdit").show();
+            });
+            $(".billingExpressEditSave").click(function () {
+                let deliverySupplierID = $(this).attr("data-delivery-supplier-id");
+                let $expressType = $("#expressType");
+                let expressName = $expressType.find("option:selected").text();
+                let expressNo = $("#expressNo").val();
+
+                let editExpressNo = '/user/sale/edit-express-save';
+                $.ajax({
+                    type: "POST",
+                    url: editExpressNo,
+                    data: {
+                        deliverySupplierID: deliverySupplierID,
+                        expressType: $expressType.val(),
+                        expressNo: expressNo
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        if ($expressType.val() !== '') {
+                            $(".expressName_").html(expressName);
+                        } else {
+                            $(".expressName_").html("");
+                        }
+                        $(".expressNo_").html(expressNo);
+
+                        $("#expressType").val($expressType.val());
+                        $("#expressNo").val(expressNo);
+
+                        $(".expressShow").show();
+                        $(".expressEdit").hide();
+                    }
+                });
+            });
+
+            $(".genBillInfoBtn").click(function () {
+                let deliveryID = $(this).attr("data-delivery-id");
+
+                let supplierIDArray = "";
+                let supplierID = document.getElementsByName("supplierID");
+                for (let i = 0, j = supplierID.length; i < j; i++) {
+                    supplierIDArray += supplierID[i].value + "|";
+                }
+
+                let bankAcctIDArray = "";
+                let bankAcctID = document.getElementsByName("bankAcctID");
+                for (let i = 0, j = bankAcctID.length; i < j; i++) {
+                    bankAcctIDArray += bankAcctID[i].value + "|";
+                }
+
+                $(".genBillInfoBtn").attr("disabled", true);
+                let genBillingInfo = '/user/sale/genbillinginfo';
+                $.ajax({
+                    type: "POST",
+                    url: genBillingInfo,
+                    data: {
+                        deliveryID: deliveryID,
+                        supplierID: supplierIDArray,
+                        bankAcctID: bankAcctIDArray
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data === 1) {
+                            $billingInfo.modal('hide');
+
+                            setTimeout(function () {
+                                $('#billingInfo').modal('toggle');
+                            }, 500);
+                        } else {
+                            alert(data + 'failed,please try again!');
+                        }
+                        $(".genBillInfoBtn").attr("disabled", false);
+                    }
+                });
+            });
+        });
+    });
+    // ********************   开票资料 End  *************************************
+
+
+
+    $('#logEventRiverModal').on('shown.bs.modal',function(){
+        // 初始化echarts实例
+        let myChart = echarts.init(document.getElementById('eventRiverContent'));
+
+        let data = [];
+
+        $.each(trackData, function (index, trackList) {
+            $.each(trackList, function (tackIndex, track) {
+                //console.log(track);
+                let dataDict_ = $.data(dataDict, 'dataDict'),
+                    result = '';
+                $.each(dataDict_, function (key, item) {
+                    if (key === 'ACTION_LOG_EVENT_TYPE') {
+                        let eventTypeCode = track.eventType;
+                        $.each(item, function (i, dict) {
+                            if (dict.code === eventTypeCode) {
+                                result = dict.name;
+                            }
+                        });
+                    }
+                });
+
+                data.push([new Date(track.operateTime).format("yyyy-MM-dd hh:mm"), Math.ceil(Math.random() * 50), track.summary.replace('&nbsp;', ' '), track.eventType, result])
+            })
+        });
+        console.log(data);
+
+        // 将相同的数据重排成二维数组
+        let refreshTrackList = Object.values(data.reduce(function (res, item) {
+            res[item[3]] ? res[item[3]].push(item) : res[item[3]] = [item];
+            return res;
+        }, {}));
+        console.log(refreshTrackList);
+
+        // 将相同的数据去重
+        let arr = [];//用来存放合并列数
+        //let data = ["煤","石油","纸","纸","煤","煤","石油"];
+        data.sort();
+        for (let i = 0; i < data.length;) {//按照属性判断属性合并列数
+            let count = 0;
+            for (let j = i; j < data.length; j++) {
+                if (data[i][3] === data[j][3]) {
+                    count++;
+                }
+            }
+            arr.push(data[i][4]);
+            i += count;
+        }
+
+        // 指定图表的配置项和数据
+        let option = {
+            title: {
+                text: '日志事件发展'
+            },
+            grid: {
+                show: false
+            },
+            tooltip: {},
+            legend: {
+                // data: JSON.stringify(arr)
+                data: ["质量控制","订单处理"]
+            },
+            xAxis: {
+                type: 'time'
+            },
+            yAxis: {
+                show: false
+            },
+            series: [{
+                name: '订单处理',
+                symbol: 'pin',
+                symbolSize: 30,
+                label: {
+                    show: true,
+                    position: 'bottom',
+                    formatter: function (param) {
+                        return param.data[2];
+                    }
+                },
+                data: refreshTrackList[0],
+                type: 'scatter'
+            }, {
+                // name: arrayTwo[1][0][4],
+                name: '质量控制',
+                symbol: 'pin',
+                symbolSize: 30,
+                label: {
+                    show: true,
+                    position: 'bottom',
+                    formatter: function (param) {
+                        return param.data[2];
+                    }
+                },
+                data: refreshTrackList[1],
+                type: 'scatter'
+            }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    });
+</script>
+</body>
+</html>

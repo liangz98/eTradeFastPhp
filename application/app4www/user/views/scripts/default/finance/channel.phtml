@@ -18,12 +18,12 @@
                     <li role="presentation" class="active">
                         <a href="#usdContent" class="accumulativeTab" aria-controls="info" role="tab" data-toggle="tab" data-crn-code="CNY"><?php echo $this->translate('CNY'); ?></a>
                     </li>
-                    <li role="presentation">
+                    <li role="presentation" class="hidden">
                         <a href="#usdContent" class="accumulativeTab" aria-controls="profile" role="tab" data-toggle="tab" data-crn-code="USD"><?php echo $this->translate('USD'); ?></a>
                     </li>
                 </ul>
 
-                <div class="tab-content">
+                <div class="tab-content gains-options">
                     <div role="tabpanel" class="tab-pane active row" id="usdContent">
                         <div class="col-sm-12">
                             <div class="alert alert-info alert-dismissible" role="alert">
@@ -85,6 +85,13 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <button type="button" class="btn btn-warning" data-type="chartType" data-value="gains">收益数</button>&nbsp;&nbsp;
+                            <button type="button" class="btn btn-default" data-type="chartType" data-value="quantity">项目笔数</button>&nbsp;&nbsp;
+                            <button type="button" class="btn btn-default" data-type="chartType" data-value="loanAmount">项目金额</button>
+                            <input type="hidden" id="chartType" value="gains">
                         </div>
 
                         <div id="ifc_zx" style="float: left; height: 400px; width: 1100px; padding-left: 10px"></div>
@@ -169,17 +176,29 @@
 <script type="text/javascript" src="/ky/echarts-4.2.0/echarts.min.js"></script>
 
 <script type="text/javascript">
-    var dataDict = {};
-    var myChart = echarts.init(document.getElementById('ifc_zx'));
+    let dataDict = {};
+    let myChart = echarts.init(document.getElementById('ifc_zx'));
 
 	$().ready(function() {
 
 	});
 
 	$(function () {
-	    // 初始化收效数据
+	    // 初始化收益数据
         initAccumulative('CNY');
         initGains('CNY', new Date().getFullYear());
+
+        let $gainsOptions = $(".gains-options");
+        $gainsOptions.find("button").click(function () {
+            let dataType = $(this).attr("data-type");
+            $("button[data-type='" + dataType + "']").removeClass("btn-warning").addClass("btn-default");
+            $(this).addClass("btn-warning");
+
+            $("#" + dataType).val($(this).attr("data-value"));
+
+            myChart.showLoading();
+            initGains('CNY', new Date().getFullYear());
+        });
 
         $(".accumulativeTab").click(function () {
             initAccumulative($(this).attr("data-crn-code"));
@@ -197,7 +216,7 @@
                     label: {
                         formatter: function (value, index) {
                             // 格式化，只显示年份
-                            var date = new Date(value);
+                            let date = new Date(value);
                             return date.getFullYear();
                         }
                     }
@@ -205,7 +224,7 @@
                 title: {
                     show: true,
                     text: '收益图表',
-                    subtext: '收益(万元)'
+                    subtext: '收益(元)'
                 },
                 tooltip: {
                     trigger: 'axis',
@@ -247,7 +266,7 @@
             options: [
                 {
                     title: {
-                        text: '2017收益分析'
+                        text: '2017 收益数'
                     },
                     series: [
                         {data: [1, 2, 15, 20, 8, 20, 32, 7]},
@@ -255,7 +274,7 @@
                     ]
                 }, {
                     title: {
-                        text: '2018收益分析'
+                        text: '2018 收益数'
                     },
                     series: [
                         {data: [1, 2, 15, 20, 8, 20, 32, 7]},
@@ -268,8 +287,8 @@
         myChart.setOption(option);
 
 
-        var dataDictQuery = '/user/common/dict-ajax';
-        var dictCode = ["FACTORING_STATUS"];
+        let dataDictQuery = '/user/common/dict-ajax';
+        let dictCode = ["FACTORING_STATUS"];
         $.ajax({
             type: "POST",
             url: dataDictQuery,
@@ -281,9 +300,9 @@
             success: function (data) {
                 $.data(dataDict, 'dataDict', data);
 
-                var $titleOptions = $(".title-options");
+                let $titleOptions = $(".title-options");
                 $titleOptions.find("button").click(function () {
-                    var dataType = $(this).attr("data-type");
+                    let dataType = $(this).attr("data-type");
                     $("button[data-type='" + dataType + "']").removeClass("btn-warning").addClass("btn-default");
                     $(this).addClass("btn-warning");
 
@@ -297,7 +316,7 @@
 	});
 
     function refreshResultList() {
-        var factoringQuery = '/user/finance/list-factoring-item-channel-ajax';
+        let factoringQuery = '/user/finance/list-factoring-item-channel-ajax';
         $.ajax({
             type: "POST",
             url: factoringQuery,
@@ -309,7 +328,7 @@
             },
             dataType: "json",
             success: function (data) {
-                var contents = '',
+                let contents = '',
                     $resultList = $(".resultList");
 
                 if (data.rows.length === 0) {
@@ -334,11 +353,11 @@
                         + '</li>';
                 } else {
                     $.each(data.rows, function (i, item) {
-                        var base = new Base64();
-                        var resultEnCode = base.encode(item.itemID);
+                        let base = new Base64();
+                        let resultEnCode = base.encode(item.itemID);
 
-                        var data = $.data(dataDict, 'dataDict');
-                        var itemStatus = '-';
+                        let data = $.data(dataDict, 'dataDict');
+                        let itemStatus = '-';
                         $.each(data, function (key, itemDict) {
                             if (key === 'FACTORING_STATUS') {
                                 $.each(itemDict, function (i, dict) {
@@ -356,7 +375,7 @@
                             + '     <span>项目号</span>&nbsp;&nbsp;'
                             + '     <span>' + item.itemNo + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
                             + '     <span>订单编号</span>&nbsp;&nbsp;'
-                            + '     <span>' + item.orderNo + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+                            + '     <span><a href="/user/finance/order-view?' + base.encode(item.orderID) + '" target="_blank" class="orderViewA">' + item.orderNo + '</a></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
                             + '     <span>项目金额</span>&nbsp;&nbsp;'
                             + '     <span>' + item.crnCode + ' ' + item.receivableAmount + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
                             + '     <span>状态</span>&nbsp;&nbsp;'
@@ -396,17 +415,22 @@
                 $resultList.html(contents);
 
                 $(".resultList li").click(function () {
-                    var resultEnCodeUrl = $(this).attr("data-resultEnCode");
+                    let resultEnCodeUrl = $(this).attr("data-resultEnCode");
                     if (resultEnCodeUrl !== undefined && resultEnCodeUrl !== '') {
                         window.location.href = '/user/finance/channelview?' + resultEnCodeUrl;
                     }
                 });
+
+                $(".orderViewA").bind('click', function(event) {
+                    // alert('里面的a点击，但是不想触发外面那个div的事件。');
+                    event.stopPropagation();
+                });
             }
         });
     }
-    
+
     function initAccumulative(crnCode) {
-        var accumulativeUrl = '/user/finance/count-accumulative-ajax';
+        let accumulativeUrl = '/user/finance/count-accumulative-ajax';
         $.ajax({
             type: "POST",
             url: accumulativeUrl,
@@ -426,19 +450,21 @@
     }
 
     function initGains(crnCode, year) {
-        var gainsUrl = '/user/finance/count-gains-ajax';
+        let gainsUrl = '/user/finance/count-gains-ajax';
         $.ajax({
             type: "POST",
             url: gainsUrl,
             data: {
                 crnCode: crnCode,
-                year: year
+                year: year,
+                chartType: $("#chartType").val()
             },
             dataType: "json",
             success: function (data) {
                 // console.log(JSON.stringify(data.options));
                 // console.log(data.options.length);
 
+                myChart.hideLoading();
                 // 填入数据
                 myChart.setOption({
                     baseOption: {
