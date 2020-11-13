@@ -3,7 +3,7 @@
 <head>
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
 	<title><?php echo $this->translate('etradefast'); ?></title>
-	<link href="/ky/css/login/login.css" rel="stylesheet">
+	<link href="/ky/css/welcome/login.css" rel="stylesheet">
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
 </head>
 <body onload="document.login_form.ecommloginname.focus()">
@@ -17,7 +17,7 @@
 		</div>
 		<div class="collapse navbar-collapse">
 			<p class="navbar-text">
-
+                <?php echo $this->translate('快移金融交易平台'); ?>
 			</p>
 		</div>
 	</div>

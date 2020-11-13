@@ -14,6 +14,14 @@ class LoginController extends Kyapi_Controller_Action {
      * @throws Exception
      */
     function indexAction() {
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/welcome/index.phtml");
+            echo $content;
+            exit;
+        }
+    }
+
+    function loginAction() {
         $this->view->resultMsg = $this->_request->getParam('resultMsg');
         $this->view->needAuthCode = $this->_request->getParam('needAuthCode');
 

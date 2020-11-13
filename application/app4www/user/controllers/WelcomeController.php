@@ -1,6 +1,6 @@
 <?php
 
-class LoginController extends Kyapi_Controller_Action {
+class WelcomeController extends Kyapi_Controller_Action {
 
     public function preDispatch() {
         $this->view->cur_pos = 'welcome';

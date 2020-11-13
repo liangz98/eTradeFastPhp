@@ -1,0 +1,121 @@
+/* header */
+.top-memu {
+    margin-bottom: 0px;
+    background-color: #fff;
+    border-color: #ccc !important;
+}
+
+.top-memu div div a img {
+    width: 70%;
+    margin-top: -10px;
+}
+
+.top-memu div div p:first-child {
+    font-size: 30px;
+    font-family: inherit;
+    margin-left: -30px;
+    margin-bottom: 20px;
+    line-height: 30px;
+}
+
+/* body */
+.index-body {
+    background-image: url('/ky/images/index/index_bg_2.jpg');
+    height: 580px;
+    background-size: cover;
+}
+
+.body-font div:first-child {
+    font-size: 70px;
+    color: #fff;
+    margin-top: 110px
+}
+
+.body-font div:nth-child(2) {
+    color: #fff;
+    font-size: 25px;
+    margin-top: 15px;
+}
+
+.body-font div:nth-last-of-type(2) {
+    color: #fff;
+    font-size: 25px;
+    margin-top: 15px;
+}
+
+.body-font div:last-child {
+    color: #fff;
+    font-size: 25px;
+    margin-top: 15px;
+}
+
+/* 登录框 */
+.login-body {
+    background-color: #fff;
+    margin-top: 100px;
+}
+
+.nav-pills {
+    margin-top: 20px;
+}
+
+.nav-pills li {
+    width: 49%;
+    text-align: center;
+	font-size: 16px;
+}
+
+.nav-pills li+li {
+	border-left: 1px solid #f4f4f4;
+}
+
+.nav-pills li a {
+    background-color: inherit;
+    color: #f0ad4e;
+}
+
+.nav-pills hr{
+	height: 1px;
+	margin-top: 10px;
+}
+
+.login-body-form {
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+.login-body-form input {
+    height: 38px;
+    font-size: 14px;
+}
+
+.login-body-form input[type=checkbox] {
+    height: 13px;
+}
+
+.login-body-form .form-group {
+    margin-left: 15px;
+    width: 90%;
+}
+
+.login-body-form .form-group a {
+    color: #777;
+}
+
+.forgotPSD {
+    line-height: 35px;
+}
+
+.login-authCode_pic {
+    width: 120px;
+    margin-top: 8px;
+}
+
+.qr-row {
+    margin-bottom: 30px;
+}
+
+#qrLoginImg img {
+    width: 200px;
+    margin-bottom: 30px;
+}
