@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
+	<title><?php echo $this->translate('etradefast'); ?></title>
+	<link href="/ky/css/login/login.css" rel="stylesheet">
+    <link href="/ky/css/layouts/base.css" rel="stylesheet">
+</head>
+<body onload="document.login_form.ecommloginname.focus()">
+
+<nav class="navbar navbar-default navbar-static-top top-memu shadow">
+	<div class="container">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="/">
+				<img alt="eTradeFast" title="eTradeFast" src="/ky/images/index/Logo_loginH75.png">
+			</a>
+		</div>
+		<div class="collapse navbar-collapse">
+			<p class="navbar-text">
+
+			</p>
+		</div>
+	</div>
+</nav>
+
+<div class="container-fluid index-body" <?php if (!empty($this->resultMsg)): echo 'style="height: 680px;"'; endif; ?> >
+	<div class="container">
+
+		<div class="row">
+
+
+		</div>
+	</div>
+</div>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
+
+<?php echo $this->render(SEED_WWW_TPL . '/layouts/footerLink.phtml'); ?>
+<script src="/ky/js/jquery.cookie.js"></script>
+
+<script type="text/javascript">
+	$().ready(function() {
+
+	});
+
+	$(function () {
+
+	});
+</script>
+</body>
+</html>

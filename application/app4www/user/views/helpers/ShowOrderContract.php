@@ -44,6 +44,7 @@ class Zend_View_Helper_ShowOrderContract extends Shop_View_Helper {
                     if ($v['firstPartySignMode'] == "E" || $v['firstPartySignMode'] == "B") {
                         if (empty($v['firstPartySigningDate'])) {
                             $isESigned = false;
+                            $IMG .= '<input type="hidden" id="isSignedINNN_'.$v['contractID'].'" value="true" />';
                         }
                     }
 
@@ -60,6 +61,7 @@ class Zend_View_Helper_ShowOrderContract extends Shop_View_Helper {
                 }
 
                 if (!empty($v['secondParty']) && $v['secondParty'] == $accountID) {
+
                     // 企业
                     if ($v['secondPartySignMode'] == "E" || $v['secondPartySignMode'] == "B") {
                         if (empty($v['secondPartySignedDate'])) {

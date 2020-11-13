@@ -113,6 +113,7 @@
                     <input type="hidden" name="actualFinancingAmount" id="actualFinancingAmount" value="0">
                     <input type="hidden" name="actualInterest" id="actualInterest" value="0">
                     <input type="hidden" name="actualServiceCharge" id="actualServiceCharge" value="0">
+                    <input type="hidden" name="explanationStr" id="explanationStr" value="">
                 </div>
 
                 <div class="col-sm-7"></div>
@@ -430,7 +431,7 @@
                         }
                     }],
                     yAxis: [{
-                        name: '万元',
+                        name: '元',
                         type: 'value',
                         splitNumber: 4,
                         splitLine: {
@@ -554,6 +555,11 @@
         $("#actualFinancingAmount").val(allSelectionsActualFinancingAmount);
         $("#actualInterest").val(allSelectionsActualInterest);
         $("#actualServiceCharge").val(allSelectionsActualServiceCharge);
+        if ($resultListTable && $allSelectionsData && $resultListTable.length > 0 && $allSelectionsData.length > 0) {
+            // console.log($allSelectionsData)
+            // console.log($allSelectionsData[0].loanNo);
+            $("#explanationStr").val($allSelectionsData[0].loanNo);
+        }
     }
 
     function checkSelections() {

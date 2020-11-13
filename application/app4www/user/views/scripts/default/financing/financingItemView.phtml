@@ -192,15 +192,21 @@
                             </div>
                             <div class="col-md-6">
                                 <p class="form-control-static text-danger">
-                                    <?php if ($this->financingLoan['expiryDate']): ?>
-                                        <?php if (round((strtotime($this->financingLoan['expiryDate']) - strtotime(date("Y-m-d"))) / 86400) > 0): ?>
-                                            <?php echo date("Y-m-d", strtotime($this->financingLoan['expiryDate'])); ?>
-                                        <?php else: ?>
-                                            <?php echo date("Y-m-d", strtotime($this->financingLoan['expiryDate'] .' +'. $this->financingLoan['financing']['gracePeriod'] .' day')); ?>
-                                        <?php endif;?>
+                                    <?php if ($this->financingLoan['loanStatus'] == '03'): ?>
+                                        <?php if (!empty($this->financingLoan['financingRepaymentList'])): ?>
+                                            <?php echo date("Y-m-d", strtotime($this->financingLoan['financingRepaymentList'][0]['repaymentDate'])); ?>
+                                        <?php endif; ?>
                                     <?php else: ?>
-                                        <?php echo date("Y-m-d", strtotime($this->financingLoan['applyExpiryDate'])); ?>
-                                    <?php endif;?>
+                                        <?php if ($this->financingLoan['expiryDate']): ?>
+                                            <?php if (round((strtotime($this->financingLoan['expiryDate']) - strtotime(date("Y-m-d"))) / 86400) > 0): ?>
+                                                <?php echo date("Y-m-d", strtotime($this->financingLoan['expiryDate'])); ?>
+                                            <?php else: ?>
+                                                <?php echo date("Y-m-d", strtotime($this->financingLoan['expiryDate'] .' +'. $this->financingLoan['financing']['gracePeriod'] .' day')); ?>
+                                            <?php endif;?>
+                                        <?php else: ?>
+                                            <?php echo date("Y-m-d", strtotime($this->financingLoan['applyExpiryDate'])); ?>
+                                        <?php endif;?>
+                                    <?php endif; ?>
                                 </p>
                             </div>
                         </div>

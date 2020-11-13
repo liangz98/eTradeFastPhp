@@ -115,6 +115,16 @@ class TransportController extends Kyapi_Controller_Action {
     public function applyAction() {
         $this->view->resultMsg = $this->_request->getParam('resultMsg');
 
+        $requestObject = $this->_requestObject;
+        $resultObject = $this->json->getCreditRating4EvaluationType($requestObject, 'LGR');
+        $this->view->creditRating = $this->objectToArray(json_decode($resultObject)->result);
+
+        $dataDictCode = array();
+        // $dataDictCode[0] = 'TRANSPORT_ACCOUNT_QUOTA_LIST';
+        $dataDictCode[0] = 'TRANSPORT_ACCOUNT_LIST';
+        $dataDictList = $this->json->findDataDictListApi($requestObject, $dataDictCode);
+        $this->view->dataDictList = $this->objectToArray(json_decode($dataDictList)->result);
+
         if (defined('SEED_WWW_TPL')) {
             $content = $this->view->render(SEED_WWW_TPL . "/transport/apply.phtml");
             echo $content;

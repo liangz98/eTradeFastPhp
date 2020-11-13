@@ -127,6 +127,16 @@ class FinancingController extends Kyapi_Controller_Action {
         }
     }
 
+    public function listLoanStatisticDataAjaxAction() {
+        $requestObject = $this->_requestObject;
+
+        $resultObject = $this->json->listLoanStatisticData($requestObject);
+
+        echo json_encode(json_decode($resultObject)->result);
+
+        exit;
+    }
+
     // 金融方案详情 - 项目列表
     public function financingLoanListAjaxAction() {
         // $msg = array();
@@ -304,7 +314,8 @@ class FinancingController extends Kyapi_Controller_Action {
         $this->view->bankAcct = $this->objectToArray(json_decode($bankAcctResultObject)->result);
 
         // 随机验证码
-        $this->view->explanationStr = date('d') . str_pad(mt_rand(1, 99999), 3, '0', STR_PAD_LEFT);
+//        $this->view->explanationStr = date('d') . str_pad(mt_rand(1, 99999), 3, '0', STR_PAD_LEFT);
+        $this->view->explanationStr = $financingLoan->loanNo;
 
         $paymentLoanIDs = array();
         $paymentLoanIDs[0] = $financingLoan->loanID;
@@ -331,7 +342,8 @@ class FinancingController extends Kyapi_Controller_Action {
         $this->view->bankAcct = $this->objectToArray(json_decode($bankAcctResultObject)->result);
 
         // 随机验证码
-        $this->view->explanationStr = date('d') . str_pad(mt_rand(1, 99999), 3, '0', STR_PAD_LEFT);
+//        $this->view->explanationStr = date('d') . str_pad(mt_rand(1, 99999), 3, '0', STR_PAD_LEFT);
+        $this->view->explanationStr = $this->_request->getParam('explanationStr');
 
         $paymentLoanIDs = $_POST['paymentLoanIDs'];
         $this->view->loanIDs = $paymentLoanIDs;

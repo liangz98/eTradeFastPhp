@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
-	<title><?php echo $this->translate('etradefast'); ?></title>
+	<title><?php echo $this->translate('etradefast'); ?> - 编辑采购订单</title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/order/order.css" rel="stylesheet">
     <link href="/ky/css/img-upload.css" rel="stylesheet">
@@ -18,7 +18,7 @@
 <div class="container-fluid index-body">
 	<div class="container">
 		<div class="row">
-            <div class="col-md-3 company-navigation">
+            <div class="col-md-3 company-navigation hidden">
                 <div class="panel panel-default">
                     <div class="panel-heading"><?php echo $this->translate('partners'); ?></div>
                     <div class="list-group">
@@ -28,7 +28,7 @@
                 </div>
             </div>
 
-            <div class="col-md-9 order-main">
+            <div class="col-md-12 order-main">
                 <form class="form-horizontal" action="#" method="post" id="order_edit_form" name="order_edit_form">
                     <input type="hidden" name="orderID" id="orderID" value="<?php echo $this->orders['orderID']; ?>">
                     <input type="hidden" name="accountName" id="accountName">
@@ -271,19 +271,19 @@
                                     <p class="form-control-static">20GP</p>
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" name="sizeQuantityMap_20GP" id="sizeQuantityMap_20GP" placeholder="" value="<?php echo $this->orders['sizeQuantityMap']['20GP']; ?>" min="0" step="1" >
+                                    <input type="number" class="form-control" name="sizeQuantityMap_20GP" id="sizeQuantityMap_20GP" placeholder="" value="<?php if (!empty($this->orders['sizeQuantityMap'])) echo $this->orders['sizeQuantityMap']['20GP']; ?>" min="0" step="1" >
                                 </div>
                                 <div class="col-sm-1">
                                     <p class="form-control-static">40GP</p>
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" name="sizeQuantityMap_40GP" id="sizeQuantityMap_40GP" placeholder="" value="<?php echo $this->orders['sizeQuantityMap']['40GP']; ?>" min="0" step="1" >
+                                    <input type="number" class="form-control" name="sizeQuantityMap_40GP" id="sizeQuantityMap_40GP" placeholder="" value="<?php if (!empty($this->orders['sizeQuantityMap'])) echo $this->orders['sizeQuantityMap']['40GP']; ?>" min="0" step="1" >
                                 </div>
                                 <div class="col-sm-1">
                                     <p class="form-control-static">40HQ</p>
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" name="sizeQuantityMap_40HP" id="sizeQuantityMap_40HP" placeholder="" value="<?php echo $this->orders['sizeQuantityMap']['40HP']; ?>" min="0" step="1" >
+                                    <input type="number" class="form-control" name="sizeQuantityMap_40HP" id="sizeQuantityMap_40HP" placeholder="" value="<?php if (!empty($this->orders['sizeQuantityMap'])) echo $this->orders['sizeQuantityMap']['40HP']; ?>" min="0" step="1" >
                                 </div>
                             </div>
 
@@ -293,19 +293,19 @@
                                     <p class="form-control-static">45HQ</p>
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" name="sizeQuantityMap_45HP" id="sizeQuantityMap_45HP" placeholder="" value="<?php echo $this->orders['sizeQuantityMap']['45HP']; ?>" min="0" step="1" >
+                                    <input type="number" class="form-control" name="sizeQuantityMap_45HP" id="sizeQuantityMap_45HP" placeholder="" value="<?php if (!empty($this->orders['sizeQuantityMap'])) echo $this->orders['sizeQuantityMap']['45HP']; ?>" min="0" step="1" >
                                 </div>
                                 <div class="col-sm-1">
                                     <p class="form-control-static">20OT</p>
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" name="sizeQuantityMap_20OT" id="sizeQuantityMap_20OT" placeholder="" value="<?php echo $this->orders['sizeQuantityMap']['20OT']; ?>" min="0" step="1" >
+                                    <input type="number" class="form-control" name="sizeQuantityMap_20OT" id="sizeQuantityMap_20OT" placeholder="" value="<?php if (!empty($this->orders['sizeQuantityMap'])) echo $this->orders['sizeQuantityMap']['20OT']; ?>" min="0" step="1" >
                                 </div>
                                 <div class="col-sm-1">
                                     <p class="form-control-static">40OT</p>
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" name="sizeQuantityMap_40OT" id="sizeQuantityMap_40OT" placeholder="" value="<?php echo $this->orders['sizeQuantityMap']['40OT']; ?>" min="0" step="1" >
+                                    <input type="number" class="form-control" name="sizeQuantityMap_40OT" id="sizeQuantityMap_40OT" placeholder="" value="<?php if (!empty($this->orders['sizeQuantityMap'])) echo $this->orders['sizeQuantityMap']['40OT']; ?>" min="0" step="1" >
                                 </div>
                             </div>
 
@@ -505,7 +505,7 @@
 <script type="text/javascript" src="/ky/fancybox-3.5.6-dist/fancyboxInit.js"></script>
 
 <script type="text/javascript">
-    var dataDict = {};
+    let dataDict = {};
 
     $().ready(function() {
 
@@ -520,9 +520,9 @@
             }
         });
 
-        var layDateLang = '<?php if ($this->userLangCode == "en_US") echo "en"; else echo "cn";?>';
+        let layDateLang = '<?php if ($this->userLangCode == "en_US") echo "en"; else echo "cn";?>';
         layui.use('laydate', function() {
-            var laydate = layui.laydate;
+            let laydate = layui.laydate;
 
             // 直接嵌套显示
             laydate.render({
@@ -532,7 +532,7 @@
             });
         });
 
-        var $vendorListTable = $("#vendorListTable"),
+        let $vendorListTable = $("#vendorListTable"),
             $selectVendorBtn = $("#selectVendorBtn"),
             $vendorModal = $("#myModal"),
             $vendor = $("#vendor"),
@@ -554,8 +554,8 @@
             $regdCountryCode_ = $("#regdCountryCode"),
             $vendorRegdCountryCode_ = $("#vendorRegdCountryCode");
 
-        var dataDictQuery = '/user/common/dict-ajax';
-        var dictCode = ["ISIC_INDUSTRY_TYPE", "COUNTRY_ISO_CODE", "PARTNER_STATUS", "PRODUCT_PRICING_UNIT"];
+        let dataDictQuery = '/user/common/dict-ajax';
+        let dictCode = ["ISIC_INDUSTRY_TYPE", "COUNTRY_ISO_CODE", "PARTNER_STATUS", "PRODUCT_PRICING_UNIT"];
         $.ajax({
             type: "POST",
             url: dataDictQuery,
@@ -614,8 +614,8 @@
                                 value = "-";
                             }
 
-                            var result = value;
-                            var data = $.data(dataDict, 'dataDict');
+                            let result = value;
+                            let data = $.data(dataDict, 'dataDict');
                             $.each(data, function (key, item) {
                                 if (key === 'ISIC_INDUSTRY_TYPE') {
                                     $.each(item, function (i, dict) {
@@ -635,8 +635,8 @@
                                 value = "-";
                             }
 
-                            var result = value;
-                            var data = $.data(dataDict, 'dataDict');
+                            let result = value;
+                            let data = $.data(dataDict, 'dataDict');
                             $.each(data, function (key, item) {
                                 if (key === 'COUNTRY_ISO_CODE') {
                                     $.each(item, function (i, dict) {
@@ -656,8 +656,8 @@
                                 value = "-";
                             }
 
-                            var result = value;
-                            var data = $.data(dataDict, 'dataDict');
+                            let result = value;
+                            let data = $.data(dataDict, 'dataDict');
                             $.each(data, function (key, item) {
                                 if (key === 'PARTNER_STATUS') {
                                     $.each(item, function (i, dict) {
@@ -703,8 +703,8 @@
                         field: 'ecommstatus',
                         title: '<?php echo $this->translate("userP"); ?>',
                         formatter: function (value) {
-                            var result = "-";
-                            var data = $.data(dataDict, 'dataDict');
+                            let result = "-";
+                            let data = $.data(dataDict, 'dataDict');
                             $.each(data, function (key, item) {
                                 if (key === 'ECOMM_STATUS') {
                                     $.each(item, function (i, dict) {
@@ -733,8 +733,8 @@
 
                 // 初始化订单商品
                 $.each(<?php echo $this->orderItem; ?>, function (index, item) {
-                    var data = $.data(dataDict, 'dataDict');
-                    var productPricingUnit = "";
+                    let data = $.data(dataDict, 'dataDict');
+                    let productPricingUnit = "";
                     $.each(data, function (key, dictItem) {
                         if (key === 'PRODUCT_PRICING_UNIT') {
                             $.each(dictItem, function (i, dict) {
@@ -745,16 +745,16 @@
                         }
                     });
 
-                    var content = genOrderItemContent(item, productPricingUnit);
+                    let content = genOrderItemContent(item, productPricingUnit);
                     $orderItemDiv.append(content);
 
                     // 更新包装类型默认选中项
-                    var $packingType = $("#packingType_" + item.productID);
+                    let $packingType = $("#packingType_" + item.productID);
                     $packingType.val(item.packingType);
                     $packingType.selectpicker('render');
 
                     $("input[name='quantity[]'], input[name='totalPackage[]'], input[name='unitPrice[]'], input[name='totalPrice[]'], input[name='purUnitPrice[]'], input[name='totalPurPrice[]'], input[name='packingNetWeight[]'], input[name='packingGrossWeight[]'], input[name='packingVolume[]'], input[name='totalNetWeight[]'], input[name='totalGrossWeight[]'], input[name='totalVolume[]']").keyup(function () {
-                        var productID = $(this).attr("data-productID"),     // ID
+                        let productID = $(this).attr("data-productID"),     // ID
                             $quantity = $("#quantity_" + productID),        // 数量
                             $totalPackage = $("#totalPackage_" + productID),    // 件数
                             quantityMul = $(".quantityMul_" + productID),   // 数量Label
@@ -795,7 +795,7 @@
                             $(this).html($totalPackage.val());
                         });
 
-                        var dataType = $(this).attr("data-type");
+                        let dataType = $(this).attr("data-type");
                         if (dataType === "totalPrice") {
                             // 计算价格
                             $unitPrice.val(arithRound(arithDiv($totalPrice.val(), $quantity.val()), 2));
@@ -962,7 +962,7 @@
         $selectVendorBtn.click(function () {
             // alert('getSelections: ' + JSON.stringify($buyerTable.bootstrapTable('getSelections')));
             console.log(JSON.stringify($vendorListTable.bootstrapTable('getSelections')));
-            var selections = $vendorListTable.bootstrapTable('getSelections'),
+            let selections = $vendorListTable.bootstrapTable('getSelections'),
                 $regdCountryCode = $("#regdCountryCode"),
                 $buyerRegdCountryCode = $("#buyerRegdCountryCode");
 
@@ -980,7 +980,7 @@
                     }
                 });
 
-                var options = {
+                let options = {
                     query:{
                         toID: $vendor.val()
                     }
@@ -1009,9 +1009,9 @@
 
         $vendorModal.on('show.bs.modal', function () {
             $vendorListTable.bootstrapTable('uncheckAll');
-            var selectVendor = $("#vendor");
+            let selectVendor = $("#vendor");
             $.each(selectVendor, function () {
-                var vendorID = $(this).val();
+                let vendorID = $(this).val();
                 $vendorListTable.bootstrapTable('checkBy', {field:'toID', values:[vendorID]});
             });
         });
@@ -1032,8 +1032,8 @@
 
         // 订单商品
         $orderItemModal.on('show.bs.modal', function () {
-            var supplierID = $("#vendor").val();
-            var options = {
+            let supplierID = $("#vendor").val();
+            let options = {
                 query:{
                     supplierID: supplierID
                 }
@@ -1064,10 +1064,10 @@
         // 计价方式
         $quotationMode.on('changed.bs.select', function(e, clickedIndex, newValue, oldValue) {
             // console.log(this.value, clickedIndex, newValue, oldValue)
-            var $products = $("div[data-type='product']"),
+            let $products = $("div[data-type='product']"),
                 quotationMode = this.value;
             $.each($products, function (i, product) {
-                var productID = $(product).attr("id"),
+                let productID = $(product).attr("id"),
                     productionMode = $("#productionMode_" + productID).val(),
                     $purchaseUnitPrice = $(product).find(".purchaseUnitPrice"),
                     $purtotal = $(product).find(".purtotal"),
@@ -1104,7 +1104,7 @@
             }
         });
 
-        var loadingPortSelect = $("#loadingPort"),
+        let loadingPortSelect = $("#loadingPort"),
             dischargePortSelect = $("#dischargePort"),
             deliveryPortSelect = $("#deliveryPort");
         // 运输方式
@@ -1136,7 +1136,7 @@
                 $(".portDLVY").html("<?php echo $this->translate('citypost3'); ?>");
             }
 
-            var optionString = "<option value=''><?php echo $this->translate('et_select'); ?></option>";
+            let optionString = "<option value=''><?php echo $this->translate('et_select'); ?></option>";
             $(loadingPortSelect).html("");
             $(loadingPortSelect).append(optionString);
             $(loadingPortSelect).selectpicker('refresh');
@@ -1150,7 +1150,7 @@
             $(deliveryPortSelect).selectpicker('refresh');
         });
 
-        var shippingMethodStr = $shippingMethod.val();
+        let shippingMethodStr = $shippingMethod.val();
         if (shippingMethodStr === 'SEA') {
             $(loadingPortSelect).attr("data-dict-code", "SEA_PORT");
             $(dischargePortSelect).attr("data-dict-code", "SEA_PORT");
@@ -1178,15 +1178,15 @@
         }
 
         // 起运港
-        var timeOut = "";
+        let timeOut = "";
         $(loadingPortSelect).on('shown.bs.select', function (e) {
             $(loadingPortSelect).prev().find("input").keyup(function (event) {
-                var e = event || window.event || arguments.callee.caller.arguments[0];
+                let e = event || window.event || arguments.callee.caller.arguments[0];
                 if (e && e.keyCode !== 38 && e.keyCode !== 40) { // 按 Up Down
                     $(loadingPortSelect).prev().find("input").attr('id', "loadingPortInput"); //为input增加id属性
-                    var loadingPortInput = $("#loadingPortInput");
-                    var keyword = $(loadingPortInput).val();
-                    var hscodeQuery = '/user/common/dict-fuzzy-query-ajax';
+                    let loadingPortInput = $("#loadingPortInput");
+                    let keyword = $(loadingPortInput).val();
+                    let hscodeQuery = '/user/common/dict-fuzzy-query-ajax';
                     clearTimeout(timeOut);
                     timeOut = setTimeout(function () {
                         $.ajax({
@@ -1199,7 +1199,7 @@
                             },
                             dataType: "json",
                             success: function (data) {
-                                var optionString = "";
+                                let optionString = "";
                                 if (data.length <= 0) {
                                     optionString += "<option value=''><?php echo $this->translate('et_select'); ?></option>";
                                 }
@@ -1221,12 +1221,12 @@
         // 卸货港
         $(dischargePortSelect).on('shown.bs.select', function (e) {
             $(dischargePortSelect).prev().find("input").keyup(function (event) {
-                var e = event || window.event || arguments.callee.caller.arguments[0];
+                let e = event || window.event || arguments.callee.caller.arguments[0];
                 if (e && e.keyCode !== 38 && e.keyCode !== 40) { // 按 Up Down
                     $(dischargePortSelect).prev().find("input").attr('id', "deliveryPortInput"); //为input增加id属性
-                    var deliveryPortInput = $("#deliveryPortInput");
-                    var keyword = $(deliveryPortInput).val();
-                    var hscodeQuery = '/user/common/dict-fuzzy-query-ajax';
+                    let deliveryPortInput = $("#deliveryPortInput");
+                    let keyword = $(deliveryPortInput).val();
+                    let hscodeQuery = '/user/common/dict-fuzzy-query-ajax';
                     clearTimeout(timeOut);
                     timeOut = setTimeout(function () {
                         $.ajax({
@@ -1239,7 +1239,7 @@
                             },
                             dataType: "json",
                             success: function (data) {
-                                var optionString = "";
+                                let optionString = "";
                                 if (data.length <= 0) {
                                     optionString += "<option value=''><?php echo $this->translate('et_select'); ?></option>";
                                 }
@@ -1261,12 +1261,12 @@
         // 交货港
         $(deliveryPortSelect).on('shown.bs.select', function (e) {
             $(deliveryPortSelect).prev().find("input").keyup(function (event) {
-                var e = event || window.event || arguments.callee.caller.arguments[0];
+                let e = event || window.event || arguments.callee.caller.arguments[0];
                 if (e && e.keyCode !== 38 && e.keyCode !== 40) { // 按 Up Down
                     $(deliveryPortSelect).prev().find("input").attr('id', "dischargePortInput"); //为input增加id属性
-                    var dischargePortInput = $("#dischargePortInput");
-                    var keyword = $(dischargePortInput).val();
-                    var hscodeQuery = '/user/common/dict-fuzzy-query-ajax';
+                    let dischargePortInput = $("#dischargePortInput");
+                    let keyword = $(dischargePortInput).val();
+                    let hscodeQuery = '/user/common/dict-fuzzy-query-ajax';
                     clearTimeout(timeOut);
                     timeOut = setTimeout(function () {
                         $.ajax({
@@ -1279,7 +1279,7 @@
                             },
                             dataType: "json",
                             success: function (data) {
-                                var optionString = "";
+                                let optionString = "";
                                 if (data.length <= 0) {
                                     optionString += "<option value=''><?php echo $this->translate('et_select'); ?></option>";
                                 }
@@ -1300,7 +1300,7 @@
 
         $selectVendorContactBtn.click(function () {
             // alert('getSelections: ' + JSON.stringify($buyerTable.bootstrapTable('getSelections')));
-            var selections = $vendorContactListTable.bootstrapTable('getSelections');
+            let selections = $vendorContactListTable.bootstrapTable('getSelections');
             if (selections.length > 0) {
                 $("#vendorContactID").val(selections[0].contactID);
                 $('#vendorContactName').val(selections[0].name);
@@ -1310,7 +1310,7 @@
 
         $selectContactBtn.click(function () {
             // alert('getSelections: ' + JSON.stringify($buyerTable.bootstrapTable('getSelections')));
-            var selections = $contactListTable.bootstrapTable('getSelections');
+            let selections = $contactListTable.bootstrapTable('getSelections');
             if (selections.length > 0) {
                 $("#buyerContactID").val(selections[0].contactID);
                 $('#buyerContactName').val(selections[0].name);
@@ -1320,9 +1320,9 @@
 
         $orderItemModal.on('show.bs.modal', function () {
             $orderItemListTable.bootstrapTable('uncheckAll');
-            var selectProducts = $(".productAlert");
+            let selectProducts = $(".productAlert");
             $.each(selectProducts, function () {
-                var productID = $(this).attr("id");
+                let productID = $(this).attr("id");
                 $orderItemListTable.bootstrapTable('checkBy', {field:'productID', values:[productID]});
             });
         });
@@ -1330,15 +1330,15 @@
         $selectOrderItemBtn.click(function () {
             // alert('getSelections: ' + JSON.stringify($buyerTable.bootstrapTable('getSelections')));
             console.log(JSON.stringify($orderItemListTable.bootstrapTable('getSelections')));
-            var selections = $orderItemListTable.bootstrapTable('getSelections');
+            let selections = $orderItemListTable.bootstrapTable('getSelections');
             $.each(selections, function (index, item) {
-                var $productDiv = $("div[id='" + item.productID + "']");
+                let $productDiv = $("div[id='" + item.productID + "']");
                 if ($productDiv.length > 0) {
                     return true;
                 }
 
-                var data = $.data(dataDict, 'dataDict');
-                var productPricingUnit = "";
+                let data = $.data(dataDict, 'dataDict');
+                let productPricingUnit = "";
                 $.each(data, function (key, dictItem) {
                     if (key === 'PRODUCT_PRICING_UNIT') {
                         $.each(dictItem, function (i, dict) {
@@ -1349,15 +1349,15 @@
                     }
                 });
 
-                var content = genOrderItemContent(item, productPricingUnit);
+                let content = genOrderItemContent(item, productPricingUnit);
                 $orderItemDiv.append(content);
                 // 更新包装类型默认选中项
-                var $packingType = $("#packingType_" + item.productID);
+                let $packingType = $("#packingType_" + item.productID);
                 $packingType.val(item.packingType);
                 $packingType.selectpicker('render');
 
                 $("input[name='quantity[]'], input[name='totalPackage[]'], input[name='unitPrice[]'], input[name='totalPrice[]'], input[name='purUnitPrice[]'], input[name='totalPurPrice[]'], input[name='packingNetWeight[]'], input[name='packingGrossWeight[]'], input[name='packingVolume[]'], input[name='totalNetWeight[]'], input[name='totalGrossWeight[]'], input[name='totalVolume[]']").keyup(function () {
-                    var productID = $(this).attr("data-productID"),     // ID
+                    let productID = $(this).attr("data-productID"),     // ID
                         $quantity = $("#quantity_" + productID),        // 数量
                         $totalPackage = $("#totalPackage_" + productID),    // 件数
                         quantityMul = $(".quantityMul_" + productID),   // 数量Label
@@ -1400,7 +1400,7 @@
                         $(this).html($totalPackage.val());
                     });
 
-                    var dataType = $(this).attr("data-type");
+                    let dataType = $(this).attr("data-type");
                     if (dataType === "totalPrice") {
                         // 计算价格
                         $unitPrice.val(arithRound(arithDiv($totalPrice.val(), $quantity.val()), 2));
@@ -1480,17 +1480,17 @@
 
     function updateCrnCode(crnCode) {
         // 更新价格货币
-        var $unitPriceCrnCodes = $(".unitPriceCrnCode");
+        let $unitPriceCrnCodes = $(".unitPriceCrnCode");
 
         $.each($unitPriceCrnCodes, function () {
             // if (crnCode !== $(this).html()) {
             //
             // }
-            var productID = $(this).attr("data-productID"),
+            let productID = $(this).attr("data-productID"),
                 $unitPriceCrnCode = $(this);
 
             // 取汇率重新计算
-            var exchangeRate = '/user/common/exchange-rate-ajax';
+            let exchangeRate = '/user/common/exchange-rate-ajax';
             $.ajax({
                 type: "POST",
                 url: exchangeRate,
@@ -1502,7 +1502,7 @@
                 },
                 dataType: "json",
                 success: function (data) {
-                    var $quantity = $("#quantity_" + productID),        // 数量
+                    let $quantity = $("#quantity_" + productID),        // 数量
                         $unitPrice = $("#unitPrice_" + productID),      // 价格
                         $totalPrice = $("#totalPrice_" + productID);
 
@@ -1517,7 +1517,7 @@
         });
 
         // 更新金额货币
-        var $totalPriceCrnCode = $(".totalPriceCrnCode");
+        let $totalPriceCrnCode = $(".totalPriceCrnCode");
         $.each($totalPriceCrnCode, function () {
             if (crnCode !== $(this).html()) {
                 // 更新货币
@@ -1528,8 +1528,12 @@
 
     function genOrderItemContent(item, productPricingUnit) {
         // console.log(item.totalNetWeight);
-        var crnCode = item.crnCode === undefined ? $("#buyerCrnCode").val() : item.crnCode;
-        var content = '<div class="alert alert-info alert-dismissible productAlert" role="alert" id="' + item.productID + '" data-type="product">' +
+        let crnCode = item.crnCode === undefined ? $("#buyerCrnCode").val() : item.crnCode;
+        let hscodeStr = '';
+        if (item.hscode !== undefined && item.hscode !== null && item.hscode !== '') {
+            hscodeStr = item.hscode;
+        }
+        let content = '<div class="alert alert-info alert-dismissible productAlert" role="alert" id="' + item.productID + '" data-type="product">' +
             '   <input type="hidden" name="productSize" value="' + item.productSize + '">' +
             '   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
             '   <div class="form-group">' +
@@ -1558,8 +1562,8 @@
 
             '       <label for="hscode" class="col-sm-2 control-label"><?php echo $this->translate("HSCODE"); ?></label>' +
             '       <div class="col-sm-3">' +
-            '           <p class="form-control-static">' + item.hscode + '</p>' +
-            '           <input type="hidden" name="hscode[]" id="hscode" value="' + item.hscode + '">' +
+            '           <p class="form-control-static">' + hscodeStr + '</p>' +
+            '           <input type="hidden" name="hscode[]" id="hscode" value="' + hscodeStr + '">' +
             '       </div>' +
             '   </div>' +
 
@@ -1581,6 +1585,13 @@
             '       <label for="productMaterial" class="col-sm-2 control-label"><?php echo $this->translate("productMaterial"); ?></label>' +
             '       <div class="col-sm-8">' +
             '           <input type="text" class="form-control" name="productMaterial[]" id="productMaterial" value="' + item.productMaterial + '">' +
+            '       </div>' +
+            '   </div>' +
+
+            '   <div class="form-group">' +
+            '       <label for="productSize" class="col-sm-2 control-label"><?php echo $this->translate("productSize"); ?></label>' +
+            '       <div class="col-sm-8">' +
+            '           <textarea class="form-control" rows="3" name="productSize[]">' + item.productSize + '</textarea>' +
             '       </div>' +
             '   </div>' +
 
@@ -1696,14 +1707,14 @@
             '       </div>' +
             '   </div>';
 
-        var purCrnCode = item.purchaseCrnCode === undefined ? item.purCrnCode : item.purchaseCrnCode;
-        var purUnitPrice = 0;
+        let purCrnCode = item.purchaseCrnCode === undefined ? item.purCrnCode : item.purchaseCrnCode;
+        let purUnitPrice = 0;
         if (item.purchaseUnitPrice !== undefined) {
             purUnitPrice = item.purchaseUnitPrice;
         } else if (item.purUnitPrice !== undefined) {
             purUnitPrice = item.purUnitPrice;
         }
-        var totalPurPrice = purUnitPrice;
+        let totalPurPrice = purUnitPrice;
         if (item.totalPurPrice !== undefined) {
             totalPurPrice = item.totalPurPrice;
         }

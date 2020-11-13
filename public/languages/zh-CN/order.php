@@ -6,6 +6,9 @@
 return array(
     'order_helloWord' => '你好！',
 
+    'material' => '上游订单',
+    'itemDesc' => '商品描述',
+
     'vendorTotalAmount'      => '采购总额',
     'expectFinancingCrnCode' => '期望融资货币',
     'expectFinancingAmount'  => '期望融资金额',

@@ -834,14 +834,14 @@ class FinanceController extends Kyapi_Controller_Action
         return ($second1 - $second2) / 86400;
     }
 
-    // 订单详情页
+    // 销售订单详情页
     public function orderViewAction() {
         $orderID = $_SERVER['QUERY_STRING'];
         $_orderID = base64_decode($orderID);
         $this->view->orderid = $_orderID;
 
         $requestObject = $this->_requestObject;
-        $orderResultObject = $this->json->getOrderApi($requestObject, $_orderID);
+        $orderResultObject = $this->json->getOrder4FundApi($requestObject, $_orderID);
         $order = $this->objectToArray(json_decode($orderResultObject)->result);
 
         // 当前返回数据为空时 前端显示为无
@@ -939,6 +939,115 @@ class FinanceController extends Kyapi_Controller_Action
         }
     }
 
+    // 采购订单详情
+    public function orderPurViewAction() {
+        // 读取数据字典
+        $cacheM = new Seed_Model_Cache2File();
+        $DATAlist = $cacheM->get("datatest_setting");
+        $this->view->Datalist = $DATAlist;
+        // 请求Hessian服务端方法
+        $orderID = $_SERVER['QUERY_STRING'];
+        $_orderID = base64_decode($orderID);
+        $this->view->orderid = $_orderID;
+
+        $requestObject = $this->_requestObject;
+        $_resultKY = $this->json->getOrder4FundApi($requestObject, $_orderID);
+        $userKY = json_decode($_resultKY);
+
+        // 取回当前公司的企业认证状态
+        $account = $this->json->getAccountApi($requestObject);
+        $this->refreshAccountCertificateByResult(json_decode($account)->result->hasIDCertificate);
+
+        // 取回当前登录用户的实名认证状态
+        $contactID = $this->view->userID;
+        $contact = $this->json->getContactApi($requestObject, $contactID);
+        $this->view->contactHasIDCertificate = json_decode($contact)->result->hasIDCertificate;
+
+        $existData = $userKY->result;
+        $existDatt = $this->objectToArray($existData);
+        //当前返回数据为空时 前端显示为无
+        if (!isset($existDatt['packingDesc']))
+            $existDatt['packingDesc'] = $this->view->translate('noData');  //包装描述
+        if (!isset($existDatt['financingRequest']))
+            $existDatt['financingRequest'] = $this->view->translate('noData');  //金融要求
+        if (!isset($existDatt['customClearanceRequest']))
+            $existDatt['customClearanceRequest'] = $this->view->translate('noData'); //报关要求
+        if (!isset($existDatt['shippingRequest']))
+            $existDatt['shippingRequest'] = $this->view->translate('noData');   //物流要求
+
+        $this->view->orders = $existDatt;
+        //判断是否请求合同签订
+
+        $bizType = 'OD';
+        $listBizContractResultKY = $this->json->listBizContract($requestObject, $bizType, $_orderID);
+        $res_contract = json_decode($listBizContractResultKY);
+        if ($res_contract->result) {
+            $contractList = $this->objectToArray($res_contract->result);
+        }
+
+        $this->view->contractList = empty($contractList) ? null : $contractList;
+
+
+        // 处理根据返回的运输方式来判断 起运|卸货|交货查询的缓存目录名称
+        if ($existDatt['shippingMethod'] == 'SEA') {
+            $this->view->port = "SEA_PORT";
+            $this->view->loadingPort = $existDatt['loadingPort'];
+            $this->view->dischargePort = $existDatt['dischargePort'];
+            $this->view->deliveryPort = $existDatt['deliveryPort'];
+
+        } else if ($existDatt['shippingMethod'] == 'AIR') {
+            $this->view->port = "AIR_PORT";
+            $this->view->loadingPort = $existDatt['loadingPort'];
+            $this->view->dischargePort = $existDatt['dischargePort'];
+            $this->view->deliveryPort = $existDatt['deliveryPort'];
+        } else {
+            $this->view->port = "CITY_ISO_CODE";
+            $this->view->loadingPort = $existDatt['loadingCity'];
+            $this->view->dischargePort = $existDatt['dischargeCity'];
+            $this->view->deliveryPort = $existDatt['deliveryCity'];
+        };
+
+        $this->view->vestut = $existDatt['buyerExecStatus'];
+        $this->view->veorderID = $existDatt['orderID'];
+
+        // 取回物流信息
+        $deliveryList = $this->json->listDelivery($requestObject, $_orderID);
+        $this->view->deliveryList = json_decode($deliveryList)->result;
+
+        // 判断当前订单是否可以更改
+        if ($this->view->accountID == $existDatt['client']) {
+            if ($existDatt['orderStatus'] == 05 || $existDatt['orderStatus'] == 00 || $existDatt['orderStatus'] == 02) {
+                $this->view->allowEdit = 1;
+            } else {
+                $this->view->allowEdit = 0;
+            }
+        } else {
+            $this->view->allowEdit = 0;
+        }
+
+        // 订单汇率
+        $rateResultObject = $this->json->listExchangeRateApi($requestObject, $bizType, $_orderID);
+        $this->view->exchangeRateList = json_decode($rateResultObject)->result;
+
+        // 报关单列表
+        $listDeclarationResultObject = $this->json->listDeclarationApi($requestObject, $_orderID);
+        $this->view->listDeclaration = json_decode($listDeclarationResultObject)->result;
+
+        // 订舱单列表
+        $listShippingOrderResultObject = $this->json->listShippingOrderApi($requestObject, $_orderID);
+        $this->view->listShippingOrder = json_decode($listShippingOrderResultObject)->result;
+
+        // 派车单列表
+        $listTruckingOrderResultObject = $this->json->listTruckingOrderApi($requestObject, $_orderID);
+        $this->view->listTruckingOrder = json_decode($listTruckingOrderResultObject)->result;
+
+        if (defined('SEED_WWW_TPL')) {
+            $content = $this->view->render(SEED_WWW_TPL . "/finance/orderPurView.phtml");
+            echo $content;
+            exit;
+        }
+    }
+
     // 开票资料 - view
     public function deliverBillingInfoAction() {
         $deliveryID = $this->_request->getParam('deliveryID');
@@ -955,21 +1064,29 @@ class FinanceController extends Kyapi_Controller_Action
         $this->refreshAccountCertificateByResult(json_decode($account)->result->hasIDCertificate);
 
         if (defined('SEED_WWW_TPL')) {
-//            if ($delivery->needTransfer && $delivery->transferRequestDate == null) {
-//                $content = $this->view->render(SEED_WWW_TPL . "/sale/genBillingInfo.phtml");
-//                echo $content;
-//                exit;
-//            } else {
-                $billingInfoResultObject = $this->json->getBillingInfoApi($requestObject, $deliveryID);
-                $billingInfo = json_decode($billingInfoResultObject)->result;
-                $this->view->billingInfo = $billingInfo;
-                $this->view->deliverySupplierList = $billingInfo->deliverySupplierList;
-                // $purContractAttachmentList = $billingInfo->deliverySupplierList->purContract->attachmentList;
+            $billingInfoResultObject = $this->json->getBillingInfoApi($requestObject, $deliveryID);
+            $billingInfo = json_decode($billingInfoResultObject)->result;
+            $this->view->billingInfo = $billingInfo;
+            $this->view->deliverySupplierList = $billingInfo->deliverySupplierList;
 
-                $content = $this->view->render(SEED_WWW_TPL . "/finance/getBillingInfo.phtml");
-                echo $content;
-                exit;
-//            }
+            $content = $this->view->render(SEED_WWW_TPL . "/finance/getBillingInfo.phtml");
+            echo $content;
+            exit;
         }
+    }
+
+    // 上游订单列表
+    public function materialPurOrderListAjaxAction() {
+        $msg = array();
+        $requestObject = $this->_requestObject;
+
+        $orderID = $this->_request->getParam('orderID');
+
+        $resultObject = $this->json->listMaterialPurOrder($requestObject, $orderID);
+        $msg["total"] = json_decode($resultObject)->extData->totalSize;
+        $msg["rows"] = json_decode($resultObject)->result;
+
+        echo json_encode($msg);
+        exit;
     }
 }

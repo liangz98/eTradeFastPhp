@@ -5,6 +5,7 @@
 	<title><?php echo $this->translate('etradefast'); ?></title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/finance/finance.css" rel="stylesheet">
+    <link href="/ky/css/img-upload.css" rel="stylesheet">
     <link href="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.css" rel="stylesheet">
     <link href="/ky/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 </head>
@@ -106,8 +107,34 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-8">
                         <p class="span-font-size-18 text-primary"><?php echo $this->translate('Finance_info'); ?></p>
+                    </div>
+
+                    <div class="col-md-4">
+                        <a class="btn btn-primary pull-right" href="/user/finance/order-view?<?php echo base64_encode($this->channelRow['orderID']); ?>" role="button" target="_blank">查看订单详情</a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('债务方'); ?></p>
+                    </div>
+                    <div class="col-md-10">
+                        <p class="form-control-static text-666">
+                            <?php echo $this->channelRow['factoring']['debtorCustomerName'] ?>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <p class="form-control-static text-999"><?php echo $this->translate('债权方'); ?></p>
+                    </div>
+                    <div class="col-md-10">
+                        <p class="form-control-static text-666">
+                            <?php echo $this->channelRow['factoring']['creditorCustomerName'] ?>
+                        </p>
                     </div>
                 </div>
 
@@ -234,7 +261,7 @@
                                             <?php echo number_format($factoringLoan['writeoffBalAmount'] + $factoringLoan['writeoffBalInterest'], 2); ?>
                                         </td>
                                         <td class="loanStatus_<?php echo $factoringLoan['loanID']; ?>">
-                                            <?php echo $this->ShowDictionaryTo("LOAN_STATUS", $this->userLangCode, $this->dic_Setting['LOAN_STATUS'], $factoringLoan['loanStatus']); ?>
+                                            <?php echo $this->ShowDictionaryTo("LOAN_STATUS", $this->userLangCode, $this->dic_Setting['LOAN_STATUS'], $factoringLoan['factoringLoan']['loanStatus']); ?>
                                         </td>
                                     </tr>
                                 <?php endforeach;?>
@@ -304,6 +331,18 @@
                         </table>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="span-font-size-18 text-primary margin-top-15">文档</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <?php echo $this->ShowUPimg($this->channelRow['attachmentList'], ''); ?>
+                    </div>
+                </div>
             </div>
         </div>
 	</div>
@@ -326,6 +365,16 @@
     </div>
 </div>
 
+<!--PDF预览-->
+<div id="signViewDiv" style="display: none; background-color: #F6F6F6;">
+    <div class="sign-button">企业签署</div>
+    <div class="person-sign-button">个人签署</div>
+    <div class="download-button"><?php echo $this->translate('download'); ?></div>
+    <div class="pdfDoc" style="padding-left:50px;">
+        <div id="pdfPageBox">
+        </div>
+    </div>
+</div>
 
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/footer.phtml'); ?>
 
@@ -333,17 +382,25 @@
 
 <script src="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.js"></script>
 <script src="/ky/bootstrap-table-1.12.1-dist/locale/bootstrap-table-zh-CN.min.js"></script>
+<script type="text/javascript" src="/ky/upload/img.js"></script>
+<script type="text/javascript" src="/ky/js/layerMsg.js"></script>
+<!-- pdf -->
+<script type="text/javascript" src="/ky/pdf/pdf.js"></script>
+<script type="text/javascript" src="/ky/pdf/pdf.worker.js"></script>
+<!-- fancybox -->
+<script type="text/javascript" src="/ky/fancybox-3.5.6-dist/jquery.fancybox.min.js"></script>
+<script type="text/javascript" src="/ky/fancybox-3.5.6-dist/fancyboxInit.js"></script>
 
 <script type="text/javascript">
-    var dataDict = {};
+    let dataDict = {};
 
 	$().ready(function() {
 
 	});
 
 	$(function () {
-        var dataDictQuery = '/user/common/dict-ajax';
-        var dictCode = ["LOAN_STATUS"];
+        let dataDictQuery = '/user/common/dict-ajax';
+        let dictCode = ["LOAN_STATUS"];
         $.ajax({
             type: "POST",
             url: dataDictQuery,
@@ -359,11 +416,11 @@
 	});
 
     $("#interestModal").on('show.bs.modal', function (e) {
-        var triggered = $(e.relatedTarget),
+        let triggered = $(e.relatedTarget),
             loanID = triggered.data("loan-id"),
             $resultListTable = $('#resultListTable');
 
-        var options = {
+        let options = {
             query:{
                 loanID: loanID
             }
@@ -485,6 +542,140 @@
                 }
             }]
         });
+    });
+
+    // *************************** PDF Sign View ********************************
+    PDFJS.workerSrc = '/ky/pdf/pdf.worker.js';
+
+    let pdfDoc = null;
+    let pageNum = 1;
+    let pageRendering = false;
+    let pageNumPending = null;
+    let scale = 1.5;
+
+    function renderPage(num, id) {
+        let canvas = document.getElementById(id);
+        let ctx = canvas.getContext('2d');
+        pageRendering = true;
+        pdfDoc.getPage(num).then(function(page) {
+            let viewport = page.getViewport(scale);
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            let renderContext = {
+                canvasContext: ctx,
+                viewport: viewport
+            };
+            let renderTask = page.render(renderContext);
+
+            renderTask.promise.then(function() {
+                pageRendering = false;
+                if (pageNumPending !== null) {
+                    // New page rendering is pending
+                    renderPage(pageNumPending);
+                    pageNumPending = null;
+                }
+            });
+        });
+
+        //document.getElementById('page_num').textContent = pageNum;
+    }
+
+    function queueRenderPage(num) {
+        if (pageRendering) {
+            pageNumPending = num;
+        } else {
+            renderPage(num);
+        }
+    }
+
+    function onPrevPage() {
+        if (pageNum <= 1) {
+            return;
+        }
+        pageNum--;
+        queueRenderPage(pageNum);
+    }
+    //document.getElementById('prev').addEventListener('click', onPrevPage);
+
+    function onNextPage() {
+        if (pageNum >= pdfDoc.numPages) {
+            return;
+        }
+        pageNum++;
+        queueRenderPage(pageNum);
+    }
+    //document.getElementById('next').addEventListener('click', onNextPage);
+
+    function initPdfView(pdfUrl, obj, viewType) {
+        $("#pdfPageBox").html("");
+        PDFJS.getDocument(pdfUrl).then(function(pdfDoc_) {
+            pdfDoc = pdfDoc_;
+            //document.getElementById('page_count').textContent = pdfDoc.numPages;
+            for (let i=1;i<=pdfDoc.numPages;i++){
+                let canvasDiv = $("<div style=\"padding-top:10px;padding-bottom:10px;\"></div>");
+                let pageNum = $("<div style=\"background-color: #999999;position:absolute;float: left;height:30px;width:60px;text-align: center;line-height: 30px;color:#ffffff;opacity: 0.6;\">"+i+"/"+pdfDoc.numPages+"</div>");
+                let canvas = $("<canvas></canvas>").attr("id", "the-canvas_"+i);
+                canvasDiv.append(pageNum);
+                canvasDiv.append(canvas);
+                $("#pdfPageBox").append(canvasDiv);
+                renderPage(i, "the-canvas_"+i);
+            }
+        });
+
+        let signTitle = "<?php echo $this->translate('signTitle');?>";
+        if (viewType !== undefined && viewType !== '') {
+            if (viewType === 'pdf_view' || viewType === 'show_up_img') {
+                signTitle = "<?php echo $this->translate('document');?>";
+            }
+        }
+        layer.open({
+            type: 1,	//Page层类型
+            area: ['1150px', '100%'],
+            title: signTitle,
+            shadeClose: true,
+            shade: 0.6,	//遮罩透明度
+            // anim: 1,	//0-6的动画形式，-1不开启
+            scrollbar: false,
+            content: $("#signViewDiv")
+        });
+
+        $(".download-button").attr("contractID_", obj.id);
+
+        if ($("#isESigned_" + obj.id).val() === '1') {
+            $(".sign-button").hide();
+        } else {
+            $(".sign-button").show().attr("contractID_", obj.id);
+        }
+
+        if ($("#isPSigned_" + obj.id).val() === '1') {
+            $(".person-sign-button").hide();
+        } else {
+            $(".person-sign-button").show().attr("contractID_", obj.id);
+        }
+
+        // 在物流详情页签署的时候, 如果有弹出层, 会影响到input框无法输入
+        $("#viewDelivery").modal('hide');
+
+        if (viewType !== undefined && viewType !== '') {
+            if (viewType === 'pdf_view') {
+                let $signViewDiv = $("#signViewDiv");
+                $signViewDiv.find(".sign-button").hide();
+                $signViewDiv.find(".person-sign-button").hide();
+                $signViewDiv.find(".download-button").hide();
+            } else if (viewType === 'show_up_img') {
+                let $signViewDiv = $("#signViewDiv");
+                $signViewDiv.find(".sign-button").hide();
+                $signViewDiv.find(".person-sign-button").hide();
+            }
+        }
+    }
+
+    //document.getElementById('prev').addEventListener('click', onPrevPage);
+
+    $(".download-button").bind("click",function(){
+        let contractID_ = $(this).attr("contractID_");
+        window.location.href = $("#contractAttachUrl_" + contractID_).val();
     });
 </script>
 </body>

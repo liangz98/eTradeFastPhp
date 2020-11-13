@@ -79,11 +79,11 @@ return array(
     'signature'    => '企业签署人',
     'setSignature' => '设为签署人',
     'resetSignature' => '刷新签署信息',
-    'compAdmin'    => '公司管理员',
-    'setCompAdmin' => '设为公司管理员',
+    'compAdmin'    => '企业管理员',
+    'setCompAdmin' => '设为企业管理员',
 
     'basicINF'                   => '基本信息',
-    'company_info'               => '公司信息',
+    'company_info'               => '企业信息',
     'companyAuth'                => '企业实名',
     'personNO'                   => '员工信息',
     'bankNO'                     => '银行账号',
@@ -99,8 +99,8 @@ return array(
 
     // 个人信息公司模块
     'companyEWM'                 => '查看公司快移码',
-    'companyMNG'                 => '公司管理',
-    'companyName'                => '公司名称',
+    'companyMNG'                 => '企业管理',
+    'companyName'                => '企业名称',
     'enNAME'                     => '英文名称',
     'enAdress'                   => '英文地址',
     'company_legal_form'         => '公司形式',
@@ -127,7 +127,7 @@ return array(
     'company_profile'            => '档案资料',
     'UPMBLS'                     => '请扫描营业执照并上传',
     'UPICBNO'                    => '请扫描工商注册证并上传',
-    'UPCOMFJ'                    => '可上传公司营业执照、生产许可证、商标等',
+    'UPCOMFJ'                    => '可上传企业营业执照、生产许可证、商标等',
 
     'goodsAttachment'   => '商品相关图片资料',
     'UPGOODSLS'         => '可上传商品外观图、包装图、生产许可证等',

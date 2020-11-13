@@ -176,10 +176,9 @@
                         };
                     },
                     onClickRow: function(row) {
-                        console.log(row.orderID);
-
-                        var resultEnCode = new Base64().encode(row.orderID);
+                        let resultEnCode = new Base64().encode(row.orderID);
                         window.location.href = "/user/sale/view?"+resultEnCode;
+                        // window.open("/user/sale/view?"+resultEnCode);
                     },
                     columns: [{
                         field: 'orderNo',

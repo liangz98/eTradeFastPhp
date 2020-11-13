@@ -1303,6 +1303,37 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl {
         return $resultObject;
     }
 
+    /**
+     * 订单基本信息接口, 供资金方用 20200721
+     * @param $_requestObject
+     * @param $_orderID
+     * @return bool|string
+     */
+    public function getOrder4FundApi($_requestObject, $_orderID) {
+        $_url = $this->url . '/orderapi/orderApi!getOrderView4Fund.action';
+        $_params = json_encode(array(
+            "requestObject" => $_requestObject,
+            "orderID"       => $_orderID
+        ));
+        $resultObject = $this->vpost($_url, $_params); //输出目标地址源码
+        return $resultObject;
+    }
+
+    /**
+     * 上游订单列表
+     * @param $requestObject
+     * @param $orderID
+     * @return bool|string
+     */
+    public function listMaterialPurOrder($requestObject, $orderID) {
+        $_url = $this->url . '/orderapi/orderApi!listMaterialPurOrder.action';
+        $_params = json_encode(array(
+            "requestObject" => $requestObject,
+            "orderID"       => $orderID
+        ));
+        return $this->vpost($_url, $_params);
+    }
+
     /**订单商品信息接口*
      * @param $_requestObject
      * @param $_itemID
@@ -2379,6 +2410,21 @@ class Kyapi_Controller_Json extends Kyapi_Model_Curl {
         ));
         $resultObject = $this->vpost($url, $params);
         return $resultObject;
+    }
+
+    /* 金融模块 - 信用等级接口 */
+    /**
+     * @param $requestObject
+     * @param $evaluationType
+     * @return bool|string
+     */
+    public function getCreditRating4EvaluationType($requestObject, $evaluationType) {
+        $url = $this->url . '/accountapi/accountApi!getCreditRating.action';
+        $params = json_encode(array(
+            "requestObject" => $requestObject,
+            "evaluationType" => $evaluationType
+        ));
+        return $this->vpost($url, $params);
     }
 
     /* 金融模块 - 信用等级接口 */

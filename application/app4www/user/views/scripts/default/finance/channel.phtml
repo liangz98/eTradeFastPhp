@@ -94,6 +94,8 @@
                             <input type="hidden" id="chartType" value="gains">
                         </div>
 
+                        <div class="col-sm-12" style="height: 12px;"></div>
+
                         <div id="ifc_zx" style="float: left; height: 400px; width: 1100px; padding-left: 10px"></div>
                     </div>
 
@@ -372,8 +374,8 @@
                             + '  <div class="panel-heading">'
                             + '   <div class="row">'
                             + '    <div class="col-sm-11">'
-                            + '     <span>项目号</span>&nbsp;&nbsp;'
-                            + '     <span>' + item.itemNo + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+                            + '     <span>债权方</span>&nbsp;&nbsp;'
+                            + '     <span>' + item.factoring.creditorCustomerName + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
                             + '     <span>订单编号</span>&nbsp;&nbsp;'
                             + '     <span><a href="/user/finance/order-view?' + base.encode(item.orderID) + '" target="_blank" class="orderViewA">' + item.orderNo + '</a></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
                             + '     <span>项目金额</span>&nbsp;&nbsp;'

@@ -7,7 +7,7 @@ return array(
     // 系统配置
     'document'               => '文档',
     'etradefast'             => '快移平台',
-    'etrade'                 => '快移平台',
+    'etrade'                 => ' ',
 
     // 语言
     'language'               => 'English',
@@ -15,12 +15,12 @@ return array(
     'english'                => 'English',
 
     // 登录页
-    'welcomeLogin'           => '欢迎登录',
+    'welcomeLogin'           => '腾卓快移云',
     'welcomeReg'             => '欢迎注册',
-    'fair'                   => '更公平',
+    'fair'                   => ' ',
     // 'fair'                   => '让交易更公平',
-    'speed'                  => '更快捷',
-    'guarantee'              => '更有保障',
+    'speed'                  => ' ',
+    'guarantee'              => ' ',
     'qrLogin'                => '扫码登录',
     'accountLogin'           => '帐号密码登录',
 
@@ -85,11 +85,11 @@ return array(
 
     // 用户角色
     'CompUser'               => '普通用户',
-    'CompAdmin'              => '公司管理员',
+    'CompAdmin'              => '企业管理员',
     'SOAdmin'                => '订舱单管理员',
     'TOAdmin'                => '派车单管理员',
     'DeclarationAdmin'       => '报关单管理员',
-    'CompPublicInfoAdmin'    => '公司公告信息管理员',
+    'CompPublicInfoAdmin'    => '企业公告信息管理员',
     'CompSettleAdmin'        => '结算中心管理员',
     'CompOrderAdmin'         => '订单管理员',
     'CompClerk'              => '跟单员',
@@ -103,7 +103,7 @@ return array(
     'is_phone'               => "请填写有效的移动电话号码或固话号码",
     'is_tel'                 => "请填写有效的固定电话",
     'is_company_name'        => "请填写营业执照的企业名称",
-    'is_regd_address'        => "请填写公司的联系地址",
+    'is_regd_address'        => "请填写企业的联系地址",
     'ps_email'               => "name@example.com",
     'service_contract'       => "《快移交易云平台服务协议》",
     'check_service_contract' => "已阅读并同意相关服务条款",
@@ -173,7 +173,7 @@ return array(
     'company_phone'          => '电话号码',
     'company_fax'            => '传真号码',
     'company_website'        => '官方网站',
-    'company_email'          => '公司电子邮箱',
+    'company_email'          => '企业电子邮箱',
     'businessLicense'        => '工商注册信息',
     'INPkw_ac'               => '可输入姓名、移动电话、电子邮箱等关键字',
     'INPkw_bk'               => '可输入账户名称、银行名称、帐号等关键字',

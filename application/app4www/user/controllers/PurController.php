@@ -315,9 +315,8 @@ class PurController extends Kyapi_Controller_Action
             $_order->needFinancing = (boolean)$this->_request->getParam("needFinancing");// 是否需要融资服务
             $_order->financingRequest = $this->_request->getParam("financingRequest");// 融资服务要求
             $_order->financingCrnCode = $this->_request->getParam("financingCrnCode"); // 期望融资货币
-            $_order->financingAmount = $this->_request->getParam("financingAmount");// 期望融资金额
+            $_order->financingAmount = (double)$this->_request->getParam("financingAmount");// 期望融资金额
             $_order->financingType = $this->_request->getParam("financingType");// 金融需求类型
-
 
             // 报关行
             $regdCountryCode = $this->_request->getParam("regdCountryCode");
@@ -631,7 +630,7 @@ class PurController extends Kyapi_Controller_Action
             $_order->needFinancing = (boolean)$this->_request->getParam("needFinancing");// 是否需要融资服务
             $_order->financingRequest = $this->_request->getParam("financingRequest");// 融资服务要求
             $_order->financingCrnCode = $this->_request->getParam("financingCrnCode"); // 期望融资货币
-            $_order->financingAmount = $this->_request->getParam("financingAmount");// 期望融资金额
+            $_order->financingAmount = (double)$this->_request->getParam("financingAmount");// 期望融资金额
             $_order->financingType = $this->_request->getParam("financingType");// 金融需求类型
 
             // 报关行

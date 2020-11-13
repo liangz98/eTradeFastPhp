@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
-	<title><?php echo $this->translate('etradefast'); ?></title>
+	<title><?php echo $this->translate('etradefast'); ?> - <?php echo $this->translate('orderSALLE'); ?></title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/order/order.css" rel="stylesheet">
     <link href="/ky/css/img-upload.css" rel="stylesheet">
@@ -16,7 +16,7 @@
 <div class="container-fluid index-body">
 	<div class="container">
 		<div class="row">
-            <div class="col-md-3 company-navigation hidden-xs">
+            <div class="col-md-3 company-navigation hidden-xs hidden">
                 <div class="panel panel-default">
                     <div class="panel-heading"><?php echo $this->translate('orderIN'); ?></div>
                     <div class="list-group">
@@ -26,7 +26,7 @@
                 </div>
             </div>
 
-            <div class="col-md-9 order-view">
+            <div class="col-md-12 order-view">
                 <?php if ($this->vestut >= 0): ?>
                 <div class="panel panel-default">
                     <div class="panel-body order-news">
@@ -359,6 +359,11 @@
                                                     <div class="row">
                                                         <div class="col-xs-2"><?php echo $this->translate("productMaterial"); ?></div>
                                                         <div class="col-sm-8"><?php echo $goods['productMaterial'];?></div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-xs-2"><?php echo $this->translate("productSize"); ?></div>
+                                                        <div class="col-sm-8"><?php echo $goods['productSize'];?></div>
                                                     </div>
 
                                                     <div class="row">

@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
-	<title><?php echo $this->translate('etradefast'); ?> - <?php echo $this->translate('orderBUY'); ?></title>
+	<title><?php echo $this->translate('etradefast'); ?> - 采购订单</title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/order/order.css" rel="stylesheet">
     <link href="/ky/css/img-upload.css" rel="stylesheet">
@@ -16,7 +16,7 @@
 <div class="container-fluid index-body">
 	<div class="container">
 		<div class="row">
-            <div class="col-md-3 company-navigation hidden-xs hidden">
+            <div class="col-md-3 company-navigation hidden">
                 <div class="panel panel-default">
                     <div class="panel-heading"><?php echo $this->translate('orderIN'); ?></div>
                     <div class="list-group">
@@ -31,29 +31,9 @@
                 <div class="panel panel-default">
                     <div class="panel-body order-news">
                         <div class="row responsive-utilities-test hidden-on">
-                            <div class="col-xs-6 col-sm-3">
-                                <span class="<?php if ($this->vestut == 0) { echo 'order-activated'; } elseif ($this->vestut > 0) { echo 'order-finished'; } ?>"><?php echo $this->translate('confirming'); ?></span>
+                            <div class="col-md-12">
+                                <h3><?php echo $this->translate('delivery'); ?></h3>
                             </div>
-
-                            <a href="#sign" aria-controls="info" role="tab" <?php if ($this->vestut != 0) { echo 'data-toggle="tab"'; } ?>>
-                                <div class="col-xs-6 col-sm-3">
-                                    <span class="<?php if ($this->vestut == 1 || $this->vestut == 3) { echo 'order-activated'; } elseif ($this->vestut > 1) { echo 'order-finished'; } else { echo 'order-no-start';} ?>"><?php echo $this->translate('sign'); ?></span>
-                                </div>
-                            </a>
-
-                            <div class="clearfix visible-xs-block"></div>
-
-                            <a href="#delivery" aria-controls="info" role="tab" <?php if ($this->vestut != 0) { echo 'data-toggle="tab"'; } ?>>
-                                <div class="col-xs-6 col-sm-3">
-                                    <span class="<?php if ($this->vestut > 3) { echo 'order-activated'; } elseif ($this->vestut > 7) { echo 'order-finished'; } else { echo 'order-no-start';} ?>"><?php echo $this->translate('delivery'); ?></span>
-                                </div>
-                            </a>
-
-                            <a href="#calculate" aria-controls="info" role="tab" <?php if ($this->vestut != 0) { echo 'data-toggle="tab"'; } ?>>
-                                <div class="col-xs-6 col-sm-3">
-                                    <span class="<?php if ($this->vestut > 3) { echo 'order-activated'; } elseif ($this->vestut > 7) { echo 'order-finished'; } else { echo 'order-no-start';} ?>"><?php echo $this->translate('calculate'); ?></span>
-                                </div>
-                            </a>
                         </div>
 
                         <div class="tab-content ">
@@ -154,7 +134,6 @@
                                             <col width="100">
                                             <col width="160">
                                             <col>
-                                            <col width="130">
                                         </colgroup>
                                         <thead>
                                         <tr style="background-color: #01AAED; color: white;">
@@ -163,7 +142,6 @@
                                             <th>批次状态</th>
                                             <th style="text-align: center"><?php echo $this->translate('date'); ?></th>
                                             <th style="text-align: center"><?php echo $this->translate('settle_DEC'); ?></th>
-                                            <th style="text-align: center"><?php echo $this->translate('operatING'); ?></th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -177,17 +155,6 @@
                                                     <td style="cursor: pointer;" data-toggle="modal" data-target="#viewDelivery" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-status="<?php echo $v->deliveryStatus; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>"><?php echo $this->ShowDictionaryTo("datatest_setting", $this->userLangCode, $this->dic_Setting['DELIVERY_STATUE'], $v->deliveryStatus); ?></td>
                                                     <td style="cursor: pointer;" data-toggle="modal" data-target="#viewDelivery" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-status="<?php echo $v->deliveryStatus; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>"><?php $date = date_create($v->readyDate); echo date_format($date,"Y-m-d"); ?></td>
                                                     <td style="cursor: pointer;" data-toggle="modal" data-target="#viewDelivery" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-status="<?php echo $v->deliveryStatus; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>"><?php $summary = $v->summary; $replaceStr = "<br />"; echo str_replace('\n', $replaceStr, $summary); ?></td>
-                                                    <td style="text-align: center">
-                                                        <?php if ($v->deliveryStatus == 1 && $v->needExamine == True):?>
-                                                            <a class="layui-btn layui-btn-warm" data-toggle="modal" data-target="#deliveryExamine" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>" ><?php echo $this->translate('ckGOODS'); ?></a>
-                                                        <?php elseif ($v->deliveryStatus == 2): ?>
-                                                            <a class="layui-btn layui-btn-disabled"><?php echo $this->translate('reGOODS'); ?></a>
-                                                        <?php elseif ($v->deliveryStatus == 3): ?>
-                                                            <a class="layui-btn layui-btn-warm" data-toggle="modal" data-target="#deliveryReceipt" data-delivery-id="<?php echo $v->deliveryID; ?>" data-delivery-no="<?php echo $v->deliveryNo; ?>" ><?php echo $this->translate('reGOODS'); ?></a>
-                                                        <?php elseif ($v->deliveryStatus == 4): ?>
-
-                                                        <?php endif; ?>
-                                                    </td>
                                                 </tr>
                                             <?php endforeach; ?>
                                         <?php else: ?>
@@ -324,11 +291,6 @@
                                                     <div class="row">
                                                         <div class="col-xs-2"><?php echo $this->translate("productMaterial"); ?></div>
                                                         <div class="col-sm-8"><?php echo $goods['productMaterial'];?></div>
-                                                    </div>
-
-                                                    <div class="row">
-                                                        <div class="col-xs-2"><?php echo $this->translate("productSize"); ?></div>
-                                                        <div class="col-sm-8"><?php echo $goods['productSize'];?></div>
                                                     </div>
 
                                                     <div class="row">

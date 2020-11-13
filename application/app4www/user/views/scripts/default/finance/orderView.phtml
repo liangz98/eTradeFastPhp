@@ -2,12 +2,13 @@
 <html lang="zh-CN">
 <head>
 <?php echo $this->render(SEED_WWW_TPL . '/layouts/headerLink.phtml'); ?>
-	<title><?php echo $this->translate('etradefast'); ?></title>
+	<title><?php echo $this->translate('etradefast'); ?> - 销售订单</title>
     <link href="/ky/css/layouts/base.css" rel="stylesheet">
     <link href="/ky/css/order/order.css" rel="stylesheet">
     <link href="/ky/css/img-upload.css" rel="stylesheet">
     <!-- fancybox -->
     <link href="/ky/fancybox-3.5.6-dist/jquery.fancybox.min.css" rel="stylesheet">
+    <link href="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -31,29 +32,9 @@
                 <div class="panel panel-default">
                     <div class="panel-body order-news">
                         <div class="row responsive-utilities-test hidden-on">
-                            <div class="col-xs-6 col-sm-3">
-                                <span class="hidden <?php if ($this->vestut == 0) { echo 'order-activated'; } elseif ($this->vestut > 0) { echo 'order-finished'; } ?>"><?php echo $this->translate('confirming'); ?></span>
+                            <div class="col-md-12">
+                                <h3><?php echo $this->translate('delivery'); ?></h3>
                             </div>
-
-                            <a href="#sign" aria-controls="info" role="tab" <?php if ($this->vestut != 0) { echo 'data-toggle="tab"'; } ?>>
-                                <div class="col-xs-6 col-sm-3 hidden">
-                                    <span class="hidden <?php if ($this->vestut == 1 || $this->vestut == 3) { echo 'order-activated'; } elseif ($this->vestut > 1) { echo 'order-finished'; } else { echo 'order-no-start';} ?>"><?php echo $this->translate('sign'); ?></span>
-                                </div>
-                            </a>
-
-                            <div class="clearfix visible-xs-block"></div>
-
-                            <a href="#delivery" aria-controls="info" role="tab" <?php if ($this->vestut != 0) { echo 'data-toggle="tab"'; } ?>>
-                                <div class="col-xs-6 col-sm-4">
-                                    <span class="<?php if ($this->vestut > 3) { echo 'order-activated'; } elseif ($this->vestut > 7) { echo 'order-finished'; } else { echo 'order-no-start';} ?>"><?php echo $this->translate('delivery'); ?></span>
-                                </div>
-                            </a>
-
-                            <a href="#calculate" aria-controls="info" role="tab" <?php if ($this->vestut != 0) { echo 'data-toggle="tab"'; } ?>>
-                                <div class="col-xs-6 col-sm-3 hidden">
-                                    <span class="hidden <?php if ($this->vestut > 3) { echo 'order-activated'; } elseif ($this->vestut > 7) { echo 'order-finished'; } else { echo 'order-no-start';} ?>"><?php echo $this->translate('calculate'); ?></span>
-                                </div>
-                            </a>
                         </div>
 
                         <div class="tab-content ">
@@ -233,6 +214,9 @@
                         <ul class="nav nav-tabs">
                             <li role="presentation" class="active">
                                 <a href="#info" aria-controls="info" role="tab" data-toggle="tab"><?php echo $this->translate('orderVINF'); ?></a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#material" aria-controls="material" role="tab" data-toggle="tab"><?php echo $this->translate('material'); ?></a>
                             </li>
                             <li role="presentation">
                                 <a href="#logistics" aria-controls="logistics" role="tab" data-toggle="tab"><?php echo $this->translate('logistics'); ?></a>
@@ -617,6 +601,14 @@
                                 </div>
                             </div>
 
+                            <!-- 上游订单 -->
+                            <div role="tabpanel" class="tab-pane row" id="material">
+                                <div class="col-md-12" style="min-height: 250px;">
+                                    <!-- Table -->
+                                    <table id="resultListTable"></table>
+                                </div>
+                            </div>
+
                             <!-- 报关物流 -->
                             <div role="tabpanel" class="tab-pane row" id="logistics">
                                 <div class="col-md-12" style="min-height: 250px;">
@@ -877,7 +869,7 @@
                             <!-- 文档 -->
                             <div role="tabpanel" class="tab-pane row" id="profile">
                                 <div class="col-md-12" style="min-height: 250px;">
-                                    <?php echo $this->ShowWebuploader($this->orders['attachmentList'], $this->biz_Setting['ORDER'], 'ODOD', "1", $this->orders['orderID']); ?>
+                                    <?php echo $this->ShowUPimg($this->orders['attachmentList'], ''); ?>
                                 </div>
                             </div>
                         </div>
@@ -1274,6 +1266,10 @@
 <script type="text/javascript" src="/ky/fancybox-3.5.6-dist/fancyboxInit.js"></script>
 <!-- echarts-4.2.0 -->
 <script type="text/javascript" src="/ky/echarts-4.2.0/echarts.min.js"></script>
+<!-- bootstrap-table-1.12.1 -->
+<script src="/ky/bootstrap-table-1.12.1-dist/bootstrap-table.min.js"></script>
+<script src="/ky/bootstrap-table-1.12.1-dist/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="/ky/js/base64.js"></script>
 
 <script type="text/javascript">
     let dataDict = {},
@@ -1376,6 +1372,91 @@
                 $(this).html('展开全部 <i class="fas fa-chevron-down"></i>');
                 $(this).attr("data-type", "down");
             }
+        });
+
+        // 上游订单列表
+        $('#resultListTable').bootstrapTable({
+            url: '/user/finance/material-pur-order-list-ajax',
+            method: 'post',
+            // showRefresh: true,
+            // search: true,
+            pagination: true,
+            classes: 'table table-hover table-no-bordered',
+            sidePagination: 'server',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            pageNumber: 1,
+            pageSize: 10,
+            height: 389,
+            queryParams: function(params) {
+                return {
+                    orderID: '<?php echo $this->orders['orderID'] ?>'
+                };
+            },
+            onClickRow: function(row) {
+                let resultEnCode = new Base64().encode(row.orderID);
+                // window.location.href = "/user/finance/order-pur-view?"+resultEnCode;
+            },
+            columns: [{
+                field: 'orderNo',
+                title: '<?php echo $this->translate("orderNo"); ?>',
+                width: 200,
+                formatter: function (value, row) {
+                    if (value === undefined || value === '' || value === null) {
+                        value = "-";
+                    }
+
+                    let base = new Base64();
+                    let resultEnCode = base.encode(row.orderID);
+                    let href = "/user/finance/order-pur-view?"+resultEnCode;
+                    return '<a href="' + href + '" target="_blank">' + value + '</a>';
+                }
+            }, {
+                field: 'vendorName',
+                title: '<?php echo $this->translate("supplierName"); ?>',
+                width: 250,
+                formatter: function (value, row) {
+                    if (value === undefined || value === '' || value === null) {
+                        value = "-";
+                    }
+
+                    let base = new Base64();
+                    let resultEnCode = base.encode(row.orderID);
+                    let href = "/user/finance/order-pur-view?"+resultEnCode;
+
+                    return '<a href="' + href + '" target="_blank">' + value + '</a>';
+                }
+            }, {
+                field: 'totalAmount',
+                title: '<?php echo $this->translate("orderPrice"); ?>',
+                align: 'right',
+                width: 150,
+                formatter: function (value, row) {
+                    if (value === undefined || value === '' || value === null) {
+                        value = "-";
+                    }
+                    let result = row.buyerCrnCode + ' ' + formatCurrency(value, 2);
+
+                    let base = new Base64();
+                    let resultEnCode = base.encode(row.orderID);
+                    let href = "/user/finance/order-pur-view?"+resultEnCode;
+
+                    return '<a href="' + href + '" target="_blank">' + result + '</a>';
+                }
+            }, {
+                field: 'orderItemDesc',
+                title: '<?php echo $this->translate("itemDesc"); ?>',
+                formatter: function (value, row) {
+                    if (value === undefined || value === '' || value === null) {
+                        value = "-";
+                    }
+
+                    let base = new Base64();
+                    let resultEnCode = base.encode(row.orderID);
+                    let href = "/user/finance/order-pur-view?"+resultEnCode;
+
+                    return '<a href="' + href + '" target="_blank">' + value + '</a>';
+                }
+            }]
         });
 	});
 
@@ -1522,8 +1603,6 @@
         });
     });
 
-
-
     // *************************** PDF Sign View ********************************
     PDFJS.workerSrc = '/ky/pdf/pdf.worker.js';
 
@@ -1605,7 +1684,7 @@
 
         let signTitle = "<?php echo $this->translate('signTitle');?>";
         if (viewType !== undefined && viewType !== '') {
-            if (viewType === 'pdf_view') {
+            if (viewType === 'pdf_view' || viewType === 'show_up_img') {
                 signTitle = "<?php echo $this->translate('document');?>";
             }
         }
@@ -1643,6 +1722,10 @@
                 $signViewDiv.find(".sign-button").hide();
                 $signViewDiv.find(".person-sign-button").hide();
                 $signViewDiv.find(".download-button").hide();
+            } else if (viewType === 'show_up_img') {
+                let $signViewDiv = $("#signViewDiv");
+                $signViewDiv.find(".sign-button").hide();
+                $signViewDiv.find(".person-sign-button").hide();
             }
         }
     }
