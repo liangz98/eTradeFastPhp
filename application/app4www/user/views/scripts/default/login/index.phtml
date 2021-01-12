@@ -17,7 +17,7 @@
 		</div>
 		<div class="collapse navbar-collapse">
 			<p class="navbar-text">
-                <?php echo $this->translate('welcomeLogin'); ?>
+                <?php echo $this->translate('登录'); ?>
 			</p>
 		</div>
 	</div>
@@ -52,7 +52,7 @@
 				</ul>
 
 				<hr>
-				<form class="form-horizontal login-body-form" action="<?php echo $this->baseUrl();?>/login" method="post" id="login_form" name="login_form">
+				<form class="form-horizontal login-body-form" action="<?php echo $this->baseUrl();?>/login/login" method="post" id="login_form" name="login_form">
                     <?php if (!empty($this->resultMsg)): ?>
                         <div class="alert alert-warning alert-dismissible fade in" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>

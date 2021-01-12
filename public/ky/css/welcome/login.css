@@ -20,9 +20,7 @@
 
 /* body */
 .index-body {
-    background-image: url('/ky/images/index/index_bg_2.jpg');
-    height: 580px;
-    background-size: cover;
+    min-height: 580px;
 }
 
 .body-font div:first-child {
